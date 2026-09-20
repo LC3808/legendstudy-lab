@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { AccountControl } from "@/components/account-control";
 import { brand } from "@/lib/brand";
 import { policyRoutes, publicReleaseRoutes } from "@/lib/release-routes";
 
@@ -20,6 +21,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <div className="site-header__actions">
+            <AccountControl />
             <Link className="button button--accent button--small" href="/support/">지원 안내</Link>
           </div>
         </div>

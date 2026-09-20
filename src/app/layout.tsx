@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
+import { AuthProvider } from "@/components/auth-context";
 import { SiteShell } from "@/components/site-shell";
 import { brand } from "@/lib/brand";
 
@@ -18,7 +19,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="ko">
       <body>
-        <SiteShell>{children}</SiteShell>
+        <AuthProvider><SiteShell>{children}</SiteShell></AuthProvider>
       </body>
     </html>
   );

@@ -8,7 +8,7 @@ LS LAB must maintain four data classes. The same display must never imply that a
 | --- | --- | --- | --- | --- |
 | `PUBLIC_METADATA` | University name, campus, region, year, public track label, source title, checked date, source status, canonical official URL. | May be sent to a public page with origin and source-status labels. | Future public API may return it with versioned provenance. | Five reviewed fixtures only. |
 | `SYNTHETIC_CONTENT` | Mock question, short mock passages, draft text placeholder, mock feedback, mock pattern signals. | May be displayed only with durable mock labels. | May support UX tests; cannot become a model claim or official label. | Used for writing/evaluation UI. |
-| `USER_PRIVATE_DATA` | Future student draft, attempt, revision, result, pattern signal, consent, retention/deletion status. | Only the authenticated owner may access their own record. | Must use explicit user scope, audit, deletion, and retention rules. | Not collected or stored. Current draft is local-only mock storage. |
+| `USER_PRIVATE_DATA` | Future student draft, attempt, revision, result, pattern signal, consent, retention/deletion status. | Only the authenticated owner may access their own record. | Must use explicit user scope, audit, deletion, and retention rules. | No personal LAB data is collected or stored. The current browser-auth foundation retains only the Supabase browser session and observes the authenticated identity; it does not query or write personal tables. Current draft is local-only mock storage. |
 | `PRIVATE_SOURCE_DERIVED_ASSET` / `PRIVATE_EVALUATION_ASSET` | Extracted source structure, source page ranges, answer key, rubric, benchmark, evaluator prompt, provider configuration. | Never serialized into client code, API response, log, analytics event, or page props. | Restricted server-only storage and review workflow. | Not created, not stored, not called. |
 
 ## Origin labels
@@ -28,8 +28,8 @@ A canonical official archive/notice link is preferred over a volatile direct att
 
 ## Temporary local draft policy
 
-The `temporaryDraftStore` is marked `client-only` and writes to browser `localStorage`. It exists solely to make the editor interaction demonstrable. It is not an account feature, backup, sync, recovery mechanism, privacy promise, or durable student record. Replace it only after shared identity and personal-data policy approval.
+The `temporaryDraftStore` is marked `client-only` and writes to browser `localStorage`. It exists solely to make the editor interaction demonstrable. It is not an account feature, backup, sync, recovery mechanism, privacy promise, or durable student record. The presence of a browser Auth session does not change this rule. Replace it only after explicit personal-data policy approval, RLS review, retention/deletion design, and a user-owned persistence contract.
 
 ## Static enforcement
 
-`pnpm verify:boundaries` fails when a Client Component imports `src/server`, when a server module lacks `server-only`, when previous prototype runtime dependencies are reintroduced, or when common secret-like tokens appear in the TypeScript source. The audit is a defense-in-depth check; it does not substitute for a production secret-management and bundle-inspection review.
+`pnpm verify:boundaries` fails when a Client Component imports `src/server`, when a server module lacks `server-only`, or when common secret-like tokens appear in the TypeScript source. Browser-side `@supabase/supabase-js` is permitted only behind the `client-only` auth boundary and only accepts the exact public LegendStudy project URL. The audit is a defense-in-depth check; it does not substitute for production secret-management, Auth configuration, RLS review, and bundle-inspection review.

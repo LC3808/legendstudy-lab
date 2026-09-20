@@ -4,7 +4,7 @@
 
 **Next.js App Router with TypeScript is the selected Phase 2 foundation.** Public catalog and university detail pages remain Server Components by default. Small Client Components are used only for interactive catalog filters, temporary browser-local drafting, and future client-only interactions. This preserves server-rendered public entry pages while constraining browser-only logic to the places where state, event handlers, or browser APIs are genuinely required.
 
-This is an architecture candidate, not a Production platform migration. It does not modify the original Flutter Mobile application, existing Production Supabase project, authentication, RLS, deployment, or public domain.
+This remains a static-web architecture candidate. It does not modify the Flutter Mobile application, the existing Production Supabase schema or RLS, deployment infrastructure, or public domain. It now contains a browser-side shared-account foundation that accepts only the LegendStudy app's declared public Supabase project URL and uses the project's existing `auth.users` identity space. It remains inert until the Owner configures public Cloudflare variables and Supabase Auth redirect URLs.
 
 ## Runtime layers
 
@@ -12,6 +12,7 @@ This is an architecture candidate, not a Production platform migration. It does 
 | --- | --- | --- |
 | Next.js Server Components | Render public page shell, route metadata, reviewed public metadata fixture, source provenance copy, and JSON-LD-ready detail pages. | Private evaluator package, protected user data, service-role access, external source retrieval. |
 | Next.js Client Components | Catalog filtering, keyboard-first editor state, browser-local mock draft, confirmation before mock result navigation. | Secrets, private sources, evaluation policy, entitlement determination, actual user history. |
+| Browser Auth boundary | Holds a browser-persisted Supabase Auth session using only the existing project's public URL and publishable key. Provides email/password login, signup, reset, sign-out, noindex auth routes, and a session-aware account state. | Service-role use, schema writes, profile reads, answer sync, user-history access, account deletion processing, or unverified social-provider buttons. |
 | Server-only evaluation boundary | Defines future package/job/credit interfaces and a no-op synthetic adapter. Build tooling prevents client imports. | AI/provider calls, queue workers, persistence, payment, actual credits. |
 | Future public metadata service | Documented successor to the in-repo fixture. Must supply source-versioned public metadata and canonical Quick Links. | Source extraction, protected document caching, private package payload. |
 | Future authenticated data service | Documented successor to mock My routes and temporary draft store. | Shared identity conversion without approval, raw student answer access outside the user scope. |
@@ -30,6 +31,12 @@ Student writing interaction
   -> confirmation
   -> synthetic mock result route
 
+LegendStudy Account browser flow
+  -> Client-only Supabase Auth client using public configuration
+  -> existing Supabase auth.users identity
+  -> local browser session state
+  -> account connection display only
+
 Future authenticated evaluation (not implemented)
   -> protected server endpoint
   -> entitlement and release-state check
@@ -46,11 +53,11 @@ The future evaluation flow must not be reversed. A browser must never post a rub
 
 ## SEO and page metadata
 
-The catalog and public details use App Router server pages, route-level metadata, descriptive Korean titles, and a structured-data-ready `WebPage` JSON-LD component. `NEXT_PUBLIC_SITE_URL` is optional and intentionally unset: canonical and absolute URLs activate only after a final domain is approved. Root robots metadata is currently `noindex, nofollow` because this is a private candidate.
+The catalog and public details use App Router server pages, route-level metadata, descriptive Korean titles, and a structured-data-ready `WebPage` JSON-LD component. `NEXT_PUBLIC_SITE_URL` is set to the canonical production origin for public routes. Account routes are explicitly `noindex`. Supabase's public URL and publishable key are build-time browser configuration and must stay in Cloudflare Pages variables, not source.
 
 ## Later shared identity plan
 
-The eventual identity path is: current LegendStudy user identity mapping → explicit account/link/unlink decision → authenticated Web session → user-owned draft and attempt access → retention/deletion controls. The current `/login` route is a capability disclosure, not a login mechanism. Phase 2 must not silently replace or couple to existing Supabase Auth.
+The shared identity path is: existing LegendStudy `auth.users` identity → browser-side authenticated LAB session → explicit future account/link/unlink decision → user-owned draft and attempt access → retention/deletion controls. `/login/`, `/signup/`, `/forgot-password/`, `/reset-password/`, and `/account/` now implement the first two stages only. The LAB neither creates a second Supabase project nor silently replaces existing Auth. It does not use the session to collect or sync LAB data.
 
 ## Future evaluation engine plan
 

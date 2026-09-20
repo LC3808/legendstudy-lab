@@ -2,7 +2,7 @@
 
 **LegendStudy LAB** is the public essay-learning service foundation for **레전드스터디+**. The production landing is available at [https://lab.legendstudy.com](https://lab.legendstudy.com).
 
-> **Current public scope:** The website introduces the service direction and its current boundaries. It does **not** offer live AI feedback, payments, subscriptions, credits, shared app accounts, answer persistence, official-source copying, or account deletion.
+> **Current public scope:** The website introduces the service direction and its current boundaries. It does **not** offer live AI feedback, payments, subscriptions, credits, answer persistence, official-source copying, or account deletion. A shared-account browser-auth foundation exists but remains unavailable until the existing LegendStudy Supabase project's public configuration and redirect URLs are set and verified.
 
 ## Public information architecture
 
@@ -15,6 +15,8 @@
 | `/privacy/`, `/terms/` | Policy URL foundations | Draft; noindex; Owner review required |
 | `/support/` | Support URL foundation | No live contact channel |
 | `/account-deletion/` | Account deletion URL foundation | No deletion intake or API |
+| `/login/`, `/signup/`, `/forgot-password/`, `/reset-password/` | LegendStudy Account browser-auth routes | `noindex`; fail closed until Owner configuration is present |
+| `/account/` | Session-aware account connection state | `noindex`; does not read or write personal LAB data |
 
 Earlier catalog, synthetic writing, mock evaluation, login, My, and score-analysis routes remain private development foundations. They are absent from public navigation and must not be represented as live services.
 
@@ -43,19 +45,22 @@ The output directory is `out/`. Do not commit `out/`, `.next/`, `node_modules/`,
 | Variable | Production value | Purpose |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | `https://lab.legendstudy.com` | Canonical URLs, public sitemap, robots metadata |
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://stlhijzpjfgwwdgunlsd.supabase.co` | Required public URL for the existing LegendStudy Supabase project |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Existing project's `sb_publishable_…` key | Required browser-safe Auth key; never use a service-role key |
+| `NEXT_PUBLIC_SUPABASE_AUTH_PROVIDERS` | Optional, e.g. `google` | Declares only providers already enabled and tested in Supabase |
 | `NODE_VERSION` | `22.13.0` | Cloudflare Pages build runtime |
 | `PNPM_VERSION` | `11.24.0` | Cloudflare Pages build runtime |
 
-There are no required secrets for the current static release. Do not add Cloudflare tokens, Supabase credentials, OAuth secrets, AI API keys, payment secrets, or private keys to this repository.
+The Supabase URL and publishable key are public browser configuration, but they still belong in Cloudflare Pages environment configuration rather than source. Do not add Cloudflare tokens, `SUPABASE_SERVICE_ROLE`, database passwords, OAuth client secrets, AI API keys, payment secrets, or private keys to this repository.
 
 ## Static hosting behavior
 
 The project uses `output: "export"` and `trailingSlash: true`. Cloudflare Pages serves `public/_redirects`, which redirects the legacy `/lab/` route to the canonical `/` route with HTTP 308. The generated static `/lab/` file remains a safe noindex fallback for hosts that do not apply redirect rules.
 
-Cloudflare Pages is appropriate for this static release. If the project later needs server rendering, Server Actions, authenticated sessions, payment, live AI features, or server-side data processing, the architecture must be reviewed for a compatible server runtime before implementation.
+Cloudflare Pages is appropriate for this static release and browser-side Supabase Auth. If the project later needs server rendering, server-managed sessions, payment, live AI features, user-data APIs, or server-side data processing, the architecture must be reviewed for a compatible server runtime before implementation.
 
 ## Before extending live functionality
 
-Read [Architecture](docs/ARCHITECTURE.md), [Data boundaries](docs/DATA_BOUNDARIES.md), [Prototype migration](docs/PROTOTYPE_MIGRATION.md), [Future implementation handoff](docs/FUTURE_IMPLEMENTATION_HANDOFF.md), and [Production Landing and Route IA](docs/RELEASE_WEB_FOUNDATION.md). The project work tracker is [todo.md](todo.md).
+Read [Architecture](docs/ARCHITECTURE.md), [Data boundaries](docs/DATA_BOUNDARIES.md), [Shared Account setup](docs/SHARED_ACCOUNT_AUTH_SETUP.md), [Prototype migration](docs/PROTOTYPE_MIGRATION.md), [Future implementation handoff](docs/FUTURE_IMPLEMENTATION_HANDOFF.md), and [Production Landing and Route IA](docs/RELEASE_WEB_FOUNDATION.md). The project work tracker is [todo.md](todo.md).
 
 Any future account, AI, payment, source-content, or user-data feature requires its own rights, security, privacy, product, and operating review before release.

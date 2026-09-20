@@ -17,6 +17,7 @@
     "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm verify:boundaries && pnpm build"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
     "client-only": "^0.0.1",
     "next": "16.3.5",
     "react": "19.2.8",

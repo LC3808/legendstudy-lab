@@ -31,7 +31,7 @@ for (const file of serverFiles) {
 }
 
 const packageJson = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
-for (const blockedDependency of ["express", "@trpc/server", "@trpc/client", "@supabase/supabase-js"]) {
+for (const blockedDependency of ["express", "@trpc/server", "@trpc/client"]) {
   if (packageJson.dependencies?.[blockedDependency] || packageJson.devDependencies?.[blockedDependency]) {
     errors.push(`blocked runtime dependency present: ${blockedDependency}`);
   }
