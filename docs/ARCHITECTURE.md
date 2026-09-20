@@ -1,64 +1,51 @@
-# LS LAB Phase 2 Architecture
+# LegendStudy LAB Architecture
 
-## Decision
+## Current decision
 
-**Next.js App Router with TypeScript is the selected Phase 2 foundation.** Public catalog and university detail pages remain Server Components by default. Small Client Components are used only for interactive catalog filters, temporary browser-local drafting, and future client-only interactions. This preserves server-rendered public entry pages while constraining browser-only logic to the places where state, event handlers, or browser APIs are genuinely required.
+**Next.js App Router with TypeScript and static export is the public LEGENDSTUDY LAB foundation.** Public service pages and reviewed public metadata are generated at build time for the canonical `https://lab.legendstudy.com` origin. Small client components are limited to browser interactions such as filters, temporary synthetic drafting, and browser-side Auth state.
 
-This remains a static-web architecture candidate. It does not modify the Flutter Mobile application, the existing Production Supabase schema or RLS, deployment infrastructure, or public domain. It now contains a browser-side shared-account foundation that accepts only the LegendStudy app's declared public Supabase project URL and uses the project's existing `auth.users` identity space. It remains inert until the Owner configures public Cloudflare variables and Supabase Auth redirect URLs.
+LegendStudy LAB is the **Web Intelligence / Deep Work Platform** in the LegendStudy product family. Essay is a service module, not the whole product. The Flutter app remains a separate native product; neither a WebView wrapper nor an automatic session handoff is part of this architecture.
 
 ## Runtime layers
 
-| Layer | Current Phase 2 responsibility | Explicitly excluded |
+| Layer | Current responsibility | Explicitly excluded |
 | --- | --- | --- |
-| Next.js Server Components | Render public page shell, route metadata, reviewed public metadata fixture, source provenance copy, and JSON-LD-ready detail pages. | Private evaluator package, protected user data, service-role access, external source retrieval. |
-| Next.js Client Components | Catalog filtering, keyboard-first editor state, browser-local mock draft, confirmation before mock result navigation. | Secrets, private sources, evaluation policy, entitlement determination, actual user history. |
-| Browser Auth boundary | Holds a browser-persisted Supabase Auth session using only the existing project's public URL and publishable key. Provides email/password login, signup, reset, sign-out, noindex auth routes, and a session-aware account state. | Service-role use, schema writes, profile reads, answer sync, user-history access, account deletion processing, or unverified social-provider buttons. |
-| Server-only evaluation boundary | Defines future package/job/credit interfaces and a no-op synthetic adapter. Build tooling prevents client imports. | AI/provider calls, queue workers, persistence, payment, actual credits. |
-| Future public metadata service | Documented successor to the in-repo fixture. Must supply source-versioned public metadata and canonical Quick Links. | Source extraction, protected document caching, private package payload. |
-| Future authenticated data service | Documented successor to mock My routes and temporary draft store. | Shared identity conversion without approval, raw student answer access outside the user scope. |
+| Static public pages | Service introduction, public scope, policy drafts, reviewed public university metadata, source-status copy. | Private data, source retrieval, auth secrets, live evaluator calls. |
+| Browser Auth boundary | Same-project Supabase email/password session, optional verified social-provider entry, recovery state, account display, sign-out. | Service-role access, schema writes, profile reads, answer sync, personal-history access. |
+| Synthetic workspace boundary | Demonstrates writing and result information architecture with durable mock labels. | Official-question delivery, user-owned answer persistence, real evaluation. |
+| Server-only evaluation boundary | Defines future package/job/credit interfaces. | AI/provider calls, queues, persistence, entitlements, payment. |
+| Future authenticated data service | Future user-owned records after explicit schema/RLS/retention approval. | Silent identity conversion or client-controlled authorization. |
 
-## Data flow
+## Auth and data flow
 
 ```text
 Public visitor
-  -> Server-rendered catalog/detail route
-  -> reviewed public metadata fixture (Phase 2)
-  -> displayed source status + canonical official external link
-
-Student writing interaction
-  -> Client editor
-  -> temporaryDraftStore (browser localStorage only)
-  -> confirmation
-  -> synthetic mock result route
+  -> static service pages and public metadata
 
 LegendStudy Account browser flow
-  -> Client-only Supabase Auth client using public configuration
-  -> existing Supabase auth.users identity
-  -> local browser session state
-  -> account connection display only
+  -> client-only Supabase Auth client using public configuration
+  -> existing LegendStudy auth.users identity
+  -> browser session state
+  -> My Account connection display only
 
-Future authenticated evaluation (not implemented)
-  -> protected server endpoint
-  -> entitlement and release-state check
-  -> private evaluation package resolution
-  -> provider-neutral evaluator
-  -> immutable user-owned result and safe display label
+Future private workspace
+  -> explicit authenticated server/data layer
+  -> user-owned data policy + RLS + retention/deletion controls
+  -> evaluated or analytical result with provenance and versioning
 ```
 
-The future evaluation flow must not be reversed. A browser must never post a rubric, answer key, source extraction, private package, evaluation prompt, provider configuration, price/credit value, or source URL as an instruction to the evaluator. The server must resolve those server-side after authentication, source/release-state, entitlement, rate-limit, and safe-refusal checks.
+`NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` are browser-visible configuration values. They must be supplied through Cloudflare Pages environment settings and must never be replaced by a service-role key, database password, payment secret, or provider client secret.
 
-## Source-aware navigation model
+## Public/private data boundary
 
-`src/lib/quick-link.ts` resolves an official Quick Link in a conservative order. It prioritizes a canonical official notice or archive page. It shows a recheck state for `REVIEW_REQUIRED`, avoids unstable session links, and only exposes a direct file if the metadata explicitly marks it as both `DIRECT_OFFICIAL_FILE` and `AVAILABLE`. It never proxies or copies content. The component uses an external browser link with `noopener noreferrer`.
+The catalog uses only reviewed `PUBLIC_METADATA`. Synthetic writing or evaluation screens use `SYNTHETIC_CONTENT` and visibly identify it as a mock. `USER_PRIVATE_DATA`, `PRIVATE_SOURCE_DERIVED_ASSET`, and `PRIVATE_EVALUATION_ASSET` are not available in the public bundle. The current authenticated session does not change the local-only draft policy.
 
-## SEO and page metadata
+## Future engineering order
 
-The catalog and public details use App Router server pages, route-level metadata, descriptive Korean titles, and a structured-data-ready `WebPage` JSON-LD component. `NEXT_PUBLIC_SITE_URL` is set to the canonical production origin for public routes. Account routes are explicitly `noindex`. Supabase's public URL and publishable key are build-time browser configuration and must stay in Cloudflare Pages variables, not source.
+1. Complete Auth production configuration and recovery E2E with a non-production test account.
+2. Approve the authenticated personal-data and retention model.
+3. Build a read-only public metadata service with source versions and canonical Quick Links.
+4. Add user-owned personal workspaces only with reviewed schema, RLS, and deletion behavior.
+5. Add private evaluation packages, jobs, benchmark evidence, and release gates.
 
-## Later shared identity plan
-
-The shared identity path is: existing LegendStudy `auth.users` identity → browser-side authenticated LAB session → explicit future account/link/unlink decision → user-owned draft and attempt access → retention/deletion controls. `/login/`, `/signup/`, `/forgot-password/`, `/reset-password/`, and `/account/` now implement the first two stages only. The LAB neither creates a second Supabase project nor silently replaces existing Auth. It does not use the session to collect or sync LAB data.
-
-## Future evaluation engine plan
-
-A future evaluator must use package IDs and package versions, not raw URLs or client-selected evaluation criteria. The `PrivateEvaluationPackageContract` is intentionally server-only. Before adding an endpoint, establish source-use approval, private package lifecycle, reviewer ownership, benchmark cases, human adjudication, prompt-injection controls, safe refusal responses, provider configuration, rate limits, incident kill switch, immutable result versioning, and Product Owner release approval.
+See [Product IA and Auth UX](PRODUCT_IA_AND_AUTH_UX.md), [Shared Account Auth Setup](SHARED_ACCOUNT_AUTH_SETUP.md), and [Data Boundaries](DATA_BOUNDARIES.md).

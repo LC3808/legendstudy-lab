@@ -221,3 +221,45 @@ body { padding-bottom: env(safe-area-inset-bottom); }
   .auth-card h1 { font-size: clamp(2.05rem, 11vw, 3rem); }
   .auth-card__lead { font-size: 0.9rem; }
 }
+
+/* Platform IA and shared-account additions. Existing visual tokens remain canonical above. */
+.release-steps__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.release-steps__grid article { min-height: 13.5rem; }
+.release-steps__status { margin: 0.6rem 0 0 !important; color: var(--accent-dark) !important; font-size: 0.68rem !important; font-weight: 800; }
+.release-steps__grid h3 { margin-top: 0.65rem; font-family: Georgia, "Nanum Myeongjo", serif; font-size: 1.35rem; letter-spacing: -0.04em; }
+
+.platform-flow { display: grid; grid-template-columns: minmax(15rem, .72fr) minmax(0, 1.28fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; padding: clamp(1.5rem, 4vw, 3rem); border-radius: var(--radius-xl); background: var(--ink); }
+.platform-flow__heading .eyebrow { color: #f4c376; }
+.platform-flow h2 { margin: 0.65rem 0 0; color: white; font-family: Georgia, "Nanum Myeongjo", serif; font-size: clamp(2.1rem, 4.3vw, 3.6rem); letter-spacing: -0.06em; line-height: 1.04; }
+.platform-flow__list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.platform-flow__list li { display: grid; grid-template-columns: 2.25rem minmax(7rem, .72fr) minmax(0, 1.28fr); gap: 0.75rem; align-items: baseline; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,.14); }
+.platform-flow__list li:last-child { border-bottom: 0; }
+.platform-flow__list span { color: #f4c376; font-family: ui-monospace, monospace; font-size: .68rem; font-weight: 800; }
+.platform-flow__list strong { color: white; font-size: .88rem; }
+.platform-flow__list p { margin: 0; color: rgba(255,255,255,.68); font-size: .8rem; line-height: 1.65; }
+
+.auth-card--account { width: min(100%, 52rem); }
+.auth-card h2 { margin: 0.45rem 0 0; font-family: Georgia, "Nanum Myeongjo", serif; font-size: 1.5rem; letter-spacing: -0.04em; }
+.account-roadmap { margin-top: 1.75rem; padding-top: 1.35rem; border-top: 1px solid var(--line); }
+.account-roadmap__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; margin-top: 1rem; }
+.account-roadmap__grid article { display: grid; gap: .5rem; padding: .9rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-muted); }
+.account-roadmap__grid strong { color: var(--ink); font-size: .8rem; }
+.account-roadmap__grid span { color: var(--ink-soft); font-size: .72rem; line-height: 1.6; }
+.auth-social__button { display: flex; min-height: 2.8rem; width: 100%; align-items: center; justify-content: center; gap: .65rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: white; color: var(--ink); font-size: .82rem; font-weight: 800; }
+.auth-social__button span { display: grid; width: 1.3rem; height: 1.3rem; place-items: center; border-radius: 50%; font-size: .78rem; font-weight: 900; }
+.auth-social__button--google span { border: 1px solid #d6dbe4; color: #4285f4; }
+.auth-social__button--apple { border-color: #171717; background: #171717; color: white; }
+.auth-social__button--apple span { color: white; }
+.auth-social__button--kakao { border-color: #f5dd00; background: #fee500; color: #191919; }
+.auth-social__button--kakao span { background: #191919; color: #fee500; }
+.auth-social__button:disabled { cursor: not-allowed; opacity: .65; }
+
+@media (max-width: 960px) {
+  .platform-flow { grid-template-columns: 1fr; }
+}
+@media (max-width: 680px) {
+  .release-steps__grid, .account-roadmap__grid { grid-template-columns: 1fr; }
+  .platform-flow { padding: 1.35rem; }
+  .platform-flow__list li { grid-template-columns: 2rem 1fr; }
+  .platform-flow__list p { grid-column: 2; }
+}

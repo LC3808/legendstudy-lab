@@ -25,6 +25,14 @@
 - [x] Used the same official asset for the Next.js app icon, Apple touch icon, and favicon.
 - [x] Validated desktop, 390-pixel, and 320-pixel header rendering; generated icon metadata; and static asset responses.
 
+## Completed platform IA and shared-account UX refinement
+
+- [x] Positioned LAB as the Web Intelligence / Deep Work Platform, with Essay Lab, Academic Analytics, and Activity Portfolio clearly treated as modules rather than separate products.
+- [x] Reworked the public service flow around information → analysis → writing → evaluation → personal review without claiming unfinished capabilities are available.
+- [x] Added safe account return-path handling, password recovery/reset states, fail-closed anonymous UI, and conditional social-provider controls.
+- [x] Replaced synthetic My Essay/My Pattern history claims with honest account-linked placeholders until user-owned records and evidence contracts exist.
+- [x] Updated the canonical LegendStudy Wiki with the actual LAB implementation state, platform boundary, and production acceptance blockers.
+
 ## Known blocked work
 
 - [ ] Owner: set the existing project’s public Supabase URL and publishable key in Cloudflare Pages, then configure the exact production Auth Site URL and redirect paths. Follow `docs/SHARED_ACCOUNT_AUTH_SETUP.md`.

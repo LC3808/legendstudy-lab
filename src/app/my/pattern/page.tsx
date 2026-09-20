@@ -1,11 +1,20 @@
 import Link from "next/link";
 
-import { MockNotice, OriginLabel } from "@/components/trust-label";
+import { MockNotice } from "@/components/trust-label";
 import { buildMetadata } from "@/lib/brand";
-import { mockPatternSignals } from "@/fixtures/public-metadata";
 
-export const metadata = buildMetadata("My Essay Pattern", "LS LAB의 evidence-linked pattern UX를 위한 합성 mock foundation입니다.");
+export const metadata = buildMetadata("My Essay Pattern", "LegendStudy Account와 연결될 개인 논술 패턴 분석 영역의 준비 상태를 안내합니다.");
 
 export default function PatternPage() {
-  return <div className="page-section content-wrap content-wrap--detail"><div className="page-intro"><p className="eyebrow eyebrow--accent">MY / PATTERN</p><h1>My Essay Pattern</h1><p>반복되는 강점과 개선 포인트를 user-owned evaluation history에서 발견하는 장기 UX입니다. 이 화면의 signal과 progress는 synthetic fixture입니다.</p></div><MockNotice compact /><section className="pattern-grid"><aside className="pattern-summary"><OriginLabel origin="SYNTHETIC_CONTENT" /><p className="eyebrow">MOCK PROGRESS</p><h2>관점 비교</h2><p>두 근거를 병렬로 놓는 문장 구조가 최근 두 답안에서 개선되는 흐름을 예시로 표시합니다.</p><div className="bar-chart" aria-label="합성 progress chart">{[25, 36, 42, 54, 68].map((height, index) => <span key={height} style={{ height: `${height}%`, opacity: 0.45 + index * 0.12 }} />)}</div><small>실제 누적 답안·평가 기록은 존재하지 않습니다.</small></aside><div className="pattern-list">{mockPatternSignals.map((signal) => <article key={signal.id}><div><span className="pattern-list__icon" aria-hidden="true">✦</span><span className="pattern-list__label">{signal.signalLabel}</span></div><h2>{signal.studentLabel}</h2><p>{signal.description}</p><small>합성 기반 횟수: {signal.contributingAttemptCount}회</small></article>)}</div></section><Link className="button button--primary" href="/essay-lab">Essay Lab으로 돌아가기 <span aria-hidden="true">→</span></Link></div>;
+  return (
+    <div className="placeholder-page content-wrap">
+      <div className="placeholder-page__icon" aria-hidden="true">✦</div>
+      <p className="eyebrow eyebrow--accent">MY / ESSAY PATTERN</p>
+      <h1>나의 논술 패턴은<br />준비 중입니다.</h1>
+      <p>반복되는 강점과 개선 포인트는 실제 답안·평가 이력, 근거, 버전 정보를 함께 보관할 수 있을 때만 개인 분석으로 보여줄 수 있습니다. 현재는 합성 신호나 진척도를 실제 결과처럼 표시하지 않습니다.</p>
+      <MockNotice compact />
+      <div className="button-row"><Link className="button button--primary" href="/account/">내 계정 보기 <span aria-hidden="true">→</span></Link><Link className="button button--outline" href="/">서비스 안내 보기</Link></div>
+      <small>개인 답안, 패턴 분석, AI 평가 데이터는 아직 저장·연결되지 않았습니다.</small>
+    </div>
+  );
 }

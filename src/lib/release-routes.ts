@@ -1,7 +1,7 @@
 export const publicReleaseRoutes = [
-  { href: "/", label: "LAB 소개" },
-  { href: "/lab/how-it-works/", label: "이용 방법" },
-  { href: "/lab/coverage/", label: "지원 범위" },
+  { href: "/", label: "서비스" },
+  { href: "/lab/how-it-works/", label: "이용 안내" },
+  { href: "/lab/coverage/", label: "공개 범위" },
 ] as const;
 
 export const policyRoutes = [
@@ -17,6 +17,10 @@ export const internalFoundationPathPrefixes = [
   "/my",
   "/score-analysis",
   "/login",
+  "/signup",
+  "/forgot-password",
+  "/reset-password",
+  "/account",
 ] as const;
 
 export const publicReleasePaths = publicReleaseRoutes.map((route) => route.href);

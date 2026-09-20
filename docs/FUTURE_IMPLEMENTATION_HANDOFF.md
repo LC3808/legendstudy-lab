@@ -1,51 +1,37 @@
-# LS LAB Future Implementation Handoff
+# LegendStudy LAB Future Implementation Handoff
 
 ## Starting point
 
-Phase 2 is a local Next.js App Router candidate with public metadata fixtures, source-aware navigation, a synthetic writing/evaluation flow, mock My routes, tests, and a static boundary audit. It is not a deployable student-data or AI-evaluation product.
+LegendStudy LAB is a deployed static Next.js public foundation with shared-account browser-auth UI, reviewed public metadata fixtures, source-aware navigation, synthetic writing/evaluation UI, and explicit public/private boundaries. It is **not** a live student-data, AI-evaluation, payment, or school-management product.
 
-## Recommended ownership split
+## Current non-negotiable boundaries
+
+- `auth.users.id` in the existing LegendStudy Supabase project is the intended canonical identity. There is no automatic App↔Web session transfer or email-based account merge.
+- Browser Auth configuration is public and fail-closed. It cannot use a service-role key or create a new identity store.
+- A signed-in LAB session does not authorize personal-data reads or writes until an approved user-owned data model, RLS, retention, and deletion contract exists.
+- Public catalog metadata may direct the user to an official source; it must not copy or re-distribute official originals by default.
+- Synthetic workspace content is not an official question, student record, or model-quality claim.
+
+## Recommended workstream ownership
 
 | Workstream | First deliverable | Must not happen before approval |
 | --- | --- | --- |
-| Product Owner | Final domain and indexing decision; source-use policy; student-facing origin labels; open-beta gate. | Domain/public release, user-data collection, source extraction, commercial launch. |
-| Backend engineering | Public metadata + Quick Link read service with source version, canonical fallback, stale status, and cache policy. | Service-role use in browser, source file mirroring, evaluator endpoint. |
-| Identity/security engineering | LegendStudy account mapping, Web session design, linking/unlinking, RLS/data-access model, privacy/retention/delete policy. | Auth replacement, silent account joining, Production schema/RLS mutation. |
-| Research/reviewer operations | Source registry, rights status, extraction scope, reviewer assignment, package lifecycle, change/incidents queue. | Using source-derived content in the product before rights and review. |
-| Evaluation engineering | Provider-neutral contract, package resolver, benchmark harness, safe refusal model, observer logs and kill switch. | Live model evaluation, score claim, credit deduction before benchmark/release gate. |
-| Frontend engineering | Replace fixture repository with public metadata client; replace local draft adapter with authenticated autosave after contracts land. | Leaking private package data or representing mock results as model output. |
+| Product Owner | First LAB module, release language, owner acceptance criteria. | Claiming availability of analytics, Essay feedback, payments, or school tools. |
+| Identity/security engineering | Shared-account production configuration, recovery E2E, linking/unlinking policy, user-data/RLS design. | Silent account joining, service-role browser access, personal-data collection. |
+| Backend engineering | Public metadata service with source version and canonical Quick Link state. | Source mirroring, private package exposure, evaluator endpoint. |
+| Research/reviewer operations | Rights/status register, reviewer ownership, private package lifecycle. | Source-derived content use before rights and review. |
+| Evaluation engineering | Package resolver, benchmark harness, safe-refusal design, job/credit lifecycle. | Live scoring, credit deduction, or quality claims before release gates. |
+| Frontend engineering | Replace fixtures with approved public service; later replace local drafts with user-owned autosave. | Mock-to-live language drift or private data in the browser bundle. |
 
-## Minimum implementation order
+## Implementation order
 
-### Phase 2.5 — Public catalog service
+1. **Auth E2E gate:** verify Cloudflare environment variables, Supabase redirect allow-list, signup confirmation, login/logout, recovery success/expired paths, and enabled social providers with a non-production account.
+2. **Personal-data approval:** define profile/record ownership, access control, RLS, retention, export, deletion, and App↔Web linking behavior.
+3. **Public catalog service:** replace fixtures with a validated anonymous read-only adapter that exposes only `PUBLIC_METADATA` with provenance and stale-link state.
+4. **Authenticated personal workspaces:** add user-owned drafts, attempts, revisions, and history only after the data gate.
+5. **Private evaluation pilot:** add package/job/credit contracts only after rights, benchmark, and release approval.
+6. **Academic Analytics and Portfolio:** treat as independent modules with their own data-quality, interpretation, and privacy gates.
 
-Create read-only public endpoints with university, year, campus, track, taxonomy, source title, source status, checked/retrieved date, canonical official URL, and a stable source-record ID. The endpoint must distinguish `OFFICIAL_CONFIRMED`, `REVIEW_REQUIRED`, `NOT_PUBLISHED`, and `NOT_FOUND_IN_AUDIT`; an empty string is not a status. Add data validation, source-version and stale-link state. Keep the first API anonymous and public-metadata-only.
+## Verification expectations
 
-### Phase 3 — Identity and personal workspaces
-
-Design identity mapping before creating user tables. A user should be able to see only their own drafts, attempts, revisions, results, and consent/deletion state. A draft must have a documented autosave conflict policy. An attempt submission must create an immutable snapshot rather than overwrite a draft. My Essay Pattern should display only evidence-linked signals with contributing-attempt count, confidence, explanation, and a next practice action.
-
-### Phase 4 — Private package and evaluator pilot
-
-Choose one reviewed package type only after rights/source-use approval. Store private artifacts server-side. Complete benchmark cases for strong, weak, partial, off-topic, adversarial, format edge, and counterfactual answers. Require safe refusal for insufficient source or unsupported scoring. Record package, rubric, source, evaluation contract, prompt, provider, and result versions. An evaluator release requires benchmark evidence, human review, source/release status, operational rollback, Product Owner sign-off, and user-visible non-official score language.
-
-## Required gates before any Production change
-
-1. Product Owner approval for the exact scope and user-visible language.
-2. Security/privacy review for shared identity and student data lifecycle.
-3. Source rights/use record and reviewer process for any non-synthetic source-derived material.
-4. Database/RLS migration plan reviewed against the actual existing LegendStudy environment.
-5. Benchmark and release gate for an evaluator; no paid or open beta claim before evidence exists.
-6. Final domain, deployment, incident, monitoring, and support ownership.
-
-## Codex-oriented next task
-
-Use Codex for a contained **public catalog data adapter** only after an approved read-only API contract exists. The task should replace `src/fixtures/public-metadata.ts` with a validated repository that maps only public fields, preserves Quick Link resolver behavior, adds loading/error states, and extends tests. It must not add Supabase credentials, database writes, official content extraction, Auth, evaluator calls, or source copying.
-
-## Claude-oriented next task
-
-Use Claude for independent product/research review: validate source-status language, compare candidate public taxonomy labels against the review register, refine Korean trust microcopy, design My Essay Pattern evidence explanations, and review the evaluator benchmark/release rubric. It should not implement an unapproved live evaluator or claim model quality.
-
-## Manus-oriented next task
-
-Use Manus for deterministic implementation and validation: scaffold approved route or adapter changes, run type/lint/test/build/boundary checks, render/screenshot public routes, validate direct-vs-canonical Quick Link behavior, assemble implementation evidence, and perform read-only source/status audits. Manus should pause for Product Owner confirmation before Production credentials, public deploy, domain binding, GitHub push/PR, schema migration, or live source/evaluator actions.
+Every implementation change should keep `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm verify:boundaries`, `pnpm build`, a credential scan, and `git diff --check` green. Public route changes require desktop and mobile render inspection. Auth changes require a fail-closed unconfigured build plus non-production E2E only after the Owner completes the deployment settings.
