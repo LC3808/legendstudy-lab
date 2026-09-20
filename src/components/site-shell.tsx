@@ -4,7 +4,8 @@ import type { ReactNode } from "react";
 
 import { AccountControl } from "@/components/account-control";
 import { brand } from "@/lib/brand";
-import { policyRoutes, publicReleaseRoutes } from "@/lib/release-routes";
+import { SiteNav } from "@/components/site-nav";
+import { policyRoutes } from "@/lib/release-routes";
 
 export function SiteShell({ children }: { children: ReactNode }) {
   return (
@@ -16,11 +17,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <span className="brand__name">{brand.productName}</span>
             <span className="brand__phase">{brand.phaseLabel}</span>
           </Link>
-          <nav className="site-nav" aria-label="주요 메뉴">
-            {publicReleaseRoutes.map((item) => (
-              <Link key={item.href} href={item.href}>{item.label}</Link>
-            ))}
-          </nav>
+          <SiteNav />
           <div className="site-header__actions">
             <AccountControl />
             <Link className="button button--accent button--small" href="/support/">지원 안내</Link>

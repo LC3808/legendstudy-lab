@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "re
 import { AuthConfigurationNotice } from "@/components/account-control";
 import { useAuth } from "@/components/auth-context";
 import { browserRedirectTo, getBrowserAuthConfig, type SocialProvider } from "@/lib/auth-config";
+import { readResetNotice, RESET_SUCCESS_PATH } from "@/lib/recovery-redirect";
 import { appendReturnPath, getSafeReturnPath } from "@/lib/return-to";
 
 export type AuthFormMode = "login" | "signup" | "forgot" | "reset";
@@ -53,9 +54,13 @@ export function AuthForm({ mode }: { mode: AuthFormMode }) {
   const copy = titleFor(mode);
   const providers = useMemo(() => getBrowserAuthConfig()?.socialProviders ?? [], []);
   const returnPath = useMemo(() => {
-    if (typeof window === "undefined") return "/account/";
+    if (typeof window === "undefined") return "/home/";
     return getSafeReturnPath(new URLSearchParams(window.location.search).get("next"));
   }, []);
+  const resetNotice = useMemo(() => {
+    if (mode !== "login" || typeof window === "undefined") return null;
+    return readResetNotice(window.location.search);
+  }, [mode]);
   const recoveryLinkState = useMemo<"checking" | "valid" | "invalid" | "direct">(() => {
     if (mode !== "reset" || typeof window === "undefined") return "checking";
     const hash = new URLSearchParams(window.location.hash.slice(1));
@@ -123,8 +128,12 @@ export function AuthForm({ mode }: { mode: AuthFormMode }) {
       } else {
         const { error: updateError } = await auth.client.auth.updateUser({ password });
         if (updateError) throw updateError;
+        // End the temporary recovery session and require a fresh sign-in with
+        // the new password. The success notice is shown on the login page.
         auth.completeRecovery();
-        setMessage("비밀번호를 변경했습니다. 현재 계정 세션을 계속 사용할 수 있습니다.");
+        await auth.signOut();
+        window.location.assign(RESET_SUCCESS_PATH);
+        return;
       }
     } catch {
       setError(safeMessage(mode));
@@ -152,6 +161,8 @@ export function AuthForm({ mode }: { mode: AuthFormMode }) {
         <p className="eyebrow eyebrow--accent">{copy.eyebrow}</p>
         <h1 id="auth-title">{copy.title}</h1>
         <p className="auth-card__lead">{copy.lead}</p>
+
+        {resetNotice && <p className="auth-callout auth-callout--success" role="status">{resetNotice}</p>}
 
         {mode === "reset" && recoveryLinkState !== "valid" && (
           <div className="auth-callout auth-callout--warning" role="status">

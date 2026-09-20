@@ -4,6 +4,14 @@ export const publicReleaseRoutes = [
   { href: "/lab/coverage/", label: "공개 범위" },
 ] as const;
 
+export const authenticatedProductRoutes = [
+  { href: "/home/", label: "홈" },
+  { href: "/score-analysis/", label: "성적 분석" },
+  { href: "/essay-lab/", label: "논술 LAB" },
+  { href: "/my/essays/", label: "내 기록" },
+  { href: "/account/", label: "마이페이지" },
+] as const;
+
 export const policyRoutes = [
   { href: "/privacy/", label: "개인정보처리방침" },
   { href: "/terms/", label: "이용약관" },

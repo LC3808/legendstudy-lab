@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { buildPublicMetadata } from "./brand";
-import { internalFoundationPathPrefixes, policyRoutes, publicReleasePaths } from "./release-routes";
+import { authenticatedProductRoutes, internalFoundationPathPrefixes, policyRoutes, publicReleasePaths } from "./release-routes";
 
 describe("release routes", () => {
   it("preserves the canonical root and stable public entry paths", () => {
@@ -9,6 +9,23 @@ describe("release routes", () => {
     expect(policyRoutes.map((route) => route.href)).toEqual(["/privacy/", "/terms/", "/support/", "/account-deletion/"]);
     expect(internalFoundationPathPrefixes).toContain("/lab");
     expect(internalFoundationPathPrefixes).toContain("/essay-lab");
+  });
+
+  it("maps the authenticated product menu to existing foundation routes", () => {
+    expect(authenticatedProductRoutes.map((route) => route.href)).toEqual([
+      "/home/",
+      "/score-analysis/",
+      "/essay-lab/",
+      "/my/essays/",
+      "/account/",
+    ]);
+    expect(authenticatedProductRoutes.map((route) => route.label)).toEqual([
+      "홈",
+      "성적 분석",
+      "논술 LAB",
+      "내 기록",
+      "마이페이지",
+    ]);
   });
 
   it("does not claim an indexing canonical before an Owner supplies a final origin", () => {

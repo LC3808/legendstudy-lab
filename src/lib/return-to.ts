@@ -1,4 +1,4 @@
-export function getSafeReturnPath(candidate: string | null | undefined, fallback = "/account/"): string {
+export function getSafeReturnPath(candidate: string | null | undefined, fallback = "/home/"): string {
   if (!candidate || !candidate.startsWith("/") || candidate.startsWith("//") || candidate.includes("\\")) {
     return fallback;
   }

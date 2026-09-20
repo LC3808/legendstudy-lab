@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { useAuth } from "@/components/auth-context";
-import { appendReturnPath } from "@/lib/return-to";
 
-const loginPath = appendReturnPath("/login/", "/account/");
+// A plain login entry: success resolves to the canonical /home/ unless a
+// valid internal next is present. It no longer forces a return to /account/.
+const loginPath = "/login/";
 
 export function AccountControl() {
   const auth = useAuth();

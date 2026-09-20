@@ -263,3 +263,10 @@ body { padding-bottom: env(safe-area-inset-bottom); }
   .platform-flow__list li { grid-template-columns: 2rem 1fr; }
   .platform-flow__list p { grid-column: 2; }
 }
+
+.home-entry-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; margin-top: 1.2rem; }
+.home-entry-card { display: grid; gap: .35rem; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-muted); text-decoration: none; color: inherit; }
+.home-entry-card strong { font-size: 1.02rem; }
+.home-entry-card span { color: var(--muted); font-size: .9rem; }
+.home-entry-card:hover { border-color: var(--accent); }
+@media (max-width: 640px) { .home-entry-grid { grid-template-columns: 1fr; } }
