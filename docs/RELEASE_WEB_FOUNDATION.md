@@ -1,43 +1,37 @@
-# LS LAB Phase 1 Release Web Foundation
+# LegendStudy LAB Production Landing and Route IA
 
 ## Purpose
 
-This repository now separates a **public LegendStudy LAB entry foundation** from the earlier private Phase 2 demonstration routes. The intended stable paths are `/lab/`, `/lab/how-it-works/`, and `/lab/coverage/`. Cloudflare Pages applies the tracked `public/_redirects` rule from `/` to `/lab/` with HTTP 308, while the generated root page is a safe static fallback for hosts without redirect rules.
+The public production entry for **LegendStudy LAB** is now `https://lab.legendstudy.com/`. The landing page explains the service direction, its current public scope, and the learning flow it is preparing. It does not present AI feedback, payment, subscriptions, account synchronization, or university-source copying as live features.
 
-The project has no hosting account, domain, DNS record, Git remote, production environment, shared authentication, payment provider, or user-data backend configured. No preview or sandbox URL is a canonical URL.
+The repository is deployed to Cloudflare Pages and the production custom domain is connected. `NEXT_PUBLIC_SITE_URL` is set to the canonical production origin at build time.
 
-## Public paths and publication state
+## Route roles
 
-| Path | Current purpose | Publication state |
-|---|---|---|
-| `/lab` | LS LAB service introduction and public entry | Service-preparing public copy; deployable only after a final host is approved |
-| `/lab/how-it-works` | Clear explanation of the current service boundary | Service-preparing public copy |
-| `/lab/coverage` | Current scope and explicit non-features | Foundation-only public copy |
-| `/privacy` | Privacy-policy review and URL foundation | Draft; owner review required; not Store-ready |
-| `/terms` | Terms review and URL foundation | Draft; owner review required; not Store-ready |
-| `/support` | Support URL foundation | Owner action required; no live contact channel |
-| `/account-deletion` | Account-deletion URL foundation | Foundation-only; no request or deletion workflow |
+| Path | Current purpose | Indexing and delivery state |
+| --- | --- | --- |
+| `/` | Canonical LegendStudy LAB introduction and value-led landing page | Public, indexable, canonical root |
+| `/lab/` | Legacy compatibility alias | Cloudflare Pages redirects to `/` with HTTP 308; static fallback is noindex |
+| `/lab/how-it-works/` | Explanation of the planned service flow and current boundary | Public, indexable |
+| `/lab/coverage/` | Current scope and explicit non-features | Public, indexable |
+| `/privacy/`, `/terms/` | Policy URL foundations | Draft, noindex, Owner review required |
+| `/support/` | Support URL foundation | Noindex, no live contact channel |
+| `/account-deletion/` | Account deletion URL foundation | Noindex, no request or deletion workflow |
 
-## Canonical-origin gate
+## Canonical and crawler behavior
 
-`NEXT_PUBLIC_SITE_URL` is intentionally absent from the repository. A Product Owner must set it at build time to the approved HTTPS origin without a trailing slash. Until that value is configured, public release pages are `noindex`, `robots.txt` disallows crawling, `sitemap.xml` is empty, and no canonical URL is emitted.
+The production build uses `NEXT_PUBLIC_SITE_URL=https://lab.legendstudy.com`. The root landing page emits a canonical URL for `/`, and the public sitemap lists `/`, `/lab/how-it-works/`, and `/lab/coverage/`. The compatibility route `/lab/` is not listed in the sitemap and has a root canonical fallback.
 
-After an approved host is configured, the site will generate canonicals and a sitemap for the three LS LAB public release pages. The policy routes remain `noindex` until their legal text, contact details, and publication decision are complete.
+The policy and future-development routes remain noindex. Private development foundations under `/essay-lab`, `/my`, `/score-analysis`, and `/login` remain excluded from public navigation and crawlers.
 
-## Required Owner actions before public release
+## Current public scope
 
-1. Choose and configure a hosting provider and the final HTTPS domain. There is no existing provider configuration to reuse.
-2. Set `NEXT_PUBLIC_SITE_URL` in that provider's production environment to the final origin.
-3. Approve final Korean copy for the public LS LAB pages and decide whether the existing `LS LAB by LegendStudy` naming remains the public name.
-4. Replace the draft privacy and terms pages with reviewed, dated, published policy documents that match the actual LegendStudy+ and LS LAB data flows.
-5. Configure a real support channel, handling owner, response expectations, and escalation process.
-6. Implement and validate an authenticated account-deletion request or in-app deletion path before using `/account-deletion` in a store listing.
-7. Confirm legal rights for any future official problem, answer, explanation, audio, OCR, caching, downloading, AI input, or redistribution behavior.
+The landing page presents the following as a **preparation direction**, not as live product capability: university essay information, past-question and trend analysis, answer writing, feedback, and learning records. The current public release provides only the service introduction, usage guidance, scope disclosure, and policy/support URL foundations.
 
-## Deployment sequence after approval
+## Release verification
 
-Run `pnpm verify`, build with the approved production `NEXT_PUBLIC_SITE_URL`, deploy through the Owner-selected provider, and validate the final HTTPS origin. The release checklist must include `/`, `/lab`, `/lab/how-it-works`, `/lab/coverage`, `/privacy`, `/terms`, `/support`, `/account-deletion`, `/robots.txt`, `/sitemap.xml`, and a missing route. Verify mobile widths 360, 390, and 430 pixels, tablet, and desktop before publishing the URL in mobile-app metadata.
+Before every release, run `pnpm verify`, `pnpm audit:github-ready`, and `git diff --check`. Build with the production canonical origin, then validate the root route, public subroutes, crawler files, a missing route, desktop, mobile, and small-mobile layouts against the deployed HTTPS domain.
 
 ## Explicit non-features
 
-This foundation does not implement WebView integration, shared authentication, app session transfer, payment token transfer, deep account linking, automatic result synchronization, academic-record synchronization, AI evaluation, payment, subscription, credit, content mirroring, data persistence, support intake, or account deletion.
+This release does not implement shared authentication, payment, subscription, credit, user data persistence, AI evaluation, university-source mirroring, support intake, account deletion, WebView session transfer, or app-record synchronization. Each must receive its own rights, security, privacy, product, and operating review before public release.

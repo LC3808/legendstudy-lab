@@ -1,26 +1,22 @@
-# LegendStudy LAB — Web Foundation
+# LegendStudy LAB — Production Landing
 
-**LegendStudy LAB** is the separate web foundation for **레전드스터디+**. It is a static Next.js App Router project prepared for a future public entry at `https://lab.legendstudy.com`.
+**LegendStudy LAB** is the public essay-learning service foundation for **레전드스터디+**. The production landing is available at [https://lab.legendstudy.com](https://lab.legendstudy.com).
 
-> **Current status:** GitHub and Cloudflare Pages preparation only. This repository has not been deployed, `lab.legendstudy.com` has not been connected, and no Cloudflare or DNS setting has been changed.
+> **Current public scope:** The website introduces the service direction and its current boundaries. It does **not** offer live AI feedback, payments, subscriptions, credits, shared app accounts, answer persistence, official-source copying, or account deletion.
 
-The public service name is **LegendStudy LAB**. “LS LAB” is retained only as an internal or short-form label in selected prior foundation copy; it is not a separate product.
+## Public information architecture
 
-## What this repository contains
-
-The project includes public service-preparation routes, clear scope disclosures, and separate private-development foundations. It does **not** connect to the Flutter app repository, Supabase Production, shared authentication, payment, AI evaluation, personal data, content mirroring, or an account-deletion backend.
-
-| Public route | Current role | State |
+| Route | Purpose | State |
 | --- | --- | --- |
-| `/` | Redirect rule to `/lab/` on Cloudflare Pages | Static fallback also available |
-| `/lab` | LegendStudy LAB introduction | Service-preparing copy |
-| `/lab/how-it-works` | Planned service flow and boundary | Service-preparing copy |
-| `/lab/coverage` | Supported scope and non-features | Foundation-only copy |
-| `/privacy`, `/terms` | Policy URL foundations | Draft; Owner review required |
-| `/support` | Support URL foundation | No live contact channel |
-| `/account-deletion` | Account deletion URL foundation | No deletion intake or API |
+| `/` | Canonical LegendStudy LAB introduction | Public and indexable |
+| `/lab/` | Legacy compatibility alias | Cloudflare Pages redirects to `/` with HTTP 308 |
+| `/lab/how-it-works/` | Service direction and current boundary | Public and indexable |
+| `/lab/coverage/` | Supported scope and explicit non-features | Public and indexable |
+| `/privacy/`, `/terms/` | Policy URL foundations | Draft; noindex; Owner review required |
+| `/support/` | Support URL foundation | No live contact channel |
+| `/account-deletion/` | Account deletion URL foundation | No deletion intake or API |
 
-Earlier catalog, synthetic writing, mock evaluation, login, My, and score-analysis routes remain as private development foundations. They are intentionally absent from public navigation and must not be represented as live services.
+Earlier catalog, synthetic writing, mock evaluation, login, My, and score-analysis routes remain private development foundations. They are absent from public navigation and must not be represented as live services.
 
 ## Development environment
 
@@ -30,68 +26,36 @@ Earlier catalog, synthetic writing, mock evaluation, login, My, and score-analys
 | Package manager | pnpm 11 |
 | Node.js | `>=22 <23` |
 | Build mode | Static export (`out/`) |
-| Intended production URL | `https://lab.legendstudy.com` |
-| Intended deployment environment | Cloudflare Pages |
-
-Install and start local development:
+| Production URL | `https://lab.legendstudy.com` |
+| Production host | Cloudflare Pages |
 
 ```bash
 pnpm install --frozen-lockfile
-pnpm dev
-```
-
-Run all repository checks:
-
-```bash
 pnpm verify
-```
-
-Run the tracked-file, generated-artifact, environment-file, and secret-value audit before a GitHub push:
-
-```bash
 pnpm audit:github-ready
-```
-
-Create the static production output:
-
-```bash
 NEXT_PUBLIC_SITE_URL=https://lab.legendstudy.com pnpm build
 ```
 
 The output directory is `out/`. Do not commit `out/`, `.next/`, `node_modules/`, local logs, credentials, or environment files.
 
-## Environment variables
+## Build-time configuration
 
-The current static build has one optional build-time public setting:
-
-| Variable | Example value | Purpose |
+| Variable | Production value | Purpose |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | `https://lab.legendstudy.com` | Enables canonical URLs, the public sitemap, and permitted crawler metadata for the approved production origin |
+| `NEXT_PUBLIC_SITE_URL` | `https://lab.legendstudy.com` | Canonical URLs, public sitemap, robots metadata |
+| `NODE_VERSION` | `22.13.0` | Cloudflare Pages build runtime |
+| `PNPM_VERSION` | `11.24.0` | Cloudflare Pages build runtime |
 
-There are **no required secrets** for the current static release. Do not store Cloudflare tokens, Supabase credentials, OAuth secrets, AI API keys, payment secrets, or private keys in this repository. Configure any future real values only in the hosting provider’s encrypted environment-variable settings.
+There are no required secrets for the current static release. Do not add Cloudflare tokens, Supabase credentials, OAuth secrets, AI API keys, payment secrets, or private keys to this repository.
 
-Without `NEXT_PUBLIC_SITE_URL`, the build deliberately emits `noindex`, disallows crawling, and creates an empty sitemap so temporary previews never become the canonical service URL.
+## Static hosting behavior
 
-## Cloudflare Pages preparation
+The project uses `output: "export"` and `trailingSlash: true`. Cloudflare Pages serves `public/_redirects`, which redirects the legacy `/lab/` route to the canonical `/` route with HTTP 308. The generated static `/lab/` file remains a safe noindex fallback for hosts that do not apply redirect rules.
 
-The project now uses `output: "export"`, so it is compatible with **Cloudflare Pages’ static Next.js export** flow. The anticipated Cloudflare Pages settings are:
+Cloudflare Pages is appropriate for this static release. If the project later needs server rendering, Server Actions, authenticated sessions, payment, live AI features, or server-side data processing, the architecture must be reviewed for a compatible server runtime before implementation.
 
-| Cloudflare Pages setting | Value |
-| --- | --- |
-| Framework preset | Next.js (Static HTML Export) |
-| Production branch | `main` |
-| Build command | `pnpm build` |
-| Build output directory | `out` |
-| Node.js | 22.x, subject to the Cloudflare build-image setting selected by the Owner |
-| Cloudflare build configuration | `NODE_VERSION=22.13.0` and `PNPM_VERSION=11.24.0` to pin the tested toolchain |
-| Build environment variable | `NEXT_PUBLIC_SITE_URL=https://lab.legendstudy.com` after the domain is approved |
-| SPA fallback | Not required; this is a static Next.js route export, not a client-only SPA |
-| Redirect configuration | `public/_redirects` supplies `/ → /lab/` with HTTP 308 on Cloudflare Pages |
+## Before extending live functionality
 
-Cloudflare Pages is appropriate only for this **static** release foundation. If the project later requires server-side rendering, Server Actions, route handlers, middleware, authenticated app session transfer, payment, or live AI features, the architecture must be reviewed for Cloudflare Workers (for example vinext/OpenNext) rather than treated as a Pages-only static site.
+Read [Architecture](docs/ARCHITECTURE.md), [Data boundaries](docs/DATA_BOUNDARIES.md), [Prototype migration](docs/PROTOTYPE_MIGRATION.md), [Future implementation handoff](docs/FUTURE_IMPLEMENTATION_HANDOFF.md), and [Production Landing and Route IA](docs/RELEASE_WEB_FOUNDATION.md). The project work tracker is [todo.md](todo.md).
 
-## Before extending or deploying
-
-Read [Architecture](docs/ARCHITECTURE.md), [Data boundaries](docs/DATA_BOUNDARIES.md), [Prototype migration](docs/PROTOTYPE_MIGRATION.md), [Future implementation handoff](docs/FUTURE_IMPLEMENTATION_HANDOFF.md), and [Release Web Foundation](docs/RELEASE_WEB_FOUNDATION.md). The local work tracker is [todo.md](todo.md).
-
-A public deployment still requires Owner approval for the final host, public copy, privacy policy, terms, support channel, account deletion process, content rights, and all real data flows.
+Any future account, AI, payment, source-content, or user-data feature requires its own rights, security, privacy, product, and operating review before release.

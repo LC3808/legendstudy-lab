@@ -4,9 +4,10 @@ import { buildPublicMetadata } from "./brand";
 import { internalFoundationPathPrefixes, policyRoutes, publicReleasePaths } from "./release-routes";
 
 describe("release routes", () => {
-  it("preserves the stable LS LAB public entry paths", () => {
-    expect(publicReleasePaths).toEqual(["/lab/", "/lab/how-it-works/", "/lab/coverage/"]);
+  it("preserves the canonical root and stable public entry paths", () => {
+    expect(publicReleasePaths).toEqual(["/", "/lab/how-it-works/", "/lab/coverage/"]);
     expect(policyRoutes.map((route) => route.href)).toEqual(["/privacy/", "/terms/", "/support/", "/account-deletion/"]);
+    expect(internalFoundationPathPrefixes).toContain("/lab");
     expect(internalFoundationPathPrefixes).toContain("/essay-lab");
   });
 

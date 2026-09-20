@@ -19,7 +19,7 @@ export default function SupportPage() {
       <section className="policy-section"><h2>출시 전 지원 운영에 필요한 정보</h2><ul className="policy-list"><li>공식 지원 이메일 또는 티켓 시스템과 담당 운영 주체</li><li>앱 오류, 계정, 개인정보, 결제, 콘텐츠 출처, 계정 삭제 요청의 문의 분류</li><li>접수 확인, 본인 확인, 처리 기한, 이의제기, 장애 공지 절차</li><li>미성년자·보호자 문의와 민감한 학습 기록을 다루는 확인 절차</li></ul></section>
       <section className="policy-section"><h2>현재 안내</h2><p>LS LAB은 서비스 준비 단계입니다. 실제 상담·계정 지원·결제 지원이 시작되기 전에는 이 페이지를 공식 고객센터 또는 Store 지원 URL로 확정해서는 안 됩니다.</p></section>
       <ReleaseNotice><strong>연락처 미연결.</strong> 임의의 지원 이메일이나 폼을 만들지 않았습니다. Owner가 관리 가능한 실제 문의 채널과 개인정보 처리 주체를 확정한 뒤에만 공식 연락처를 발행합니다.</ReleaseNotice>
-      <div className="policy-actions"><Link className="button button--outline" href="/account-deletion">계정 삭제 안내 보기</Link><Link className="button button--primary" href="/lab">LS LAB 소개로 돌아가기</Link></div>
+      <div className="policy-actions"><Link className="button button--outline" href="/account-deletion/">계정 삭제 안내 보기</Link><Link className="button button--primary" href="/">LegendStudy LAB 소개로 돌아가기</Link></div>
     </div>
   );
 }

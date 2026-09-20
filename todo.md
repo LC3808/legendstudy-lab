@@ -1,42 +1,30 @@
-# LS LAB Phase 2 — Feature and Issue Tracker
+# LegendStudy LAB — Feature and Issue Tracker
 
-**Project:** `legendstudy-lab-web` local Next.js candidate
-**Scope:** Production-oriented frontend foundation only. This tracker does not authorize Production Supabase, shared Auth, database/RLS, source extraction, live AI evaluation, payment, public deployment, or GitHub repository creation.
+**Project:** `legendstudy-lab-web` — deployed static Next.js public landing at `https://lab.legendstudy.com`.
+**Scope:** Public information architecture and static release only. This tracker does not authorize Production Supabase, shared auth, database/RLS, source extraction, live AI evaluation, payment, or app data synchronization.
 
-## Completed planning
+## Completed foundation
 
-- [x] Confirmed the separate local project identity: `/home/ubuntu/development/legendstudy-lab-web`.
-- [x] Confirmed the selected architecture: Next.js App Router and TypeScript.
-- [x] Reviewed the current LegendStudy Wiki and Phase 0/Phase 1 research boundaries.
-- [x] Confirmed that the prior Vite/Express/tRPC application is a prototype, not the production architecture.
-- [x] Defined the Phase 2 public metadata, private package, and user-private data boundaries.
+- [x] Established the separate Next.js App Router project and static-export delivery model.
+- [x] Created public service information, current-scope, policy-foundation, and support-foundation routes.
+- [x] Added canonical production metadata, `robots.txt`, sitemap generation, Cloudflare Pages static configuration, GitHub readiness checks, and public repository delivery.
+- [x] Connected the production canonical origin `https://lab.legendstudy.com` through Cloudflare Pages.
+- [x] Kept private catalog, synthetic writing, mock evaluation, login, personal-history, payment, and account-integration foundations out of public navigation and crawler indexing.
 
-## Phase 2 implementation checklist
+## Completed landing refinement
 
-- [x] Established App Router routes, layout, metadata foundation, loading, and not-found UX.
-- [x] Created typed reviewed public metadata and official Quick Link fixture subset.
-- [x] Implemented Quick Link resolver with canonical fallback and status UX.
-- [x] Ported the public catalog, university detail, year/track detail, and source provenance UI.
-- [x] Ported synthetic question, keyboard-first writing workspace, temporary draft adapter, and structured mock evaluation.
-- [x] Ported My Essays, My Essay Pattern, Score Analysis shell, and Login shell.
-- [x] Added server-only future evaluation boundary and lifecycle/entitlement types without real evaluator behavior.
-- [x] Added README, architecture, data-boundary, prototype-migration, and handoff documents.
-- [x] Added tests, typecheck, lint, production build, route smoke, screenshots, and static boundary audit.
+- [x] Verified production root redirection, public `/lab/` content, GitHub `main`, and Cloudflare response headers before changing copy.
+- [x] Promoted `/` to the canonical public LegendStudy LAB landing route.
+- [x] Kept `/lab/` as a noindex legacy compatibility alias with a Cloudflare 308 redirect to `/`.
+- [x] Reframed the Hero around the value proposition and the end-to-end essay-learning flow.
+- [x] Separated future-direction steps from a compact, accurate current-availability disclosure.
+- [x] Limited public CTAs to information and navigation; no AI, payment, subscription, or account action is represented as live.
+- [x] Verified desktop, mobile, and 320-pixel small-mobile rendering, CTA fit, Korean line breaks, metadata, static export, and secret hygiene.
 
 ## Known blocked work
 
-- [x] Production Supabase, Auth, RLS, migrations, database tables, and Production data access are out of scope.
-- [x] Official question/passage/answer/rubric content, source extraction, and source copying remain blocked pending rights/use and source-review decisions.
-- [x] Live provider calls, AI evaluation, credits, ledger, entitlement settlement, and payments remain out of scope.
-- [x] Final domain, canonical origin, public deployment, Vercel project, GitHub repository creation, push, PR, and merge require Product Owner approval.
-
-## Phase 1 release-web foundation
-
-- [x] Audited the current local Next.js project, public-route state, mobile styles, environment template, and deployment configuration.
-- [x] Added the stable LS LAB entry structure: `/lab`, `/lab/how-it-works`, and `/lab/coverage`.
-- [x] Added `/privacy`, `/terms`, `/support`, and `/account-deletion` as explicit draft or foundation-only URLs without claiming live policy, support, or deletion workflows.
-- [x] Added a canonical-origin gate, `robots.txt`, sitemap behavior, public metadata, and the existing official LegendStudy app icon for the web icon.
-- [x] Kept the existing synthetic, login, personal-history, AI, payment, and account-integration routes out of public navigation and search indexing.
-- [ ] Obtain an Owner-approved hosting provider, HTTPS domain, and `NEXT_PUBLIC_SITE_URL` before public deployment.
-- [ ] Replace policy drafts with Owner-reviewed, dated, published legal documents that match actual LegendStudy+ data processing.
-- [ ] Connect a real support channel and implement an authenticated account-deletion workflow before using policy URLs in Store metadata.
+- [ ] Replace privacy and terms foundations with Owner-reviewed, dated policy documents that match actual data processing before any account or data feature launches.
+- [ ] Connect a real support channel and an authenticated account-deletion workflow before using the policy URLs in mobile-store metadata.
+- [ ] Complete rights and source reviews before presenting university problems, passages, answers, rubrics, or audio as in-product content.
+- [ ] Conduct separate security, privacy, quality, cost, and operating reviews before enabling account sync, AI feedback, payment, subscription, credit, personal answer persistence, or learning-record analytics.
+- [ ] Reassess static hosting if future functionality requires server rendering, authenticated sessions, payments, or server-side AI/data processing.

@@ -1,5 +1,5 @@
 export const publicReleaseRoutes = [
-  { href: "/lab/", label: "LAB 소개" },
+  { href: "/", label: "LAB 소개" },
   { href: "/lab/how-it-works/", label: "이용 방법" },
   { href: "/lab/coverage/", label: "지원 범위" },
 ] as const;
@@ -12,6 +12,7 @@ export const policyRoutes = [
 ] as const;
 
 export const internalFoundationPathPrefixes = [
+  "/lab",
   "/essay-lab",
   "/my",
   "/score-analysis",
