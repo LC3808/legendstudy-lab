@@ -1,0 +1,41 @@
+import Link from "next/link";
+import type { ReactNode } from "react";
+
+import { brand } from "@/lib/brand";
+import { policyRoutes, publicReleaseRoutes } from "@/lib/release-routes";
+
+export function SiteShell({ children }: { children: ReactNode }) {
+  return (
+    <div className="site-shell">
+      <header className="site-header">
+        <div className="site-header__inner">
+          <Link className="brand" href="/" aria-label="LS LAB 홈">
+            <span className="brand__mark" aria-hidden="true">▣</span>
+            <span className="brand__name">{brand.productName}</span>
+            <span className="brand__phase">{brand.phaseLabel}</span>
+          </Link>
+          <nav className="site-nav" aria-label="주요 메뉴">
+            {publicReleaseRoutes.map((item) => (
+              <Link key={item.href} href={item.href}>{item.label}</Link>
+            ))}
+          </nav>
+          <div className="site-header__actions">
+            <Link className="button button--accent button--small" href="/support">지원 안내</Link>
+          </div>
+        </div>
+      </header>
+      <main>{children}</main>
+      <footer className="site-footer">
+        <div className="site-footer__inner">
+          <div>
+            <p><strong>{brand.productName}</strong> {brand.byline} · 서비스 준비 중</p>
+            <p>공식 정보는 출처와 함께 안내하며, 준비되지 않은 기능은 실제 서비스처럼 표시하지 않습니다.</p>
+          </div>
+          <nav className="footer-nav" aria-label="정책과 지원">
+            {policyRoutes.map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
+          </nav>
+        </div>
+      </footer>
+    </div>
+  );
+}
