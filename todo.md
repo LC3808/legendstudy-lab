@@ -19,6 +19,12 @@
 - [x] Kept social provider buttons hidden unless a declared provider is both configured in the Cloudflare environment and verified by the Owner.
 - [x] Verified unit contracts, static export, auth-route generation, secret scans, and desktop/mobile/small-mobile interface states without submitting a live Auth request.
 
+## Completed official brand-logo rollout
+
+- [x] Replaced the temporary header glyph with the supplied official LegendStudy logo.
+- [x] Used the same official asset for the Next.js app icon, Apple touch icon, and favicon.
+- [x] Validated desktop, 390-pixel, and 320-pixel header rendering; generated icon metadata; and static asset responses.
+
 ## Known blocked work
 
 - [ ] Owner: set the existing project’s public Supabase URL and publishable key in Cloudflare Pages, then configure the exact production Auth Site URL and redirect paths. Follow `docs/SHARED_ACCOUNT_AUTH_SETUP.md`.
