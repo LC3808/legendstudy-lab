@@ -9,7 +9,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
     <div className="site-shell">
       <header className="site-header">
         <div className="site-header__inner">
-          <Link className="brand" href="/" aria-label="LS LAB 홈">
+          <Link className="brand" href="/lab/" aria-label="LegendStudy LAB 홈">
             <span className="brand__mark" aria-hidden="true">▣</span>
             <span className="brand__name">{brand.productName}</span>
             <span className="brand__phase">{brand.phaseLabel}</span>
@@ -20,7 +20,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <div className="site-header__actions">
-            <Link className="button button--accent button--small" href="/support">지원 안내</Link>
+            <Link className="button button--accent button--small" href="/support/">지원 안내</Link>
           </div>
         </div>
       </header>

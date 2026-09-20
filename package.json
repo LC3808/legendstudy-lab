@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "LS LAB by LegendStudy — Phase 2 Next.js App Router foundation",
+  "description": "LegendStudy LAB — static Next.js App Router foundation",
   "scripts": {
     "dev": "NODE_ENV=development next dev",
     "build": "NODE_ENV=production next build",
@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "verify:boundaries": "node scripts/verify-boundaries.mjs",
+    "audit:github-ready": "node scripts/audit-github-ready.mjs",
     "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm verify:boundaries && pnpm build"
   },
   "dependencies": {
@@ -37,5 +38,9 @@
     "typescript": "^5",
     "vitest": "^4.1.0"
   },
-  "packageManager": "pnpm@11.24.0"
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": ">=22 <23",
+    "pnpm": ">=11 <12"
+  }
 }

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const brand = {
-  productName: "LS LAB",
-  byline: "by LegendStudy",
+  productName: "LegendStudy LAB",
+  byline: "by 레전드스터디+",
   phaseLabel: "SERVICE PREPARING",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || undefined,
 } as const;
@@ -29,6 +29,7 @@ export function buildMetadata(title: string, description: string): Metadata {
 
 type PublicMetadataOptions = {
   index?: boolean;
+  canonicalOrigin?: string | false;
 };
 
 /**
@@ -40,9 +41,10 @@ export function buildPublicMetadata(
   title: string,
   description: string,
   path: string,
-  { index = true }: PublicMetadataOptions = {},
+  { index = true, canonicalOrigin }: PublicMetadataOptions = {},
 ): Metadata {
-  const canonical = brand.siteUrl ? new URL(path, brand.siteUrl).toString() : undefined;
+  const siteUrl = canonicalOrigin === false ? undefined : (canonicalOrigin ?? brand.siteUrl);
+  const canonical = siteUrl ? new URL(path, siteUrl).toString() : undefined;
   const canIndex = Boolean(canonical) && index;
 
   return {

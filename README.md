@@ -1,67 +1,97 @@
-# LS LAB by LegendStudy — Phase 2 Next.js Foundation
+# LegendStudy LAB — Web Foundation
 
-This repository is a **local, isolated Phase 2 candidate** for LS LAB by LegendStudy. It replaces the earlier private Vite/Express/tRPC UX prototype as the recommended forward-looking Web foundation, while preserving that prototype unchanged as a reference. It is not connected to the LegendStudy Flutter Mobile repository, Production Supabase, shared authentication, a custom domain, public deployment, a GitHub remote, or a payment/provider system.
+**LegendStudy LAB** is the separate web foundation for **레전드스터디+**. It is a static Next.js App Router project prepared for a future public entry at `https://lab.legendstudy.com`.
 
-It now includes a **Phase 1 release-web foundation** for a future public LS LAB entry. The public route structure, policy-path foundation, canonical-origin gate, release copy, and deployment handoff are documented in [Release Web Foundation](docs/RELEASE_WEB_FOUNDATION.md). This is not a public deployment and it does not make draft policy pages or account deletion Store-ready.
+> **Current status:** GitHub and Cloudflare Pages preparation only. This repository has not been deployed, `lab.legendstudy.com` has not been connected, and no Cloudflare or DNS setting has been changed.
 
-The application establishes a desktop-first, mobile-responsive App Router experience: university metadata discovery, university/year/track detail, source-aware official navigation, synthetic writing practice, structured mock evaluation, My Essays, My Essay Pattern, a future Score Analysis shell, and a Login integration shell. Public metadata and synthetic instructional content are deliberately separated.
+The public service name is **LegendStudy LAB**. “LS LAB” is retained only as an internal or short-form label in selected prior foundation copy; it is not a separate product.
 
-## Local runbook
+## What this repository contains
+
+The project includes public service-preparation routes, clear scope disclosures, and separate private-development foundations. It does **not** connect to the Flutter app repository, Supabase Production, shared authentication, payment, AI evaluation, personal data, content mirroring, or an account-deletion backend.
+
+| Public route | Current role | State |
+| --- | --- | --- |
+| `/` | Redirect rule to `/lab/` on Cloudflare Pages | Static fallback also available |
+| `/lab` | LegendStudy LAB introduction | Service-preparing copy |
+| `/lab/how-it-works` | Planned service flow and boundary | Service-preparing copy |
+| `/lab/coverage` | Supported scope and non-features | Foundation-only copy |
+| `/privacy`, `/terms` | Policy URL foundations | Draft; Owner review required |
+| `/support` | Support URL foundation | No live contact channel |
+| `/account-deletion` | Account deletion URL foundation | No deletion intake or API |
+
+Earlier catalog, synthetic writing, mock evaluation, login, My, and score-analysis routes remain as private development foundations. They are intentionally absent from public navigation and must not be represented as live services.
+
+## Development environment
+
+| Item | Requirement |
+| --- | --- |
+| Framework | Next.js 16 App Router with React 19 |
+| Package manager | pnpm 11 |
+| Node.js | `>=22 <23` |
+| Build mode | Static export (`out/`) |
+| Intended production URL | `https://lab.legendstudy.com` |
+| Intended deployment environment | Cloudflare Pages |
+
+Install and start local development:
 
 ```bash
-pnpm install
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-To validate the production candidate locally:
+Run all repository checks:
 
 ```bash
 pnpm verify
-pnpm start
 ```
 
-`pnpm verify` runs ESLint, TypeScript, unit/component tests, the static client/server boundary audit, and a production build. Scripts explicitly set `NODE_ENV` to prevent accidental builds under an inherited nonstandard value.
+Run the tracked-file, generated-artifact, environment-file, and secret-value audit before a GitHub push:
 
-## Supported routes
+```bash
+pnpm audit:github-ready
+```
 
-| Route | Role | Data boundary |
+Create the static production output:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://lab.legendstudy.com pnpm build
+```
+
+The output directory is `out/`. Do not commit `out/`, `.next/`, `node_modules/`, local logs, credentials, or environment files.
+
+## Environment variables
+
+The current static build has one optional build-time public setting:
+
+| Variable | Example value | Purpose |
 | --- | --- | --- |
-| `/` | Product framing and trust model | Public product copy only |
-| `/essay-lab` | Searchable university metadata catalog | Reviewed public fixture subset |
-| `/essay-lab/universities/[universityId]` | University detail and source provenance | Public metadata and official external links |
-| `/essay-lab/universities/[universityId]/[year]` | Year/track metadata foundation | Public metadata only |
-| `/essay-lab/questions/synthetic-q-01` | Synthetic practice question overview | Synthetic content only |
-| `/essay-lab/write/synthetic-q-01` | Keyboard-first writing workspace | Browser-local temporary draft only |
-| `/essay-lab/evaluation/mock-attempt-001` | Structured mock evaluation | Synthetic learning signal only |
-| `/my/essays`, `/my/pattern` | Personal-history information architecture | Mock fixture only |
-| `/score-analysis`, `/login` | Explicit future-scope shells | No score, Auth, or user data |
+| `NEXT_PUBLIC_SITE_URL` | `https://lab.legendstudy.com` | Enables canonical URLs, the public sitemap, and permitted crawler metadata for the approved production origin |
 
-## Phase 1 release-web routes
+There are **no required secrets** for the current static release. Do not store Cloudflare tokens, Supabase credentials, OAuth secrets, AI API keys, payment secrets, or private keys in this repository. Configure any future real values only in the hosting provider’s encrypted environment-variable settings.
 
-| Route | Current role | Publication state |
-| --- | --- | --- |
-| `/` and `/lab` | LS LAB canonical entry route | Service-preparing copy; the root redirects to `/lab` |
-| `/lab/how-it-works`, `/lab/coverage` | Service explanation and boundary disclosure | Service-preparing / foundation-only copy |
-| `/privacy`, `/terms` | Policy URL structure | Draft; Owner review required; not published policy documents |
-| `/support` | Support URL structure | Owner action required; no live support channel connected |
-| `/account-deletion` | Account-deletion URL structure | Foundation-only; no identity, intake, or deletion flow |
+Without `NEXT_PUBLIC_SITE_URL`, the build deliberately emits `noindex`, disallows crawling, and creates an empty sitemap so temporary previews never become the canonical service URL.
 
-No public canonical, sitemap entries, or crawl permission is emitted until an approved production `NEXT_PUBLIC_SITE_URL` is supplied at build time. Earlier Phase 2 demonstration routes remain available for private development but are `noindex` and disallowed in `robots.txt` once a public origin is configured.
+## Cloudflare Pages preparation
 
-## Fixture provenance and limits
+The project now uses `output: "export"`, so it is compatible with **Cloudflare Pages’ static Next.js export** flow. The anticipated Cloudflare Pages settings are:
 
-The foundation ships five reviewed public university metadata fixtures: **경북대학교, 부산대학교, 광운대학교, 아주대학교, and 서경대학교**. They are manually normalized from the Phase 1 research master dated 2026-09-18. This is neither the complete 42-university catalog nor the 53 recruitment-unit inventory. It includes public labels, official admissions/archive navigation, source status, and an observation date only.
+| Cloudflare Pages setting | Value |
+| --- | --- |
+| Framework preset | Next.js (Static HTML Export) |
+| Production branch | `main` |
+| Build command | `pnpm build` |
+| Build output directory | `out` |
+| Node.js | 22.x, subject to the Cloudflare build-image setting selected by the Owner |
+| Cloudflare build configuration | `NODE_VERSION=22.13.0` and `PNPM_VERSION=11.24.0` to pin the tested toolchain |
+| Build environment variable | `NEXT_PUBLIC_SITE_URL=https://lab.legendstudy.com` after the domain is approved |
+| SPA fallback | Not required; this is a static Next.js route export, not a client-only SPA |
+| Redirect configuration | `public/_redirects` supplies `/ → /lab/` with HTTP 308 on Cloudflare Pages |
 
-The project **does not** store, mirror, scrape, transmit, or display official question papers, passages, answer keys, detailed scoring criteria, private research notes, source hashes, private package content, or evaluator prompts. An official URL is a source-navigation and attribution feature; it is not content-use permission.
+Cloudflare Pages is appropriate only for this **static** release foundation. If the project later requires server-side rendering, Server Actions, route handlers, middleware, authenticated app session transfer, payment, or live AI features, the architecture must be reviewed for Cloudflare Workers (for example vinext/OpenNext) rather than treated as a Pages-only static site.
 
-## Phase 2 boundaries
+## Before extending or deploying
 
-No Production database or Supabase change is part of this repository. It contains no schema, migration, RLS policy, production environment variable, service-role key, user identifier, payment key, provider credential, live evaluator, credit settlement, or background worker. The server-only `src/server/evaluation/` folder defines interfaces and a no-op synthetic adapter only; it performs no AI call, persistence, queue operation, or entitlement decision.
+Read [Architecture](docs/ARCHITECTURE.md), [Data boundaries](docs/DATA_BOUNDARIES.md), [Prototype migration](docs/PROTOTYPE_MIGRATION.md), [Future implementation handoff](docs/FUTURE_IMPLEMENTATION_HANDOFF.md), and [Release Web Foundation](docs/RELEASE_WEB_FOUNDATION.md). The local work tracker is [todo.md](todo.md).
 
-The browser-local draft adapter is a temporary mock boundary. Replace it only after Product Owner approval of shared identity, data ownership, access control, retention, deletion, and incident/appeal flows.
-
-## Required reading before extending
-
-Read [Architecture](docs/ARCHITECTURE.md), [Data boundaries](docs/DATA_BOUNDARIES.md), [Prototype migration](docs/PROTOTYPE_MIGRATION.md), and [Future implementation handoff](docs/FUTURE_IMPLEMENTATION_HANDOFF.md). The current work tracker is [todo.md](todo.md).
-
-Final domain/canonical origin, public deployment, GitHub repository creation or push, shared Supabase Auth, Production Supabase schema/RLS/migration work, official source extraction, source copying, live AI evaluation, credits/payment, analytics, and actual student data each require separate approval.
+A public deployment still requires Owner approval for the final host, public copy, privacy policy, terms, support channel, account deletion process, content rights, and all real data flows.

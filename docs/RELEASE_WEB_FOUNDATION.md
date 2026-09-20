@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository now separates a **public LS LAB entry foundation** from the earlier private Phase 2 demonstration routes. The intended stable paths are `/lab`, `/lab/how-it-works`, and `/lab/coverage`. The root route redirects to `/lab` so an eventual canonical host has one primary LS LAB entry point.
+This repository now separates a **public LegendStudy LAB entry foundation** from the earlier private Phase 2 demonstration routes. The intended stable paths are `/lab/`, `/lab/how-it-works/`, and `/lab/coverage/`. Cloudflare Pages applies the tracked `public/_redirects` rule from `/` to `/lab/` with HTTP 308, while the generated root page is a safe static fallback for hosts without redirect rules.
 
 The project has no hosting account, domain, DNS record, Git remote, production environment, shared authentication, payment provider, or user-data backend configured. No preview or sandbox URL is a canonical URL.
 

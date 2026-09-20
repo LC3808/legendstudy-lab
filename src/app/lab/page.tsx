@@ -4,8 +4,8 @@ import { ReleaseNotice, ReleaseStatusLabel } from "@/components/release-status";
 import { buildPublicMetadata } from "@/lib/brand";
 
 export const metadata = buildPublicMetadata(
-  "LS LAB | LegendStudy+ 논술 서비스",
-  "LegendStudy+의 논술 서비스 LS LAB을 소개합니다. 현재는 서비스 공개 준비 단계이며, AI 첨삭·결제·계정 연동은 아직 운영하지 않습니다.",
+  "LegendStudy LAB | 레전드스터디+ 논술 서비스",
+  "레전드스터디+의 논술 서비스 LegendStudy LAB을 소개합니다. 현재는 서비스 공개 준비 단계이며, AI 첨삭·결제·계정 연동은 아직 운영하지 않습니다.",
   "/lab",
 );
 
@@ -20,13 +20,13 @@ export default function LabHomePage() {
     <div className="release-page">
       <section className="release-hero content-wrap">
         <div>
-          <p className="eyebrow eyebrow--accent">LEGENDSTUDY+ / LS LAB</p>
+          <p className="eyebrow eyebrow--accent">레전드스터디+ / LEGENDSTUDY LAB</p>
           <div className="release-status-row"><ReleaseStatusLabel status="SERVICE_PREPARING" /></div>
           <h1>논술 준비의 다음 단계를<br /><em>차분하게</em> 준비합니다.</h1>
-          <p className="release-hero__lead">LS LAB은 LegendStudy의 논술 서비스입니다. 대학별 논술 정보, 작성 경험, 피드백을 신뢰할 수 있는 방식으로 연결하기 위해 서비스 기반을 준비하고 있습니다.</p>
+          <p className="release-hero__lead">LegendStudy LAB은 레전드스터디+의 논술 서비스입니다. 대학별 논술 정보, 작성 경험, 피드백을 신뢰할 수 있는 방식으로 연결하기 위해 서비스 기반을 준비하고 있습니다.</p>
           <div className="button-row">
-            <Link className="button button--primary" href="/lab/how-it-works">LS LAB 이용 방법 보기 <span aria-hidden="true">→</span></Link>
-            <Link className="button button--outline" href="/lab/coverage">현재 준비 범위 보기</Link>
+            <Link className="button button--primary" href="/lab/how-it-works/">이용 방법 보기 <span aria-hidden="true">→</span></Link>
+            <Link className="button button--outline" href="/lab/coverage/">현재 준비 범위 보기</Link>
           </div>
         </div>
         <aside className="release-hero__card">
@@ -40,7 +40,7 @@ export default function LabHomePage() {
           </ul>
         </aside>
       </section>
-      <section className="content-wrap"><ReleaseNotice><strong>정확한 공개 상태.</strong> 이 페이지는 LS LAB의 안정적인 웹 진입점입니다. 실제 사용 가능한 기능이 준비되기 전에는 가입·결제·AI 평가를 요청하거나 완료된 것처럼 표시하지 않습니다.</ReleaseNotice></section>
+      <section className="content-wrap"><ReleaseNotice><strong>정확한 공개 상태.</strong> 이 페이지는 LegendStudy LAB의 안정적인 웹 진입점입니다. 실제 사용 가능한 기능이 준비되기 전에는 가입·결제·AI 평가를 요청하거나 완료된 것처럼 표시하지 않습니다.</ReleaseNotice></section>
       <section className="release-steps content-wrap">
         <div><p className="eyebrow">SERVICE FOUNDATION</p><h2>서비스보다 먼저,<br />신뢰 기준을 세웁니다.</h2></div>
         <div className="release-steps__grid">{steps.map(([number, title, copy]) => <article key={number}><span>{number}</span><h3>{title}</h3><p>{copy}</p></article>)}</div>

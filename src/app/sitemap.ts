@@ -3,6 +3,8 @@ import type { MetadataRoute } from "next";
 import { brand } from "@/lib/brand";
 import { publicReleasePaths } from "@/lib/release-routes";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   if (!brand.siteUrl) return [];
 
