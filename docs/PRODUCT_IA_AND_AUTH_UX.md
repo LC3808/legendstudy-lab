@@ -7,7 +7,7 @@
 | Surface | Product role | Current public state |
 | --- | --- | --- |
 | LegendStudy+ App | Quick execution, habits, notifications, and daily learning actions | Separate native application; no browser session handoff is implied. |
-| LegendStudy LAB Web | Deep analysis, creation, personal review, and future management modules | Public service guidance and shared-account browser-auth foundation. |
+| LegendStudy LAB Web | Deep analysis, creation, personal review, and future management modules | Public service guidance and Production-verified browser Auth lifecycle. |
 | Essay Lab | One LAB module for university-specific essay preparation | Public information and synthetic UX foundation only; no live evaluation or personal history. |
 | Academic Analytics | One LAB module for deep academic review | Planned; no score collection, analysis, or admissions claim. |
 | Activity Portfolio | One LAB module for evidence-based activity review | Planned; no activity collection or analysis. |
@@ -28,7 +28,7 @@ Internal foundation routes, synthetic writing fixtures, and placeholder personal
 
 ## Shared account UX
 
-The LAB uses the existing LegendStudy Supabase project's `auth.users.id` as its intended identity source. It does not create a second authoritative user database and does not receive a mobile session token, shared browser cookie, or automatic SSO assertion.
+The LAB uses the existing LegendStudy Supabase project's `auth.users.id` as its intended identity source. LAB email and Google/Kakao/Apple web sign-in have passed Owner Production E2E (2026-09-21). App↔LAB same-ID verification remains open. The web does not receive a mobile session token, shared browser cookie, or automatic SSO assertion. See [Production Auth status and operating gates](SHARED_ACCOUNT_AUTH_SETUP.md#production-auth-status-2026-09-21).
 
 | State | User-visible behavior | Data boundary |
 | --- | --- | --- |
@@ -36,19 +36,19 @@ The LAB uses the existing LegendStudy Supabase project's `auth.users.id` as its 
 | Anonymous | Login link includes a validated internal `next` destination. | No personal record query or write. |
 | Authenticated | `My Account` shows the email and an identity-connection status. | Only session identity is observed. |
 | Sign-out | Client signs out through Supabase and returns to anonymous UI. | No local LAB personal-data cleanup claim because LAB personal data does not yet exist. |
-| Recovery | Reset screen opens only after the Auth recovery event. | Token is never shown in UI, route state, or logs. |
+| Recovery | Reset screen opens only after the Auth recovery event; after password update, recovery session ends and user returns to `/login/`. | Token is never shown in UI, route state, or logs. |
 
 ## Auth flows
 
-- **Email/password:** sign in directs the user to `/account/` or a validated same-origin `next` path after success.
+- **Email/password:** Production E2E passed for signup, confirmation, login, logout, `/home/` redirect, and reactive header state.
 - **Signup:** may require email confirmation. The completion link returns to `/login/` with the intended internal destination; an immediate Supabase session takes the user directly there.
 - **Forgot password:** always gives neutral delivery copy and returns only to `/reset-password/`.
-- **Reset password:** requires a current recovery session before `updateUser`; success leaves the authenticated session intact and makes the account route available.
-- **Social login:** a button is rendered only when a provider is named in `NEXT_PUBLIC_SUPABASE_AUTH_PROVIDERS`. The configuration must be verified in Supabase, its provider console, and production before the variable is set.
+- **Reset password:** Production E2E passed for recovery email, reset route, password update, recovery-session sign-out, return to `/login/`, and new-password login.
+- **Social login:** Google, Kakao, and Apple Production E2E passed for LAB web. App-side provider verification is still open. Provider visibility configuration controls buttons only; it does not create credentials.
 
-## Mandatory pre-activation checks
+## Production status and next verification
 
-Before enabling public login in Cloudflare Pages, the Product Owner must confirm the same Supabase project ref, set the public browser variables, allow-list the exact `https://lab.legendstudy.com/login/**`, `https://lab.legendstudy.com/reset-password/**`, and `https://lab.legendstudy.com/account/**` redirects, and complete a non-production mailbox test. See [Shared Account Auth Setup](SHARED_ACCOUNT_AUTH_SETUP.md) for the full checklist.
+LAB web authentication is Production verified. The next official task is App ↔ LAB Shared Account Production Verification for same `auth.users.id` identity, all four sign-in methods, session restore, A→logout→B owner isolation, and owner-scoped Materials bookmark/grade data. App social E2E remains unverified. Apple account-deletion revoke and secret renewal are operating gates; details are in [Shared Account Auth Setup](SHARED_ACCOUNT_AUTH_SETUP.md).
 
 ## Explicitly excluded work
 

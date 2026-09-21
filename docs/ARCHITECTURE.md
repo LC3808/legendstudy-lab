@@ -11,7 +11,7 @@ LegendStudy LAB is the **Web Intelligence / Deep Work Platform** in the LegendSt
 | Layer | Current responsibility | Explicitly excluded |
 | --- | --- | --- |
 | Static public pages | Service introduction, public scope, policy drafts, reviewed public university metadata, source-status copy. | Private data, source retrieval, auth secrets, live evaluator calls. |
-| Browser Auth boundary | Same-project Supabase email/password session, optional verified social-provider entry, recovery state, account display, sign-out. | Service-role access, schema writes, profile reads, answer sync, personal-history access. |
+| Browser Auth boundary | Production-verified LAB email/password and Google/Kakao/Apple sign-in, recovery state, account display, sign-out using the same-project Supabase browser client. | Service-role access, schema writes, profile reads, answer sync, personal-history access; App↔LAB identity E2E is not yet verified. |
 | Synthetic workspace boundary | Demonstrates writing and result information architecture with durable mock labels. | Official-question delivery, user-owned answer persistence, real evaluation. |
 | Server-only evaluation boundary | Defines future package/job/credit interfaces. | AI/provider calls, queues, persistence, entitlements, payment. |
 | Future authenticated data service | Future user-owned records after explicit schema/RLS/retention approval. | Silent identity conversion or client-controlled authorization. |
@@ -42,10 +42,12 @@ The catalog uses only reviewed `PUBLIC_METADATA`. Synthetic writing or evaluatio
 
 ## Future engineering order
 
-1. Complete Auth production configuration and recovery E2E with a non-production test account.
-2. Approve the authenticated personal-data and retention model.
-3. Build a read-only public metadata service with source versions and canonical Quick Links.
-4. Add user-owned personal workspaces only with reviewed schema, RLS, and deletion behavior.
-5. Add private evaluation packages, jobs, benchmark evidence, and release gates.
+1. Verify App ↔ LAB Production shared-account identity (`auth.users.id`), native provider E2E, session restore, and owner isolation.
+2. Complete Apple account-deletion revoke and keep Store release closed until verified; renew Apple client secret before its six-month maximum expires.
+3. Rotate the Google OAuth client secret due to prior screen-capture exposure.
+4. Approve the authenticated personal-data and retention model.
+5. Build a read-only public metadata service with source versions and canonical Quick Links.
+6. Add user-owned personal workspaces only with reviewed schema, RLS, and deletion behavior.
+7. Add private evaluation packages, jobs, benchmark evidence, and release gates.
 
-See [Product IA and Auth UX](PRODUCT_IA_AND_AUTH_UX.md), [Shared Account Auth Setup](SHARED_ACCOUNT_AUTH_SETUP.md), and [Data Boundaries](DATA_BOUNDARIES.md).
+See [Product IA and Auth UX](PRODUCT_IA_AND_AUTH_UX.md), [Shared Account Auth Setup and Production status](SHARED_ACCOUNT_AUTH_SETUP.md), and [Data Boundaries](DATA_BOUNDARIES.md).

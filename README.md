@@ -2,7 +2,7 @@
 
 **LegendStudy LAB** is the public essay-learning service foundation for **레전드스터디+**. The production landing is available at [https://lab.legendstudy.com](https://lab.legendstudy.com).
 
-> **Current public scope:** The website introduces the service direction and its current boundaries. It does **not** offer live AI feedback, payments, subscriptions, credits, answer persistence, official-source copying, or account deletion. A shared-account browser-auth foundation exists but remains unavailable until the existing LegendStudy Supabase project's public configuration and redirect URLs are set and verified.
+> **Current public scope:** The website introduces the service direction and its current boundaries. It does **not** offer live AI feedback, payments, subscriptions, credits, answer persistence, official-source copying, or account deletion. LAB browser authentication (email, Google, Kakao, and Apple) has passed Owner Production E2E; this does not verify the native app's providers or App↔LAB identity mapping. See [Production Auth status and operating gates](docs/SHARED_ACCOUNT_AUTH_SETUP.md#production-auth-status-2026-09-21).
 
 ## Public information architecture
 
@@ -15,7 +15,7 @@
 | `/privacy/`, `/terms/` | Policy URL foundations | Draft; noindex; Owner review required |
 | `/support/` | Support URL foundation | No live contact channel |
 | `/account-deletion/` | Account deletion URL foundation | No deletion intake or API |
-| `/login/`, `/signup/`, `/forgot-password/`, `/reset-password/` | LegendStudy Account browser-auth routes | `noindex`; fail closed until Owner configuration is present |
+| `/login/`, `/signup/`, `/forgot-password/`, `/reset-password/` | LegendStudy Account browser-auth routes | `noindex`; LAB Production E2E verified |
 | `/account/` | Session-aware account connection state | `noindex`; does not read or write personal LAB data |
 
 Earlier catalog, synthetic writing, mock evaluation, login, My, and score-analysis routes remain private development foundations. They are absent from public navigation and must not be represented as live services.
@@ -61,6 +61,6 @@ Cloudflare Pages is appropriate for this static release and browser-side Supabas
 
 ## Before extending live functionality
 
-Read [Architecture](docs/ARCHITECTURE.md), [Data boundaries](docs/DATA_BOUNDARIES.md), [Shared Account setup](docs/SHARED_ACCOUNT_AUTH_SETUP.md), [Prototype migration](docs/PROTOTYPE_MIGRATION.md), [Future implementation handoff](docs/FUTURE_IMPLEMENTATION_HANDOFF.md), and [Production Landing and Route IA](docs/RELEASE_WEB_FOUNDATION.md). The project work tracker is [todo.md](todo.md).
+Read [Architecture](docs/ARCHITECTURE.md), [Data boundaries](docs/DATA_BOUNDARIES.md), [Shared Account setup and Production Auth status](docs/SHARED_ACCOUNT_AUTH_SETUP.md), [Prototype migration](docs/PROTOTYPE_MIGRATION.md), [Future implementation handoff](docs/FUTURE_IMPLEMENTATION_HANDOFF.md), and [Production Landing and Route IA](docs/RELEASE_WEB_FOUNDATION.md). The project work tracker is [todo.md](todo.md).
 
 Any future account, AI, payment, source-content, or user-data feature requires its own rights, security, privacy, product, and operating review before release.

@@ -33,12 +33,15 @@
 - [x] Replaced synthetic My Essay/My Pattern history claims with honest account-linked placeholders until user-owned records and evidence contracts exist.
 - [x] Updated the canonical LegendStudy Wiki with the actual LAB implementation state, platform boundary, and production acceptance blockers.
 
-## Known blocked work
+## Current operations and next work
 
-- [ ] Owner: set the existing project’s public Supabase URL and publishable key in Cloudflare Pages, then configure the exact production Auth Site URL and redirect paths. Follow `docs/SHARED_ACCOUNT_AUTH_SETUP.md`.
-- [ ] Owner: verify email confirmation, login, logout, recovery, expired-link behavior, and each intentionally enabled OAuth provider with a non-production test account before representing authentication as live.
+- [x] LAB web Production Auth E2E: email signup/confirmation/login/logout, password recovery/reset/sign-out, and Google/Kakao/Apple OAuth verified by Owner on 2026-09-21. See `docs/SHARED_ACCOUNT_AUTH_SETUP.md`.
+- [ ] Rotate the Google OAuth client secret. The prior setup process exposed it in a screen capture; do not record credential values in this repository.
+- [ ] Renew the Apple OAuth client secret before expiry (maximum six-month lifetime); replace it in Supabase and record only the renewal date, never the secret.
+- [ ] Implement and verify Apple authorization/token revoke in the account-deletion flow before Store release; keep the Store Release Gate closed until complete.
+- [ ] **Next official task:** verify LegendStudy+ App ↔ LAB shared-account identity in Production. Test email, Google, Kakao, Apple, A→logout→B owner isolation, app session restore after relaunch, same `auth.users.id` across App/LAB, and owner-scoped Materials bookmark/grade isolation. Shared account identity does not imply shared browser/native session. App provider E2E and App↔LAB identity remain unverified.
 - [ ] Replace privacy and terms foundations with Owner-reviewed, dated policy documents that match actual data processing before any account or data feature launches.
-- [ ] Connect a real support channel and an authenticated account-deletion workflow before using policy URLs in mobile-store metadata.
+- [ ] Connect a real support channel and an authenticated account-deletion workflow, including Apple authorization/token revoke, before using policy URLs in mobile-store metadata or closing the Store Release Gate.
 - [ ] Complete rights and source reviews before presenting university problems, passages, answers, rubrics, or audio as in-product content.
 - [ ] Conduct separate security, privacy, quality, cost, and operating reviews before enabling answer persistence, learning-record analytics, AI feedback, payment, subscription, credit, or any authenticated personal-data API.
 - [ ] Reassess static hosting if future functionality requires server-managed sessions, payments, live AI processing, or server-side data processing.

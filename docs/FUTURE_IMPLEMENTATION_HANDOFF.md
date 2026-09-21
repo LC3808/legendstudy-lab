@@ -25,12 +25,16 @@ LegendStudy LAB is a deployed static Next.js public foundation with shared-accou
 
 ## Implementation order
 
-1. **Auth E2E gate:** verify Cloudflare environment variables, Supabase redirect allow-list, signup confirmation, login/logout, recovery success/expired paths, and enabled social providers with a non-production account.
-2. **Personal-data approval:** define profile/record ownership, access control, RLS, retention, export, deletion, and App↔Web linking behavior.
-3. **Public catalog service:** replace fixtures with a validated anonymous read-only adapter that exposes only `PUBLIC_METADATA` with provenance and stale-link state.
-4. **Authenticated personal workspaces:** add user-owned drafts, attempts, revisions, and history only after the data gate.
-5. **Private evaluation pilot:** add package/job/credit contracts only after rights, benchmark, and release approval.
-6. **Academic Analytics and Portfolio:** treat as independent modules with their own data-quality, interpretation, and privacy gates.
+1. **App ↔ LAB shared-account Production verification (next official task):** use the web-verified email, Google, Kakao, and Apple accounts; verify same `auth.users.id`, app OAuth E2E, A→logout→B owner isolation, app session restore, and owner-scoped Materials bookmark/grade isolation. Shared account identity does not mean shared native/browser session.
+2. **Apple operational gates:** renew the client secret before the six-month maximum lifetime and implement/test Apple token revoke in the account-deletion flow before Store release.
+3. **Google credential rotation:** rotate the OAuth client secret because it was exposed in a setup screen capture.
+4. **Personal-data approval:** define profile/record ownership, access control, RLS, retention, export, deletion, and App↔Web linking behavior.
+5. **Public catalog service:** replace fixtures with a validated anonymous read-only adapter that exposes only `PUBLIC_METADATA` with provenance and stale-link state.
+6. **Authenticated personal workspaces:** add user-owned drafts, attempts, revisions, and history only after the data gate.
+7. **Private evaluation pilot:** add package/job/credit contracts only after rights, benchmark, and release approval.
+8. **Academic Analytics and Portfolio:** treat as independent modules with their own data-quality, interpretation, and privacy gates.
+
+LAB web email/password, recovery, Google, Kakao, and Apple Production E2E passed on 2026-09-21. App provider E2E and App↔LAB identity remain unverified; see [Shared Account Auth Setup](SHARED_ACCOUNT_AUTH_SETUP.md#production-auth-status-2026-09-21) for the exact scope and evidence status.
 
 ## Verification expectations
 

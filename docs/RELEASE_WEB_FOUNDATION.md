@@ -16,13 +16,13 @@ The repository is deployed to Cloudflare Pages and the production custom domain 
 | `/lab/coverage/` | Current scope and explicit non-features | Public, indexable |
 | `/privacy/`, `/terms/` | Policy URL foundations | Draft, noindex, Owner review required |
 | `/support/` | Support URL foundation | Noindex, no live contact channel |
-| `/account-deletion/` | Account deletion URL foundation | Noindex, no request or deletion workflow |
+| `/account-deletion/` | Account deletion URL foundation | Noindex, no request or deletion workflow; Apple revoke gate open |
 
 ## Canonical and crawler behavior
 
 The production build uses `NEXT_PUBLIC_SITE_URL=https://lab.legendstudy.com`. The root landing page emits a canonical URL for `/`, and the public sitemap lists `/`, `/lab/how-it-works/`, and `/lab/coverage/`. The compatibility route `/lab/` is not listed in the sitemap and has a root canonical fallback.
 
-The policy and future-development routes remain noindex. Private development foundations under `/essay-lab`, `/my`, `/score-analysis`, and `/login` remain excluded from public navigation and crawlers.
+The policy and future-development routes remain noindex. Private development foundations under `/essay-lab`, `/my`, `/score-analysis`, and `/login` remain excluded from public navigation and crawlers. LAB browser Auth is Production E2E verified; App social Auth, App↔LAB identity, and Apple account-deletion revoke remain open. See [Shared Account Auth Setup](SHARED_ACCOUNT_AUTH_SETUP.md#production-auth-status-2026-09-21).
 
 ## Current public scope
 
@@ -34,4 +34,4 @@ Before every release, run `pnpm verify`, `pnpm audit:github-ready`, and `git dif
 
 ## Explicit non-features
 
-This release does not implement shared authentication, payment, subscription, credit, user data persistence, AI evaluation, university-source mirroring, support intake, account deletion, WebView session transfer, or app-record synchronization. Each must receive its own rights, security, privacy, product, and operating review before public release.
+This release has Production-verified LAB browser authentication. It does not implement payment, subscription, credit, user data persistence, AI evaluation, university-source mirroring, support intake, account deletion, WebView session transfer, App↔LAB identity verification, or app-record synchronization. Each must receive its own rights, security, privacy, product, and operating review before release. Apple authorization/token revoke remains an open Store Release Gate.
