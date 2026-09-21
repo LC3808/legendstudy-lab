@@ -258,13 +258,15 @@ body { padding-bottom: env(safe-area-inset-bottom); }
 .account-roadmap__grid article { display: grid; gap: .5rem; padding: .9rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-muted); }
 .account-roadmap__grid strong { color: var(--ink); font-size: .8rem; }
 .account-roadmap__grid span { color: var(--ink-soft); font-size: .72rem; line-height: 1.6; }
-.auth-social__button { display: flex; min-height: 2.8rem; width: 100%; align-items: center; justify-content: center; gap: .65rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: white; color: var(--ink); font-size: .82rem; font-weight: 800; }
-.auth-social__button span { display: grid; width: 1.3rem; height: 1.3rem; place-items: center; border-radius: 50%; font-size: .78rem; font-weight: 900; }
-.auth-social__button--google span { border: 1px solid #d6dbe4; color: #4285f4; }
-.auth-social__button--apple { border-color: #171717; background: #171717; color: white; }
-.auth-social__button--apple span { color: white; }
-.auth-social__button--kakao { border-color: #f5dd00; background: #fee500; color: #191919; }
-.auth-social__button--kakao span { background: #191919; color: #fee500; }
+.auth-social__button { position: relative; display: grid; min-height: 2.8rem; width: 100%; place-items: center; padding: .65rem 3.2rem; border: 1px solid var(--line-strong); border-radius: 12px; background: white; color: var(--ink); font-size: .88rem; font-weight: 700; text-align: center; transition: box-shadow 150ms ease, transform 150ms ease; }
+.auth-social__icon { position: absolute; left: calc(50% - 5.8rem); display: grid; width: 24px; height: 24px; place-items: center; }
+.auth-social__icon img { display: block; width: 24px; height: 24px; object-fit: contain; }
+.auth-social__button--google { border-color: #dadce0; background: #fff; color: #1f1f1f; }
+.auth-social__button--apple { border-color: #000; background: #000; color: #fff; }
+.auth-social__button--kakao { border-color: #fee500; background: #fee500; color: rgba(0, 0, 0, .85); }
+.auth-social__button:hover { box-shadow: 0 2px 8px rgba(23, 43, 69, .16); transform: translateY(-1px); }
+.auth-social__button:active { box-shadow: none; transform: translateY(0); }
+.auth-social__button:focus-visible { outline: 3px solid var(--accent-dark); outline-offset: 3px; }
 .auth-social__button:disabled { cursor: not-allowed; opacity: .65; }
 
 @media (max-width: 960px) {

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 
@@ -184,7 +185,7 @@ export function AuthForm({ mode }: { mode: AuthFormMode }) {
         {mode === "forgot" && <div className="auth-links"><Link href={appendReturnPath("/login/", returnPath)}>로그인으로 돌아가기</Link><Link href="/support/">가입한 이메일을 잊으셨나요?</Link></div>}
         {mode === "reset" && <div className="auth-links"><Link href="/forgot-password/">새 재설정 링크 요청</Link><Link href="/account/">내 계정으로 가기</Link></div>}
 
-        {providers.length > 0 && <div className="auth-social"><p>연결된 로그인 방식</p>{providers.map((provider) => <button className={socialButtonClass(provider)} disabled={submitting} key={provider} onClick={() => void signInWithProvider(provider)} type="button"><span aria-hidden="true">{provider === "google" ? "G" : provider === "apple" ? "●" : "K"}</span>{providerLabels[provider]}로 계속하기</button>)}</div>}
+        {providers.length > 0 && <div className="auth-social"><p>다른 방법으로 로그인</p>{providers.map((provider) => <button className={socialButtonClass(provider)} disabled={submitting} key={provider} onClick={() => void signInWithProvider(provider)} type="button"><span aria-hidden="true" className="auth-social__icon"><Image alt="" height={24} src={`/brand/social/${provider === "google" ? "google-g" : provider === "apple" ? "apple-sign-in-symbol" : "kakao-login-symbol"}.png`} unoptimized width={24} /></span>{providerLabels[provider]}로 계속하기</button>)}</div>}
         <Link className="auth-back-link" href="/">서비스 안내로 돌아가기</Link>
       </section>
     </div>
