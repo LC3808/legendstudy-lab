@@ -4,9 +4,9 @@ type ReleaseStatus = "SERVICE_PREPARING" | "DRAFT" | "OWNER_REVIEW_REQUIRED" | "
 
 const labels: Record<ReleaseStatus, string> = {
   SERVICE_PREPARING: "서비스 준비 중",
-  DRAFT: "DRAFT",
-  OWNER_REVIEW_REQUIRED: "OWNER REVIEW REQUIRED",
-  FOUNDATION_ONLY: "FOUNDATION ONLY",
+  DRAFT: "검토 초안",
+  OWNER_REVIEW_REQUIRED: "운영자 검토 필요",
+  FOUNDATION_ONLY: "서비스 기반 준비 중",
 };
 
 export function ReleaseStatusLabel({ status }: { status: ReleaseStatus }) {

@@ -53,3 +53,7 @@ Before enabling public login in Cloudflare Pages, the Product Owner must confirm
 ## Explicitly excluded work
 
 This IA and UX change does not create or migrate any profile, academic-record, draft, attempt, evaluation, entitlement, payment, portfolio, teacher, or school table. It does not enable AI evaluation, credits, payments, official source copying, automatic SSO, or WebView behavior.
+
+## Visual foundation
+
+The shared web UI uses a Korean-first system font stack beginning with Nanum Gothic, followed by Apple SD Gothic Neo and Noto Sans KR when available. It does not fetch fonts from a third-party CDN or bundle unverified font files. Shared heading and body line heights, card spacing, controls, and focus styles are defined in `src/app/globals.css`. On authenticated pages, **마이페이지** remains the product personal-space destination and **계정 설정** is the account/session control.

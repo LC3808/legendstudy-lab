@@ -1,6 +1,18 @@
 @import "tailwindcss";
 
 :root {
+  --font-ui: "NanumGothic", "Nanum Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --type-display: clamp(2.55rem, 5.2vw, 4.85rem);
+  --type-h1: clamp(2.35rem, 4.5vw, 4.1rem);
+  --type-h2: clamp(1.7rem, 3vw, 2.35rem);
+  --type-h3: 1.2rem;
+  --type-body-lg: 1.05rem;
+  --type-body: 0.96rem;
+  --type-small: 0.84rem;
+  --leading-heading: 1.28;
+  --leading-body: 1.75;
+  --leading-compact: 1.6;
+  --card-padding: clamp(1.15rem, 2vw, 1.55rem);
   --ink: #172b45;
   --ink-strong: #0e2138;
   --ink-soft: #56636f;
@@ -25,7 +37,7 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); font-family: Arial, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; }
+body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); font-family: var(--font-ui); }
 a { color: inherit; text-decoration: none; }
 button, input, select, textarea { font: inherit; }
 button, select { cursor: pointer; }
@@ -270,3 +282,102 @@ body { padding-bottom: env(safe-area-inset-bottom); }
 .home-entry-card span { color: var(--muted); font-size: .9rem; }
 .home-entry-card:hover { border-color: var(--accent); }
 @media (max-width: 640px) { .home-entry-grid { grid-template-columns: 1fr; } }
+
+/* Shared Korean-first type and spacing refinements */
+body { font-size: var(--type-body); line-height: var(--leading-body); }
+h1, h2, h3, h4, p, li, dt, dd, label, button, input, select, textarea { font-family: var(--font-ui); }
+h1, h2, h3 { text-wrap: pretty; }
+.hero h1, .page-intro h1, .detail-hero h1, .year-page h1, .question-overview h1,
+.evaluation-heading h1, .placeholder-page h1, .login-page h1, .release-hero h1,
+.policy-page h1, .auth-card h1, .status-page h1 {
+  font-family: var(--font-ui);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: var(--leading-heading);
+}
+.hero h1, .release-hero h1 { max-width: 12.5em; font-size: var(--type-display); line-height: 1.22; }
+.hero h1 em, .release-hero h1 em { font-weight: 800; }
+.page-intro h1, .detail-hero h1, .year-page h1, .question-overview h1,
+.evaluation-heading h1, .placeholder-page h1, .login-page h1, .policy-page h1 {
+  font-size: var(--type-h1);
+  line-height: 1.3;
+}
+.auth-card h1 { font-size: clamp(2.1rem, 4.2vw, 3.25rem); line-height: 1.32; }
+.hero__lead, .release-hero__lead, .page-intro p, .policy-page__lead,
+.auth-card__lead, .detail-copy, .policy-section > p {
+  max-width: 42rem;
+  font-size: var(--type-body-lg);
+  line-height: var(--leading-body);
+}
+.hero__lead, .release-hero__lead { margin-top: 1.35rem; }
+.button-row { gap: 0.7rem; margin-top: 1.65rem; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.1em; line-height: 1.5; }
+.site-nav a, .text-link { font-size: 0.9rem; font-weight: 600; line-height: 1.4; }
+.button { min-height: 2.8rem; padding: 0.72rem 1.1rem; font-weight: 700; line-height: 1.35; }
+.button--small { min-height: 2.45rem; font-size: 0.82rem; }
+.button:focus-visible, .auth-password-toggle:focus-visible { outline: 3px solid var(--accent-dark); outline-offset: 3px; }
+.button:disabled, .auth-social__button:disabled { opacity: 0.58; }
+.release-hero { gap: clamp(2rem, 4vw, 4rem); padding-block: clamp(3.75rem, 7vw, 6rem); }
+.release-hero__card { border-color: var(--line); border-radius: var(--radius-lg); background: var(--surface); box-shadow: none; }
+.release-hero__card h2, .release-steps h2, .platform-flow h2, .policy-section h2,
+.surface-card h2, .review-card h2, .question-aside h2, .next-actions h2,
+.auth-card h2, .writing-loop h2 {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.32;
+}
+.release-hero__card h2 { font-size: var(--type-h2); }
+.release-hero__card-copy, .release-hero__card ul, .release-steps__grid p,
+.platform-flow__list p, .home-entry-card span, .auth-card__lead,
+.policy-list, .process-list span, .scope-table__row p { line-height: var(--leading-body); }
+.release-status { min-height: 1.85rem; font-size: 0.72rem; letter-spacing: 0.04em; }
+.release-steps__grid article, .writing-loop__cards article, .home-entry-card,
+.university-card, .surface-card, .review-card, .question-prompt,
+.reading-pane, .editor-pane, .account-roadmap__grid article {
+  border-radius: var(--radius-md);
+}
+.release-steps__grid article { padding: var(--card-padding); }
+.release-steps__grid h3 { margin-top: 0.75rem; font-family: var(--font-ui); font-size: var(--type-h3); font-weight: 700; line-height: 1.4; }
+.release-steps__grid p { font-size: var(--type-small); }
+.policy-section { margin-top: 2.2rem; padding-top: 1.7rem; }
+.policy-section h2 { font-size: var(--type-h2); }
+.policy-section > p, .policy-list, .process-list span, .scope-table__row p { font-size: var(--type-body); }
+.policy-list { gap: 0.9rem; }
+.auth-form { gap: 1.1rem; }
+.auth-form label { gap: 0.5rem; font-size: 0.88rem; line-height: 1.5; font-weight: 700; }
+.auth-form input { min-height: 3.15rem; font-size: 1rem; }
+.auth-form input::placeholder { color: #687685; opacity: 1; }
+.auth-callout { padding: 0.9rem 1rem; font-size: 0.9rem; line-height: 1.65; }
+.auth-links a, .auth-back-link { font-size: 0.84rem; line-height: 1.6; }
+.auth-account-details dt { font-size: 0.76rem; }
+.auth-account-details dd { font-size: 0.94rem; line-height: 1.6; }
+.account-roadmap__grid strong { font-size: 0.88rem; }
+.account-roadmap__grid span { font-size: 0.82rem; line-height: var(--leading-body); }
+.home-entry-card { padding: 1.2rem; background: var(--surface); transition: border-color 150ms ease, background-color 150ms ease; }
+.home-entry-card strong { font-size: 1.05rem; }
+.home-entry-card span { color: var(--ink-soft); font-size: 0.9rem; }
+.home-entry-card:hover { border-color: var(--accent-dark); background: #fffaf5; }
+.home-entry-card:focus-visible { outline: 3px solid var(--accent-dark); outline-offset: 3px; }
+.site-nav { scrollbar-width: thin; }
+.site-nav a { white-space: nowrap; }
+.account-control .text-link--small { font-size: 0.8rem; }
+
+@media (max-width: 960px) {
+  .release-hero h1, .hero h1 { max-width: 14em; }
+  .site-header__inner { flex-wrap: wrap; height: auto; min-height: 4.25rem; padding-block: 0.45rem; }
+  .site-nav { min-width: 0; }
+}
+@media (max-width: 680px) {
+  :root { --type-display: clamp(2.3rem, 9.2vw, 3.35rem); --type-h1: clamp(2.1rem, 8vw, 2.8rem); }
+  .site-header__inner { width: min(100% - 1.5rem, 92rem); gap: 0.35rem 0.6rem; }
+  .site-nav { justify-content: flex-start; gap: 0.1rem; }
+  .site-nav a { padding: 0.45rem 0.55rem; font-size: 0.84rem; }
+  .release-hero, .hero { padding-block: 3.3rem; }
+  .release-hero h1, .hero h1 { max-width: 100%; font-size: var(--type-display); line-height: 1.25; letter-spacing: -0.04em; }
+  .release-hero__lead, .hero__lead { font-size: 0.98rem; }
+  .auth-card h1 { font-size: clamp(2rem, 8vw, 2.65rem); }
+  .auth-card__lead { font-size: 0.94rem; }
+  .auth-form label { font-size: 0.9rem; }
+  .auth-form input { min-height: 3.25rem; }
+}

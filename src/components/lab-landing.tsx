@@ -30,7 +30,7 @@ export function LabLanding() {
           </div>
         </div>
         <aside className="release-hero__card" aria-label="현재 공개 범위">
-          <p className="eyebrow">CURRENT AVAILABILITY</p>
+          <p className="eyebrow">현재 제공 범위</p>
           <ReleaseStatusLabel status="FOUNDATION_ONLY" />
           <h2>현재는 서비스 안내와 기반을 제공합니다.</h2>
           <p className="release-hero__card-copy">제품 구조, 공개 범위, 계정 기반을 먼저 정리하고 있습니다. 실제 기능은 권리·보안·운영 기준이 확인된 범위에서만 순차적으로 열립니다.</p>
