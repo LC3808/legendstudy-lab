@@ -2,8 +2,9 @@
 
 :root {
   --font-ui: "NanumGothic", "Nanum Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-  --type-display: clamp(2.55rem, 5.2vw, 4.85rem);
-  --type-h1: clamp(2.35rem, 4.5vw, 4.1rem);
+  --type-display: clamp(2.3rem, 4.6vw, 4.25rem);
+  --type-h1: clamp(2.1rem, 4vw, 3.55rem);
+  --type-dashboard: clamp(2rem, 3.8vw, 3.25rem);
   --type-h2: clamp(1.7rem, 3vw, 2.35rem);
   --type-h3: 1.2rem;
   --type-body-lg: 1.05rem;
@@ -381,3 +382,13 @@ h1, h2, h3 { text-wrap: pretty; }
   .auth-form label { font-size: 0.9rem; }
   .auth-form input { min-height: 3.25rem; }
 }
+
+/* Typography fine tuning from production review */
+.brand__name { font-family: var(--font-ui); font-weight: 700; letter-spacing: -0.04em; }
+.hero h1, .release-hero h1 { font-weight: 700; }
+.page-intro h1, .detail-hero h1, .year-page h1, .question-overview h1,
+.evaluation-heading h1, .policy-page h1 { font-size: var(--type-h1); font-weight: 700; }
+.placeholder-page h1 { font-size: var(--type-dashboard); font-weight: 600; }
+.release-hero__card h2, .release-steps__grid h3, .home-entry-card strong,
+.university-card h2, .surface-card h2, .review-card h2,
+.question-aside h2, .next-actions h2 { font-weight: 600; }
