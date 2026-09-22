@@ -148,7 +148,11 @@ export function AuthForm({ mode }: { mode: AuthFormMode }) {
     setError(null);
     setSubmitting(true);
     try {
-      const { error: oauthError } = await auth.client.auth.signInWithOAuth({ provider, options: { redirectTo: browserRedirectTo(`/login/?next=${encodeURIComponent(returnPath)}`) } });
+      const redirectTo = browserRedirectTo(`/login/?next=${encodeURIComponent(returnPath)}`);
+      const { error: oauthError } = await auth.client.auth.signInWithOAuth({
+        provider,
+        options: provider === "kakao" ? { redirectTo, scopes: "account_email" } : { redirectTo },
+      });
       if (oauthError) throw oauthError;
     } catch {
       setError("소셜 로그인을 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.");
