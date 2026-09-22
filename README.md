@@ -2,7 +2,7 @@
 
 **LegendStudy LAB** is the public essay-learning service foundation for **레전드스터디+**. The production landing is available at [https://lab.legendstudy.com](https://lab.legendstudy.com).
 
-> **Current public scope:** The website introduces the service direction and its current boundaries. It does **not** offer live AI feedback, payments, subscriptions, credits, answer persistence, official-source copying, or account deletion. LAB browser authentication (email, Google, Kakao, and Apple) has passed Owner Production E2E; this does not verify the native app's providers or App↔LAB identity mapping. See [Production Auth status and operating gates](docs/SHARED_ACCOUNT_AUTH_SETUP.md#production-auth-status-2026-09-21).
+> **Current public scope:** The website introduces the service direction and its current boundaries. It does **not** offer live AI feedback, payments, subscriptions, credits, answer persistence, official-source copying, or account deletion. LAB Email/Google/Apple have passed Owner Production E2E. Kakao is now a code-ready OIDC replacement after a later KOE205 report and awaits deployment/E2E; this does not verify the native app's providers or App↔LAB identity mapping. See [Production Auth status and operating gates](docs/SHARED_ACCOUNT_AUTH_SETUP.md#production-auth-status-2026-09-21).
 
 ## Public information architecture
 
@@ -57,7 +57,7 @@ The Supabase URL and publishable key are public browser configuration, but they 
 
 The project uses `output: "export"` and `trailingSlash: true`. Cloudflare Pages serves `public/_redirects`, which redirects the legacy `/lab/` route to the canonical `/` route with HTTP 308. The generated static `/lab/` file remains a safe noindex fallback for hosts that do not apply redirect rules.
 
-Cloudflare Pages is appropriate for this static release and browser-side Supabase Auth. If the project later needs server rendering, server-managed sessions, payment, live AI features, user-data APIs, or server-side data processing, the architecture must be reviewed for a compatible server runtime before implementation.
+Cloudflare Pages serves the static release and browser-side Supabase Auth; Kakao alone now uses root `functions/` for a server-side OIDC code exchange. Static `out/` upload alone is insufficient. See the [Kakao deployment and security contract](docs/SHARED_ACCOUNT_AUTH_SETUP.md#current-kakao-correction--2026-09-22). If the project later needs server rendering, server-managed sessions, payment, live AI features, user-data APIs, or server-side data processing, the architecture must be reviewed for a compatible server runtime before implementation.
 
 ## Before extending live functionality
 

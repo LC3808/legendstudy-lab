@@ -18,7 +18,7 @@ const errors = [];
 const clientFiles = files.filter((file) => fs.readFileSync(file, "utf8").startsWith('"use client"'));
 for (const file of clientFiles) {
   const source = fs.readFileSync(file, "utf8");
-  if (source.includes("@/server/") || source.includes("server-only")) {
+  if (source.includes("@/server/") || source.includes("server-only") || source.includes("cloudflare/") || source.includes("functions/")) {
     errors.push(`client component imports server-only code: ${path.relative(root, file)}`);
   }
 }
@@ -34,6 +34,13 @@ const packageJson = JSON.parse(fs.readFileSync(path.join(root, "package.json"), 
 for (const blockedDependency of ["express", "@trpc/server", "@trpc/client"]) {
   if (packageJson.dependencies?.[blockedDependency] || packageJson.devDependencies?.[blockedDependency]) {
     errors.push(`blocked runtime dependency present: ${blockedDependency}`);
+  }
+}
+
+// Cloudflare exchange secrets must never be referenced from any browser source.
+for (const file of files) {
+  if (/KAKAO_CLIENT_SECRET|KAKAO_REST_API_KEY/.test(fs.readFileSync(file, "utf8")) && !file.endsWith(".test.ts")) {
+    errors.push(`server Kakao binding referenced in browser source: ${path.relative(root, file)}`);
   }
 }
 

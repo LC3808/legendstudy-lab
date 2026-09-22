@@ -9,6 +9,8 @@ const prohibitedPathPatterns = [
   /^(?:node_modules|\.next|build|dist|coverage|\.cache)\//,
   /(?:^|\/)\.DS_Store$/,
   /(?:^|\/)(?:npm-debug|yarn-debug|pnpm-debug).*\.log$/,
+  /(?:^|\/)\.dev\.vars(?:\.|$)/,
+  /^\.wrangler\//,
   /\.pem$/,
   /\.key$/,
   /(?:^|\/)id_rsa$/,

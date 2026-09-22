@@ -2,9 +2,66 @@
 
 ## Purpose
 
-LegendStudy LAB is a static Next.js export. It uses **browser-side Supabase Auth only** so that a user can hold the same `auth.users.id` identity in LegendStudy+ and LAB without introducing a second database, server-side session store, service-role key, or new Supabase project. The LAB source accepts only the public project URL declared by the LegendStudy app: `https://stlhijzpjfgwwdgunlsd.supabase.co`.
+LegendStudy LAB is a static Next.js export. It uses **browser-side Supabase sessions**, with the Kakao-only Pages token-exchange boundary described below, so that a user can hold the same `auth.users.id` identity in LegendStudy+ and LAB without introducing a second database, server-side session store, service-role key, or new Supabase project. The LAB source accepts only the public project URL declared by the LegendStudy app: `https://stlhijzpjfgwwdgunlsd.supabase.co`.
 
 This document records both the deployment setup and the Owner-verified Production state. Credentials and private keys themselves are intentionally excluded.
+
+## Current Kakao correction — 2026-09-22
+
+The 2026-09-21 table below is historical Owner evidence. The later Owner report supersedes **LAB Kakao only**: Production KOE205 was reproduced with `account_email profile_image profile_nickname account_email`. Hosted Supabase Kakao defaults add profile scopes; the previous `scopes: "account_email"` only appended email. LAB Email/Google/Apple PASS remains valid. Owner now also reports App Email/Google/Apple/Kakao PASS; this task does not edit the App repository. Shared Kakao App/LAB user-ID equality remains **NOT VERIFIED**.
+
+### Implemented replacement and deployment boundary
+
+- Kakao no longer calls hosted `signInWithOAuth`. Google and Apple still do. Email/signup/recovery remain unchanged.
+- Next `output: "export"`, `trailingSlash`, `out/`, and browser Supabase persistent session/storage key are unchanged. No SSR/session-cookie migration.
+- Cloudflare Pages routes: `POST /api/auth/kakao/start`, `GET /api/auth/kakao/callback`, `POST /api/auth/kakao/callback`. Static browser completion route: `/auth/kakao/` (noindex).
+- `functions/` is at repository root, separate from exported assets; shared server code is `cloudflare/kakao.ts`. `_routes.json` limits invocation to `/api/auth/kakao/*`. Wrangler locally compiles the actual functions. **Production deployment mode has not been independently verified:** Owner must confirm Git-connected Pages or Wrangler deployment that includes root functions; uploading only `out/` through Dashboard is insufficient. Existing static hosting is not evidence that Functions are already deployed.
+- Runtime fails closed unless `KAKAO_OIDC_ENABLED=true`, existing REST API key, and explicit client-secret mode are configured. Existing browser provider allow-list still controls visibility. Do not expose Kakao until deployment/configuration is ready.
+
+### Protocol and security decisions
+
+1. Browser generates three independent 256-bit random values with Web Crypto: state, raw nonce, PKCE verifier. A tab-scoped transaction in sessionStorage expires after five minutes and is consumed before async completion. No ID/access/refresh token is stored there.
+2. Same-origin JSON POST to start sets a five-minute `__Host-` Secure/HttpOnly/SameSite=Lax state cookie. The browser separately retains state; callback must match cookie and tab state. Foreign Origin and malformed input fail closed.
+3. Kakao authorization endpoint is `https://kauth.kakao.com/oauth/authorize`. Actual request scope is **`openid,account_email`** (Kakao REST docs specify comma-separated IDs), semantically exactly openid + account_email once. No profile scopes, login hint, forced consent or prompt parameter. Owner reports OIDC ON and same App/LAB Kakao client_id; no new application/key is created. Email claim still requires valid email and consent; OIDC alone does not guarantee every account supplies email.
+4. Authorize nonce is lowercase hex SHA-256(raw nonce). Installed `@supabase/auth-js` 2.116.0 supports `provider: "kakao"` and `nonce`; Supabase Auth verifies SHA-256(raw nonce) against the ID-token claim. The browser passes raw nonce to `signInWithIdToken`. It checks claim equality early; **only Supabase performs signature/issuer/audience/expiry verification**. Never disable nonce verification.
+5. Kakao's live Discovery document advertises `code_challenge_methods_supported: ["S256"]`. Browser derives base64url SHA-256(verifier); request uses `code_challenge`/`code_challenge_method=S256`, server token request uses `code_verifier`. No plain fallback. Production enforcement remains an E2E gate; metadata and mocked tests are not a live invalid-verifier acceptance test.
+6. Callback GET verifies cookie/state and redirects only to fixed `/auth/kakao/` with short-lived code/state in fragment, **never ID token**. Browser immediately replaces that URL, consumes the tab transaction, then POSTs code/verifier/state to the same server callback. Server independently checks Origin and cookie/state before token exchange. Code necessarily arrives in the initial Kakao GET query; Owner must exclude callback query/body data from access-log exports, analytics, tracing and error capture. Referrer-Policy/no-store responses reduce propagation but cannot erase upstream access logs.
+7. Server exchanges at fixed `https://kauth.kakao.com/oauth/token`, using exactly the registered callback, 15-second timeout and no redirect following. Kakao client secret is sent only when configured enabled. Only ID token is returned in a no-store same-origin JSON response, with no CORS permission. Kakao access/refresh tokens are discarded. ID token remains in browser memory only until official Supabase sign-in; existing Supabase session persistence continues normally.
+8. Replay defense: consumed tab transaction, cookie clearing on terminal exchange/error, five-minute lifetime and Kakao single-use authorization code + PKCE. Concurrent exchanges rely on Kakao code single-use enforcement; there is no invented global atomic ledger. This does **not** claim stolen ID tokens are globally revoked after one Supabase request. Nonce secrecy, no ID-token URL/storage/logging, same-origin delivery and Supabase expiry validation are required boundaries.
+9. Cancellation, invalid state/code, exchange failure, missing token, nonce mismatch and Supabase failure return safe login notices. No raw upstream error/token logging. Final navigation reuses the existing local return-path guard; server has no arbitrary redirect input. No inline executable callback payload or CSP relaxation was introduced. Existing external CSP/analytics configuration still needs Owner deployment validation.
+
+### Owner configuration (do not send secrets to chat)
+
+1. **Cloudflare Dashboard → Workers & Pages → legendstudy-lab → Settings → Builds & deployments:** confirm repository root, Git-connected build (or approved Wrangler deployment including `functions/`), existing build command and output `out`. No deployment was performed here. Keep preview disabled for this flow: runtime intentionally accepts only `https://lab.legendstudy.com`.
+2. **Kakao Developers → existing app → App → Platform Key → REST API key:** retain the existing key shared with App/Supabase; add redirect `https://lab.legendstudy.com/api/auth/kakao/callback` without removing existing Supabase redirects. Confirm whether Client Secret is enabled; do not create/rotate/disable it merely for this change.
+3. **Kakao Login → General → OpenID Connect:** Owner says ON. **Consent items:** keep account_email required, profile_nickname/profile_image unused. Do not enable extra profile collection.
+4. **Cloudflare Pages project → Settings → Variables and Secrets → Production:** configure these **runtime** bindings (never `NEXT_PUBLIC_*`):
+
+| Name | Value type / action |
+|---|---|
+| `KAKAO_REST_API_KEY` | Existing same Kakao app REST API key; no new key |
+| `KAKAO_CLIENT_SECRET_MODE` | Exactly `enabled` if current Kakao secret is ON, otherwise `disabled` only after confirming OFF |
+| `KAKAO_CLIENT_SECRET` | Existing secret, **encrypted secret binding**, only when mode is enabled; never source/build-public config |
+| `KAKAO_OIDC_ENABLED` | `true` only after callback/runtime settings are ready |
+
+Client Secret is required **when its existing setting is ON** (current Kakao docs say new REST keys default ON); this run did not inspect that private setting. No secret value was requested or stored. The server uses no service-role/DB credentials. Existing Supabase Kakao enabled/client-ID configuration must accept the same REST-key audience; do not change other provider settings.
+5. Keep existing `NEXT_PUBLIC_SUPABASE_*` and Google/Apple allow-list configuration. Include `kakao` in `NEXT_PUBLIC_SUPABASE_AUTH_PROVIDERS` only for the configured deployment. Review log/analytics redaction for `/api/auth/kakao/*` and `/auth/kakao/` before rollout.
+6. Owner approval precedes push/deploy. After deploying, verify actual Functions routing, Secure cookie, minimal scope, no ID tokens in URLs, nonce/PKCE and safe failures. Do not infer success from the static Next build.
+
+### Owner Production acceptance
+
+- First Kakao login: only email consent, automatic LAB return, authenticated Home.
+- Logout/relogin: no unnecessary repeated consent; session restore; A→logout→B isolation.
+- App and LAB same Kakao account: privately compare canonical Supabase `auth.users.id`; no new user, no manual merge, no UUID in docs/source/logs.
+- Recheck LAB Email, Google, Apple and recovery; their prior Owner PASS is preserved, not substituted with new E2E claims.
+- `LAB_KAKAO_PRODUCTION_E2E: NOT VERIFIED`
+- `KAKAO_LAB_APP_SHARED_IDENTITY: NOT VERIFIED`
+
+### Evidence and local validation
+
+Official references: [Kakao REST/OIDC](https://developers.kakao.com/docs/ko/kakaologin/rest-api), [live OIDC Discovery](https://kauth.kakao.com/.well-known/openid-configuration), [Supabase Kakao ID-token flow](https://supabase.com/docs/guides/auth/social-login/auth-kakao), [JS ID-token API](https://supabase.com/docs/reference/javascript/auth-signinwithidtoken), [Pages Functions structure](https://developers.cloudflare.com/pages/functions/get-started/), [Pages routing](https://developers.cloudflare.com/pages/functions/routing/). Installed JS/auth-js version: 2.116.0. Nonce source inspected: Supabase Auth `internal/api/token_oidc.go` at upstream revision `64cfdf22e15278eb7f4e7be541156e1cf94f4431`; this is not a claim about the hosted deployment's revision.
+
+Local verification results are recorded in `todo.md`. No real OAuth request, token exchange, user mutation or deployment was made by these tests.
 
 ## Production Auth status (2026-09-21)
 
@@ -26,14 +83,14 @@ LAB_GOOGLE_OAUTH_PRODUCTION_E2E: PASS
 LAB_KAKAO_OAUTH_PRODUCTION_E2E: PASS
 LAB_APPLE_OAUTH_PRODUCTION_E2E: PASS
 LAB_AUTH_LIFECYCLE: PRODUCTION VERIFIED
-APP_SOCIAL_AUTH_PRODUCTION_E2E: NOT YET VERIFIED
+APP_SOCIAL_AUTH_PRODUCTION_E2E: PASS (Owner update 2026-09-22)
 APP_LAB_ACCOUNT_IDENTITY_E2E: NOT YET VERIFIED
 APPLE_SECRET_RENEWAL_GATE: OPEN
 APPLE_ACCOUNT_DELETION_REVOKE: OPEN
 STORE_RELEASE_READY: NO
 ```
 
-The verified scope is LAB web only. LAB and LegendStudy+ App use the same Supabase project and intend `auth.users.id` as canonical account identity, but same-ID Production verification between App and LAB has not been completed. This does not verify app-side Google/Kakao/Apple OAuth and does not imply browser/native session sharing. Shared account identity and session sharing are separate: the goal is the same `auth.users.id`, not a shared browser cookie or native session.
+The following paragraph describes the 2026-09-21 evidence only; the current correction above takes precedence. The verified scope at that date was LAB web only. LAB and LegendStudy+ App use the same Supabase project and intend `auth.users.id` as canonical account identity, but same-ID Production verification between App and LAB has not been completed. This does not verify app-side Google/Kakao/Apple OAuth and does not imply browser/native session sharing. Shared account identity and session sharing are separate: the goal is the same `auth.users.id`, not a shared browser cookie or native session.
 
 ### Provider operating notes and open gates
 
@@ -55,7 +112,7 @@ Use the web-verified accounts to verify that the native app resolves to the same
 7. App/LAB identity equality using the canonical Supabase `auth.users.id`.
 8. Existing Materials bookmark and grade owner-scoped data isolation.
 
-Record app OAuth results separately from LAB web results. Shared account does not require shared browser/native session. Until these checks pass, keep `APP_SOCIAL_AUTH_PRODUCTION_E2E` and `APP_LAB_ACCOUNT_IDENTITY_E2E` as `NOT YET VERIFIED`.
+Record app OAuth results separately from LAB web results. Shared account does not require shared browser/native session. Preserve the later Owner App-provider PASS report above; keep shared Kakao App/LAB identity NOT VERIFIED until its own comparison passes.
 
 ## Cloudflare Pages environment variables
 
@@ -68,7 +125,7 @@ Set these in the existing `legendstudy-lab` Cloudflare Pages project for both th
 | `NEXT_PUBLIC_SUPABASE_AUTH_PROVIDERS` | No | Comma-separated configured providers, for example `google` | Controls which social buttons are shown. Supported values are `google`, `apple`, and `kakao`. Leave unset until the provider is actually enabled and verified. |
 | `NEXT_PUBLIC_SITE_URL` | Existing | `https://lab.legendstudy.com` | Canonical metadata and redirect origin. |
 
-> `NEXT_PUBLIC_*` values become part of the browser bundle. They must contain only public configuration. Do **not** create or store `SUPABASE_SERVICE_ROLE`, database passwords, private OAuth client secrets, payment secrets, or app signing secrets in this repository or Pages environment.
+> `NEXT_PUBLIC_*` values become part of the browser bundle. They must contain only public configuration. Do **not** store service-role credentials, database passwords, payment secrets, app signing secrets, or private OAuth secrets in the repository or browser build. The only new exception is the specifically scoped Kakao server runtime secret binding above.
 
 ## Supabase Auth URL configuration
 

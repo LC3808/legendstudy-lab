@@ -7,6 +7,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useAuth } from "@/components/auth-context";
 import { AuthForm } from "@/components/auth-forms";
 
+vi.mock("@/lib/kakao-oidc", () => ({ startKakaoLogin: vi.fn().mockResolvedValue(undefined) }));
+import { startKakaoLogin } from "@/lib/kakao-oidc";
+
 vi.mock("@/components/auth-context", () => ({ useAuth: vi.fn() }));
 
 describe("AuthForm social OAuth options", () => {
@@ -27,19 +30,11 @@ describe("AuthForm social OAuth options", () => {
     });
   });
 
-  it("generates a Kakao authorization request with only account_email", async () => {
-    const user = userEvent.setup();
+  it("starts Kakao OIDC without calling hosted OAuth", async () => {
     render(<AuthForm mode="login" />);
-
-    await user.click(screen.getByRole("button", { name: "Kakao로 계속하기" }));
-
-    await waitFor(() => expect(signInWithOAuth).toHaveBeenCalledTimes(1));
-    expect(signInWithOAuth).toHaveBeenCalledWith({
-      provider: "kakao",
-      options: expect.objectContaining({ redirectTo: expect.any(String), scopes: "account_email" }),
-    });
-    const options = signInWithOAuth.mock.calls[0]?.[0].options as { scopes?: string };
-    expect(options.scopes?.split(" ")).toEqual(["account_email"]);
+    await userEvent.setup().click(screen.getByRole("button", { name: "Kakao로 계속하기" }));
+    expect(startKakaoLogin).toHaveBeenCalledWith("/home/");
+    expect(signInWithOAuth).not.toHaveBeenCalled();
   });
 
   it("does not add Kakao scopes to Google or Apple", async () => {

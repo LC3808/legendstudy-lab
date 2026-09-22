@@ -11,7 +11,8 @@ LegendStudy LAB is the **Web Intelligence / Deep Work Platform** in the LegendSt
 | Layer | Current responsibility | Explicitly excluded |
 | --- | --- | --- |
 | Static public pages | Service introduction, public scope, policy drafts, reviewed public university metadata, source-status copy. | Private data, source retrieval, auth secrets, live evaluator calls. |
-| Browser Auth boundary | Production-verified LAB email/password and Google/Kakao/Apple sign-in, recovery state, account display, sign-out using the same-project Supabase browser client. | Service-role access, schema writes, profile reads, answer sync, personal-history access; App↔LAB identity E2E is not yet verified. |
+| Browser Auth boundary | Production-verified LAB email/password and Google/Apple sign-in; Kakao OIDC replacement awaiting E2E, recovery state, account display, sign-out using the same-project Supabase browser client. | Service-role access, schema writes, profile reads, answer sync, personal-history access; App↔LAB identity E2E is not yet verified. |
+| Kakao Pages boundary | Same-origin state-bound code exchange at `/api/auth/kakao/callback`; runtime-only optional existing Kakao secret; ID token returned as no-store JSON to browser Supabase client. | No session store, database, service-role, profile fetching, provider-token persistence, or changes to Google/Apple/App flows. |
 | Synthetic workspace boundary | Demonstrates writing and result information architecture with durable mock labels. | Official-question delivery, user-owned answer persistence, real evaluation. |
 | Server-only evaluation boundary | Defines future package/job/credit interfaces. | AI/provider calls, queues, persistence, entitlements, payment. |
 | Future authenticated data service | Future user-owned records after explicit schema/RLS/retention approval. | Silent identity conversion or client-controlled authorization. |

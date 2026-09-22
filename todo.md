@@ -35,11 +35,20 @@
 
 ## Current operations and next work
 
+### 2026-09-22 — Kakao OIDC replacement (local implementation, not deployed)
+
+- [x] Removed LAB Kakao hosted OAuth/additive scope workaround after Owner's confirmed KOE205 report. Email/Google/Apple flows are preserved; App repository unchanged. Owner now reports App Kakao PASS.
+- [x] Added Pages-only server exchange, minimal openid/account_email scope, state cookie + tab binding, SHA-256 nonce, S256 PKCE, no-store ID-token JSON handoff and existing Supabase browser sign-in/session model.
+- [x] Node 22 validation: 52 tests PASS, typecheck/lint/boundary audit PASS; Next static build PASS with `pnpm build --webpack`. Default Turbopack failed on local process/port permission (`Operation not permitted`), not TypeScript/product code. Wrangler 4.136.1 compiled the real Pages Functions locally. GitHub-ready/credential scan, browser bundle secret-boundary scan and diff check PASS. No external auth request or deployment.
+- [ ] Owner confirms Pages Git/Functions deployment mode and current Kakao Client Secret ON/OFF; configure only the runtime bindings and callback specified in `docs/SHARED_ACCOUNT_AUTH_SETUP.md`. Push/deploy requires Owner approval. Local compile is not Production runtime verification.
+- [ ] LAB Kakao replacement Production login/logout/relogin/session/isolation and App↔LAB same-user identity E2E remain NOT VERIFIED. Do not expand profile consent or erase historical PASS evidence.
+
+
 - [x] LAB web Production Auth E2E: email signup/confirmation/login/logout, password recovery/reset/sign-out, and Google/Kakao/Apple OAuth verified by Owner on 2026-09-21. See `docs/SHARED_ACCOUNT_AUTH_SETUP.md`.
 - [ ] Rotate the Google OAuth client secret. The prior setup process exposed it in a screen capture; do not record credential values in this repository.
 - [ ] Renew the Apple OAuth client secret before expiry (maximum six-month lifetime); replace it in Supabase and record only the renewal date, never the secret.
 - [ ] Implement and verify Apple authorization/token revoke in the account-deletion flow before Store release; keep the Store Release Gate closed until complete.
-- [ ] **Next official task:** verify LegendStudy+ App ↔ LAB shared-account identity in Production. Test email, Google, Kakao, Apple, A→logout→B owner isolation, app session restore after relaunch, same `auth.users.id` across App/LAB, and owner-scoped Materials bookmark/grade isolation. Shared account identity does not imply shared browser/native session. App provider E2E and App↔LAB identity remain unverified.
+- [ ] **After Kakao OIDC deployment acceptance:** verify LegendStudy+ App ↔ LAB shared-account identity in Production. Test email, Google, Kakao, Apple, A→logout→B owner isolation, app session restore after relaunch, same `auth.users.id` across App/LAB, and owner-scoped Materials bookmark/grade isolation. Shared account identity does not imply shared browser/native session. Owner has since reported App provider login PASS; same-Kakao-user App↔LAB identity remains unverified.
 - [ ] Replace privacy and terms foundations with Owner-reviewed, dated policy documents that match actual data processing before any account or data feature launches.
 - [ ] Connect a real support channel and an authenticated account-deletion workflow, including Apple authorization/token revoke, before using policy URLs in mobile-store metadata or closing the Store Release Gate.
 - [ ] Complete rights and source reviews before presenting university problems, passages, answers, rubrics, or audio as in-product content.

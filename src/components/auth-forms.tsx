@@ -1,5 +1,6 @@
 "use client";
 
+import { startKakaoLogin } from "@/lib/kakao-oidc";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
@@ -51,7 +52,11 @@ export function AuthForm({ mode }: { mode: AuthFormMode }) {
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(() => {
+    if (mode !== "login" || typeof window === "undefined") return null;
+    const result = new URLSearchParams(window.location.search).get("kakao");
+    return result === "cancelled" ? "Kakao 로그인을 취소했습니다." : result === "failed" ? "Kakao 로그인에 실패했습니다. 다시 시도해 주세요." : null;
+  });
   const copy = titleFor(mode);
   const providers = useMemo(() => getBrowserAuthConfig()?.socialProviders ?? [], []);
   const returnPath = useMemo(() => {
@@ -148,10 +153,14 @@ export function AuthForm({ mode }: { mode: AuthFormMode }) {
     setError(null);
     setSubmitting(true);
     try {
+      if (provider === "kakao") {
+        await startKakaoLogin(returnPath);
+        return;
+      }
       const redirectTo = browserRedirectTo(`/login/?next=${encodeURIComponent(returnPath)}`);
       const { error: oauthError } = await auth.client.auth.signInWithOAuth({
         provider,
-        options: provider === "kakao" ? { redirectTo, scopes: "account_email" } : { redirectTo },
+        options: { redirectTo },
       });
       if (oauthError) throw oauthError;
     } catch {
