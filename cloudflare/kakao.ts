@@ -110,7 +110,8 @@ export async function exchange({ request, env }: Context, fetcher: typeof fetch 
     kakaoDiagnostic("stage=kakao_token_exchange result=start");
     const response = await fetcher("https://kauth.kakao.com/oauth/token", {
       method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded;charset=utf-8" },
-      body: params, redirect: "error", signal: AbortSignal.timeout(15000),
+      // workerd rejects redirect:"error" before network I/O. Manual plus !ok rejects 3xx without forwarding secrets.
+      body: params, redirect: "manual", signal: AbortSignal.timeout(15000),
     });
     if (!response.ok) {
       const { error, errorCode } = await safeKakaoErrorMetadata(response);

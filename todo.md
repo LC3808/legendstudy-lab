@@ -35,12 +35,20 @@
 
 ## Current operations and next work
 
+### 2026-09-23 — Kakao token-fetch runtime fix
+
+- [x] Reproduced Production-shaped TypeError in real local workerd: unsupported `redirect: "error"` fails before outbound I/O. Changed only redirect to `manual`; existing non-OK handling rejects redirects without forwarding secrets.
+- [x] Added five unit redirect cases and retained a local workerd regression runner covering before/after, 200/400 and five redirect responses. No provider requests or Production changes. Full suite: 63 PASS; typecheck/lint/boundary PASS; Pages Functions compile PASS; static Webpack build PASS (default Turbopack blocked by local port permissions); GitHub-ready/secret/diff checks PASS.
+- [x] Owner confirms Pages routing, callback/state/browser transaction and console/runtime settings. Previous unknown configuration items are resolved by Owner evidence.
+- [ ] Owner reviews commit before push/deploy; repeat actual Kakao login and App/LAB identity comparison. Both Production E2E gates remain NOT VERIFIED.
+
+
 ### 2026-09-22 — Kakao OIDC replacement (local implementation, not deployed)
 
 - [x] Removed LAB Kakao hosted OAuth/additive scope workaround after Owner's confirmed KOE205 report. Email/Google/Apple flows are preserved; App repository unchanged. Owner now reports App Kakao PASS.
 - [x] Added Pages-only server exchange, minimal openid/account_email scope, state cookie + tab binding, SHA-256 nonce, S256 PKCE, no-store ID-token JSON handoff and existing Supabase browser sign-in/session model.
 - [x] Node 22 validation: 52 tests PASS, typecheck/lint/boundary audit PASS; Next static build PASS with `pnpm build --webpack`. Default Turbopack failed on local process/port permission (`Operation not permitted`), not TypeScript/product code. Wrangler 4.136.1 compiled the real Pages Functions locally. GitHub-ready/credential scan, browser bundle secret-boundary scan and diff check PASS. No external auth request or deployment.
-- [ ] Owner confirms Pages Git/Functions deployment mode and current Kakao Client Secret ON/OFF; configure only the runtime bindings and callback specified in `docs/SHARED_ACCOUNT_AUTH_SETUP.md`. Push/deploy requires Owner approval. Local compile is not Production runtime verification.
+- [x] Owner confirmed actual Pages Function routing, Client Secret ON, runtime bindings and callback on 2026-09-23. This does not yet verify final token exchange/login.
 - [ ] LAB Kakao replacement Production login/logout/relogin/session/isolation and App↔LAB same-user identity E2E remain NOT VERIFIED. Do not expand profile consent or erase historical PASS evidence.
 
 

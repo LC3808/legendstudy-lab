@@ -109,9 +109,23 @@ describe("Kakao OIDC server boundary", () => {
     expect(options.body.get("code_verifier")).toBe("d".repeat(43));
     expect(options.body.get("client_secret")).toBe("test-only");
     expect(options.body.get("redirect_uri")).toBe(CALLBACK);
-    expect(options.redirect).toBe("error");
+    expect(options.redirect).toBe("manual");
     expect(options.signal).toBeInstanceOf(AbortSignal);
     expect(result.headers.get("cache-control")).toBe("no-store");
+  });
+  it.each([301, 302, 303, 307, 308])("rejects HTTP %s without following or exposing redirect targets", async (status) => {
+    const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    const fetcher = vi.fn(async (_url: RequestInfo | URL, options?: RequestInit) => {
+      // Preserve the Workers contract: error is rejected before I/O; follow could forward credentials.
+      expect(options?.redirect).toBe("manual");
+      return new Response(null, { status, headers: { Location: "https://untrusted.invalid/private" } });
+    });
+    const result = await exchange({ request: request(), env }, fetcher);
+    expect(result.status).toBe(502);
+    expect(await result.json()).toEqual({ error: "exchange" });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(result.headers.get("set-cookie")).toContain("Max-Age=0");
+    expect(diagnostic.mock.calls.flat().join(" ")).not.toMatch(/untrusted|private/);
   });
   it("classifies fetch exceptions without logging sensitive error details", async () => {
     const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);

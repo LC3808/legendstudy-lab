@@ -6,6 +6,24 @@ LegendStudy LAB is a static Next.js export. It uses **browser-side Supabase sess
 
 This document records both the deployment setup and the Owner-verified Production state. Credentials and private keys themselves are intentionally excluded.
 
+## 2026-09-23 — token-fetch TypeError resolved locally
+
+Owner Production evidence confirms authorize/OIDC/minimal scope/code/redirect/callback GET/state/tab transaction/Pages routing PASS. Existing Kakao Login/OIDC/account_email and Login Client Secret are ON; nickname/image remain OFF. Cloudflare runtime bindings and Supabase same REST-key client ID are Owner-confirmed. No console changes are needed for this fix. This supersedes the earlier configuration-unknown notes below; end-to-end login/shared identity are still NOT VERIFIED.
+
+**Root cause:** `redirect: "error"` is rejected by workerd while constructing the outbound request, before any network I/O. It is not a Kakao HTTP 400/401 or evidence of a redirect from Kakao. Cloudflare's general Request reference lists `error`, but actual [official workerd implementation](https://github.com/cloudflare/workerd/blob/main/src/workerd/api/http.c++) rejects it in `Request::constructor` and advises `manual` plus status checking. [WHATWG Fetch](https://fetch.spec.whatwg.org/#http-fetch) defines `error` semantics; that standard behavior is not implemented by the tested edge runtime. The [Workers Request reference](https://developers.cloudflare.com/workers/runtime-apis/request/) and [Pages Functions runtime](https://developers.cloudflare.com/pages/functions/) were cross-checked against runtime evidence rather than assumed equivalent to Node/browser fetch.
+
+Minimal fix: `redirect: "manual"`; existing `!response.ok` rejects all 3xx and 4xx/5xx. No auto-follow/retry, Location forwarding, credential forwarding or protocol changes. AbortSignal.timeout(15000), URLSearchParams, Content-Type, default native fetch injection, state/nonce/PKCE and conditional secret remain unchanged. [Kakao token API](https://developers.kakao.com/docs/en/kakaologin/rest-api#request-token) remains the same form-encoded POST. No outbound restriction workaround/TLS weakening was introduced.
+
+Reproduction uses workerd **1.20260921.1**, Miniflare **5.20260921.0-alpha**, compatibility date 2026-09-22, the real exchange function and native fetch. Every outbound request is intercepted locally; synthetic values only. Before: 502 + TypeError, **zero outbound calls**. After changing only redirect: synthetic 200 succeeds; 400 is handled; 301/302/303/307/308 are rejected with exactly one call, never followed. This also rules out the unchanged timeout/body/content-type/function-binding combination as the cause of this deterministic failure. Production deployment runtime/version is not claimed to have been directly inspected.
+
+Repeat locally with an installed Miniflare package (no runtime dependency was added):
+
+```sh
+node scripts/test-kakao-workerd.mjs /path/to/node_modules/miniflare
+```
+
+Existing safe stage diagnostics remain; no credentials or raw exceptions are logged. Google/Apple/Email code and prior Owner Production PASS are untouched. Owner next action: review the commit, approve push/deploy, then repeat Kakao login and privately compare App/LAB identity. A successful local synthetic response is not Production login verification.
+
 ## Current Kakao correction — 2026-09-22
 
 The 2026-09-21 table below is historical Owner evidence. The later Owner report supersedes **LAB Kakao only**: Production KOE205 was reproduced with `account_email profile_image profile_nickname account_email`. Hosted Supabase Kakao defaults add profile scopes; the previous `scopes: "account_email"` only appended email. LAB Email/Google/Apple PASS remains valid. Owner now also reports App Email/Google/Apple/Kakao PASS; this task does not edit the App repository. Shared Kakao App/LAB user-ID equality remains **NOT VERIFIED**.
@@ -15,7 +33,7 @@ The 2026-09-21 table below is historical Owner evidence. The later Owner report 
 - Kakao no longer calls hosted `signInWithOAuth`. Google and Apple still do. Email/signup/recovery remain unchanged.
 - Next `output: "export"`, `trailingSlash`, `out/`, and browser Supabase persistent session/storage key are unchanged. No SSR/session-cookie migration.
 - Cloudflare Pages routes: `POST /api/auth/kakao/start`, `GET /api/auth/kakao/callback`, `POST /api/auth/kakao/callback`. Static browser completion route: `/auth/kakao/` (noindex).
-- `functions/` is at repository root, separate from exported assets; shared server code is `cloudflare/kakao.ts`. `_routes.json` limits invocation to `/api/auth/kakao/*`. Wrangler locally compiles the actual functions. **Production deployment mode has not been independently verified:** Owner must confirm Git-connected Pages or Wrangler deployment that includes root functions; uploading only `out/` through Dashboard is insufficient. Existing static hosting is not evidence that Functions are already deployed.
+- `functions/` is at repository root, separate from exported assets; shared server code is `cloudflare/kakao.ts`. `_routes.json` limits invocation to `/api/auth/kakao/*`. Wrangler locally compiles the actual functions. Owner has now verified actual Production Pages Function routing (2026-09-23); root functions must remain included in deployment. Uploading only `out/` through Dashboard is insufficient.
 - Runtime fails closed unless `KAKAO_OIDC_ENABLED=true`, existing REST API key, and explicit client-secret mode are configured. Existing browser provider allow-list still controls visibility. Do not expose Kakao until deployment/configuration is ready.
 
 ### Protocol and security decisions
@@ -44,7 +62,7 @@ The 2026-09-21 table below is historical Owner evidence. The later Owner report 
 | `KAKAO_CLIENT_SECRET` | Existing secret, **encrypted secret binding**, only when mode is enabled; never source/build-public config |
 | `KAKAO_OIDC_ENABLED` | `true` only after callback/runtime settings are ready |
 
-Client Secret is required **when its existing setting is ON** (current Kakao docs say new REST keys default ON); this run did not inspect that private setting. No secret value was requested or stored. The server uses no service-role/DB credentials. Existing Supabase Kakao enabled/client-ID configuration must accept the same REST-key audience; do not change other provider settings.
+Client Secret is required **when its existing setting is ON** (current Kakao docs say new REST keys default ON); Owner has now confirmed that setting is ON (2026-09-23); no secret value was inspected. No secret value was requested or stored. The server uses no service-role/DB credentials. Existing Supabase Kakao enabled/client-ID configuration must accept the same REST-key audience; do not change other provider settings.
 5. Keep existing `NEXT_PUBLIC_SUPABASE_*` and Google/Apple allow-list configuration. Include `kakao` in `NEXT_PUBLIC_SUPABASE_AUTH_PROVIDERS` only for the configured deployment. Review log/analytics redaction for `/api/auth/kakao/*` and `/auth/kakao/` before rollout.
 6. Owner approval precedes push/deploy. After deploying, verify actual Functions routing, Secure cookie, minimal scope, no ID tokens in URLs, nonce/PKCE and safe failures. Do not infer success from the static Next build.
 
