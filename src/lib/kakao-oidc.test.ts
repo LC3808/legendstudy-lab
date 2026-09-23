@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 import { callback, exchange, start, ORIGIN, CALLBACK, type Env } from "../../cloudflare/kakao";
 import { createKakaoTransaction, consumeKakaoCallback, finishKakaoLogin } from "./kakao-oidc";
 
@@ -17,6 +17,7 @@ function browserStorage(transaction: unknown) {
   return { getItem: () => value, removeItem: () => { value = null; } };
 }
 const token = (nonce: string) => `test.${btoa(JSON.stringify({ nonce }))}.test`;
+afterEach(() => vi.restoreAllMocks());
 
 describe("Kakao OIDC server boundary", () => {
   it("uses exact minimal scopes, hashed nonce, S256 and fixed callback", async () => {
@@ -77,6 +78,19 @@ describe("Kakao OIDC server boundary", () => {
     expect(await result.text()).not.toContain("private");
     expect(result.headers.get("set-cookie")).toContain("Max-Age=0");
   });
+  it("logs only safe provider error details for token exchange HTTP failures", async () => {
+    const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    const result = await exchange({ request: request(), env }, vi.fn().mockResolvedValue(Response.json({ error: "invalid_grant", error_description: "private" }, { status: 400 })));
+    expect(result.status).toBe(502);
+    expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=kakao_token_exchange result=failed status=400 error=invalid_grant");
+    expect(diagnostic.mock.calls.flat().join(" ")).not.toContain("private");
+  });
+  it("logs a missing ID token without exposing the provider response", async () => {
+    const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    await exchange({ request: request(), env }, vi.fn().mockResolvedValue(Response.json({ access_token: "private" })));
+    expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=id_token result=missing");
+    expect(diagnostic.mock.calls.flat().join(" ")).not.toContain("private");
+  });
   it("exchanges server-side with PKCE, returns only ID token, and drops provider access tokens", async () => {
     const fetcher = vi.fn().mockResolvedValue(Response.json({ id_token: "test-id", access_token: "discard", refresh_token: "discard" }));
     const result = await exchange({ request: request(), env: { ...env, KAKAO_CLIENT_SECRET_MODE: "enabled", KAKAO_CLIENT_SECRET: "test-only" } }, fetcher);
@@ -122,14 +136,29 @@ describe("browser transaction and Supabase session seam", () => {
     const tx = { ...await createKakaoTransaction("/home/"), code: "test-code" };
     const signInWithIdToken = vi.fn().mockResolvedValue({ data: { session: {} }, error: null });
     const idToken = token(tx.nonceHash);
+    const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
     expect(await finishKakaoLogin({ auth: { signInWithIdToken } } as never, tx, vi.fn().mockResolvedValue(Response.json({ idToken })))).toBe("/home/");
     expect(signInWithIdToken).toHaveBeenCalledWith({ provider: "kakao", token: idToken, nonce: tx.nonce });
+    expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=success result=complete");
   });
   it("rejects wrong nonce before Supabase and rejects session failure", async () => {
     const tx = { ...await createKakaoTransaction("/home/"), code: "test-code" };
     const signInWithIdToken = vi.fn().mockResolvedValue({ data: { session: null }, error: null });
+    const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
     await expect(finishKakaoLogin({ auth: { signInWithIdToken } } as never, tx, vi.fn().mockResolvedValue(Response.json({ idToken: token("wrong") })))).rejects.toThrow();
     expect(signInWithIdToken).not.toHaveBeenCalled();
+    expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=nonce_validation result=failed");
     await expect(finishKakaoLogin({ auth: { signInWithIdToken } } as never, tx, vi.fn().mockResolvedValue(Response.json({ idToken: token(tx.nonceHash) })))).rejects.toThrow();
+    expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=session_creation result=missing");
+  });
+  it("logs exchange HTTP failures and Supabase failures with safe status/code only", async () => {
+    const tx = { ...await createKakaoTransaction("/home/"), code: "test-code" };
+    const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    const client = { auth: { signInWithIdToken: vi.fn().mockResolvedValue({ data: { session: null }, error: { code: "provider_disabled", message: "private" } }) } } as never;
+    await expect(finishKakaoLogin(client, tx, vi.fn().mockResolvedValue(new Response(null, { status: 502 })))).rejects.toThrow();
+    expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=exchange_response result=failed status=502");
+    await expect(finishKakaoLogin(client, tx, vi.fn().mockResolvedValue(Response.json({ idToken: token(tx.nonceHash) })))).rejects.toThrow();
+    expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=supabase_id_token_exchange result=failed code=provider_disabled");
+    expect(diagnostic.mock.calls.flat().join(" ")).not.toContain("private");
   });
 });

@@ -25,6 +25,18 @@ function storedState(request: Request) {
 function json(value: unknown, status = 200, binding?: string) {
   return Response.json(value, { status, headers: { ...baseHeaders, ...(binding ? { "Set-Cookie": binding } : {}) } });
 }
+const KAKAO_ERROR_NAMES = new Set([
+  "invalid_request", "invalid_client", "invalid_grant", "unauthorized_client", "unsupported_grant_type", "invalid_scope",
+]);
+function kakaoDiagnostic(message: string) {
+  console.info(`KAKAO_OIDC ${message}`);
+}
+async function safeKakaoErrorName(response: Response) {
+  try {
+    const value = await response.clone().json() as { error?: unknown };
+    return typeof value.error === "string" && KAKAO_ERROR_NAMES.has(value.error) ? value.error : undefined;
+  } catch { return undefined; }
+}
 function configured(env: Env) {
   return env.KAKAO_OIDC_ENABLED === "true" && Boolean(env.KAKAO_REST_API_KEY) &&
     (env.KAKAO_CLIENT_SECRET_MODE === "disabled" ||
@@ -82,19 +94,31 @@ export async function exchange({ request, env }: Context, fetcher: typeof fetch 
     const { state, code, verifier } = await body(request);
     if (!RANDOM.test(state ?? "") || storedState(request) !== state || !RANDOM.test(verifier ?? "") ||
         typeof code !== "string" || !code || code.length > 4096) return json({ error: "request" }, 400, clear);
+    kakaoDiagnostic("stage=exchange_request result=start");
     const params = new URLSearchParams({ grant_type: "authorization_code", client_id: env.KAKAO_REST_API_KEY!,
       redirect_uri: CALLBACK, code, code_verifier: verifier });
     if (env.KAKAO_CLIENT_SECRET_MODE === "enabled") params.set("client_secret", env.KAKAO_CLIENT_SECRET!);
+    kakaoDiagnostic("stage=kakao_token_exchange result=start");
     const response = await fetcher("https://kauth.kakao.com/oauth/token", {
       method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded;charset=utf-8" },
       body: params, redirect: "error", signal: AbortSignal.timeout(15000),
     });
-    if (!response.ok) return json({ error: "exchange" }, 502, clear);
+    if (!response.ok) {
+      const errorName = await safeKakaoErrorName(response);
+      kakaoDiagnostic(`stage=kakao_token_exchange result=failed status=${response.status}${errorName ? ` error=${errorName}` : ""}`);
+      return json({ error: "exchange" }, 502, clear);
+    }
+    kakaoDiagnostic("stage=kakao_token_exchange result=success");
     const result = await response.json() as { id_token?: unknown };
     if (typeof result.id_token !== "string" || !result.id_token || result.id_token.length > 16384) {
+      kakaoDiagnostic("stage=id_token result=missing");
       return json({ error: "missing_token" }, 502, clear);
     }
+    kakaoDiagnostic("stage=id_token result=present");
     // Discard Kakao access/refresh tokens. Supabase verifies the ID token signature/claims.
     return json({ idToken: result.id_token }, 200, clear);
-  } catch { return json({ error: "exchange" }, 502, clear); }
+  } catch {
+    kakaoDiagnostic("stage=kakao_token_exchange result=failed");
+    return json({ error: "exchange" }, 502, clear);
+  }
 }

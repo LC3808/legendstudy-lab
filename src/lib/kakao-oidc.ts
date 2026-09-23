@@ -3,6 +3,12 @@ import { getSafeReturnPath } from "@/lib/return-to";
 
 const KEY = "lab-kakao-transaction";
 export const KAKAO_FAILURE_PATH = "/login/?kakao=failed";
+function kakaoDiagnostic(message: string) {
+  console.info(`KAKAO_OIDC ${message}`);
+}
+function safeCode(value: unknown) {
+  return typeof value === "string" && /^[A-Za-z0-9_.-]{1,64}$/.test(value) ? value : "unknown";
+}
 const random = () => btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(32))))
   .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 async function digest(value: string) {
@@ -43,6 +49,7 @@ export function consumeKakaoCallback(fragment: string, storage: Pick<Storage, "g
   const age = Date.now() - transaction.createdAt;
   const code = params.get("code");
   if (!Number.isFinite(age) || age < 0 || age > 300000 || !code || params.get("state") !== transaction.state) throw new Error("failed");
+  kakaoDiagnostic("stage=callback_transaction result=success");
   return { ...transaction, code };
 }
 export async function finishKakaoLogin(client: SupabaseClient, transaction: ReturnType<typeof consumeKakaoCallback>, fetcher: typeof fetch = fetch) {
@@ -50,13 +57,42 @@ export async function finishKakaoLogin(client: SupabaseClient, transaction: Retu
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ state: transaction.state, code: transaction.code, verifier: transaction.verifier }),
     signal: AbortSignal.timeout(20000) });
-  if (!response.ok) throw new Error("failed");
+  if (!response.ok) {
+    kakaoDiagnostic(`stage=exchange_response result=failed status=${response.status}`);
+    throw new Error("failed");
+  }
+  kakaoDiagnostic("stage=exchange_response result=success");
   const { idToken } = await response.json();
   if (typeof idToken !== "string") throw new Error("failed");
   // This is an early nonce guard, NOT signature validation. Supabase does signature/issuer/audience/expiry validation.
-  const claims = JSON.parse(atob(idToken.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
-  if (claims.nonce !== transaction.nonceHash) throw new Error("failed");
-  const { data, error } = await client.auth.signInWithIdToken({ provider: "kakao", token: idToken, nonce: transaction.nonce });
-  if (error || !data.session) throw new Error("failed");
+  try {
+    const claims = JSON.parse(atob(idToken.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+    if (claims.nonce !== transaction.nonceHash) {
+      kakaoDiagnostic("stage=nonce_validation result=failed");
+      throw new Error("failed");
+    }
+  } catch (error) {
+    if (!(error instanceof Error && error.message === "failed")) kakaoDiagnostic("stage=nonce_validation result=failed");
+    throw new Error("failed");
+  }
+  kakaoDiagnostic("stage=nonce_validation result=success");
+  kakaoDiagnostic("stage=supabase_id_token_exchange result=start");
+  let result: Awaited<ReturnType<SupabaseClient["auth"]["signInWithIdToken"]>>;
+  try {
+    result = await client.auth.signInWithIdToken({ provider: "kakao", token: idToken, nonce: transaction.nonce });
+  } catch {
+    kakaoDiagnostic("stage=supabase_id_token_exchange result=failed code=unknown");
+    throw new Error("failed");
+  }
+  const { data, error } = result;
+  if (error) {
+    kakaoDiagnostic(`stage=supabase_id_token_exchange result=failed code=${safeCode(error.code)}`);
+    throw new Error("failed");
+  }
+  if (!data.session) {
+    kakaoDiagnostic("stage=session_creation result=missing");
+    throw new Error("failed");
+  }
+  kakaoDiagnostic("stage=success result=complete");
   return getSafeReturnPath(transaction.returnPath);
 }
