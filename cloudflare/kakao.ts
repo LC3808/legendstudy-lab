@@ -31,11 +31,15 @@ const KAKAO_ERROR_NAMES = new Set([
 function kakaoDiagnostic(message: string) {
   console.info(`KAKAO_OIDC ${message}`);
 }
-async function safeKakaoErrorName(response: Response) {
+const KAKAO_ERROR_CODE = /^[A-Za-z0-9_-]{1,32}$/;
+async function safeKakaoErrorMetadata(response: Response) {
   try {
-    const value = await response.clone().json() as { error?: unknown };
-    return typeof value.error === "string" && KAKAO_ERROR_NAMES.has(value.error) ? value.error : undefined;
-  } catch { return undefined; }
+    const value = await response.json() as { error?: unknown; error_code?: unknown };
+    return {
+      error: typeof value.error === "string" && KAKAO_ERROR_NAMES.has(value.error) ? value.error : undefined,
+      errorCode: typeof value.error_code === "string" && KAKAO_ERROR_CODE.test(value.error_code) ? value.error_code : undefined,
+    };
+  } catch { return {}; }
 }
 function configured(env: Env) {
   return env.KAKAO_OIDC_ENABLED === "true" && Boolean(env.KAKAO_REST_API_KEY) &&
@@ -104,8 +108,8 @@ export async function exchange({ request, env }: Context, fetcher: typeof fetch 
       body: params, redirect: "error", signal: AbortSignal.timeout(15000),
     });
     if (!response.ok) {
-      const errorName = await safeKakaoErrorName(response);
-      kakaoDiagnostic(`stage=kakao_token_exchange result=failed status=${response.status}${errorName ? ` error=${errorName}` : ""}`);
+      const { error, errorCode } = await safeKakaoErrorMetadata(response);
+      kakaoDiagnostic(`stage=kakao_token_exchange result=failed status=${response.status}${error ? ` error=${error}` : ""}${errorCode ? ` error_code=${errorCode}` : ""}`);
       return json({ error: "exchange" }, 502, clear);
     }
     kakaoDiagnostic("stage=kakao_token_exchange result=success");

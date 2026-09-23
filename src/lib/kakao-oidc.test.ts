@@ -80,10 +80,19 @@ describe("Kakao OIDC server boundary", () => {
   });
   it("logs only safe provider error details for token exchange HTTP failures", async () => {
     const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
-    const result = await exchange({ request: request(), env }, vi.fn().mockResolvedValue(Response.json({ error: "invalid_grant", error_description: "private" }, { status: 400 })));
+    const result = await exchange({ request: request(), env }, vi.fn().mockResolvedValue(Response.json({
+      error: "invalid_grant", error_code: "KOE320", error_description: "private", access_token: "secret", refresh_token: "secret",
+    }, { status: 400 })));
     expect(result.status).toBe(502);
-    expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=kakao_token_exchange result=failed status=400 error=invalid_grant");
-    expect(diagnostic.mock.calls.flat().join(" ")).not.toContain("private");
+    expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=kakao_token_exchange result=failed status=400 error=invalid_grant error_code=KOE320");
+    const output = diagnostic.mock.calls.flat().join(" ");
+    expect(output).not.toMatch(/private|secret|access_token|refresh_token|error_description/);
+  });
+  it("omits unallowlisted provider fields from token exchange diagnostics", async () => {
+    const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    await exchange({ request: request(), env }, vi.fn().mockResolvedValue(Response.json({ error: "provider-private", error_code: "email@example.com" }, { status: 401 })));
+    expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=kakao_token_exchange result=failed status=401");
+    expect(diagnostic.mock.calls.flat().join(" ")).not.toContain("email@example.com");
   });
   it("logs a missing ID token without exposing the provider response", async () => {
     const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
