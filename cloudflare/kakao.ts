@@ -32,6 +32,7 @@ function kakaoDiagnostic(message: string) {
   console.info(`KAKAO_OIDC ${message}`);
 }
 const KAKAO_ERROR_CODE = /^[A-Za-z0-9_-]{1,32}$/;
+const KAKAO_EXCEPTION_NAMES = new Set(["TypeError", "AbortError", "TimeoutError", "Error"]);
 async function safeKakaoErrorMetadata(response: Response) {
   try {
     const value = await response.json() as { error?: unknown; error_code?: unknown };
@@ -40,6 +41,10 @@ async function safeKakaoErrorMetadata(response: Response) {
       errorCode: typeof value.error_code === "string" && KAKAO_ERROR_CODE.test(value.error_code) ? value.error_code : undefined,
     };
   } catch { return {}; }
+}
+function safeKakaoExceptionName(error: unknown) {
+  if (!(error instanceof Error)) return "non_error";
+  return KAKAO_EXCEPTION_NAMES.has(error.name) ? error.name : "Error";
 }
 function configured(env: Env) {
   return env.KAKAO_OIDC_ENABLED === "true" && Boolean(env.KAKAO_REST_API_KEY) &&
@@ -121,8 +126,8 @@ export async function exchange({ request, env }: Context, fetcher: typeof fetch 
     kakaoDiagnostic("stage=id_token result=present");
     // Discard Kakao access/refresh tokens. Supabase verifies the ID token signature/claims.
     return json({ idToken: result.id_token }, 200, clear);
-  } catch {
-    kakaoDiagnostic("stage=kakao_token_exchange result=failed");
+  } catch (error) {
+    kakaoDiagnostic(`stage=kakao_token_exchange result=failed exception=${safeKakaoExceptionName(error)}`);
     return json({ error: "exchange" }, 502, clear);
   }
 }

@@ -113,9 +113,19 @@ describe("Kakao OIDC server boundary", () => {
     expect(options.signal).toBeInstanceOf(AbortSignal);
     expect(result.headers.get("cache-control")).toBe("no-store");
   });
-  it("sanitizes timeout/network errors", async () => {
+  it("classifies fetch exceptions without logging sensitive error details", async () => {
+    const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
     const result = await exchange({ request: request(), env }, vi.fn().mockRejectedValue(new Error("private")));
     expect(await result.json()).toEqual({ error: "exchange" });
+    expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=kakao_token_exchange result=failed exception=Error");
+    expect(diagnostic.mock.calls.flat().join(" ")).not.toMatch(/private|Error:|stack|cause/);
+  });
+  it.each([TypeError, DOMException])("classifies allowlisted fetch exception name %s", async (Exception) => {
+    const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    const error = Exception === DOMException ? new DOMException("private", "TimeoutError") : new TypeError("private");
+    await exchange({ request: request(), env }, vi.fn().mockRejectedValue(error));
+    expect(diagnostic.mock.calls.flat().join(" ")).toMatch(/exception=(TypeError|TimeoutError)/);
+    expect(diagnostic.mock.calls.flat().join(" ")).not.toContain("private");
   });
 });
 
