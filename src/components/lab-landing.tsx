@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 /**
- * LegendStudy LAB landing — Axis Convergence.
+ * LegendStudy LAB landing — Axis Data Tracks.
  *
  * The landing describes three equally weighted areas (내신, 모의고사·수능, 논술)
- * as connected evidence streams. The SVG diagrams are conceptual structure only:
+ * as independent, connected evidence streams. The track diagrams are conceptual only:
  * they intentionally render no student score, date, prediction, or live-product data.
  */
 
@@ -29,10 +29,10 @@ const labs = [
   },
 ] as const;
 
-const sources = [
-  ["내신", "학교 성적의 변화"],
-  ["모의고사 · 수능", "시험마다 달라지는 강점·약점"],
-  ["논술", "쓰고 고친 기록"],
+const dataTracks = [
+  ["내신", "과목별 성취도 · 변화"],
+  ["모의고사 · 수능", "시험별 성적 · 강점과 약점"],
+  ["논술", "작성 · 첨삭 · 재작성"],
 ] as const;
 
 const loop = [
@@ -42,66 +42,29 @@ const loop = [
   ["다음 선택", "이해를 바탕으로 다음 학습과 준비를 결정합니다."],
 ] as const;
 
-function ConvergenceNode({ compact = false }: { compact?: boolean }) {
+function DataTrackGraphic({ compact = false }: { compact?: boolean }) {
   return (
-    <span className={`ll-convergence-node${compact ? " ll-convergence-node--compact" : ""}`} aria-hidden="true">
-      <span />
-      <span />
-      <span />
-    </span>
-  );
-}
-
-function AxisConvergenceGraphic() {
-  return (
-    <div className="ll-convergence" role="img" aria-labelledby="axis-convergence-title axis-convergence-description">
-      <span className="sr-only" id="axis-convergence-title">세 입시 데이터 축의 수렴</span>
-      <span className="sr-only" id="axis-convergence-description">
-        내신, 모의고사·수능, 논술의 세 축이 하나의 나의 입시 데이터 맥락으로 연결되는 개념도입니다.
-      </span>
-      <svg className="ll-convergence__lines" viewBox="0 0 680 380" aria-hidden="true" focusable="false">
-        <path className="ll-convergence__rule" d="M48 86H392C452 86 470 160 526 190" />
-        <path className="ll-convergence__rule" d="M48 190H526" />
-        <path className="ll-convergence__rule" d="M48 294H392C452 294 470 220 526 190" />
-        <path className="ll-convergence__tail" d="M526 190H574" />
-        <circle className="ll-convergence__origin" cx="48" cy="86" r="5" />
-        <circle className="ll-convergence__origin" cx="48" cy="190" r="5" />
-        <circle className="ll-convergence__origin" cx="48" cy="294" r="5" />
-        <circle className="ll-convergence__point" cx="246" cy="86" r="4" />
-        <circle className="ll-convergence__point" cx="320" cy="190" r="4" />
-        <circle className="ll-convergence__point" cx="246" cy="294" r="4" />
-        <circle className="ll-convergence__point" cx="526" cy="190" r="5" />
-        <path className="ll-convergence__tick" d="M170 76V96M320 76V96M170 180V200M246 180V200M170 284V304M320 284V304" />
-      </svg>
-      <div className="ll-convergence__labels" aria-hidden="true">
-        <span className="ll-convergence__label ll-convergence__label--school">내신</span>
-        <span className="ll-convergence__label ll-convergence__label--exam">모의고사 · 수능</span>
-        <span className="ll-convergence__label ll-convergence__label--essay">논술</span>
-        <span className="ll-convergence__result"><ConvergenceNode />나의 입시 데이터</span>
-      </div>
-    </div>
-  );
-}
-
-function ConvergenceLedger() {
-  return (
-    <div className="ll-ledger" role="img" aria-label="내신, 모의고사·수능, 논술 기록이 하나의 입시 데이터로 연결되는 개념도">
-      <svg className="ll-ledger__lines" viewBox="0 0 620 228" aria-hidden="true" focusable="false">
-        <path d="M178 38H410C458 38 470 100 514 114" />
-        <path d="M178 114H514" />
-        <path d="M178 190H410C458 190 470 128 514 114" />
-        <circle cx="514" cy="114" r="4" />
-      </svg>
-      <div className="ll-ledger__rows">
-        {sources.map(([label, detail]) => (
-          <div className="ll-ledger__row" key={label}>
+    <figure className={`ll-data-tracks${compact ? " ll-data-tracks--compact" : ""}`}>
+      <figcaption className="sr-only">
+        내신, 모의고사·수능, 논술의 세 독립 입시 데이터 Track이 하나의 기록으로 연결되는 개념도입니다.
+      </figcaption>
+      <div className="ll-data-tracks__list">
+        {dataTracks.map(([label, detail]) => (
+          <div className="ll-data-track" key={label}>
             <strong>{label}</strong>
-            <span>{detail}</span>
+            <span className="ll-data-track__line" aria-hidden="true">
+              <span className="ll-data-track__point" />
+              <span className="ll-data-track__rule" />
+              <span className="ll-data-track__point ll-data-track__point--orange" />
+              <span className="ll-data-track__rule" />
+              <span className="ll-data-track__point" />
+            </span>
+            <p>{detail}</p>
           </div>
         ))}
       </div>
-      <div className="ll-ledger__result"><ConvergenceNode compact />나의 입시 데이터</div>
-    </div>
+      <p className="ll-data-tracks__note">하나의 기록으로 연결됩니다.</p>
+    </figure>
   );
 }
 
@@ -112,9 +75,8 @@ export function LabLanding() {
         <div className="ll-hero__copy">
           <p className="ll-eyebrow">레전드스터디+ · LegendStudy LAB</p>
           <h1 className="ll-hero__title" id="lab-hero-title">
-            데이터가 쌓일수록,<br />
-            나의 가능성은<br />
-            선명해집니다.
+            <span>데이터가 쌓일수록,</span>
+            <span>나의 가능성은 선명해집니다.</span>
           </h1>
           <div className="ll-hero__support">
             <p>점수 하나만으로 학생의 가능성을 설명할 수는 없습니다.</p>
@@ -128,7 +90,7 @@ export function LabLanding() {
             </div>
           </div>
         </div>
-        <AxisConvergenceGraphic />
+        <DataTrackGraphic />
       </section>
 
       <section className="ll-labs ll-wrap" id="three-labs" aria-labelledby="three-labs-title">
@@ -157,7 +119,7 @@ export function LabLanding() {
             학생의 하나의 입시 데이터로 모여, 지금의 상태를 더 정확하게 설명합니다.
           </p>
         </div>
-        <ConvergenceLedger />
+        <DataTrackGraphic compact />
       </section>
 
       <section className="ll-loop" aria-labelledby="loop-title">
