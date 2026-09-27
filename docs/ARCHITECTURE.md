@@ -6,6 +6,10 @@
 
 LegendStudy LAB is the **Web Intelligence / Deep Work Platform** in the LegendStudy product family. Essay is a service module, not the whole product. The Flutter app remains a separate native product; neither a WebView wrapper nor an automatic session handoff is part of this architecture.
 
+The Owner-approved product direction is a future **B2C admissions-data platform**. Its three equal analysis axes are school-record analysis, mock-exam and CSAT analysis, and essay feedback. LAB is intended to connect those future evidence streams so students can understand their current state, changes over time, and next choice. This is a product direction, not a claim that the current public release collects, analyses, or persists student data.
+
+The longer-term product-family map reserves `lab.legendstudy.com` for B2C, `school.legendstudy.com` for a future B2B surface, and `analytics.legendstudy.com` for a future data, analytics, and consulting surface. This record does not create DNS, routes, deployments, permissions, or data sharing between those surfaces.
+
 ## Runtime layers
 
 | Layer | Current responsibility | Explicitly excluded |

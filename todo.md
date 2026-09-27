@@ -25,6 +25,14 @@
 - [x] Used the same official asset for the Next.js app icon, Apple touch icon, and favicon.
 - [x] Validated desktop, 390-pixel, and 320-pixel header rendering; generated icon metadata; and static asset responses.
 
+## Completed Landing Phase 1 — Axis Convergence
+
+- [x] Recorded LAB as a future B2C admissions-data platform rather than an essay-only service, with three equal axes: school-record analysis, mock-exam and CSAT analysis, and essay feedback.
+- [x] Approved the Axis Convergence landing foundation: a two-line readable Hero, three independent straight Data Tracks, strong Navy section dividers, restrained Orange points, warm-white surfaces, and the existing official transparent LegendStudy logo asset.
+- [x] Removed the former curved convergence and person/profile-node visual from the approved landing implementation.
+- [x] Kept Three Labs, Connected Data, the Navy process band, truthful public-scope copy, public CTA routes, browser Auth, Kakao OIDC, Supabase boundaries, Pages Functions, and route architecture unchanged.
+- [x] Verified the approved implementation on Desktop and Mobile, ran typecheck, lint, tests, boundary and GitHub-readiness audits, a production static build, a secret scan, and a Cloudflare Pages preview before closeout.
+
 ## Completed platform IA and shared-account UX refinement
 
 - [x] Positioned LAB as the Web Intelligence / Deep Work Platform, with Essay Lab, Academic Analytics, and Activity Portfolio clearly treated as modules rather than separate products.

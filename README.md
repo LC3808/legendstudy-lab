@@ -1,6 +1,6 @@
 # LegendStudy LAB — Production Landing
 
-**LegendStudy LAB** is the public essay-learning service foundation for **레전드스터디+**. The production landing is available at [https://lab.legendstudy.com](https://lab.legendstudy.com).
+**LegendStudy LAB** is the public foundation for LegendStudy's future **B2C admissions-data platform**. It is not an essay-only service: its long-term three-axis direction connects school-record analysis, mock-exam and CSAT analysis, and essay feedback so a student can understand their current state, change, and next choice. The current production landing is available at [https://lab.legendstudy.com](https://lab.legendstudy.com).
 
 > **Current public scope:** The website introduces the service direction and its current boundaries. It does **not** offer live AI feedback, payments, subscriptions, credits, answer persistence, official-source copying, or account deletion. LAB Email/Google/Apple have passed Owner Production E2E. Kakao is now a code-ready OIDC replacement after a later KOE205 report and awaits deployment/E2E; this does not verify the native app's providers or App↔LAB identity mapping. See [Production Auth status and operating gates](docs/SHARED_ACCOUNT_AUTH_SETUP.md#production-auth-status-2026-09-21).
 
