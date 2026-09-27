@@ -17,12 +17,12 @@
   --ink: #172b45;
   --ink-strong: #0e2138;
   --ink-soft: #56636f;
-  --paper: #fbf8f2;
-  --paper-deep: #f1ebe1;
+  --paper: #ffffff;
+  --paper-deep: #f4f4f5;
   --surface: #ffffff;
-  --surface-muted: #f6f1e9;
-  --line: rgba(23, 43, 69, 0.14);
-  --line-strong: rgba(23, 43, 69, 0.24);
+  --surface-muted: #f5f5f6;
+  --line: rgba(20, 20, 22, 0.10);
+  --line-strong: rgba(20, 20, 22, 0.18);
   --accent: #e76f2f;
   --accent-dark: #c95720;
   --green: #20675f;
@@ -397,55 +397,91 @@ h1, h2, h3 { text-wrap: pretty; }
 
 
 /* ==========================================================================
-   LAB brand landing — Phase 1
-   Three equal analysis axes (내신 · 모의·수능 · 논술) connected into one
-   student data profile. Reuses the canonical tokens above; orange stays an
-   accent only, typography and whitespace carry the brand.
+   LAB brand landing — Phase 1 (editorial visual direction)
+   White/neutral canvas, near-black editorial typography, generous whitespace,
+   borderless / hairline-divider layout, minimal component density. Orange is
+   an accent only (one CTA + focus/hover + a tiny numeric mark). One near-black
+   band carries rhythm; the rest stays on white. All rules are scoped under
+   .lab-landing so nothing leaks into product/auth/policy pages.
    ========================================================================== */
-
-/* 02 · Three Labs — equal hierarchy */
-.lab-axes { display: grid; gap: clamp(2rem, 5vw, 3.5rem); padding-block: clamp(3.5rem, 8vw, 6rem); }
-.lab-axes__heading { max-width: 46rem; }
-.lab-axes__heading h2 { margin: 0.65rem 0 0; font-family: var(--font-ui); font-size: var(--type-h2); font-weight: 700; letter-spacing: -0.035em; line-height: 1.24; }
-.lab-axes__lead { margin: 1.25rem 0 0; max-width: 42rem; color: var(--ink-soft); font-size: var(--type-body-lg); line-height: var(--leading-body); }
-.lab-axes__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem; }
-.lab-axis { display: flex; min-height: 15.5rem; flex-direction: column; padding: clamp(1.35rem, 2.2vw, 1.85rem); border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); transition: transform 160ms cubic-bezier(.23,1,.32,1), box-shadow 160ms cubic-bezier(.23,1,.32,1); }
-.lab-axis:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-.lab-axis__top { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
-.lab-axis__index { color: var(--accent); font-family: ui-monospace, monospace; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.02em; }
-.lab-axis__status { display: inline-flex; align-items: center; min-height: 1.6rem; padding: 0.22rem 0.55rem; border: 1px solid var(--line); border-radius: 99px; color: var(--ink-soft); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.04em; }
-.lab-axis__en { margin: 1.75rem 0 0; color: var(--ink-soft); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
-.lab-axis h3 { margin: 0.4rem 0 0; font-family: var(--font-ui); font-size: 1.5rem; font-weight: 700; letter-spacing: -0.035em; line-height: 1.28; }
-.lab-axis__copy { margin: 0.7rem 0 0; color: var(--ink-soft); font-size: var(--type-body); line-height: var(--leading-compact); }
-
-/* 03 · Connected Data — three sources into one profile */
-.lab-connect { display: grid; grid-template-columns: minmax(16rem, 0.82fr) minmax(0, 1.18fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: center; padding-block: clamp(3.5rem, 8vw, 6rem); border-top: 1px solid var(--line); }
-.lab-connect__intro h2 { margin: 0.65rem 0 0; font-family: var(--font-ui); font-size: var(--type-h2); font-weight: 700; letter-spacing: -0.035em; line-height: 1.22; }
-.lab-connect__intro p { margin: 1.2rem 0 0; max-width: 32rem; color: var(--ink-soft); font-size: var(--type-body-lg); line-height: var(--leading-body); }
-.lab-hub { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.05fr); gap: clamp(0.85rem, 2.5vw, 1.75rem); align-items: center; }
-.lab-hub__sources { display: grid; gap: 0.7rem; margin: 0; padding: 0; list-style: none; }
-.lab-hub__sources li { display: grid; gap: 0.2rem; padding: 0.95rem 1.05rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
-.lab-hub__sources strong { font-size: 0.98rem; font-weight: 700; letter-spacing: -0.02em; }
-.lab-hub__sources span { color: var(--ink-soft); font-size: 0.8rem; line-height: 1.45; }
-.lab-hub::before { grid-column: 2; align-self: stretch; width: clamp(1.75rem, 4vw, 3rem); border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); content: ""; margin-block: 22%; }
-.lab-hub__core { display: grid; gap: 0.45rem; padding: clamp(1.5rem, 3vw, 2.1rem); border-radius: var(--radius-lg); background: var(--ink); color: white; box-shadow: var(--shadow); }
-.lab-hub__core-eyebrow { color: #f4c376; font-family: ui-monospace, monospace; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.14em; }
-.lab-hub__core strong { font-family: var(--font-ui); font-size: clamp(1.6rem, 3vw, 2.15rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1.15; }
-.lab-hub__core-copy { color: rgba(255, 255, 255, 0.72); font-size: 0.84rem; line-height: 1.55; }
-
-/* 05 · Start / CTA */
-.lab-cta { padding-block: clamp(1rem, 3vw, 2rem) clamp(3.5rem, 8vw, 6rem); }
-.lab-cta__inner { padding: clamp(2rem, 5vw, 3.75rem); border: 1px solid var(--line); border-radius: var(--radius-xl); background: linear-gradient(140deg, #fff7ef 0%, var(--surface-muted) 100%); }
-.lab-cta__inner h2 { margin: 0.65rem 0 0; font-family: var(--font-ui); font-size: var(--type-h2); font-weight: 700; letter-spacing: -0.04em; line-height: 1.2; }
-.lab-cta__copy { margin: 1.1rem 0 0; max-width: 40rem; color: var(--ink-soft); font-size: var(--type-body-lg); line-height: var(--leading-body); }
-
-@media (max-width: 960px) {
-  .lab-connect { grid-template-columns: 1fr; }
+.lab-landing {
+  --ll-ink: #141414;
+  --ll-muted: #6b6b70;
+  --ll-line: rgba(20, 20, 22, 0.12);
+  background: #ffffff;
+  color: var(--ll-ink);
 }
-@media (max-width: 680px) {
-  .lab-axes__grid { grid-template-columns: 1fr; }
-  .lab-axis { min-height: auto; }
-  .lab-hub { grid-template-columns: 1fr; }
-  .lab-hub::before { display: none; }
-  .lab-hub__core { text-align: left; }
+.lab-landing .ll-wrap { width: min(100% - 3rem, 74rem); margin-inline: auto; }
+.lab-landing .ll-eyebrow { margin: 0; color: var(--ll-muted); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+.lab-landing .ll-section-title { margin: 1rem 0 0; color: var(--ll-ink); font-family: var(--font-ui); font-size: clamp(1.9rem, 3.6vw, 2.9rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1.2; word-break: keep-all; text-wrap: balance; }
+
+/* 01 · Hero — typography and whitespace are the visual */
+.lab-landing .ll-hero { padding-block: clamp(4.5rem, 12vh, 9rem) clamp(3.5rem, 9vh, 7rem); }
+.lab-landing .ll-hero__title { margin: 1.5rem 0 0; color: var(--ll-ink); font-family: var(--font-ui); font-size: clamp(2.5rem, 7vw, 5.75rem); font-weight: 800; letter-spacing: -0.055em; line-height: 1.06; word-break: keep-all; }
+.lab-landing .ll-hero__support { display: grid; gap: 1.1rem; max-width: 34rem; margin: clamp(2.25rem, 5vw, 3.25rem) 0 0; margin-left: auto; }
+.lab-landing .ll-hero__support p { margin: 0; color: var(--ll-muted); font-size: var(--type-body-lg); line-height: 1.85; }
+.lab-landing .ll-hero__support p:first-child { color: var(--ll-ink); font-weight: 600; }
+.lab-landing .ll-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin-top: 0.75rem; }
+
+/* Editorial buttons/links — restrained */
+.lab-landing .ll-btn { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.9rem; padding: 0.75rem 1.35rem; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 700; line-height: 1; transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease; }
+.lab-landing .ll-btn--ink { background: var(--ll-ink); color: #fff; }
+.lab-landing .ll-btn--ink:hover { background: #000; }
+.lab-landing .ll-btn--accent { background: var(--accent); color: #fff; }
+.lab-landing .ll-btn--accent:hover { background: var(--accent-dark); }
+.lab-landing .ll-link { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--ll-ink); font-size: 0.9rem; font-weight: 700; border-bottom: 1px solid var(--ll-line); padding-bottom: 2px; }
+.lab-landing .ll-link:hover { border-bottom-color: var(--accent); color: var(--accent-dark); }
+
+/* 02 · Three Labs — editorial grid, borderless, hairline dividers, equal weight */
+.lab-landing .ll-labs { padding-block: clamp(3.5rem, 9vh, 6.5rem); }
+.lab-landing .ll-labs__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3rem); margin-top: clamp(2.5rem, 6vw, 4rem); }
+.lab-landing .ll-lab { padding-top: 1.4rem; border-top: 1px solid var(--ll-ink); }
+.lab-landing .ll-lab__no { color: var(--ll-ink); font-family: ui-monospace, monospace; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.02em; }
+.lab-landing .ll-lab__no::after { content: ""; display: inline-block; width: 0.3rem; height: 0.3rem; margin-left: 0.4rem; border-radius: 50%; background: var(--accent); vertical-align: middle; }
+.lab-landing .ll-lab h3 { margin: 1.4rem 0 0; color: var(--ll-ink); font-family: var(--font-ui); font-size: clamp(1.35rem, 2.2vw, 1.65rem); font-weight: 700; letter-spacing: -0.035em; line-height: 1.3; }
+.lab-landing .ll-lab__copy { margin: 0.75rem 0 0; color: var(--ll-muted); font-size: var(--type-body); line-height: 1.7; }
+.lab-landing .ll-lab__status { display: inline-block; margin-top: 1.1rem; color: var(--ll-muted); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* 03 · Connected Data — typographic / line composition, no dark card */
+.lab-landing .ll-connect { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(2.5rem, 6vw, 5rem); align-items: center; padding-block: clamp(3.5rem, 9vh, 6.5rem); border-top: 1px solid var(--ll-line); }
+.lab-landing .ll-connect__copy { margin: 1.25rem 0 0; max-width: 30rem; color: var(--ll-muted); font-size: var(--type-body-lg); line-height: 1.85; }
+.lab-landing .ll-map { display: grid; gap: 0; }
+.lab-landing .ll-map__source { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 1.05rem 0; border-bottom: 1px solid var(--ll-line); }
+.lab-landing .ll-map__source:first-child { border-top: 1px solid var(--ll-line); }
+.lab-landing .ll-map__source strong { color: var(--ll-ink); font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+.lab-landing .ll-map__source span { color: var(--ll-muted); font-size: 0.85rem; text-align: right; }
+.lab-landing .ll-map__core { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem; }
+.lab-landing .ll-map__arrow { color: var(--accent); font-size: 1.1rem; line-height: 1; }
+.lab-landing .ll-map__core strong { color: var(--ll-ink); font-family: var(--font-ui); font-size: clamp(1.5rem, 2.8vw, 2.05rem); font-weight: 700; letter-spacing: -0.04em; }
+
+/* 04 · How LAB helps — the single near-black band (full-bleed) */
+.lab-landing .ll-loop { background: var(--ll-ink); color: #fff; padding-block: clamp(4rem, 10vh, 7rem); }
+.lab-landing .ll-loop .ll-eyebrow { color: rgba(255, 255, 255, 0.55); }
+.lab-landing .ll-loop h2 { color: #fff; }
+.lab-landing .ll-loop__list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3rem); margin: clamp(2.5rem, 6vw, 4rem) 0 0; padding: 0; list-style: none; }
+.lab-landing .ll-loop__list li { padding-top: 1.3rem; border-top: 1px solid rgba(255, 255, 255, 0.24); }
+.lab-landing .ll-loop__list span { color: rgba(255, 255, 255, 0.5); font-family: ui-monospace, monospace; font-size: 0.78rem; font-weight: 700; }
+.lab-landing .ll-loop__list strong { display: block; margin-top: 1rem; color: #fff; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
+.lab-landing .ll-loop__list p { margin: 0.6rem 0 0; color: rgba(255, 255, 255, 0.66); font-size: 0.86rem; line-height: 1.65; }
+
+/* 05 · Start / CTA — editorial, one accent action */
+.lab-landing .ll-cta { padding-block: clamp(4rem, 10vh, 7rem); }
+.lab-landing .ll-cta__copy { margin: 1.15rem 0 0; max-width: 38rem; color: var(--ll-muted); font-size: var(--type-body-lg); line-height: 1.85; }
+.lab-landing .ll-cta__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin-top: 2rem; }
+
+/* Closing honesty note — quiet, borderless */
+.lab-landing .ll-note { padding-block: 0 clamp(4rem, 9vh, 6.5rem); }
+.lab-landing .ll-note p { max-width: 52rem; padding-top: 1.6rem; border-top: 1px solid var(--ll-line); margin: 0; color: var(--ll-muted); font-size: 0.86rem; line-height: 1.8; }
+.lab-landing .ll-note strong { color: var(--ll-ink); font-weight: 700; }
+
+@media (max-width: 900px) {
+  .lab-landing .ll-hero__support { margin-left: 0; max-width: 40rem; }
+  .lab-landing .ll-connect { grid-template-columns: 1fr; }
+  .lab-landing .ll-loop__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .lab-landing .ll-labs__grid { grid-template-columns: 1fr; }
+  .lab-landing .ll-loop__list { grid-template-columns: 1fr; }
+  .lab-landing .ll-map__source { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+  .lab-landing .ll-map__source span { text-align: left; }
 }
