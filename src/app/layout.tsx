@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     default: `${brand.productName} ${brand.byline}`,
     template: `%s | ${brand.productName} ${brand.byline}`,
   },
-  description: "LegendStudy의 논술 서비스 LS LAB입니다. 현재는 서비스 공개를 위한 웹 기반을 준비하고 있습니다.",
+  description: "LegendStudy LAB은 내신·모의고사·수능·논술 데이터를 연결하는 개인 입시 분석·학습 플랫폼입니다. 현재는 서비스 방향과 공개 범위를 안내하는 웹 기반을 준비하고 있습니다.",
   robots: { index: Boolean(brand.siteUrl), follow: Boolean(brand.siteUrl) },
 };
 

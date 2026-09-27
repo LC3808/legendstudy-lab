@@ -4,8 +4,8 @@ import { LabLanding } from "@/components/lab-landing";
 import { buildPublicMetadata } from "@/lib/brand";
 
 export const metadata: Metadata = buildPublicMetadata(
-  "LegendStudy LAB | 레전드스터디+ 논술 서비스",
-  "대학별 논술 정보와 기출 분석, 답안 작성과 첨삭까지. 레전드스터디+ LegendStudy LAB이 준비하는 논술 학습 흐름을 안내합니다.",
+  "LegendStudy LAB | 나의 입시 데이터가 쌓이는 곳",
+  "내신·모의고사·수능·논술까지, 흩어진 입시 데이터를 연결해 지금의 위치를 이해하고 다음 선택을 명확하게 만듭니다. 레전드스터디+ LegendStudy LAB의 개인 입시 분석·학습 플랫폼을 안내합니다.",
   "/",
 );
 
