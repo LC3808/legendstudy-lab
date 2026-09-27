@@ -485,3 +485,415 @@ h1, h2, h3 { text-wrap: pretty; }
   .lab-landing .ll-map__source { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
   .lab-landing .ll-map__source span { text-align: left; }
 }
+
+
+/* ===========================================================================
+   LAB landing — Axis Convergence implementation
+   Keeps the existing landing scope while evolving it toward the approved
+   LegendStudy-native data-line system. No imagery or product data is implied.
+   =========================================================================== */
+.site-shell:has(.lab-landing) .site-header {
+  border-bottom-color: rgba(23, 43, 69, 0.12);
+  background: color-mix(in srgb, #fffdfa 94%, transparent);
+}
+.site-shell:has(.lab-landing) .site-header__inner,
+.site-shell:has(.lab-landing) .site-footer__inner {
+  width: min(100% - 3rem, 76rem);
+}
+.site-shell:has(.lab-landing) .brand__mark {
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.site-shell:has(.lab-landing) .brand__phase {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.site-shell:has(.lab-landing) .site-nav a,
+.site-shell:has(.lab-landing) .text-link {
+  color: #4f5d6c;
+  font-weight: 600;
+}
+.site-shell:has(.lab-landing) .site-nav a:hover,
+.site-shell:has(.lab-landing) .text-link:hover {
+  background: transparent;
+  color: #172b45;
+}
+.site-shell:has(.lab-landing) .button--accent {
+  background: #172b45;
+}
+.site-shell:has(.lab-landing) .button--accent:hover {
+  background: #0e2138;
+}
+
+.lab-landing {
+  --ll-navy: #172b45;
+  --ll-navy-deep: #0e2138;
+  --ll-ink: #202124;
+  --ll-muted: #66717d;
+  --ll-paper: #fffdfa;
+  --ll-surface: #ffffff;
+  --ll-line: #e5e8eb;
+  --ll-line-strong: #cfd6dd;
+  --ll-orange: #ffac14;
+  --ll-orange-soft: #fff3dc;
+  overflow: clip;
+  background: var(--ll-paper);
+  color: var(--ll-ink);
+}
+.lab-landing .ll-wrap { width: min(100% - 3rem, 76rem); }
+.lab-landing .ll-eyebrow {
+  color: var(--ll-muted);
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+}
+.lab-landing .ll-section-title {
+  color: var(--ll-navy);
+  font-size: clamp(1.85rem, 3vw, 2.75rem);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 1.25;
+}
+
+/* Hero: a 7 / 5 grid where the convergence diagram earns its whitespace. */
+.lab-landing .ll-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.06fr) minmax(25rem, 0.94fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: center;
+  min-height: clamp(36rem, 46vw, 42rem);
+  padding-block: clamp(5.5rem, 9vw, 8rem) clamp(4.5rem, 8vw, 6.5rem);
+}
+.lab-landing .ll-hero__copy { min-width: 0; }
+.lab-landing .ll-hero__title {
+  max-width: 8.9em;
+  margin-top: 1.35rem;
+  color: var(--ll-navy);
+  font-size: clamp(3rem, 4.6vw, 4.15rem);
+  font-weight: 650;
+  letter-spacing: -0.065em;
+  line-height: 1.18;
+}
+.lab-landing .ll-hero__support {
+  max-width: 31rem;
+  margin: clamp(2rem, 4vw, 3rem) 0 0;
+  margin-left: 0;
+  gap: 0.8rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--ll-line);
+}
+.lab-landing .ll-hero__support p {
+  color: var(--ll-muted);
+  font-size: 1rem;
+  line-height: 1.82;
+}
+.lab-landing .ll-hero__support p:first-child { color: var(--ll-navy); font-weight: 650; }
+.lab-landing .ll-hero__actions { gap: 1rem; margin-top: 0.5rem; }
+.lab-landing .ll-link {
+  border-bottom-color: var(--ll-line-strong);
+  color: var(--ll-navy);
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+.lab-landing .ll-link:hover { border-bottom-color: var(--ll-orange); color: var(--ll-navy); }
+
+/* The Diagram carries semantic labels in HTML, while SVG is visual structure. */
+.lab-landing .ll-convergence {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 680 / 380;
+  isolation: isolate;
+}
+.lab-landing .ll-convergence::before,
+.lab-landing .ll-convergence::after {
+  position: absolute;
+  z-index: -1;
+  top: -15%;
+  bottom: -16%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--ll-line), transparent);
+  content: "";
+}
+.lab-landing .ll-convergence::before { left: 20%; }
+.lab-landing .ll-convergence::after { right: 8%; }
+.lab-landing .ll-convergence__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.lab-landing .ll-convergence__rule,
+.lab-landing .ll-convergence__tail {
+  fill: none;
+  stroke: var(--ll-navy);
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+.lab-landing .ll-convergence__tail { stroke-width: 2.5; }
+.lab-landing .ll-convergence__origin { fill: var(--ll-navy); }
+.lab-landing .ll-convergence__point { fill: var(--ll-orange); }
+.lab-landing .ll-convergence__tick { fill: none; stroke: var(--ll-line-strong); stroke-width: 1.5; }
+.lab-landing .ll-convergence__labels { position: absolute; inset: 0; color: var(--ll-navy); }
+.lab-landing .ll-convergence__label {
+  position: absolute;
+  left: 6%;
+  font-size: clamp(0.78rem, 1.2vw, 0.95rem);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+.lab-landing .ll-convergence__label--school { top: 17%; }
+.lab-landing .ll-convergence__label--exam { top: calc(50% - 0.7rem); }
+.lab-landing .ll-convergence__label--essay { bottom: 17%; }
+.lab-landing .ll-convergence__result {
+  position: absolute;
+  top: calc(50% - 1.55rem);
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--ll-navy);
+  font-size: clamp(0.85rem, 1.3vw, 1rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+}
+.lab-landing .ll-convergence-node {
+  position: relative;
+  display: inline-block;
+  width: 3.1rem;
+  height: 3.1rem;
+  flex: 0 0 auto;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+.lab-landing .ll-convergence-node > span:nth-child(1) {
+  position: absolute;
+  top: 0.67rem;
+  left: 50%;
+  width: 0.65rem;
+  height: 0.65rem;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+.lab-landing .ll-convergence-node > span:nth-child(2) {
+  position: absolute;
+  right: 0.72rem;
+  bottom: 0.62rem;
+  left: 0.72rem;
+  height: 0.82rem;
+  border: 1.5px solid currentColor;
+  border-bottom: 0;
+  border-radius: 1rem 1rem 0 0;
+}
+.lab-landing .ll-convergence-node > span:nth-child(3) {
+  position: absolute;
+  top: -0.2rem;
+  right: -0.2rem;
+  width: 0.34rem;
+  height: 0.34rem;
+  border-radius: 50%;
+  background: var(--ll-orange);
+}
+.lab-landing .ll-convergence-node--compact {
+  width: 2.6rem;
+  height: 2.6rem;
+}
+.lab-landing .ll-convergence-node--compact > span:nth-child(1) { top: 0.5rem; }
+.lab-landing .ll-convergence-node--compact > span:nth-child(2) { right: 0.55rem; bottom: 0.48rem; left: 0.55rem; }
+
+/* Three equal pillars, rendered as information columns rather than product cards. */
+.lab-landing .ll-labs { padding-block: clamp(4.5rem, 8vw, 6.5rem); border-top: 1px solid var(--ll-line); }
+.lab-landing .ll-section-heading { max-width: 42rem; }
+.lab-landing .ll-labs__grid {
+  gap: 0;
+  margin-top: clamp(2.8rem, 5vw, 4rem);
+  border-top: 1px solid var(--ll-line-strong);
+}
+.lab-landing .ll-lab {
+  min-height: 17rem;
+  padding: 1.35rem clamp(1.25rem, 2.3vw, 2rem) 1.75rem 0;
+  border-top: 0;
+  border-right: 1px solid var(--ll-line);
+}
+.lab-landing .ll-lab + .ll-lab { padding-left: clamp(1.25rem, 2.3vw, 2rem); }
+.lab-landing .ll-lab:last-child { border-right: 0; }
+.lab-landing .ll-lab__no {
+  color: var(--ll-muted);
+  font-size: 0.76rem;
+  font-weight: 650;
+}
+.lab-landing .ll-lab__no::after { display: none; }
+.lab-landing .ll-lab h3 {
+  margin-top: 1.25rem;
+  color: var(--ll-navy);
+  font-size: clamp(1.35rem, 2vw, 1.6rem);
+  font-weight: 650;
+}
+.lab-landing .ll-lab__copy { max-width: 18rem; color: var(--ll-muted); font-size: 0.9rem; line-height: 1.72; }
+.lab-landing .ll-lab__status {
+  display: flex;
+  align-items: center;
+  gap: 0.46rem;
+  margin-top: 1.25rem;
+  color: var(--ll-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+.lab-landing .ll-lab__status span { width: 0.34rem; height: 0.34rem; border-radius: 50%; background: var(--ll-orange); }
+
+/* Connected Data: a low-density, non-operational ledger. */
+.lab-landing .ll-connect {
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(2.5rem, 7vw, 6.5rem);
+  align-items: center;
+  padding-block: clamp(4.5rem, 8vw, 7rem);
+}
+.lab-landing .ll-connect__copy { color: var(--ll-muted); font-size: 1rem; }
+.lab-landing .ll-ledger {
+  position: relative;
+  min-height: 15.8rem;
+  overflow: hidden;
+  border-block: 1px solid var(--ll-line);
+}
+.lab-landing .ll-ledger__lines {
+  position: absolute;
+  top: 1.75rem;
+  right: 0;
+  bottom: 1.75rem;
+  width: 74%;
+  height: calc(100% - 3.5rem);
+  fill: none;
+  stroke: var(--ll-navy);
+  stroke-linecap: round;
+  stroke-width: 1.6;
+}
+.lab-landing .ll-ledger__lines circle { fill: var(--ll-orange); stroke: none; }
+.lab-landing .ll-ledger__rows { position: relative; z-index: 1; display: grid; min-height: 15.7rem; }
+.lab-landing .ll-ledger__row {
+  display: grid;
+  grid-template-columns: minmax(7.6rem, 0.52fr) minmax(0, 0.86fr);
+  gap: 0.75rem;
+  align-items: center;
+  width: 68%;
+  border-bottom: 1px solid var(--ll-line);
+}
+.lab-landing .ll-ledger__row:last-child { border-bottom: 0; }
+.lab-landing .ll-ledger__row strong { color: var(--ll-navy); font-size: 0.88rem; font-weight: 650; }
+.lab-landing .ll-ledger__row span { color: var(--ll-muted); font-size: 0.77rem; line-height: 1.45; }
+.lab-landing .ll-ledger__result {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--ll-navy);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  transform: translateY(-50%);
+}
+
+/* The one dark interval repeats the same data-ledger discipline. */
+.lab-landing .ll-loop { background: var(--ll-navy); padding-block: clamp(4rem, 7vw, 6rem); }
+.lab-landing .ll-loop .ll-section-title { color: #fff; }
+.lab-landing .ll-loop__list { gap: 0; margin-top: clamp(2.5rem, 4vw, 3.5rem); border-top: 1px solid rgba(255, 255, 255, 0.28); }
+.lab-landing .ll-loop__list li { min-height: 11.5rem; padding: 1.35rem clamp(1rem, 2vw, 1.75rem) 1.25rem 0; border-top: 0; border-right: 1px solid rgba(255, 255, 255, 0.16); }
+.lab-landing .ll-loop__list li + li { padding-left: clamp(1rem, 2vw, 1.75rem); }
+.lab-landing .ll-loop__list li:last-child { border-right: 0; }
+.lab-landing .ll-loop__list strong { font-size: 1.1rem; font-weight: 650; }
+.lab-landing .ll-loop__list p { max-width: 13rem; }
+
+.lab-landing .ll-cta { padding-block: clamp(4.5rem, 8vw, 7rem) clamp(4rem, 7vw, 6.2rem); }
+.lab-landing .ll-cta__copy { color: var(--ll-muted); font-size: 1rem; }
+.lab-landing .ll-btn { border-radius: 0.45rem; font-weight: 650; }
+.lab-landing .ll-btn--navy { background: var(--ll-navy); color: #fff; }
+.lab-landing .ll-btn--navy:hover { background: var(--ll-navy-deep); }
+.lab-landing .ll-cta__actions { gap: 1rem; }
+.lab-landing .ll-note { padding-bottom: clamp(3.5rem, 6vw, 5.5rem); }
+.lab-landing .ll-note p { max-width: 60rem; color: var(--ll-muted); }
+.lab-landing .ll-note strong { color: var(--ll-navy); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .lab-landing .ll-convergence__rule,
+  .lab-landing .ll-convergence__tail {
+    animation: ll-line-draw 850ms cubic-bezier(.23, 1, .32, 1) both;
+    stroke-dasharray: 800;
+  }
+  .lab-landing .ll-convergence__rule:nth-child(2) { animation-delay: 80ms; }
+  .lab-landing .ll-convergence__rule:nth-child(3) { animation-delay: 160ms; }
+  .lab-landing .ll-convergence__tail { animation-delay: 270ms; }
+}
+@keyframes ll-line-draw { from { stroke-dashoffset: 800; } to { stroke-dashoffset: 0; } }
+
+@media (max-width: 960px) {
+  .lab-landing .ll-hero { grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.9fr); gap: 2.5rem; }
+  .lab-landing .ll-hero__title { font-size: clamp(3rem, 5.8vw, 4rem); }
+  .lab-landing .ll-connect { gap: 3rem; }
+  .lab-landing .ll-ledger__row { width: 65%; grid-template-columns: 1fr; gap: 0.2rem; }
+  .lab-landing .ll-ledger__lines { width: 67%; }
+}
+@media (max-width: 760px) {
+  .site-shell:has(.lab-landing) .site-header__inner,
+  .site-shell:has(.lab-landing) .site-footer__inner,
+  .lab-landing .ll-wrap { width: min(100% - 2.5rem, 76rem); }
+  .site-shell:has(.lab-landing) .brand__phase { display: none; }
+  .lab-landing .ll-hero { grid-template-columns: 1fr; min-height: 0; padding-block: 4.6rem 3.9rem; }
+  .lab-landing .ll-hero__title { max-width: 9em; font-size: clamp(2.65rem, 10vw, 3.65rem); line-height: 1.2; }
+  .lab-landing .ll-hero__support { max-width: 34rem; margin-top: 2rem; }
+  .lab-landing .ll-convergence { width: min(100%, 33rem); margin: 0 auto; }
+  .lab-landing .ll-convergence::before,
+  .lab-landing .ll-convergence::after { display: none; }
+  .lab-landing .ll-labs { padding-block: 3.8rem; }
+  .lab-landing .ll-labs__grid { grid-template-columns: 1fr; }
+  .lab-landing .ll-lab,
+  .lab-landing .ll-lab + .ll-lab { min-height: auto; padding: 1.25rem 0 1.45rem; border-right: 0; border-bottom: 1px solid var(--ll-line); }
+  .lab-landing .ll-lab:last-child { border-bottom: 0; }
+  .lab-landing .ll-lab h3 { margin-top: 0.7rem; }
+  .lab-landing .ll-lab__copy { margin-top: 0.45rem; }
+  .lab-landing .ll-connect { grid-template-columns: 1fr; gap: 2rem; padding-block: 3.8rem; }
+  .lab-landing .ll-ledger { min-height: 18rem; }
+  .lab-landing .ll-ledger__rows { min-height: 18rem; }
+  .lab-landing .ll-ledger__row { width: 57%; grid-template-columns: 1fr; gap: 0.2rem; }
+  .lab-landing .ll-ledger__lines { width: 61%; top: 2.8rem; bottom: 2.8rem; height: calc(100% - 5.6rem); }
+  .lab-landing .ll-ledger__result { max-width: 8.4rem; flex-direction: column; align-items: flex-start; gap: 0.35rem; font-size: 0.78rem; }
+  .lab-landing .ll-loop { padding-block: 3.8rem; }
+  .lab-landing .ll-loop__list { grid-template-columns: repeat(2, 1fr); }
+  .lab-landing .ll-loop__list li,
+  .lab-landing .ll-loop__list li + li { min-height: 10.5rem; padding: 1.05rem 1rem 1.1rem 0; }
+  .lab-landing .ll-loop__list li:nth-child(2n) { padding-left: 1rem; border-right: 0; }
+  .lab-landing .ll-loop__list li:nth-child(n + 3) { border-top: 1px solid rgba(255, 255, 255, 0.16); }
+  .lab-landing .ll-cta { padding-block: 3.8rem 3.5rem; }
+}
+@media (max-width: 460px) {
+  .site-shell:has(.lab-landing) .site-header__inner,
+  .site-shell:has(.lab-landing) .site-footer__inner,
+  .lab-landing .ll-wrap { width: min(100% - 2rem, 76rem); }
+  .lab-landing .ll-hero { padding-top: 3.8rem; }
+  .lab-landing .ll-hero__title { font-size: clamp(2.45rem, 11vw, 3.05rem); }
+  .lab-landing .ll-hero__support p,
+  .lab-landing .ll-connect__copy,
+  .lab-landing .ll-cta__copy { font-size: 0.95rem; }
+  .lab-landing .ll-convergence__result { right: -1%; font-size: 0.72rem; }
+  .lab-landing .ll-convergence-node { width: 2.7rem; height: 2.7rem; }
+  .lab-landing .ll-convergence-node > span:nth-child(1) { top: 0.52rem; }
+  .lab-landing .ll-convergence-node > span:nth-child(2) { right: 0.57rem; bottom: 0.5rem; left: 0.57rem; }
+  .lab-landing .ll-loop__list { grid-template-columns: 1fr; }
+  .lab-landing .ll-loop__list li,
+  .lab-landing .ll-loop__list li + li,
+  .lab-landing .ll-loop__list li:nth-child(2n) { min-height: auto; padding: 1.05rem 0 1.25rem; border-right: 0; border-top: 1px solid rgba(255, 255, 255, 0.16); }
+  .lab-landing .ll-loop__list li:first-child { border-top: 0; }
+}
