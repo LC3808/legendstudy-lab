@@ -593,27 +593,59 @@ any future per-level pricing is a separate commercial decision, not an architect
 
 ---
 
-## 26–27. Voice explanation — future shared LAB extension point (VOICE-1)
+## 26–27. Voice explanation — VOICE-1 (POST-LAUNCH REQUIRED, shared LAB capability)
 
-The owner wants future Korean voice explanation for **both** Humanities and Math (per-CORE "설명
-듣기", per-feedback "설명 듣기", Math solution-step explanation, full "전체 설명 듣기"). **TTS is not
-implemented in MATH-1.**
+**Owner product decision (2026-10-01): VOICE-1 is no longer optional.** It is
+`POST_LAUNCH_REQUIRED`, target **before end of October 2026**. It does **not** block the first LAB
+launch before the Yonsei essay examination (`VOICE_1_BLOCKS_INITIAL_LAUNCH: NO`), but **every**
+Humanities and Mathematical Essay canonical DTO/design decision in MATH-1 **must preserve a clean
+VOICE-1 consumption path**. **TTS is still not implemented in MATH-1** (§29 non-goal; this section
+records the contract, not an implementation).
 
-Architectural requirement recorded as a **shared LAB extension point**:
-- `DISPLAY_TEXT ≠ VOICE_EXPLANATION_SCRIPT`. The evaluation DTO (§38) is structured so a future
-  VOICE-1 adapter can consume **structured facts** without scraping rendered UI text.
+**VOICE-1 minimum product scope (Owner-defined):**
+- Korean **per-item** explanation playback and Korean **full-evaluation** explanation.
+- Humanities targets: CORE · rubric dimension · sentence feedback · rewrite guidance.
+- Math targets: CORE · solution step · root error · hint · reevaluation change.
+- **Pedagogical** explanation, not verbatim screen reading.
+- Mathematical-expression-to-natural-Korean speech adaptation.
+- Playback controls: **play / pause / replay** and **playback-speed** control.
+- VOICE-1 **consumes canonical evaluation facts** and **must not become an independent evaluation
+  authority** (no second, contradictory evaluation; the canonical evaluation remains authority).
+
+**Architectural requirements (shared LAB extension point), preserved by MATH-1:**
+- `DISPLAY_TEXT ≠ VOICE_EXPLANATION_SCRIPT`. The evaluation DTOs are structured so the VOICE-1
+  adapter consumes **structured facts** without scraping rendered UI text.
 - Flow: `canonical evaluation → voice-explanation adapter → Korean pedagogical script → TTS →
-  audio playback`.
+  audio playback (play/pause/replay/speed)`.
 - Voice **explains**, not reads verbatim (bad: "논리적 전개 3점. 계산 정확성 2점." / better: "풀이
   방향은 맞았습니다. 다만 세 번째 단계에서 도함수의 부호를 반대로 판단하면서 이후 계산이 함께 틀어졌습니다…").
 - The adapter may verbalize formulas naturally while preserving mathematical meaning (e.g.
-  `f'(x)=0` → "에프 프라임 엑스가 0이 되는 지점을 먼저 확인해 보세요"). It **must not** store a second,
-  contradictory evaluation — the canonical evaluation remains authority.
-- **Audio is not persisted by default** pending a future retention/cost decision (§43).
+  `f'(x)=0` → "에프 프라임 엑스가 0이 되는 지점을 먼저 확인해 보세요"), consuming `normalized_math` (§13).
+- **Audio is not persisted by default** pending a future retention/cost decision (§39, §43).
+
+**VOICE_1_ARCHITECTURE_COMPATIBILITY: PASS.** Every VOICE-1 minimum-scope target already maps to a
+canonical fact exposed by the MATH-1 design — no DTO redesign is required to add VOICE-1 later:
+
+| VOICE-1 target | Canonical source (unchanged) |
+| --- | --- |
+| Humanities CORE | `ql-read-v1` `improvements[].is_core` + `priority` |
+| Humanities rubric dimension | `ql-read-v1` `dimensions[]` |
+| Humanities sentence feedback | `ql-read-v1` `sentence_feedback[]` |
+| Humanities rewrite guidance | `ql-read-v1` `improvements[]` / `generated_rewrite` |
+| Math CORE | `math-eval-v1` `core { solution_step_id, error_classification }` (§17, §35) |
+| Math solution step | `math-eval-v1` `solution_steps[]` (§8, §35) |
+| Math root error | `math-eval-v1` `root_errors[]` / `propagation_edges[]` (§7) |
+| Math hint | `math-eval-v1` `hint_availability` (§18) |
+| Math reevaluation change | `math-eval-v1` `reevaluation_link.deltas` (§20) |
+| Formula → natural Korean | `solution_steps[].normalized_math` (§13) |
+| Per-item vs full explanation | per-group DTO access + overall `evaluation` group |
+| Play / pause / replay / speed | client playback over a per-item audio artifact; **no DTO change** |
 
 **VOICE_EXTENSION_READY: YES.** **Q17 (acceptance): yes** — a future voice layer consumes the
 canonical evaluation (identity, CORE, step statuses, root/propagated, hint, reevaluation delta)
-without parsing UI strings.
+without parsing UI strings. The only VOICE-1-specific persistence question deferred to the VOICE-1
+phase is the **audio artifact + retention/cost** decision (§39, §43); it does not alter any MATH-1
+canonical fact.
 
 ---
 
@@ -626,12 +658,13 @@ CORE (§17) · Hint Ladder Levels 0–2 (§18) · re-solve `FULL_RESOLVE` + `STE
 reevaluation (§20) · Human-Quality **readiness** (contract, not UI, §24) · existing Credit
 integration (§25).
 
-**POST_LAUNCH:** Hint Levels 3–4 · `PARTIAL_RESOLVE` · generated full solution (Level 5) general
-availability · advanced reviewer analytics · additional universities' structured criteria at
-scale · Quality Console Math UI.
+**POST_LAUNCH:** **VOICE-1 (POST_LAUNCH_REQUIRED, target before end of 2026-10; does not block
+initial launch, §26–27)** · Hint Levels 3–4 · `PARTIAL_RESOLVE` · generated full solution (Level 5)
+general availability · advanced reviewer analytics · additional universities' structured criteria
+at scale · Quality Console Math UI.
 
 **EXPERIMENTAL:** AI-generated alternative-path equivalence proving beyond heuristic · automated
-sampling/anomaly queues · voice explanation (VOICE-1) · broader multimodal context expansion.
+sampling/anomaly queues · broader multimodal context expansion.
 
 ---
 
@@ -845,9 +878,12 @@ Measurable, dataset-honest (no invented accuracy percentages):
 | **MATH-6** | Re-solve + Reevaluation | after MATH-5 |
 | **MATH-7** | Human Quality / Quality Console Math extension (additive) | can start contract after MATH-4 |
 | **MATH-8** | Production E2E / launch gate (retention policy, privacy, acceptance §42) | last |
+| **VOICE-1** | Korean pedagogical voice explanation (Humanities + Math), playback (play/pause/replay/speed), voice-script adapter, audio artifact + retention decision — **POST_LAUNCH_REQUIRED, target before end of 2026-10; does not block initial launch** | consumes MATH-4+ DTO; can start adapter design after MATH-4 |
 
 MATH-3 and MATH-4 can proceed in parallel once MATH-2 fixes the contract (interface-first).
-MATH-7's contract can be drafted alongside MATH-4. MATH-2 is the single hard gate.
+MATH-7's contract can be drafted alongside MATH-4. MATH-2 is the single hard gate. VOICE-1 is a
+**separate shared track** (not Math-only): it consumes the canonical Humanities + Math evaluation
+facts and runs after the initial launch, in parallel with MATH-5+ once the evaluation DTO is fixed.
 
 ---
 
@@ -937,6 +973,11 @@ HUMAN_QUALITY_REUSE:         additive extension (hq-math-rubric-v1 + Math findin
                                reused; ql-read-v1/hq-read-v1 unchanged (§24, §36)
 CREDIT_REUSE:                YES — single wallet; initial/re-eval share semantics; no new price (§25)
 VOICE_EXTENSION_READY:       YES (§26–27, §37)
+VOICE_1_PRIORITY:            POST_LAUNCH_REQUIRED (Owner decision 2026-10-01) (§26–27)
+VOICE_1_TARGET:              BEFORE_2026_10_END
+VOICE_1_BLOCKS_INITIAL_LAUNCH: NO
+VOICE_1_ARCHITECTURE_COMPATIBILITY: PASS (every minimum-scope target maps to an existing canonical
+                               fact; no DTO redesign needed; only audio artifact/retention deferred) (§26–27)
 SCIENCE_FUTURE_COMPATIBILITY: additional domains on the same spine + child persistence; no forced
                                generic schema (§23)
 LAUNCH_REQUIRED:            §28 LAUNCH_REQUIRED list
@@ -993,6 +1034,10 @@ MATH_EVAL_V1:               conceptual DTO, references not binaries, voice-consu
 HUMAN_QUALITY_EXTENSION:    additive (hq-math-rubric-v1 + Math targets); spine reused (§24,§36)
 CREDIT_REUSE:               YES — single authority (§25)
 VOICE_1_EXTENSION:          recorded shared extension point; DISPLAY_TEXT ≠ VOICE_SCRIPT (§26–27,§37)
+VOICE_1_PRIORITY:           POST_LAUNCH_REQUIRED
+VOICE_1_TARGET:             BEFORE_2026_10_END
+VOICE_1_BLOCKS_INITIAL_LAUNCH: NO
+VOICE_1_ARCHITECTURE_COMPATIBILITY: PASS
 SCIENCE_FUTURE_COMPATIBILITY: same spine + child persistence; no forced generic schema (§23)
 PRIVACY_FOLLOW_UP_REQUIRED: YES (retention policy before Production Math) (§39)
 DB_CHANGE_EXPECTED:         YES (future; none in MATH-1)
