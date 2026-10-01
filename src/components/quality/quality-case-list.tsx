@@ -2,13 +2,33 @@
 
 import type { QualityCaseSummary } from "@/lib/quality/contract";
 import type { QualityErrorKind } from "@/lib/quality/errors";
+import type { HqCaseReviewState, HqReviewState } from "@/lib/quality/human-review-contract";
+import { reviewStateLabel } from "@/lib/quality/human-review-view";
 
 /**
  * Case list panel. Renders ONLY compact list fields — never any student answer
  * body (the list contract carries none; the detail RPC is the only answer source).
+ * Human review state (if provided) is shown as a badge from the canonical
+ * `ql_review_state` projection — never inferred from ql-read-v1 fields.
  */
 
 export type ListState = "idle" | "loading" | "loaded" | "error";
+
+function reviewBadgeClass(state: HqReviewState | null | undefined): string {
+  switch (state) {
+    case "REVIEWED_ACCEPTABLE":
+      return "ql-review-badge--ok";
+    case "REVIEWED_WITH_CONCERNS":
+      return "ql-review-badge--concern";
+    case "REVIEWED_FAILED":
+      return "ql-review-badge--fail";
+    case "DISAGREEMENT":
+    case "MULTIPLE_REVIEWS":
+      return "ql-review-badge--multi";
+    default:
+      return "ql-review-badge--unreviewed";
+  }
+}
 
 function fmtTime(value: string | null | undefined): string {
   if (!value) return "—";
@@ -42,6 +62,10 @@ export function QualityCaseList({
   onSelect,
   onLoadMore,
   onRefresh,
+  reviewStates,
+  unreviewedOnly = false,
+  onToggleUnreviewed,
+  onNextUnreviewed,
 }: {
   cases: QualityCaseSummary[];
   state: ListState;
@@ -52,6 +76,10 @@ export function QualityCaseList({
   onSelect: (evaluationId: string) => void;
   onLoadMore: () => void;
   onRefresh: () => void;
+  reviewStates?: Map<string, HqCaseReviewState>;
+  unreviewedOnly?: boolean;
+  onToggleUnreviewed?: () => void;
+  onNextUnreviewed?: () => void;
 }) {
   return (
     <div className="ql-list" aria-label="평가 사례 목록">
@@ -61,6 +89,20 @@ export function QualityCaseList({
           {state === "loading" ? "불러오는 중" : "새로고침"}
         </button>
       </div>
+
+      {onToggleUnreviewed || onNextUnreviewed ? (
+        <div className="ql-list__filters">
+          {onToggleUnreviewed ? (
+            <label className="ql-checkbox ql-checkbox--inline">
+              <input type="checkbox" checked={unreviewedOnly} onChange={onToggleUnreviewed} />
+              <span>미검토만 (불러온 범위)</span>
+            </label>
+          ) : null}
+          {onNextUnreviewed ? (
+            <button type="button" className="button button--outline button--small" onClick={onNextUnreviewed}>다음 미검토 →</button>
+          ) : null}
+        </div>
+      ) : null}
 
       {state === "loading" && cases.length === 0 ? (
         <p className="ql-state" aria-live="polite">목록을 불러오는 중입니다.</p>
@@ -84,6 +126,8 @@ export function QualityCaseList({
         <ul className="ql-list__items">
           {cases.map((item) => {
             const selected = item.evaluation_id === selectedId;
+            const review = reviewStates?.get(item.evaluation_id);
+            const reviewState = review?.availability === "AVAILABLE" ? (review.human_review_state ?? null) : null;
             return (
               <li key={item.evaluation_id}>
                 <button
@@ -93,6 +137,12 @@ export function QualityCaseList({
                   onClick={() => onSelect(item.evaluation_id)}
                 >
                   <span className="ql-case__top">
+                    {review ? (
+                      <span className={`ql-review-badge ${reviewBadgeClass(reviewState)}`}>
+                        {reviewStateLabel(reviewState)}
+                        {review.has_material_issue ? " ·!" : ""}
+                      </span>
+                    ) : null}
                     <span className="ql-case__univ">{item.university_name ?? "대학 미상"}</span>
                     {item.status ? <span className="ql-chip">{item.status}</span> : null}
                     {item.invalidated_at ? <span className="ql-chip ql-chip--warn">무효화됨</span> : null}

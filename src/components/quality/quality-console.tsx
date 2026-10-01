@@ -5,11 +5,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useAuth } from "@/components/auth-context";
 import { createQualityClient, type QualityClient } from "@/lib/quality/client";
+import { createHumanReviewClient, type HumanReviewClient } from "@/lib/quality/human-review-client";
 import type { QualityCaseDetail, QualityCaseSummary, QualityListCursor } from "@/lib/quality/contract";
+import type { HqCaseReviewState } from "@/lib/quality/human-review-contract";
 import { qualityErrorKind, type QualityErrorKind } from "@/lib/quality/errors";
 
 import { QualityCaseList, type ListState } from "./quality-case-list";
 import { QualityCaseDetailPanel, type DetailState } from "./quality-case-detail";
+import { QualityReviewPanel } from "./quality-review-panel";
 
 /**
  * Operator-only Quality Console (`/ql`). Client-rendered on top of the static
@@ -55,6 +58,10 @@ export function QualityConsole() {
 function OperatorGateView({ auth }: { auth: ReturnType<typeof useAuth> }) {
   const quality = useMemo<QualityClient | null>(
     () => (auth.client ? createQualityClient(auth.client) : null),
+    [auth.client],
+  );
+  const humanReview = useMemo<HumanReviewClient | null>(
+    () => (auth.client ? createHumanReviewClient(auth.client) : null),
     [auth.client],
   );
   const [gate, setGate] = useState<OperatorGate>("checking");
@@ -123,14 +130,14 @@ function OperatorGateView({ auth }: { auth: ReturnType<typeof useAuth> }) {
     );
   }
 
-  return <QualityWorkspace quality={quality as QualityClient} />;
+  return <QualityWorkspace quality={quality as QualityClient} humanReview={humanReview as HumanReviewClient} />;
 }
 
 function GateShell({ children }: { children: React.ReactNode }) {
   return <div className="ql-gate content-wrap"><div className="ql-gate__card">{children}</div></div>;
 }
 
-function QualityWorkspace({ quality }: { quality: QualityClient }) {
+function QualityWorkspace({ quality, humanReview }: { quality: QualityClient; humanReview: HumanReviewClient }) {
   const [cases, setCases] = useState<QualityCaseSummary[]>([]);
   // Initial state is "loading" because the mount effect fetches immediately —
   // so no synchronous setState is needed in the effect body.
@@ -140,12 +147,72 @@ function QualityWorkspace({ quality }: { quality: QualityClient }) {
   const [loadingMore, setLoadingMore] = useState(false);
   const [reloadToken, setReloadToken] = useState(0);
 
+  const [reviewStates, setReviewStates] = useState<Map<string, HqCaseReviewState>>(new Map());
+  const [unreviewedOnly, setUnreviewedOnly] = useState(false);
+
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [detail, setDetail] = useState<QualityCaseDetail | null>(null);
   const [detailState, setDetailState] = useState<DetailState>("idle");
   const [detailError, setDetailError] = useState<QualityErrorKind | null>(null);
 
   const reqIdRef = useRef(0);
+
+  const caseIdsKey = cases.map((item) => item.evaluation_id).join(",");
+
+  // Batch-fetch human review state for visible cases (bounded, deduped). A
+  // review-state failure must never corrupt the ql-read-v1 case list, so errors
+  // here are swallowed (badges simply stay absent). No answer bodies fetched.
+  useEffect(() => {
+    if (cases.length === 0) return;
+    let active = true;
+    const ids = cases.map((c) => c.evaluation_id);
+    const missing = ids.filter((id) => !reviewStates.has(id));
+    if (missing.length === 0) return;
+    const chunks: string[][] = [];
+    for (let i = 0; i < missing.length; i += 100) chunks.push(missing.slice(i, i + 100));
+    Promise.all(chunks.map((chunk) => humanReview.getReviewState(chunk).catch(() => [])))
+      .then((results) => {
+        if (!active) return;
+        setReviewStates((prev) => {
+          const next = new Map(prev);
+          for (const rows of results) for (const row of rows) next.set(row.evaluation_id, row);
+          return next;
+        });
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [caseIdsKey, humanReview]);
+
+  const refreshReviewStateFor = (evaluationId: string) => {
+    humanReview
+      .getReviewState([evaluationId])
+      .then((rows) => {
+        setReviewStates((prev) => {
+          const next = new Map(prev);
+          for (const row of rows) next.set(row.evaluation_id, row);
+          return next;
+        });
+      })
+      .catch(() => {});
+  };
+
+  const isUnreviewed = (id: string) => reviewStates.get(id)?.human_review_state === "UNREVIEWED";
+  const visibleCases = unreviewedOnly ? cases.filter((item) => isUnreviewed(item.evaluation_id)) : cases;
+
+  const nextUnreviewed = () => {
+    if (cases.length === 0) return;
+    const start = selectedId ? cases.findIndex((c) => c.evaluation_id === selectedId) + 1 : 0;
+    for (let offset = 0; offset < cases.length; offset += 1) {
+      const candidate = cases[(start + offset) % cases.length];
+      if (isUnreviewed(candidate.evaluation_id)) {
+        selectCase(candidate.evaluation_id);
+        return;
+      }
+    }
+  };
 
   useEffect(() => {
     let active = true;
@@ -218,13 +285,13 @@ function QualityWorkspace({ quality }: { quality: QualityClient }) {
         <div>
           <p className="eyebrow eyebrow--accent">LEGENDSTUDY LAB · QUALITY CONSOLE v0</p>
           <h1>품질 검토 콘솔</h1>
-          <p className="ql-workspace__lead">초기 서비스 단계에서는 제출 답안과 AI 피드백을 가까이에서 검토해 서비스가 올바르게 작동하는지 확인합니다. 읽기 중심 콘솔이며, 사람 품질 판정 저장은 아직 제공하지 않습니다.</p>
+          <p className="ql-workspace__lead">초기 서비스 단계에서는 제출 답안과 AI 피드백을 가까이에서 검토해 서비스가 올바르게 작동하는지 확인합니다. 각 사례에 대한 인간 품질 검토를 기록할 수 있으며, 검토 기록은 불변 이력으로 보존됩니다.</p>
         </div>
       </header>
       <div className="ql-workspace__grid content-wrap content-wrap--wide">
         <aside className="ql-workspace__list">
           <QualityCaseList
-            cases={cases}
+            cases={visibleCases}
             state={listState}
             errorKind={listError}
             selectedId={selectedId}
@@ -233,10 +300,23 @@ function QualityWorkspace({ quality }: { quality: QualityClient }) {
             onSelect={selectCase}
             onLoadMore={loadMore}
             onRefresh={refresh}
+            reviewStates={reviewStates}
+            unreviewedOnly={unreviewedOnly}
+            onToggleUnreviewed={() => setUnreviewedOnly((v) => !v)}
+            onNextUnreviewed={nextUnreviewed}
           />
         </aside>
         <main className="ql-workspace__detail">
           <QualityCaseDetailPanel detail={detail} state={detailState} errorKind={detailError} />
+          {detailState === "loaded" && detail && selectedId ? (
+            <QualityReviewPanel
+              key={selectedId}
+              humanReview={humanReview}
+              evaluationId={selectedId}
+              detail={detail}
+              onReviewed={refreshReviewStateFor}
+            />
+          ) : null}
         </main>
       </div>
     </div>

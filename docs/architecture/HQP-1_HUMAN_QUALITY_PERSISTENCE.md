@@ -5,6 +5,12 @@
 **Author role:** LAB architecture / operator-UX design (Claude).
 **Source branch / baseline:** `legendstudy-lab` `claude/quality-console-v0 @ 325a112`.
 
+> **Successor:** this is historical design evidence. The canonical runtime contract is the
+> APP HQP-3 migration `20261001000200_human_quality_persistence`; the LAB consumer mapping and
+> UI are in [HQR-1_HUMAN_REVIEW_CONTRACT_MAPPING.md](HQR-1_HUMAN_REVIEW_CONTRACT_MAPPING.md) and
+> [HQR-1_HUMAN_REVIEW_CONSOLE.md](HQR-1_HUMAN_REVIEW_CONSOLE.md). This HQP-1 proposal is not
+> edited to match the final implementation.
+>
 > **This document authorizes nothing.** It contains **no** migration SQL. It proposes a
 > canonical data/security architecture and a reviewer UX contract for **Codex** to review
 > from a DB/security standpoint (HQP-2). It does **not** change any Shared Backend schema,

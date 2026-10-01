@@ -102,6 +102,9 @@ export interface QualityEvaluationSummary {
 }
 
 export interface QualityDimension {
+  /** `essay_evaluation_dimensions.id` — used as a finding target (DIMENSION). */
+  dimension_id?: string | null;
+  criterion_id?: string | null;
   criterion_key?: string | null;
   criterion_label?: string | null;
   origin?: string | null;
@@ -123,10 +126,12 @@ export interface QualityImprovement {
   next_action?: string | null;
   priority?: number | null;
   /**
-   * CORE membership signal (task §6): CORE = active progress with
-   * `core_focus === true`. Priority is ordering, NOT membership. Never infer
-   * CORE from priority/category/count.
+   * CORE membership. The deployed `ql_case_detail` exposes `is_core` (derived
+   * server-side as active progress with `core_focus=true`); older fixtures used a
+   * bare `core_focus`. Both are accepted; `is_core` is preferred. Priority is
+   * ordering, NOT membership — never infer CORE from priority/category/count.
    */
+  is_core?: boolean | null;
   core_focus?: boolean | null;
   /** Versioned sentence/scaffolding observation linked to this progress. */
   scaffolding_observation?: unknown;

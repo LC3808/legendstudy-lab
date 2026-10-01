@@ -53,7 +53,9 @@ export function partitionImprovements(
   const core: QualityImprovement[] = [];
   const nonCore: QualityImprovement[] = [];
   for (const item of improvements) {
-    if (item.core_focus === true) core.push(item);
+    // Prefer the deployed `is_core`; fall back to `core_focus` for legacy fixtures.
+    const isCore = item.is_core ?? item.core_focus ?? false;
+    if (isCore === true) core.push(item);
     else nonCore.push(item);
   }
   return { availability, core, nonCore };

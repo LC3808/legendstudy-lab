@@ -876,3 +876,64 @@ h1, h2, h3 { text-wrap: pretty; }
   .ql-field-list { grid-template-columns: 1fr; gap: 0 0.25rem; }
   .ql-field dt { margin-top: 0.4rem; }
 }
+
+/* ── Human Review (HQP) workflow ───────────────────────────────────────────── */
+.ql-list__filters { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.4rem 0.9rem; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.ql-checkbox { display: flex; align-items: flex-start; gap: 0.45rem; font-size: var(--type-small); color: var(--ink); line-height: var(--leading-compact); }
+.ql-checkbox--inline { align-items: center; }
+
+.ql-review-badge { display: inline-block; font-size: 0.66rem; font-weight: 700; padding: 0.08rem 0.4rem; border-radius: 999px; border: 1px solid var(--line); }
+.ql-review-badge--unreviewed { background: var(--surface-muted); color: var(--ink-soft); }
+.ql-review-badge--ok { background: rgba(32, 103, 95, 0.12); color: var(--green); border-color: var(--green); }
+.ql-review-badge--concern { background: var(--warning); color: var(--ink-strong); border-color: var(--gold); }
+.ql-review-badge--fail { background: rgba(166, 70, 56, 0.12); color: var(--danger); border-color: var(--danger); }
+.ql-review-badge--multi { background: rgba(196, 139, 44, 0.14); color: var(--gold); border-color: var(--gold); }
+
+.ql-review-panel { margin-top: 1.25rem; border: 2px solid var(--ink-strong); border-radius: var(--radius-md); background: var(--surface); padding: clamp(1rem, 2vw, 1.4rem); display: flex; flex-direction: column; gap: 1rem; }
+.ql-review-panel__head p { margin: 0; }
+.ql-review-panel__history, .ql-review-panel__form { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.ql-review-history__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.ql-review-item { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 0.6rem 0.75rem; font-size: var(--type-small); display: flex; flex-direction: column; gap: 0.35rem; }
+.ql-review-item--superseded { opacity: 0.7; background: var(--surface-muted); }
+.ql-review-item__head { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.ql-review-item__who { font-weight: 700; color: var(--ink-strong); }
+.ql-review-item__verdicts { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.ql-verdict-chip { font-size: 0.68rem; padding: 0.06rem 0.4rem; border-radius: var(--radius-sm); background: var(--surface-muted); border: 1px solid var(--line); color: var(--ink-soft); }
+.ql-review-item__findings { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.ql-review-item__findings li { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+.ql-chip--sev { background: var(--warning); border-color: var(--gold); }
+.ql-review-item__note { color: var(--ink); margin: 0; }
+.ql-disposition--PASS { background: rgba(32,103,95,0.12); color: var(--green); border-color: var(--green); }
+.ql-disposition--PASS_WITH_NOTES { background: rgba(32,103,95,0.08); color: var(--green); }
+.ql-disposition--NEEDS_REVIEW { background: var(--warning); color: var(--ink-strong); border-color: var(--gold); }
+.ql-disposition--FAIL { background: rgba(166,70,56,0.12); color: var(--danger); border-color: var(--danger); }
+
+.ql-review-form { display: flex; flex-direction: column; gap: 0.85rem; }
+.ql-field-group { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 0.6rem 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.ql-field-group legend { font-size: var(--type-small); font-weight: 700; color: var(--ink-strong); padding: 0 0.35rem; }
+.ql-radio-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.ql-radio { display: inline-flex; align-items: center; gap: 0.3rem; font-size: var(--type-small); }
+.ql-radio--small { font-size: 0.78rem; }
+.ql-verdict-row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.2rem 0; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.ql-verdict-row:first-of-type { border-top: 0; }
+.ql-verdict-row__label { font-size: var(--type-small); color: var(--ink); }
+.ql-verdict-row--na { color: var(--ink-soft); }
+.ql-finding { border: 1px dashed var(--line-strong); border-radius: var(--radius-sm); padding: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.ql-finding__controls { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: flex-end; }
+.ql-finding__controls label { display: flex; flex-direction: column; gap: 0.15rem; font-size: 0.74rem; }
+.ql-finding__target { flex: 1 1 14rem; }
+.ql-finding select, .ql-ops-row select { font-size: var(--type-small); padding: 0.25rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--surface); }
+.ql-finding__note { width: 100%; font-size: var(--type-small); padding: 0.3rem 0.4rem; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.ql-label { font-size: 0.72rem; color: var(--ink-soft); }
+.ql-ops-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.ql-ops-row label { display: flex; flex-direction: column; gap: 0.2rem; }
+.ql-note-field { display: flex; flex-direction: column; gap: 0.25rem; }
+.ql-note-field textarea { font-family: var(--font-ui); font-size: var(--type-small); padding: 0.4rem 0.5rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); resize: vertical; }
+.ql-form-errors { margin: 0; padding-left: 1.1rem; font-size: var(--type-small); color: var(--danger); }
+.ql-confirm { border: 1px solid var(--line-strong); border-radius: var(--radius-sm); padding: 0.6rem 0.75rem; background: var(--surface-muted); display: flex; flex-direction: column; gap: 0.5rem; font-size: var(--type-small); }
+.ql-review-form__submit { align-self: flex-start; }
+
+@media (max-width: 860px) {
+  .ql-finding__controls { flex-direction: column; align-items: stretch; }
+}
