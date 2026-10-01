@@ -1,0 +1,244 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+import { useAuth } from "@/components/auth-context";
+import { createQualityClient, type QualityClient } from "@/lib/quality/client";
+import type { QualityCaseDetail, QualityCaseSummary, QualityListCursor } from "@/lib/quality/contract";
+import { qualityErrorKind, type QualityErrorKind } from "@/lib/quality/errors";
+
+import { QualityCaseList, type ListState } from "./quality-case-list";
+import { QualityCaseDetailPanel, type DetailState } from "./quality-case-detail";
+
+/**
+ * Operator-only Quality Console (`/ql`). Client-rendered on top of the static
+ * export; all data comes from the deployed canonical RPCs via the authenticated
+ * Supabase session. Client route gating is defense-in-depth only — the database
+ * SECURITY DEFINER authorization is authoritative.
+ */
+
+type OperatorGate = "checking" | "operator" | "denied" | "error";
+
+export function QualityConsole() {
+  const auth = useAuth();
+
+  if (auth.status === "loading") {
+    return <GateShell><p className="ql-state" aria-live="polite">세션을 확인하고 있습니다.</p></GateShell>;
+  }
+
+  if (auth.status === "unconfigured") {
+    return (
+      <GateShell>
+        <p className="eyebrow eyebrow--accent">QUALITY CONSOLE</p>
+        <h1>계정 연결이 준비되지 않았습니다.</h1>
+        <p>이 배포에는 LegendStudy Supabase 브라우저 설정이 연결되어 있지 않아 Quality 데이터를 조회할 수 없습니다.</p>
+        <Link className="button button--outline" href="/">서비스 안내 보기</Link>
+      </GateShell>
+    );
+  }
+
+  if (auth.status === "anonymous") {
+    return (
+      <GateShell>
+        <p className="eyebrow eyebrow--accent">QUALITY CONSOLE</p>
+        <h1>로그인이 필요합니다.</h1>
+        <p>이 영역은 로그인한 운영자만 접근할 수 있습니다. 로그아웃 상태에서는 어떤 Quality 데이터도 표시되지 않습니다.</p>
+        <Link className="button button--primary" href="/login/">로그인</Link>
+      </GateShell>
+    );
+  }
+
+  return <OperatorGateView auth={auth} />;
+}
+
+function OperatorGateView({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const quality = useMemo<QualityClient | null>(
+    () => (auth.client ? createQualityClient(auth.client) : null),
+    [auth.client],
+  );
+  const [gate, setGate] = useState<OperatorGate>("checking");
+  const [errorKind, setErrorKind] = useState<QualityErrorKind | null>(null);
+  const [reloadToken, setReloadToken] = useState(0);
+
+  // State is set only inside async callbacks (never synchronously in the effect
+  // body), mirroring the auth-context pattern and the React 19 effect rules.
+  useEffect(() => {
+    let active = true;
+    if (!quality) {
+      Promise.resolve().then(() => {
+        if (!active) return;
+        setErrorKind("UNKNOWN");
+        setGate("error");
+      });
+      return () => {
+        active = false;
+      };
+    }
+    quality
+      .isOperator()
+      .then((ok) => {
+        if (active) setGate(ok ? "operator" : "denied");
+      })
+      .catch((error) => {
+        if (!active) return;
+        setErrorKind(qualityErrorKind(error));
+        setGate("error");
+      });
+    return () => {
+      active = false;
+    };
+  }, [quality, reloadToken]);
+
+  // Retry runs in an event handler, where a synchronous reset is allowed.
+  const retryOperatorCheck = () => {
+    setGate("checking");
+    setErrorKind(null);
+    setReloadToken((token) => token + 1);
+  };
+
+  if (gate === "checking") {
+    return <GateShell><p className="ql-state" aria-live="polite">접근 권한을 확인하고 있습니다.</p></GateShell>;
+  }
+
+  if (gate === "denied") {
+    return (
+      <GateShell>
+        <p className="eyebrow eyebrow--accent">QUALITY CONSOLE</p>
+        <h1>접근 권한이 없습니다.</h1>
+        <p>이 계정은 Quality 운영자 권한이 없습니다. 접근이 필요하면 운영자에게 문의하세요.</p>
+        <Link className="button button--outline" href="/home/">홈으로</Link>
+      </GateShell>
+    );
+  }
+
+  if (gate === "error") {
+    return (
+      <GateShell>
+        <p className="eyebrow eyebrow--accent">QUALITY CONSOLE</p>
+        <h1>권한 확인 중 오류가 발생했습니다.</h1>
+        <p>{errorKind === "NETWORK" ? "네트워크 오류로 권한을 확인하지 못했습니다." : "권한을 확인하는 중 문제가 발생했습니다."}</p>
+        <button type="button" className="button button--primary" onClick={retryOperatorCheck}>다시 시도</button>
+      </GateShell>
+    );
+  }
+
+  return <QualityWorkspace quality={quality as QualityClient} />;
+}
+
+function GateShell({ children }: { children: React.ReactNode }) {
+  return <div className="ql-gate content-wrap"><div className="ql-gate__card">{children}</div></div>;
+}
+
+function QualityWorkspace({ quality }: { quality: QualityClient }) {
+  const [cases, setCases] = useState<QualityCaseSummary[]>([]);
+  // Initial state is "loading" because the mount effect fetches immediately —
+  // so no synchronous setState is needed in the effect body.
+  const [listState, setListState] = useState<ListState>("loading");
+  const [listError, setListError] = useState<QualityErrorKind | null>(null);
+  const [cursor, setCursor] = useState<QualityListCursor | null>(null);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [reloadToken, setReloadToken] = useState(0);
+
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [detail, setDetail] = useState<QualityCaseDetail | null>(null);
+  const [detailState, setDetailState] = useState<DetailState>("idle");
+  const [detailError, setDetailError] = useState<QualityErrorKind | null>(null);
+
+  const reqIdRef = useRef(0);
+
+  useEffect(() => {
+    let active = true;
+    quality
+      .listCases()
+      .then((page) => {
+        if (!active) return;
+        setCases(page.cases);
+        setCursor(page.nextCursor);
+        setListState("loaded");
+      })
+      .catch((error) => {
+        if (!active) return;
+        setListError(qualityErrorKind(error));
+        setListState("error");
+      });
+    return () => {
+      active = false;
+    };
+  }, [quality, reloadToken]);
+
+  // Event handler — synchronous reset is allowed outside an effect.
+  const refresh = () => {
+    setListState("loading");
+    setListError(null);
+    setCases([]);
+    setCursor(null);
+    setReloadToken((token) => token + 1);
+  };
+
+  const loadMore = () => {
+    if (!cursor || loadingMore) return;
+    setLoadingMore(true);
+    quality
+      .listCases({ cursor })
+      .then((page) => {
+        setCases((prev) => [...prev, ...page.cases]);
+        setCursor(page.nextCursor);
+      })
+      .catch((error) => {
+        setListError(qualityErrorKind(error));
+        setListState("error");
+      })
+      .finally(() => setLoadingMore(false));
+  };
+
+  const selectCase = (evaluationId: string) => {
+    setSelectedId(evaluationId);
+    setDetailState("loading");
+    setDetailError(null);
+    setDetail(null);
+    const reqId = ++reqIdRef.current;
+    quality
+      .getCaseDetail(evaluationId)
+      .then((result) => {
+        if (reqIdRef.current !== reqId) return; // ignore stale response
+        setDetail(result);
+        setDetailState("loaded");
+      })
+      .catch((error) => {
+        if (reqIdRef.current !== reqId) return;
+        setDetailError(qualityErrorKind(error));
+        setDetailState("error");
+      });
+  };
+
+  return (
+    <div className="ql-workspace">
+      <header className="ql-workspace__head content-wrap content-wrap--wide">
+        <div>
+          <p className="eyebrow eyebrow--accent">LEGENDSTUDY LAB · QUALITY CONSOLE v0</p>
+          <h1>품질 검토 콘솔</h1>
+          <p className="ql-workspace__lead">초기 서비스 단계에서는 제출 답안과 AI 피드백을 가까이에서 검토해 서비스가 올바르게 작동하는지 확인합니다. 읽기 중심 콘솔이며, 사람 품질 판정 저장은 아직 제공하지 않습니다.</p>
+        </div>
+      </header>
+      <div className="ql-workspace__grid content-wrap content-wrap--wide">
+        <aside className="ql-workspace__list">
+          <QualityCaseList
+            cases={cases}
+            state={listState}
+            errorKind={listError}
+            selectedId={selectedId}
+            hasMore={Boolean(cursor)}
+            loadingMore={loadingMore}
+            onSelect={selectCase}
+            onLoadMore={loadMore}
+            onRefresh={refresh}
+          />
+        </aside>
+        <main className="ql-workspace__detail">
+          <QualityCaseDetailPanel detail={detail} state={detailState} errorKind={detailError} />
+        </main>
+      </div>
+    </div>
+  );
+}
