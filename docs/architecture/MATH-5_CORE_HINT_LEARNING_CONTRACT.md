@@ -10,7 +10,7 @@ no AI/Vision calls, no real student evaluation, no payment, no VOICE-1.
 [MATH-2A](MATH-2_CANONICAL_DATA_PERSISTENCE_CONTRACT.md) ·
 [MATH-3A](MATH-3_VISION_INPUT_ARCHITECTURE.md) ·
 [MATH-4A](MATH-4_EVALUATION_ENGINE_CONTRACT.md) — all APPROVED.
-**Successor:** [MATH-6A](MATH-6_RESOLVE_REEVALUATION_LEARNING_HISTORY_CONTRACT.md) (re-solve/reevaluation/learning-history contract).
+**Successor:** [MATH-6A](MATH-6_RESOLVE_REEVALUATION_LEARNING_HISTORY_CONTRACT.md) (re-solve/reevaluation/history) → [MATH-7A](MATH-7_HUMAN_QUALITY_CONSOLE_CONTRACT.md) (Human Quality / Quality Console).
 
 > **This document authorizes nothing and changes no system.** No UI, no DB migration/schema, no
 > shared-backend change, **no AI/Vision provider call**, **no real student answer evaluated**, no

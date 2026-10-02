@@ -10,7 +10,8 @@ call, no real student evaluation, no payment implementation, no VOICE-1.
 [MATH-2A](MATH-2_CANONICAL_DATA_PERSISTENCE_CONTRACT.md) ·
 [MATH-3A](MATH-3_VISION_INPUT_ARCHITECTURE.md) ·
 [MATH-4A](MATH-4_EVALUATION_ENGINE_CONTRACT.md) ·
-[MATH-5A](MATH-5_CORE_HINT_LEARNING_CONTRACT.md) — all APPROVED. APP authority: MATH-2B
+[MATH-5A](MATH-5_CORE_HINT_LEARNING_CONTRACT.md) — all APPROVED.
+**Successor:** [MATH-7A](MATH-7_HUMAN_QUALITY_CONSOLE_CONTRACT.md) (Human Quality / Quality Console contract). APP authority: MATH-2B
 (DB/Security cross-review) + MATH-2R (Shared Integration Contract). Codex MATH-2C implementation is
 **concurrent and incomplete** → this contract depends on **MATH-2R semantics, not physical names**
 (§17).

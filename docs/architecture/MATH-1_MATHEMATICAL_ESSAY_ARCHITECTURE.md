@@ -6,7 +6,7 @@
 **Repository / branch:** `LC3808/legendstudy-lab` · `claude/math-essay-architecture-v1`.
 **Base commit:** `253867b91b00429d581946a418b2c82b2163e721` (tip of `claude/quality-console-v0`,
 HQR-1 + LDP-1 preserved).
-**Successor:** [MATH-2A](MATH-2_CANONICAL_DATA_PERSISTENCE_CONTRACT.md) (persistence) → [MATH-3A](MATH-3_VISION_INPUT_ARCHITECTURE.md) (Vision/input) → [MATH-4A](MATH-4_EVALUATION_ENGINE_CONTRACT.md) (evaluation engine) → [MATH-5A](MATH-5_CORE_HINT_LEARNING_CONTRACT.md) (CORE/hint learning) → [MATH-6A](MATH-6_RESOLVE_REEVALUATION_LEARNING_HISTORY_CONTRACT.md) (re-solve/reevaluation/learning-history contract).
+**Successor:** [MATH-2A](MATH-2_CANONICAL_DATA_PERSISTENCE_CONTRACT.md) (persistence) → [MATH-3A](MATH-3_VISION_INPUT_ARCHITECTURE.md) (Vision/input) → [MATH-4A](MATH-4_EVALUATION_ENGINE_CONTRACT.md) (evaluation engine) → [MATH-5A](MATH-5_CORE_HINT_LEARNING_CONTRACT.md) (CORE/hint learning) → [MATH-6A](MATH-6_RESOLVE_REEVALUATION_LEARNING_HISTORY_CONTRACT.md) (re-solve/reevaluation/history) → [MATH-7A](MATH-7_HUMAN_QUALITY_CONSOLE_CONTRACT.md) (Human Quality / Quality Console contract).
 
 > **This document authorizes nothing.** It contains **no** migration SQL, **no** implementation
 > code, **no** Vision/OCR/AI provider integration, and makes **no** change to Production, to
