@@ -10,6 +10,7 @@ AI, no real student evaluation, no `legendstudy-app`/`legendstudy-docs` change.
 [MATH-2A](MATH-2_CANONICAL_DATA_PERSISTENCE_CONTRACT.md) (APPROVED, + MATH-2B corrections below) ·
 [MATH-3A](MATH-3_VISION_INPUT_ARCHITECTURE.md) (APPROVED).
 **Successor:** [MATH-5A](MATH-5_CORE_HINT_LEARNING_CONTRACT.md) (CORE/hint learning) → [MATH-6A](MATH-6_RESOLVE_REEVALUATION_LEARNING_HISTORY_CONTRACT.md) (re-solve/reevaluation/history) → [MATH-7A](MATH-7_HUMAN_QUALITY_CONSOLE_CONTRACT.md) (Human Quality / Quality Console).
+**Implementation:** [MATH-4B_EVALUATION_ENGINE_IMPLEMENTATION.md](MATH-4B_EVALUATION_ENGINE_IMPLEMENTATION.md) — deterministic engine + math-eval-v1 validator + MATH-2D worker binding in `src/lib/math-eval/` (E01–E35 green; no live model).
 
 > **This document authorizes nothing and changes no system.** No provider/AI call, no DB
 > migration/schema, no Production change, **no real student answer evaluated**, no App/docs-repo
