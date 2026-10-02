@@ -9,7 +9,7 @@ provider calls, no Production change.
 **Authority read:** [MATH-1](MATH-1_MATHEMATICAL_ESSAY_ARCHITECTURE.md) (APPROVED) ·
 [MATH-2A](MATH-2_CANONICAL_DATA_PERSISTENCE_CONTRACT.md) (COMPLETE; Codex MATH-2B DB/security
 cross-review concurrent).
-**Successor:** [MATH-4A](MATH-4_EVALUATION_ENGINE_CONTRACT.md) (evaluation engine) → [MATH-5A](MATH-5_CORE_HINT_LEARNING_CONTRACT.md) (CORE/hint/re-solve learning contract).
+**Successor:** [MATH-4A](MATH-4_EVALUATION_ENGINE_CONTRACT.md) (evaluation engine) → [MATH-5A](MATH-5_CORE_HINT_LEARNING_CONTRACT.md) (CORE/hint learning) → [MATH-6A](MATH-6_RESOLVE_REEVALUATION_LEARNING_HISTORY_CONTRACT.md) (re-solve/reevaluation/learning-history).
 
 > **This document authorizes nothing and changes no system.** No DB migration, no shared-backend
 > schema change, no Production change, **no paid Vision/OCR/AI provider call**, **no real student
