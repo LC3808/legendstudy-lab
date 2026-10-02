@@ -9,6 +9,7 @@ AI, no real student evaluation, no `legendstudy-app`/`legendstudy-docs` change.
 **Authority read:** [MATH-1](MATH-1_MATHEMATICAL_ESSAY_ARCHITECTURE.md) (APPROVED) ·
 [MATH-2A](MATH-2_CANONICAL_DATA_PERSISTENCE_CONTRACT.md) (APPROVED, + MATH-2B corrections below) ·
 [MATH-3A](MATH-3_VISION_INPUT_ARCHITECTURE.md) (APPROVED).
+**Successor:** [MATH-5A](MATH-5_CORE_HINT_LEARNING_CONTRACT.md) (CORE/hint/re-solve learning contract).
 
 > **This document authorizes nothing and changes no system.** No provider/AI call, no DB
 > migration/schema, no Production change, **no real student answer evaluated**, no App/docs-repo
