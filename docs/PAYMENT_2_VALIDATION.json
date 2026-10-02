@@ -1,0 +1,797 @@
+{
+  "scope": "LAB deterministic integration; APP DB contract mocked, not deployed DB evidence",
+  "node": "22",
+  "passed": 185,
+  "failed": 0,
+  "suites": {
+    "payments.test.ts": [
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter canonical SKU 1c",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter canonical SKU 3c",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter canonical SKU 5c",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter canonical SKU 10c",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter reject forged field amount",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter reject forged field user_id",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter reject forged field mode",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter reject forged field coupon",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter reject forged field successUrl",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter unsupported SKU",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter duplicate order returns same canonical id",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter changed duplicate conflicts",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter owner is rechecked before finance",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter exact confirmation and TEST record",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter amount mismatch calls no finance/provider",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter duplicate confirmation posts once",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter concurrent confirmations reuse durable operation key",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter changed confirmation identity rejected",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter timeout grants nothing and records UNKNOWN",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter malformed provider response grants nothing",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter provider mismatch paymentKey",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter provider mismatch orderId",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter provider mismatch mId",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter provider mismatch currency",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter provider mismatch totalAmount",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter provider success local failure recovered by lookup",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter status does not mutate payment",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter full cancellation",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter partial 5400 comes from APP authority",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter duplicate cancellation",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter concurrent cancellation",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter cancel failure keeps pending then recovery",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter unauthorized support denied",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter mode LIVE closed",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter mode  closed",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter mode undefined closed",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter missing secret closed",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter foreign origin denied",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter anon denied",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter content type denied",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter method denied",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter oversize denied",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter malformed JSON denied",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter unknown endpoint denied",
+        "status": "passed"
+      },
+      {
+        "name": "PAYMENT-2 deterministic APP contract and provider adapter errors sanitized and no logs",
+        "status": "passed"
+      }
+    ],
+    "auth-email-regression.test.tsx": [
+      {
+        "name": "keeps email/password request and safe failure copy",
+        "status": "passed"
+      },
+      {
+        "name": "preserves signup confirmation-pending semantics",
+        "status": "passed"
+      },
+      {
+        "name": "preserves recovery email endpoint and neutral notice",
+        "status": "passed"
+      }
+    ],
+    "auth-forms-oauth.test.tsx": [
+      {
+        "name": "AuthForm social OAuth options starts Kakao OIDC without calling hosted OAuth",
+        "status": "passed"
+      },
+      {
+        "name": "AuthForm social OAuth options does not add Kakao scopes to Google or Apple",
+        "status": "passed"
+      }
+    ],
+    "auth-forms.test.tsx": [
+      {
+        "name": "AuthForm fails closed when browser Supabase configuration is absent",
+        "status": "passed"
+      }
+    ],
+    "essay-editor.test.tsx": [
+      {
+        "name": "EssayEditor counts characters and saves a temporary browser-local draft",
+        "status": "passed"
+      },
+      {
+        "name": "EssayEditor requires a confirmation before navigating to the synthetic evaluation result",
+        "status": "passed"
+      }
+    ],
+    "lab-landing.test.tsx": [
+      {
+        "name": "Axis Data Tracks landing keeps the fixed two-line Hero and independent three-track narrative",
+        "status": "passed"
+      },
+      {
+        "name": "Axis Data Tracks landing retains public CTA destinations rather than adding illustrative product routes",
+        "status": "passed"
+      }
+    ],
+    "payment-test.test.tsx": [
+      {
+        "name": "TEST checkout UI callback waits for canonical PAID, never trusts redirect alone",
+        "status": "passed"
+      },
+      {
+        "name": "TEST checkout UI success callback confirms server-created order",
+        "status": "passed"
+      },
+      {
+        "name": "TEST checkout UI pending refresh uses reconcile without callback payment key",
+        "status": "passed"
+      },
+      {
+        "name": "TEST checkout UI failure route has no provider or grant calls",
+        "status": "passed"
+      },
+      {
+        "name": "TEST checkout UI checkout uses server payload and sends no price authority",
+        "status": "passed"
+      }
+    ],
+    "site-nav.test.tsx": [
+      {
+        "name": "SiteNav session-aware header shows the public menu for an anonymous session",
+        "status": "passed"
+      },
+      {
+        "name": "SiteNav session-aware header shows the authenticated product menu once signed in",
+        "status": "passed"
+      },
+      {
+        "name": "SiteNav session-aware header does not show the authenticated menu before the session is known",
+        "status": "passed"
+      }
+    ],
+    "auth-config.test.ts": [
+      {
+        "name": "getBrowserAuthConfig accepts only the declared LegendStudy Supabase public project",
+        "status": "passed"
+      },
+      {
+        "name": "getBrowserAuthConfig fails closed when any public configuration value is absent or points elsewhere",
+        "status": "passed"
+      }
+    ],
+    "auth-state.test.ts": [
+      {
+        "name": "nextAuthSnapshot retains a current user across ordinary auth refresh events",
+        "status": "passed"
+      },
+      {
+        "name": "nextAuthSnapshot opens recovery mode only for a password recovery event",
+        "status": "passed"
+      },
+      {
+        "name": "nextAuthSnapshot clears the user and recovery flag for any signed-out event",
+        "status": "passed"
+      }
+    ],
+    "business-info.test.ts": [
+      {
+        "name": "seller identity publishes the Owner-confirmed business identity",
+        "status": "passed"
+      },
+      {
+        "name": "seller identity publishes the Owner-confirmed address",
+        "status": "passed"
+      },
+      {
+        "name": "seller identity keeps the existing filing published while the change report is pending",
+        "status": "passed"
+      },
+      {
+        "name": "seller identity does not invent a replacement filing number",
+        "status": "passed"
+      },
+      {
+        "name": "customer centre identity uses exactly one consumer-facing name",
+        "status": "passed"
+      },
+      {
+        "name": "customer centre identity derives the centre name from the service name",
+        "status": "passed"
+      },
+      {
+        "name": "customer centre identity never publishes a legacy centre name",
+        "status": "passed"
+      },
+      {
+        "name": "customer centre identity keeps the site brand, the sold product and the operator hierarchy distinct",
+        "status": "passed"
+      },
+      {
+        "name": "customer support channels makes e-mail the primary channel",
+        "status": "passed"
+      },
+      {
+        "name": "customer support channels keeps the general and partnership channel secondary",
+        "status": "passed"
+      },
+      {
+        "name": "customer support channels keeps the telephone channel published but never first",
+        "status": "passed"
+      },
+      {
+        "name": "customer support channels never promises phone-first help or invents operating hours",
+        "status": "passed"
+      },
+      {
+        "name": "customer support channels never exposes an operational mailbox as customer support",
+        "status": "passed"
+      },
+      {
+        "name": "customer support channels keeps every published channel actionable without JavaScript",
+        "status": "passed"
+      },
+      {
+        "name": "privacy officer publishes the Owner-confirmed officer and contact",
+        "status": "passed"
+      },
+      {
+        "name": "privacy officer does not use the telephone number as the privacy contact",
+        "status": "passed"
+      },
+      {
+        "name": "privacy activation gates lists exactly the features that must trigger a policy review",
+        "status": "passed"
+      },
+      {
+        "name": "privacy activation gates is internal release information, not public policy copy",
+        "status": "passed"
+      },
+      {
+        "name": "privacy activation gates no longer treats support hours as an open item",
+        "status": "passed"
+      },
+      {
+        "name": "product naming keeps the essay product distinct from the whole LAB platform",
+        "status": "passed"
+      }
+    ],
+    "kakao-oidc.test.ts": [
+      {
+        "name": "Kakao OIDC server boundary uses exact minimal scopes, hashed nonce, S256 and fixed callback",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary fails closed for unspecified secret policy or disabled integration",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary rejects cross-origin start and exchange without fetching",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary rejects malformed random fields",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary rejects invalid callback ?code=test-code",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary rejects invalid callback ?state=wrong&code=test-code",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary rejects invalid callback ?state=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary maps cancellation without forwarding provider error descriptions",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary passes code only in fragment to fixed destination with no-referrer/no-store",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary rejects state mismatch without token exchange",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary sanitizes exchange failures and clears transaction cookie",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary sanitizes exchange failures and clears transaction cookie",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary sanitizes exchange failures and clears transaction cookie",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary logs only safe provider error details for token exchange HTTP failures",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary omits unallowlisted provider fields from token exchange diagnostics",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary logs a missing ID token without exposing the provider response",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary exchanges server-side with PKCE, returns only ID token, and drops provider access tokens",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary rejects HTTP 301 without following or exposing redirect targets",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary rejects HTTP 302 without following or exposing redirect targets",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary rejects HTTP 303 without following or exposing redirect targets",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary rejects HTTP 307 without following or exposing redirect targets",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary rejects HTTP 308 without following or exposing redirect targets",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary classifies fetch exceptions without logging sensitive error details",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary classifies allowlisted fetch exception name function TypeError() { [native code] }",
+        "status": "passed"
+      },
+      {
+        "name": "Kakao OIDC server boundary classifies allowlisted fetch exception name class DOMException {\n  constructor(message = '', options = 'Error') {\n    // Invokes the Error constructor to create an object with the [[ErrorData]]\n    // internal slot.\n    // eslint-disable-next-line no-restricted-syntax\n    const self = new Error();\n    // Use `new.target.prototype` to support DOMException subclasses.\n    ObjectSetPrototypeOf(self, new.target.prototype);\n    self[transfer_mode_private_symbol] = kCloneable;\n\n    if (options && typeof options === 'object') {\n      const { name } = options;\n      internalsMap.set(self, {\n        message: `${message}`,\n        name: `${name}`,\n      });\n\n      if ('cause' in options) {\n        ObjectDefineProperty(self, 'cause', {\n          __proto__: null,\n          value: options.cause,\n          configurable: true,\n          writable: true,\n          enumerable: false,\n        });\n      }\n    } else {\n      internalsMap.set(self, {\n        message: `${message}`,\n        name: `${options}`,\n      });\n    }\n    // Return the error object as the return overriding of the constructor.\n    // eslint-disable-next-line no-constructor-return\n    return self;\n  }\n\n  [messaging_clone_symbol]() {\n    // See serialization steps in https://webidl.spec.whatwg.org/#dom-domexception-domexception\n    const internals = internalsMap.get(this);\n    return {\n      data: {\n        message: internals.message,\n        name: internals.name,\n        stack: this.stack,\n      },\n      deserializeInfo: 'internal/worker/clone_dom_exception:DOMException',\n    };\n  }\n\n  [messaging_deserialize_symbol](data) {\n    // See deserialization steps in https://webidl.spec.whatwg.org/#dom-domexception-domexception\n    internalsMap.set(this, {\n      message: data.message,\n      name: data.name,\n    });\n    this.stack = data.stack;\n  }\n\n  get name() {\n    const internals = internalsMap.get(this);\n    if (internals === undefined) {\n      throwInvalidThisError(TypeError, 'DOMException');\n    }\n    return internals.name;\n  }\n\n  get message() {\n    const internals = internalsMap.get(this);\n    if (internals === undefined) {\n      throwInvalidThisError(TypeError, 'DOMException');\n    }\n    return internals.message;\n  }\n\n  get code() {\n    const internals = internalsMap.get(this);\n    if (internals === undefined) {\n      throwInvalidThisError(TypeError, 'DOMException');\n    }\n\n    if (disusedNamesSet.has(internals.name)) {\n      return 0;\n    }\n\n    const code = nameToCodeMap.get(internals.name);\n    return code === undefined ? 0 : code;\n  }\n}",
+        "status": "passed"
+      },
+      {
+        "name": "browser transaction and Supabase session seam creates independent random state/nonce/verifier and exact SHA-256 representations",
+        "status": "passed"
+      },
+      {
+        "name": "browser transaction and Supabase session seam consumes transaction once and rejects replay",
+        "status": "passed"
+      },
+      {
+        "name": "browser transaction and Supabase session seam rejects expired, missing code and mismatched state",
+        "status": "passed"
+      },
+      {
+        "name": "browser transaction and Supabase session seam uses official kakao ID-token API with raw nonce and existing client",
+        "status": "passed"
+      },
+      {
+        "name": "browser transaction and Supabase session seam rejects wrong nonce before Supabase and rejects session failure",
+        "status": "passed"
+      },
+      {
+        "name": "browser transaction and Supabase session seam logs exchange HTTP failures and Supabase failures with safe status/code only",
+        "status": "passed"
+      }
+    ],
+    "legal-documents.test.ts": [
+      {
+        "name": "legal document set publishes both documents",
+        "status": "passed"
+      },
+      {
+        "name": "legal document set carries no internal build or review vocabulary",
+        "status": "passed"
+      },
+      {
+        "name": "legal document set uses one effective-date source for both documents",
+        "status": "passed"
+      },
+      {
+        "name": "terms document names the operating entity and the sold product",
+        "status": "passed"
+      },
+      {
+        "name": "terms document matches the published prices",
+        "status": "passed"
+      },
+      {
+        "name": "terms document matches the published Credit periods and deduction",
+        "status": "passed"
+      },
+      {
+        "name": "terms document covers every topic the review requires",
+        "status": "passed"
+      },
+      {
+        "name": "terms document states the minor payment clause without over-promising",
+        "status": "passed"
+      },
+      {
+        "name": "terms document does not let the refund policy outrank statutory rights",
+        "status": "passed"
+      },
+      {
+        "name": "terms document names the customer centre and puts e-mail before the phone",
+        "status": "passed"
+      },
+      {
+        "name": "terms document does not claim a live payment flow",
+        "status": "passed"
+      },
+      {
+        "name": "terms document describes Credit as a non-transferable usage unit, not money",
+        "status": "passed"
+      },
+      {
+        "name": "privacy document covers every topic the review requires",
+        "status": "passed"
+      },
+      {
+        "name": "privacy document publishes the Owner-confirmed privacy officer and contact",
+        "status": "passed"
+      },
+      {
+        "name": "privacy document states the real current processors and the real data boundaries",
+        "status": "passed"
+      },
+      {
+        "name": "privacy document places the primary database in Seoul and never in the United States",
+        "status": "passed"
+      },
+      {
+        "name": "privacy document does not list an inactive payment or AI provider as a current processor",
+        "status": "passed"
+      },
+      {
+        "name": "privacy document never claims to collect social-login passwords or payment card numbers",
+        "status": "passed"
+      },
+      {
+        "name": "privacy document describes the real account-deletion path without promising an unbuilt one",
+        "status": "passed"
+      },
+      {
+        "name": "privacy document keeps operational mailboxes out of the public documents",
+        "status": "passed"
+      }
+    ],
+    "pricing.test.ts": [
+      {
+        "name": "owner-final pricing keeps the approved payment amount for every Credit pack",
+        "status": "passed"
+      },
+      {
+        "name": "owner-final pricing displays the per-Credit price for each pack",
+        "status": "passed"
+      },
+      {
+        "name": "owner-final pricing recommends exactly one pack and it is 5 Credits",
+        "status": "passed"
+      },
+      {
+        "name": "owner-final pricing does not sell the 20 Credit pack in the first release",
+        "status": "passed"
+      },
+      {
+        "name": "hero copy uses the Owner-approved headline and description",
+        "status": "passed"
+      },
+      {
+        "name": "hero copy keeps internal evaluation strategy and removed marketing phrases out of the hero",
+        "status": "passed"
+      },
+      {
+        "name": "hero copy does not carry the reevaluation rule or the Credit scope into the hero",
+        "status": "passed"
+      },
+      {
+        "name": "product card copy shows answer quantity only, without reevaluation wording",
+        "status": "passed"
+      },
+      {
+        "name": "product card copy keeps reevaluation and review-count claims off the cards",
+        "status": "passed"
+      },
+      {
+        "name": "credit scope and reevaluation copy states the Owner-approved 1 Credit scope",
+        "status": "passed"
+      },
+      {
+        "name": "credit scope and reevaluation copy states the Owner-approved reevaluation rule",
+        "status": "passed"
+      },
+      {
+        "name": "credit scope and reevaluation copy keeps Credit validity separate from the reevaluation window",
+        "status": "passed"
+      },
+      {
+        "name": "credit scope and reevaluation copy matches the future evaluation result CTA to the published rule",
+        "status": "passed"
+      },
+      {
+        "name": "purchase model sells a one-off Credit purchase with no subscription or automatic renewal",
+        "status": "passed"
+      },
+      {
+        "name": "purchase model does not use the removed subscription marketing line",
+        "status": "passed"
+      },
+      {
+        "name": "free signup benefit keeps the free grant presented as upcoming, never as active",
+        "status": "passed"
+      },
+      {
+        "name": "free signup benefit describes the free grant without expiry and without cash refund",
+        "status": "passed"
+      },
+      {
+        "name": "promotion block uses the Owner-approved title, label and CTA",
+        "status": "passed"
+      },
+      {
+        "name": "promotion block does not pretend the coupon can be redeemed yet",
+        "status": "passed"
+      },
+      {
+        "name": "refund policy deducts consumed Credits at the full 1 Credit price",
+        "status": "passed"
+      },
+      {
+        "name": "refund policy reproduces the Owner worked example",
+        "status": "passed"
+      },
+      {
+        "name": "refund policy never returns a negative refund when the deduction exceeds the payment",
+        "status": "passed"
+      },
+      {
+        "name": "refund policy refunds an entirely unused purchase in full",
+        "status": "passed"
+      },
+      {
+        "name": "refund policy keeps statutory consumer rights separate from this commercial policy",
+        "status": "passed"
+      },
+      {
+        "name": "service and payment state does not present payment as available",
+        "status": "passed"
+      },
+      {
+        "name": "service and payment state does not show either essay track as already available",
+        "status": "passed"
+      },
+      {
+        "name": "public document state reports the real state of each public document",
+        "status": "passed"
+      }
+    ],
+    "public-catalog.test.ts": [
+      {
+        "name": "public catalog preserves the reviewed five-university fixture subset",
+        "status": "passed"
+      },
+      {
+        "name": "public catalog looks up a university and declared public metadata year without fallback",
+        "status": "passed"
+      },
+      {
+        "name": "public catalog filters by name, region, year, and taxonomy without inventing fixture rows",
+        "status": "passed"
+      }
+    ],
+    "quick-link.test.ts": [
+      {
+        "name": "official Quick Link resolver uses the canonical notice as the primary public navigation target",
+        "status": "passed"
+      },
+      {
+        "name": "official Quick Link resolver falls back to canonical notice instead of an unstable direct attachment",
+        "status": "passed"
+      },
+      {
+        "name": "official Quick Link resolver does not expose a direct file unless it is explicitly available and stable",
+        "status": "passed"
+      },
+      {
+        "name": "official Quick Link resolver avoids a broken direct file and surfaces a recheck state",
+        "status": "passed"
+      }
+    ],
+    "recovery-redirect.test.ts": [
+      {
+        "name": "recovery redirect contract sends a completed reset to the login page, not back to the reset screen",
+        "status": "passed"
+      },
+      {
+        "name": "recovery redirect contract shows the reset success notice only when arriving from a completed reset",
+        "status": "passed"
+      }
+    ],
+    "release-routes.test.ts": [
+      {
+        "name": "release routes preserves the canonical root and stable public entry paths",
+        "status": "passed"
+      },
+      {
+        "name": "release routes keeps the pricing page reachable for reviewers and external crawlers",
+        "status": "passed"
+      },
+      {
+        "name": "release routes keeps every sale-condition document in the indexable set",
+        "status": "passed"
+      },
+      {
+        "name": "release routes does not let a foundation disallow prefix shadow a public document",
+        "status": "passed"
+      },
+      {
+        "name": "release routes maps the authenticated product menu to existing foundation routes",
+        "status": "passed"
+      },
+      {
+        "name": "release routes does not claim an indexing canonical before an Owner supplies a final origin",
+        "status": "passed"
+      },
+      {
+        "name": "release routes keeps draft policy pages noindex even after a canonical origin is supplied",
+        "status": "passed"
+      }
+    ],
+    "return-to.test.ts": [
+      {
+        "name": "getSafeReturnPath accepts an internal path with query and hash",
+        "status": "passed"
+      },
+      {
+        "name": "getSafeReturnPath fails closed for external and malformed return paths",
+        "status": "passed"
+      },
+      {
+        "name": "getSafeReturnPath serializes only a safe internal return target",
+        "status": "passed"
+      }
+    ]
+  },
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "boundary": "PASS",
+  "static_export_pages": 44,
+  "production_writes": 0,
+  "live_calls": 0,
+  "app_authority": "e4836eda919c6c9dbf524026c68255f308c3c776",
+  "public_payment_internal_links": "PASS",
+  "built_output_secret_scan": "PASS",
+  "browser_static_preview": "PASS: 4 products and TEST label; anon checkout denied without API call",
+  "provider_evidence": "PAYMENT_2_PROVIDER_TEST.json"
+}

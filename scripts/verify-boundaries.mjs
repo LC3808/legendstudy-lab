@@ -39,7 +39,7 @@ for (const blockedDependency of ["express", "@trpc/server", "@trpc/client"]) {
 
 // Cloudflare exchange secrets must never be referenced from any browser source.
 for (const file of files) {
-  if (/KAKAO_CLIENT_SECRET|KAKAO_REST_API_KEY/.test(fs.readFileSync(file, "utf8")) && !file.endsWith(".test.ts")) {
+  if (/KAKAO_CLIENT_SECRET|KAKAO_REST_API_KEY|TOSS_TEST_SECRET_KEY|PAYMENT_FINANCE_TOKEN|PAYMENT_SUPPORT_SUBJECTS/.test(fs.readFileSync(file, "utf8")) && !file.endsWith(".test.ts")) {
     errors.push(`server Kakao binding referenced in browser source: ${path.relative(root, file)}`);
   }
 }
