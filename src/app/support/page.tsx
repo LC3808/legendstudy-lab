@@ -1,16 +1,22 @@
 import Link from "next/link";
 
-import { BusinessInfoList, ContactList, PhoneContact } from "@/components/business-info-block";
+import { BusinessInfoList, ContactList } from "@/components/business-info-block";
 import { buildPublicMetadata } from "@/lib/brand";
-import { businessInfo, customerCenter, ecommerceRegistration, supportEnquiryTypes } from "@/lib/business-info";
-import { pricingPlans, pricingPolicy, refundPolicy } from "@/lib/pricing";
+import { businessInfo, customerCenter } from "@/lib/business-info";
+import { refundPolicy } from "@/lib/pricing";
 
 export const metadata = buildPublicMetadata(
   customerCenter.displayName,
-  "레전드스터디 랩 고객센터 연락처와 문의 유형, 결제·환불·계정·개인정보 관련 문의의 접수와 처리 절차를 안내합니다.",
+  "레전드스터디 랩 고객센터 연락처와 환불 규정, 문의 접수 처리 절차를 안내합니다.",
   "/support",
 );
 
+/**
+ * Consumer-facing support page. Deliberately short: the two contact channels
+ * sit directly under the heading, and only what a customer needs in order to
+ * reach support or understand the refund rules is kept. Operational process
+ * detail and repeated contact blocks were removed.
+ */
 export default function SupportPage() {
   return (
     <div className="policy-page content-wrap content-wrap--detail support-page">
@@ -23,33 +29,25 @@ export default function SupportPage() {
         문의를 접수합니다.
       </p>
 
-      <section className="policy-section" aria-labelledby="support-contact">
-        <h2 id="support-contact">이메일 문의</h2>
-        <ContactList />
-      </section>
+      <ContactList />
 
-      <section className="policy-section" aria-labelledby="support-topics">
-        <h2 id="support-topics">문의 유형</h2>
-        <ul className="tag-row" aria-label="문의 유형">
-          {supportEnquiryTypes.map((type) => <li className="tag" key={type}>{type}</li>)}
-        </ul>
-        <p>
-          결제와 환불 문의는 결제 내역을 확인할 수 있도록 가입한 이메일 주소를 함께 알려주세요. 답안이나 첨삭 결과에
-          관한 문의는 문제명과 제출 시점을 알려주시면 확인이 빠릅니다.
-        </p>
-      </section>
-
-      <section className="policy-section" aria-labelledby="support-refund">
-        <h2 id="support-refund">환불 문의</h2>
-        <p>환불 문의 및 신청은 {customerCenter.primary.display}으로 접수해 주세요.</p>
+      <section className="policy-section" aria-labelledby="support-refund-rules">
+        <h2 id="support-refund-rules">환불 규정</h2>
+        <div className="refund-summary">
+          <p>
+            <span>미사용 Credit</span>
+            <strong>{refundPolicy.unused}</strong>
+          </p>
+          <p>
+            <span>일부 사용</span>
+            <strong>{refundPolicy.partialFormula}</strong>
+          </p>
+        </div>
         <ul className="policy-list">
-          <li>
-            환불은 {refundPolicy.requestWindow}에 {customerCenter.primary.display}으로 신청할 수 있습니다.
-          </li>
-          <li>{refundPolicy.partiallyUsed}</li>
+          <li>{refundPolicy.requestWindow}에 환불을 신청할 수 있습니다.</li>
           <li>{refundPolicy.zeroOrNegative}</li>
-          <li>{refundPolicy.processing} {refundPolicy.processingCaveat}</li>
           <li>{refundPolicy.freeCredit}</li>
+          <li>{refundPolicy.usedCreditRule}</li>
         </ul>
         <div className="policy-actions">
           <Link className="button button--outline" href="/refund/">환불정책 자세히 보기</Link>
@@ -57,25 +55,21 @@ export default function SupportPage() {
       </section>
 
       <section className="policy-section" aria-labelledby="support-process">
-        <h2 id="support-process">접수와 처리 절차</h2>
-        <ol className="process-list">
-          <li>
-            <strong>문의 접수</strong>
-            <span>이메일로 문의를 접수합니다.</span>
-          </li>
-          <li>
-            <strong>내용 확인</strong>
-            <span>가입 계정과 결제·이용 내역을 확인하고 추가로 필요한 정보를 요청할 수 있습니다.</span>
-          </li>
-          <li>
-            <strong>안내와 조치</strong>
-            <span>처리 결과 또는 환불 산정 내역을 안내하고 필요한 조치를 진행합니다.</span>
-          </li>
-        </ol>
+        <h2 id="support-process">문의 접수 처리 절차</h2>
+        <div className="process-flow">
+          <ol className="process-flow__steps" role="list">
+            <li>문의 접수</li>
+            <li>내용 확인</li>
+            <li>안내 및 처리</li>
+          </ol>
+          <p className="process-flow__note">
+            이메일로 문의를 접수하면 가입 계정과 필요한 내용을 확인한 후 처리 결과 또는 필요한 조치를 안내합니다.
+          </p>
+        </div>
       </section>
 
       <section className="policy-section" aria-labelledby="support-links">
-        <h2 id="support-links">관련 안내</h2>
+        <h2 id="support-links">기타 안내</h2>
         <div className="policy-actions">
           <Link className="button button--outline" href="/pricing/">요금 안내</Link>
           <Link className="button button--outline" href="/refund/">환불정책</Link>
@@ -83,16 +77,6 @@ export default function SupportPage() {
           <Link className="button button--outline" href="/privacy/">개인정보처리방침</Link>
           <Link className="button button--outline" href="/account-deletion/">계정 삭제 안내</Link>
         </div>
-        <p className="pricing-note">
-          판매 상품: Credit 충전형 논술 첨삭 이용권({pricingPlans.map((plan) => plan.credits).join(" / ")} Credits).
-          구매한 Credit은 결제일로부터 {pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있습니다.{" "}
-          {ecommerceRegistration.note}
-        </p>
-      </section>
-
-      <section className="policy-section" aria-labelledby="support-phone">
-        <h2 id="support-phone">보조 연락수단</h2>
-        <PhoneContact />
       </section>
 
       <section className="policy-section" aria-labelledby="support-business">

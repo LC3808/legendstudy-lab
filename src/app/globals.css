@@ -885,10 +885,31 @@ h1, h2, h3 { text-wrap: pretty; }
 .contact-list__value { color: var(--ink); font-size: 1rem; font-weight: 800; text-decoration: underline; text-underline-offset: 0.18em; overflow-wrap: anywhere; }
 .contact-list__note { color: var(--ink-soft); font-size: 0.8rem; line-height: 1.6; }
 
-.contact-phone { display: grid; gap: 0.25rem; margin: 1.3rem 0 0; padding: 0.9rem 1rem; border: 1px dashed var(--line); border-radius: var(--radius-sm); background: var(--surface); }
-.contact-phone__label { color: var(--ink-soft); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.02em; }
-.contact-phone__value { color: var(--ink); font-size: 0.95rem; font-weight: 700; text-decoration: underline; text-underline-offset: 0.18em; overflow-wrap: anywhere; }
-.contact-phone__note { margin: 0.2rem 0 0; color: var(--ink-soft); font-size: 0.8rem; line-height: 1.6; }
+.refund-summary { display: grid; gap: 0.5rem; margin: 1.3rem 0 0; }
+.refund-summary p { display: grid; gap: 0.2rem; margin: 0; padding: 0.85rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-muted); }
+.refund-summary span { color: var(--ink-soft); font-size: 0.74rem; font-weight: 800; letter-spacing: 0.02em; }
+.refund-summary strong { color: var(--ink); font-size: 0.95rem; font-weight: 700; line-height: 1.55; overflow-wrap: anywhere; }
+.refund-summary + .policy-list { margin-top: 1rem; }
+
+.process-flow { display: grid; gap: 0.7rem; margin: 1.3rem 0 0; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-muted); }
+.process-flow__steps { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.5rem; margin: 0; padding: 0; list-style: none; }
+.process-flow__steps li { color: var(--ink); font-size: 0.85rem; font-weight: 800; }
+.process-flow__steps li + li::before { content: "→"; margin-right: 0.5rem; color: var(--accent); font-weight: 700; }
+.process-flow__note { margin: 0; color: var(--ink-soft); font-size: 0.86rem; line-height: 1.65; overflow-wrap: anywhere; }
+
+.business-info__service { display: grid; gap: 0.35rem; margin: 1.1rem 0 0; padding-top: 0.9rem; border-top: 1px solid var(--line); }
+.business-info__service-name { color: var(--ink); font-size: 0.78rem; font-weight: 800; }
+.business-info__service-row { display: flex; flex-wrap: wrap; align-items: baseline; color: var(--ink-soft); font-size: 0.78rem; }
+.business-info__service-item { min-width: 0; overflow-wrap: anywhere; }
+.business-info__service-item + .business-info__service-item::before { content: "|"; margin: 0 0.7rem; color: var(--line-strong); }
+.business-info__service-item a { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 0.15em; }
+
+/* The service contact line stacks on small screens so the separators do not
+   strand at the start of a wrapped line. */
+@media (max-width: 680px) {
+  .business-info__service-row { flex-direction: column; gap: 0.3rem; }
+  .business-info__service-item + .business-info__service-item::before { content: none; margin: 0; }
+}
 
 .doc-meta { display: grid; gap: 0.6rem; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 1.6rem 0 0; }
 .doc-meta > div { padding: 0.85rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }

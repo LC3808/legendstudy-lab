@@ -9,8 +9,6 @@ import {
   pendingOwnerKeys,
   productNaming,
   supportContacts,
-  supportEnquiryTypes,
-  supportPhone,
 } from "./business-info";
 
 /**
@@ -24,7 +22,7 @@ const forbiddenOperationalAddresses = [
   ["privacy", "legendstudy.com"].join("@"),
 ];
 
-/** Consumer-facing supports must carry exactly one name. */
+/** Consumer-facing support must carry exactly one name. */
 const legacyCustomerCenterNames = [
   "LegendStudy 고객센터",
   "레전드스터디 고객센터",
@@ -38,7 +36,6 @@ const publishedSurface = () =>
     customerCenter,
     productNaming,
     supportContacts,
-    supportEnquiryTypes,
     pendingOwnerData,
   });
 
@@ -48,7 +45,7 @@ const publishedSurface = () =>
  * same as inventing them.
  */
 const renderedSurface = () =>
-  JSON.stringify({ businessInfo, customerCenter, productNaming, supportContacts, supportEnquiryTypes });
+  JSON.stringify({ businessInfo, customerCenter, productNaming, supportContacts });
 
 describe("seller identity", () => {
   it("publishes the Owner-confirmed business identity", () => {
@@ -83,7 +80,12 @@ describe("seller identity", () => {
 describe("customer centre identity", () => {
   it("uses exactly one consumer-facing name", () => {
     expect(customerCenter.displayName).toBe("레전드스터디 랩 고객센터");
+    expect(customerCenter.serviceName).toBe("레전드스터디 랩");
     expect(customerCenter.brandName).toBe("LegendStudy Lab");
+  });
+
+  it("derives the centre name from the service name", () => {
+    expect(customerCenter.displayName).toBe(`${customerCenter.serviceName} 고객센터`);
   });
 
   it("never publishes a legacy centre name", () => {
@@ -103,14 +105,14 @@ describe("customer centre identity", () => {
 
 describe("customer support channels", () => {
   it("makes e-mail the primary channel", () => {
-    expect(customerCenter.primary.label).toBe("고객지원 / 결제 / 환불");
+    expect(customerCenter.primary.label).toBe("고객지원 · 결제 및 환불 문의");
     expect(customerCenter.primary.display).toBe("support@legendstudy.com");
     expect(customerCenter.primary.href).toBe("mailto:support@legendstudy.com");
     expect(customerCenter.primary.description).toBe("서비스 이용, 결제·환불, 계정, 개인정보 관련 문의");
   });
 
   it("keeps the general and partnership channel secondary", () => {
-    expect(customerCenter.secondary.label).toBe("일반 / 제휴");
+    expect(customerCenter.secondary.label).toBe("일반 · 제휴 문의");
     expect(customerCenter.secondary.display).toBe("contact@legendstudy.com");
     expect(customerCenter.secondary.href).toBe("mailto:contact@legendstudy.com");
     expect(customerCenter.secondary.description).toBe("서비스 일반 문의 및 제휴 제안");
@@ -120,7 +122,6 @@ describe("customer support channels", () => {
     expect(customerCenter.phone.label).toBe("전화 문의");
     expect(customerCenter.phone.display).toBe("010-6469-7654");
     expect(customerCenter.phone.href).toBe("tel:01064697654");
-    expect(customerCenter.phone.note).toBe("원활한 확인과 처리를 위해 이메일 문의를 권장합니다.");
     expect(supportContacts.map((contact) => contact.display)).toEqual([
       "support@legendstudy.com",
       "contact@legendstudy.com",
@@ -129,7 +130,6 @@ describe("customer support channels", () => {
     // error, but the runtime assertion is exactly what must be guaranteed.
     const channelDisplays: string[] = supportContacts.map((contact) => contact.display);
     expect(channelDisplays).not.toContain(customerCenter.phone.display);
-    expect(supportPhone).toBe(customerCenter.phone);
   });
 
   it("never promises phone-first help or invents operating hours", () => {
@@ -144,10 +144,6 @@ describe("customer support channels", () => {
     for (const address of forbiddenOperationalAddresses) {
       expect(serialized).not.toContain(address);
     }
-  });
-
-  it("offers the enquiry categories the support page renders", () => {
-    expect(supportEnquiryTypes).toEqual(["서비스 이용", "결제", "환불·취소", "계정", "개인정보", "기타"]);
   });
 
   it("keeps every published channel actionable without JavaScript", () => {

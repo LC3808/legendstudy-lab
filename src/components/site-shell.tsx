@@ -40,7 +40,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
         <div className="site-footer__inner">
           <div className="site-footer__brand">
             <p className="site-footer__product"><strong>{brand.productName}</strong> {brand.byline}</p>
-            <BusinessInfoList />
+            <BusinessInfoList showServiceContact={false} />
             <CustomerCenterFooterContact />
           </div>
           <nav className="footer-nav" aria-label="정책과 고객지원">

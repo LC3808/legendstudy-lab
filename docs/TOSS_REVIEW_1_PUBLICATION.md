@@ -89,6 +89,14 @@ regional-office address is not published.
 
 ## Surfacing behaviour fixed along the way
 
+- The support page read like an internal runbook. It now opens with the two
+  contact channels directly under the heading, then 환불 규정, 문의 접수 처리
+  절차, 기타 안내 and 사업자 정보. The removed headings (이메일 문의, 문의 유형,
+  환불 문의, 접수와 처리 절차, 관련 안내, 보조 연락수단) are guarded by
+  `scripts/verify-boundaries.mjs`, which fails if any of them returns.
+- The telephone number is a business fact inside the 사업자 정보 block, not a
+  contact card. `BusinessInfoList` takes `showServiceContact`, so the page-level
+  block publishes it while the footer stays e-mail centric.
 - `robots.ts` now lists each public document as an explicit `allow` rule. The
   `/lab` disallow prefix previously also covered the public
   `/lab/how-it-works/` and `/lab/coverage/` pages, so two sitemap URLs were

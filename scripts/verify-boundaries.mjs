@@ -67,6 +67,27 @@ for (const file of loadingBoundaries) {
   errors.push(`route loading boundary breaks static export output: ${path.relative(root, file)}`);
 }
 
+// The support page is consumer-facing, so operational headings that were
+// removed must not return: they made the page read like an internal runbook
+// and pushed the two contact channels below the fold.
+const supportPage = path.join(appRoot, "support", "page.tsx");
+const removedSupportHeadings = [
+  "이메일 문의",
+  "문의 유형",
+  "환불 문의",
+  "접수와 처리 절차",
+  "관련 안내",
+  "보조 연락수단",
+];
+if (fs.existsSync(supportPage)) {
+  const source = fs.readFileSync(supportPage, "utf8");
+  for (const heading of removedSupportHeadings) {
+    if (new RegExp(`<h[1-6][^>]*>\\s*${heading}\\s*<`).test(source)) {
+      errors.push(`removed support heading returned: ${heading}`);
+    }
+  }
+}
+
 if (errors.length) {
   console.error("BOUNDARY_AUDIT=FAIL");
   for (const error of errors) console.error(`- ${error}`);

@@ -1,4 +1,4 @@
-import { businessInfo, customerCenter, supportContacts, supportPhone } from "@/lib/business-info";
+import { businessInfo, customerCenter, supportContacts } from "@/lib/business-info";
 
 /**
  * Shared renderers for the Owner-confirmed business identity and customer
@@ -6,12 +6,18 @@ import { businessInfo, customerCenter, supportContacts, supportPhone } from "@/l
  * page cannot state a different centre name, phone number, address or
  * registration number.
  *
- * E-mail is the primary channel everywhere. The telephone channel has its own
- * renderer and is used in a secondary position only, because it is published
- * for verification rather than promoted as the way to reach support.
+ * E-mail is the primary channel everywhere. The telephone number is a business
+ * fact inside the 사업자 정보 block, never a call-to-action and never its own
+ * contact card.
  */
 
-export function BusinessInfoList() {
+/**
+ * `showServiceContact` keeps the telephone number out of the footer. The footer
+ * already carries an e-mail-only support line, and the Owner asked for the
+ * footer to stay e-mail centric, so the service contact line is rendered only
+ * inside a page-level 사업자 정보 block.
+ */
+export function BusinessInfoList({ showServiceContact = true }: { showServiceContact?: boolean }) {
   const rows = [
     { term: "상호", value: businessInfo.legalName },
     { term: "대표자", value: businessInfo.representative },
@@ -21,14 +27,37 @@ export function BusinessInfoList() {
   ];
 
   return (
-    <dl className="business-info">
-      {rows.map((row) => (
-        <div key={row.term}>
-          <dt>{row.term}</dt>
-          <dd>{row.value}</dd>
-        </div>
-      ))}
-    </dl>
+    <>
+      <dl className="business-info">
+        {rows.map((row) => (
+          <div key={row.term}>
+            <dt>{row.term}</dt>
+            <dd>{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+      {showServiceContact ? (
+        /*
+       * Service contact line. The telephone number stays published here as a
+       * business fact so a reviewer can verify a telephone channel, but it is
+       * not a call-to-action and has no separate contact card.
+       */
+        <p className="business-info__service">
+          <span className="business-info__service-name">{customerCenter.serviceName}</span>
+          <span className="business-info__service-row">
+            <span className="business-info__service-item">
+              전화 <a href={customerCenter.phone.href}>{customerCenter.phone.display}</a>
+            </span>
+            <span className="business-info__service-item">
+              일반·제휴 <a href={customerCenter.secondary.href}>{customerCenter.secondary.display}</a>
+            </span>
+            <span className="business-info__service-item">
+              고객지원 <a href={customerCenter.primary.href}>{customerCenter.primary.display}</a>
+            </span>
+          </span>
+        </p>
+      ) : null}
+    </>
   );
 }
 
@@ -37,7 +66,7 @@ export function CustomerCenterName() {
   return <p className="customer-center__name">{customerCenter.displayName}</p>;
 }
 
-/** E-mail channels in priority order. */
+/** E-mail channels in priority order: primary first, secondary second. */
 export function ContactList({ showName = false }: { showName?: boolean }) {
   return (
     <div className="customer-center">
@@ -51,20 +80,6 @@ export function ContactList({ showName = false }: { showName?: boolean }) {
           </li>
         ))}
       </ul>
-    </div>
-  );
-}
-
-/**
- * Secondary telephone channel. Rendered below the e-mail channels and never as
- * a headline action. Operating hours are intentionally absent.
- */
-export function PhoneContact() {
-  return (
-    <div className="contact-phone">
-      <span className="contact-phone__label">{supportPhone.label}</span>
-      <a className="contact-phone__value" href={supportPhone.href}>{supportPhone.display}</a>
-      <p className="contact-phone__note">{supportPhone.note}</p>
     </div>
   );
 }

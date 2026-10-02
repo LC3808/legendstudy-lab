@@ -55,6 +55,8 @@ export const ecommerceRegistration = {
 export const customerCenter = {
   /** Official consumer-facing name, used verbatim wherever support is named. */
   displayName: "레전드스터디 랩 고객센터",
+  /** Korean name of the service itself, without the customer-centre suffix. */
+  serviceName: "레전드스터디 랩",
   /** English name of the site itself. Not a translation of `displayName`. */
   brandName: "LegendStudy Lab",
   /**
@@ -65,14 +67,14 @@ export const customerCenter = {
    */
   primary: {
     id: "support",
-    label: "고객지원 / 결제 / 환불",
+    label: "고객지원 · 결제 및 환불 문의",
     description: "서비스 이용, 결제·환불, 계정, 개인정보 관련 문의",
     display: "support@legendstudy.com",
     href: "mailto:support@legendstudy.com",
   },
   secondary: {
     id: "contact",
-    label: "일반 / 제휴",
+    label: "일반 · 제휴 문의",
     description: "서비스 일반 문의 및 제휴 제안",
     display: "contact@legendstudy.com",
     href: "mailto:contact@legendstudy.com",
@@ -93,19 +95,6 @@ export const customerCenter = {
 
 /** E-mail channels in priority order: primary first, secondary second. */
 export const supportContacts = [customerCenter.primary, customerCenter.secondary] as const;
-
-/** Alias kept for the components that render only the telephone channel. */
-export const supportPhone = customerCenter.phone;
-
-/** Enquiry categories offered on the support page. */
-export const supportEnquiryTypes = [
-  "서비스 이용",
-  "결제",
-  "환불·취소",
-  "계정",
-  "개인정보",
-  "기타",
-] as const;
 
 export type OwnerPendingKey =
   | "PRIVACY_OFFICER"
