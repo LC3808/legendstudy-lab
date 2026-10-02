@@ -13,6 +13,11 @@ export function ReleaseStatusLabel({ status }: { status: ReleaseStatus }) {
   return <span className={`release-status release-status--${status.toLowerCase()}`}>{labels[status]}</span>;
 }
 
-export function ReleaseNotice({ children }: { children: ReactNode }) {
-  return <aside className="release-notice" aria-label="현재 공개 범위 안내">{children}</aside>;
+/**
+ * `label` exists so a page with more than one notice can give each aside a
+ * distinct accessible name. Two identically labelled landmarks on one page are
+ * flagged by `landmark-unique` and make screen-reader navigation ambiguous.
+ */
+export function ReleaseNotice({ children, label = "현재 공개 범위 안내" }: { children: ReactNode; label?: string }) {
+  return <aside className="release-notice" aria-label={label}>{children}</aside>;
 }

@@ -12,8 +12,11 @@
 | `/lab/` | Legacy compatibility alias | Cloudflare Pages redirects to `/` with HTTP 308 |
 | `/lab/how-it-works/` | Service direction and current boundary | Public and indexable |
 | `/lab/coverage/` | Supported scope and explicit non-features | Public and indexable |
-| `/privacy/`, `/terms/` | Policy URL foundations | Draft; noindex; Owner review required |
-| `/support/` | Support URL foundation | No live contact channel |
+| `/pricing/` | Credit pricing, payment terms and refund summary | Public and indexable; payment not connected |
+| `/refund/` | Full refund policy for Credit purchases | Public; Owner commercial policy; legal review recommended |
+| `/terms/` | Terms of service for the Credit-based essay product | Public and indexable; Owner-confirmed commercial terms; legal review recommended |
+| `/privacy/` | Privacy policy derived from the real auth and data flow | Public and indexable; remaining Owner items are listed on the page itself |
+| `/support/` | Customer centre with the published contact channels | Public and indexable; phone and support e-mail |
 | `/account-deletion/` | Account deletion URL foundation | No deletion intake or API |
 | `/login/`, `/signup/`, `/forgot-password/`, `/reset-password/` | LegendStudy Account browser-auth routes | `noindex`; LAB Production E2E verified |
 | `/account/` | Session-aware account connection state | `noindex`; does not read or write personal LAB data |
@@ -61,6 +64,6 @@ Cloudflare Pages serves the static release and browser-side Supabase Auth; Kakao
 
 ## Before extending live functionality
 
-Read [Architecture](docs/ARCHITECTURE.md), [Data boundaries](docs/DATA_BOUNDARIES.md), [Shared Account setup and Production Auth status](docs/SHARED_ACCOUNT_AUTH_SETUP.md), [Prototype migration](docs/PROTOTYPE_MIGRATION.md), [Future implementation handoff](docs/FUTURE_IMPLEMENTATION_HANDOFF.md), and [Production Landing and Route IA](docs/RELEASE_WEB_FOUNDATION.md). The project work tracker is [todo.md](todo.md).
+Read [Architecture](docs/ARCHITECTURE.md), [Data boundaries](docs/DATA_BOUNDARIES.md), [Shared Account setup and Production Auth status](docs/SHARED_ACCOUNT_AUTH_SETUP.md), [Prototype migration](docs/PROTOTYPE_MIGRATION.md), [Future implementation handoff](docs/FUTURE_IMPLEMENTATION_HANDOFF.md), [Production Landing and Route IA](docs/RELEASE_WEB_FOUNDATION.md), [Static export notes](docs/STATIC_EXPORT_NOTES.md), and [Toss review publication state](docs/TOSS_REVIEW_1_PUBLICATION.md). The project work tracker is [todo.md](todo.md).
 
 Any future account, AI, payment, source-content, or user-data feature requires its own rights, security, privacy, product, and operating review before release.

@@ -1,6 +1,7 @@
 export const publicReleaseRoutes = [
   { href: "/", label: "서비스" },
   { href: "/lab/how-it-works/", label: "이용 안내" },
+  { href: "/pricing/", label: "요금 안내" },
   { href: "/lab/coverage/", label: "공개 범위" },
 ] as const;
 
@@ -15,7 +16,8 @@ export const authenticatedProductRoutes = [
 export const policyRoutes = [
   { href: "/privacy/", label: "개인정보처리방침" },
   { href: "/terms/", label: "이용약관" },
-  { href: "/support/", label: "지원" },
+  { href: "/refund/", label: "환불정책" },
+  { href: "/support/", label: "고객센터" },
   { href: "/account-deletion/", label: "계정 삭제 안내" },
 ] as const;
 
@@ -32,3 +34,17 @@ export const internalFoundationPathPrefixes = [
 ] as const;
 
 export const publicReleasePaths = publicReleaseRoutes.map((route) => route.href);
+
+/**
+ * Public documents that search engines may index alongside the entry routes.
+ * The auth, essay and My routes stay out of this list and stay disallowed in
+ * robots.txt, so a reviewer or crawler can always reach the sale conditions
+ * without being sent into a foundation screen.
+ */
+export const indexablePublicPaths = [
+  ...publicReleasePaths,
+  "/terms/",
+  "/privacy/",
+  "/refund/",
+  "/support/",
+] as const;

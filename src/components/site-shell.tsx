@@ -3,10 +3,21 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { AccountControl } from "@/components/account-control";
+import { BusinessInfoList, CustomerCenterFooterContact } from "@/components/business-info-block";
 import { brand } from "@/lib/brand";
 import { SiteNav } from "@/components/site-nav";
 import { policyRoutes } from "@/lib/release-routes";
 
+/**
+ * Public shell for every route. The footer carries the Owner-confirmed business
+ * identity and the customer centre e-mail channels on every page, because a
+ * Toss reviewer must be able to confirm the seller, the registration numbers
+ * and a real contact channel without signing in.
+ *
+ * The telephone channel is deliberately absent here: it is published for
+ * verification on the support page as a secondary contact, not promoted as the
+ * way to reach support.
+ */
 export function SiteShell({ children }: { children: ReactNode }) {
   return (
     <div className="site-shell">
@@ -20,18 +31,19 @@ export function SiteShell({ children }: { children: ReactNode }) {
           <SiteNav />
           <div className="site-header__actions">
             <AccountControl />
-            <Link className="button button--accent button--small" href="/support/">지원 안내</Link>
+            <Link className="button button--accent button--small" href="/support/">고객센터</Link>
           </div>
         </div>
       </header>
       <main>{children}</main>
       <footer className="site-footer">
         <div className="site-footer__inner">
-          <div>
-            <p><strong>{brand.productName}</strong> {brand.byline} · 서비스 안내</p>
-            <p>현재 공개 범위와 향후 학습 흐름을 구분해 안내합니다. 준비되지 않은 기능은 실제 서비스처럼 표시하지 않습니다.</p>
+          <div className="site-footer__brand">
+            <p className="site-footer__product"><strong>{brand.productName}</strong> {brand.byline}</p>
+            <BusinessInfoList showServiceContact={false} />
+            <CustomerCenterFooterContact />
           </div>
-          <nav className="footer-nav" aria-label="정책과 지원">
+          <nav className="footer-nav" aria-label="정책과 고객지원">
             {policyRoutes.map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
           </nav>
         </div>

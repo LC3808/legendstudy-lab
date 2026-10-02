@@ -1,25 +1,88 @@
 import Link from "next/link";
 
-import { ReleaseNotice, ReleaseStatusLabel } from "@/components/release-status";
+import { BusinessInfoList, ContactList } from "@/components/business-info-block";
 import { buildPublicMetadata } from "@/lib/brand";
+import { businessInfo, customerCenter } from "@/lib/business-info";
+import { refundPolicy } from "@/lib/pricing";
 
 export const metadata = buildPublicMetadata(
-  "지원 안내",
-  "LegendStudy+ 및 LS LAB의 공식 지원 경로 발행 준비 상태를 안내합니다.",
+  customerCenter.displayName,
+  "레전드스터디 랩 고객센터 연락처와 환불 규정, 문의 접수 처리 절차를 안내합니다.",
   "/support",
-  { index: false },
 );
 
+/**
+ * Consumer-facing support page. Deliberately short: the two contact channels
+ * sit directly under the heading, and only what a customer needs in order to
+ * reach support or understand the refund rules is kept. Operational process
+ * detail and repeated contact blocks were removed.
+ */
 export default function SupportPage() {
   return (
-    <div className="policy-page content-wrap content-wrap--detail">
-      <p className="eyebrow eyebrow--accent">LEGENDSTUDY+ / SUPPORT</p>
-      <div className="policy-page__heading"><h1>지원 채널<br />발행 준비 상태</h1><ReleaseStatusLabel status="OWNER_REVIEW_REQUIRED" /></div>
-      <p className="policy-page__lead">이 페이지는 LegendStudy+와 LS LAB이 사용할 공식 지원 URL의 기반입니다. 현재 운영 중인 이메일, 상담 폼, 처리 시간, 문의번호는 연결되어 있지 않습니다.</p>
-      <section className="policy-section"><h2>출시 전 지원 운영에 필요한 정보</h2><ul className="policy-list"><li>공식 지원 이메일 또는 티켓 시스템과 담당 운영 주체</li><li>앱 오류, 계정, 개인정보, 결제, 콘텐츠 출처, 계정 삭제 요청의 문의 분류</li><li>접수 확인, 본인 확인, 처리 기한, 이의제기, 장애 공지 절차</li><li>미성년자·보호자 문의와 민감한 학습 기록을 다루는 확인 절차</li></ul></section>
-      <section className="policy-section"><h2>현재 안내</h2><p>LS LAB은 서비스 준비 단계입니다. 실제 상담·계정 지원·결제 지원이 시작되기 전에는 이 페이지를 공식 고객센터 또는 Store 지원 URL로 확정해서는 안 됩니다.</p></section>
-      <ReleaseNotice><strong>연락처 미연결.</strong> 임의의 지원 이메일이나 폼을 만들지 않았습니다. Owner가 관리 가능한 실제 문의 채널과 개인정보 처리 주체를 확정한 뒤에만 공식 연락처를 발행합니다.</ReleaseNotice>
-      <div className="policy-actions"><Link className="button button--outline" href="/account-deletion/">계정 삭제 안내 보기</Link><Link className="button button--primary" href="/">LegendStudy LAB 소개로 돌아가기</Link></div>
+    <div className="policy-page content-wrap content-wrap--detail support-page">
+      <p className="eyebrow eyebrow--accent">LEGENDSTUDY LAB / SUPPORT</p>
+      <div className="policy-page__heading">
+        <h1>{customerCenter.displayName}</h1>
+      </div>
+      <p className="policy-page__lead">
+        {businessInfo.legalName}가 운영하는 레전드스터디 랩 고객센터입니다. 서비스 이용, 결제·환불, 계정, 개인정보 관련
+        문의를 접수합니다.
+      </p>
+
+      <ContactList />
+
+      <section className="policy-section" aria-labelledby="support-refund-rules">
+        <h2 id="support-refund-rules">환불 규정</h2>
+        <div className="refund-summary">
+          <p>
+            <span>미사용 Credit</span>
+            <strong>{refundPolicy.unused}</strong>
+          </p>
+          <p>
+            <span>일부 사용</span>
+            <strong>{refundPolicy.partialFormula}</strong>
+          </p>
+        </div>
+        <ul className="policy-list">
+          <li>{refundPolicy.requestWindow}에 환불을 신청할 수 있습니다.</li>
+          <li>{refundPolicy.zeroOrNegative}</li>
+          <li>{refundPolicy.freeCredit}</li>
+          <li>{refundPolicy.usedCreditRule}</li>
+        </ul>
+        <div className="policy-actions">
+          <Link className="button button--outline" href="/refund/">환불정책 자세히 보기</Link>
+        </div>
+      </section>
+
+      <section className="policy-section" aria-labelledby="support-process">
+        <h2 id="support-process">문의 접수 처리 절차</h2>
+        <div className="process-flow">
+          <ol className="process-flow__steps" role="list">
+            <li>문의 접수</li>
+            <li>내용 확인</li>
+            <li>안내 및 처리</li>
+          </ol>
+          <p className="process-flow__note">
+            이메일로 문의를 접수하면 가입 계정과 필요한 내용을 확인한 후 처리 결과 또는 필요한 조치를 안내합니다.
+          </p>
+        </div>
+      </section>
+
+      <section className="policy-section" aria-labelledby="support-links">
+        <h2 id="support-links">기타 안내</h2>
+        <div className="policy-actions">
+          <Link className="button button--outline" href="/pricing/">요금 안내</Link>
+          <Link className="button button--outline" href="/refund/">환불정책</Link>
+          <Link className="button button--outline" href="/terms/">이용약관</Link>
+          <Link className="button button--outline" href="/privacy/">개인정보처리방침</Link>
+          <Link className="button button--outline" href="/account-deletion/">계정 삭제 안내</Link>
+        </div>
+      </section>
+
+      <section className="policy-section" aria-labelledby="support-business">
+        <h2 id="support-business">사업자 정보</h2>
+        <BusinessInfoList />
+      </section>
     </div>
   );
 }

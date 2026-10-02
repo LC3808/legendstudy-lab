@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { brand } from "@/lib/brand";
-import { publicReleasePaths } from "@/lib/release-routes";
+import { indexablePublicPaths } from "@/lib/release-routes";
 
 export const dynamic = "force-static";
 
@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   if (!brand.siteUrl) return [];
 
   const lastModified = new Date("2026-09-20T00:00:00.000Z");
-  return publicReleasePaths.map((path, index) => ({
+  return indexablePublicPaths.map((path, index) => ({
     url: new URL(path, brand.siteUrl).toString(),
     lastModified,
     changeFrequency: index === 0 ? "monthly" : "yearly",
