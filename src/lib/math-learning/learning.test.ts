@@ -2,13 +2,31 @@ import { describe, expect, it } from "vitest";
 
 import { baseOutput, evalError, step } from "../math-eval/fixtures";
 import { buildCoreView, groupPropagated, referenceLabel } from "./core";
-import { buildMath6Handoff, buildSolutionRevealContext, resolveCtaNote } from "./handoff";
+import { buildMath6Handoff, resolveCtaNote } from "./handoff";
 import { classifyLeakage, validateHint } from "./hints";
-import { coreItem, hint, outputWithCore } from "./fixtures";
-import { createMockLearningServer } from "./runtime/mock-learning-server";
-import { LearningRuntimeClient, createInMemorySolutionRevealRepository } from "./runtime/learning-client";
+import { coreItem, hint, learningStateFixture, outputWithCore } from "./fixtures";
+import { createMockLearningServer, type SeedLearning } from "./runtime/mock-learning-server";
+import { LearningRuntimeClient } from "./runtime/learning-client";
 import type { HintLevel, LeakagePolicyContext } from "./types";
 import type { MathResponseFormat } from "../math-eval/types";
+
+function seededLearningServer(lifecycle?: Record<string, "ACTIVE" | "PENDING" | "ERASING">) {
+  const seed: SeedLearning = {
+    owner: "student-A",
+    state: learningStateFixture(),
+    hintBodies: [
+      { hintId: "h-l0", coreId: "core-1", level: 0, body: "3단계의 부호 처리를 다시 확인해 보세요." },
+      { hintId: "h-l1", coreId: "core-1", level: 1, body: "방향 힌트" },
+      { hintId: "h-l2", coreId: "core-1", level: 2, body: "개념 힌트" },
+    ],
+    solutionBodies: [
+      { solutionId: "sol-official", target: "REFERENCE", provenance: "OFFICIAL_SOLUTION", physicalOrigin: "OFFICIAL", body: "공식 해설 본문" },
+    ],
+  };
+  const server = createMockLearningServer(lifecycle ? { lifecycle } : {});
+  server.seedLearning(seed);
+  return server;
+}
 
 const fullCtx: LeakagePolicyContext = { responseFormat: "FULL_SOLUTION" };
 const shortCtx: LeakagePolicyContext = { responseFormat: "SHORT_ANSWER", finalAnswer: "12" };
@@ -112,67 +130,62 @@ describe("MATH-5B learning guidance — H01–H35", () => {
     expect(referenceLabel("AI_GENERATED_REFERENCE").label).not.toBe(referenceLabel("OFFICIAL").label);
   });
 
-  it("H18 L1 progressive reveal via runtime", async () => {
-    const server = createMockLearningServer();
-    server.seedHint({ hint_id: "h-l1", evaluation_id: "eval-1", level: 1, body: "방향 힌트", leakage_class: "SAFE_DIRECTION" });
+  it("H18 L1 progressive reveal via canonical math_learning runtime", async () => {
+    const server = seededLearningServer();
     const client = new LearningRuntimeClient(server.studentTransport("student-A"));
-    const res = await client.revealHint("h-l1", "csid-1");
+    const res = await client.revealHint("eval-1", "h-l1", 1, "csid-1");
     expect(res.level).toBe(1);
     expect(res.body).toBe("방향 힌트");
   });
 
   it("H19 L2 requires L1 first (progressive gating)", async () => {
-    const server = createMockLearningServer();
-    server.seedHint({ hint_id: "h-l1", evaluation_id: "eval-1", level: 1, body: "방향", leakage_class: "SAFE_DIRECTION" });
-    server.seedHint({ hint_id: "h-l2", evaluation_id: "eval-1", level: 2, body: "개념", leakage_class: "CONCEPT_REVEAL" });
+    const server = seededLearningServer();
     const client = new LearningRuntimeClient(server.studentTransport("student-A"));
-    await expect(client.revealHint("h-l2", "csid-a")).rejects.toMatchObject({ code: "INVALID_OR_STALE" });
-    await client.revealHint("h-l1", "csid-b");
-    const res = await client.revealHint("h-l2", "csid-c");
+    await expect(client.revealHint("eval-1", "h-l2", 2, "csid-a")).rejects.toMatchObject({ code: "INVALID_OR_STALE" });
+    await client.revealHint("eval-1", "h-l1", 1, "csid-b");
+    const res = await client.revealHint("eval-1", "h-l2", 2, "csid-c");
     expect(res.level).toBe(2);
   });
 
-  it("H20 early solution reveal allowed + H21 records context", async () => {
-    const repo = createInMemorySolutionRevealRepository();
-    const ctx = buildSolutionRevealContext({ evaluationId: "eval-1", provenance: "OFFICIAL", earlyReveal: true, atIso: "2026-10-02T00:00:00.000Z" });
-    await repo.recordReveal({ evaluationId: ctx.evaluationId, earlyReveal: ctx.earlyReveal, atIso: ctx.atIso });
-    expect(ctx.earlyReveal).toBe(true);
-    expect(repo.records).toHaveLength(1);
+  it("H20 early solution reveal allowed + H21 records context (REFERENCE_SOLUTION_REVEALED)", async () => {
+    const server = seededLearningServer();
+    const client = new LearningRuntimeClient(server.studentTransport("student-A"));
+    const res = await client.revealSolution("eval-1", "REFERENCE", "csid-sol", "sol-official");
+    expect(res.learning_context).toBe("REFERENCE_SOLUTION_REVEALED");
+    expect(server.state.evaluations.get("eval-1")!.solutionExposures).toHaveLength(1);
   });
 
   it("H22 hint exposure recorded + H25 no scoring + H26 no credit fields", async () => {
-    const server = createMockLearningServer();
-    server.seedHint({ hint_id: "h-l1", evaluation_id: "eval-1", level: 1, body: "방향", leakage_class: "SAFE_DIRECTION" });
+    const server = seededLearningServer();
     const client = new LearningRuntimeClient(server.studentTransport("student-A"));
-    const res = await client.revealHint("h-l1", "csid-1");
-    expect(server.state.exposures).toHaveLength(1);
+    const res = await client.revealHint("eval-1", "h-l1", 1, "csid-1");
+    expect(server.state.evaluations.get("eval-1")!.hintExposures).toHaveLength(1);
     const serialized = JSON.stringify(res).toLowerCase();
     expect(serialized).not.toContain("credit");
     expect(serialized).not.toContain("score");
   });
 
   it("H23 duplicate exposure idempotent", async () => {
-    const server = createMockLearningServer();
-    server.seedHint({ hint_id: "h-l1", evaluation_id: "eval-1", level: 1, body: "방향", leakage_class: "SAFE_DIRECTION" });
+    const server = seededLearningServer();
     const client = new LearningRuntimeClient(server.studentTransport("student-A"));
-    await client.revealHint("h-l1", "csid-1");
-    const again = await client.revealHint("h-l1", "csid-1");
+    await client.revealHint("eval-1", "h-l1", 1, "csid-1");
+    const again = await client.revealHint("eval-1", "h-l1", 1, "csid-1");
     expect(again.replayed).toBe(true);
-    expect(server.state.exposures).toHaveLength(1);
+    expect(server.state.evaluations.get("eval-1")!.hintExposures).toHaveLength(1);
   });
 
   it("H24 changed duplicate (same key, different hint) conflicts", async () => {
-    const server = createMockLearningServer();
-    server.seedHint({ hint_id: "h-l1", evaluation_id: "eval-1", level: 1, body: "a", leakage_class: "SAFE_DIRECTION" });
-    server.seedHint({ hint_id: "h-l1b", evaluation_id: "eval-1", level: 1, body: "b", leakage_class: "SAFE_DIRECTION" });
+    const server = seededLearningServer();
     const client = new LearningRuntimeClient(server.studentTransport("student-A"));
-    await client.revealHint("h-l1", "csid-1");
-    await expect(client.revealHint("h-l1b", "csid-1")).rejects.toMatchObject({ code: "CONFLICT" });
+    await client.revealHint("eval-1", "h-l1", 1, "csid-1");
+    await expect(client.revealHint("eval-1", "h-l2", 2, "csid-1")).rejects.toMatchObject({ code: "CONFLICT" });
   });
 
-  it("H27 solution reveal context carries no Credit", () => {
-    const ctx = buildSolutionRevealContext({ evaluationId: "eval-1", provenance: "OFFICIAL", earlyReveal: false, atIso: "t" });
-    expect(JSON.stringify(ctx).toLowerCase()).not.toContain("credit");
+  it("H27 solution reveal carries no Credit", async () => {
+    const server = seededLearningServer();
+    const client = new LearningRuntimeClient(server.studentTransport("student-A"));
+    const res = await client.revealSolution("eval-1", "REFERENCE", "csid-sol", "sol-official");
+    expect(JSON.stringify(res).toLowerCase()).not.toContain("credit");
   });
 
   it("H28 invalid CORE binding (ungrounded core) rejected", () => {

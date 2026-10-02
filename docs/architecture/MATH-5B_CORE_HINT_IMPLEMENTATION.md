@@ -43,11 +43,29 @@ L0 is canonical from CORE facts; L1/L2 are deterministic/pre-generated candidate
 MATH-4 evaluation output), validated before reveal. A provider-independent generator can wrap the
 same interface later; **no live model call** at reveal time.
 
-## BACKEND_FOLLOW_UPS
-- **Reference-solution reveal recording** has no dedicated MATH-2D runtime op. LAB uses
-  `SolutionRevealRepository` (in-memory now); Codex must add a backend operation so the reveal context
-  is durably recorded (not client-only) before Production. (Hint reveal already binds to the existing
-  `math_input reveal_hint` action — no new op needed there.)
+## Physical runtime binding — MATH-5B-R (MATH-2E `math_learning`)
+Bound to the canonical MATH-2E learning runtime (APP `cd215a6`, migration
+`20261002000300_math_learning_runtime.sql`, SHA `fa0fbb50…`, verified). RPC `math_learning`
+(`math-learning-v1`): `read_learning_state` (server-authoritative hint availability / solution reveal
+state / **included-reevaluation eligibility + 336h expiry** — never client-recomputed), `reveal_hint`
+(gated L1/L2, idempotent, no Credit), `reveal_solution` (HYBRID early reveal, server-authored
+provenance, idempotent, no Credit).
+- `runtime/contract.ts` rewritten to `math-learning-v1`; `learning-client.ts` rebound to
+  `math_learning` (read_learning_state / reveal_hint / reveal_solution); shared `MathRpcFunction`
+  gained `math_learning`.
+- **The provisional in-memory `SolutionRevealRepository` is removed** — `math_learning reveal_solution`
+  is the canonical authority (`PROVISIONAL_SOLUTION_REPOSITORY_REMAINING: NO`).
+- `handoff.ts` consumes `LearningState` (`buildMath6HandoffFromState`): prior attempt/evaluation,
+  prior CORE, hint-exposure summary, solution-reveal context, included eligibility/expiry, lineage;
+  the re-solve free-reeval copy shows **only** when `included_reevaluation.status === "AVAILABLE"`.
+- Provenance labels driven by server `SolutionProvenance` (`solutionProvenanceLabel`); AI reference
+  never shown as official.
+- LR01–LR20 integration tests green via a deterministic `math_learning` mock server (gating,
+  idempotency, lifecycle, included projection). Hint reveal no longer uses the MATH-2D `math_input
+  reveal_hint` path — single reveal authority.
+
+No remaining BACKEND_FOLLOW_UP for learning runtime: hint and solution reveal both bind to the
+canonical MATH-2E surface. (R21 Storage activation and ADR-2 erasure remain external gates.)
 
 ## R21 / loading.tsx
 R21 unchanged. `src/app/loading.tsx` pre-existing, **not modified**; no new loading boundary.

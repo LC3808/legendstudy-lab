@@ -6,6 +6,7 @@
 
 import type { MathEvalOutput, ReferenceProvenance } from "../math-eval/types";
 import type { CorePresentation, CoreView, PropagatedGroup, ReferenceProvenanceLabel } from "./types";
+import type { SolutionProvenance } from "./runtime/contract";
 
 function toPresentation(core: MathEvalOutput["core"][number]): CorePresentation {
   return {
@@ -58,4 +59,15 @@ const PROVENANCE_LABEL: Record<ReferenceProvenance, string> = {
 /** Canonical provenance drives the label; AI content is never labeled official (MATH-5A §26). */
 export function referenceLabel(provenance: ReferenceProvenance): ReferenceProvenanceLabel {
   return { provenance, label: PROVENANCE_LABEL[provenance] };
+}
+
+const SOLUTION_PROVENANCE_LABEL: Record<SolutionProvenance, string> = {
+  OFFICIAL_SOLUTION: "대학 공식 해설",
+  VERIFIED_INTERNAL_SOLUTION: "레전드스터디 검증 풀이",
+  AI_GENERATED_REFERENCE: "AI 참고 풀이",
+};
+
+/** Label for a server-authored reveal_solution provenance; AI reference never shown as official. */
+export function solutionProvenanceLabel(provenance: SolutionProvenance): string {
+  return SOLUTION_PROVENANCE_LABEL[provenance];
 }

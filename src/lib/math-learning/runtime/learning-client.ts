@@ -1,33 +1,58 @@
 /**
- * MATH-5B — student-facing learning runtime client (browser-safe). Wraps the MATH-2D `math_input`
- * reveal_hint action for gated L1/L2 retrieval. No worker credential, no direct DB write, no Credit.
+ * MATH-5B-R — student-facing learning runtime client (browser-safe). Wraps the canonical MATH-2E
+ * `math_learning` RPC: read_learning_state (server-authoritative), reveal_hint, reveal_solution.
+ * Server derives owner; no worker credential, no direct DB write, no Credit, no client eligibility/
+ * expiry computation. (create_resolve_attempt / request_reevaluation are MATH-6B, not bound here.)
  */
 
-import { MATH_INPUT_DTO } from "../../math-input/runtime/contract";
 import { callRuntime, type MathRpcTransport } from "../../math-input/runtime/transport";
-import type { RevealHintPayload, RevealHintResult, SolutionRevealRepository } from "./contract";
+import {
+  MATH_LEARNING_DTO,
+  type LearningState,
+  type RevealHintResult,
+  type RevealSolutionResult,
+  type SolutionTarget,
+} from "./contract";
+import type { HintLevel } from "../types";
 
 export class LearningRuntimeClient {
   constructor(private readonly transport: MathRpcTransport) {}
 
-  /** Gated reveal of a hint body (L1/L2). Server enforces gating + idempotency + no Credit. */
-  revealHint(hintId: string, clientSubmissionId: string): Promise<RevealHintResult> {
-    const payload: RevealHintPayload = { hint_id: hintId, client_submission_id: clientSubmissionId };
-    return callRuntime<RevealHintResult>(this.transport, "math_input", MATH_INPUT_DTO, "reveal_hint", {
-      ...payload,
+  /** Canonical, server-authoritative learning state (hint availability, solution/eligibility state). */
+  readLearningState(evaluationId: string): Promise<LearningState> {
+    return callRuntime<LearningState>(this.transport, "math_learning", MATH_LEARNING_DTO, "read_learning_state", {
+      evaluation_id: evaluationId,
     });
   }
-}
 
-/** In-memory SolutionRevealRepository for tests (real impl pends the BACKEND_FOLLOW_UP, contract.ts). */
-export function createInMemorySolutionRevealRepository(): SolutionRevealRepository & {
-  readonly records: Array<{ evaluationId: string; earlyReveal: boolean; atIso: string }>;
-} {
-  const records: Array<{ evaluationId: string; earlyReveal: boolean; atIso: string }> = [];
-  return {
-    records,
-    async recordReveal(context) {
-      records.push(context);
-    },
-  };
+  /** Gated hint reveal (L1/L2 bodies). Server enforces gating + idempotency + no Credit. */
+  revealHint(
+    evaluationId: string,
+    hintId: string,
+    level: HintLevel,
+    clientSubmissionId: string,
+  ): Promise<RevealHintResult> {
+    return callRuntime<RevealHintResult>(this.transport, "math_learning", MATH_LEARNING_DTO, "reveal_hint", {
+      evaluation_id: evaluationId,
+      hint_id: hintId,
+      level,
+      client_submission_id: clientSubmissionId,
+    });
+  }
+
+  /** HYBRID solution reveal. Provenance is server-authored; no Credit/score/attempt side effect. */
+  revealSolution(
+    evaluationId: string,
+    target: SolutionTarget,
+    clientSubmissionId: string,
+    solutionId?: string | null,
+  ): Promise<RevealSolutionResult> {
+    const payload: Record<string, unknown> = {
+      evaluation_id: evaluationId,
+      target,
+      client_submission_id: clientSubmissionId,
+    };
+    if (target === "REFERENCE") payload.solution_id = solutionId ?? null;
+    return callRuntime<RevealSolutionResult>(this.transport, "math_learning", MATH_LEARNING_DTO, "reveal_solution", payload);
+  }
 }

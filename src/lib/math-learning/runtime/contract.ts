@@ -1,42 +1,152 @@
 /**
- * MATH-5B — hint reveal binding. Gated L1/L2 retrieval uses the EXISTING MATH-2D student action
- * `math_input` → `reveal_hint` {hint_id, client_submission_id} (dto math-input-v1). Bodies are not
- * preloaded; the server delivers them on explicit, gated reveal. L0 is delivered with the evaluation.
+ * MATH-5B-R — canonical MATH-2E learning runtime contract (`math_learning`, dto math-learning-v1).
+ * Replaces the provisional MATH-5B reveal path and the in-memory SolutionRevealRepository.
  *
- * NO dedicated runtime op exists for recording a reference-SOLUTION reveal — that is a documented
- * BACKEND_FOLLOW_UP (see SolutionRevealRepository). No APP RPC is invented.
+ * Provenance (authority; read-only, not duplicated as SQL):
+ *   APP commit:        cd215a6d88c0f72e59d06478bf4727ed676ca5f9
+ *   migration:         supabase/migrations/20261002000300_math_learning_runtime.sql
+ *   SHA-256:           fa0fbb507dd650d2e684f7dc9bc9375c6c5db09eac64405a438ad63206933f7d
+ *   contract:          supabase/verification/math_essay/learning/contract.md
+ *
+ * Transport: `rpc('math_learning', { p_request: {dto_version, action, payload} })`. Server derives
+ * owner from auth.uid(); the client supplies no owner/eligibility/completion/price authority. Null is
+ * "unavailable/not recorded", never a fabricated zero. READY/availability/eligibility/expiry are
+ * server-authoritative; the client never recomputes the 336-hour window.
  */
 
-import type { HintLevel, LeakageResult } from "../types";
+import type { HintLevel } from "../types";
 
-export { MATH_INPUT_DTO } from "../../math-input/runtime/contract";
+export const MATH_LEARNING_DTO = "math-learning-v1" as const;
 
+export type MathLearningAction =
+  | "read_learning_state"
+  | "reveal_hint"
+  | "reveal_solution"
+  | "create_resolve_attempt"
+  | "request_reevaluation"
+  | "read_learning_history";
+
+export type SolutionTarget = "REFERENCE" | "GENERATED";
+export type SolutionProvenance =
+  | "OFFICIAL_SOLUTION"
+  | "VERIFIED_INTERNAL_SOLUTION"
+  | "AI_GENERATED_REFERENCE";
+export type IncludedReevaluationStatus =
+  | "AVAILABLE"
+  | "AUTHORIZED_PENDING"
+  | "CONSUMED"
+  | "EXPIRED"
+  | "UNAVAILABLE";
+
+/* --------------------------------------------------- payloads */
+
+export interface ReadLearningStatePayload {
+  evaluation_id: string;
+}
 export interface RevealHintPayload {
+  evaluation_id: string;
   hint_id: string;
+  level: HintLevel;
   client_submission_id: string;
 }
+export interface RevealSolutionPayload {
+  evaluation_id: string;
+  target: SolutionTarget;
+  client_submission_id: string;
+  /** Required for REFERENCE; omitted/null for GENERATED. */
+  solution_id?: string | null;
+}
+export interface ReadLearningHistoryPayload {
+  evaluation_id: string;
+  limit?: number;
+  before_at?: string;
+  before_id?: string;
+}
 
-/** Bounded hint delivery result (math_input reveal_hint). */
+/* --------------------------------------------------- results */
+
+export interface IncludedReevaluation {
+  status: IncludedReevaluationStatus;
+  eligible: boolean;
+  included_count: 1;
+  initial_evaluation_id: string | null;
+  /** Initial valid completion + exactly 336h; server authority — never recomputed client-side. */
+  expires_at: string | null;
+  as_of: string;
+  request_route: string;
+}
+
+export interface LearningStateCore {
+  core_id: string;
+  position: number;
+  error_id: string | null;
+  step_id: string | null;
+  title: string;
+  diagnosis: string;
+  why: string;
+  next_action: string;
+}
+export interface LearningStateHint {
+  hint_id: string;
+  core_id: string;
+  level: HintLevel;
+  available: boolean;
+  revealed: boolean;
+  can_reveal: boolean;
+  /** No body in state — bodies come only through reveal_hint. */
+}
+export interface LearningStateSolution {
+  solution_id: string | null;
+  target: SolutionTarget;
+  provenance: SolutionProvenance;
+  physical_origin: string;
+  reveal_state: "AVAILABLE_ON_EXPLICIT_REQUEST" | "UNAVAILABLE";
+  revealed: boolean;
+}
+
+export interface LearningState {
+  evaluation_id: string;
+  attempt_id: string;
+  lineage_id: string;
+  problem_id: string;
+  leaf_id: string;
+  response_format: "SHORT_ANSWER" | "SHORT_REASONING" | "FULL_SOLUTION" | "PROOF";
+  resolve_kind: string;
+  prior_attempt_id: string | null;
+  prior_evaluation_id: string | null;
+  target_step_id: string | null;
+  submitted_scope: "TARGET_STEP" | "WHOLE_LEAF";
+  downstream: "NOT_REASSESSED" | null;
+  evaluation_state: string;
+  completed_at: string | null;
+  valid_evaluation_available: boolean;
+  review_status: "NOT_RECORDED" | "NOT_REQUIRED" | "HUMAN_REVIEW_REQUIRED";
+  core: LearningStateCore[];
+  hints: LearningStateHint[];
+  hint_availability: "NOT_APPLICABLE" | "UNAVAILABLE" | "FROM_FROZEN_HINTS";
+  solutions: LearningStateSolution[];
+  resolve_kinds: string[];
+  included_reevaluation: IncludedReevaluation;
+  reevaluation_delta: unknown | null;
+  reference_solution_revealed_before_resolve: boolean;
+  hint_levels_before_resolve: number[];
+}
+
 export interface RevealHintResult {
   hint_id: string;
   level: HintLevel;
   body: string;
-  leakage_class: "SAFE_DIRECTION" | "CONCEPT_REVEAL" | "SOLUTION_REVEAL";
   replayed?: boolean;
 }
-
-export interface RevealedHintRecord {
-  hintId: string;
-  level: HintLevel;
-  leakage: LeakageResult;
-  atIso: string;
-}
-
-/**
- * BACKEND_FOLLOW_UP: recording a reference-solution reveal as MATH-6 learning context has no MATH-2D
- * runtime op yet. LAB uses this narrow interface; Codex must add the backend operation before
- * Production so the reveal context is durably recorded (not client-only).
- */
-export interface SolutionRevealRepository {
-  recordReveal(context: { evaluationId: string; earlyReveal: boolean; atIso: string }): Promise<void>;
+export interface RevealSolutionResult {
+  exposure_id: string;
+  evaluation_id: string;
+  solution_id: string | null;
+  target: SolutionTarget;
+  delivered_at: string;
+  provenance: SolutionProvenance;
+  physical_origin: string;
+  body: string;
+  learning_context: "REFERENCE_SOLUTION_REVEALED";
+  replayed?: boolean;
 }

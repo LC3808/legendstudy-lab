@@ -9,9 +9,9 @@
 
 import { useState } from "react";
 
-import { referenceLabel } from "@/lib/math-learning/core";
-import type { CoreView, HintLevel, ReferenceProvenanceLabel } from "@/lib/math-learning/types";
-import type { ReferenceProvenance } from "@/lib/math-eval/types";
+import { solutionProvenanceLabel } from "@/lib/math-learning/core";
+import type { CoreView, HintLevel } from "@/lib/math-learning/types";
+import type { SolutionProvenance } from "@/lib/math-learning/runtime/contract";
 
 export interface LearningGuidanceProps {
   coreView: CoreView;
@@ -22,7 +22,7 @@ export interface LearningGuidanceProps {
   onRevealHint: (level: HintLevel) => void;
   onRevealSolution: () => void;
   onResolve: () => void;
-  solutionProvenance?: ReferenceProvenance | null;
+  solutionProvenance?: SolutionProvenance | null;
 }
 
 export function LearningGuidance({
@@ -35,7 +35,7 @@ export function LearningGuidance({
   solutionProvenance,
 }: LearningGuidanceProps) {
   const [noticeShown, setNoticeShown] = useState(false);
-  const label: ReferenceProvenanceLabel | null = solutionProvenance ? referenceLabel(solutionProvenance) : null;
+  const label: string | null = solutionProvenance ? solutionProvenanceLabel(solutionProvenance) : null;
 
   if (!coreView.primary) {
     return (
@@ -86,7 +86,7 @@ export function LearningGuidance({
         >
           해설 보기
         </button>
-        {label ? <span className="math-learning__provenance">{label.label}</span> : null}
+        {label ? <span className="math-learning__provenance">{label}</span> : null}
       </div>
 
       <button type="button" className="math-learning__resolve" onClick={onResolve}>

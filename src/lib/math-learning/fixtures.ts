@@ -5,6 +5,8 @@
 
 import { baseOutput, evalError, step } from "../math-eval/fixtures";
 import type { MathEvalCore, MathEvalHint, MathEvalOutput } from "../math-eval/types";
+import { includedReevaluation } from "./runtime/mock-learning-server";
+import type { LearningState } from "./runtime/contract";
 
 export function coreItem(overrides: Partial<MathEvalCore> = {}): MathEvalCore {
   return {
@@ -46,4 +48,44 @@ export function outputWithCore(overrides: Partial<MathEvalOutput> = {}): MathEva
     overall: { status: "COMPLETE", diagnostic: "ANSWER_INCORRECT_APPROACH_MOSTLY_VALID", answer: "INCORRECT", coverage: "ATTEMPTED" },
     ...overrides,
   });
+}
+
+/** A server-authoritative LearningState (COMPLETED) with one CORE, L0/L1/L2 hints, one reference. */
+export function learningStateFixture(overrides: Partial<LearningState> = {}): LearningState {
+  return {
+    evaluation_id: "eval-1",
+    attempt_id: "att-1",
+    lineage_id: "lin-1",
+    problem_id: "prob-1",
+    leaf_id: "leaf-1",
+    response_format: "FULL_SOLUTION",
+    resolve_kind: "INITIAL",
+    prior_attempt_id: null,
+    prior_evaluation_id: null,
+    target_step_id: null,
+    submitted_scope: "WHOLE_LEAF",
+    downstream: null,
+    evaluation_state: "COMPLETED",
+    completed_at: "2026-10-02T00:00:00.000Z",
+    valid_evaluation_available: true,
+    review_status: "NOT_REQUIRED",
+    core: [
+      { core_id: "core-1", position: 0, error_id: "err-1", step_id: "step-1", title: "부호 처리", diagnosis: "부호 오류", why: "이후 계산에 영향", next_action: "3단계부터 다시" },
+    ],
+    hints: [
+      { hint_id: "h-l0", core_id: "core-1", level: 0, available: true, revealed: false, can_reveal: true },
+      { hint_id: "h-l1", core_id: "core-1", level: 1, available: true, revealed: false, can_reveal: true },
+      { hint_id: "h-l2", core_id: "core-1", level: 2, available: true, revealed: false, can_reveal: false },
+    ],
+    hint_availability: "FROM_FROZEN_HINTS",
+    solutions: [
+      { solution_id: "sol-official", target: "REFERENCE", provenance: "OFFICIAL_SOLUTION", physical_origin: "OFFICIAL", reveal_state: "AVAILABLE_ON_EXPLICIT_REQUEST", revealed: false },
+    ],
+    resolve_kinds: ["FULL_RESOLVE", "STEP_RETRY"],
+    included_reevaluation: includedReevaluation(),
+    reevaluation_delta: null,
+    reference_solution_revealed_before_resolve: false,
+    hint_levels_before_resolve: [],
+    ...overrides,
+  };
 }
