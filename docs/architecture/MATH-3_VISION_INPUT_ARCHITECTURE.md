@@ -10,6 +10,7 @@ provider calls, no Production change.
 [MATH-2A](MATH-2_CANONICAL_DATA_PERSISTENCE_CONTRACT.md) (COMPLETE; Codex MATH-2B DB/security
 cross-review concurrent).
 **Successor:** [MATH-4A](MATH-4_EVALUATION_ENGINE_CONTRACT.md) (evaluation engine) → [MATH-5A](MATH-5_CORE_HINT_LEARNING_CONTRACT.md) (CORE/hint learning) → [MATH-6A](MATH-6_RESOLVE_REEVALUATION_LEARNING_HISTORY_CONTRACT.md) (re-solve/reevaluation/history) → [MATH-7A](MATH-7_HUMAN_QUALITY_CONSOLE_CONTRACT.md) (Human Quality / Quality Console).
+**Implementation:** [MATH-3B_VISION_INPUT_IMPLEMENTATION.md](MATH-3B_VISION_INPUT_IMPLEMENTATION.md) — local/test pipeline in `src/lib/math-input/` (V01–V30 green; no live provider calls).
 
 > **This document authorizes nothing and changes no system.** No DB migration, no shared-backend
 > schema change, no Production change, **no paid Vision/OCR/AI provider call**, **no real student
