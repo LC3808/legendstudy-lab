@@ -7,6 +7,7 @@
 **Base commit:** `47afbdcc80845e7446495a3cdf5eac8dd5adab4b` (approved MATH-1 tip).
 **Authority read:** [MATH-1_MATHEMATICAL_ESSAY_ARCHITECTURE.md](MATH-1_MATHEMATICAL_ESSAY_ARCHITECTURE.md)
 (APPROVED). Deployed boundaries preserved: `ql-read-v1`, `hq-read-v1`, HQP-3 persistence, Credit.
+**Successor:** [MATH-3_VISION_INPUT_ARCHITECTURE.md](MATH-3_VISION_INPUT_ARCHITECTURE.md) (MATH-3A, Vision/input architecture).
 
 > **This document authorizes nothing and changes no system.** It contains **no** `CREATE/ALTER
 > TABLE`, **no** `CREATE FUNCTION`, **no** policy SQL, **no** migration file, **no** provider code,
