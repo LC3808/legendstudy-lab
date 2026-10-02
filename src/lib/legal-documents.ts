@@ -16,7 +16,7 @@
  * reviewed by a lawyer.
  */
 
-import { businessInfo, pendingOwnerData, productNaming, supportContacts, supportPhone, type OwnerPendingKey } from "@/lib/business-info";
+import { businessInfo, customerCenter, pendingOwnerData, productNaming, type OwnerPendingKey } from "@/lib/business-info";
 import { pricingPlans, pricingPolicy } from "@/lib/pricing";
 
 export type LegalBlock =
@@ -43,7 +43,7 @@ const priceLine = pricingPlans.map((plan) => `${plan.credits} Credits ${plan.pri
 const fullPrice = `${pricingPolicy.refundDeductionPerCreditKrw.toLocaleString("ko-KR")}원`;
 
 const supportParagraph =
-  `전화 ${supportPhone.display}, 이메일 ${supportContacts[0].display}, 일반·제휴 ${supportContacts[1].display}로 문의할 수 있습니다.`;
+  `문의는 ${customerCenter.displayName}로 접수합니다. 이메일 ${customerCenter.primary.display}, 일반·제휴 ${customerCenter.secondary.display}이며, 전화 문의는 ${customerCenter.phone.display}입니다.`;
 
 export const termsDocument: LegalDocument = {
   id: "terms",
@@ -164,7 +164,7 @@ export const termsDocument: LegalDocument = {
         "환불 신청 기간, 미사용·일부 사용 환불 산식, 사용한 Credit 판정 기준, 환불 처리 기간은 환불정책에서 정합니다.",
         `일부 사용한 경우 사용한 Credit을 1 Credit 정상가 ${fullPrice} 기준으로 공제한 뒤 남은 결제금액을 환불합니다.`,
         "관련 법령에 따른 청약철회, 계약해제·해지 및 환급에 관한 소비자의 권리는 환불정책과 별도로 보장됩니다.",
-        "환불 요청은 고객센터를 통해 접수합니다.",
+        `환불 요청은 ${customerCenter.displayName}(${customerCenter.primary.display})로 접수합니다.`,
       ],
     },
     {
@@ -186,7 +186,7 @@ export const termsDocument: LegalDocument = {
       kind: "items",
       items: [
         "제공자 장애, 처리 오류, 유효하지 않은 결과 등으로 정상적인 첨삭 결과가 제공되지 않은 경우에는 그 Credit을 사용한 것으로 보지 않습니다.",
-        "이용자는 고객센터를 통해 오류를 신고할 수 있고, 회사는 확인 후 재처리 또는 환불 등 필요한 조치를 안내합니다.",
+        `이용자는 ${customerCenter.displayName}를 통해 오류를 신고할 수 있고, 회사는 확인 후 재처리 또는 환불 등 필요한 조치를 안내합니다.`,
       ],
     },
     {
@@ -224,7 +224,7 @@ export const termsDocument: LegalDocument = {
         "논술 첨삭 서비스는 고등학생을 포함한 이용자를 대상으로 합니다.",
         "현재 가입 절차는 이용자의 연령을 수집하지 않으며, 법정대리인 동의 절차를 운영하지 않습니다.",
         "미성년자가 유료 상품을 결제하는 경우의 처리 기준과 법정대리인 동의 절차에 관한 문구는 법률 검토 후 확정합니다.",
-        "보호자는 고객센터를 통해 자녀의 이용에 관한 문의를 할 수 있습니다.",
+        `보호자는 ${customerCenter.displayName}를 통해 자녀의 이용에 관한 문의를 할 수 있습니다.`,
       ],
     },
     {
@@ -237,7 +237,7 @@ export const termsDocument: LegalDocument = {
     },
     {
       kind: "heading",
-      text: "제15조 문의와 고객지원",
+      text: "제15조 문의와 고객센터",
     },
     {
       kind: "paragraph",
@@ -418,7 +418,7 @@ export const privacyDocument: LegalDocument = {
       items: [
         "이용자는 자신의 개인정보에 대한 열람, 정정, 삭제, 처리정지를 요구할 수 있습니다.",
         "동의한 사항에 대한 동의를 철회할 수 있습니다.",
-        "권리 행사는 고객센터를 통해 요청할 수 있으며, 회사는 지체 없이 조치합니다.",
+        `권리 행사는 ${customerCenter.displayName}를 통해 요청할 수 있으며, 회사는 지체 없이 조치합니다.`,
         "이용자는 법정대리인이나 위임을 받은 대리인을 통해 권리를 행사할 수 있습니다.",
       ],
     },
@@ -437,7 +437,7 @@ export const privacyDocument: LegalDocument = {
       items: [
         "현재 가입 절차는 이용자의 연령을 수집하지 않으며, 법정대리인 동의 절차를 운영하지 않습니다.",
         "미성년자와 만 14세 미만 아동의 개인정보 처리 기준, 법정대리인 동의 절차에 관한 문구는 법률 검토 후 확정합니다.",
-        "보호자는 고객센터를 통해 자녀의 개인정보에 관한 문의와 삭제 요청을 할 수 있습니다.",
+        `보호자는 ${customerCenter.displayName}를 통해 자녀의 개인정보에 관한 문의와 삭제 요청을 할 수 있습니다.`,
       ],
     },
     { kind: "heading", text: "제10조 브라우저 저장소의 사용" },

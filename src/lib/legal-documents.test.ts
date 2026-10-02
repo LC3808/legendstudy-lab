@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { pendingOwnerData } from "./business-info";
+import { customerCenter, pendingOwnerData } from "./business-info";
 import { legalDocuments, pendingItemsFor, privacyDocument, termsDocument } from "./legal-documents";
 import { pricingPlans, pricingPolicy } from "./pricing";
 
@@ -43,9 +43,21 @@ describe("terms document", () => {
   });
 
   it("covers every topic the review requires", () => {
-    for (const topic of ["Credit", "결제", "환불", "미성년자", "계정", "고객지원", "시행일", "지식재산권"]) {
+    for (const topic of ["Credit", "결제", "환불", "미성년자", "계정", "고객센터", "시행일", "지식재산권"]) {
       expect(terms).toContain(topic);
     }
+  });
+
+  it("names the customer centre and puts e-mail before the phone", () => {
+    expect(terms).toContain(customerCenter.displayName);
+    for (const legacy of ["LegendStudy 고객센터", "레전드스터디 고객센터", "LegendStudy LAB 고객센터", "레전드스터디+ 고객센터"]) {
+      expect(terms).not.toContain(legacy);
+    }
+    const paragraphStart = terms.indexOf(customerCenter.displayName);
+    const phoneAt = terms.indexOf(customerCenter.phone.display);
+    expect(paragraphStart).toBeGreaterThan(-1);
+    expect(phoneAt).toBeGreaterThan(paragraphStart);
+    expect(terms.indexOf(customerCenter.primary.display)).toBeLessThan(phoneAt);
   });
 
   it("does not claim a live payment flow", () => {

@@ -17,7 +17,7 @@ export const policyRoutes = [
   { href: "/privacy/", label: "개인정보처리방침" },
   { href: "/terms/", label: "이용약관" },
   { href: "/refund/", label: "환불정책" },
-  { href: "/support/", label: "지원" },
+  { href: "/support/", label: "고객센터" },
   { href: "/account-deletion/", label: "계정 삭제 안내" },
 ] as const;
 

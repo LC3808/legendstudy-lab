@@ -1,38 +1,31 @@
 import Link from "next/link";
 
-import { BusinessInfoList, ContactList } from "@/components/business-info-block";
+import { BusinessInfoList, ContactList, PhoneContact } from "@/components/business-info-block";
 import { buildPublicMetadata } from "@/lib/brand";
-import { businessInfo, ecommerceRegistration, pendingOwnerData, supportContacts, supportEnquiryTypes, supportPhone } from "@/lib/business-info";
+import { businessInfo, customerCenter, ecommerceRegistration, supportEnquiryTypes } from "@/lib/business-info";
 import { pricingPlans, pricingPolicy, refundPolicy } from "@/lib/pricing";
 
 export const metadata = buildPublicMetadata(
-  "LegendStudy 고객지원",
-  "LegendStudy LAB 고객센터 연락처와 문의 유형, 결제·환불·계정·개인정보 문의 접수와 처리 절차를 안내합니다.",
+  customerCenter.displayName,
+  "레전드스터디 랩 고객센터 연락처와 문의 유형, 결제·환불·계정·개인정보 관련 문의의 접수와 처리 절차를 안내합니다.",
   "/support",
 );
-
-/** Operating hours are deliberately absent: the Owner has not confirmed them. */
-const supportHoursPending = pendingOwnerData.find((item) => item.key === "SUPPORT_HOURS");
 
 export default function SupportPage() {
   return (
     <div className="policy-page content-wrap content-wrap--detail support-page">
       <p className="eyebrow eyebrow--accent">LEGENDSTUDY LAB / SUPPORT</p>
       <div className="policy-page__heading">
-        <h1>고객센터</h1>
+        <h1>{customerCenter.displayName}</h1>
       </div>
       <p className="policy-page__lead">
-        {businessInfo.legalName}가 운영하는 LegendStudy LAB 고객센터입니다. 서비스 이용, 결제, 환불, 계정, 개인정보에
-        관한 문의를 접수합니다.
+        {businessInfo.legalName}가 운영하는 레전드스터디 랩 고객센터입니다. 서비스 이용, 결제·환불, 계정, 개인정보 관련
+        문의를 접수합니다.
       </p>
 
       <section className="policy-section" aria-labelledby="support-contact">
-        <h2 id="support-contact">연락처</h2>
+        <h2 id="support-contact">이메일 문의</h2>
         <ContactList />
-        <p className="pricing-note">
-          전화 연결이 어려운 경우 이메일로 문의해 주시면 확인 후 회신드립니다.
-          {supportHoursPending ? " 상담 운영시간은 확정 후 이 페이지에 안내합니다." : null}
-        </p>
       </section>
 
       <section className="policy-section" aria-labelledby="support-topics">
@@ -48,10 +41,10 @@ export default function SupportPage() {
 
       <section className="policy-section" aria-labelledby="support-refund">
         <h2 id="support-refund">환불 문의</h2>
+        <p>환불 문의 및 신청은 {customerCenter.primary.display}으로 접수해 주세요.</p>
         <ul className="policy-list">
           <li>
-            환불은 {refundPolicy.requestWindow}에 {supportContacts[0].display} 또는 {supportPhone.display}로 신청할 수
-            있습니다.
+            환불은 {refundPolicy.requestWindow}에 {customerCenter.primary.display}으로 신청할 수 있습니다.
           </li>
           <li>{refundPolicy.partiallyUsed}</li>
           <li>{refundPolicy.zeroOrNegative}</li>
@@ -68,7 +61,7 @@ export default function SupportPage() {
         <ol className="process-list">
           <li>
             <strong>문의 접수</strong>
-            <span>전화 또는 이메일로 문의를 접수합니다.</span>
+            <span>이메일로 문의를 접수합니다.</span>
           </li>
           <li>
             <strong>내용 확인</strong>
@@ -95,6 +88,11 @@ export default function SupportPage() {
           구매한 Credit은 결제일로부터 {pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있습니다.{" "}
           {ecommerceRegistration.note}
         </p>
+      </section>
+
+      <section className="policy-section" aria-labelledby="support-phone">
+        <h2 id="support-phone">보조 연락수단</h2>
+        <PhoneContact />
       </section>
 
       <section className="policy-section" aria-labelledby="support-business">

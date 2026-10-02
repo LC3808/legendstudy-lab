@@ -290,7 +290,7 @@ export default function PricingPage() {
           결제와 이용자 고지를 위해 판매 주체 정보를 게시합니다. 통신판매업 신고번호는 현재 유효한 신고번호입니다.
         </p>
         <BusinessInfoList />
-        <ContactList />
+        <ContactList showName />
         <dl className="pricing-summary">
           <div>
             <dt>판매 상품</dt>

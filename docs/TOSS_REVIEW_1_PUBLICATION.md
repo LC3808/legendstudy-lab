@@ -33,7 +33,34 @@ Published values:
 - 상호 주식회사 코파카바나 / 대표자 장우진
 - 사업자등록번호 262-88-02453 / 통신판매업 신고번호 2025-서울노원-1263
 - 사업장 주소 서울특별시 노원구 화랑로 621, 서울여자대학교 고명우기념관 305호
-- 고객센터 010-6469-7654 / support@legendstudy.com / contact@legendstudy.com
+- 레전드스터디 랩 고객센터 — 고객지원·결제·환불 `support@legendstudy.com` (주 채널),
+  일반·제휴 `contact@legendstudy.com` (보조 채널)
+- 전화 문의 010-6469-7654 — 공개는 유지하되 primary 채널이 아니며, Support 페이지의
+  하단 보조 연락수단으로만 표시
+
+## Customer centre naming and channel priority
+
+The platform is LegendStudy Lab and the paid product is sold inside the Lab, so
+consumer-facing support carries exactly one name, **레전드스터디 랩 고객센터**,
+and e-mail is the primary channel everywhere. `customerCenter` in
+`src/lib/business-info.ts` owns the display name, the two e-mail channels and
+the telephone channel; no page retypes them.
+
+Kept distinct on purpose:
+
+| Level | Value |
+| --- | --- |
+| Site brand | LegendStudy Lab |
+| Sold product | LegendStudy 논술 LAB / 논술 LAB |
+| Operator | 주식회사 코파카바나 |
+| Separate service | legendstudy.com (admissions materials) |
+
+The telephone number is never the first contact method, never a headline card or
+primary call-to-action, and never accompanied by operating hours or
+phone-first wording. It stays discoverable on `/support/` as 보조 연락수단, so a
+reviewer can still verify a telephone channel. Tests assert that the four
+previous names do not reappear, that the telephone channel is absent from the
+e-mail channel list, and that no surface promises phone-first help.
 
 The internal admin mailbox and the corporate representative mailbox are
 operational addresses and are deliberately not published as customer support

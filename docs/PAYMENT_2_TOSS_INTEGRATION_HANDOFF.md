@@ -91,11 +91,16 @@ be treated as consumed.
 
 ## Still required before payment can be switched on
 
-- Published 이용약관 (`/terms/`) and 개인정보처리방침 (`/privacy/`) — both are
-  currently drafts marked `noindex`.
-- Owner business data: 상호, 대표자, 사업자등록번호, 통신판매업 신고번호,
-  사업장 주소, 고객센터 전화, 고객센터 이메일, 개인정보 보호책임자.
-- A real support channel for `/support/` so refund intake is possible.
+- Published 이용약관 (`/terms/`) and 개인정보처리방침 (`/privacy/`) — published and
+  indexable. The effective date, the 개인정보 보호책임자 designation, the
+  minor-payment clause and the processor storage region are still Owner-pending
+  and are listed on each page.
+- Owner business data: published in `src/lib/business-info.ts` (상호, 대표자,
+  사업자등록번호, 통신판매업 신고번호, 사업장 주소). The 개인정보 보호책임자 is
+  still Owner-pending.
+- Support channel for `/support/` so refund intake is possible: published as
+  레전드스터디 랩 고객센터, with e-mail primary (`support@legendstudy.com`) and
+  the telephone channel secondary.
 - Legal review of the statutory-rights wording and the minor-payment clause.
 - Confirmation of when the essay service itself opens; the pricing page
   currently discloses that both essay tracks are 준비 중.

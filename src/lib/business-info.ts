@@ -5,8 +5,8 @@
  * the pricing page, the refund policy, the terms, the privacy policy and the
  * support page. Nothing here may be duplicated as a literal in a page.
  *
- * Every value in `businessInfo`, `supportContacts` and `supportPhone` is
- * Owner-confirmed for public publication (TOSS-REVIEW-1, 2026-10-02). A value
+ * Every value in `businessInfo` and `customerCenter` is Owner-confirmed for
+ * public publication (TOSS-REVIEW-1, 2026-10-02). A value
  * that is NOT confirmed belongs in `pendingOwnerData` and must never be
  * guessed, because an invented business or legal value is worse than a
  * disclosed gap.
@@ -46,35 +46,55 @@ export const ecommerceRegistration = {
     "판매 환경 변경에 따른 변경신고 필요 여부를 관할 행정기관에 확인하고 있습니다. 확인 결과에 따라 신고 내용을 정리해 안내합니다.",
 } as const;
 
-/** Customer centre phone. */
-export const supportPhone = {
-  label: "LegendStudy 고객센터",
-  display: "010-6469-7654",
-  /** E.164 digits for the tel: link. */
-  href: "tel:01064697654",
-} as const;
-
 /**
- * Consumer-facing contact addresses. `admin@` and the corporate `ceo@` mailbox
- * are operational addresses and are deliberately NOT published as customer
- * support channels.
+ * The customer centre. The site itself is LegendStudy Lab and the paid product
+ * is sold inside the Lab, so support is the Lab's customer centre and carries
+ * exactly one consumer-facing name. Every page reads this object, so no surface
+ * can invent a second name or reorder the channels.
  */
-export const supportContacts = [
-  {
+export const customerCenter = {
+  /** Official consumer-facing name, used verbatim wherever support is named. */
+  displayName: "레전드스터디 랩 고객센터",
+  /** English name of the site itself. Not a translation of `displayName`. */
+  brandName: "LegendStudy Lab",
+  /**
+   * E-mail is the primary channel. `admin@legendstudy.com` and the corporate
+   * representative mailbox are operational addresses and are deliberately NOT
+   * published as customer support channels.
+   */
+  primary: {
     id: "support",
-    label: "고객지원 · 결제 · 환불",
-    description: "서비스 이용, 결제, 환불, 계정, 개인정보 문의",
+    label: "고객지원 / 결제 / 환불",
+    description: "서비스 이용, 결제·환불, 계정, 개인정보 관련 문의",
     display: "support@legendstudy.com",
     href: "mailto:support@legendstudy.com",
   },
-  {
+  secondary: {
     id: "contact",
-    label: "일반 · 제휴",
-    description: "서비스 일반 문의와 제휴 제안",
+    label: "일반 / 제휴",
+    description: "서비스 일반 문의 및 제휴 제안",
     display: "contact@legendstudy.com",
     href: "mailto:contact@legendstudy.com",
   },
-] as const;
+  /**
+   * Published so a reviewer can verify a telephone channel, but never the first
+   * contact method and never a call-to-action. Operating hours stay unstated
+   * until the Owner confirms them.
+   */
+  phone: {
+    label: "전화 문의",
+    display: "010-6469-7654",
+    /** E.164 digits for the tel: link. */
+    href: "tel:01064697654",
+    note: "원활한 확인과 처리를 위해 이메일 문의를 권장합니다.",
+  },
+} as const;
+
+/** E-mail channels in priority order: primary first, secondary second. */
+export const supportContacts = [customerCenter.primary, customerCenter.secondary] as const;
+
+/** Alias kept for the components that render only the telephone channel. */
+export const supportPhone = customerCenter.phone;
 
 /** Enquiry categories offered on the support page. */
 export const supportEnquiryTypes = [
@@ -139,7 +159,7 @@ export const pendingOwnerData: readonly OwnerPendingItem[] = [
     key: "SUPPORT_HOURS",
     label: "고객센터 운영시간",
     reason:
-      "운영시간이 확정되지 않아 고객센터 페이지에 안내하지 않았습니다. 확정 시 표시합니다.",
+      "운영시간이 확정되지 않아 레전드스터디 랩 고객센터 페이지에 안내하지 않았습니다. 확정 시 표시합니다.",
     requiredFor: "GO_LIVE",
   },
 ] as const;

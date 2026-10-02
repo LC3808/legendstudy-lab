@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   businessInfo,
+  customerCenter,
   ecommerceRegistration,
   ownerPendingLabel,
   pendingOwnerData,
@@ -22,6 +23,32 @@ const forbiddenOperationalAddresses = [
   ["ceo", "copacabana.co.kr"].join("@"),
   ["privacy", "legendstudy.com"].join("@"),
 ];
+
+/** Consumer-facing supports must carry exactly one name. */
+const legacyCustomerCenterNames = [
+  "LegendStudy 고객센터",
+  "레전드스터디 고객센터",
+  "LegendStudy LAB 고객센터",
+  "레전드스터디+ 고객센터",
+];
+
+const publishedSurface = () =>
+  JSON.stringify({
+    businessInfo,
+    customerCenter,
+    productNaming,
+    supportContacts,
+    supportEnquiryTypes,
+    pendingOwnerData,
+  });
+
+/**
+ * What actually reaches a page. Internal pending-reason text is excluded: it
+ * legitimately says that operating hours are not published, which is not the
+ * same as inventing them.
+ */
+const renderedSurface = () =>
+  JSON.stringify({ businessInfo, customerCenter, productNaming, supportContacts, supportEnquiryTypes });
 
 describe("seller identity", () => {
   it("publishes the Owner-confirmed business identity", () => {
@@ -53,42 +80,80 @@ describe("seller identity", () => {
   });
 });
 
+describe("customer centre identity", () => {
+  it("uses exactly one consumer-facing name", () => {
+    expect(customerCenter.displayName).toBe("레전드스터디 랩 고객센터");
+    expect(customerCenter.brandName).toBe("LegendStudy Lab");
+  });
+
+  it("never publishes a legacy centre name", () => {
+    const serialized = publishedSurface();
+    for (const legacy of legacyCustomerCenterNames) {
+      expect(serialized).not.toContain(legacy);
+    }
+  });
+
+  it("keeps the site brand, the sold product and the operator hierarchy distinct", () => {
+    expect(customerCenter.brandName).not.toBe(customerCenter.displayName);
+    expect(productNaming.essayProduct).toBe("LegendStudy 논술 LAB");
+    expect(businessInfo.legalName).toBe("주식회사 코파카바나");
+    expect(productNaming.separateSiteNote).toContain("legendstudy.com");
+  });
+});
+
 describe("customer support channels", () => {
-  it("publishes the Owner-confirmed consumer channels", () => {
-    expect(supportPhone.display).toBe("010-6469-7654");
-    expect(supportPhone.href).toBe("tel:01064697654");
+  it("makes e-mail the primary channel", () => {
+    expect(customerCenter.primary.label).toBe("고객지원 / 결제 / 환불");
+    expect(customerCenter.primary.display).toBe("support@legendstudy.com");
+    expect(customerCenter.primary.href).toBe("mailto:support@legendstudy.com");
+    expect(customerCenter.primary.description).toBe("서비스 이용, 결제·환불, 계정, 개인정보 관련 문의");
+  });
+
+  it("keeps the general and partnership channel secondary", () => {
+    expect(customerCenter.secondary.label).toBe("일반 / 제휴");
+    expect(customerCenter.secondary.display).toBe("contact@legendstudy.com");
+    expect(customerCenter.secondary.href).toBe("mailto:contact@legendstudy.com");
+    expect(customerCenter.secondary.description).toBe("서비스 일반 문의 및 제휴 제안");
+  });
+
+  it("keeps the telephone channel published but never first", () => {
+    expect(customerCenter.phone.label).toBe("전화 문의");
+    expect(customerCenter.phone.display).toBe("010-6469-7654");
+    expect(customerCenter.phone.href).toBe("tel:01064697654");
+    expect(customerCenter.phone.note).toBe("원활한 확인과 처리를 위해 이메일 문의를 권장합니다.");
     expect(supportContacts.map((contact) => contact.display)).toEqual([
       "support@legendstudy.com",
       "contact@legendstudy.com",
     ]);
-    expect(supportContacts.map((contact) => contact.href)).toEqual([
-      "mailto:support@legendstudy.com",
-      "mailto:contact@legendstudy.com",
-    ]);
+    // Widened deliberately: comparing two disjoint literal unions is a type
+    // error, but the runtime assertion is exactly what must be guaranteed.
+    const channelDisplays: string[] = supportContacts.map((contact) => contact.display);
+    expect(channelDisplays).not.toContain(customerCenter.phone.display);
+    expect(supportPhone).toBe(customerCenter.phone);
+  });
+
+  it("never promises phone-first help or invents operating hours", () => {
+    const serialized = renderedSurface();
+    expect(serialized).not.toMatch(/전화 상담을 우선|언제든 전화|전화 주세요|우선 이용/);
+    expect(serialized).not.toMatch(/운영시간|상담시간|평일|주말/);
+    expect(serialized).not.toMatch(/\d{1,2}:\d{2}/);
   });
 
   it("never exposes an operational mailbox as customer support", () => {
-    const serialized = JSON.stringify({ supportContacts, supportPhone });
+    const serialized = publishedSurface();
     for (const address of forbiddenOperationalAddresses) {
       expect(serialized).not.toContain(address);
     }
-  });
-
-  it("does not invent support hours", () => {
-    const serialized = JSON.stringify({ supportContacts, supportPhone, supportEnquiryTypes });
-    expect(serialized).not.toMatch(/운영시간|상담시간|평일|주말/);
-    expect(serialized).not.toMatch(/\d{1,2}:\d{2}/);
   });
 
   it("offers the enquiry categories the support page renders", () => {
     expect(supportEnquiryTypes).toEqual(["서비스 이용", "결제", "환불·취소", "계정", "개인정보", "기타"]);
   });
 
-  it("keeps every published contact reachable without JavaScript", () => {
-    for (const contact of supportContacts) {
-      expect(contact.href.startsWith("mailto:")).toBe(true);
-    }
-    expect(supportPhone.href.startsWith("tel:")).toBe(true);
+  it("keeps every published channel actionable without JavaScript", () => {
+    expect(customerCenter.primary.href.startsWith("mailto:")).toBe(true);
+    expect(customerCenter.secondary.href.startsWith("mailto:")).toBe(true);
+    expect(customerCenter.phone.href.startsWith("tel:")).toBe(true);
   });
 });
 

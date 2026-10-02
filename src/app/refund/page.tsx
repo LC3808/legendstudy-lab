@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BusinessInfoList, ContactList } from "@/components/business-info-block";
 import { ReleaseNotice } from "@/components/release-status";
 import { buildPublicMetadata } from "@/lib/brand";
-import { businessInfo } from "@/lib/business-info";
+import { businessInfo, customerCenter } from "@/lib/business-info";
 import { creditCopy, pricingPlans, pricingPolicy, refundExamples, refundPolicy } from "@/lib/pricing";
 
 export const metadata = buildPublicMetadata(
@@ -107,7 +107,7 @@ export default function RefundPage() {
         <ol className="process-list">
           <li>
             <strong>환불 신청</strong>
-            <span>유료 Credit 유효기간 내에 고객센터를 통해 환불 의사를 전달합니다.</span>
+            <span>유료 Credit 유효기간 내에 {customerCenter.displayName}로 환불 의사를 전달합니다.</span>
           </li>
           <li>
             <strong>결제·사용 내역 확인</strong>
@@ -134,12 +134,12 @@ export default function RefundPage() {
       </section>
 
       <section className="policy-section">
-        <h2>문의</h2>
+        <h2>환불 문의</h2>
         <p>
-          환불과 결제에 관한 문의는 고객센터로 접수합니다. 결제 내역과 사용한 Credit 수를 확인할 수 있도록 가입한
-          이메일 주소를 함께 알려주세요.
+          환불 문의 및 신청은 {customerCenter.primary.display}으로 접수해 주세요. 결제 내역과 사용한 Credit 수를
+          확인할 수 있도록 가입한 이메일 주소를 함께 알려주세요.
         </p>
-        <ContactList />
+        <ContactList showName />
         <div className="policy-actions">
           <Link className="button button--outline" href="/pricing/">요금 안내 보기</Link>
           <Link className="button button--outline" href="/support/">고객센터</Link>

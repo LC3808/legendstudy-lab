@@ -864,8 +864,8 @@ h1, h2, h3 { text-wrap: pretty; }
 /* TOSS-REVIEW-1: public business identity, customer contacts and legal documents */
 .site-footer__brand { display: grid; gap: 0.5rem; max-width: 46rem; }
 .site-footer__product { margin: 0; color: var(--ink); font-size: 0.82rem; }
-.site-footer__contact { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; margin: 0; color: var(--ink-soft); font-size: 0.74rem; line-height: 1.7; }
-.site-footer__contact span { font-weight: 700; }
+.site-footer__contact { display: flex; flex-wrap: wrap; gap: 0.25rem 0.9rem; margin: 0; color: var(--ink-soft); font-size: 0.74rem; line-height: 1.7; }
+.site-footer__contact-name { color: var(--ink-soft); font-size: 0.72rem; font-weight: 700; }
 .site-footer__contact a { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 0.15em; }
 
 .business-info { display: grid; gap: 0.4rem; margin: 1.3rem 0 0; }
@@ -876,11 +876,19 @@ h1, h2, h3 { text-wrap: pretty; }
 .site-footer .business-info dt { min-width: 7rem; font-size: 0.7rem; }
 .site-footer .business-info dd { color: var(--ink-soft); font-size: 0.72rem; }
 
+.customer-center__name { margin: 1.3rem 0 0; color: var(--ink); font-size: 0.82rem; font-weight: 800; }
 .contact-list { display: grid; gap: 0.7rem; margin: 1.3rem 0 0; padding: 0; list-style: none; }
-.contact-list li { display: grid; gap: 0.25rem; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-muted); }
+.customer-center__name + .contact-list { margin-top: 0.6rem; }
+.contact-list__item { display: grid; gap: 0.25rem; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-muted); }
+.contact-list__item--primary { border-color: var(--line-strong); background: var(--surface); }
 .contact-list__label { color: var(--ink); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.02em; }
 .contact-list__value { color: var(--ink); font-size: 1rem; font-weight: 800; text-decoration: underline; text-underline-offset: 0.18em; overflow-wrap: anywhere; }
 .contact-list__note { color: var(--ink-soft); font-size: 0.8rem; line-height: 1.6; }
+
+.contact-phone { display: grid; gap: 0.25rem; margin: 1.3rem 0 0; padding: 0.9rem 1rem; border: 1px dashed var(--line); border-radius: var(--radius-sm); background: var(--surface); }
+.contact-phone__label { color: var(--ink-soft); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.02em; }
+.contact-phone__value { color: var(--ink); font-size: 0.95rem; font-weight: 700; text-decoration: underline; text-underline-offset: 0.18em; overflow-wrap: anywhere; }
+.contact-phone__note { margin: 0.2rem 0 0; color: var(--ink-soft); font-size: 0.8rem; line-height: 1.6; }
 
 .doc-meta { display: grid; gap: 0.6rem; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 1.6rem 0 0; }
 .doc-meta > div { padding: 0.85rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
@@ -924,6 +932,9 @@ h1, h2, h3 { text-wrap: pretty; }
 .footer-nav a,
 .policy-section > p,
 .policy-definitions dt,
+.process-list li,
+.process-list span,
+.process-list strong,
 .pricing-promo__lead,
 .pricing-promo__note,
 .policy-list,

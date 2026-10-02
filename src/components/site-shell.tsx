@@ -3,17 +3,20 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { AccountControl } from "@/components/account-control";
-import { BusinessInfoList } from "@/components/business-info-block";
+import { BusinessInfoList, CustomerCenterFooterContact } from "@/components/business-info-block";
 import { brand } from "@/lib/brand";
-import { supportContacts, supportPhone } from "@/lib/business-info";
 import { SiteNav } from "@/components/site-nav";
 import { policyRoutes } from "@/lib/release-routes";
 
 /**
  * Public shell for every route. The footer carries the Owner-confirmed business
- * identity and customer contacts on every page, because a Toss reviewer must be
- * able to confirm the seller, the registration numbers and a real contact
- * channel without signing in.
+ * identity and the customer centre e-mail channels on every page, because a
+ * Toss reviewer must be able to confirm the seller, the registration numbers
+ * and a real contact channel without signing in.
+ *
+ * The telephone channel is deliberately absent here: it is published for
+ * verification on the support page as a secondary contact, not promoted as the
+ * way to reach support.
  */
 export function SiteShell({ children }: { children: ReactNode }) {
   return (
@@ -38,13 +41,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
           <div className="site-footer__brand">
             <p className="site-footer__product"><strong>{brand.productName}</strong> {brand.byline}</p>
             <BusinessInfoList />
-            <p className="site-footer__contact">
-              <span>{supportPhone.label}</span>
-              <a href={supportPhone.href}>{supportPhone.display}</a>
-              {supportContacts.map((contact) => (
-                <a href={contact.href} key={contact.id}>{contact.display}</a>
-              ))}
-            </p>
+            <CustomerCenterFooterContact />
           </div>
           <nav className="footer-nav" aria-label="정책과 고객지원">
             {policyRoutes.map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
