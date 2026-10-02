@@ -6,6 +6,7 @@
 **Repository / branch:** `LC3808/legendstudy-lab` · `claude/math-essay-architecture-v1`.
 **Base commit:** `253867b91b00429d581946a418b2c82b2163e721` (tip of `claude/quality-console-v0`,
 HQR-1 + LDP-1 preserved).
+**Successor:** [MATH-2_CANONICAL_DATA_PERSISTENCE_CONTRACT.md](MATH-2_CANONICAL_DATA_PERSISTENCE_CONTRACT.md) (MATH-2A, concrete persistence contract).
 
 > **This document authorizes nothing.** It contains **no** migration SQL, **no** implementation
 > code, **no** Vision/OCR/AI provider integration, and makes **no** change to Production, to
