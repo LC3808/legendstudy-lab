@@ -58,9 +58,10 @@ export const customerCenter = {
   /** English name of the site itself. Not a translation of `displayName`. */
   brandName: "LegendStudy Lab",
   /**
-   * E-mail is the primary channel. `admin@legendstudy.com` and the corporate
+   * E-mail is the primary channel. The internal admin mailbox and the corporate
    * representative mailbox are operational addresses and are deliberately NOT
-   * published as customer support channels.
+   * published as customer support channels; their literals are not written into
+   * this repository so they cannot be harvested from it.
    */
   primary: {
     id: "support",
