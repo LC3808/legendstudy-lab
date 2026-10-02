@@ -6,9 +6,11 @@ import { buildPublicMetadata } from "@/lib/brand";
 import {
   businessInfoFields,
   creditCopy,
+  heroCopy,
   paymentState,
   pricingPlans,
   pricingPolicy,
+  promotionCopy,
   refundPolicy,
   serviceAvailability,
 } from "@/lib/pricing";
@@ -29,35 +31,28 @@ export default function PricingPage() {
     <div className="policy-page content-wrap content-wrap--detail pricing-page">
       <p className="eyebrow eyebrow--accent">LEGENDSTUDY LAB / PRICING</p>
       <div className="policy-page__heading">
-        <h1>필요한 만큼 충전하고,<br />첨삭부터 재첨삭까지.</h1>
+        <h1>
+          {heroCopy.titleLine1}
+          <br />
+          {heroCopy.titleLine2}
+        </h1>
         <ReleaseStatusLabel status="SERVICE_PREPARING" />
       </div>
-      <p className="policy-page__lead">
-        LegendStudy LAB은 대학별 평가 관점으로 답안을 읽는 논술 첨삭 서비스입니다. 구독이 아니라 필요한 만큼
-        Credit을 구매해 사용하며, {creditCopy.primary}
-      </p>
-      <p className="pricing-hero__note">{creditCopy.noSubscription}</p>
+      <p className="policy-page__lead">{heroCopy.description}</p>
 
       <ReleaseNotice>
         <strong>{serviceAvailability.service.stateLabel}.</strong> {serviceAvailability.service.notice}
       </ReleaseNotice>
 
       <section className="pricing-free" aria-labelledby="pricing-free-title">
-        <div className="pricing-free__body">
-          <h2 id="pricing-free-title">신규 가입 {pricingPolicy.freeSignupCredits} Credits 무료</h2>
-          <p>
-            {creditCopy.freeSignup} 무료 Credit은 유효기간이 없고 현금으로 환불되지 않습니다. 재첨삭 조건은 아래 자주
-            묻는 질문에서 확인할 수 있습니다.
-          </p>
-        </div>
-        <p className="pricing-free__state">출시 시 제공</p>
+        <h2 id="pricing-free-title">신규 가입 {pricingPolicy.freeSignupCredits} Credits 무료</h2>
+        <p className="pricing-free__state">{serviceAvailability.freeSignupGrant.stateLabel}</p>
       </section>
 
       <section className="policy-section" aria-labelledby="pricing-plans-title">
         <h2 id="pricing-plans-title">Credit 판매 가격</h2>
         <p className="pricing-section__lead">
-          모든 Credit 팩은 같은 서비스 범위를 제공합니다. 팩에 따라 제공 기능이 달라지지 않고, Credit당 가격만
-          낮아집니다.
+          팩에 따라 제공되는 기능은 같고, 구매 수량이 늘어날수록 Credit당 가격이 낮아집니다.
         </p>
         <div className="pricing-plans">
           {plans.map((plan) => (
@@ -69,11 +64,6 @@ export default function PricingPage() {
               <p className="pricing-plan__price">{plan.priceLabel}</p>
               <p className="pricing-plan__unit">Credit당 {plan.perCreditLabel}</p>
               <p className="pricing-plan__value">{plan.valueLine}</p>
-              <p className="pricing-plan__value-note">{creditCopy.valueSecondary}</p>
-              <ul className="pricing-plan__list">
-                <li>최초 첨삭 {plan.credits}회</li>
-                <li>동일 답안 재첨삭 {plan.credits}회 (추가 차감 없음)</li>
-              </ul>
               <p className="pricing-plan__cta">
                 <button className="button button--outline" type="button" disabled aria-describedby={paymentNoteId}>
                   {paymentState.ctaLabel}
@@ -87,28 +77,26 @@ export default function PricingPage() {
         </p>
       </section>
 
+      <section className="policy-section" aria-labelledby="pricing-promo-title">
+        <h2 id="pricing-promo-title">{promotionCopy.title}</h2>
+        <div className="pricing-promo">
+          <p className="pricing-promo__lead">{promotionCopy.lead}</p>
+          <PricingPromoForm />
+        </div>
+      </section>
+
       <section className="policy-section" aria-labelledby="pricing-credit-title">
-        <h2 id="pricing-credit-title">1 Credit으로 어디까지 이용할 수 있나요?</h2>
-        <p>{creditCopy.primary}</p>
-        <p className="pricing-credit__total">{creditCopy.secondary}</p>
-        <ol className="process-list">
-          <li>
-            <strong>답안 제출</strong>
-            <span>대학별 논술 문제를 선택하고 제한 시간과 분량을 확인해 답안을 제출합니다.</span>
-          </li>
-          <li>
-            <strong>최초 첨삭</strong>
-            <span>답안에 대한 첨삭 결과를 받습니다. 유효한 최초 첨삭 결과가 제공되면 그 Credit을 사용한 것으로 봅니다.</span>
-          </li>
-          <li>
-            <strong>답안 수정</strong>
-            <span>첨삭 결과를 확인하고 답안을 수정하거나 다시 작성합니다.</span>
-          </li>
-          <li>
-            <strong>재첨삭 1회</strong>
-            <span>최초 첨삭 결과 제공일로부터 14일 이내에 같은 답안을 한 번 더 첨삭받습니다. 추가 Credit은 차감되지 않습니다.</span>
-          </li>
-        </ol>
+        <h2 id="pricing-credit-title">1 Credit 이용 범위</h2>
+        <div className="pricing-facts">
+          <div className="pricing-fact">
+            <h3>1 Credit으로 이용할 수 있는 범위</h3>
+            <p className="pricing-fact__statement">{creditCopy.primary}</p>
+          </div>
+          <div className="pricing-fact">
+            <h3>재첨삭 방법과 기간</h3>
+            <p className="pricing-fact__statement">{creditCopy.reevaluation}</p>
+          </div>
+        </div>
       </section>
 
       <section className="policy-section" aria-labelledby="pricing-compare-title">
@@ -181,16 +169,6 @@ export default function PricingPage() {
         </p>
       </section>
 
-      <section className="policy-section" aria-labelledby="pricing-promo-title">
-        <h2 id="pricing-promo-title">학교·이벤트 프로모션</h2>
-        <div className="pricing-promo">
-          <p className="pricing-promo__lead">
-            학교, 설명회, 이벤트 등을 통해 받은 프로모션 코드가 있다면 입력해 주세요.
-          </p>
-          <PricingPromoForm />
-        </div>
-      </section>
-
       <section className="policy-section" aria-labelledby="pricing-how-title">
         <h2 id="pricing-how-title">이용 방법</h2>
         <ol className="process-list">
@@ -212,36 +190,23 @@ export default function PricingPage() {
           </li>
           <li>
             <strong>재첨삭 1회</strong>
-            <span>최초 첨삭 결과 제공일로부터 14일 이내에 같은 답안을 한 번 더 첨삭받습니다.</span>
+            <span>최초 첨삭 결과 제공일로부터 14일 이내에 추가 Credit 차감 없이 한 번 더 첨삭받습니다.</span>
           </li>
         </ol>
       </section>
 
       <section className="policy-section" aria-labelledby="pricing-credit-policy-title">
         <h2 id="pricing-credit-policy-title">Credit 이용 조건</h2>
-        <div className="pricing-facts">
-          <div className="pricing-fact">
-            <h3>Credit 유효기간</h3>
-            <p className="pricing-fact__statement">{creditCopy.validity}</p>
-            <p>
-              유효기간은 결제일을 기준으로 계산합니다. 구매한 Credit은 여러 답안에 나누어 사용할 수 있으며, 유효기간이
-              지난 뒤에는 사용할 수 없습니다.
-            </p>
-          </div>
-          <div className="pricing-fact">
-            <h3>재첨삭 이용 기간</h3>
-            <p className="pricing-fact__statement">{creditCopy.reevaluation}</p>
-            <p>
-              재첨삭 기간은 Credit 유효기간과 별개로, 최초 첨삭 결과 제공일로부터 계산합니다. 재첨삭은 같은 답안에 한해
-              1회 제공되며 무제한이 아닙니다.
-            </p>
-          </div>
-        </div>
+        <ul className="policy-list">
+          <li>{creditCopy.validity}</li>
+          <li>유효기간은 결제일을 기준으로 계산하며, 구매한 Credit은 여러 답안에 나누어 사용할 수 있습니다.</li>
+          <li>
+            재첨삭은 최초 첨삭 결과 제공일로부터 {pricingPolicy.reevaluationWindowDays}일 이내에 1회 제공되며, Credit
+            유효기간과 별개로 계산합니다.
+          </li>
+          <li>{creditCopy.oneOffPurchase}</li>
+        </ul>
         <dl className="pricing-summary">
-          <div>
-            <dt>결제 방식</dt>
-            <dd>일회성 Credit 구매 · 정기결제 아님 · 자동 결제 없음</dd>
-          </div>
           <div>
             <dt>Credit 사용 기준</dt>
             <dd>{refundPolicy.usedCreditRule}</dd>
@@ -272,7 +237,7 @@ export default function PricingPage() {
         <div className="pricing-faq">
           <details>
             <summary>1 Credit으로 무엇을 이용할 수 있나요?</summary>
-            <p>{creditCopy.primary} {creditCopy.secondary}입니다.</p>
+            <p>{creditCopy.primary} {creditCopy.reevaluation}</p>
           </details>
           <details>
             <summary>재첨삭은 언제까지 받을 수 있나요?</summary>
@@ -286,14 +251,11 @@ export default function PricingPage() {
           </details>
           <details>
             <summary>무료로 받은 Credit도 유효기간이 있나요?</summary>
-            <p>
-              무료로 지급된 Credit은 유효기간이 없습니다. 다만 현금으로 환불되지 않으며, 무료 Credit으로 받은 최초
-              첨삭의 재첨삭은 최초 첨삭 결과 제공일로부터 14일 이내에 이용할 수 있습니다.
-            </p>
+            <p>{creditCopy.freeSignup} {creditCopy.freeCreditTerms}</p>
           </details>
           <details>
             <summary>정기결제인가요?</summary>
-            <p>{creditCopy.noSubscription} 일회성 Credit 구매이며 자동 결제가 없습니다.</p>
+            <p>{creditCopy.oneOffPurchase}</p>
           </details>
           <details>
             <summary>환불은 어떻게 신청하나요?</summary>
@@ -311,8 +273,8 @@ export default function PricingPage() {
             </p>
           </details>
           <details>
-            <summary>프로모션 코드는 어떻게 사용하나요?</summary>
-            <p>{paymentState.promotionNote} 코드를 입력하면 적용 여부를 서버에서 확인하는 방식으로 제공할 예정입니다.</p>
+            <summary>쿠폰 번호는 어떻게 사용하나요?</summary>
+            <p>{paymentState.promotionNote} 쿠폰 번호를 입력하면 적용 여부를 서버에서 확인하는 방식으로 제공할 예정입니다.</p>
           </details>
           <details>
             <summary>결제는 언제부터 가능한가요?</summary>

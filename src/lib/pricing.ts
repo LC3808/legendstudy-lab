@@ -40,7 +40,10 @@ export type CreditPlan = {
   /** Integer KRW per Credit, rounded for display only. */
   readonly perCreditKrw: number;
   readonly perCreditLabel: string;
-  /** Primary value line. Deliberately counts answers, not review sessions. */
+  /**
+   * Answer-count value line. Cards stay quantity-and-price only; the
+   * reevaluation rule is stated once in the 1 Credit section instead.
+   */
   readonly valueLine: string;
   readonly recommended: boolean;
 };
@@ -60,7 +63,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(4900),
     perCreditKrw: 4900,
     perCreditLabel: won(4900),
-    valueLine: "1개 답안 이용",
+    valueLine: "1개 답안",
     recommended: false,
   },
   {
@@ -71,7 +74,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(11900),
     perCreditKrw: Math.round(11900 / 3),
     perCreditLabel: `약 ${won(Math.round(11900 / 3))}`,
-    valueLine: "3개 답안 이용",
+    valueLine: "3개 답안",
     recommended: false,
   },
   {
@@ -82,7 +85,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(17900),
     perCreditKrw: 3580,
     perCreditLabel: won(3580),
-    valueLine: "5개 답안 이용",
+    valueLine: "5개 답안",
     recommended: true,
   },
   {
@@ -93,7 +96,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(29900),
     perCreditKrw: 2990,
     perCreditLabel: won(2990),
-    valueLine: "10개 답안 이용",
+    valueLine: "10개 답안",
     recommended: false,
   },
 ] as const;
@@ -119,23 +122,57 @@ export const pricingPolicy = {
   refundRequestWindow: "유료 Credit 유효기간 내",
 } as const;
 
+/**
+ * Owner-final hero copy.
+ *
+ * Internal evaluation strategy must not leak into marketing copy, so the hero
+ * deliberately avoids naming an evaluation standard or perspective, and does not
+ * carry the purchase-model or reevaluation wording that belongs further down.
+ */
+export const heroCopy = {
+  titleLine1: "필요한 만큼 충전하고,",
+  titleLine2: "가능성을 좀 더 선명하게.",
+  description:
+    "LegendStudy 논술 LAB은 대학별 논술의 특성을 반영해, 내 답안에서 무엇을 보완해야 하는지 구체적으로 보여주는 논술 첨삭 서비스입니다.",
+  /**
+   * Phrases the Owner removed from the hero. Asserted against the hero strings
+   * only — the FAQ and policy sections may still state these as facts.
+   */
+  bannedPhrases: [
+    "대학별 평가 기준",
+    "대학별 평가 관점",
+    "구독이 아니라",
+    "정기결제가 아닙니다",
+    "첨삭부터 재첨삭까지",
+  ],
+} as const;
+
 export const creditCopy = {
-  primary: "최초 첨삭과 동일 답안 재첨삭(1회)까지 이용할 수 있습니다.",
-  secondary: "동일 답안 기준 1 Credit = 총 2회 첨삭",
-  valueSecondary: "각 답안 최초 첨삭 + 재첨삭 1회 포함",
+  /** Scope of one Credit. Stated once here, not repeated on the product cards. */
+  primary: "1 Credit으로 최초 첨삭과 답안 수정 후 재첨삭 1회까지 이용할 수 있습니다.",
+  reevaluation: `첨삭 결과를 확인한 뒤 답안을 다시 작성해 제출하면, 최초 첨삭 결과 제공일로부터 ${pricingPolicy.reevaluationWindowDays}일 이내에는 추가 Credit 차감 없이 재첨삭을 받을 수 있습니다.`,
   validity: `구매한 Credit은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있습니다.`,
-  reevaluation: `최초 첨삭 결과를 받은 후 ${pricingPolicy.reevaluationWindowDays}일 이내 동일 답안을 수정해 1회 재첨삭받을 수 있으며 추가 Credit은 차감되지 않습니다.`,
-  noSubscription: "정기결제가 아닙니다. 필요한 만큼만 구매하세요.",
-  freeSignup: `신규 가입 시 ${pricingPolicy.freeSignupCredits} Credits를 무료로 제공합니다.`,
+  /** Factual purchase-model statement. Not used as hero marketing copy. */
+  oneOffPurchase: "일회성 Credit 구매이며 자동 갱신 결제가 없습니다.",
+  freeSignup: `신규 가입 시 ${pricingPolicy.freeSignupCredits} Credits를 무료로 제공할 예정입니다.`,
   freeCreditTerms:
     "무료로 지급된 Credit은 유효기간이 없고 현금으로 환불되지 않습니다. 무료 Credit으로 받은 최초 첨삭의 재첨삭도 동일하게 14일 이내에 이용할 수 있습니다.",
   statutoryRights:
     "관련 법령에 따른 청약철회, 계약해제·해지 및 환급에 관한 소비자의 권리는 본 환불정책과 별도로 보장됩니다.",
 } as const;
 
+/** Promotion / coupon block copy. Sits directly below the product cards. */
+export const promotionCopy = {
+  title: "학교 단체 이용 / 이벤트 프로모션",
+  lead: "학교나 이벤트에서 받은 쿠폰 번호가 있다면 입력해 주세요.",
+  inputLabel: "쿠폰 번호 입력",
+  inputPlaceholder: "쿠폰 번호",
+  ctaLabel: "적용하기",
+} as const;
+
 /**
  * Refund policy. Owner commercial policy, summarised on /pricing/ and stated in
- * full on /refund/.
+ * full on /refund/. Do not change the arithmetic without Owner approval.
  */
 export const refundPolicy = {
   requestWindow: "유료 Credit 유효기간 내",
@@ -199,6 +236,16 @@ export const serviceAvailability = {
     notice:
       "결제 기능과 첨삭 서비스는 아직 열려 있지 않습니다. 가격과 이용 조건을 먼저 안내하고, 결제가 열리는 시점에 이 페이지에서 다시 알립니다.",
   },
+  /**
+   * The free signup Credit grant is declared in the domain types
+   * (`CreditEntitlement.initialFreeEvaluationCredits`) but has no runtime grant
+   * logic, so the benefit must be presented as upcoming, never as active.
+   */
+  freeSignupGrant: {
+    state: "PLANNED" as LaunchState,
+    stateLabel: "출시 시 제공",
+    runtimeStatus: "NOT_IMPLEMENTED",
+  },
 } as const;
 
 /** Payment state. No payment provider is connected in this release. */
@@ -208,7 +255,7 @@ export const paymentState = {
   ctaNote: "결제 기능을 준비하고 있습니다. 결제가 열리면 이 페이지에서 구매할 수 있습니다.",
   provider: "NOT_CONNECTED" as const,
   promotion: "NOT_IMPLEMENTED" as const,
-  promotionNote: "프로모션 코드 적용 기능은 결제 기능과 함께 제공될 예정입니다.",
+  promotionNote: "쿠폰 적용 기능은 결제 기능과 함께 제공될 예정입니다.",
 } as const;
 
 export const businessInfoFields: readonly BusinessInfoField[] = [
@@ -234,4 +281,14 @@ export const policyDocumentState = {
   privacy: "NEEDS_UPDATE" as PolicyDocumentState,
   businessInfo: "MISSING" as PolicyDocumentState,
   customerService: "MISSING" as PolicyDocumentState,
+} as const;
+
+/**
+ * Forward-compatibility note for the future evaluation result screen. Recorded
+ * here so the screen built in a later task matches the published 14-day rule.
+ * The evaluation result screen is NOT implemented in PAYMENT-1B.
+ */
+export const evaluationResultCtaPolicy = {
+  ctaLabel: "답안을 다시 작성해 보세요.",
+  creditNote: "14일 이내 재첨삭에는 Credit이 추가로 차감되지 않습니다.",
 } as const;

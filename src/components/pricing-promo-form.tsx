@@ -1,9 +1,9 @@
 "use client";
 
-import { paymentState } from "@/lib/pricing";
+import { paymentState, promotionCopy } from "@/lib/pricing";
 
 /**
- * Promotion code shell for the public pricing page.
+ * Coupon / promotion code shell for the public pricing page.
  *
  * The redemption backend does not exist yet, so the field is rendered for review
  * but the action is disabled and no code is ever reported as accepted. When the
@@ -20,18 +20,18 @@ export function PricingPromoForm() {
         event.preventDefault();
       }}
     >
-      <label htmlFor="promotion-code">학교 / 이벤트 / 프로모션 코드</label>
+      <label htmlFor="promotion-code">{promotionCopy.inputLabel}</label>
       <div className="pricing-promo__row">
         <input
           id="promotion-code"
           name="promotionCode"
           type="text"
-          placeholder="예) LS-EVENT-2026"
+          placeholder={promotionCopy.inputPlaceholder}
           autoComplete="off"
           aria-describedby={noteId}
         />
         <button className="button button--outline" type="submit" disabled aria-describedby={noteId}>
-          적용하기
+          {promotionCopy.ctaLabel}
         </button>
       </div>
       <p className="pricing-promo__note" id={noteId} role="status">

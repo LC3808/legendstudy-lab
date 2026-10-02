@@ -4,11 +4,14 @@ import {
   businessInfoFields,
   calculatePartialRefundKrw,
   creditCopy,
+  evaluationResultCtaPolicy,
   excludedCreditPackSizes,
+  heroCopy,
   paymentState,
   policyDocumentState,
   pricingPlans,
   pricingPolicy,
+  promotionCopy,
   refundExamples,
   refundPolicy,
   requiredDataKeys,
@@ -41,25 +44,119 @@ describe("owner-final pricing", () => {
   });
 });
 
-describe("commercial policy", () => {
-  it("sells a one-off Credit purchase with no subscription or automatic renewal", () => {
-    expect(pricingPolicy.subscription).toBe(false);
-    expect(pricingPolicy.autoRenewal).toBe(false);
-    expect(creditCopy.noSubscription).toBe("정기결제가 아닙니다. 필요한 만큼만 구매하세요.");
+describe("hero copy", () => {
+  it("uses the Owner-approved headline and description", () => {
+    expect(heroCopy.titleLine1).toBe("필요한 만큼 충전하고,");
+    expect(heroCopy.titleLine2).toBe("가능성을 좀 더 선명하게.");
+    expect(heroCopy.description).toBe(
+      "LegendStudy 논술 LAB은 대학별 논술의 특성을 반영해, 내 답안에서 무엇을 보완해야 하는지 구체적으로 보여주는 논술 첨삭 서비스입니다.",
+    );
   });
 
-  it("matches the Owner decisions for validity and the included reevaluation", () => {
+  it("keeps internal evaluation strategy and removed marketing phrases out of the hero", () => {
+    const hero = `${heroCopy.titleLine1} ${heroCopy.titleLine2} ${heroCopy.description}`;
+    for (const phrase of heroCopy.bannedPhrases) {
+      expect(hero).not.toContain(phrase);
+    }
+    expect(heroCopy.bannedPhrases).toContain("대학별 평가 관점");
+    expect(heroCopy.bannedPhrases).toContain("정기결제가 아닙니다");
+    expect(heroCopy.bannedPhrases).toContain("첨삭부터 재첨삭까지");
+  });
+
+  it("does not carry the reevaluation rule or the Credit scope into the hero", () => {
+    const hero = `${heroCopy.titleLine1} ${heroCopy.titleLine2} ${heroCopy.description}`;
+    expect(hero).not.toContain(creditCopy.primary);
+    expect(hero).not.toContain("14일");
+  });
+});
+
+describe("product card copy", () => {
+  it("shows answer quantity only, without reevaluation wording", () => {
+    expect(pricingPlans.map((plan) => plan.valueLine)).toEqual([
+      "1개 답안",
+      "3개 답안",
+      "5개 답안",
+      "10개 답안",
+    ]);
+  });
+
+  it("keeps reevaluation and review-count claims off the cards", () => {
+    for (const plan of pricingPlans) {
+      const cardCopy = Object.values(plan).join(" ");
+      expect(cardCopy).not.toMatch(/재첨삭/);
+      expect(cardCopy).not.toMatch(/총 \d+회/);
+      expect(cardCopy).not.toMatch(/\d+회 첨삭/);
+      expect(cardCopy).not.toContain("포함");
+    }
+  });
+});
+
+describe("credit scope and reevaluation copy", () => {
+  it("states the Owner-approved 1 Credit scope", () => {
+    expect(creditCopy.primary).toBe("1 Credit으로 최초 첨삭과 답안 수정 후 재첨삭 1회까지 이용할 수 있습니다.");
+  });
+
+  it("states the Owner-approved reevaluation rule", () => {
+    expect(creditCopy.reevaluation).toBe(
+      "첨삭 결과를 확인한 뒤 답안을 다시 작성해 제출하면, 최초 첨삭 결과 제공일로부터 14일 이내에는 추가 Credit 차감 없이 재첨삭을 받을 수 있습니다.",
+    );
+  });
+
+  it("keeps Credit validity separate from the reevaluation window", () => {
+    expect(creditCopy.validity).toContain("결제일로부터 3개월");
+    expect(creditCopy.validity).not.toContain("14일");
+    expect(creditCopy.reevaluation).not.toContain("3개월");
     expect(pricingPolicy.paidCreditValidityMonths).toBe(3);
     expect(pricingPolicy.includedReevaluationsPerCredit).toBe(1);
     expect(pricingPolicy.reevaluationWindowDays).toBe(14);
     expect(pricingPolicy.reevaluationWindowBasis).toBe("최초 첨삭 결과 제공일");
   });
 
-  it("describes the free signup grant without expiry and without cash refund", () => {
+  it("matches the future evaluation result CTA to the published rule", () => {
+    expect(evaluationResultCtaPolicy.creditNote).toContain("14일 이내");
+    expect(evaluationResultCtaPolicy.creditNote).toContain("추가로 차감되지 않습니다");
+  });
+});
+
+describe("purchase model", () => {
+  it("sells a one-off Credit purchase with no subscription or automatic renewal", () => {
+    expect(pricingPolicy.subscription).toBe(false);
+    expect(pricingPolicy.autoRenewal).toBe(false);
+    expect(creditCopy.oneOffPurchase).toBe("일회성 Credit 구매이며 자동 갱신 결제가 없습니다.");
+  });
+
+  it("does not use the removed subscription marketing line", () => {
+    expect(creditCopy.oneOffPurchase).not.toContain("정기결제가 아닙니다");
+    expect(creditCopy.oneOffPurchase).not.toContain("필요한 만큼만 구매하세요");
+  });
+});
+
+describe("free signup benefit", () => {
+  it("keeps the free grant presented as upcoming, never as active", () => {
     expect(pricingPolicy.freeSignupCredits).toBe(3);
+    expect(serviceAvailability.freeSignupGrant.runtimeStatus).toBe("NOT_IMPLEMENTED");
+    expect(serviceAvailability.freeSignupGrant.stateLabel).toBe("출시 시 제공");
+    expect(serviceAvailability.freeSignupGrant.state).toBe("PLANNED");
+  });
+
+  it("describes the free grant without expiry and without cash refund", () => {
     expect(pricingPolicy.freeCreditHasExpiry).toBe(false);
     expect(pricingPolicy.freeCreditCashRefundable).toBe(false);
     expect(creditCopy.freeCreditTerms).toContain("현금으로 환불되지 않습니다");
+    expect(creditCopy.freeSignup).toContain("제공할 예정입니다");
+  });
+});
+
+describe("promotion block", () => {
+  it("uses the Owner-approved title, label and CTA", () => {
+    expect(promotionCopy.title).toBe("학교 단체 이용 / 이벤트 프로모션");
+    expect(promotionCopy.inputLabel).toBe("쿠폰 번호 입력");
+    expect(promotionCopy.ctaLabel).toBe("적용하기");
+  });
+
+  it("does not pretend the coupon can be redeemed yet", () => {
+    expect(paymentState.promotion).toBe("NOT_IMPLEMENTED");
+    expect(paymentState.promotionNote).toContain("제공될 예정입니다");
   });
 });
 
@@ -89,38 +186,15 @@ describe("refund policy", () => {
     expect(creditCopy.statutoryRights).toContain("별도로 보장됩니다");
     expect(refundPolicy.processing).toContain(`${pricingPolicy.refundProcessingBusinessDays}영업일`);
     expect(refundPolicy.processingCaveat).toContain("카드사");
+    expect(refundPolicy.requestWindow).toBe("유료 Credit 유효기간 내");
   });
 });
 
-describe("page copy safety", () => {
-  it("counts answers instead of advertising a doubled review count", () => {
-    expect(pricingPlans.map((plan) => plan.valueLine)).toEqual([
-      "1개 답안 이용",
-      "3개 답안 이용",
-      "5개 답안 이용",
-      "10개 답안 이용",
-    ]);
-    for (const plan of pricingPlans) {
-      expect(Object.values(plan).join(" ")).not.toMatch(/20회|첨삭 20/);
-    }
-  });
-
-  it("states the Credit explanation in the approved wording", () => {
-    expect(creditCopy.primary).toBe("최초 첨삭과 동일 답안 재첨삭(1회)까지 이용할 수 있습니다.");
-    expect(creditCopy.secondary).toBe("동일 답안 기준 1 Credit = 총 2회 첨삭");
-  });
-
-  it("keeps Credit validity and the reevaluation window as separate statements", () => {
-    expect(creditCopy.validity).toContain("결제일로부터 3개월");
-    expect(creditCopy.reevaluation).toContain("14일 이내");
-    expect(creditCopy.reevaluation).toContain("추가 Credit은 차감되지 않습니다");
-  });
-
+describe("service and payment state", () => {
   it("does not present payment as available", () => {
     expect(paymentState.cta).toBe("PAYMENT_NOT_READY");
     expect(paymentState.ctaLabel).toBe("결제 준비 중");
     expect(paymentState.provider).toBe("NOT_CONNECTED");
-    expect(paymentState.promotion).toBe("NOT_IMPLEMENTED");
   });
 
   it("does not show either essay track as already available", () => {
@@ -147,6 +221,12 @@ describe("required business data", () => {
     for (const field of businessInfoFields) {
       expect(field.status).toBe("REQUIRED_DATA");
       expect(field.pendingLabel).toBe("확정 후 게시");
+    }
+  });
+
+  it("never publishes a business value that the Owner has not supplied", () => {
+    for (const field of businessInfoFields) {
+      expect(field).not.toHaveProperty("value");
     }
   });
 

@@ -783,7 +783,6 @@ h1, h2, h3 { text-wrap: pretty; }
    state (추천 / 준비 중 / 결제 준비 중) carries text instead of colour alone.
    ========================================================================== */
 .pricing-page .policy-page__heading h1 { font-size: clamp(2.3rem, 4.8vw, 3.9rem); }
-.pricing-hero__note { margin: 1rem 0 0; color: var(--ink); font-size: 0.95rem; font-weight: 800; }
 .pricing-section__lead { margin: 1rem 0 0; color: var(--ink-soft); font-size: 0.94rem; line-height: 1.8; }
 .pricing-note { margin: 1.25rem 0 0; color: var(--ink-soft); font-size: 0.84rem; line-height: 1.7; }
 
@@ -793,7 +792,6 @@ h1, h2, h3 { text-wrap: pretty; }
 
 .pricing-free { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.6rem; padding: 1.35rem 1.4rem; border: 1px solid var(--line-strong); border-left: 4px solid var(--accent); border-radius: var(--radius-md); background: var(--paper-deep); }
 .pricing-free h2 { margin: 0; color: var(--ink); font-family: Georgia, "Nanum Myeongjo", serif; font-size: clamp(1.3rem, 2.4vw, 1.7rem); letter-spacing: -0.03em; }
-.pricing-free__body p { margin: 0.6rem 0 0; max-width: 44rem; color: var(--ink-soft); font-size: 0.9rem; line-height: 1.7; }
 .pricing-free__state { margin: 0; padding: 0.32rem 0.62rem; border: 1px solid var(--line-strong); border-radius: 99px; background: var(--surface); color: var(--ink); font-size: 0.72rem; font-weight: 800; white-space: nowrap; }
 
 .pricing-plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.9rem; margin-top: 1.6rem; }
@@ -804,12 +802,8 @@ h1, h2, h3 { text-wrap: pretty; }
 .pricing-plan__price { margin: 0.5rem 0 0; color: var(--ink); font-family: Georgia, "Nanum Myeongjo", serif; font-size: clamp(1.7rem, 2.6vw, 2.05rem); font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .pricing-plan__unit { margin: 0; color: var(--ink-soft); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
 .pricing-plan__value { margin: 0.85rem 0 0; padding-top: 0.85rem; border-top: 1px solid var(--line); color: var(--ink); font-size: 0.95rem; font-weight: 800; }
-.pricing-plan__value-note { margin: 0.2rem 0 0; color: var(--ink-soft); font-size: 0.8rem; line-height: 1.55; }
-.pricing-plan__list { display: grid; gap: 0.35rem; margin: 0.75rem 0 0; padding-left: 1.05rem; color: var(--ink-soft); font-size: 0.8rem; line-height: 1.55; }
 .pricing-plan__cta { margin: auto 0 0; padding-top: 1rem; }
 .pricing-plan__cta .button { width: 100%; }
-
-.pricing-credit__total { margin: 0.5rem 0 0; color: var(--ink); font-size: 0.98rem; font-weight: 800; }
 
 .pricing-table-scroll { margin-top: 1.6rem; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); -webkit-overflow-scrolling: touch; }
 .pricing-table-scroll:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 70%, white); outline-offset: 3px; }

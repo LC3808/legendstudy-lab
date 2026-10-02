@@ -49,6 +49,24 @@ for (const prohibited of ["SUPABASE_SERVICE_ROLE", "service_role", "sk-", "ANTHR
   if (combinedSource.includes(prohibited)) errors.push(`prohibited secret-like token found: ${prohibited}`);
 }
 
+// A route-level loading boundary breaks the static export. Every route is
+// prerendered here, so loading.tsx only adds a Suspense boundary; once a page
+// exceeds React's progressive chunk size that boundary flushes its fallback as
+// the visible <main> and hides the real page until hydration. See
+// docs/STATIC_EXPORT_NOTES.md.
+const appRoot = path.join(sourceRoot, "app");
+const loadingBoundaries = [];
+(function findLoadingBoundaries(directory) {
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const full = path.join(directory, entry.name);
+    if (entry.isDirectory()) findLoadingBoundaries(full);
+    else if (entry.name === "loading.tsx") loadingBoundaries.push(full);
+  }
+})(appRoot);
+for (const file of loadingBoundaries) {
+  errors.push(`route loading boundary breaks static export output: ${path.relative(root, file)}`);
+}
+
 if (errors.length) {
   console.error("BOUNDARY_AUDIT=FAIL");
   for (const error of errors) console.error(`- ${error}`);

@@ -99,3 +99,29 @@ be treated as consumed.
 - Legal review of the statutory-rights wording and the minor-payment clause.
 - Confirmation of when the essay service itself opens; the pricing page
   currently discloses that both essay tracks are 준비 중.
+
+## E-commerce registration and administrative checks
+
+The 통신판매업 신고 is planned to reuse an existing filing rather than to open a
+new one. The registration number and the registered entity details have not been
+supplied, so nothing is published on `/pricing/` and no value may be invented.
+`businessInfoFields` in `src/lib/pricing.ts` lists every field that must be
+filled before the Toss application is submitted.
+
+Separate administrative check, not a code change: whether the host server and
+domain entries on the existing filing need to be brought up to date for the
+LegendStudy LAB domain. Confirm this with the relevant authority before
+submitting the Toss application.
+
+## Forward compatibility: evaluation result screen
+
+The evaluation result screen is **not** implemented in PAYMENT-1B. When it is
+built, its reevaluation call to action must match the rule already published on
+`/pricing/`:
+
+- CTA: `답안을 다시 작성해 보세요.`
+- Credit note: `14일 이내 재첨삭에는 Credit이 추가로 차감되지 않습니다.`
+
+These strings live in `evaluationResultCtaPolicy` in `src/lib/pricing.ts`, next
+to the 14-day reevaluation window they depend on, so the future screen and the
+pricing page cannot drift apart.
