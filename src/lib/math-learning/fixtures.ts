@@ -89,3 +89,39 @@ export function learningStateFixture(overrides: Partial<LearningState> = {}): Le
     ...overrides,
   };
 }
+
+export function reevaluationDeltaFixture(
+  overrides: Partial<import("./runtime/contract").ReevaluationDelta> = {},
+): import("./runtime/contract").ReevaluationDelta {
+  return {
+    prior_evaluation_id: "eval-1",
+    target_step_id: null,
+    downstream: null,
+    summary: "무엇이 달라졌는지",
+    delta: [{ kind: "ROOT_ERROR_REMOVED", explanation: "부호 오류 해결" }],
+    ...overrides,
+  };
+}
+
+export function historyEntryFixture(
+  overrides: Partial<import("./runtime/contract").LearningHistoryEntry> = {},
+): import("./runtime/contract").LearningHistoryEntry {
+  return {
+    attempt_id: "att-1",
+    created_at: "2026-10-02T00:00:00.000Z",
+    resolve_kind: "INITIAL",
+    prior_attempt_id: null,
+    prior_evaluation_id: null,
+    target_step_id: null,
+    submitted_scope: "WHOLE_LEAF",
+    evaluation_id: "eval-1",
+    evaluation_state: "COMPLETED",
+    completed_at: "2026-10-02T00:00:00.000Z",
+    reevaluation_delta: null,
+    core_ids: ["core-1"],
+    exposed_hint_levels: [],
+    solution_revealed: false,
+    reference_solution_revealed_before_resolve: false,
+    ...overrides,
+  };
+}

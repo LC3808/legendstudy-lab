@@ -63,6 +63,88 @@ export interface ReadLearningHistoryPayload {
   before_id?: string;
 }
 
+export type ResolveKind = "STEP_RETRY" | "FULL_RESOLVE" | "SHORT_ANSWER_RESOLVE";
+export type ResolveInputKind = "TYPED" | "EVIDENCE" | "MIXED";
+
+export interface CreateResolveAttemptPayload {
+  client_submission_id: string;
+  leaf_id: string;
+  kind: ResolveKind;
+  predecessor_id: string;
+  prior_evaluation_id: string;
+  input_kind: ResolveInputKind;
+  /** Actual TYPED/MIXED work (≤30000 chars). */
+  typed_answer?: string;
+  /** Required for STEP_RETRY; omitted/null otherwise. */
+  target_step_id?: string | null;
+}
+export interface CreateResolveAttemptResult {
+  attempt_id: string;
+}
+
+export interface RequestReevaluationPayload {
+  attempt_id: string;
+  client_submission_id: string;
+}
+/** Included-only; the runtime never auto-falls back to the paid route. */
+export interface RequestReevaluationResult {
+  evaluation_id: string;
+  commercial_context: "INCLUDED_REEVALUATION";
+  additional_credit: 0;
+}
+
+/* --------------------------------------------------- reevaluation delta (MATH-4 worker extension) */
+
+export type ReevaluationDeltaKind =
+  | "CORE_CORRECTED"
+  | "ROOT_ERROR_REMOVED"
+  | "ROOT_ERROR_REMAINS"
+  | "PROPAGATED_ERROR_REMOVED"
+  | "NEW_INDEPENDENT_ERROR"
+  | "ANSWER_CHANGED"
+  | "ANSWER_NOW_CORRECT"
+  | "JUSTIFICATION_IMPROVED"
+  | "NO_MATERIAL_CHANGE"
+  | "PATH_VALIDITY_CHANGED";
+
+export interface ReevaluationDeltaItem {
+  kind: ReevaluationDeltaKind;
+  explanation: string;
+  prior_error_id?: string;
+  current_error_id?: string;
+}
+export interface ReevaluationDelta {
+  prior_evaluation_id: string;
+  target_step_id: string | null;
+  downstream: "NOT_REASSESSED" | null;
+  summary: string;
+  delta?: ReevaluationDeltaItem[];
+}
+
+export interface LearningHistoryEntry {
+  attempt_id: string;
+  created_at: string;
+  resolve_kind: string;
+  prior_attempt_id: string | null;
+  prior_evaluation_id: string | null;
+  target_step_id: string | null;
+  submitted_scope: "TARGET_STEP" | "WHOLE_LEAF";
+  evaluation_id: string | null;
+  evaluation_state: string | null;
+  completed_at: string | null;
+  reevaluation_delta: ReevaluationDelta | null;
+  core_ids: string[];
+  exposed_hint_levels: number[];
+  solution_revealed: boolean;
+  reference_solution_revealed_before_resolve: boolean;
+}
+export interface LearningHistoryResult {
+  lineage_id: string;
+  attempts: LearningHistoryEntry[];
+  included_reevaluation: IncludedReevaluation;
+  next_cursor: { created_at: string; attempt_id: string } | null;
+}
+
 /* --------------------------------------------------- results */
 
 export interface IncludedReevaluation {

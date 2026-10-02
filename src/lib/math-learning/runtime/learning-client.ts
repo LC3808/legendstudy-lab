@@ -8,7 +8,11 @@
 import { callRuntime, type MathRpcTransport } from "../../math-input/runtime/transport";
 import {
   MATH_LEARNING_DTO,
+  type CreateResolveAttemptPayload,
+  type CreateResolveAttemptResult,
+  type LearningHistoryResult,
   type LearningState,
+  type RequestReevaluationResult,
   type RevealHintResult,
   type RevealSolutionResult,
   type SolutionTarget,
@@ -54,5 +58,34 @@ export class LearningRuntimeClient {
     };
     if (target === "REFERENCE") payload.solution_id = solutionId ?? null;
     return callRuntime<RevealSolutionResult>(this.transport, "math_learning", MATH_LEARNING_DTO, "reveal_solution", payload);
+  }
+
+  /** Create a new immutable re-solve attempt (server owns lineage/eligibility/sequence). */
+  createResolveAttempt(payload: CreateResolveAttemptPayload): Promise<CreateResolveAttemptResult> {
+    return callRuntime<CreateResolveAttemptResult>(this.transport, "math_learning", MATH_LEARNING_DTO, "create_resolve_attempt", {
+      ...payload,
+    });
+  }
+
+  /** Included-only reevaluation request; server decides eligibility (no client paid fallback). */
+  requestReevaluation(attemptId: string, clientSubmissionId: string): Promise<RequestReevaluationResult> {
+    return callRuntime<RequestReevaluationResult>(this.transport, "math_learning", MATH_LEARNING_DTO, "request_reevaluation", {
+      attempt_id: attemptId,
+      client_submission_id: clientSubmissionId,
+    });
+  }
+
+  /** Append-only learning history (server pagination). */
+  readLearningHistory(
+    evaluationId: string,
+    options: { limit?: number; beforeAt?: string; beforeId?: string } = {},
+  ): Promise<LearningHistoryResult> {
+    const payload: Record<string, unknown> = { evaluation_id: evaluationId };
+    if (options.limit !== undefined) payload.limit = options.limit;
+    if (options.beforeAt !== undefined && options.beforeId !== undefined) {
+      payload.before_at = options.beforeAt;
+      payload.before_id = options.beforeId;
+    }
+    return callRuntime<LearningHistoryResult>(this.transport, "math_learning", MATH_LEARNING_DTO, "read_learning_history", payload);
   }
 }

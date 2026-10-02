@@ -11,6 +11,7 @@ import type { MathRpcTransport } from "../../math-input/runtime/transport";
 import {
   MATH_LEARNING_DTO,
   type IncludedReevaluation,
+  type LearningHistoryEntry,
   type LearningState,
   type SolutionProvenance,
   type SolutionTarget,
@@ -38,6 +39,10 @@ export interface SeedLearning {
   state: LearningState;
   hintBodies: HintBody[];
   solutionBodies: SolutionBody[];
+  /** Valid step ids of the prior evaluation (for STEP_RETRY target validation). */
+  validStepIds?: string[];
+  /** Newest-first learning-history entries for read_learning_history. */
+  historyEntries?: LearningHistoryEntry[];
 }
 
 interface EvalRecord {
@@ -45,20 +50,31 @@ interface EvalRecord {
   state: LearningState;
   hintBodies: Map<string, HintBody>;
   solutionBodies: SolutionBody[];
+  validStepIds: Set<string>;
+  historyEntries: LearningHistoryEntry[];
   hintExposures: Array<{ hintId: string; level: HintLevel; coreId: string; key: string }>;
   solutionExposures: Array<{ key: string; target: SolutionTarget; solutionId: string | null; exposureId: string }>;
   hintIdem: Map<string, string>; // client_submission_id -> hint_id
   solutionIdem: Map<string, string>; // client_submission_id -> `${target}:${solution_id ?? ""}`
 }
 
+interface ResolveAttemptRecord {
+  attemptId: string;
+  owner: string;
+  priorEvaluationId: string;
+}
+
 export interface MockLearningServer {
   studentTransport(subject: string): MathRpcTransport;
   seedLearning(seed: SeedLearning): void;
-  state: { evaluations: Map<string, EvalRecord> };
+  state: { evaluations: Map<string, EvalRecord>; resolveAttempts: Map<string, ResolveAttemptRecord> };
 }
 
 export function createMockLearningServer(options: { lifecycle?: Record<string, Lifecycle> } = {}): MockLearningServer {
   const evaluations = new Map<string, EvalRecord>();
+  const resolveAttempts = new Map<string, ResolveAttemptRecord>();
+  const resolveIdem = new Map<string, { attemptId: string; hash: string }>();
+  const reevalIdem = new Map<string, string>();
   const lifecycle = options.lifecycle ?? {};
   let seq = 0;
 
@@ -151,8 +167,76 @@ export function createMockLearningServer(options: { lifecycle?: Record<string, L
         return solutionResult(exposureId, record.state.evaluation_id, sol, false);
       }
 
+      case "create_resolve_attempt": {
+        const kind = String(payload.kind ?? "");
+        if (!["STEP_RETRY", "FULL_RESOLVE", "SHORT_ANSWER_RESOLVE"].includes(kind)) throw invalid("unknown resolve kind");
+        const record = evaluations.get(String(payload.prior_evaluation_id ?? ""));
+        if (!record || record.owner !== subject) throw missing();
+        if (lifecycle[record.owner] === "PENDING" || lifecycle[record.owner] === "ERASING") throw denied("lifecycle restricted");
+        if (payload.predecessor_id !== record.state.attempt_id) throw missing(); // foreign lineage
+        if (payload.leaf_id !== record.state.leaf_id) throw invalid("leaf lineage mismatch");
+        if (kind === "STEP_RETRY") {
+          const target = String(payload.target_step_id ?? "");
+          if (!target || !record.validStepIds.has(target)) throw invalid("invalid STEP_RETRY target");
+        } else if (payload.target_step_id != null) {
+          throw invalid("target_step_id only for STEP_RETRY");
+        }
+        if (kind === "SHORT_ANSWER_RESOLVE" && record.state.response_format !== "SHORT_ANSWER") {
+          throw invalid("SHORT_ANSWER_RESOLVE requires SHORT_ANSWER leaf");
+        }
+        const csid = String(payload.client_submission_id ?? "");
+        const hash = JSON.stringify([kind, payload.leaf_id, payload.predecessor_id, payload.prior_evaluation_id, payload.input_kind, payload.typed_answer ?? null, payload.target_step_id ?? null]);
+        const prior = resolveIdem.get(csid);
+        if (prior) {
+          if (prior.hash !== hash) throw conflict("resolve payload changed for same key");
+          return { attempt_id: prior.attemptId };
+        }
+        const attemptId = `att-${(seq += 1)}`;
+        resolveIdem.set(csid, { attemptId, hash });
+        resolveAttempts.set(attemptId, { attemptId, owner: record.owner, priorEvaluationId: record.state.evaluation_id });
+        return { attempt_id: attemptId };
+      }
+
+      case "request_reevaluation": {
+        const attemptId = String(payload.attempt_id ?? "");
+        const attempt = resolveAttempts.get(attemptId);
+        if (!attempt || attempt.owner !== subject) throw missing();
+        if (lifecycle[attempt.owner] === "PENDING" || lifecycle[attempt.owner] === "ERASING") throw denied("lifecycle restricted");
+        const priorRecord = evaluations.get(attempt.priorEvaluationId)!;
+        const csid = String(payload.client_submission_id ?? "");
+        const priorEval = reevalIdem.get(csid);
+        if (priorEval) return { evaluation_id: priorEval, commercial_context: "INCLUDED_REEVALUATION", additional_credit: 0 };
+        // Included-only: non-AVAILABLE is rejected; NO paid fallback.
+        if (priorRecord.state.included_reevaluation.status !== "AVAILABLE") {
+          throw invalid("included reevaluation not available");
+        }
+        const evaluationId = `eval-re-${(seq += 1)}`;
+        reevalIdem.set(csid, evaluationId);
+        return { evaluation_id: evaluationId, commercial_context: "INCLUDED_REEVALUATION", additional_credit: 0 };
+      }
+
+      case "read_learning_history": {
+        const record = ownedRecord(subject, payload.evaluation_id);
+        const limit = payload.limit === undefined ? 20 : Number(payload.limit);
+        if (!Number.isInteger(limit) || limit < 1 || limit > 50) throw invalid("bad limit");
+        if ((payload.before_at === undefined) !== (payload.before_id === undefined)) throw invalid("cursor requires both before_at and before_id");
+        let entries = record.historyEntries; // newest-first
+        if (payload.before_id !== undefined) {
+          const idx = entries.findIndex((e) => e.attempt_id === payload.before_id);
+          entries = idx >= 0 ? entries.slice(idx + 1) : entries;
+        }
+        const page = entries.slice(0, limit);
+        const last = page[page.length - 1];
+        const hasMore = page.length === limit && entries.length > limit;
+        return {
+          lineage_id: record.state.lineage_id,
+          attempts: page,
+          included_reevaluation: record.state.included_reevaluation,
+          next_cursor: hasMore && last ? { created_at: last.created_at, attempt_id: last.attempt_id } : null,
+        };
+      }
+
       default:
-        // create_resolve_attempt / request_reevaluation / read_learning_history are MATH-6B.
         throw invalid(`unsupported math_learning action ${action}`);
     }
   }
@@ -173,13 +257,15 @@ export function createMockLearningServer(options: { lifecycle?: Record<string, L
   }
 
   return {
-    state: { evaluations },
+    state: { evaluations, resolveAttempts },
     seedLearning(seed) {
       evaluations.set(seed.state.evaluation_id, {
         owner: seed.owner,
         state: seed.state,
         hintBodies: new Map(seed.hintBodies.map((h) => [h.hintId, h])),
         solutionBodies: seed.solutionBodies,
+        validStepIds: new Set(seed.validStepIds ?? []),
+        historyEntries: seed.historyEntries ?? [],
         hintExposures: [],
         solutionExposures: [],
         hintIdem: new Map(),
