@@ -1,13 +1,16 @@
-import { businessInfo, ownerPendingLabel } from "@/lib/business-info";
-import { pendingItemsFor, type LegalBlock, type LegalDocument } from "@/lib/legal-documents";
+import { businessInfo } from "@/lib/business-info";
+import { effectiveDateLabel, type LegalBlock, type LegalDocument } from "@/lib/legal-documents";
 
 /**
  * Renders a legal document from `src/lib/legal-documents.ts`.
  *
  * Headings become `<h2>` sections so the page keeps a single `<h1>` and a
  * semantic outline. The same component renders both the terms and the privacy
- * policy, which is why neither page restates a price, a period or a contact
- * address on its own.
+ * policy, which is why neither page restates a price, a period, an effective
+ * date or a contact address on its own.
+ *
+ * The rendered page is a consumer-facing operating document: it carries no
+ * pending-value placeholder, no review marker and no build-time state.
  */
 
 type Section = { readonly heading?: string; readonly blocks: readonly LegalBlock[] };
@@ -59,7 +62,6 @@ function BlockBody({ block }: { block: LegalBlock }) {
 
 export function PolicyDocument({ document }: { document: LegalDocument }) {
   const sections = groupSections(document.blocks);
-  const pending = pendingItemsFor(document);
 
   return (
     <>
@@ -75,12 +77,8 @@ export function PolicyDocument({ document }: { document: LegalDocument }) {
           <dd>{businessInfo.legalName}</dd>
         </div>
         <div>
-          <dt>문서 작성일</dt>
-          <dd>{document.preparedOn}</dd>
-        </div>
-        <div>
           <dt>시행일</dt>
-          <dd>{document.effectiveDate ?? ownerPendingLabel}</dd>
+          <dd>{effectiveDateLabel()}</dd>
         </div>
       </dl>
 
@@ -96,24 +94,6 @@ export function PolicyDocument({ document }: { document: LegalDocument }) {
           ))}
         </section>
       ))}
-
-      {pending.length > 0 ? (
-        <section className="policy-section" aria-labelledby={`${document.id}-pending`}>
-          <h2 id={`${document.id}-pending`}>Owner 확인 대기 항목</h2>
-          <p>
-            아래 항목은 운영자가 아직 확정하지 않아 임의로 작성하지 않았습니다. 확정되는 대로 이 문서에 반영합니다.
-            해당 항목이 확정되기 전에도 이 문서의 나머지 내용과 상품 조건은 그대로 적용됩니다.
-          </p>
-          <dl className="owner-pending">
-            {pending.map((item) => (
-              <div key={item.key}>
-                <dt>{item.label}</dt>
-                <dd>{item.reason}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      ) : null}
     </>
   );
 }

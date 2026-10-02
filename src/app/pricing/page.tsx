@@ -191,7 +191,10 @@ export default function PricingPage() {
           </li>
           <li>
             <strong>재첨삭 1회</strong>
-            <span>최초 첨삭 결과 제공일로부터 14일 이내에 추가 Credit 차감 없이 한 번 더 첨삭받습니다.</span>
+            <span>
+              최초 첨삭 결과 제공일로부터 {pricingPolicy.reevaluationWindowDays}일 이내에 추가 Credit 차감 없이 한 번
+              더 첨삭받습니다.
+            </span>
           </li>
         </ol>
       </section>
@@ -313,8 +316,8 @@ export default function PricingPage() {
           <Link className="button button--outline" href="/support/">고객센터</Link>
         </div>
         <ReleaseNotice label="결제와 정책 문서 안내">
-          결제 기능은 아직 열려 있지 않습니다. 이용약관과 개인정보처리방침은 공개했으며, 시행일과 개인정보
-          보호책임자 지정 등 운영자 확정이 필요한 항목은 각 문서의 안내에 따릅니다.
+          결제 기능은 아직 열려 있지 않습니다. 이용약관, 개인정보처리방침과 환불정책은 공개되어 있으며, 결제가
+          시작되면 결제수단과 절차를 이 페이지와 각 정책 문서에 함께 반영합니다.
         </ReleaseNotice>
       </section>
     </div>

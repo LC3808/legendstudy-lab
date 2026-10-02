@@ -88,6 +88,55 @@ if (fs.existsSync(supportPage)) {
   }
 }
 
+// Consumer-facing routes and the legal documents must never carry internal
+// build or review vocabulary. Test files are excluded: they assert that these
+// tokens are absent, so they have to name them.
+const publicSurfaceFiles = files.filter(
+  (file) =>
+    !/\.test\.tsx?$/.test(file) &&
+    (/[\\/]src[\\/]app[\\/]/.test(file) || /[\\/]src[\\/]lib[\\/]legal-documents\.ts$/.test(file)),
+);
+const internalVocabulary = [
+  "LEGAL_REVIEW_RECOMMENDED",
+  "OWNER_PENDING",
+  "OWNER_DATA_REQUIRED",
+  "PROCESSOR_AND_TRANSFER_DETAIL",
+  "PRODUCTION_ACTIVATION_GATE",
+  "확정 후 게시",
+  "법률 검토 후 확정",
+];
+for (const file of publicSurfaceFiles) {
+  const source = fs.readFileSync(file, "utf8");
+  for (const token of internalVocabulary) {
+    if (source.includes(token)) {
+      errors.push(`internal vocabulary on a public surface: ${token} (${path.relative(root, file)})`);
+    }
+  }
+}
+
+// Commercial and policy values live in pricing.ts and business-info.ts. A page
+// that retypes one can be left behind by a later change, so the literals are
+// rejected on the public policy pages.
+const canonicalValueLiterals = ["4,900", "11,900", "17,900", "29,900", "14일", "3개월"];
+for (const relative of [
+  "app/pricing/page.tsx",
+  "app/refund/page.tsx",
+  "app/support/page.tsx",
+  "app/terms/page.tsx",
+  "app/privacy/page.tsx",
+]) {
+  const file = path.join(sourceRoot, relative);
+  if (!fs.existsSync(file)) continue;
+  const source = fs.readFileSync(file, "utf8");
+  for (const literal of canonicalValueLiterals) {
+    if (source.includes(literal)) {
+      errors.push(
+        `policy value retyped instead of read from a canonical module: ${literal} (${path.relative(root, file)})`,
+      );
+    }
+  }
+}
+
 if (errors.length) {
   console.error("BOUNDARY_AUDIT=FAIL");
   for (const error of errors) console.error(`- ${error}`);

@@ -1,15 +1,19 @@
 /**
- * LegendStudy LAB — public business, support and pending-owner data.
+ * LegendStudy LAB — public business, support and privacy-role data.
  *
  * Single source of truth for the facts that have to agree across the footer,
  * the pricing page, the refund policy, the terms, the privacy policy and the
  * support page. Nothing here may be duplicated as a literal in a page.
  *
- * Every value in `businessInfo` and `customerCenter` is Owner-confirmed for
- * public publication (TOSS-REVIEW-1, 2026-10-02). A value
- * that is NOT confirmed belongs in `pendingOwnerData` and must never be
- * guessed, because an invented business or legal value is worse than a
- * disclosed gap.
+ * Every value in `businessInfo`, `customerCenter`, `ecommerceRegistration` and
+ * `privacyOfficer` is Owner-confirmed for public publication. A value that is
+ * not confirmed is not written here at all: an invented business or legal value
+ * is worse than an omitted one.
+ *
+ * This file is also where the future privacy gates live. `privacyActivationGates`
+ * lists the features that must trigger a policy review before they are turned
+ * on. That list is internal release information and is never rendered on a
+ * public page.
  */
 
 /** Operating entity that concludes the sale. */
@@ -24,8 +28,7 @@ export const businessInfo = {
   /**
    * Owner-confirmed address. Published with a comma before the building detail
    * instead of the "/" separator used in the Owner note, keeping every token
-   * unchanged. See OWNER_DATA_REQUIRED: the Toss application text could not be
-   * read from this environment to confirm byte-for-byte equality.
+   * unchanged.
    */
   address: "서울특별시 노원구 화랑로 621, 서울여자대학교 고명우기념관 305호",
 } as const;
@@ -33,8 +36,8 @@ export const businessInfo = {
 /**
  * 통신판매업 filing. The number is valid and is what the public site must
  * display. Whether selling through Cloudflare Pages at lab.legendstudy.com also
- * needs a 변경신고 is being confirmed with the local office; that question does
- * not block the public site and the valid filing number stays published.
+ * needs a 변경신고 is being confirmed with the local office; that open question
+ * does not block the public site and the valid filing number stays published.
  */
 export const ecommerceRegistration = {
   number: businessInfo.ecommerceRegistrationNumber,
@@ -80,9 +83,9 @@ export const customerCenter = {
     href: "mailto:contact@legendstudy.com",
   },
   /**
-   * Published so a reviewer can verify a telephone channel, but never the first
-   * contact method and never a call-to-action. Operating hours stay unstated
-   * until the Owner confirms them.
+   * Published inside the 사업자 정보 block so a reviewer can verify a telephone
+   * channel, but never the first contact method and never a call-to-action.
+   * Operating hours are not published and must not be invented.
    */
   phone: {
     label: "전화 문의",
@@ -96,73 +99,43 @@ export const customerCenter = {
 /** E-mail channels in priority order: primary first, secondary second. */
 export const supportContacts = [customerCenter.primary, customerCenter.secondary] as const;
 
-export type OwnerPendingKey =
-  | "PRIVACY_OFFICER"
-  | "POLICY_EFFECTIVE_DATE"
-  | "MINOR_PAYMENT_CLAUSE"
-  | "PROCESSOR_AND_TRANSFER_DETAIL"
-  | "SUPPORT_HOURS";
-
-export type OwnerPendingItem = {
-  readonly key: OwnerPendingKey;
-  readonly label: string;
-  /** Why the value is needed and where it is blocked. */
-  readonly reason: string;
-  readonly requiredFor: "TOSS_REVIEW" | "GO_LIVE";
-};
+/**
+ * Owner-confirmed 개인정보 보호책임자, published in the privacy policy.
+ *
+ * The public privacy contact is the customer-centre e-mail. The telephone
+ * number is deliberately NOT used as the privacy officer's contact: it stays a
+ * business fact inside the 사업자 정보 block.
+ */
+export const privacyOfficer = {
+  name: "장우진",
+  role: "개인정보 보호책임자",
+  channel: customerCenter.primary,
+} as const;
 
 /**
- * Values the Owner has not yet confirmed. They are reported, never invented.
- * The public site keeps working without them: each one is either omitted or
- * shown as an explicitly pending item on the document that needs it.
+ * Features that must trigger a privacy-policy review BEFORE they are activated.
+ *
+ * This is internal release information. It records what the published policy
+ * deliberately does not cover yet, so that turning one of these on cannot ship
+ * without a policy update. It must never be rendered on a public page: a public
+ * policy describes what is happening now, not a development roadmap.
  */
-export const pendingOwnerData: readonly OwnerPendingItem[] = [
-  {
-    key: "PRIVACY_OFFICER",
-    label: "개인정보 보호책임자",
-    reason:
-      "개인정보처리방침은 보호책임자의 성명과 연락처를 공개해야 합니다. 현재 저장소와 기존 문서 어디에도 확정된 지정이 없어 임의로 지정하지 않았습니다.",
-    requiredFor: "TOSS_REVIEW",
-  },
-  {
-    key: "POLICY_EFFECTIVE_DATE",
-    label: "정책 시행일",
-    reason:
-      "이용약관과 개인정보처리방침의 최종 시행일은 공개 승인 시점에 확정해야 합니다. 문서 작성일과 분리해 표시합니다.",
-    requiredFor: "TOSS_REVIEW",
-  },
-  {
-    key: "MINOR_PAYMENT_CLAUSE",
-    label: "미성년자 결제·법정대리인 동의 최종 문구",
-    reason:
-      "현재 가입 절차는 연령을 수집하지 않습니다. 미성년자 결제와 법정대리인 동의에 관한 최종 법률 문구는 법률 검토 후 확정해야 합니다.",
-    requiredFor: "TOSS_REVIEW",
-  },
-  {
-    key: "PROCESSOR_AND_TRANSFER_DETAIL",
-    label: "처리위탁·국외이전 세부(보관 리전)",
-    reason:
-      "인증 데이터는 호스팅 Supabase 프로젝트에 저장되고 정적 사이트는 Cloudflare Pages가 제공합니다. 저장 리전 등 국외이전 세부는 저장소에 기록된 값이 없어 확정 후 고지해야 합니다.",
-    requiredFor: "TOSS_REVIEW",
-  },
-  {
-    key: "SUPPORT_HOURS",
-    label: "고객센터 운영시간",
-    reason:
-      "운영시간이 확정되지 않아 레전드스터디 랩 고객센터 페이지에 안내하지 않았습니다. 확정 시 표시합니다.",
-    requiredFor: "GO_LIVE",
-  },
+export const privacyActivationGates = [
+  "Toss Payments Production 결제",
+  "Production AI 평가 provider",
+  "Math private image/PDF Storage",
+  "external Vision/OCR provider",
+  "AdMob",
+  "GA4 또는 기타 analytics",
+  "push notification provider",
+  "external crash/error collection provider",
 ] as const;
-
-export const pendingOwnerKeys: readonly OwnerPendingKey[] = pendingOwnerData.map((item) => item.key);
-
-/** Label used everywhere a pending Owner value would otherwise be shown. */
-export const ownerPendingLabel = "Owner 확정 후 게시" as const;
 
 /**
  * Naming hierarchy. LegendStudy LAB is the platform that also carries 내신 학습
- * and 모의고사·수능; 논술 첨삭 is one product inside it. Marketing copy must not
- * describe the whole LAB as an essay service.
+ * and 모의고사·수능; 논술 첨삭 is one product inside it. 레전드스터디+ is the app
+ * bundle and legendstudy.com is a separate admissions-materials service, so
+ * marketing copy must not use either name for the whole LAB.
  */
 export const productNaming = {
   essayProduct: "LegendStudy 논술 LAB",

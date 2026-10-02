@@ -1,10 +1,9 @@
 import Link from "next/link";
 
 import { BusinessInfoList, ContactList } from "@/components/business-info-block";
-import { ReleaseNotice } from "@/components/release-status";
 import { buildPublicMetadata } from "@/lib/brand";
 import { businessInfo, customerCenter } from "@/lib/business-info";
-import { creditCopy, pricingPlans, pricingPolicy, refundExamples, refundPolicy } from "@/lib/pricing";
+import { pricingPlans, pricingPolicy, refundExamples, refundPolicy } from "@/lib/pricing";
 
 export const metadata = buildPublicMetadata(
   "LegendStudy 논술 LAB 환불정책",
@@ -126,10 +125,10 @@ export default function RefundPage() {
 
       <section className="policy-section">
         <h2>소비자 권리</h2>
-        <p>{creditCopy.statutoryRights}</p>
         <p>
-          이 정책은 관련 법령에 따른 소비자의 권리를 제한하지 않습니다. 법령상 권리 행사가 이 정책의 상업적 기준과
-          다르게 적용되는 경우에는 법령이 우선합니다.
+          관계 법령에 따라 별도의 청약철회, 계약 취소 또는 환급 사유가 인정되는 경우에는 해당 법령이 적용됩니다.
+          이 정책은 관계 법령에 따른 소비자의 권리를 제한하지 않으며, 법령상 권리가 이 정책의 상업적 기준과 다르게
+          적용되는 경우에는 법령이 우선합니다.
         </p>
       </section>
 
@@ -152,11 +151,6 @@ export default function RefundPage() {
         <BusinessInfoList />
       </section>
 
-      <ReleaseNotice>
-        <strong>LEGAL_REVIEW_RECOMMENDED.</strong> 이 문서는 운영자가 확정한 상업적 환불 기준을 정리한 것이며, 법률
-        검토를 거친 법률 문서가 아닙니다. 청약철회 기간, 디지털 콘텐츠 제공 개시 후의 제한 범위, 미성년자 결제와
-        법정대리인 동의 절차에 관한 문구는 법률 검토 후 확정합니다.
-      </ReleaseNotice>
     </div>
   );
 }

@@ -4,9 +4,8 @@ import {
   businessInfo,
   customerCenter,
   ecommerceRegistration,
-  ownerPendingLabel,
-  pendingOwnerData,
-  pendingOwnerKeys,
+  privacyActivationGates,
+  privacyOfficer,
   productNaming,
   supportContacts,
 } from "./business-info";
@@ -31,21 +30,7 @@ const legacyCustomerCenterNames = [
 ];
 
 const publishedSurface = () =>
-  JSON.stringify({
-    businessInfo,
-    customerCenter,
-    productNaming,
-    supportContacts,
-    pendingOwnerData,
-  });
-
-/**
- * What actually reaches a page. Internal pending-reason text is excluded: it
- * legitimately says that operating hours are not published, which is not the
- * same as inventing them.
- */
-const renderedSurface = () =>
-  JSON.stringify({ businessInfo, customerCenter, productNaming, supportContacts });
+  JSON.stringify({ businessInfo, customerCenter, productNaming, supportContacts, privacyOfficer });
 
 describe("seller identity", () => {
   it("publishes the Owner-confirmed business identity", () => {
@@ -73,7 +58,6 @@ describe("seller identity", () => {
     const serialized = JSON.stringify(ecommerceRegistration);
     expect(serialized).toContain("2025-서울노원-1263");
     expect(serialized).not.toMatch(/2026-서울/);
-    expect(serialized).not.toMatch(/제?\s?2025-\d{2,4}-[0-9]{3,}/);
   });
 });
 
@@ -126,14 +110,12 @@ describe("customer support channels", () => {
       "support@legendstudy.com",
       "contact@legendstudy.com",
     ]);
-    // Widened deliberately: comparing two disjoint literal unions is a type
-    // error, but the runtime assertion is exactly what must be guaranteed.
     const channelDisplays: string[] = supportContacts.map((contact) => contact.display);
     expect(channelDisplays).not.toContain(customerCenter.phone.display);
   });
 
   it("never promises phone-first help or invents operating hours", () => {
-    const serialized = renderedSurface();
+    const serialized = publishedSurface();
     expect(serialized).not.toMatch(/전화 상담을 우선|언제든 전화|전화 주세요|우선 이용/);
     expect(serialized).not.toMatch(/운영시간|상담시간|평일|주말/);
     expect(serialized).not.toMatch(/\d{1,2}:\d{2}/);
@@ -153,27 +135,46 @@ describe("customer support channels", () => {
   });
 });
 
-describe("pending Owner data", () => {
-  it("lists exactly the unconfirmed items", () => {
-    expect(pendingOwnerKeys).toEqual([
-      "PRIVACY_OFFICER",
-      "POLICY_EFFECTIVE_DATE",
-      "MINOR_PAYMENT_CLAUSE",
-      "PROCESSOR_AND_TRANSFER_DETAIL",
-      "SUPPORT_HOURS",
+describe("privacy officer", () => {
+  it("publishes the Owner-confirmed officer and contact", () => {
+    expect(privacyOfficer.name).toBe("장우진");
+    expect(privacyOfficer.role).toBe("개인정보 보호책임자");
+    expect(privacyOfficer.channel.display).toBe("support@legendstudy.com");
+  });
+
+  it("does not use the telephone number as the privacy contact", () => {
+    expect(privacyOfficer.channel.href.startsWith("mailto:")).toBe(true);
+    expect(JSON.stringify(privacyOfficer)).not.toContain(customerCenter.phone.display);
+  });
+});
+
+describe("privacy activation gates", () => {
+  it("lists exactly the features that must trigger a policy review", () => {
+    expect([...privacyActivationGates]).toEqual([
+      "Toss Payments Production 결제",
+      "Production AI 평가 provider",
+      "Math private image/PDF Storage",
+      "external Vision/OCR provider",
+      "AdMob",
+      "GA4 또는 기타 analytics",
+      "push notification provider",
+      "external crash/error collection provider",
     ]);
   });
 
-  it("never carries an invented value", () => {
-    for (const item of pendingOwnerData) {
-      expect(item).not.toHaveProperty("value");
-      expect(item.reason.length).toBeGreaterThan(20);
-      expect(item.requiredFor === "TOSS_REVIEW" || item.requiredFor === "GO_LIVE").toBe(true);
+  it("is internal release information, not public policy copy", () => {
+    // The gate list is documentation. It must never be rendered, so the
+    // published surfaces may not carry its wording.
+    const serialized = publishedSurface();
+    for (const gate of privacyActivationGates) {
+      expect(serialized).not.toContain(gate);
     }
   });
 
-  it("uses one pending label everywhere", () => {
-    expect(ownerPendingLabel).toBe("Owner 확정 후 게시");
+  it("no longer treats support hours as an open item", () => {
+    const serialized = publishedSurface();
+    expect(serialized).not.toMatch(/SUPPORT_HOURS/);
+    expect(serialized).not.toMatch(/OWNER_PENDING|OWNER_DATA_REQUIRED/);
   });
 });
 

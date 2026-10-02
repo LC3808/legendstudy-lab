@@ -911,7 +911,7 @@ h1, h2, h3 { text-wrap: pretty; }
   .business-info__service-item + .business-info__service-item::before { content: none; margin: 0; }
 }
 
-.doc-meta { display: grid; gap: 0.6rem; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 1.6rem 0 0; }
+.doc-meta { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); margin: 1.6rem 0 0; }
 .doc-meta > div { padding: 0.85rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
 .doc-meta dt { color: var(--ink-soft); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.02em; }
 .doc-meta dd { margin: 0.35rem 0 0; color: var(--ink); font-size: 0.86rem; font-weight: 700; line-height: 1.6; overflow-wrap: anywhere; }
@@ -920,11 +920,6 @@ h1, h2, h3 { text-wrap: pretty; }
 .policy-definitions > div { padding: 0.9rem 1rem; border-radius: var(--radius-sm); background: var(--surface-muted); }
 .policy-definitions dt { color: var(--ink); font-size: 0.86rem; font-weight: 800; line-height: 1.6; }
 .policy-definitions dd { margin: 0.4rem 0 0; color: var(--ink-soft); font-size: 0.9rem; line-height: 1.75; }
-
-.owner-pending { display: grid; gap: 0.6rem; margin: 1.25rem 0 0; }
-.owner-pending > div { padding: 0.9rem 1rem; border: 1px dashed var(--line-strong); border-radius: var(--radius-sm); background: var(--surface); }
-.owner-pending dt { color: var(--ink); font-size: 0.86rem; font-weight: 800; }
-.owner-pending dd { margin: 0.4rem 0 0; color: var(--ink-soft); font-size: 0.88rem; line-height: 1.75; }
 
 @media (max-width: 960px) {
   .doc-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }

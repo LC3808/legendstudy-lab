@@ -1,13 +1,12 @@
 import Link from "next/link";
 
 import { PolicyDocument } from "@/components/policy-document";
-import { ReleaseNotice } from "@/components/release-status";
 import { buildPublicMetadata } from "@/lib/brand";
 import { termsDocument } from "@/lib/legal-documents";
 
 export const metadata = buildPublicMetadata(
   "LegendStudy 이용약관",
-  "LegendStudy LAB 논술 첨삭 상품의 이용 조건, Credit 이용기간과 재첨삭, 결제와 환불, 이용자의 의무를 안내합니다.",
+  "LegendStudy LAB 논술 첨삭 상품의 이용 조건, Credit 이용기간과 재첨삭, 결제와 환불, 미성년자 이용과 이용자의 의무를 안내합니다.",
   "/terms",
 );
 
@@ -24,11 +23,6 @@ export default function TermsPage() {
           <Link className="button button--outline" href="/support/">고객센터</Link>
         </div>
       </section>
-      <ReleaseNotice>
-        <strong>LEGAL_REVIEW_RECOMMENDED.</strong> 이 약관은 운영자가 확정한 상품 조건과 실제 서비스 상태를 기준으로
-        작성했지만 법률 검토를 거친 문서가 아닙니다. 청약철회 기간과 그 제한 범위, 미성년자 결제와 법정대리인 동의
-        절차, 분쟁 해결 조항의 최종 문구는 법률 검토 후 확정합니다.
-      </ReleaseNotice>
     </div>
   );
 }
