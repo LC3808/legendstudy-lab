@@ -46,10 +46,9 @@ describe("legal document set", () => {
     const label = effectiveDateLabel();
     expect(text(termsDocument)).toContain(label);
     expect(text(privacyDocument)).toContain(label);
-    // The branch ships with the date unset, so the documents state that they
-    // take effect from publication instead of inventing a date.
-    expect(policyEffectiveDateIso).toBeNull();
-    expect(label).toBe("본 문서를 공개한 날");
+    // Owner-approved release date is shared by both public policies.
+    expect(policyEffectiveDateIso).toBe("2026-10-03");
+    expect(label).toBe("2026년 10월 3일");
     expect(text(termsDocument)).not.toMatch(/시행일은 확정/);
   });
 });

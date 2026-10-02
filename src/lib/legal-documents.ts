@@ -57,7 +57,7 @@ export type LegalDocument = {
  *
  * OWNER CLOSEOUT ITEM: set the real date before the Production merge.
  */
-export const policyEffectiveDateIso: string | null = null;
+export const policyEffectiveDateIso: string | null = "2026-10-03";
 
 /** Human-readable 시행일 for the public pages. */
 export function effectiveDateLabel(): string {
