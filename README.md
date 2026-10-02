@@ -12,6 +12,8 @@
 | `/lab/` | Legacy compatibility alias | Cloudflare Pages redirects to `/` with HTTP 308 |
 | `/lab/how-it-works/` | Service direction and current boundary | Public and indexable |
 | `/lab/coverage/` | Supported scope and explicit non-features | Public and indexable |
+| `/pricing/` | Credit pricing, payment terms and refund summary | Public and indexable; payment not connected |
+| `/refund/` | Full refund policy for Credit purchases | Public; Owner commercial policy; legal review recommended |
 | `/privacy/`, `/terms/` | Policy URL foundations | Draft; noindex; Owner review required |
 | `/support/` | Support URL foundation | No live contact channel |
 | `/account-deletion/` | Account deletion URL foundation | No deletion intake or API |

@@ -5,10 +5,23 @@ import { authenticatedProductRoutes, internalFoundationPathPrefixes, policyRoute
 
 describe("release routes", () => {
   it("preserves the canonical root and stable public entry paths", () => {
-    expect(publicReleasePaths).toEqual(["/", "/lab/how-it-works/", "/lab/coverage/"]);
-    expect(policyRoutes.map((route) => route.href)).toEqual(["/privacy/", "/terms/", "/support/", "/account-deletion/"]);
+    expect(publicReleasePaths).toEqual(["/", "/lab/how-it-works/", "/pricing/", "/lab/coverage/"]);
+    expect(policyRoutes.map((route) => route.href)).toEqual([
+      "/privacy/",
+      "/terms/",
+      "/refund/",
+      "/support/",
+      "/account-deletion/",
+    ]);
     expect(internalFoundationPathPrefixes).toContain("/lab");
     expect(internalFoundationPathPrefixes).toContain("/essay-lab");
+  });
+
+  it("keeps the pricing page reachable for reviewers and external crawlers", () => {
+    for (const path of ["/pricing/", "/refund/"]) {
+      expect(internalFoundationPathPrefixes.some((prefix) => path.startsWith(prefix))).toBe(false);
+    }
+    expect(publicReleasePaths).toContain("/pricing/");
   });
 
   it("maps the authenticated product menu to existing foundation routes", () => {
