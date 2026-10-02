@@ -12,25 +12,6 @@
 
 export type LaunchState = "PREPARING" | "PLANNED";
 
-export type BusinessInfoKey =
-  | "BUSINESS_NAME"
-  | "REPRESENTATIVE"
-  | "BUSINESS_REGISTRATION_NUMBER"
-  | "ECOMMERCE_REGISTRATION_NUMBER"
-  | "BUSINESS_ADDRESS"
-  | "CUSTOMER_SERVICE_PHONE"
-  | "CUSTOMER_SERVICE_EMAIL"
-  | "PRIVACY_OFFICER";
-
-export type BusinessInfoField = {
-  readonly key: BusinessInfoKey;
-  readonly label: string;
-  /** Owner-provided input that must not be guessed or invented. */
-  readonly status: "REQUIRED_DATA";
-  /** Public-facing wording while the value is still unconfirmed. */
-  readonly pendingLabel: string;
-};
-
 export type CreditPlan = {
   readonly id: "1c" | "3c" | "5c" | "10c";
   readonly credits: number;
@@ -258,29 +239,20 @@ export const paymentState = {
   promotionNote: "쿠폰 적용 기능은 결제 기능과 함께 제공될 예정입니다.",
 } as const;
 
-export const businessInfoFields: readonly BusinessInfoField[] = [
-  { key: "BUSINESS_NAME", label: "상호", status: "REQUIRED_DATA", pendingLabel: "확정 후 게시" },
-  { key: "REPRESENTATIVE", label: "대표자", status: "REQUIRED_DATA", pendingLabel: "확정 후 게시" },
-  { key: "BUSINESS_REGISTRATION_NUMBER", label: "사업자등록번호", status: "REQUIRED_DATA", pendingLabel: "확정 후 게시" },
-  { key: "ECOMMERCE_REGISTRATION_NUMBER", label: "통신판매업 신고번호", status: "REQUIRED_DATA", pendingLabel: "확정 후 게시" },
-  { key: "BUSINESS_ADDRESS", label: "사업장 주소", status: "REQUIRED_DATA", pendingLabel: "확정 후 게시" },
-  { key: "CUSTOMER_SERVICE_PHONE", label: "고객센터 전화", status: "REQUIRED_DATA", pendingLabel: "확정 후 게시" },
-  { key: "CUSTOMER_SERVICE_EMAIL", label: "고객센터 이메일", status: "REQUIRED_DATA", pendingLabel: "확정 후 게시" },
-  { key: "PRIVACY_OFFICER", label: "개인정보 보호책임자", status: "REQUIRED_DATA", pendingLabel: "확정 후 게시" },
-] as const;
+export type PolicyDocumentState = "READY" | "NEEDS_OWNER_DATA" | "BLOCKED";
 
-/** Owner/business inputs that must be supplied before payment can go live. */
-export const requiredDataKeys: readonly BusinessInfoKey[] = businessInfoFields.map((field) => field.key);
-
-export type PolicyDocumentState = "READY" | "NEEDS_UPDATE" | "MISSING";
-
+/**
+ * Real state of each public document. `NEEDS_OWNER_DATA` means the document is
+ * published and usable for review while still carrying an Owner-confirmed gap;
+ * the exact gap per document is listed in `src/lib/business-info.ts`.
+ */
 export const policyDocumentState = {
   pricing: "READY" as PolicyDocumentState,
   refund: "READY" as PolicyDocumentState,
-  terms: "NEEDS_UPDATE" as PolicyDocumentState,
-  privacy: "NEEDS_UPDATE" as PolicyDocumentState,
-  businessInfo: "MISSING" as PolicyDocumentState,
-  customerService: "MISSING" as PolicyDocumentState,
+  terms: "NEEDS_OWNER_DATA" as PolicyDocumentState,
+  privacy: "NEEDS_OWNER_DATA" as PolicyDocumentState,
+  businessInfo: "READY" as PolicyDocumentState,
+  customerService: "READY" as PolicyDocumentState,
 } as const;
 
 /**

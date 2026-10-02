@@ -34,3 +34,17 @@ export const internalFoundationPathPrefixes = [
 ] as const;
 
 export const publicReleasePaths = publicReleaseRoutes.map((route) => route.href);
+
+/**
+ * Public documents that search engines may index alongside the entry routes.
+ * The auth, essay and My routes stay out of this list and stay disallowed in
+ * robots.txt, so a reviewer or crawler can always reach the sale conditions
+ * without being sent into a foundation screen.
+ */
+export const indexablePublicPaths = [
+  ...publicReleasePaths,
+  "/terms/",
+  "/privacy/",
+  "/refund/",
+  "/support/",
+] as const;

@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  businessInfoFields,
   calculatePartialRefundKrw,
   creditCopy,
   evaluationResultCtaPolicy,
@@ -14,7 +13,6 @@ import {
   promotionCopy,
   refundExamples,
   refundPolicy,
-  requiredDataKeys,
   serviceAvailability,
 } from "./pricing";
 
@@ -206,36 +204,13 @@ describe("service and payment state", () => {
   });
 });
 
-describe("required business data", () => {
-  it("lists every Owner input without inventing a value", () => {
-    expect(requiredDataKeys).toEqual([
-      "BUSINESS_NAME",
-      "REPRESENTATIVE",
-      "BUSINESS_REGISTRATION_NUMBER",
-      "ECOMMERCE_REGISTRATION_NUMBER",
-      "BUSINESS_ADDRESS",
-      "CUSTOMER_SERVICE_PHONE",
-      "CUSTOMER_SERVICE_EMAIL",
-      "PRIVACY_OFFICER",
-    ]);
-    for (const field of businessInfoFields) {
-      expect(field.status).toBe("REQUIRED_DATA");
-      expect(field.pendingLabel).toBe("확정 후 게시");
-    }
-  });
-
-  it("never publishes a business value that the Owner has not supplied", () => {
-    for (const field of businessInfoFields) {
-      expect(field).not.toHaveProperty("value");
-    }
-  });
-
-  it("reports the real state of each policy document", () => {
+describe("public document state", () => {
+  it("reports the real state of each public document", () => {
     expect(policyDocumentState.pricing).toBe("READY");
     expect(policyDocumentState.refund).toBe("READY");
-    expect(policyDocumentState.terms).toBe("NEEDS_UPDATE");
-    expect(policyDocumentState.privacy).toBe("NEEDS_UPDATE");
-    expect(policyDocumentState.businessInfo).toBe("MISSING");
-    expect(policyDocumentState.customerService).toBe("MISSING");
+    expect(policyDocumentState.terms).toBe("NEEDS_OWNER_DATA");
+    expect(policyDocumentState.privacy).toBe("NEEDS_OWNER_DATA");
+    expect(policyDocumentState.businessInfo).toBe("READY");
+    expect(policyDocumentState.customerService).toBe("READY");
   });
 });

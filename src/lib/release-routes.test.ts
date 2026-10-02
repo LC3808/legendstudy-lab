@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import { buildPublicMetadata } from "./brand";
-import { authenticatedProductRoutes, internalFoundationPathPrefixes, policyRoutes, publicReleasePaths } from "./release-routes";
+import {
+  authenticatedProductRoutes,
+  indexablePublicPaths,
+  internalFoundationPathPrefixes,
+  policyRoutes,
+  publicReleasePaths,
+} from "./release-routes";
 
 describe("release routes", () => {
   it("preserves the canonical root and stable public entry paths", () => {
@@ -22,6 +28,26 @@ describe("release routes", () => {
       expect(internalFoundationPathPrefixes.some((prefix) => path.startsWith(prefix))).toBe(false);
     }
     expect(publicReleasePaths).toContain("/pricing/");
+  });
+
+  it("keeps every sale-condition document in the indexable set", () => {
+    for (const path of ["/pricing/", "/refund/", "/terms/", "/privacy/", "/support/"]) {
+      expect(indexablePublicPaths).toContain(path);
+    }
+    expect(indexablePublicPaths).toContain("/");
+    expect(indexablePublicPaths).not.toContain("/account-deletion/");
+  });
+
+  it("does not let a foundation disallow prefix shadow a public document", () => {
+    // The `/lab` prefix also covers the public `/lab/how-it-works/` and
+    // `/lab/coverage/` pages. robots.ts therefore lists each public path as an
+    // explicit allow rule, and RFC 9309 resolves the conflict by longest match,
+    // which only works while the public path is longer than the prefix.
+    for (const path of indexablePublicPaths) {
+      for (const prefix of internalFoundationPathPrefixes.filter((candidate) => path.startsWith(candidate))) {
+        expect(path.length).toBeGreaterThan(prefix.length);
+      }
+    }
   });
 
   it("maps the authenticated product menu to existing foundation routes", () => {

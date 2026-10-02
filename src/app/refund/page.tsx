@@ -1,11 +1,13 @@
 import Link from "next/link";
 
+import { BusinessInfoList, ContactList } from "@/components/business-info-block";
 import { ReleaseNotice } from "@/components/release-status";
 import { buildPublicMetadata } from "@/lib/brand";
+import { businessInfo } from "@/lib/business-info";
 import { creditCopy, pricingPlans, pricingPolicy, refundExamples, refundPolicy } from "@/lib/pricing";
 
 export const metadata = buildPublicMetadata(
-  "환불정책",
+  "LegendStudy 논술 LAB 환불정책",
   "LegendStudy LAB Credit 구매의 환불 신청 기간과 미사용·일부 사용 환불 기준, 처리 절차를 안내합니다.",
   "/refund",
 );
@@ -134,13 +136,20 @@ export default function RefundPage() {
       <section className="policy-section">
         <h2>문의</h2>
         <p>
-          환불과 결제에 관한 문의는 고객센터를 통해 접수합니다. 실제 문의 채널과 연락처는 확정 후 이 페이지와 요금
-          안내 페이지에 게시합니다.
+          환불과 결제에 관한 문의는 고객센터로 접수합니다. 결제 내역과 사용한 Credit 수를 확인할 수 있도록 가입한
+          이메일 주소를 함께 알려주세요.
         </p>
+        <ContactList />
         <div className="policy-actions">
           <Link className="button button--outline" href="/pricing/">요금 안내 보기</Link>
           <Link className="button button--outline" href="/support/">고객센터</Link>
         </div>
+      </section>
+
+      <section className="policy-section">
+        <h2>판매 주체</h2>
+        <p>이 환불정책이 적용되는 상품의 판매 주체는 {businessInfo.legalName}입니다.</p>
+        <BusinessInfoList />
       </section>
 
       <ReleaseNotice>

@@ -1,10 +1,11 @@
 import Link from "next/link";
 
+import { BusinessInfoList, ContactList } from "@/components/business-info-block";
 import { PricingPromoForm } from "@/components/pricing-promo-form";
 import { ReleaseNotice, ReleaseStatusLabel } from "@/components/release-status";
 import { buildPublicMetadata } from "@/lib/brand";
+import { ecommerceRegistration } from "@/lib/business-info";
 import {
-  businessInfoFields,
   creditCopy,
   heroCopy,
   paymentState,
@@ -16,7 +17,7 @@ import {
 } from "@/lib/pricing";
 
 export const metadata = buildPublicMetadata(
-  "요금 안내",
+  "LegendStudy 논술 LAB 요금 안내",
   "LegendStudy LAB 논술 첨삭의 Credit 판매 가격과 이용 기간, 재첨삭 조건, 환불 정책을 안내합니다.",
   "/pricing",
 );
@@ -286,14 +287,10 @@ export default function PricingPage() {
       <section className="policy-section" aria-labelledby="pricing-legal-title">
         <h2 id="pricing-legal-title">사업자 정보와 정책 문서</h2>
         <p>
-          결제 심사와 이용자 고지를 위해 아래 사업자 정보를 게시합니다. 현재 값이 확정되지 않아 임의로 만들지
-          않았으며, 확정 후 이 페이지에 게시합니다.
+          결제와 이용자 고지를 위해 판매 주체 정보를 게시합니다. 통신판매업 신고번호는 현재 유효한 신고번호입니다.
         </p>
-        <ul className="tag-row" aria-label="확정 후 게시할 사업자 정보 항목">
-          {businessInfoFields.map((field) => (
-            <li className="tag" key={field.key}>{field.label}</li>
-          ))}
-        </ul>
+        <BusinessInfoList />
+        <ContactList />
         <dl className="pricing-summary">
           <div>
             <dt>판매 상품</dt>
@@ -308,15 +305,16 @@ export default function PricingPage() {
             <dd>결제일로부터 {pricingPolicy.paidCreditValidityMonths}개월 (무료 Credit은 유효기간 없음)</dd>
           </div>
         </dl>
+        <p className="pricing-note">{ecommerceRegistration.note}</p>
         <div className="policy-actions">
           <Link className="button button--outline" href="/terms/">이용약관</Link>
           <Link className="button button--outline" href="/privacy/">개인정보처리방침</Link>
           <Link className="button button--outline" href="/refund/">환불정책</Link>
           <Link className="button button--outline" href="/support/">고객센터</Link>
         </div>
-        <ReleaseNotice>
-          이용약관과 개인정보처리방침은 아직 발행 전 초안이며, 고객센터는 실제 문의 채널이 연결되기 전입니다. 결제
-          기능을 열기 전에 두 문서를 발행 상태로 전환하고 지원 채널을 확정합니다.
+        <ReleaseNotice label="결제와 정책 문서 안내">
+          결제 기능은 아직 열려 있지 않습니다. 이용약관과 개인정보처리방침은 공개했으며, 시행일과 개인정보
+          보호책임자 지정 등 운영자 확정이 필요한 항목은 각 문서의 안내에 따릅니다.
         </ReleaseNotice>
       </section>
     </div>
