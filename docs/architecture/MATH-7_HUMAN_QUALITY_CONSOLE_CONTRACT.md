@@ -14,6 +14,7 @@ change, no provider call, no real student data, no real AI evaluation.
 [MATH-6A](MATH-6_RESOLVE_REEVALUATION_LEARNING_HISTORY_CONTRACT.md) — all APPROVED. APP authority:
 MATH-2B (DB/security cross-review) + MATH-2R (shared integration). Codex MATH-2C is **concurrent and
 incomplete** → **depend on MATH-2R semantics, not physical names** (§76).
+**Successor:** [MATH-2C_PHYSICAL_RECONCILIATION.md](MATH-2C_PHYSICAL_RECONCILIATION.md) (MATH-2C-R reconciliation gate → MATH-3B implementation).
 
 > **This document authorizes nothing and changes no system.** No UI, no DB migration/SQL, no
 > Production change, **no provider call**, **no real student data**, no real AI evaluation, no App/
