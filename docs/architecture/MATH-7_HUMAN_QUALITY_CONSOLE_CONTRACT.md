@@ -15,6 +15,7 @@ change, no provider call, no real student data, no real AI evaluation.
 MATH-2B (DB/security cross-review) + MATH-2R (shared integration). Codex MATH-2C is **concurrent and
 incomplete** → **depend on MATH-2R semantics, not physical names** (§76).
 **Successor:** [MATH-2C_PHYSICAL_RECONCILIATION.md](MATH-2C_PHYSICAL_RECONCILIATION.md) (MATH-2C-R reconciliation gate → MATH-3B implementation).
+**Implementation:** [MATH-7B_QUALITY_CONSOLE_IMPLEMENTATION.md](MATH-7B_QUALITY_CONSOLE_IMPLEMENTATION.md) — Math Quality Console bound to MATH-2E `qlm_quality` in `src/lib/math-quality/` (Q01–Q30 green; no live provider; Humanities untouched).
 
 > **This document authorizes nothing and changes no system.** No UI, no DB migration/SQL, no
 > Production change, **no provider call**, **no real student data**, no real AI evaluation, no App/

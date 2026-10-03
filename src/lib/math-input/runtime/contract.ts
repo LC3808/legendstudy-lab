@@ -17,7 +17,7 @@
 export const MATH_INPUT_DTO = "math-input-v1" as const;
 export const MATH_EXTRACTION_DTO = "math-extraction-v1" as const;
 
-export type MathRpcFunction = "math_input" | "math_extraction" | "math_evaluation" | "math_learning";
+export type MathRpcFunction = "math_input" | "math_extraction" | "math_evaluation" | "math_learning" | "qlm_quality";
 
 export interface RuntimeEnvelope<P = Record<string, unknown>> {
   dto_version: string;
