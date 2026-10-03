@@ -4,13 +4,11 @@ Status: **LAB Phase A implemented / deterministic verified; official documentati
 No deployment, Production DB apply, LIVE call or financial write. Public pricing stays
 PAYMENT_NOT_READY; a separate `/payments/test/` screen is ready for approved TEST configuration.
 
-APP binding authority explicitly pinned by Owner: `e4836eda919c6c9dbf524026c68255f308c3c776`,
-`20261003000100_payment_foundation.sql`, SHA-256
-`be808d9625729bac336446d07d92460d57286cfec30f0c29f9135fd70ce1f643`.
-The later APP provider-neutral pre-apply amendment (`3b3b869`) has a different hash.
-This LAB implementation neither rolls APP back nor selects a Production migration artifact.
-Before any future apply, Owner must select the intended exact APP revision/hash. Both DTOs
-are compatible with this consumer: optional provider, if present, must be TOSS.
+Canonical candidate reconciled in PAYMENT-E2E-PREP-1: APP
+`3b3b869297a0884bfb908c87977fa14519f72d91`, `20261003000100_payment_foundation.sql`,
+SHA-256 `77b460bf2bf437a8d6dd03d78454ece17c6c4143fe50d7f28b6ea30a51509c75`.
+Old e4836eda / be808d96… is SUPERSEDED_PRE_APPLY. DTO is compatible; provider, if
+present, must be TOSS. No Production apply selected or authorized.
 
 ## What PAYMENT-1B already established
 
@@ -280,3 +278,66 @@ LEGENDSTUDY_PERSISTENCE_RUNTIME_E2E: NOT_RUN (deterministic binding tests PASS).
 No APP RPC was called during provider proof; spendable Credit impact0. SDK authentication
 background requests are not included in the14 direct REST count. Success callback fields
 paymentType/orderId/paymentKey/amount observed; failure callback remains deterministic UI proof.
+
+## PAYMENT-E2E-PREP-1 — isolated Hosted TEST preparation
+
+No project creation, config change, deployment or merchant call performed. APP bootstrap:
+[24-file allowlist and Owner procedure](https://github.com/LC3808/legendstudy-app/tree/codex/essay-scaffolding-vnext/supabase/verification/payments/hosted-test).
+No Production data/Auth/key copy. Math/provider005 excluded; ADR-2/day_targets only installed
+as explicit dependencies in the **new empty TEST** project, never replayed into Production.
+
+Browser auth now checks a build-declared exact Preview-origin/TEST-project pair. Production
+`https://lab.legendstudy.com` remains bound to its canonical Production project. Unknown
+origin, missing Preview declaration, foreign URL, or Production project on Preview fails closed.
+No query/localStorage mode selector. The two extra NEXT_PUBLIC_AUTH_PREVIEW_* values are
+Owner build configuration, not a browser request. Never take them from customer input.
+Only HTTPS *.pages.dev Preview origins are accepted in this phase; custom-domain test setup
+would require a reviewed mapping change. SSR/unknown origin yields no Auth client.
+
+Payment outbound fetch uses manual redirects; **all3xx rejected** for both Supabase and Toss.
+Real workerd8 scenarios200/400/301/302/303/304/307/308 passed, one outbound request each,
+zero redirect follows. No real upstream request; synthetic outbound service.
+`node scripts/test-payment-workerd.mjs /path/to/miniflare` reproduces it.
+
+### Exact configuration (not configured here)
+
+Cloudflare → Workers & Pages → approved TEST Pages project → Settings → Variables and
+Secrets → **Preview**. Build-time NEXT_PUBLIC values require a fresh static build. Runtime
+secrets belong only to Functions. [Cloudflare binding documentation](https://developers.cloudflare.com/pages/functions/bindings/).
+For this E2E all rows below are Preview-only; existing Production Auth values stay unchanged.
+Do not put finance secrets into Preview environments accessible by unreviewed branches.
+Prefer a dedicated TEST Pages project if deployment controls cannot isolate trusted code.
+
+| Variable | Classification | Consumer/time | Expected format / validation |
+|---|---|---|---|
+| PAYMENT_MODE | PUBLIC config | Functions runtime | exactly TEST; missing/LIVE fail closed |
+| PAYMENT_ORIGIN | PUBLIC config | Functions runtime | exact approved HTTPS Preview origin, no path/trailing slash; Origin/request URL must match |
+| PAYMENT_SUPABASE_URL | PUBLIC | Functions runtime | new approved TEST https://projectref.supabase.co; equal browser URL, never Production |
+| PAYMENT_SUPABASE_PUBLISHABLE_KEY | PUBLIC key | Functions runtime | same TEST project publishable key; server forwards as apikey, gateway validates |
+| PAYMENT_FINANCE_TOKEN | SECRET | Functions runtime only | short-lived signed TEST JWT role essay_finance, non-null gateway sub; signature/expiry/role validated by Data API |
+| PAYMENT_SUPPORT_SUBJECTS | SECRET/private config | Functions runtime only | comma-separated synthetic buyer/support Auth UUIDs; exact verified sub membership plus own order |
+| TOSS_TEST_CLIENT_KEY | PUBLIC key | Functions runtime → checkout browser response | merchant standard SDK test_ck_ prefix; merchant match verified at provider boundary |
+| TOSS_TEST_SECRET_KEY | SECRET | Functions runtime only | matching merchant test_sk_ prefix; never NEXT_PUBLIC or bundle |
+| TOSS_MID | PUBLIC identifier | Functions runtime | leglabn24k; exact provider response match |
+| NEXT_PUBLIC_SUPABASE_URL | PUBLIC | browser build-time | equal PAYMENT_SUPABASE_URL and approved Preview project declaration |
+| NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY | PUBLIC key | browser build-time | same TEST project, sb_publishable_ format |
+| NEXT_PUBLIC_SUPABASE_AUTH_PROVIDERS | PUBLIC | browser build-time | empty for initial email/password-only E2E |
+| NEXT_PUBLIC_AUTH_PREVIEW_ORIGIN | PUBLIC | browser build-time | exact approved HTTPS *.pages.dev origin; equal PAYMENT_ORIGIN |
+| NEXT_PUBLIC_AUTH_PREVIEW_SUPABASE_URL | PUBLIC | browser build-time | exact approved non-Production TEST project URL; no trailing slash |
+
+Client checks cannot certify a deployment administrator's choice of project. Owner must
+cross-check the identical TEST project across build/runtime bindings; no arbitrary client
+field changes those bindings. Runtime gateway validates key/JWT issuer independently.
+Secret presence in Cloudflare remains NOT_VERIFIED; no values requested or read here.
+
+Owner sequence: approve empty Hosted TEST creation → hash-checked APP bootstrap/postflight →
+synthetic email/password Auth and own-profile insertion via canonical RLS → finance gateway
+membership/signing + actual JWT denial/success matrix → trusted Preview config/build/deploy
+approval → separately authorized merchant TEST E2E. Finance token also has existing admin
+Credit/refund RPC capability, so it must never target Production or reach browser.
+Managed signing keys are not extractable; Owner follows APP package's test-only imported-key
+procedure, stores only short-lived bearer in Cloudflare, keeps signing private key offline.
+
+Current evidence: full LAB186 tests, typecheck, lint, boundary and GitHub-readiness PASS;
+workerd8 PASS. Production/Hosted JWT cryptographic gateway and merchant E2E remain separate.
+TOSS_CHECKOUT_REVIEW_READY remains NO; PAYMENT_LIVE_READY remains NO.

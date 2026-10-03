@@ -793,5 +793,21 @@
   "public_payment_internal_links": "PASS",
   "built_output_secret_scan": "PASS",
   "browser_static_preview": "PASS: 4 products and TEST label; anon checkout denied without API call",
-  "provider_evidence": "PAYMENT_2_PROVIDER_TEST.json"
+  "provider_evidence": "PAYMENT_2_PROVIDER_TEST.json",
+  "prep_1": {
+    "unit_tests": 186,
+    "typecheck": "PASS",
+    "eslint": "PASS",
+    "boundary": "PASS",
+    "github_readiness": "PASS",
+    "static_export": "PASS",
+    "built_secret_scan": "PASS",
+    "workerd_redirect_scenarios": 8,
+    "workerd_redirect_follow_count": 0,
+    "hosted_auth_gateway": "HOSTED_VERIFICATION_REQUIRED",
+    "merchant_e2e": "NOT_RUN",
+    "external_config_changes": 0,
+    "miniflare": "5.20261001.0-alpha",
+    "workerd": "1.20261001.1"
+  }
 }

@@ -1,4 +1,4 @@
-/** Cloudflare only. APP e4836eda payment-v1 is the sole persistence authority. */
+/** Cloudflare only. APP 3b3b869 payment-v1 is the sole persistence authority. */
 export type Env = {
   PAYMENT_MODE?: string; PAYMENT_ORIGIN?: string;
   PAYMENT_SUPABASE_URL?: string; PAYMENT_SUPABASE_PUBLISHABLE_KEY?: string;
@@ -30,7 +30,11 @@ function config(e: Env) {
   return origin;
 }
 async function call(io: IO, url: string, init: RequestInit): Promise<Response> {
-  try { return await io(url, { ...init, redirect: 'error', signal: AbortSignal.timeout(10000) }); } catch { return fail(503, 'RECONCILIATION_REQUIRED'); }
+  try {
+    const response = await io(url, { ...init, redirect: 'manual', signal: AbortSignal.timeout(10000) });
+    if (response.status >= 300 && response.status < 400) return fail(503, 'RECONCILIATION_REQUIRED');
+    return response;
+  } catch { return fail(503, 'RECONCILIATION_REQUIRED'); }
 }
 function safeOrder(o: Json): Json {
   if (o.dto_version !== 'payment-v1' || o.mode !== 'TEST' || !uuid.test(String(o.id)) || o.order_id !== 'ls_' + String(o.id).replaceAll('-', '') || !Number.isSafeInteger(o.amount) || Number(o.amount) <= 0 || o.currency !== 'KRW' || (o.provider !== undefined && o.provider !== 'TOSS') || !['NONE','TEST_RECORDED','REVOKED'].includes(String(o.grant_state))) fail(502, 'INVALID_ORDER');
