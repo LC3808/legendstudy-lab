@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-04",
+  "tests": 199,
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "boundary": "PASS",
+  "build": "PASS next build --webpack static export",
+  "workerd": "PASS 8 cases 1.20261001.1 compatibility 2026-09-22 synthetic outbound only",
+  "static_assets": 249,
+  "js": 55,
+  "secret_scan": "PASS pattern scan of fresh static output, no actual secret values loaded",
+  "finance_jwt": "ABSENT",
+  "toss_secret": "ABSENT",
+  "server_source_sha256": "c1e150c95bad5123d6eb9dc393676420ecea82364fb71ef98f1b7254917d3c43",
+  "production_deploy": false,
+  "provider_calls": 0
+}

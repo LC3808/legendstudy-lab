@@ -26,7 +26,10 @@ function config(e: Env) {
   if (e.PAYMENT_MODE !== 'TEST' || !/^test_ck_/.test(e.TOSS_TEST_CLIENT_KEY || '') || !/^test_sk_/.test(e.TOSS_TEST_SECRET_KEY || '') || !e.TOSS_MID || !e.PAYMENT_FINANCE_TOKEN || !e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) fail(503, 'PAYMENT_NOT_CONFIGURED');
   const origin = e.PAYMENT_ORIGIN;
   if (!origin || !/^https:\/\/[a-z0-9.-]+(?::\d+)?$/.test(origin)) fail(503, 'PAYMENT_NOT_CONFIGURED');
-  if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(e.PAYMENT_SUPABASE_URL || '')) fail(503, 'PAYMENT_NOT_CONFIGURED');
+  // This adapter is authorized only for the dedicated, isolated TEST deployment.
+  // Pin before sending buyer/finance credentials; syntactically valid URLs are insufficient.
+  if (origin !== 'https://legendstudy-lab-payment-test.pages.dev' ||
+      e.PAYMENT_SUPABASE_URL !== 'https://wsnrwklplnunjktyfmbr.supabase.co') fail(503, 'PAYMENT_NOT_CONFIGURED');
   return origin;
 }
 async function call(io: IO, url: string, init: RequestInit): Promise<Response> {

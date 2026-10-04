@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { payment, type Env } from './payments';
 const ID='11111111-1111-4111-8111-111111111111', KEY='22222222-2222-4222-8222-222222222222';
-const origin='https://preview.example.com';
+const origin='https://legendstudy-lab-payment-test.pages.dev';
 // Deliberately synthetic non-credential strings, generated to avoid token literals in artifacts.
-const env:Env={PAYMENT_MODE:'TEST',PAYMENT_ORIGIN:origin,PAYMENT_SUPABASE_URL:'https://synthetic.supabase.co',PAYMENT_SUPABASE_PUBLISHABLE_KEY:'synthetic-public',PAYMENT_FINANCE_TOKEN:'synthetic-finance',PAYMENT_SUPPORT_SUBJECTS:'synthetic-user',TOSS_TEST_CLIENT_KEY:['test','ck','fixture'].join('_'),TOSS_TEST_SECRET_KEY:['test','sk','fixture'].join('_'),TOSS_MID:'synthetic'};
+const env:Env={PAYMENT_MODE:'TEST',PAYMENT_ORIGIN:origin,PAYMENT_SUPABASE_URL:'https://wsnrwklplnunjktyfmbr.supabase.co',PAYMENT_SUPABASE_PUBLISHABLE_KEY:'synthetic-public',PAYMENT_FINANCE_TOKEN:'synthetic-finance',PAYMENT_SUPPORT_SUBJECTS:'synthetic-user',TOSS_TEST_CLIENT_KEY:['test','ck','fixture'].join('_'),TOSS_TEST_SECRET_KEY:['test','sk','fixture'].join('_'),TOSS_MID:'synthetic'};
 function fixture(){
  let order:Record<string,unknown>={dto_version:'payment-v1',id:ID,order_id:'ls_'+ID.replaceAll('-',''),mode:'TEST',sku:'10c',quantity:10,amount:29900,currency:'KRW',state:'ORDER_CREATED',grant_state:'NONE',expires_at:'2099-01-01',paid_at:null,credit_expires_at:null};
  let op:Record<string,unknown>={};let storedCreate='';let storedConfirm='';let finishes=0;let cancels=0;
@@ -84,4 +84,10 @@ describe('PAYMENT-2 deterministic APP contract and provider adapter',()=>{
  it('malformed JSON denied',async()=>expect((await fixture().send('status',{},env,{body:'{'})).status).toBe(422));
  it('unknown endpoint denied',async()=>expect((await fixture().send('other',{})).status).toBe(404));
  it('errors sanitized and no logs',async()=>{const f=fixture();f.f.providerFailure=true;const r=await f.confirm();const b=await r.json();expect(b.error).toBe('RECONCILIATION_REQUIRED');expect(b.diagnostic.stage).toBe('provider_lookup');expect(JSON.stringify(b)).not.toContain('SECRET');});
+});
+
+describe('Production readiness fail-closed boundaries (synthetic IO only)',()=>{
+ for(const url of ['https://stlhijzpjfgwwdgunlsd.supabase.co','https://wrong.supabase.co','https://evil.example',''])it(`reject project ${url} before credentials leave`,async()=>{const f=fixture();expect((await f.send('orders',{sku:'1c',request_key:KEY},{...env,PAYMENT_SUPABASE_URL:url})).status).toBe(503);expect(f.calls).toHaveLength(0);});
+ for(const url of ['https://lab.legendstudy.com','https://other.pages.dev'])it(`reject deployment ${url}`,async()=>{const f=fixture();expect((await f.send('orders',{sku:'1c',request_key:KEY},{...env,PAYMENT_ORIGIN:url})).status).toBe(503);expect(f.calls).toHaveLength(0);});
+ for(const field of ['TOSS_TEST_CLIENT_KEY','TOSS_TEST_SECRET_KEY'] as const)it(`LIVE key in TEST ${field} denied`,async()=>{const f=fixture();expect((await f.send('status',{id:ID},{...env,[field]:['live',field.includes('CLIENT')?'ck':'sk','synthetic'].join('_')})).status).toBe(503);expect(f.calls).toHaveLength(0);});
 });
