@@ -784,11 +784,11 @@ h1, h2, h3 { text-wrap: pretty; }
 /* ==========================================================================
    Pricing and refund — public commercial information
    Reuses the foundation tokens above. Pricing cards are bordered surfaces,
-   the comparison table scrolls horizontally instead of collapsing, and every
-   state (추천 / 준비 중 / 결제 준비 중) carries text instead of colour alone.
+   and they carry the whole product offer on their own, so there is no second
+   comparison table to scroll. Every state (추천 / 구매하기) carries text instead
+   of colour alone.
    ========================================================================== */
 .pricing-page .policy-page__heading h1 { font-size: clamp(2.3rem, 4.8vw, 3.9rem); }
-.pricing-section__lead { margin: 1rem 0 0; color: var(--ink-soft); font-size: 0.94rem; line-height: 1.8; }
 .pricing-note { margin: 1.25rem 0 0; color: var(--ink-soft); font-size: 0.84rem; line-height: 1.7; }
 
 .pricing-page .button:disabled,
@@ -807,17 +807,6 @@ h1, h2, h3 { text-wrap: pretty; }
 .pricing-plan__price { margin: 0.5rem 0 0; color: var(--ink); font-family: Georgia, "Nanum Myeongjo", serif; font-size: clamp(1.7rem, 2.6vw, 2.05rem); font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .pricing-plan__unit { margin: 0; color: var(--ink-soft); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
 .pricing-plan__value { margin: 0.85rem 0 0; padding-top: 0.85rem; border-top: 1px solid var(--line); color: var(--ink); font-size: 0.95rem; font-weight: 800; }
-
-.pricing-table-scroll { margin-top: 1.6rem; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); -webkit-overflow-scrolling: touch; }
-.pricing-table-scroll:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 70%, white); outline-offset: 3px; }
-.pricing-table { width: 100%; min-width: 40rem; border-collapse: separate; border-spacing: 0; font-size: 0.88rem; }
-.pricing-table caption { padding: 0.9rem 1rem; border-bottom: 1px solid var(--line); color: var(--ink-soft); font-size: 0.8rem; line-height: 1.6; text-align: left; }
-.pricing-table th, .pricing-table td { padding: 0.8rem 0.9rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-.pricing-table tbody tr:last-child th, .pricing-table tbody tr:last-child td { border-bottom: 0; }
-.pricing-table thead th { position: sticky; top: 0; z-index: 1; background: var(--surface-muted); color: var(--ink); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.02em; white-space: nowrap; }
-.pricing-table thead th:first-child { left: 0; z-index: 2; }
-.pricing-table tbody th { position: sticky; left: 0; z-index: 1; width: 11rem; background: var(--surface); color: var(--ink); font-size: 0.82rem; font-weight: 800; }
-.pricing-table td { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 
 .pricing-promo { display: grid; gap: 0.85rem; justify-items: start; margin-top: 1.25rem; }
 .pricing-promo__lead { max-width: 46rem; margin: 0; color: var(--ink-body); font-size: 0.94rem; line-height: 1.8; }
@@ -860,8 +849,6 @@ h1, h2, h3 { text-wrap: pretty; }
   .pricing-free { flex-direction: column; align-items: flex-start; }
   .pricing-promo__row { flex-direction: column; }
   .pricing-promo__row .button { width: 100%; }
-  .pricing-table { min-width: 38rem; font-size: 0.84rem; }
-  .pricing-table tbody th { width: 9rem; }
 }
 /* TOSS-REVIEW-1: public business identity, customer contacts and legal documents */
 .site-footer__brand { display: grid; gap: 0.5rem; max-width: 46rem; }
@@ -969,23 +956,16 @@ h1, h2, h3 { text-wrap: pretty; }
 .pricing-page .policy-section > p,
 .pricing-page .policy-list,
 .pricing-page .process-list span,
-.pricing-page .pricing-section__lead,
 .pricing-page .pricing-fact p:not(.pricing-fact__statement),
 .pricing-page .pricing-summary dd,
 .pricing-page .pricing-faq details p { color: var(--ink-body); }
-
 /* Supporting copy stays a step lighter than the paragraph colour but never
    lighter than the measured 7.5:1 --ink-muted. */
-.pricing-page .pricing-table caption,
-.pricing-page .pricing-table td,
 .pricing-page .pricing-plan__unit,
 .pricing-page .pricing-note,
 .pricing-page .pricing-promo__note,
 .pricing-page .contact-list__note,
 .pricing-page .business-info dt { color: var(--ink-muted); }
-
-.pricing-page .pricing-table thead th,
-.pricing-page .pricing-table tbody th,
 .pricing-page .contact-list__label,
 .pricing-page .business-info dd { color: var(--ink-body); }
 
@@ -1045,3 +1025,38 @@ h1, h2, h3 { text-wrap: pretty; }
    footer otherwise carried is guarded on the page itself in
    scripts/verify-boundaries.mjs. */
 .site-shell:has(.pricing-page) .site-footer { display: none; }
+
+/* ==========================================================================
+   PRICING-UX-CLEANUP-1D — the cards carry the CTA, the copy stops repeating
+   The pack cards are the only product table now, so each one ends with its own
+   purchase CTA. Payment is not connected yet, so the CTA renders disabled: it
+   keeps the card shape stable for the day the checkout is wired, and it never
+   claims a purchase the service cannot complete.
+   ========================================================================== */
+.pricing-page .pricing-plan__cta {
+  width: 100%; min-height: 2.5rem; margin-top: 1.1rem; padding: 0.6rem 0.9rem;
+  font-size: 0.86rem;
+}
+.pricing-page .pricing-plan__cta:disabled { cursor: not-allowed; }
+/* The hero sentence measures ~72em, so the 48rem reading measure broke it in the
+   middle of a phrase. The wider measure lets it break at the clause boundary
+   instead. Mobile keeps wrapping to the viewport. */
+.pricing-page .policy-page__lead { max-width: 52rem; }
+
+/* Korean prose breaks inside a word by default, which is what made the hero and
+   the policy lists look like they wrapped too early. keep-all moves every break
+   to a word boundary, so the same container width reads as a deliberate line
+   instead of a truncated one. break-word stays as the fallback for the long
+   unbroken tokens (e-mail addresses, numbers) that appear further down. */
+.pricing-page .policy-page__lead,
+.pricing-page .policy-section > p,
+.pricing-page .policy-list li,
+.pricing-page .process-list span,
+.pricing-page .pricing-fact__statement,
+.pricing-page .pricing-summary dd,
+.pricing-page .pricing-faq details p,
+.pricing-page .pricing-note,
+.pricing-page .pricing-promo__lead {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}

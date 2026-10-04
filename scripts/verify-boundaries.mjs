@@ -103,6 +103,10 @@ const removedPricingCopy = [
   "관할 행정기관",
   "결제 기능을 준비",
   "결제가 열리면",
+  "결제 준비 중",
+  "곧 구매 가능",
+  "출시 예정",
+  "준비 중",
 ];
 if (fs.existsSync(pricingPage)) {
   const source = fs.readFileSync(pricingPage, "utf8");
@@ -123,6 +127,20 @@ if (fs.existsSync(pricingPage)) {
     if (new RegExp(`<dt>\\s*${term}\\s*</dt>`).test(source)) {
       errors.push(`duplicated sales information returned on /pricing/: ${term}`);
     }
+  }
+  // The pack cards are the only product table: every pack gives the same service
+  // scope and differs only in quantity, so a second comparison table would
+  // repeat the cards row for row.
+  if (/pricing-table/.test(source)) {
+    errors.push("the duplicated Credit comparison table returned on /pricing/");
+  }
+  if (!source.includes("Credit 판매 상품")) {
+    errors.push("pricing product section must keep the Owner-approved title");
+  }
+  // Every card carries the purchase CTA, and it stays disabled until a real
+  // checkout exists behind it.
+  if (!/pricing-plan__cta/.test(source) || !/disabled=\{!purchaseCta\.enabled\}/.test(source)) {
+    errors.push("pricing cards must carry the purchase CTA in its disabled state");
   }
   // globals.css omits the shared footer on this one route, so the page has to
   // keep publishing everything the footer otherwise carried: the seller
