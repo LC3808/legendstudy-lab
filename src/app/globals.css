@@ -1036,10 +1036,12 @@ h1, h2, h3 { text-wrap: pretty; }
   letter-spacing: 0.02em; color: var(--ink-muted);
 }
 
-/* The pricing page publishes the seller identity in its own 사업자정보 block
-   directly above the footer, so the global footer would repeat the same five
-   rows on this one route. The rule is scoped with :has() to /pricing/ alone:
-   every other public page keeps the footer block exactly as it is. The body
-   block is guarded in scripts/verify-boundaries.mjs so the information cannot
-   leave the page by accident. */
-.site-shell:has(.pricing-page) .site-footer .business-info { display: none; }
+/* /pricing/ ends with its own customer centre, policy links and seller identity,
+   so the global footer would repeat all of them on this one route. The whole
+   footer is omitted on /pricing/ only. The rule is scoped with :has(), which
+   leaves the markup untouched for every other route, and `display: none` also
+   removes the duplicated footer nav landmark from the accessibility tree
+   instead of leaving a second "정책과 고객지원" navigation behind. Everything the
+   footer otherwise carried is guarded on the page itself in
+   scripts/verify-boundaries.mjs. */
+.site-shell:has(.pricing-page) .site-footer { display: none; }

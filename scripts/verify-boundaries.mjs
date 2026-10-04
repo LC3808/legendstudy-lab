@@ -124,10 +124,19 @@ if (fs.existsSync(pricingPage)) {
       errors.push(`duplicated sales information returned on /pricing/: ${term}`);
     }
   }
-  // globals.css hides the footer seller block on this one route, so the page
-  // must keep publishing the seller identity in its own 사업자정보 block.
+  // globals.css omits the shared footer on this one route, so the page has to
+  // keep publishing everything the footer otherwise carried: the seller
+  // identity, the customer centre and the four policy links.
   if (!/<BusinessInfoList/.test(source)) {
     errors.push("pricing page must render the seller identity in its own block");
+  }
+  if (!/<ContactList/.test(source)) {
+    errors.push("pricing page must render the customer centre in its own block");
+  }
+  for (const href of ["/terms/", "/privacy/", "/refund/", "/support/"]) {
+    if (!source.includes(`"${href}"`)) {
+      errors.push(`pricing page must link ${href} because the footer is omitted`);
+    }
   }
 }
 
