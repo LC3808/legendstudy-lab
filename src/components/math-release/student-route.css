@@ -1,0 +1,9 @@
+.math-student{max-width:52rem;margin:auto;padding:1rem;overflow-wrap:anywhere;min-width:0;line-height:1.65}
+.math-student *{box-sizing:border-box;min-width:0;max-width:100%}
+.math-student fieldset{border:0;padding:0;margin:0}
+.math-student input,.math-student textarea,.math-student select{display:block;width:100%;font:inherit;border:1px solid #64748b;border-radius:.5rem;padding:.6rem;margin:.4rem 0 1rem}
+.math-student button,.math-student a{min-height:44px;font:inherit;white-space:normal;overflow-wrap:anywhere}
+.math-student button{padding:.65rem 1rem;border:1px solid #64748b;border-radius:.5rem;margin:.4rem .4rem .4rem 0}
+.math-student button:disabled{opacity:.55}
+.math-student :focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+.math-student section{margin:1.5rem 0}.math-student p{white-space:pre-wrap}

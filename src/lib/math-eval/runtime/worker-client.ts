@@ -7,6 +7,7 @@
  * candidate BEFORE finalize and FAILS the run on invalid output — never a partial "completed" publish.
  */
 
+import { physicalClaimToInput, physicalFinalize } from "./physical-contract";
 import { callRuntime, type MathRpcTransport } from "../../math-input/runtime/transport";
 import { validateMathEval, type MathEvaluationValidation } from "../validation";
 import {
@@ -46,6 +47,7 @@ export class MathEvaluationWorkerClient {
 }
 
 export function claimContextToInput(claim: ClaimEvalResult): MathEvaluationInput {
+  if ("reasoning_required" in claim.context.profile) return physicalClaimToInput(claim);
   const ctx: ClaimContext = claim.context;
   return {
     evaluationId: claim.evaluation_id,
@@ -78,17 +80,42 @@ export async function runWorkerEvaluation(params: {
   worker: MathEvaluationWorkerClient;
   evaluationId: string;
   adapter: MathEvaluatorAdapter;
+  timeoutMs?: number;
 }): Promise<WorkerEvaluationResult> {
   const claim = await params.worker.claim(params.evaluationId);
-  const input = claimContextToInput(claim);
-  const candidate = await params.adapter.evaluate(input);
-  const validation = validateMathEval(candidate.output, input);
-
+  let validation: MathEvaluationValidation;
+  let candidate: Awaited<ReturnType<MathEvaluatorAdapter["evaluate"]>>;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  let timedOut = false;
+  try {
+    const input = claimContextToInput(claim);
+    candidate = await Promise.race([
+      params.adapter.evaluate(input),
+      new Promise<never>((_, reject) => { timer = setTimeout(() => {
+        timedOut = true; reject(new Error("TIMEOUT"));
+      }, Math.min(120000, Math.max(1, params.timeoutMs ?? 45000))); }),
+    ]);
+  } catch {
+    await params.worker.fail(params.evaluationId, claim.lease_token, timedOut ? "TIMEOUT" : "PROCESSING_FAILED");
+    return { finalized: false, validation: { ok: false, issues: [] }, evaluationId: null, failed: true };
+  } finally { if (timer !== undefined) clearTimeout(timer); }
+  try { validation = validateMathEval(candidate.output, claimContextToInput(claim)); }
+  catch { validation = { ok: false, issues: [] }; }
   if (!validation.ok) {
     await params.worker.fail(params.evaluationId, claim.lease_token, "INVALID_OUTPUT");
     return { finalized: false, validation, evaluationId: null, failed: true };
   }
+  // A finalize transport failure may already have committed. Never compensate here;
+  // canonical replay/read and lease fencing resolve that uncertainty.
 
-  const evaluationId = await params.worker.finalize(params.evaluationId, claim.lease_token, candidate.output);
+  let finalOutput: unknown = candidate.output;
+  if ("reasoning_required" in claim.context.profile) {
+    try { finalOutput = physicalFinalize(candidate.output, claimContextToInput(claim)); }
+    catch {
+      await params.worker.fail(params.evaluationId, claim.lease_token, "INVALID_OUTPUT");
+      return { finalized: false, validation: { ok: false, issues: [] }, evaluationId: null, failed: true };
+    }
+  }
+  const evaluationId = await params.worker.finalize(params.evaluationId, claim.lease_token, finalOutput);
   return { finalized: true, validation, evaluationId, failed: false };
 }

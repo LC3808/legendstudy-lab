@@ -45,9 +45,16 @@ export class MathInputClient {
   }
 
   /** Canonical, server-derived readiness/state for an attempt. */
-  readInput(attemptId: string): Promise<ReadInputResult> {
-    return callRuntime<ReadInputResult>(this.transport, "math_input", MATH_INPUT_DTO, "read_input", {
+  async readInput(attemptId: string): Promise<ReadInputResult> {
+    const result = await callRuntime<ReadInputResult>(this.transport, "math_input", MATH_INPUT_DTO, "read_input", {
       attempt_id: attemptId,
     });
+    // APP read_input emits canonical row id; the presentation model calls it region_id.
+    const regions = (rows: ReadInputResult["candidate_regions"]) => rows.map(row => {
+      const id = row.region_id ?? (row as unknown as { id?: string }).id;
+      if (typeof id !== "string" || !id) throw new Error("INVALID_EXTRACTION_RESPONSE");
+      return { ...row, region_id: id };
+    });
+    return { ...result, candidate_regions: regions(result.candidate_regions), confirmed_regions: regions(result.confirmed_regions) };
   }
 }

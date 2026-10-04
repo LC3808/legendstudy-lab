@@ -1,10 +1,10 @@
 /**
  * MATH-4B — Mathematical Essay evaluation engine canonical types (LAB consumer).
  *
- * The `MathEvalOutput` shape mirrors the EXACT MATH-2C `math_finalize_evaluation(output)` schema
- * (steps/edges/errors/causes/core/hints/references/paths/criteria/rubric/overall/provenance/
- * progression/generated_solution + selected_extraction). MATH-4 is the sole mathematical evaluation
- * authority; this engine is deterministic + provider-independent (no provider payload is canonical).
+ * MathEvalOutput is the established LAB domain projection. It is NOT the physical SQL
+ * finalize JSON shape. runtime/physical-contract.ts explicitly maps it to unchanged
+ * APP MATH-2C/D/E; canonical SQL validation remains the final authority. The local
+ * validator and provider-independent consumer contract are preserved.
  *
  * APP authority: commit 17e528b…, MATH-2C 20261002000100 + MATH-2D 20261002000200
  * (runtime SHA-256 b40bf7224a84658308ff1640b639acb857e379998211131d97a688a9711fe049).
@@ -193,7 +193,9 @@ export interface MathEvaluationInput {
   responseFormat: MathResponseFormat;
   /** Whether the profile requires reasoning (drives SHORT_ANSWER firewall). */
   requiresReasoning: boolean;
-  selectedExtractionId: string;
+  selectedExtractionId: string | null;
+  /** Immutable server claim package, required by a real model adapter. */
+  canonicalPackage?: Readonly<Record<string, unknown>>;
   /** Extraction region ids available for grounding step evidence. */
   regionIds: string[];
   authoritySolutions: PinnedAuthoritySolution[];

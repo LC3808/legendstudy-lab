@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CatalogFilters } from "@/components/catalog-filters";
 import { MockNotice } from "@/components/trust-label";
 import { buildMetadata } from "@/lib/brand";
@@ -17,6 +18,7 @@ export default function EssayLabPage() {
         <h1>대학별 논술을<br />구조부터 살펴보세요.</h1>
         <p>2027 공식 문서에서 확인한 소수의 대학·캠퍼스·track metadata fixture입니다. 최종 지원 전에는 반드시 해당 대학 입학처의 최신 모집요강을 다시 확인하세요.</p>
       </div>
+      {process.env.NEXT_PUBLIC_MATH_ENABLED === "true" && <Link href="/math/">수리논술 학습 시작</Link>}
       <MockNotice compact />
       <CatalogFilters universities={universities} />
     </div>
