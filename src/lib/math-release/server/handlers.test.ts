@@ -3,7 +3,7 @@ import {onRequestPost as upload} from '../../../../functions/api/math/upload';
 import {onRequestPost as extract} from '../../../../functions/api/math/extract';
 import type {MathEnvironment} from './transport';
 const id='00000000-0000-4000-8000-000000000001';
-const env:MathEnvironment={MATH_ENABLED:'true',MATH_ORIGIN:'https://math.example.invalid',MATH_PROJECT_REF:'synthetic',MATH_SUPABASE_URL:'https://synthetic.supabase.co',MATH_SUPABASE_PUBLISHABLE_KEY:'synthetic-public',MATH_EXTRACTION_WORKER_JWT:'synthetic-worker'};
+const env:MathEnvironment={MATH_ALLOWED_SUBJECTS:id,MATH_ENABLED:'true',MATH_ORIGIN:'https://math.example.invalid',MATH_PROJECT_REF:'synthetic',MATH_SUPABASE_URL:'https://synthetic.supabase.co',MATH_SUPABASE_PUBLISHABLE_KEY:'synthetic-public',MATH_EXTRACTION_WORKER_JWT:'synthetic-worker'};
 const bytes=new TextEncoder().encode('%PDF-1.7\nsynthetic');
 function request(){const form=new FormData();form.set('artifact_id',id);form.set('file',new File([bytes],'answer.pdf',{type:'application/pdf'}));return new Request('https://math.example.invalid/api/math/upload',{method:'POST',headers:{origin:env.MATH_ORIGIN!,authorization:'Bearer synthetic-buyer'},body:form});}
 afterEach(()=>vi.unstubAllGlobals());

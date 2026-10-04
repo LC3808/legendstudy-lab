@@ -20,6 +20,7 @@ Cloudflare → Workers & Pages → explicitly approved LAB deployment project �
 |---|---|---|
 | NEXT_PUBLIC_MATH_ENABLED | Text/build | false until approved route exposure; rebuild required |
 | MATH_ENABLED | Text/server | false until gateway approved |
+| MATH_ALLOWED_SUBJECTS | Text/server | Required exact verified synthetic Auth UUIDs, comma-separated, at most10; missing/malformed fails closed; never NEXT_PUBLIC |
 | MATH_PROVIDER_CALLS_ENABLED | Text/server | false until explicit paid-call approval |
 | MATH_ORIGIN | Text | exact approved HTTPS origin, no trailing path |
 | MATH_SUPABASE_URL | Text | approved LegendStudy DB URL |
@@ -57,3 +58,7 @@ Consumer COMPLETE. Student route/code deterministic PASS. Backend activation pac
 Owner created isolated Cloudflare Pages `legendstudy-lab-math-test`, pinned to `codex/math-production-activation-1`; initial configured redeploy `67565373-e87c-43ff-9241-e99e16c676d7` succeeded at80bcd25. Production-environment binding names/types and nonsecret values verified in dashboard; both Math role JWTs encrypted. `MATH_ENABLED`, `MATH_PROVIDER_CALLS_ENABLED`, `NEXT_PUBLIC_MATH_ENABLED` remain false. Public `/math/` renders preparation state. Public LAB main and Payment code unchanged.
 
 Actual unauthenticated POST probes found405 because `public/_routes.json` included only Kakao. Add `/api/math/*` to the existing include list, preserving existing routes. `verify-math-release.mjs` now asserts source and exported routing reach all three gateways and are not excluded. Math release15 tests PASS; webpack static build/TypeScript PASS; boundary PASS; browser graph24 modules and231 local assets scanned with no privileged bindings/canaries. Default Turbopack local build is blocked by this worktree's external node_modules symlink; webpack validation used. Hosted Cloudflare build and post-fix OFF probes must independently pass. No provider calls or student data. Role JWT runtime use, private byte E2E and provider gate remain pending; RC NO.
+
+## Synthetic-only Hosted admission continuation
+
+Owner confirmed the logged-in account contains no real student data. Browser reload retained session; local0600 access-token session independently verified against Production Auth. Nonexistent-ID read_input/read_learning_state returned P0002, not foreign-owner evidence. No application writes/provider calls. All three Math handlers now enforce a required bounded server allowlist against Auth-verified identity before worker/storage/provider actions. Missing, malformed or nonmatching configuration denies access; public release requires a separate decision. Tests cover allowed/missing/foreign/malformed/forged identity and handler admission ordering. Hosted deployment and actual byte E2E remain pending. No Payment change.

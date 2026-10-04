@@ -1,7 +1,7 @@
 import { boundedBody } from "./request";
 import type { MathRpcTransport } from "../../math-input/runtime/transport";
 export interface MathEnvironment {
-  MATH_ENABLED?: string; MATH_PROVIDER_CALLS_ENABLED?: string; MATH_PROVIDER?: string; MATH_PRIMARY_MODEL?: string;
+  MATH_ALLOWED_SUBJECTS?: string; MATH_ENABLED?: string; MATH_PROVIDER_CALLS_ENABLED?: string; MATH_PROVIDER?: string; MATH_PRIMARY_MODEL?: string;
   MATH_PROVIDER_API_KEY?: string; MATH_ORIGIN?: string; MATH_SUPABASE_URL?: string; MATH_PROJECT_REF?: string;
   MATH_SUPABASE_PUBLISHABLE_KEY?: string; MATH_EXTRACTION_WORKER_JWT?: string; MATH_EVALUATION_WORKER_JWT?: string;
 }
@@ -22,7 +22,14 @@ export function serverTransport(env: MathEnvironment) {
   async function subject(token: string) {
     const response = await request("/auth/v1/user", token);
     if (!response.ok) throw Error("LOGIN_REQUIRED"); const body = await response.json() as { id?: string };
-    if (!body.id || !/^[0-9a-f-]{36}$/i.test(body.id)) throw Error("LOGIN_REQUIRED");return body.id;
+    if (!body.id || !/^[0-9a-f-]{36}$/i.test(body.id)) throw Error("LOGIN_REQUIRED");
+    // Hosted activation is synthetic-only until a separately approved public release.
+    // Match the identity verified by Auth, never a client-supplied/decoded JWT subject.
+    const allowed = (env.MATH_ALLOWED_SUBJECTS ?? "").split(",").map(value => value.trim());
+    const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!allowed.length || allowed.length > 10 || allowed.some(value => !uuid.test(value)) ||
+      !allowed.some(value => value.toLowerCase() === body.id!.toLowerCase())) throw Error("ACCESS_DENIED");
+    return body.id;
   }
   return { request, rpcRaw, rpc, subject };
 }
