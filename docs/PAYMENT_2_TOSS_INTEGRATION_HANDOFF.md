@@ -318,7 +318,7 @@ Prefer a dedicated TEST Pages project if deployment controls cannot isolate trus
 | PAYMENT_SUPPORT_SUBJECTS | SECRET/private config | Functions runtime only | comma-separated synthetic buyer/support Auth UUIDs; exact verified sub membership plus own order |
 | TOSS_TEST_CLIENT_KEY | PUBLIC key | Functions runtime → checkout browser response | merchant standard SDK test_ck_ prefix; merchant match verified at provider boundary |
 | TOSS_TEST_SECRET_KEY | SECRET | Functions runtime only | matching merchant test_sk_ prefix; never NEXT_PUBLIC or bundle |
-| TOSS_MID | PUBLIC identifier | Functions runtime | leglabn24k; exact provider response match |
+| TOSS_MID | PUBLIC identifier | Functions runtime | leglabn24k; verified TEST provider identity is exactly tleglabn24k (see 2026-10-04 runtime evidence) |
 | NEXT_PUBLIC_SUPABASE_URL | PUBLIC | browser build-time | equal PAYMENT_SUPABASE_URL and approved Preview project declaration |
 | NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY | PUBLIC key | browser build-time | same TEST project, sb_publishable_ format |
 | NEXT_PUBLIC_SUPABASE_AUTH_PROVIDERS | PUBLIC | browser build-time | empty for initial email/password-only E2E |
@@ -341,3 +341,45 @@ procedure, stores only short-lived bearer in Cloudflare, keeps signing private k
 Current evidence: full LAB186 tests, typecheck, lint, boundary and GitHub-readiness PASS;
 workerd8 PASS. Production/Hosted JWT cryptographic gateway and merchant E2E remain separate.
 TOSS_CHECKOUT_REVIEW_READY remains NO; PAYMENT_LIVE_READY remains NO.
+
+
+## 2026-10-04 — PAYMENT-E2E-TOSS-1R-FAST runtime evidence
+
+This dated section supersedes earlier NOT_RUN statements for the dedicated merchant TEST flow.
+Dedicated project: `legendstudy-lab-payment-test`, origin
+`https://legendstudy-lab-payment-test.pages.dev`, isolated Supabase `wsnrwklplnunjktyfmbr`.
+These bindings are in the dedicated project's Production environment (its default TEST origin),
+not the real LAB Production project. Payment feature remains unmerged.
+
+Root cause: authenticated Toss lookup returned `mId=tleglabn24k`; the handler compared it
+with configured merchant `leglabn24k`, raised PROVIDER_MISMATCH before sending confirm.
+Payment identity, order identity, KRW and4900 all matched. Official developer dashboard,
+company merchant1835291 / selected MIDleglabn24k, showed the identical original order.
+This runtime and dashboard evidence establishes this exact merchant's TEST mapping; do not
+infer arbitrary prefix mappings for other merchants. Code5b132b2 maps only this configured
+merchant to its exact TEST response identity; live mode and other MID mismatches remain denied.
+Diagnostics expose only bounded error identifiers, stages and mismatch facts, no raw provider
+payload/card/auth/secret. Original order retained: dashboard EXPIRED, local pending UNKNOWN;
+no payment/grant assertion or destructive cleanup for it.
+
+One authorized replacement1c4900 TEST checkout was completed by Owner. Server verified Toss
+response and posted PAID/TEST_RECORDED through canonical APP RPC. Paid_at2026-10-04T04:45:03Z,
+credit_expires_at2027-01-04T04:45:03Z, no canonical spendable grant. Duplicate confirm200,
+conflicting payment identity409, amount mismatch422. Full cancellation200, duplicate cancel200,
+final reconciliation200/CANCELLED/REVOKED. Successful cancel path verifies provider canceled
+status, one DONE cancellation4900 and balanceAmount0 before local finalization. Independent
+Toss dashboard shows the same replacement order cancelled; LAB result refresh shows CANCELLED.
+SQL confirms exactly one successful CONFIRM and one successful CANCEL operation for replacement.
+Foreign-owner runtime check is pending existing gateway Auth login (no new signup).
+
+Final ledger query: payment-attributable spendable delta0, purchase grants0, order-grant links0,
+payment-linked postings0, LIVE orders/grants0, unexplained/unclassified delta/postings0.
+Existing signup bonus6 remains separate. Production accesses/writes0, LIVE calls0.
+Validation:191 deterministic tests PASS, typecheck/lint/boundary PASS; Cloudflare static build
+and deploy5b132b2 PASS (bd062d3b-9d2d-4a91-b875-28971c0609cb). Static scan7HTML/12JS PASS,
+finance JWT/Toss secret absent. Local Turbopack build cannot bind a port in this execution
+sandbox; deployed Cloudflare build passed. Additional workerd rerun unavailable because the
+installed binary supports compatibility dates only through2026-05-03; earlier PREP8-case PASS
+is historical and is not relabeled as a new run.
+
+This phase does not authorize LIVE, public Production review exposure or main merge.
