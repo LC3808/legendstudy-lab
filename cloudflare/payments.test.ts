@@ -81,5 +81,5 @@ describe('PAYMENT-2 deterministic APP contract and provider adapter',()=>{
  it('oversize denied',async()=>expect((await fixture().send('status',{id:'a'.repeat(3000)})).status).toBe(413));
  it('malformed JSON denied',async()=>expect((await fixture().send('status',{},env,{body:'{'})).status).toBe(422));
  it('unknown endpoint denied',async()=>expect((await fixture().send('other',{})).status).toBe(404));
- it('errors sanitized and no logs',async()=>{const f=fixture();f.f.providerFailure=true;const r=await f.confirm();expect(await r.text()).toBe('{"error":"RECONCILIATION_REQUIRED"}');});
+ it('errors sanitized and no logs',async()=>{const f=fixture();f.f.providerFailure=true;const r=await f.confirm();const b=await r.json();expect(b.error).toBe('RECONCILIATION_REQUIRED');expect(b.diagnostic.stage).toBe('provider_lookup');expect(JSON.stringify(b)).not.toContain('SECRET');});
 });

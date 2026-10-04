@@ -87,12 +87,23 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     if (op.operation_state === 'SUCCEEDED') return result(op);
     const key = text(op.payment_key); const cancel = op.state === 'CANCEL_PENDING';
     if (!['AUTHORIZATION_PENDING','CANCEL_PENDING'].includes(String(op.state))) return result(op);
+    let diagnostic: Json = { stage: 'provider_lookup', provider_requests: 0, confirm_sent: false };
     const provider = async (path: string, body?: Json) => {
+      diagnostic = { ...diagnostic, stage: body ? (cancel ? 'provider_cancel' : 'provider_confirm') : 'provider_lookup', provider_requests: Number(diagnostic.provider_requests) + 1, confirm_sent: diagnostic.confirm_sent || path === 'confirm' };
       const r = await call(io, `https://api.tosspayments.com/v1/payments/${path}`, { method: body ? 'POST' : 'GET', headers: { Authorization: `Basic ${btoa(env.TOSS_TEST_SECRET_KEY + ':')}`, 'Content-Type': 'application/json', ...(body ? { 'Idempotency-Key': text(op.provider_idempotency_key) } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
-      if (!r.ok) return fail(503, 'RECONCILIATION_REQUIRED');
+      if (!r.ok) {
+        const error = await read(r, 65536);
+        // Only bounded provider error identifiers, never payload/message/credentials.
+        const code = typeof error.code === 'string' && /^[A-Z][A-Z0-9_]{1,63}$/.test(error.code) ? error.code : 'UNCLASSIFIED';
+        diagnostic = { ...diagnostic, provider_http: r.status, provider_code: code };
+        return fail(503, 'RECONCILIATION_REQUIRED');
+      }
       return read(r, 65536);
     };
-    const verify = (v: Json) => { if (v.paymentKey !== key || v.orderId !== order.order_id || v.mId !== env.TOSS_MID || v.currency !== 'KRW' || v.totalAmount !== order.amount) fail(502, 'PROVIDER_MISMATCH'); };
+    const verify = (v: Json) => {
+      const matches = { payment_key: v.paymentKey === key, order_id: v.orderId === order.order_id, mid: v.mId === env.TOSS_MID, currency: v.currency === 'KRW', amount: v.totalAmount === order.amount };
+      if (Object.values(matches).some(x => !x)) { diagnostic = { ...diagnostic, matches }; fail(502, 'PROVIDER_MISMATCH'); }
+    };
     try {
       // Lookup first: network timeouts/retries never mean definitive rejection.
       let v = await provider(encodeURIComponent(key)); verify(v);
@@ -112,10 +123,11 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
         op = await process({ action: 'confirm_finish', operation_id: op.operation_id, payment_key: key, amount: order.amount, paid_at: v.approvedAt });
       }
       return result(op);
-    } catch {
+    } catch (error) {
+      diagnostic = { ...diagnostic, category: error instanceof Fault ? error.code : 'UPSTREAM_OR_LOCAL_EXCEPTION' };
       // Even a rejected HTTP response may hide a successful prior request. Never release the fence on guesswork.
       try { await process({ action: 'outcome', operation_id: op.operation_id, outcome: 'UNKNOWN' }); } catch { /* durable pending operation is already the recovery anchor */ }
-      return fail(503, 'RECONCILIATION_REQUIRED');
+      return Response.json({ error: 'RECONCILIATION_REQUIRED', diagnostic }, { status: 503, headers });
     }
   } catch (e) {
     const f = e instanceof Fault ? e : new Fault(503, 'RECONCILIATION_REQUIRED');
