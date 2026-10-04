@@ -3,6 +3,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
 const visited=new Set(),root=process.cwd();
+// The hosted gateway must execute Functions, not fall through to static assets (405).
+for (const file of ['public/_routes.json', ...(fs.existsSync('out/_routes.json') ? ['out/_routes.json'] : [])]) {
+ const routes=JSON.parse(fs.readFileSync(file,'utf8'));
+ const matches=(pattern,url)=>new RegExp('^'+pattern.split('*').map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('.*')+'$').test(url);
+ for (const endpoint of ['upload','extract','evaluate']) {
+  const url='/api/math/'+endpoint;
+  if(routes.version!==1 || !routes.include?.some(p=>matches(p,url)) || routes.exclude?.some(p=>matches(p,url))) throw Error('MATH_FUNCTION_ROUTE_MISSING: '+file);
+ }
+}
 function visit(file){
  if(visited.has(file))return;visited.add(file);
  const source=fs.readFileSync(file,'utf8');
