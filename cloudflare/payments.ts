@@ -100,9 +100,12 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
       }
       return read(r, 65536);
     };
+    // Verified in Toss dashboard: this TEST order belongs to leglabn24k,
+    // while its authenticated Payment response uses tleglabn24k. Exact mapping only.
+    const providerMid = env.TOSS_MID === 'leglabn24k' ? 'tleglabn24k' : env.TOSS_MID;
     const verify = (v: Json) => {
-      const matches = { payment_key: v.paymentKey === key, order_id: v.orderId === order.order_id, mid: v.mId === env.TOSS_MID, currency: v.currency === 'KRW', amount: v.totalAmount === order.amount };
-      if (Object.values(matches).some(x => !x)) { diagnostic = { ...diagnostic, matches, provider_mid: typeof v.mId === 'string' && /^[a-zA-Z0-9_-]{1,14}$/.test(v.mId) ? v.mId : 'INVALID', expected_mid: env.TOSS_MID }; fail(502, 'PROVIDER_MISMATCH'); }
+      const matches = { payment_key: v.paymentKey === key, order_id: v.orderId === order.order_id, mid: v.mId === providerMid, currency: v.currency === 'KRW', amount: v.totalAmount === order.amount };
+      if (Object.values(matches).some(x => !x)) { diagnostic = { ...diagnostic, matches, provider_mid: typeof v.mId === 'string' && /^[a-zA-Z0-9_-]{1,14}$/.test(v.mId) ? v.mId : 'INVALID', expected_mid: providerMid }; fail(502, 'PROVIDER_MISMATCH'); }
     };
     try {
       // Lookup first: network timeouts/retries never mean definitive rejection.
