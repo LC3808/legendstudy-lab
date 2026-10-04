@@ -1,3 +1,4 @@
+import { CreditBalance } from '@/components/credit-balance';
 import type { Metadata } from "next";
 
 import { AccountPanel } from "@/components/account-control";
@@ -11,5 +12,5 @@ export const metadata: Metadata = buildPublicMetadata(
 );
 
 export default function AccountPage() {
-  return <div className="auth-page content-wrap"><AccountPanel /></div>;
+  return <div className="auth-page content-wrap"><AccountPanel /><CreditBalance /></div>;
 }

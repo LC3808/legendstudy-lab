@@ -1,8 +1,9 @@
 /** Cloudflare only. APP 3b3b869 payment-v1 is the sole persistence authority. */
 export type Env = {
-  PAYMENT_MODE?: string; PAYMENT_ORIGIN?: string;
+  PAYMENT_MODE?: string; PAYMENT_ENABLED?: string; PAYMENT_ORIGIN?: string;
   PAYMENT_SUPABASE_URL?: string; PAYMENT_SUPABASE_PUBLISHABLE_KEY?: string;
   PAYMENT_FINANCE_TOKEN?: string; PAYMENT_SUPPORT_SUBJECTS?: string;
+  TOSS_LIVE_CLIENT_KEY?: string; TOSS_LIVE_SECRET_KEY?: string;
   TOSS_TEST_CLIENT_KEY?: string; TOSS_TEST_SECRET_KEY?: string; TOSS_MID?: string;
 };
 type Json = Record<string, unknown>;
@@ -23,14 +24,15 @@ function exact(p: Json, keys: string[]) { if (Object.keys(p).some(k => !keys.inc
 function text(v: unknown, max = 200): string { if (typeof v !== 'string' || !v.length || v.length > max) return fail(422, 'INVALID_FIELD'); return v; }
 function id(v: unknown): string { const s = text(v, 36); if (!uuid.test(s)) fail(422, 'INVALID_ID'); return s; }
 function config(e: Env) {
-  if (e.PAYMENT_MODE !== 'TEST' || !/^test_ck_/.test(e.TOSS_TEST_CLIENT_KEY || '') || !/^test_sk_/.test(e.TOSS_TEST_SECRET_KEY || '') || !e.TOSS_MID || !e.PAYMENT_FINANCE_TOKEN || !e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) fail(503, 'PAYMENT_NOT_CONFIGURED');
-  const origin = e.PAYMENT_ORIGIN;
-  if (!origin || !/^https:\/\/[a-z0-9.-]+(?::\d+)?$/.test(origin)) fail(503, 'PAYMENT_NOT_CONFIGURED');
-  // This adapter is authorized only for the dedicated, isolated TEST deployment.
-  // Pin before sending buyer/finance credentials; syntactically valid URLs are insufficient.
-  if (origin !== 'https://legendstudy-lab-payment-test.pages.dev' ||
-      e.PAYMENT_SUPABASE_URL !== 'https://wsnrwklplnunjktyfmbr.supabase.co') fail(503, 'PAYMENT_NOT_CONFIGURED');
-  return origin;
+  const live = e.PAYMENT_MODE === 'LIVE';
+  if (!live && e.PAYMENT_MODE !== 'TEST') fail(503, 'PAYMENT_NOT_CONFIGURED');
+  const clientKey = live ? e.TOSS_LIVE_CLIENT_KEY : e.TOSS_TEST_CLIENT_KEY;
+  const secret = live ? e.TOSS_LIVE_SECRET_KEY : e.TOSS_TEST_SECRET_KEY;
+  if (!(live ? /^live_ck_/ : /^test_ck_/).test(clientKey || '') || !(live ? /^live_sk_/ : /^test_sk_/).test(secret || '') || e.TOSS_MID !== 'leglabn24k' || !e.PAYMENT_FINANCE_TOKEN || !e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) fail(503, 'PAYMENT_NOT_CONFIGURED');
+  const origin = live ? 'https://lab.legendstudy.com' : 'https://legendstudy-lab-payment-test.pages.dev';
+  const db = live ? 'https://stlhijzpjfgwwdgunlsd.supabase.co' : 'https://wsnrwklplnunjktyfmbr.supabase.co';
+  if (e.PAYMENT_ORIGIN !== origin || e.PAYMENT_SUPABASE_URL !== db || !['true','false'].includes(e.PAYMENT_ENABLED || '')) fail(503, 'PAYMENT_NOT_CONFIGURED');
+  return { origin, clientKey, secret, enabled: e.PAYMENT_ENABLED === 'true', mode: e.PAYMENT_MODE! };
 }
 async function call(io: IO, url: string, init: RequestInit): Promise<Response> {
   try {
@@ -39,17 +41,22 @@ async function call(io: IO, url: string, init: RequestInit): Promise<Response> {
     return response;
   } catch { return fail(503, 'RECONCILIATION_REQUIRED'); }
 }
-function safeOrder(o: Json): Json {
-  if (o.dto_version !== 'payment-v1' || o.mode !== 'TEST' || !uuid.test(String(o.id)) || o.order_id !== 'ls_' + String(o.id).replaceAll('-', '') || !Number.isSafeInteger(o.amount) || Number(o.amount) <= 0 || o.currency !== 'KRW' || (o.provider !== undefined && o.provider !== 'TOSS') || !['NONE','TEST_RECORDED','REVOKED'].includes(String(o.grant_state))) fail(502, 'INVALID_ORDER');
+function safeOrder(o: Json, mode: string): Json {
+  if (o.dto_version !== 'payment-v1' || o.mode !== mode || !uuid.test(String(o.id)) || o.order_id !== 'ls_' + String(o.id).replaceAll('-', '') || !Number.isSafeInteger(o.amount) || Number(o.amount) <= 0 || o.currency !== 'KRW' || (o.provider !== undefined && o.provider !== 'TOSS') || !(mode === 'TEST' ? ['NONE','TEST_RECORDED','REVOKED'] : ['NONE','POSTED','REVOKED']).includes(String(o.grant_state))) fail(502, 'INVALID_ORDER');
   const keys = ['dto_version','order_id','id','mode','sku','amount','quantity','currency','state','grant_state','expires_at','paid_at','credit_expires_at'];
   return Object.fromEntries(keys.map(k => [k, o[k]]));
 }
 export async function payment(request: Request, env: Env, io: IO = fetch): Promise<Response> {
   try {
-    const origin = config(env); const url = new URL(request.url);
+    const cfg = config(env); const { origin } = cfg; const url = new URL(request.url);
     if (url.origin !== origin || request.headers.get('origin') !== origin) fail(403, 'ORIGIN_DENIED');
     if (request.method !== 'POST') fail(405, 'METHOD_NOT_ALLOWED');
     if (request.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') fail(415, 'CONTENT_TYPE');
+    const action = url.pathname.replace(/\/$/, '').split('/').pop();
+    if (action === 'runtime') {
+      exact(await read(request, 2048), []);
+      return Response.json({ state: cfg.enabled ? cfg.mode : 'PAUSED', mode: cfg.mode, consumer_purchase: cfg.enabled && cfg.mode === 'LIVE' }, { headers });
+    }
     const bearer = request.headers.get('authorization');
     if (!bearer || !/^Bearer [A-Za-z0-9._-]{10,8192}$/.test(bearer)) fail(401, 'AUTH_REQUIRED');
     const p = await read(request, 2048);
@@ -58,34 +65,38 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
       if (!r.ok) { const status = [401,403,404,409,422].includes(r.status) ? r.status : 503; fail(status, status === 503 ? 'RECONCILIATION_REQUIRED' : 'ORDER_REQUEST_REJECTED'); }
       return read(r, 16384);
     };
-    const action = url.pathname.replace(/\/$/, '').split('/').pop();
     if (action === 'orders') {
+      if (!cfg.enabled) fail(409, 'PAYMENT_PAUSED');
       exact(p, ['sku','request_key']); id(p.request_key);
       if (!['1c','3c','5c','10c'].includes(String(p.sku))) fail(422, 'UNSUPPORTED_SKU');
-      const o = safeOrder(await rpc('payment_order', { action: 'create', ...p }));
-      return Response.json({ order: o, checkout: { clientKey: env.TOSS_TEST_CLIENT_KEY, customerKey: o.id, orderId: o.order_id, orderName: `LegendStudy ${o.quantity} Credits TEST`, amount: { currency: 'KRW', value: o.amount }, successUrl: `${origin}/payments/success/`, failUrl: `${origin}/payments/fail/` } }, { headers });
+      const o = safeOrder(await rpc('payment_order', { action: 'create', ...p }), cfg.mode);
+      if (o.state !== 'ORDER_CREATED' || Date.parse(String(o.expires_at)) <= Date.now()) fail(409, 'ORDER_NOT_CHECKOUT_READY');
+      return Response.json({ order: o, checkout: { clientKey: cfg.clientKey, customerKey: o.id, orderId: o.order_id, orderName: `LegendStudy ${o.quantity} Credits${cfg.mode === 'TEST' ? ' TEST' : ''}`, amount: { currency: 'KRW', value: o.amount }, successUrl: `${origin}/payments/success/`, failUrl: `${origin}/payments/fail/` } }, { headers });
     }
-    const shape: Record<string,string[]> = { status: ['id'], confirm: ['id','request_key','payment_key','amount'], reconcile: ['id'], cancel: ['id','request_key'] };
+    const shape: Record<string,string[]> = { status: ['id'], confirm: ['id','request_key','payment_key','amount'], reconcile: ['id'], cancel: ['id','request_key'], 'support-inspect': ['id','request_key'], 'support-cancel': ['id','request_key'], 'support-reconcile': ['id','request_key'] };
     if (!action || !shape[action]) fail(404, 'NOT_FOUND'); exact(p, shape[action!]); id(p.id);
-    // Buyer JWT goes to APP for fresh ownership/lifecycle checks, including all retries.
-    const order = safeOrder(await rpc('payment_order', { action: 'get', id: p.id }));
-    const result = (o: Json) => Response.json({ order: safeOrder(o) }, { headers });
-    if (action === 'status') return result(order);
-    if (action === 'cancel') {
+    const support = action!.startsWith('support-');
+    let preview: Json | undefined;
+    if (support || action === 'cancel') {
       id(p.request_key);
       const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/auth/v1/user`, { headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: bearer! } });
       if (!r.ok) fail(401, 'AUTH_REQUIRED'); const user = await read(r, 32768);
       if (!(env.PAYMENT_SUPPORT_SUBJECTS || '').split(',').filter(Boolean).includes(String(user.id))) fail(403, 'SUPPORT_REQUIRED');
-      // Test support operator must own the synthetic test order as well. No arbitrary-order authority.
+      if (support) preview = await rpc('payment_support', { action: action!.slice(8).replace('inspect','inspect'), id: p.id, request_key: p.request_key, operator_id: id(user.id) }, true);
     }
+    // Ordinary buyers always pass fresh APP ownership checks. Support passes fresh Auth+allowlist first.
+    const order = safeOrder(preview ? object(preview.order) : await rpc('payment_order', { action: 'get', id: p.id }), cfg.mode);
+    const result = (o: Json) => Response.json({ order: safeOrder(o, cfg.mode) }, { headers });
+    if (action === 'support-inspect') return Response.json({ order, preview: { owner_id: preview!.owner_id, used: preview!.used, remaining: preview!.remaining, reserved: preview!.reserved, refund_amount: preview!.refund_amount, eligible: preview!.eligible, reason: preview!.reason } }, { headers });
+    if (action === 'status') return result(order);
     const process = (body: Json) => rpc('payment_process', { id: p.id, ...body }, true);
     let op: Json;
     if (action === 'confirm') {
       id(p.request_key); text(p.payment_key); if (p.amount !== order.amount) fail(422, 'AMOUNT_MISMATCH');
       op = await process({ action: 'confirm_begin', request_key: p.request_key, payment_key: p.payment_key, amount: order.amount });
-    } else if (action === 'cancel') op = await process({ action: 'cancel_begin', request_key: p.request_key });
+    } else if (action === 'cancel' || action === 'support-cancel') op = await process({ action: 'cancel_begin', request_key: p.request_key });
     else op = await process({ action: 'get' });
-    safeOrder(op);
+    safeOrder(op, cfg.mode);
     if (!op.operation_id) return result(op);
     if (op.operation_state === 'SUCCEEDED') return result(op);
     const key = text(op.payment_key); const cancel = op.state === 'CANCEL_PENDING';
@@ -93,7 +104,7 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     let diagnostic: Json = { stage: 'provider_lookup', provider_requests: 0, confirm_sent: false };
     const provider = async (path: string, body?: Json) => {
       diagnostic = { ...diagnostic, stage: body ? (cancel ? 'provider_cancel' : 'provider_confirm') : 'provider_lookup', provider_requests: Number(diagnostic.provider_requests) + 1, confirm_sent: diagnostic.confirm_sent || path === 'confirm' };
-      const r = await call(io, `https://api.tosspayments.com/v1/payments/${path}`, { method: body ? 'POST' : 'GET', headers: { Authorization: `Basic ${btoa(env.TOSS_TEST_SECRET_KEY + ':')}`, 'Content-Type': 'application/json', ...(body ? { 'Idempotency-Key': text(op.provider_idempotency_key) } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
+      const r = await call(io, `https://api.tosspayments.com/v1/payments/${path}`, { method: body ? 'POST' : 'GET', headers: { Authorization: `Basic ${btoa(cfg.secret + ':')}`, 'Content-Type': 'application/json', ...(body ? { 'Idempotency-Key': text(op.provider_idempotency_key) } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
       if (!r.ok) {
         const error = await read(r, 65536);
         // Only bounded provider error identifiers, never payload/message/credentials.
@@ -105,7 +116,7 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     };
     // Verified in Toss dashboard: this TEST order belongs to leglabn24k,
     // while its authenticated Payment response uses tleglabn24k. Exact mapping only.
-    const providerMid = env.TOSS_MID === 'leglabn24k' ? 'tleglabn24k' : env.TOSS_MID;
+    const providerMid = cfg.mode === 'TEST' && env.TOSS_MID === 'leglabn24k' ? 'tleglabn24k' : env.TOSS_MID;
     const verify = (v: Json) => {
       const matches = { payment_key: v.paymentKey === key, order_id: v.orderId === order.order_id, mid: v.mId === providerMid, currency: v.currency === 'KRW', amount: v.totalAmount === order.amount };
       if (Object.values(matches).some(x => !x)) { diagnostic = { ...diagnostic, matches, provider_mid: typeof v.mId === 'string' && /^[a-zA-Z0-9_-]{1,14}$/.test(v.mId) ? v.mId : 'INVALID', expected_mid: providerMid }; fail(502, 'PROVIDER_MISMATCH'); }
@@ -113,12 +124,14 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     try {
       // Lookup first: network timeouts/retries never mean definitive rejection.
       let v = await provider(encodeURIComponent(key)); verify(v);
+      if (!cancel && ['ABORTED','EXPIRED'].includes(String(v.status))) return result(await process({ action: 'outcome', operation_id: op.operation_id, outcome: 'REJECTED' }));
       if (!cancel && v.status === 'IN_PROGRESS') {
+        if (!cfg.enabled) fail(409, 'PAYMENT_PAUSED');
         v = await provider('confirm', { paymentKey: key, orderId: order.order_id, amount: order.amount }); verify(v);
       }
       if (cancel && v.status === 'DONE') {
         if (Number(op.operation_amount) < Number(order.amount) && v.isPartialCancelable !== true) fail(409, 'PARTIAL_CANCEL_UNSUPPORTED');
-        v = await provider(`${encodeURIComponent(key)}/cancel`, { cancelReason: 'TEST general refund', cancelAmount: op.operation_amount }); verify(v);
+        v = await provider(`${encodeURIComponent(key)}/cancel`, { cancelReason: cfg.mode === 'TEST' ? 'TEST general refund' : 'General refund', cancelAmount: op.operation_amount }); verify(v);
       }
       if (cancel) {
         const cancels = Array.isArray(v.cancels) ? v.cancels as Json[] : [];
@@ -126,6 +139,7 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
         op = await process({ action: 'cancel_finish', operation_id: op.operation_id, payment_key: key, amount: op.operation_amount });
       } else {
         if (v.status !== 'DONE' || typeof v.approvedAt !== 'string' || !Number.isFinite(Date.parse(v.approvedAt)) || v.balanceAmount !== order.amount) fail(503, 'RECONCILIATION_REQUIRED');
+        if (support && preview?.compensation_required === true) return result(await rpc('payment_compensate', { id: p.id, request_key: p.request_key, payment_key: key, amount: order.amount, paid_at: v.approvedAt }, true));
         op = await process({ action: 'confirm_finish', operation_id: op.operation_id, payment_key: key, amount: order.amount, paid_at: v.approvedAt });
       }
       return result(op);
@@ -137,6 +151,6 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     }
   } catch (e) {
     const f = e instanceof Fault ? e : new Fault(503, 'RECONCILIATION_REQUIRED');
-    return Response.json({ error: f.code }, { status: f.status, headers });
+    return Response.json({ error: f.code, ...(f.code === 'PAYMENT_NOT_CONFIGURED' ? { state: 'NOT_READY', consumer_purchase: false } : {}) }, { status: f.status, headers });
   }
 }

@@ -1,8 +1,7 @@
 # PAYMENT-2 — Toss Payments integration handoff
 
-Status: **LAB Phase A implemented / deterministic verified; official documentation/Sandbox provider TEST verified; merchant E2E not run.**
-No deployment, Production DB apply, LIVE call or financial write. Public pricing stays
-PAYMENT_NOT_READY; a separate `/payments/test/` screen is ready for approved TEST configuration.
+Status: **TEST merchant E2E COMPLETE; Production implementation COMPLETE (isolated validation), LIVE activation OFF.**
+Latest authoritative implementation/config/test details are in the final PAYMENT-PRODUCTION-IMPLEMENTATION-1 section. Earlier dated sections preserve history. No Production apply or deployment is authorized.
 
 Canonical candidate reconciled in PAYMENT-E2E-PREP-1: APP
 `3b3b869297a0884bfb908c87977fa14519f72d91`, `20261003000100_payment_foundation.sql`,
@@ -484,3 +483,54 @@ Source comparison with main preserves1/3/5/10 pricing4900/11900/17900/29900;20 e
 Native web-purchased entitlement is the same canonical ledger only; Store compliance remains separately reviewed. No external native checkout CTA or Apple/Google API added. External merchant approval is independent from these code/operations blockers.
 
 Final: preparation artifacts/retests complete; **PAYMENT_PRODUCTION_READINESS BLOCKED**, **READY_FOR_PRODUCTION_ACTIVATION NO**. Migration SQL unchanged; no Production configuration/deploy/migration/financial writes, no TEST/LIVE provider calls, no main merge. Next Owner/ChatGPT reviews internal blockers → completes implementation/reviews → Toss/card approval → separately authorized Production activation. No secrets in this document.
+
+## PAYMENT-PRODUCTION-IMPLEMENTATION-1 — code complete, activation OFF
+
+Supersedes the initial Phase A/current-status wording above. TEST_E2E COMPLETE is the accepted merchant runtime result; this task uses deterministic synthetic transports and disposable PG17 only. No actual Toss call, deployment, Production access/write, main merge or Pricing branch merge.
+
+### Canonical server configuration
+
+| Variable | TEST | LIVE (future separately approved activation) |
+|---|---|---|
+| PAYMENT_MODE | TEST | LIVE |
+| PAYMENT_ENABLED | explicit `true` to purchase; `false` PAUSED | explicit `true` only after Owner activation; `false` PAUSED |
+| PAYMENT_ORIGIN | https://legendstudy-lab-payment-test.pages.dev | https://lab.legendstudy.com |
+| PAYMENT_SUPABASE_URL | https://wsnrwklplnunjktyfmbr.supabase.co | https://stlhijzpjfgwwdgunlsd.supabase.co |
+| PAYMENT_SUPABASE_PUBLISHABLE_KEY | matching TEST project publishable key | matching Production project publishable key |
+| PAYMENT_FINANCE_TOKEN | matching, nonexpired essay_finance credential; Secret | matching Production finance subject/token; Secret |
+| PAYMENT_SUPPORT_SUBJECTS | comma-separated approved support Auth subject UUIDs | approved support Auth UUIDs; empty means no support access |
+| TOSS_TEST_CLIENT_KEY / TOSS_TEST_SECRET_KEY | individual TEST key pair; server secret is Secret | unused, never fallback |
+| TOSS_LIVE_CLIENT_KEY / TOSS_LIVE_SECRET_KEY | unused, never fallback | individual LIVE key pair; server secret is Secret |
+| TOSS_MID | leglabn24k; verified TEST response must equal tleglabn24k | leglabn24k; response must equal leglabn24k |
+
+Cloudflare Pages → **correct project** → Settings → Variables and secrets → intended deployment environment. Existing dedicated TEST project uses its own Production-labeled scope; this is separate from the real Production project. Configuration changes require a new deployment to reach active Functions/build. This task changed neither project. Missing PAYMENT_ENABLED now fails closed: an eventual TEST deployment must explicitly register it. Keys for the other mode are never selected. Never register finance/provider secret with NEXT_PUBLIC prefix. Public browser Auth URL/key must point to the matching project; existing Auth binding guards remain.
+
+Application configuration is not approval: DB payment mode still defaults TEST on migration install. Fresh Owner preflight, exact three-file migration review/apply, finance enrollment/signing/token renewal, DB mode/config approval, and Toss/card approval precede a separately authorized LIVE rollout. No actual LIVE credential is needed for deterministic tests.
+
+### Runtime and client contract
+
+`POST /api/payments/runtime {}` is bounded, same-origin, unauthenticated, no provider/DB call. Returns state TEST/LIVE/PAUSED and consumer_purchase; invalid config returns503 NOT_READY. `src/lib/payment-runtime.ts` maps all errors to NOT_READY. Public pricing consumer enables purchase only for LIVE; TEST never enables the Production consumer CTA. Approved pricing branch remains unchanged/unmerged. No internal-state copy is added to public Pricing.
+
+`/payments/checkout/` is the LIVE-ready checkout client and `/payments/test/` remains explicitly TEST-only. Buttons wait for runtime state; server orders remain authoritative. Server rejects stale/non-created orders before issuing checkout. Callback derives mode from canonical stored order and waits for confirmed grant state. Browser never posts ledger data. Existing `/payments/success/` and `/payments/fail/` are mode-neutral.
+
+`PAYMENT_ENABLED=false` denies new server orders/checkout and prevents provider POST confirm. Lookup-only recovery of existing provider DONE and pending cancellation remains available. A callback may durably bind an unapproved authorization for lookup while paused, but cannot approve it. An authenticated canonical ABORTED/EXPIRED provider result can mark local confirmation rejected; timeout alone remains UNKNOWN. Keep secrets valid during pause; removing/expiring finance credentials blocks recovery until renewal.
+
+### Shared Credit read and support
+
+APP additive `20261004000100_payment_runtime.sql` adds authenticated own `credit_summary()` (credit-v1) and finance-only `payment_support(jsonb)`. Canonical foundation SQL remains unchanged. [APP review package](https://github.com/LC3808/legendstudy-app/blob/codex/payment-production-implementation/supabase/verification/payments/production/README.md).
+
+LAB `/account/` and native APP LAB screen read the same summary. Spendable comes only from nonexpired canonical grants minus reservations, excluding cancellation fences. Paid/signup/other quantities and next expiry are derived, not stored as a wallet. Included reevaluation and failed-evaluation release stay under existing Essay authority. APP invalidates its read after evaluation changes; both clients provide refresh and reject inconsistent DTOs.
+
+`/payments/support/` is a minimal authenticated operational screen, not a self-service refund button. POST support-inspect/support-cancel/support-reconcile take only order UUID+request UUID. Server freshly verifies Supabase Auth and PAYMENT_SUPPORT_SUBJECTS before any cross-owner finance RPC. The DB audit records bounded operator/order/action/request identities, never keys or learning data. Browser only receives safe order + owner UUID/use/refund preview; paymentKey/provider idempotency/finance token are omitted. An inspection request key may be reused for the same semantic request; changed action/order conflicts.
+
+Preview shows owner, state, used count, reserved/remaining and canonical general refund. Actual cancel_begin re-locks account/order and recalculates price-minus-used×4900, refusing expiry, reservations and zero refund. Preview is not the final financial authority. Pending local cancellation never deletes entitlement before provider success. Existing cancel/reconcile protocol performs one durable grant reversal, supports retries and reads provider result first. No raw DB UPDATE in support procedures.
+
+Recovery matrix: (A) provider DONE/local fail → support-reconcile lookup+finish; (B) pending claim/provider failure → lookup, terminal rejection only with canonical ABORTED/EXPIRED, otherwise retained UNKNOWN; (C) provider cancelled/local fail → lookup+cancel_finish, no second cancel; (D) timeout → pending durable operation; (E) duplicate callback → canonical operation uniqueness; (F) expired finance → replace Secret with newly approved matching credential/redeploy, inspect+reconcile same order, never create a replacement purchase merely to recover. Legal/statutory decisions remain separately authorized, not an automatic general refund calculation.
+
+### Verification and limits
+
+Payment PG117 PASS; Essay84+static7 PASS; Humanities/HQP102 PASS; Math131+37+63 PASS. Real canonical evaluation integration: paid5 → initial success4 → included revision4 → new answer3; support preview5c/2used=8100. All4 SKU grant, calendar expiry, duplicate/concurrent confirm/cancel, TEST+0, private ACL, expired-credit exclusion and guarded rollback PASS. Native focused64 PASS+1 opt-in skip; analyze PASS. Full native suite927 PASS/2 skips/5 failures reproduced unchanged baseline8881eee: day6 projection2, day5 badge1, materials journey2. These are unrelated pre-existing failures and were not changed. Overall unqualified regression is FAIL; payment regression PASS.
+
+LAB225 deterministic tests, typecheck/lint/boundary/static export PASS. Real workerd verifies8 redirect cases plus TEST/LIVE actual handler runtime/order/recovery with all outbound intercepted. See `PAYMENT_PRODUCTION_IMPLEMENTATION_VALIDATION.json` for final receipts and static scan. No runtime LIVE PASS claim. Internal requested payment code blockers closed; external activation gates remain. Finance token renewal requires a valid replacement credential and deployment; tokens are never minted by browser/support UI.
+
+Restricted-account exception closure: fresh authorized support inspection can flag compensation_required for a LIVE pending confirmation whose subject was restricted/detached. After validating Toss DONE+unchanged full balance, support-reconcile calls finance-only payment_compensate. It binds the already approved payment and creates a durable full-refund claim with zero credit revocation, never a grant. The next support-reconcile executes/recovers the existing cancellation. Active accounts cannot enter this path; retries share the claim and preserve history. This is a no-service-delivered full refund, not an automated statutory/age rule. Existing aggregate mismatch monitor retains these no-grant LIVE rows for operator review; completed compensation must be distinguished from an orphan purchase.
