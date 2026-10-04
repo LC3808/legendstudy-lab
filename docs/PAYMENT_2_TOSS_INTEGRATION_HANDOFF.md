@@ -370,7 +370,10 @@ final reconciliation200/CANCELLED/REVOKED. Successful cancel path verifies provi
 status, one DONE cancellation4900 and balanceAmount0 before local finalization. Independent
 Toss dashboard shows the same replacement order cancelled; LAB result refresh shows CANCELLED.
 SQL confirms exactly one successful CONFIRM and one successful CANCEL operation for replacement.
-Foreign-owner runtime check is pending existing gateway Auth login (no new signup).
+Foreign-owner runtime PASS: existing synthetic gateway logged in through normal Supabase Auth;
+status/confirm/cancel against the buyer-owned order each returned404 ORDER_REQUEST_REJECTED,
+no order data disclosed. No new signup or fabricated user token.
+PAYMENT_E2E_TOSS_TEST: COMPLETE. READY_FOR_PAYMENT_NEXT_GATE: YES (Owner review only).
 
 Final ledger query: payment-attributable spendable delta0, purchase grants0, order-grant links0,
 payment-linked postings0, LIVE orders/grants0, unexplained/unclassified delta/postings0.
