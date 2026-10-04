@@ -88,6 +88,44 @@ if (fs.existsSync(supportPage)) {
   }
 }
 
+// /pricing/ is a consumer shopping page. The internal build state, the release
+// roadmap, the excluded 20 Credit pack and the duplicated sales-information box
+// were removed from it; a later edit must not quietly bring them back.
+const pricingPage = path.join(appRoot, "pricing", "page.tsx");
+const removedPricingCopy = [
+  "서비스 준비 중",
+  "출시 시 제공",
+  "1차 출시",
+  "20 Credits",
+  "CORE",
+  "확정된 출시 일정",
+  "판매 환경 변경",
+  "관할 행정기관",
+  "결제 기능을 준비",
+  "결제가 열리면",
+];
+if (fs.existsSync(pricingPage)) {
+  const source = fs.readFileSync(pricingPage, "utf8");
+  for (const phrase of removedPricingCopy) {
+    if (source.includes(phrase)) {
+      errors.push(`removed pricing copy returned: ${phrase}`);
+    }
+  }
+  // The page must not narrate the release state of the service or of payment.
+  if (/ReleaseStatusLabel|ReleaseNotice/.test(source)) {
+    errors.push("pricing page renders a release-state component");
+  }
+  if (/serviceAvailability/.test(source)) {
+    errors.push("pricing page renders internal service availability state");
+  }
+  // Product, price and validity are stated once; the duplicated box is gone.
+  for (const term of ["판매 상품", "판매 가격"]) {
+    if (new RegExp(`<dt>\\s*${term}\\s*</dt>`).test(source)) {
+      errors.push(`duplicated sales information returned on /pricing/: ${term}`);
+    }
+  }
+}
+
 // Consumer-facing routes and the legal documents must never carry internal
 // build or review vocabulary. Test files are excluded: they assert that these
 // tokens are absent, so they have to name them.
