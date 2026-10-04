@@ -1002,3 +1002,44 @@ h1, h2, h3 { text-wrap: pretty; }
 /* 사업자정보 closes the page: compact labels, not a display heading. */
 .pricing-business { margin-top: 2.2rem; }
 .pricing-business h2 { font-size: var(--type-h3); font-weight: 700; }
+/* ==========================================================================
+   PRICING-UX-CLEANUP-1B — hierarchy before the Production merge
+   The 신규 가입 banner drops below the price table in visual weight, the coupon
+   section becomes a compact secondary block, and 사업자정보 reads as a small
+   legal block instead of a page section.
+   ========================================================================== */
+.pricing-page .pricing-free {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.35rem 0.6rem;
+  margin-top: 1.3rem; padding: 0.75rem 1rem;
+  border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm); background: var(--surface-muted);
+}
+.pricing-page .pricing-free h2 {
+  margin: 0; font-family: var(--font-ui); font-size: var(--type-body);
+  font-weight: 800; letter-spacing: 0; color: var(--ink-body);
+}
+
+.pricing-page .pricing-promo-section { margin-top: 1.9rem; padding-top: 1.5rem; }
+.pricing-page .pricing-promo-section h2 { font-size: 1.15rem; }
+.pricing-page .pricing-promo { gap: 0.6rem; margin-top: 0.9rem; }
+.pricing-page .pricing-promo__lead { font-size: var(--type-small); line-height: 1.65; }
+.pricing-page .pricing-promo__form { max-width: 22rem; gap: 0.45rem; }
+.pricing-page .pricing-promo__form label { font-size: 0.76rem; }
+.pricing-page .pricing-promo__row { gap: 0.45rem; }
+.pricing-page .pricing-promo__row input { min-height: 2.5rem; padding: 0.55rem 0.7rem; font-size: var(--type-body); }
+.pricing-page .pricing-promo__row .button { min-height: 2.5rem; padding: 0.6rem 0.9rem; font-size: 0.82rem; }
+.pricing-page .pricing-promo__note { font-size: 0.76rem; line-height: 1.55; }
+
+.pricing-page .pricing-business { margin-top: 1.9rem; padding-top: 1.5rem; }
+.pricing-page .pricing-business h2 {
+  font-family: var(--font-ui); font-size: 0.95rem; font-weight: 800;
+  letter-spacing: 0.02em; color: var(--ink-muted);
+}
+
+/* The pricing page publishes the seller identity in its own 사업자정보 block
+   directly above the footer, so the global footer would repeat the same five
+   rows on this one route. The rule is scoped with :has() to /pricing/ alone:
+   every other public page keeps the footer block exactly as it is. The body
+   block is guarded in scripts/verify-boundaries.mjs so the information cannot
+   leave the page by accident. */
+.site-shell:has(.pricing-page) .site-footer .business-info { display: none; }

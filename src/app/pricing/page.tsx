@@ -73,14 +73,6 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="policy-section" aria-labelledby="pricing-promo-title">
-        <h2 id="pricing-promo-title">{promotionCopy.title}</h2>
-        <div className="pricing-promo">
-          <p className="pricing-promo__lead">{promotionCopy.lead}</p>
-          <PricingPromoForm />
-        </div>
-      </section>
-
       <section className="policy-section" aria-labelledby="pricing-credit-title">
         <h2 id="pricing-credit-title">1 Credit 이용 범위</h2>
         <div className="pricing-facts">
@@ -178,6 +170,14 @@ export default function PricingPage() {
             <dd>{refundPolicy.usedCreditRule}</dd>
           </div>
         </dl>
+      </section>
+
+      <section className="policy-section pricing-promo-section" aria-labelledby="pricing-promo-title">
+        <h2 id="pricing-promo-title">{promotionCopy.title}</h2>
+        <div className="pricing-promo">
+          <p className="pricing-promo__lead">{promotionCopy.lead}</p>
+          <PricingPromoForm />
+        </div>
       </section>
 
       <section className="policy-section" aria-labelledby="pricing-refund-title" id="refund-policy">

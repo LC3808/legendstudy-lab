@@ -124,6 +124,11 @@ if (fs.existsSync(pricingPage)) {
       errors.push(`duplicated sales information returned on /pricing/: ${term}`);
     }
   }
+  // globals.css hides the footer seller block on this one route, so the page
+  // must keep publishing the seller identity in its own 사업자정보 block.
+  if (!/<BusinessInfoList/.test(source)) {
+    errors.push("pricing page must render the seller identity in its own block");
+  }
 }
 
 // Consumer-facing routes and the legal documents must never carry internal
