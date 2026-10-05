@@ -22,7 +22,11 @@ export function serverTransport(env: MathEnvironment) {
   async function subject(token: string) {
     let response: Response;
     try { response = await request("/auth/v1/user", token); }
-    catch { console.warn("MATH_AUTH_FAILURE", { stage: "transport" }); throw Error("LOGIN_REQUIRED"); }
+    catch (error) {
+      const message = error instanceof Error ? error.message.toLowerCase() : "";
+      const reason = message.includes("redirect") ? "REDIRECT_MODE" : message.includes("abortsignal") || message.includes("timeout is not") ? "TIMEOUT_API" : message.includes("header") ? "HEADER_CONSTRUCTION" : message.includes("url") ? "URL_CONSTRUCTION" : message.includes("invocation") ? "FETCH_INVOCATION" : message.includes("fetch") ? "FETCH_FAILED" : "OTHER";
+      console.warn("MATH_AUTH_FAILURE", { stage: "transport", reason, type: error instanceof TypeError ? "TypeError" : "Error" }); throw Error("LOGIN_REQUIRED");
+    }
     if (!response.ok) { console.warn("MATH_AUTH_FAILURE", { stage: "response", status: response.status }); throw Error("LOGIN_REQUIRED"); } const body = await response.json() as { id?: string };
     if (!body.id || !/^[0-9a-f-]{36}$/i.test(body.id)) { console.warn("MATH_AUTH_FAILURE", { stage: "identity" }); throw Error("LOGIN_REQUIRED"); }
     // Hosted activation is synthetic-only until a separately approved public release.
