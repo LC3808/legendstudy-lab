@@ -168,7 +168,9 @@ describe("privacy document", () => {
     for (const processor of ["Supabase", "Cloudflare", "Google Workspace", "Resend", "Apple", "Kakao"]) {
       expect(privacy).toContain(processor);
     }
-    expect(privacy).toContain("논술 답안과 첨삭 결과, 성적, 학교·학년 정보도 서버에 저장하지 않습니다");
+    expect(privacy).toContain("서비스 제공을 위해 회사의 서버에 저장됩니다");
+    expect(privacy).toContain("적절히 비식별화하여 활용될 수 있습니다");
+    expect(privacy).not.toContain("성적, 학교·학년 정보도 서버에 저장하지 않습니다");
     expect(privacy).toContain("생년월일, 주민등록번호, 학생부나 공식 성적표, 보호자 정보를 수집하지 않습니다");
   });
 
