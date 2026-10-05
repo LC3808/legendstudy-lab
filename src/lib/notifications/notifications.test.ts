@@ -104,6 +104,7 @@ describe("notification routing", () => {
 
   it("labels the P0 types", () => {
     expect(notificationTypeLabel("credit_expiry")).toBe("Credit 만료");
+    expect(notificationTypeLabel("low_credit_notification")).toBe("Credit 부족");
     expect(notificationTypeLabel("something_new")).toBe("안내");
   });
 });

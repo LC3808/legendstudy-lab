@@ -35,8 +35,8 @@ export function notificationTypeLabel(type: string): string {
       return "결제";
     case "credit_grant":
       return "Credit 지급";
-    case "credit_balance_reminder":
-      return "Credit 잔액";
+    case "low_credit_notification":
+      return "Credit 부족";
     case "credit_expiry":
       return "Credit 만료";
     case "payment_refund":
