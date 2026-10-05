@@ -20,15 +20,17 @@ export function serverTransport(env: MathEnvironment) {
   }
   const rpc = (token: string): MathRpcTransport => ({ rpc: (fn, p_request) => rpcRaw(fn, { p_request }, token) });
   async function subject(token: string) {
-    const response = await request("/auth/v1/user", token);
-    if (!response.ok) throw Error("LOGIN_REQUIRED"); const body = await response.json() as { id?: string };
-    if (!body.id || !/^[0-9a-f-]{36}$/i.test(body.id)) throw Error("LOGIN_REQUIRED");
+    let response: Response;
+    try { response = await request("/auth/v1/user", token); }
+    catch { console.warn("MATH_AUTH_FAILURE", { stage: "transport" }); throw Error("LOGIN_REQUIRED"); }
+    if (!response.ok) { console.warn("MATH_AUTH_FAILURE", { stage: "response", status: response.status }); throw Error("LOGIN_REQUIRED"); } const body = await response.json() as { id?: string };
+    if (!body.id || !/^[0-9a-f-]{36}$/i.test(body.id)) { console.warn("MATH_AUTH_FAILURE", { stage: "identity" }); throw Error("LOGIN_REQUIRED"); }
     // Hosted activation is synthetic-only until a separately approved public release.
     // Match the identity verified by Auth, never a client-supplied/decoded JWT subject.
     const allowed = (env.MATH_ALLOWED_SUBJECTS ?? "").split(",").map(value => value.trim());
     const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!allowed.length || allowed.length > 10 || allowed.some(value => !uuid.test(value)) ||
-      !allowed.some(value => value.toLowerCase() === body.id!.toLowerCase())) throw Error("ACCESS_DENIED");
+      !allowed.some(value => value.toLowerCase() === body.id!.toLowerCase())) { console.warn("MATH_AUTH_FAILURE", { stage: "allowlist" }); throw Error("ACCESS_DENIED"); }
     return body.id;
   }
   return { request, rpcRaw, rpc, subject };
