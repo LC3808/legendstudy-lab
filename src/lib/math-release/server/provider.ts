@@ -13,7 +13,17 @@ export async function candidateJson(config: CandidateConfig, instructions: strin
       text: { format: { type: "json_object" } }, instructions,
       input: content }),
   });
-  if (!response.ok) throw Error("PROVIDER_UNAVAILABLE");
+  if (!response.ok) {
+    // Only bounded, known provider codes; never log response text or credentials.
+    let code = "unknown";
+    try {
+      const body = JSON.parse(new TextDecoder().decode(await boundedBody(response, 16384)));
+      const allowed = ["model_not_found", "invalid_api_key", "insufficient_quota", "rate_limit_exceeded", "unsupported_parameter", "invalid_value"];
+      if (allowed.includes(body?.error?.code)) code = body.error.code;
+    } catch { /* opaque upstream errors remain sanitized */ }
+    console.warn("MATH_PROVIDER_FAILURE", { status: response.status, code });
+    throw Error("PROVIDER_UNAVAILABLE");
+  }
   const raw = new TextDecoder().decode(await boundedBody(response, 1500000));
   const data = JSON.parse(raw);
   if (data.status !== "completed" || !Array.isArray(data.output)) throw Error("INVALID_OUTPUT");
