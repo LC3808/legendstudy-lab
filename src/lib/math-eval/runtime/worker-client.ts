@@ -102,6 +102,8 @@ export async function runWorkerEvaluation(params: {
   try { validation = validateMathEval(candidate.output, claimContextToInput(claim)); }
   catch { validation = { ok: false, issues: [] }; }
   if (!validation.ok) {
+    // Sanitized diagnostics: issue codes only, never student content.
+    console.warn("MATH_VALIDATION_FAILED", { codes: validation.issues.map((i) => i.code).slice(0, 20) });
     await params.worker.fail(params.evaluationId, claim.lease_token, "INVALID_OUTPUT");
     return { finalized: false, validation, evaluationId: null, failed: true };
   }
@@ -111,7 +113,9 @@ export async function runWorkerEvaluation(params: {
   let finalOutput: unknown = candidate.output;
   if ("reasoning_required" in claim.context.profile) {
     try { finalOutput = physicalFinalize(candidate.output, claimContextToInput(claim)); }
-    catch {
+    catch (error) {
+      // Sanitized diagnostics: bounded error message only, never student content.
+      console.warn("MATH_PHYSICAL_FAILED", { reason: String(error instanceof Error ? error.message : "unknown").slice(0, 60) });
       await params.worker.fail(params.evaluationId, claim.lease_token, "INVALID_OUTPUT");
       return { finalized: false, validation: { ok: false, issues: [] }, evaluationId: null, failed: true };
     }
