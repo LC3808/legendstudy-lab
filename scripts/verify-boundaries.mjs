@@ -207,6 +207,62 @@ for (const relative of [
   }
 }
 
+// The operations console (/admin/) is an internal surface. It must stay
+// unindexed, unreachable from the public route table, and read-only: every read
+// goes through the deployed operator-gated RPCs, never a direct table query and
+// never a privileged key.
+const adminRoutes = ["admin/page.tsx", "admin/members/page.tsx", "admin/credit/page.tsx"];
+for (const relative of adminRoutes) {
+  const file = path.join(appRoot, relative);
+  if (!fs.existsSync(file)) {
+    errors.push(`operations console route missing: src/app/${relative}`);
+    continue;
+  }
+  const source = fs.readFileSync(file, "utf8");
+  if (!/robots:\s*\{\s*index:\s*false,\s*follow:\s*false\s*\}/.test(source)) {
+    errors.push(`operations console route must be noindex: src/app/${relative}`);
+  }
+}
+
+const releaseRoutes = fs.readFileSync(path.join(sourceRoot, "lib", "release-routes.ts"), "utf8");
+/** Body of one exported array literal, so the checks stay scoped to that list. */
+function routeArrayBody(name) {
+  const match = releaseRoutes.match(new RegExp(`${name}\\s*=\\s*\\[([\\s\\S]*?)\\]`));
+  return match ? match[1] : "";
+}
+const adminRoutePattern = /["'`]\/admin/;
+if (!adminRoutePattern.test(routeArrayBody("internalFoundationPathPrefixes"))) {
+  errors.push("operations console must stay in the internal route prefixes");
+}
+for (const list of ["publicReleaseRoutes", "indexablePublicPaths", "policyRoutes"]) {
+  if (adminRoutePattern.test(routeArrayBody(list))) {
+    errors.push(`operations console must not be a public or indexable route (${list})`);
+  }
+}
+if (/ADMIN_NAV|admin-nav/.test(releaseRoutes)) {
+  errors.push("operations console must not be linked from the public navigation");
+}
+
+const adminFiles = files.filter((file) => /[\\/]src[\\/](lib|components)[\\/]admin[\\/]/.test(file));
+if (adminFiles.length === 0) errors.push("operations console client modules are missing");
+for (const file of adminFiles) {
+  if (/\.test\.tsx?$/.test(file)) continue;
+  const source = fs.readFileSync(file, "utf8");
+  const relative = path.relative(root, file);
+  // No direct table access: the console only ever calls the gated functions.
+  if (/\.from\(\s*["'`]/.test(source)) {
+    errors.push(`operations console reads a table directly instead of the gated RPC: ${relative}`);
+  }
+  // No write verb of any kind.
+  if (/\.(insert|update|upsert|delete)\(/.test(source)) {
+    errors.push(`operations console contains a write call: ${relative}`);
+  }
+  // No privileged or finance credential reference.
+  if (/service_role|SERVICE_ROLE|essay_finance|essay_executor|admin_users/.test(source)) {
+    errors.push(`operations console references a privileged token or operations table: ${relative}`);
+  }
+}
+
 if (errors.length) {
   console.error("BOUNDARY_AUDIT=FAIL");
   for (const error of errors) console.error(`- ${error}`);

@@ -20,6 +20,7 @@
 | `/account-deletion/` | Account deletion URL foundation | No deletion intake or API |
 | `/login/`, `/signup/`, `/forgot-password/`, `/reset-password/` | LegendStudy Account browser-auth routes | `noindex`; LAB Production E2E verified |
 | `/account/` | Session-aware account connection state | `noindex`; does not read or write personal LAB data |
+| `/admin/`, `/admin/members/`, `/admin/credit/` | Operations console: dashboard, member lookup, Credit read | `noindex` and disallowed; operator-gated by `admin_operator()`; read-only (ADMIN-P0-A) |
 
 Earlier catalog, synthetic writing, mock evaluation, login, My, and score-analysis routes remain private development foundations. They are absent from public navigation and must not be represented as live services.
 

@@ -31,6 +31,9 @@ export const internalFoundationPathPrefixes = [
   "/forgot-password",
   "/reset-password",
   "/account",
+  // Operations console. Internal-only: never linked publicly, never indexed and
+  // disallowed in robots.txt. Authorization is the database gate, not obscurity.
+  "/admin",
 ] as const;
 
 export const publicReleasePaths = publicReleaseRoutes.map((route) => route.href);
