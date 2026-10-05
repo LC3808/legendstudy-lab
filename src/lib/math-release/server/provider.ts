@@ -11,17 +11,23 @@ export async function candidateJson(config: CandidateConfig, instructions: strin
     headers: { Authorization: `Bearer ${config.key}`, "Content-Type": "application/json" },
     body: JSON.stringify({ model: config.model, store: false, max_output_tokens: 12000,
       text: { format: { type: "json_object" } }, instructions,
-      input: content }),
+      input: [{ role: "developer", content: instructions }, ...(Array.isArray(content) ? content : [{ role: "user", content: typeof content === "string" ? content : JSON.stringify(content) }])] }),
   });
   if (!response.ok) {
     // Only bounded, known provider codes; never log response text or credentials.
-    let code = "unknown";
+    let code = "unknown", reason = "unknown";
     try {
       const body = JSON.parse(new TextDecoder().decode(await boundedBody(response, 16384)));
       const allowed = ["model_not_found", "invalid_api_key", "insufficient_quota", "rate_limit_exceeded", "unsupported_parameter", "invalid_value"];
       if (allowed.includes(body?.error?.code)) code = body.error.code;
+      const message = typeof body?.error?.message === "string" ? body.error.message : "";
+      if (/json/i.test(message)) reason = "json_format";
+      else if (/verif/i.test(message)) reason = "verification_required";
+      else if (/model/i.test(message)) reason = "model_configuration";
+      else if (/image/i.test(message)) reason = "image_input";
+      else if (/parameter/i.test(message)) reason = "parameter";
     } catch { /* opaque upstream errors remain sanitized */ }
-    console.warn("MATH_PROVIDER_FAILURE", { status: response.status, code });
+    console.warn("MATH_PROVIDER_FAILURE", { status: response.status, code, reason });
     throw Error("PROVIDER_UNAVAILABLE");
   }
   const raw = new TextDecoder().decode(await boundedBody(response, 1500000));

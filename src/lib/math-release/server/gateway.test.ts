@@ -36,7 +36,7 @@ describe("gateway privilege and provider boundary",()=>{
  it("provider refuses incomplete output and never exposes raw failure",async()=>{
   const fetcher=vi.fn(async(_url: string | URL | Request, _init?: RequestInit)=>{void _url;void _init;return Response.json({status:"incomplete",output:[]});});
   await expect(candidateJson({enabled:true,model:"synthetic",key:"synthetic-not-a-key",fetcher},"JSON",{})).rejects.toThrow("INVALID_OUTPUT");
-  const sent=JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body));expect(sent.store).toBe(false);
+  const sent=JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body));expect(sent.input[0]).toEqual({role:"developer",content:"JSON"});expect(sent.store).toBe(false);
  });
  it("file signatures reject MIME spoofing",()=>{
   expect(mediaSignature(new TextEncoder().encode("<script>"),"image/png")).toBe(false);
