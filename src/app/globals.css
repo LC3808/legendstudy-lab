@@ -1156,3 +1156,287 @@ h1, h2, h3 { text-wrap: pretty; }
   .admin-nav__list li { min-width: 0; }
   .admin-nav__link { white-space: nowrap; }
 }
+
+/* ==========================================================================
+   ADMIN-P0-B — payment read, 1:1 inquiry and Credit grant.
+   The console is an internal surface; these rules reuse the ADMIN-P0-A tokens
+   and never introduce a new palette.
+   ========================================================================== */
+.admin-search__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.75rem;
+}
+.admin-search__hint {
+  margin: 0.5rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+.admin-tag {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.admin-tag--normal {
+  background: var(--accent-soft, rgba(37, 99, 235, 0.12));
+  color: var(--ink-strong);
+}
+.admin-tag--pending {
+  background: rgba(180, 120, 20, 0.14);
+  color: var(--ink-strong);
+}
+.admin-tag--danger {
+  background: rgba(180, 40, 40, 0.14);
+  color: var(--ink-strong);
+}
+.admin-orders,
+.admin-inquiries,
+.admin-replies,
+.inquiry-list {
+  display: grid;
+  gap: 1rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.admin-order,
+.admin-inquiry,
+.admin-reply,
+.inquiry-list__item {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line, rgba(23, 43, 69, 0.14));
+  border-radius: 12px;
+  background: var(--surface, #fff);
+}
+.admin-order__head,
+.admin-inquiry__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.admin-order__id {
+  margin: 0;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+.admin-inquiry__title {
+  margin: 0;
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+.admin-order__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.5rem 1rem;
+  margin: 0.85rem 0 0;
+}
+.admin-order__facts div {
+  min-width: 0;
+}
+.admin-order__facts dt {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+.admin-order__facts dd {
+  margin: 0.15rem 0 0;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+.admin-order__flag {
+  margin: 0.85rem 0 0;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(180, 120, 20, 0.14);
+  font-size: 0.9rem;
+}
+.admin-inquiry__meta,
+.admin-reply__meta {
+  margin: 0.35rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+.admin-inquiry__preview {
+  margin: 0.6rem 0 0.9rem;
+  color: var(--ink-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.admin-inquiry__detail {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line, rgba(23, 43, 69, 0.14));
+}
+.admin-inquiry__body h3,
+.admin-inquiry__thread h3,
+.admin-grant h3 {
+  margin: 1.25rem 0 0.4rem;
+  font-size: 1.02rem;
+}
+.admin-prose {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+.admin-reply {
+  background: var(--surface-soft, rgba(23, 43, 69, 0.03));
+}
+.admin-reply-form,
+.admin-grant {
+  margin-top: 1.25rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line, rgba(23, 43, 69, 0.14));
+  border-radius: 12px;
+}
+.admin-reply-form__input {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  resize: vertical;
+  font: inherit;
+}
+.admin-reply-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0.75rem 0 0;
+}
+.admin-grant__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.75rem 1rem;
+  margin: 0.75rem 0 1rem;
+}
+.admin-grant__field {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+.admin-grant__field label,
+.admin-reply-form label {
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+}
+.admin-grant__field input,
+.admin-grant__field select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line, rgba(23, 43, 69, 0.18));
+  border-radius: 8px;
+  font: inherit;
+  background: #fff;
+}
+.admin-notice {
+  margin: 0 0 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  background: var(--accent-soft, rgba(37, 99, 235, 0.12));
+  font-size: 0.92rem;
+}
+.admin-error--inline {
+  margin: 0 0 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(180, 40, 40, 0.12);
+  font-size: 0.92rem;
+}
+.admin-muted {
+  margin: 0.75rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+/* Member-facing 1:1 문의 */
+.inquiry {
+  display: grid;
+  gap: 2rem;
+}
+.inquiry-form {
+  display: grid;
+  gap: 1rem;
+}
+.inquiry-form__field {
+  display: grid;
+  gap: 0.35rem;
+}
+.inquiry-form__field label {
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+.inquiry-form__field input,
+.inquiry-form__field select,
+.inquiry-form__field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--line, rgba(23, 43, 69, 0.18));
+  border-radius: 10px;
+  font: inherit;
+  background: #fff;
+  resize: vertical;
+}
+.inquiry-form__hint,
+.inquiry-state__note,
+.inquiry-list__note {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+.inquiry-notice,
+.inquiry-error {
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.94rem;
+}
+.inquiry-notice {
+  background: var(--accent-soft, rgba(37, 99, 235, 0.12));
+}
+.inquiry-error {
+  background: rgba(180, 40, 40, 0.12);
+}
+.inquiry-state {
+  display: grid;
+  gap: 0.6rem;
+  justify-items: start;
+}
+.inquiry-history h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+}
+.inquiry-list__title {
+  margin: 0;
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+.inquiry-list__meta {
+  margin: 0.35rem 0 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+/* Long tokens (request keys, UUIDs, mailboxes) must wrap rather than widen the
+   page at 320px with 200% text scaling. */
+.admin-order__id,
+.admin-order__facts dd,
+.admin-prose,
+.admin-inquiry__meta,
+.admin-reply__meta,
+.inquiry-list__meta,
+.inquiry-state__note,
+.inquiry-form__hint {
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}

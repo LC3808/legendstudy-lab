@@ -7,20 +7,23 @@ import { ADMIN_MIN_QUERY } from "@/lib/admin/client";
 import { accountStateLabel, creditOriginLabel, formatCredit, formatNumber } from "@/lib/admin/format";
 
 import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
+import { AdminCreditGrantForm } from "./admin-credit-grant-form";
 import { AdminMemberCreditPanel } from "./admin-member-credit-panel";
 
 /**
  * Credit overview.
  *
- * ADMIN-P0-A is read-only, so this module shows the aggregate Credit picture and
- * routes an operator to one member's grant and transaction history. The grant
- * control itself belongs to ADMIN-P0-B and is intentionally absent.
+ * Shows the aggregate Credit picture and routes an operator to one member's
+ * grant and transaction history. Issuing Credit is a finance action, so the
+ * control posts to the server boundary rather than to the database directly.
  */
 export function AdminCreditView() {
   const [input, setInput] = useState("");
   const [submitted, setSubmitted] = useState<string | null>(null);
   const [accountId, setAccountId] = useState<string | null>(null);
   const [hint, setHint] = useState<string | null>(null);
+  // Re-mounts the member panel after a grant so the ledger shown is the new one.
+  const [creditNonce, setCreditNonce] = useState(0);
 
   const summary = useAdminQuery<AdminDashboard>((client) => client.dashboard(), "credit-overview");
   const lookup = useAdminQuery<AdminSearchPage>(
@@ -153,9 +156,17 @@ export function AdminCreditView() {
       </section>
 
       {accountId ? (
-        <section className="admin-section">
-          <AdminMemberCreditPanel accountId={accountId} />
-        </section>
+        <>
+          <section className="admin-section">
+            <AdminMemberCreditPanel key={creditNonce} accountId={accountId} />
+          </section>
+          <section className="admin-section">
+            <AdminCreditGrantForm
+              accountId={accountId}
+              onGranted={() => setCreditNonce((value) => value + 1)}
+            />
+          </section>
+        </>
       ) : null}
     </div>
   );

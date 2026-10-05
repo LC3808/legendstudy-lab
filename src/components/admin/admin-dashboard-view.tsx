@@ -8,7 +8,8 @@ import {
   gradeLabel,
   schoolCodeLabel,
 } from "@/lib/admin/format";
-import type { AdminDashboard } from "@/lib/admin/contract";
+import type { AdminDashboard, AdminSupportMetrics } from "@/lib/admin/contract";
+import { formatDateTime, formatDuration } from "@/lib/admin/format";
 
 import { AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
 
@@ -57,6 +58,44 @@ function Bars({ rows }: { rows: { label: string; count: number }[] }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+function SupportSection() {
+  const { state, reload } = useAdminQuery<AdminSupportMetrics>(
+    (client) => client.supportMetrics(),
+    "support-metrics",
+  );
+  if (state.status === "loading") return <AdminLoading label="고객지원 현황을 불러오는 중입니다" />;
+  if (state.status === "error") return <AdminErrorPanel kind={state.kind} onRetry={reload} />;
+  const data = state.data;
+  return (
+    <Section title="고객지원" note="1:1 문의 접수와 답변 발송 상태입니다.">
+      <div className="admin-metrics">
+        <Metric label="미처리" value={formatNumber(data.open)} note="접수 및 처리 중" />
+        <Metric label="오늘 접수" value={formatNumber(data.newToday)} />
+        <Metric label="처리 중" value={formatNumber(data.inProgress)} />
+        <Metric label="답변 완료" value={formatNumber(data.answered)} />
+        <Metric label="종결" value={formatNumber(data.closed)} />
+        <Metric
+          label="첫 응답까지"
+          value={formatDuration(data.firstResponseSeconds)}
+          note="답변 완료 문의 평균"
+        />
+        <Metric
+          label="발송 실패"
+          value={formatNumber(data.failedDeliveries)}
+          note="재발송 대기 포함"
+        />
+      </div>
+      {data.oldestOpenId ? (
+        <p className="admin-muted">
+          가장 오래된 미처리 문의: {formatDateTime(data.oldestOpenAt)}
+        </p>
+      ) : (
+        <p className="admin-muted">미처리 문의가 없습니다.</p>
+      )}
+    </Section>
   );
 }
 
@@ -167,6 +206,7 @@ export function AdminDashboardView() {
           결제가 열리기 전에는 매출 지표를 표시하지 않습니다. 위 값은 실제 주문 건수입니다.
         </p>
       </Section>
+      <SupportSection />
     </div>
   );
 }

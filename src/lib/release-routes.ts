@@ -18,6 +18,7 @@ export const policyRoutes = [
   { href: "/terms/", label: "이용약관" },
   { href: "/refund/", label: "환불정책" },
   { href: "/support/", label: "고객센터" },
+  { href: "/support/inquiry/", label: "1:1 문의" },
   { href: "/account-deletion/", label: "계정 삭제 안내" },
 ] as const;
 
@@ -50,4 +51,5 @@ export const indexablePublicPaths = [
   "/privacy/",
   "/refund/",
   "/support/",
+  "/support/inquiry/",
 ] as const;

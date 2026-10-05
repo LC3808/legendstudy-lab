@@ -30,6 +30,11 @@ export default function SupportPage() {
       </p>
 
       <ContactList />
+      <div className="policy-actions">
+        <Link className="button button--accent" href="/support/inquiry/">
+          1:1 문의하기
+        </Link>
+      </div>
 
       <section className="policy-section" aria-labelledby="support-refund-rules">
         <h2 id="support-refund-rules">환불 규정</h2>

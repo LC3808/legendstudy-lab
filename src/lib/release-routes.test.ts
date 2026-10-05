@@ -17,6 +17,7 @@ describe("release routes", () => {
       "/terms/",
       "/refund/",
       "/support/",
+      "/support/inquiry/",
       "/account-deletion/",
     ]);
     expect(internalFoundationPathPrefixes).toContain("/lab");

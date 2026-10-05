@@ -103,3 +103,14 @@ export function adminErrorCopy(kind: AdminErrorKind): { title: string; body: str
       return { title: "조회하지 못했습니다", body: "잠시 후 다시 시도하세요." };
   }
 }
+
+/**
+ * A short operator-facing sentence for a failed write.
+ *
+ * The console never surfaces a raw provider or Postgres message, so this maps
+ * the failure to the same bounded copy the read panels use.
+ */
+export function describeError(error: unknown): string {
+  const copy = adminErrorCopy(adminErrorKind(error));
+  return `${copy.title}. ${copy.body}`;
+}

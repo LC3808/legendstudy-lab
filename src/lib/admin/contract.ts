@@ -434,3 +434,288 @@ export function parseCredit(raw: unknown): AdminCredit {
     }),
   };
 }
+
+// --- ADMIN-P0-B: payment operations read ------------------------------------
+
+export type AdminPaymentOrder = {
+  orderId: string;
+  subjectId: string | null;
+  sku: string;
+  amount: number;
+  quantity: number;
+  currency: string;
+  mode: string;
+  state: string;
+  grantState: string;
+  provider: string;
+  paidAt: string | null;
+  createdAt: string;
+  creditExpiresAt: string | null;
+  reconciliationRequired: boolean;
+  refundable: boolean;
+};
+
+export type AdminPaymentPage = {
+  asOf: string;
+  installed: boolean;
+  runtimeState: string;
+  runtimeLabel: string;
+  mode: string;
+  total: AdminCount;
+  limit: number;
+  offset: number;
+  orders: AdminPaymentOrder[] | null;
+};
+
+export function parsePaymentPage(raw: unknown): AdminPaymentPage {
+  const root = envelope(raw, "payment");
+  return {
+    asOf: str(root.as_of, "payment.as_of"),
+    installed: bool(root.installed, "payment.installed"),
+    runtimeState: str(root.runtime_state, "payment.runtime_state"),
+    runtimeLabel: str(root.runtime_label, "payment.runtime_label"),
+    mode: str(root.mode, "payment.mode"),
+    total: numOrNull(root.total, "payment.total"),
+    limit: num(root.limit, "payment.limit"),
+    offset: num(root.offset, "payment.offset"),
+    orders:
+      root.orders === null || root.orders === undefined
+        ? null
+        : arr(root.orders, "payment.orders").map((entry, index) => {
+            const row = record(entry, `orders[${index}]`);
+            return {
+              orderId: str(row.order_id, `orders[${index}].order_id`),
+              subjectId: strOrNull(row.subject_id, `orders[${index}].subject_id`),
+              sku: str(row.sku, `orders[${index}].sku`),
+              amount: num(row.amount, `orders[${index}].amount`),
+              quantity: num(row.quantity, `orders[${index}].quantity`),
+              currency: str(row.currency, `orders[${index}].currency`),
+              mode: str(row.mode, `orders[${index}].mode`),
+              state: str(row.state, `orders[${index}].state`),
+              grantState: str(row.grant_state, `orders[${index}].grant_state`),
+              provider: str(row.provider, `orders[${index}].provider`),
+              paidAt: strOrNull(row.paid_at, `orders[${index}].paid_at`),
+              createdAt: str(row.created_at, `orders[${index}].created_at`),
+              creditExpiresAt: strOrNull(
+                row.credit_expires_at,
+                `orders[${index}].credit_expires_at`,
+              ),
+              reconciliationRequired: bool(
+                row.reconciliation_required,
+                `orders[${index}].reconciliation_required`,
+              ),
+              refundable: bool(row.refundable, `orders[${index}].refundable`),
+            };
+          }),
+  };
+}
+
+// --- ADMIN-P0-B: 1:1 inquiry -------------------------------------------------
+
+export const INQUIRY_CATEGORIES = [
+  "account",
+  "material",
+  "essay_humanities",
+  "essay_math",
+  "credit",
+  "payment",
+  "deletion",
+  "technical",
+  "other",
+] as const;
+
+export type InquiryCategory = (typeof INQUIRY_CATEGORIES)[number];
+
+export const INQUIRY_STATUSES = ["RECEIVED", "IN_PROGRESS", "ANSWERED", "CLOSED"] as const;
+
+export type InquiryStatus = (typeof INQUIRY_STATUSES)[number];
+
+export type InquiryRow = {
+  inquiryId: string;
+  status: string;
+  category: string;
+  title: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+  replyCount: number;
+  preview: string;
+};
+
+export type AdminInquiryPage = {
+  asOf: string;
+  total: number;
+  open: number;
+  limit: number;
+  offset: number;
+  items: InquiryRow[];
+};
+
+export type AdminInquiryReply = {
+  replyId: string;
+  authorId: string;
+  body: string;
+  createdAt: string;
+  delivery: string;
+  attempts: number;
+};
+
+export type AdminInquiryDetail = {
+  asOf: string;
+  inquiry: {
+    inquiryId: string;
+    category: string;
+    title: string;
+    body: string;
+    status: string;
+    submittedAt: string;
+    updatedAt: string;
+    answeredAt: string | null;
+    closedAt: string | null;
+  };
+  member: {
+    accountId: string;
+    gradeLevel: string | null;
+    accountState: string | null;
+    spendable: number | null;
+  };
+  replies: AdminInquiryReply[];
+  statusEvents: { fromStatus: string | null; toStatus: string; actorKind: string; createdAt: string }[];
+  related: { essayEvaluations: AdminCount; paymentOrders: AdminCount };
+};
+
+export type AdminSupportMetrics = {
+  open: number;
+  newToday: number;
+  inProgress: number;
+  answered: number;
+  closed: number;
+  oldestOpenId: string | null;
+  oldestOpenAt: string | null;
+  firstResponseSeconds: AdminCount;
+  failedDeliveries: number;
+};
+
+function inquiryRow(value: unknown, path: string): InquiryRow {
+  const row = record(value, path);
+  return {
+    inquiryId: str(row.inquiry_id, `${path}.inquiry_id`),
+    status: str(row.status, `${path}.status`),
+    category: str(row.category, `${path}.category`),
+    title: str(row.title, `${path}.title`),
+    userId: str(row.user_id, `${path}.user_id`),
+    createdAt: str(row.created_at, `${path}.created_at`),
+    updatedAt: str(row.updated_at, `${path}.updated_at`),
+    replyCount: num(row.reply_count, `${path}.reply_count`),
+    preview: str(row.preview, `${path}.preview`),
+  };
+}
+
+export function parseInquiryPage(raw: unknown): AdminInquiryPage {
+  const root = envelope(raw, "inquiry");
+  return {
+    asOf: str(root.as_of, "inquiry.as_of"),
+    total: num(root.total, "inquiry.total"),
+    open: num(root.open, "inquiry.open"),
+    limit: num(root.limit, "inquiry.limit"),
+    offset: num(root.offset, "inquiry.offset"),
+    items: arr(root.items, "inquiry.items").map((entry, index) =>
+      inquiryRow(entry, `items[${index}]`),
+    ),
+  };
+}
+
+export function parseInquiryDetail(raw: unknown): AdminInquiryDetail {
+  const root = envelope(raw, "inquiryDetail");
+  const inquiry = record(root.inquiry, "inquiryDetail.inquiry");
+  const member = record(root.member, "inquiryDetail.member");
+  const related = record(root.related, "inquiryDetail.related");
+  return {
+    asOf: str(root.as_of, "inquiryDetail.as_of"),
+    inquiry: {
+      inquiryId: str(inquiry.inquiry_id, "inquiry.inquiry_id"),
+      category: str(inquiry.category, "inquiry.category"),
+      title: str(inquiry.title, "inquiry.title"),
+      body: str(inquiry.body, "inquiry.body"),
+      status: str(inquiry.status, "inquiry.status"),
+      submittedAt: str(inquiry.submitted_at, "inquiry.submitted_at"),
+      updatedAt: str(inquiry.updated_at, "inquiry.updated_at"),
+      answeredAt: strOrNull(inquiry.answered_at, "inquiry.answered_at"),
+      closedAt: strOrNull(inquiry.closed_at, "inquiry.closed_at"),
+    },
+    member: {
+      accountId: str(member.account_id, "member.account_id"),
+      gradeLevel: strOrNull(member.grade_level, "member.grade_level"),
+      accountState: strOrNull(member.account_state, "member.account_state"),
+      spendable: numOrNull(member.spendable, "member.spendable"),
+    },
+    replies: arr(root.replies, "inquiryDetail.replies").map((entry, index) => {
+      const row = record(entry, `replies[${index}]`);
+      return {
+        replyId: str(row.reply_id, `replies[${index}].reply_id`),
+        authorId: str(row.author_id, `replies[${index}].author_id`),
+        body: str(row.body, `replies[${index}].body`),
+        createdAt: str(row.created_at, `replies[${index}].created_at`),
+        delivery: str(row.delivery, `replies[${index}].delivery`),
+        attempts: num(row.attempts, `replies[${index}].attempts`),
+      };
+    }),
+    statusEvents: arr(root.status_events, "inquiryDetail.status_events").map((entry, index) => {
+      const row = record(entry, `status_events[${index}]`);
+      return {
+        fromStatus: strOrNull(row.from_status, `status_events[${index}].from_status`),
+        toStatus: str(row.to_status, `status_events[${index}].to_status`),
+        actorKind: str(row.actor_kind, `status_events[${index}].actor_kind`),
+        createdAt: str(row.created_at, `status_events[${index}].created_at`),
+      };
+    }),
+    related: {
+      essayEvaluations: numOrNull(related.essay_evaluations, "related.essay_evaluations"),
+      paymentOrders: numOrNull(related.payment_orders, "related.payment_orders"),
+    },
+  };
+}
+
+export function parseSupportMetrics(raw: unknown): AdminSupportMetrics {
+  const root = record(raw, "support");
+  return {
+    open: num(root.open, "support.open"),
+    newToday: num(root.new_today, "support.new_today"),
+    inProgress: num(root.in_progress, "support.in_progress"),
+    answered: num(root.answered, "support.answered"),
+    closed: num(root.closed, "support.closed"),
+    oldestOpenId: strOrNull(root.oldest_open_id, "support.oldest_open_id"),
+    oldestOpenAt: strOrNull(root.oldest_open_at, "support.oldest_open_at"),
+    firstResponseSeconds: numOrNull(root.first_response_seconds, "support.first_response_seconds"),
+    failedDeliveries: num(root.failed_deliveries, "support.failed_deliveries"),
+  };
+}
+
+// --- ADMIN-P0-B: member-facing inquiry --------------------------------------
+
+export type MyInquiryRow = {
+  inquiryId: string;
+  category: string;
+  title: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  answered: boolean;
+};
+
+export function parseMyInquiries(raw: unknown): MyInquiryRow[] {
+  const root = record(raw, "myInquiries");
+  if (root.dto_version !== "inquiry-v1") bad("myInquiries.dto_version");
+  return arr(root.items, "myInquiries.items").map((entry, index) => {
+    const row = record(entry, `items[${index}]`);
+    return {
+      inquiryId: str(row.inquiry_id, `items[${index}].inquiry_id`),
+      category: str(row.category, `items[${index}].category`),
+      title: str(row.title, `items[${index}].title`),
+      status: str(row.status, `items[${index}].status`),
+      createdAt: str(row.created_at, `items[${index}].created_at`),
+      updatedAt: str(row.updated_at, `items[${index}].updated_at`),
+      answered: bool(row.answered, `items[${index}].answered`),
+    };
+  });
+}

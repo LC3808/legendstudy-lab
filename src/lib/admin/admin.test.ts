@@ -6,7 +6,16 @@ import {
   ADMIN_DEFAULT_LIMIT,
   type AdminRpcClient,
 } from "./client";
-import { parseCredit, parseDashboard, parseMemberDetail, parseSearchPage } from "./contract";
+import {
+  parseCredit,
+  parseDashboard,
+  parseInquiryDetail,
+  parseInquiryPage,
+  parseMemberDetail,
+  parsePaymentPage,
+  parseSearchPage,
+  parseSupportMetrics,
+} from "./contract";
 import { AdminError, adminErrorCopy, mapRpcError } from "./errors";
 import {
   accountStateLabel,
@@ -14,7 +23,9 @@ import {
   formatCount,
   formatCredit,
   formatDelta,
+  formatDuration,
   gradeLabel,
+  inquiryStatusLabel,
   transactionTypeLabel,
 } from "./format";
 
@@ -336,10 +347,32 @@ describe("admin client", () => {
     await expect(client.dashboard()).rejects.toMatchObject({ kind: "NOT_INSTALLED" });
   });
 
-  it("exposes no write method", () => {
+  it("exposes no money-moving method", () => {
     const client = createAdminClient(stubRpc(() => null));
-    const surface = Object.keys(client).sort();
-    expect(surface).toEqual(["dashboard", "isOperator", "memberCredit", "memberDetail", "searchMembers"]);
+    const surface = Object.keys(client);
+    // ADMIN-P0-B adds inquiry writes, which are member and operator support
+    // actions. It adds no path to the ledger: issuing Credit and acting on an
+    // order stay behind the server-only finance boundary.
+    expect(surface).toEqual(
+      expect.arrayContaining([
+        "dashboard",
+        "isOperator",
+        "memberCredit",
+        "memberDetail",
+        "searchMembers",
+        "paymentOrders",
+        "supportMetrics",
+        "inquiryList",
+        "inquiryDetail",
+        "replyInquiry",
+        "setInquiryStatus",
+        "submitInquiry",
+        "myInquiries",
+      ]),
+    );
+    for (const name of surface) {
+      expect(name).not.toMatch(/grant|refund|cancel|reconcile|compensate|revoke/i);
+    }
   });
 });
 
@@ -377,5 +410,199 @@ describe("admin formatting", () => {
     expect(transactionTypeLabel("unknown_type")).toBe("unknown_type");
     expect(formatCredit(7)).toContain("7");
     expect(formatCredit(null)).toBe("-");
+  });
+});
+
+// --- ADMIN-P0-B: payment read, inquiry and the finance boundary --------------
+
+describe("payment read contract", () => {
+  const order = {
+    order_id: "aa111111-1111-4111-8111-111111111111",
+    subject_id: "22222222-2222-4222-8222-222222222222",
+    sku: "credit_5",
+    amount: 4900,
+    quantity: 5,
+    currency: "KRW",
+    mode: "TEST",
+    state: "PAID",
+    grant_state: "POSTED",
+    provider: "TOSS",
+    paid_at: "2026-10-04T10:00:00.000Z",
+    created_at: "2026-10-04T09:59:00.000Z",
+    credit_expires_at: "2027-01-04T09:59:00.000Z",
+    reconciliation_required: false,
+    refundable: true,
+  };
+
+  it("parses an installed order page", () => {
+    const page = parsePaymentPage({
+      dto_version: "admin-v1",
+      as_of: "2026-10-05T00:00:00.000Z",
+      installed: true,
+      runtime_state: "LIVE_OFF",
+      runtime_label: "결제 기능 미활성 (실결제 아님)",
+      mode: "TEST",
+      total: 1,
+      limit: 25,
+      offset: 0,
+      orders: [order],
+    });
+    expect(page.installed).toBe(true);
+    expect(page.orders).toHaveLength(1);
+    expect(page.orders?.[0].refundable).toBe(true);
+  });
+
+  it("keeps an uninstalled subsystem null rather than zero", () => {
+    const page = parsePaymentPage({
+      dto_version: "admin-v1",
+      as_of: "2026-10-05T00:00:00.000Z",
+      installed: false,
+      runtime_state: "LIVE_OFF",
+      runtime_label: "결제 기능 미활성 (실결제 아님)",
+      mode: "NONE",
+      total: null,
+      limit: 25,
+      offset: 0,
+      orders: null,
+    });
+    expect(page.total).toBeNull();
+    expect(page.orders).toBeNull();
+    expect(formatCount(page.total)).toBe("미설치");
+  });
+
+  it("rejects a malformed order", () => {
+    expect(() =>
+      parsePaymentPage({
+        dto_version: "admin-v1",
+        as_of: "2026-10-05T00:00:00.000Z",
+        installed: true,
+        runtime_state: "LIVE_OFF",
+        runtime_label: "x",
+        mode: "TEST",
+        total: 1,
+        limit: 25,
+        offset: 0,
+        orders: [{ ...order, amount: "4900" }],
+      }),
+    ).toThrow();
+  });
+});
+
+describe("inquiry contract", () => {
+  it("parses an operator list page", () => {
+    const page = parseInquiryPage({
+      dto_version: "admin-v1",
+      as_of: "2026-10-05T00:00:00.000Z",
+      total: 1,
+      open: 1,
+      limit: 25,
+      offset: 0,
+      items: [
+        {
+          inquiry_id: "bb111111-1111-4111-8111-111111111111",
+          status: "RECEIVED",
+          category: "payment",
+          title: "환불 문의드립니다",
+          user_id: "22222222-2222-4222-8222-222222222222",
+          created_at: "2026-10-05T01:00:00.000Z",
+          updated_at: "2026-10-05T01:00:00.000Z",
+          reply_count: 0,
+          preview: "환불 문의드립니다",
+        },
+      ],
+    });
+    expect(page.total).toBe(1);
+    expect(inquiryStatusLabel(page.items[0].status).label).toBe("접수");
+  });
+
+  it("keeps a related count null when the owning subsystem is absent", () => {
+    const detail = parseInquiryDetail({
+      dto_version: "admin-v1",
+      as_of: "2026-10-05T00:00:00.000Z",
+      inquiry: {
+        inquiry_id: "bb111111-1111-4111-8111-111111111111",
+        category: "payment",
+        title: "t",
+        body: "b",
+        status: "RECEIVED",
+        submitted_at: "2026-10-05T01:00:00.000Z",
+        updated_at: "2026-10-05T01:00:00.000Z",
+        answered_at: null,
+        closed_at: null,
+      },
+      member: { account_id: "22222222-2222-4222-8222-222222222222", grade_level: "3", account_state: "NORMAL", spendable: 3 },
+      replies: [],
+      status_events: [{ from_status: null, to_status: "RECEIVED", actor_kind: "member", created_at: "2026-10-05T01:00:00.000Z" }],
+      related: { essay_evaluations: 0, payment_orders: null },
+    });
+    expect(detail.related.paymentOrders).toBeNull();
+    expect(formatCount(detail.related.paymentOrders)).toBe("미설치");
+    expect(formatCount(detail.related.essayEvaluations)).toBe("0");
+  });
+
+  it("parses support metrics and never renders a blank duration as zero", () => {
+    const metrics = parseSupportMetrics({
+      open: 2,
+      new_today: 1,
+      in_progress: 1,
+      answered: 4,
+      closed: 3,
+      oldest_open_id: null,
+      oldest_open_at: null,
+      first_response_seconds: null,
+      failed_deliveries: 0,
+    });
+    expect(metrics.firstResponseSeconds).toBeNull();
+    expect(formatDuration(metrics.firstResponseSeconds)).toBe("측정값 없음");
+  });
+});
+
+describe("member inquiry client", () => {
+  const session = { auth: { getSession: async () => ({ data: { session: { access_token: "t" } } }) } };
+
+  it("rejects a title that is too short before calling the database", async () => {
+    const rpc = vi.fn();
+    const client = createAdminClient({ ...session, rpc } as never);
+    await expect(
+      client.submitInquiry({ category: "payment", title: "짧", body: "충분히 긴 문의 내용입니다", requestKey: "k" }),
+    ).rejects.toBeInstanceOf(AdminError);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it("submits with the caller's own identity and no member id in the payload", async () => {
+    const rpc = vi.fn().mockResolvedValue({ data: { inquiry_id: "x", created: true }, error: null });
+    const client = createAdminClient({ ...session, rpc } as never);
+    await client.submitInquiry({
+      category: "payment",
+      title: "환불 문의드립니다",
+      body: "환불 가능 여부를 확인하고 싶습니다.",
+      requestKey: "11111111-1111-4111-8111-111111111111",
+    });
+    const [fn, params] = rpc.mock.calls[0];
+    expect(fn).toBe("inquiry_submit");
+    expect(Object.keys(params.p).sort()).toEqual(
+      ["body", "category", "dto_version", "request_key", "title"].sort(),
+    );
+  });
+
+  it("never returns an inquiry body from the member list", async () => {
+    const rpc = vi.fn().mockResolvedValue({
+      data: { dto_version: "inquiry-v1", items: [
+        {
+          inquiry_id: "bb111111-1111-4111-8111-111111111111",
+          category: "payment",
+          title: "t",
+          status: "ANSWERED",
+          created_at: "2026-10-05T01:00:00.000Z",
+          updated_at: "2026-10-05T02:00:00.000Z",
+          answered: true,
+        },
+      ] },
+      error: null,
+    });
+    const client = createAdminClient({ ...session, rpc } as never);
+    const rows = await client.myInquiries();
+    expect(rows[0].answered).toBe(true);
+    expect(Object.keys(rows[0])).not.toContain("body");
   });
 });

@@ -17,21 +17,29 @@ import { adminErrorCopy, adminErrorKind, type AdminErrorKind } from "@/lib/admin
  * an authorization mechanism.
  */
 
-export type AdminNavKey = "dashboard" | "members" | "credit" | "payment" | "essay" | "quality";
+export type AdminNavKey =
+  | "dashboard"
+  | "members"
+  | "credit"
+  | "payment"
+  | "inquiries"
+  | "essay"
+  | "quality";
 
 type NavEntry = { key: AdminNavKey; label: string; href: string | null };
 
 /**
- * The full release-operations IA is present so ADMIN-P0-B/C and the `/ql` merge
- * have a stable shape. Only the implemented modules are navigable; the rest are
- * rendered as non-interactive, so no console copy promises a feature that does
- * not exist yet.
+ * The full release-operations IA is present so the remaining work and the `/ql`
+ * merge have a stable shape. Only the implemented modules are navigable; the
+ * rest are rendered as non-interactive, so no console copy promises a feature
+ * that does not exist yet.
  */
 export const ADMIN_NAV: readonly NavEntry[] = [
   { key: "dashboard", label: "대시보드", href: "/admin/" },
   { key: "members", label: "회원", href: "/admin/members/" },
   { key: "credit", label: "Credit", href: "/admin/credit/" },
-  { key: "payment", label: "결제", href: null },
+  { key: "payment", label: "결제", href: "/admin/payment/" },
+  { key: "inquiries", label: "1:1 문의", href: "/admin/inquiries/" },
   { key: "essay", label: "논술 운영", href: null },
   { key: "quality", label: "AI 품질", href: null },
 ] as const;

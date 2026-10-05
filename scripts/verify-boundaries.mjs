@@ -263,6 +263,58 @@ for (const file of adminFiles) {
   }
 }
 
+
+// ADMIN-P0-B — the finance boundary is server-only, and the console must not
+// grow a browser path to the ledger.
+const financeModule = "cloudflare/admin-finance.ts";
+if (fs.existsSync(financeModule)) {
+  const finance = fs.readFileSync(financeModule, "utf8");
+  const required = [
+    ["the finance boundary must verify the caller with the database", /callRpc\("admin_operator"/],
+    ["the finance boundary must mint a short-lived finance JWT", /FINANCE_JWT_PRIVATE_KEY/],
+    ["the finance boundary must fail closed without signing material", /return json\(\{ error: "unavailable" \}, 503\)/],
+    ["the finance boundary must not trust an actor from the body", /operatorIdentity/],
+  ];
+  for (const [message, pattern] of required) {
+    if (!pattern.test(finance)) errors.push(message);
+  }
+  // A privileged key must never appear in the boundary.
+  if (/service_role|SUPABASE_SERVICE_ROLE/i.test(finance)) {
+    errors.push("the finance boundary must not reference a service-role key");
+  }
+}
+for (const name of ["credit-grant", "payment-support"]) {
+  const file = `functions/api/admin/${name}.ts`;
+  if (!fs.existsSync(file)) errors.push(`missing server boundary route ${file}`);
+}
+// The browser half must reach the ledger only through the boundary.
+const boundaryClient = "src/lib/admin/finance-boundary.ts";
+if (fs.existsSync(boundaryClient)) {
+  const source = fs.readFileSync(boundaryClient, "utf8");
+  if (!source.includes("/api/admin/credit-grant")) {
+    errors.push("the browser finance client must call the server boundary");
+  }
+  if (/essay_admin_grant|payment_support/.test(source.replace(/\/\*[\s\S]*?\*\//g, ""))) {
+    errors.push("the browser finance client must not call the ledger functions directly");
+  }
+}
+// No client module may call a finance RPC directly.
+for (const file of files) {
+  if (!file.startsWith("src/components/") && !file.startsWith("src/app/")) continue;
+  const source = fs.readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  if (/rpc\(\s*["'`](essay_admin_grant|payment_support)["'`]/.test(source)) {
+    errors.push(`${file} calls a finance-only RPC directly`);
+  }
+}
+// The member inquiry surface must not promise a reply body by email alone.
+const memberInquiry = "src/components/support/member-inquiry.tsx";
+if (fs.existsSync(memberInquiry)) {
+  const source = fs.readFileSync(memberInquiry, "utf8");
+  if (/답변 내용을 (화면에서|여기에서) 확인/.test(source)) {
+    errors.push("the member inquiry surface must not promise a reply view it does not have");
+  }
+}
+
 if (errors.length) {
   console.error("BOUNDARY_AUDIT=FAIL");
   for (const error of errors) console.error(`- ${error}`);
