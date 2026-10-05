@@ -32,6 +32,9 @@ export const internalFoundationPathPrefixes = [
   "/forgot-password",
   "/reset-password",
   "/account",
+  // The member notification inbox. Personal data, so it is never indexed and
+  // never appears in the sitemap; it stays reachable for signed-in members.
+  "/notifications",
   // Operations console. Internal-only: never linked publicly, never indexed and
   // disallowed in robots.txt. Authorization is the database gate, not obscurity.
   "/admin",

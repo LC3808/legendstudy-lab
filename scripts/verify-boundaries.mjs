@@ -315,6 +315,48 @@ if (fs.existsSync(memberInquiry)) {
   }
 }
 
+
+// ADMIN-P0-B ADDENDUM — the shared notification center.
+//
+// The inbox is personal data and the read state is shared with the APP, so two
+// things must stay true: the browser never reaches the table, and the route is
+// never published.
+const notificationClient = "src/lib/notifications/client.ts";
+if (!fs.existsSync(notificationClient)) {
+  errors.push("notification client module is missing");
+} else {
+  const source = fs.readFileSync(notificationClient, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  if (/\.from\(\s*["'`]/.test(source)) {
+    errors.push("notification client reads a table directly instead of the owner-scoped RPCs");
+  }
+  for (const fn of ["user_notifications_list", "user_notifications_unread_count", "user_notification_mark_read", "user_notifications_mark_all_read"]) {
+    if (!source.includes(fn)) errors.push(`notification client lost the ${fn} call`);
+  }
+  if (/service_role|SERVICE_ROLE/.test(source)) {
+    errors.push("notification client references a privileged key");
+  }
+}
+// The inbox must not be public, indexable or in the sitemap.
+for (const list of ["publicReleaseRoutes", "indexablePublicPaths", "policyRoutes"]) {
+  if (new RegExp(`"/notifications/?"`).test(routeArrayBody(list))) {
+    errors.push(`notification inbox must not be a public route (${list})`);
+  }
+}
+if (!/internalFoundationPathPrefixes[\s\S]*?"\/notifications"/.test(releaseRoutes)) {
+  errors.push("the notification inbox must stay out of the sitemap prefixes");
+}
+if (/NAV_NOTIFICATIONS|notifications.*label.*알림안내/.test(releaseRoutes)) {
+  errors.push("the notification inbox must not be added to the public navigation");
+}
+// A notification must never carry a destination the client did not choose.
+const routes = "src/lib/notifications/format.ts";
+if (fs.existsSync(routes)) {
+  const source = fs.readFileSync(routes, "utf8");
+  if (/https?:\/\//.test(source.replace(/\/\*[\s\S]*?\*\//g, ""))) {
+    errors.push("notification routing must not contain an absolute destination");
+  }
+}
+
 if (errors.length) {
   console.error("BOUNDARY_AUDIT=FAIL");
   for (const error of errors) console.error(`- ${error}`);

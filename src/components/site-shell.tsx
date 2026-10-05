@@ -6,6 +6,7 @@ import { AccountControl } from "@/components/account-control";
 import { BusinessInfoList, CustomerCenterFooterContact } from "@/components/business-info-block";
 import { brand } from "@/lib/brand";
 import { SiteNav } from "@/components/site-nav";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { policyRoutes } from "@/lib/release-routes";
 
 /**
@@ -30,6 +31,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
           </Link>
           <SiteNav />
           <div className="site-header__actions">
+            <NotificationBell />
             <AccountControl />
             <Link className="button button--accent button--small" href="/support/">고객센터</Link>
           </div>
