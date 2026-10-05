@@ -16,9 +16,11 @@ export async function onRequestPost({ request, env }: { request: Request; env: M
     const artifact = form.get("artifact_id"), file = form.get("file");
     if (typeof artifact !== "string" || !(file instanceof File) || file.size < 1 || file.size > 20971520 || [...form.keys()].some(k => !["artifact_id","file"].includes(k))) throw Error("INVALID_UPLOAD");
     const args = { p_subject: subject, p_artifact: artifact };
-    phase = "describe";
+    phase = "describe_rpc";
     const row = await t.rpcRaw("math_artifact_storage", { ...args, p_action: "describe" }, env.MATH_EXTRACTION_WORKER_JWT);
+    phase = "file_digest";
     const content = new Uint8Array(await file.arrayBuffer()), digest = await sha256(content);
+    phase = "file_validation";
     if (row.byte_size !== file.size || row.media_type !== file.type || !mediaSignature(content,file.type) || (row.content_sha256 && row.content_sha256 !== digest)) throw Error("INVALID_UPLOAD");
     const path = storagePath(row.bucket, row.object_key);
     phase = "storage_upload";

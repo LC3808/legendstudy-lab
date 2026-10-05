@@ -25,6 +25,14 @@ describe("gateway privilege and provider boundary",()=>{
  it("candidate requires explicit enable/model/key and performs no implicit call",async()=>{
   const fetcher=vi.fn();await expect(candidateJson({enabled:false,model:"",key:"",fetcher},"JSON",{})).rejects.toThrow();expect(fetcher).not.toHaveBeenCalled();
  });
+ it("provider redirects fail closed without forwarding its credential",async()=>{
+  const fetcher=vi.fn(async(_url: string | URL | Request,init?:RequestInit)=>{
+   expect(init?.redirect).toBe("manual");
+   return new Response(null,{status:307,headers:{location:"https://untrusted.example.invalid"}});
+  });
+  await expect(candidateJson({enabled:true,model:"synthetic",key:"synthetic-not-a-key",fetcher},"JSON",{})).rejects.toThrow("PROVIDER_UNAVAILABLE");
+  expect(fetcher).toHaveBeenCalledTimes(1);
+ });
  it("provider refuses incomplete output and never exposes raw failure",async()=>{
   const fetcher=vi.fn(async(_url: string | URL | Request, _init?: RequestInit)=>{void _url;void _init;return Response.json({status:"incomplete",output:[]});});
   await expect(candidateJson({enabled:true,model:"synthetic",key:"synthetic-not-a-key",fetcher},"JSON",{})).rejects.toThrow("INVALID_OUTPUT");

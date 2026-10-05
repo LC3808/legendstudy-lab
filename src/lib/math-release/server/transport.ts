@@ -17,7 +17,7 @@ export function serverTransport(env: MathEnvironment) {
   }
   async function rpcRaw(name: string, args: unknown, token: string) {
     const res = await request(`/rest/v1/rpc/${name}`, token, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(args) });
-    if (!res.ok) throw Error("RPC_DENIED");
+    if (!res.ok) { console.warn("MATH_RPC_FAILURE", { operation: name, status: res.status }); throw Error("RPC_DENIED"); }
     const body = new TextDecoder().decode(await boundedBody(res,2097152));return JSON.parse(body);
   }
   const rpc = (token: string): MathRpcTransport => ({ rpc: (fn, p_request) => rpcRaw(fn, { p_request }, token) });
