@@ -8,6 +8,14 @@ const foreign='00000000-0000-4000-8000-000000000002';
 const env:MathEnvironment={MATH_ENABLED:'true',MATH_ALLOWED_SUBJECTS:own,MATH_ORIGIN:'https://math.example.invalid',MATH_PROJECT_REF:'synthetic',MATH_SUPABASE_URL:'https://synthetic.supabase.co',MATH_SUPABASE_PUBLISHABLE_KEY:'synthetic-public',MATH_EXTRACTION_WORKER_JWT:'synthetic-extraction',MATH_EVALUATION_WORKER_JWT:'synthetic-evaluation',MATH_PROVIDER_CALLS_ENABLED:'true',MATH_PROVIDER:'OPENAI',MATH_PRIMARY_MODEL:'synthetic',MATH_PROVIDER_API_KEY:'synthetic-provider'};
 afterEach(()=>vi.unstubAllGlobals());
 describe('synthetic-only hosted admission',()=>{
+ it('uses edge-compatible manual redirects and refuses credential forwarding',async()=>{
+  const fetcher=vi.fn(async(_url:unknown,init?:RequestInit)=>{
+   expect(init?.redirect).toBe('manual');
+   return new Response(null,{status:302,headers:{location:'https://untrusted.example.invalid'}});
+  });vi.stubGlobal('fetch',fetcher);
+  await expect(serverTransport(env).request('/auth/v1/user','synthetic-session')).rejects.toThrow('REDIRECT_DENIED');
+  expect(fetcher).toHaveBeenCalledTimes(1);
+ });
  it('permits only identity returned by authenticated Auth user endpoint',async()=>{
   vi.stubGlobal('fetch',vi.fn(async()=>Response.json({id:own})));
   expect(await serverTransport(env).subject('opaque-session')).toBe(own);

@@ -7,7 +7,7 @@ export type CandidateConfig = { enabled: boolean; model: string; key: string; fe
 export async function candidateJson(config: CandidateConfig, instructions: string, content: unknown): Promise<unknown> {
   if (!config.enabled || !config.model || !config.key) throw Error("PROVIDER_UNAVAILABLE");
   const response = await (config.fetcher ?? fetch)("https://api.openai.com/v1/responses", {
-    method: "POST", redirect: "error", signal: AbortSignal.timeout(40000),
+    method: "POST", redirect: "manual", signal: AbortSignal.timeout(40000),
     headers: { Authorization: `Bearer ${config.key}`, "Content-Type": "application/json" },
     body: JSON.stringify({ model: config.model, store: false, max_output_tokens: 12000,
       text: { format: { type: "json_object" } }, instructions,
