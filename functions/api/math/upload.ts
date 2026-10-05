@@ -1,9 +1,14 @@
 import { serverTransport, type MathEnvironment } from "../../../src/lib/math-release/server/transport";
 import { boundedBody, mediaSignature, requestToken, sha256, storagePath } from "../../../src/lib/math-release/server/request";
 export async function onRequestPost({ request, env }: { request: Request; env: MathEnvironment }) {
-  let phase = "authenticate";
+  let phase = "request_admission";
   try {
-    const token = requestToken(request, env), t = serverTransport(env), subject = await t.subject(token);
+    const token = requestToken(request, env);
+    phase = "transport_configuration";
+    const t = serverTransport(env);
+    phase = "user_authentication";
+    const subject = await t.subject(token);
+    phase = "worker_configuration";
     if (!env.MATH_EXTRACTION_WORKER_JWT) throw Error("CONFIGURATION_REQUIRED");
     phase = "multipart";
     const bytes = await boundedBody(request, 20971520 + 65536);
