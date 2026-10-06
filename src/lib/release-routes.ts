@@ -38,6 +38,9 @@ export const internalFoundationPathPrefixes = [
   // Operations console. Internal-only: never linked publicly, never indexed and
   // disallowed in robots.txt. Authorization is the database gate, not obscurity.
   "/admin",
+  // Quality Console. Operator-only, noindex, and guarded by its own
+  // `quality_operators` authorization — deliberately not the operations gate.
+  "/ql",
 ] as const;
 
 export const publicReleasePaths = publicReleaseRoutes.map((route) => route.href);

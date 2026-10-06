@@ -21,6 +21,9 @@
 | `/login/`, `/signup/`, `/forgot-password/`, `/reset-password/` | LegendStudy Account browser-auth routes | `noindex`; LAB Production E2E verified |
 | `/account/` | Session-aware account connection state | `noindex`; does not read or write personal LAB data |
 | `/admin/`, `/admin/members/`, `/admin/credit/` | Operations console: dashboard, member lookup, Credit read | `noindex` and disallowed; operator-gated by `admin_operator()`; read-only (ADMIN-P0-A) |
+| `/admin/payment/`, `/admin/inquiries/` | Payment orders and member 1:1 inquiry operations | `noindex`; operator-gated; read-only apart from the reply and status writes (ADMIN-P0-B) |
+| `/admin/operations/` | 논술·수리 운영: evaluation pipeline status, latency, model and prompt identity, Credits, re-evaluation and human-review state | `noindex`; operator-gated; no answer text is ever read (ADMIN-P0-C) |
+| `/ql/` | Quality Console: human quality judgment submission and history | `noindex` and disallowed; guarded by its own `quality_operators` authorization, deliberately separate from the operations gate |
 | `/notifications/` | Member notification inbox: reply, 첨삭 완료, Credit 지급·만료, 결제 안내 | `noindex` and not in the sitemap. Rows and read state are shared with the LegendStudy 앱 through the same backend functions |
 
 Earlier catalog, synthetic writing, mock evaluation, login, My, and score-analysis routes remain private development foundations. They are absent from public navigation and must not be represented as live services.

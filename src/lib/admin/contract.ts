@@ -719,3 +719,228 @@ export function parseMyInquiries(raw: unknown): MyInquiryRow[] {
     };
   });
 }
+// --- ADMIN-P0-C: essay / math operations ------------------------------------
+/**
+ * The operations read speaks its own version because it carries a different
+ * shape from the member console: one row per evaluation request, with the
+ * pipeline facts an operator needs and no answer text at all.
+ *
+ * There are two summaries and they are deliberately different types. A list
+ * summary counts the pipeline states the list itself can filter on
+ * (`requested`/`processing`/`completed`/...). A headline summary collapses them
+ * into the operator's question (`pending`/`succeeded`/`failed`). Treating them
+ * as one type was how a missing key became a crash.
+ */
+export const OPS_DTO_VERSION = "admin-ops-v1";
+export type OpsType = "humanities" | "math";
+/** Why a type cannot be read. Distinguishes "not deployed" from "idle". */
+export type OpsUnavailableReason = "NOT_INSTALLED" | "SCHEMA_INCOMPLETE";
+export type OpsOutcome = "success" | "failure" | "pending" | "invalidated";
+export type OpsHumanReviewState = "REVIEWED" | "NOT_REVIEWED" | "NOT_TRACKED";
+export type OpsItem = {
+  evaluationId: string;
+  attemptId: string;
+  memberId: string;
+  /** Product line of the attempt. Math carries its resolve kind; essay does not. */
+  attemptKind: string | null;
+  requestKind: string | null;
+  status: string;
+  outcome: OpsOutcome;
+  requestedAt: string;
+  completedAt: string | null;
+  processingMs: number | null;
+  isReevaluation: boolean;
+  invalidated: boolean;
+  invalidationReason: string | null;
+  errorCode: string | null;
+  modelProvider: string | null;
+  modelName: string | null;
+  modelVersion: string | null;
+  promptVersion: string | null;
+  creditsCharged: number | null;
+  billingStatus: string | null;
+  billingReason: string | null;
+  humanReviewState: OpsHumanReviewState;
+  humanReviewDisposition: string | null;
+  humanReviewedAt: string | null;
+};
+/** Status counts behind a list, matching that list's own filter values. */
+export type OpsListSummary = {
+  total: number;
+  requested: number | null;
+  processing: number | null;
+  completed: number | null;
+  failed: number | null;
+  cancelled: number | null;
+  invalidated: number | null;
+  last24h: number;
+  medianProcessingMs: number | null;
+  reevaluations: number;
+};
+/** The operator's headline for one product line. */
+export type OpsHeadlineSummary = {
+  total: number;
+  pending: number;
+  succeeded: number;
+  failed: number;
+  invalidated: number | null;
+  last24h: number;
+  medianProcessingMs: number | null;
+};
+export type OpsPage = {
+  type: OpsType;
+  available: boolean;
+  reason: OpsUnavailableReason | null;
+  humanReviewTracked: boolean;
+  items: OpsItem[];
+  summary: OpsListSummary | null;
+};
+/** One product line as the overview reports it: availability, then activity. */
+export type OpsHeadline = {
+  type: OpsType;
+  available: boolean;
+  reason: OpsUnavailableReason | null;
+  summary: OpsHeadlineSummary | null;
+};
+export type OpsOverview = {
+  asOf: string;
+  humanReviewTracked: boolean;
+  humanReviewedCases: number | null;
+  essay: OpsHeadline;
+  math: OpsHeadline;
+};
+
+function opsVersion(root: Record<string, unknown>, path: string): void {
+  if (root.dto_version !== OPS_DTO_VERSION) bad(`${path}.dto_version`);
+}
+
+function opsOutcome(value: unknown, path: string): OpsOutcome {
+  const raw = str(value, path);
+  if (raw !== "success" && raw !== "failure" && raw !== "pending" && raw !== "invalidated") {
+    bad(path);
+  }
+  return raw;
+}
+
+function opsReviewState(value: unknown, path: string): OpsHumanReviewState {
+  const raw = str(value, path);
+  if (raw !== "REVIEWED" && raw !== "NOT_REVIEWED" && raw !== "NOT_TRACKED") bad(path);
+  return raw;
+}
+
+function opsUnavailableReason(value: unknown, path: string): OpsUnavailableReason | null {
+  if (value === null || value === undefined) return null;
+  const raw = str(value, path);
+  if (raw !== "NOT_INSTALLED" && raw !== "SCHEMA_INCOMPLETE") bad(path);
+  return raw;
+}
+
+function opsItem(value: unknown, path: string): OpsItem {
+  const row = record(value, path);
+  return {
+    evaluationId: str(row.evaluation_id, `${path}.evaluation_id`),
+    attemptId: str(row.attempt_id, `${path}.attempt_id`),
+    memberId: str(row.member_id, `${path}.member_id`),
+    attemptKind: strOrNull(row.attempt_kind, `${path}.attempt_kind`),
+    requestKind: strOrNull(row.request_kind, `${path}.request_kind`),
+    status: str(row.status, `${path}.status`),
+    outcome: opsOutcome(row.outcome, `${path}.outcome`),
+    requestedAt: str(row.requested_at, `${path}.requested_at`),
+    completedAt: strOrNull(row.completed_at, `${path}.completed_at`),
+    processingMs: numOrNull(row.processing_ms, `${path}.processing_ms`),
+    isReevaluation: bool(row.is_reevaluation, `${path}.is_reevaluation`),
+    invalidated: bool(row.invalidated, `${path}.invalidated`),
+    invalidationReason: strOrNull(row.invalidation_reason, `${path}.invalidation_reason`),
+    errorCode: strOrNull(row.error_code, `${path}.error_code`),
+    modelProvider: strOrNull(row.model_provider, `${path}.model_provider`),
+    modelName: strOrNull(row.model_name, `${path}.model_name`),
+    modelVersion: strOrNull(row.model_version, `${path}.model_version`),
+    promptVersion: strOrNull(row.prompt_version, `${path}.prompt_version`),
+    creditsCharged: numOrNull(row.credits_charged, `${path}.credits_charged`),
+    billingStatus: strOrNull(row.billing_status, `${path}.billing_status`),
+    billingReason: strOrNull(row.billing_reason, `${path}.billing_reason`),
+    humanReviewState: opsReviewState(row.human_review_state, `${path}.human_review_state`),
+    humanReviewDisposition: strOrNull(
+      row.human_review_disposition,
+      `${path}.human_review_disposition`,
+    ),
+    humanReviewedAt: strOrNull(row.human_reviewed_at, `${path}.human_reviewed_at`),
+  };
+}
+
+function opsListSummary(value: unknown, path: string): OpsListSummary | null {
+  if (value === null || value === undefined) return null;
+  const row = record(value, path);
+  return {
+    total: num(row.total, `${path}.total`),
+    requested: numOrNull(row.requested, `${path}.requested`),
+    processing: numOrNull(row.processing, `${path}.processing`),
+    completed: numOrNull(row.completed, `${path}.completed`),
+    failed: numOrNull(row.failed, `${path}.failed`),
+    cancelled: numOrNull(row.cancelled, `${path}.cancelled`),
+    invalidated: numOrNull(row.invalidated, `${path}.invalidated`),
+    last24h: num(row.last_24h, `${path}.last_24h`),
+    medianProcessingMs: numOrNull(row.median_processing_ms, `${path}.median_processing_ms`),
+    reevaluations: num(row.reevaluations, `${path}.reevaluations`),
+  };
+}
+
+function opsHeadlineSummary(value: unknown, path: string): OpsHeadlineSummary | null {
+  if (value === null || value === undefined) return null;
+  const row = record(value, path);
+  return {
+    total: num(row.total, `${path}.total`),
+    pending: num(row.pending, `${path}.pending`),
+    succeeded: num(row.succeeded, `${path}.succeeded`),
+    failed: num(row.failed, `${path}.failed`),
+    invalidated: numOrNull(row.invalidated, `${path}.invalidated`),
+    last24h: num(row.last_24h, `${path}.last_24h`),
+    medianProcessingMs: numOrNull(row.median_processing_ms, `${path}.median_processing_ms`),
+  };
+}
+
+function opsHeadline(
+  row: Record<string, unknown>,
+  path: string,
+  type: OpsType,
+): OpsHeadline {
+  return {
+    type,
+    available: bool(row.available, `${path}.available`),
+    reason: opsUnavailableReason(row.reason, `${path}.reason`),
+    summary: opsHeadlineSummary(row.summary, `${path}.summary`),
+  };
+}
+
+export function parseOpsPage(raw: unknown): OpsPage {
+  const root = record(raw, "ops");
+  opsVersion(root, "ops");
+  const type = str(root.type, "ops.type");
+  if (type !== "humanities" && type !== "math") bad("ops.type");
+  return {
+    type,
+    available: bool(root.available, "ops.available"),
+    reason: opsUnavailableReason(root.reason, "ops.reason"),
+    humanReviewTracked: bool(root.human_review_tracked ?? false, "ops.human_review_tracked"),
+    items: arr(root.items, "ops.items").map((entry, index) => opsItem(entry, `items[${index}]`)),
+    summary: opsListSummary(root.summary, "ops.summary"),
+  };
+}
+
+export function parseOpsOverview(raw: unknown): OpsOverview {
+  const root = record(raw, "opsOverview");
+  opsVersion(root, "opsOverview");
+  return {
+    asOf: str(root.as_of, "opsOverview.as_of"),
+    humanReviewTracked: bool(
+      root.human_review_tracked ?? false,
+      "opsOverview.human_review_tracked",
+    ),
+    humanReviewedCases: numOrNull(
+      root.human_reviewed_cases,
+      "opsOverview.human_reviewed_cases",
+    ),
+    essay: opsHeadline(record(root.essay, "opsOverview.essay"), "opsOverview.essay", "humanities"),
+    math: opsHeadline(record(root.math, "opsOverview.math"), "opsOverview.math", "math"),
+  };
+}

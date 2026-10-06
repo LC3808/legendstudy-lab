@@ -211,7 +211,14 @@ for (const relative of [
 // unindexed, unreachable from the public route table, and read-only: every read
 // goes through the deployed operator-gated RPCs, never a direct table query and
 // never a privileged key.
-const adminRoutes = ["admin/page.tsx", "admin/members/page.tsx", "admin/credit/page.tsx"];
+const adminRoutes = [
+  "admin/page.tsx",
+  "admin/members/page.tsx",
+  "admin/credit/page.tsx",
+  "admin/payment/page.tsx",
+  "admin/inquiries/page.tsx",
+  "admin/operations/page.tsx",
+];
 for (const relative of adminRoutes) {
   const file = path.join(appRoot, relative);
   if (!fs.existsSync(file)) {
@@ -357,6 +364,76 @@ if (fs.existsSync(routes)) {
   }
 }
 
+// ADMIN-P0-C: the essay / math operations read and the imported Quality Console.
+// The Quality Console is reached as a link, not reimplemented under /admin.
+if (!fs.existsSync(path.join(appRoot, "ql", "page.tsx"))) {
+  errors.push("the quality console route (/ql/) must exist for the console link to resolve");
+}
+if (!/internalFoundationPathPrefixes[\s\S]*?"\/ql"/.test(releaseRoutes)) {
+  errors.push("the quality console must be an internal route prefix");
+}
+for (const list of ["publicReleaseRoutes", "indexablePublicPaths", "policyRoutes"]) {
+  if (/"\/ql\/?"/.test(routeArrayBody(list))) {
+    errors.push(`the quality console must not be a public route (${list})`);
+  }
+}
+// The operations read reports the pipeline. It must never surface answer text.
+const opsView = "src/components/admin/admin-operations-view.tsx";
+if (fs.existsSync(opsView)) {
+  const source = fs
+    .readFileSync(opsView, "utf8")
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/\/\/[^\n]*/g, "");
+  // "body" alone is too broad (AdminEmpty takes one); these are the fields that
+  // would actually carry a student's writing.
+  for (const forbidden of [
+    "answer_text",
+    "answerText",
+    "submission_body",
+    "submissionBody",
+    "draft_body",
+    "question_text",
+  ]) {
+    if (new RegExp(`\\b${forbidden}\\b`).test(source)) {
+      errors.push(`the operations view must not surface answer text (${forbidden})`);
+    }
+  }
+  if (/dangerouslySetInnerHTML/.test(source)) {
+    errors.push("the operations view must not inject markup");
+  }
+}
+const opsClient = "src/lib/admin/client.ts";
+{
+  const source = fs.readFileSync(opsClient, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  if (/\.from\(\s*["'`]/.test(source)) {
+    errors.push("the operations client reads a table directly instead of the operator RPCs");
+  }
+  for (const fn of ["admin_operations_summary", "admin_essay_operations", "admin_math_operations"]) {
+    if (!source.includes(fn)) errors.push(`operations client lost the ${fn} call`);
+  }
+}
+// An undeployed runtime is a state, not a zero: the label must exist and the
+// UI must use it rather than printing a count for an absent subsystem.
+const opsRuntime = "src/lib/admin/ops-runtime.ts";
+if (!fs.existsSync(opsRuntime)) {
+  errors.push("the Math release position module is missing");
+} else {
+  const source = fs.readFileSync(opsRuntime, "utf8");
+  // Check the stated position, not the label literals: the labels spell both
+  // branches, so only the values can be wrong.
+  if (!/rcReady:\s*true/.test(source) || !/runtimeEnabled:\s*false/.test(source)) {
+    errors.push("the Math release position must stay RC READY / RUNTIME OFF");
+  }
+}
+{
+  const source = fs.readFileSync("src/lib/admin/ops-format.ts", "utf8");
+  if (!/SCHEMA_INCOMPLETE/.test(source) || !/NOT_INSTALLED/.test(source)) {
+    errors.push("the operations labels must distinguish an undeployed runtime from an uninstalled one");
+  }
+  if (!/측정값 없음/.test(source)) {
+    errors.push("a missing processing time must render as 측정값 없음, never as 0");
+  }
+}
 if (errors.length) {
   console.error("BOUNDARY_AUDIT=FAIL");
   for (const error of errors) console.error(`- ${error}`);

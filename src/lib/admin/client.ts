@@ -7,6 +7,8 @@ import {
   parseInquiryPage,
   parseMemberDetail,
   parseMyInquiries,
+  parseOpsOverview,
+  parseOpsPage,
   parsePaymentPage,
   parseSearchPage,
   parseSupportMetrics,
@@ -19,6 +21,8 @@ import {
   type AdminSearchPage,
   type AdminSupportMetrics,
   type MyInquiryRow,
+  type OpsOverview,
+  type OpsPage,
 } from "./contract";
 import { AdminError, mapRpcError } from "./errors";
 
@@ -49,6 +53,17 @@ export interface AdminClient {
   setInquiryStatus(input: InquiryStatusInput): Promise<{ status: string; changed: boolean }>;
   submitInquiry(input: InquirySubmitInput): Promise<{ inquiryId: string; created: boolean }>;
   myInquiries(): Promise<MyInquiryRow[]>;
+  operationsSummary(): Promise<OpsOverview>;
+  essayOperations(options?: OpsOptions): Promise<OpsPage>;
+  mathOperations(options?: OpsOptions): Promise<OpsPage>;
+}
+
+export interface OpsOptions {
+  limit?: number;
+  /** Only rows older than this instant, for paging backwards in time. */
+  before?: string | null;
+  /** Essay only. Ignored by the Math read, which has no status filter. */
+  status?: string | null;
 }
 
 export interface AdminPageOptions {
@@ -293,6 +308,29 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
       await requireSession();
       return parseMyInquiries(
         await callRpc<unknown>("inquiry_mine", { p: { dto_version: "inquiry-v1" } }),
+      );
+    },
+    async operationsSummary(): Promise<OpsOverview> {
+      await requireSession();
+      return parseOpsOverview(await callRpc<unknown>("admin_operations_summary", {}));
+    },
+    async essayOperations(options: OpsOptions = {}): Promise<OpsPage> {
+      await requireSession();
+      return parseOpsPage(
+        await callRpc<unknown>("admin_essay_operations", {
+          p_limit: clampLimit(options.limit),
+          p_status: options.status ? options.status : null,
+          p_before: options.before ? options.before : null,
+        }),
+      );
+    },
+    async mathOperations(options: OpsOptions = {}): Promise<OpsPage> {
+      await requireSession();
+      return parseOpsPage(
+        await callRpc<unknown>("admin_math_operations", {
+          p_limit: clampLimit(options.limit),
+          p_before: options.before ? options.before : null,
+        }),
       );
     },
   };
