@@ -22,8 +22,9 @@ export type CreditPlan = {
   readonly perCreditKrw: number;
   readonly perCreditLabel: string;
   /**
-   * Answer-count value line. Cards stay quantity-and-price only; the
-   * reevaluation rule is stated once in the 1 Credit section instead.
+   * What the pack contains, in consumer terms: one Credit buys one 첨삭권.
+   * Cards stay quantity-and-price only; the reevaluation rule is stated once in
+   * the 1 Credit section instead.
    */
   readonly valueLine: string;
   readonly recommended: boolean;
@@ -44,7 +45,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(4900),
     perCreditKrw: 4900,
     perCreditLabel: won(4900),
-    valueLine: "1개 답안",
+    valueLine: "첨삭권 1개",
     recommended: false,
   },
   {
@@ -55,7 +56,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(11900),
     perCreditKrw: Math.round(11900 / 3),
     perCreditLabel: `약 ${won(Math.round(11900 / 3))}`,
-    valueLine: "3개 답안",
+    valueLine: "첨삭권 3개",
     recommended: false,
   },
   {
@@ -66,7 +67,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(17900),
     perCreditKrw: 3580,
     perCreditLabel: won(3580),
-    valueLine: "5개 답안",
+    valueLine: "첨삭권 5개",
     recommended: true,
   },
   {
@@ -77,7 +78,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(29900),
     perCreditKrw: 2990,
     perCreditLabel: won(2990),
-    valueLine: "10개 답안",
+    valueLine: "첨삭권 10개",
     recommended: false,
   },
 ] as const;
@@ -130,8 +131,8 @@ export const heroCopy = {
 
 export const creditCopy = {
   /** Scope of one Credit. Stated once here, not repeated on the product cards. */
-  primary: "1 Credit으로 최초 첨삭과 답안 수정 후 재첨삭 1회까지 이용할 수 있습니다.",
-  reevaluation: `첨삭 결과를 확인한 뒤 답안을 다시 작성해 제출하면, 최초 첨삭 결과 제공일로부터 ${pricingPolicy.reevaluationWindowDays}일 이내에는 추가 Credit 차감 없이 재첨삭을 받을 수 있습니다.`,
+  primary: "1 Credit으로 최초 첨삭과 답안 수정 후 재첨삭까지 이용할 수 있습니다.",
+  reevaluation: `첨삭 결과를 확인한 뒤 답안을 다시 작성해 제출하면, 추가 Credit 차감 없이 재첨삭을 받을 수 있습니다. 최초 첨삭 결과 제공일로부터 ${pricingPolicy.reevaluationWindowDays}일 이내에 재첨삭을 1회 받을 수 있으며, 그 이후 다시 첨삭을 요청하면 새로운 첨삭권이 사용됩니다.`,
   validity: `구매한 Credit은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있습니다.`,
   /** Factual purchase-model statement. Not used as hero marketing copy. */
   oneOffPurchase: "일회성 Credit 구매이며 자동 갱신 결제가 없습니다.",
@@ -237,6 +238,20 @@ export const paymentState = {
   provider: "NOT_CONNECTED" as const,
   promotion: "NOT_IMPLEMENTED" as const,
   promotionNote: "쿠폰 적용 기능은 결제 기능과 함께 제공될 예정입니다.",
+} as const;
+
+/**
+ * Purchase CTA on each product card.
+ *
+ * Payment is not connected in this release, so the control renders disabled
+ * with the plain label only. Naming a build state on a shopping page would
+ * describe the runtime to a consumer, and an enabled control with no checkout
+ * behind it would be a fake purchase. When payment goes live the same CTA is
+ * enabled and wired to the real checkout; no other card markup changes.
+ */
+export const purchaseCta = {
+  label: "구매하기",
+  enabled: false,
 } as const;
 
 export type PolicyDocumentState = "READY" | "NEEDS_OWNER_DATA" | "BLOCKED";

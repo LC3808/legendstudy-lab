@@ -11,6 +11,7 @@ import {
   pricingPlans,
   pricingPolicy,
   promotionCopy,
+  purchaseCta,
   refundExamples,
   refundPolicy,
   serviceAvailability,
@@ -69,13 +70,16 @@ describe("hero copy", () => {
 });
 
 describe("product card copy", () => {
-  it("shows answer quantity only, without reevaluation wording", () => {
+  it("states what each pack contains in consumer terms, one Credit per 첨삭권", () => {
     expect(pricingPlans.map((plan) => plan.valueLine)).toEqual([
-      "1개 답안",
-      "3개 답안",
-      "5개 답안",
-      "10개 답안",
+      "첨삭권 1개",
+      "첨삭권 3개",
+      "첨삭권 5개",
+      "첨삭권 10개",
     ]);
+    for (const plan of pricingPlans) {
+      expect(plan.valueLine).toBe(`첨삭권 ${plan.credits}개`);
+    }
   });
 
   it("keeps reevaluation and review-count claims off the cards", () => {
@@ -91,12 +95,12 @@ describe("product card copy", () => {
 
 describe("credit scope and reevaluation copy", () => {
   it("states the Owner-approved 1 Credit scope", () => {
-    expect(creditCopy.primary).toBe("1 Credit으로 최초 첨삭과 답안 수정 후 재첨삭 1회까지 이용할 수 있습니다.");
+    expect(creditCopy.primary).toBe("1 Credit으로 최초 첨삭과 답안 수정 후 재첨삭까지 이용할 수 있습니다.");
   });
 
   it("states the Owner-approved reevaluation rule", () => {
     expect(creditCopy.reevaluation).toBe(
-      "첨삭 결과를 확인한 뒤 답안을 다시 작성해 제출하면, 최초 첨삭 결과 제공일로부터 14일 이내에는 추가 Credit 차감 없이 재첨삭을 받을 수 있습니다.",
+      "첨삭 결과를 확인한 뒤 답안을 다시 작성해 제출하면, 추가 Credit 차감 없이 재첨삭을 받을 수 있습니다. 최초 첨삭 결과 제공일로부터 14일 이내에 재첨삭을 1회 받을 수 있으며, 그 이후 다시 첨삭을 요청하면 새로운 첨삭권이 사용됩니다.",
     );
   });
 
@@ -126,6 +130,19 @@ describe("purchase model", () => {
   it("does not use the removed subscription marketing line", () => {
     expect(creditCopy.oneOffPurchase).not.toContain("정기결제가 아닙니다");
     expect(creditCopy.oneOffPurchase).not.toContain("필요한 만큼만 구매하세요");
+  });
+});
+
+describe("purchase CTA", () => {
+  it("labels every card CTA 구매하기 and keeps it disabled until checkout exists", () => {
+    expect(purchaseCta.label).toBe("구매하기");
+    expect(purchaseCta.enabled).toBe(false);
+  });
+
+  it("never labels the CTA with a build or release state", () => {
+    for (const phrase of ["결제 준비 중", "서비스 준비 중", "곧 구매 가능", "출시 예정", "준비 중"]) {
+      expect(purchaseCta.label).not.toContain(phrase);
+    }
   });
 });
 

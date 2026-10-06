@@ -88,6 +88,76 @@ if (fs.existsSync(supportPage)) {
   }
 }
 
+// /pricing/ is a consumer shopping page. The internal build state, the release
+// roadmap, the excluded 20 Credit pack and the duplicated sales-information box
+// were removed from it; a later edit must not quietly bring them back.
+const pricingPage = path.join(appRoot, "pricing", "page.tsx");
+const removedPricingCopy = [
+  "서비스 준비 중",
+  "출시 시 제공",
+  "1차 출시",
+  "20 Credits",
+  "CORE",
+  "확정된 출시 일정",
+  "판매 환경 변경",
+  "관할 행정기관",
+  "결제 기능을 준비",
+  "결제가 열리면",
+  "결제 준비 중",
+  "곧 구매 가능",
+  "출시 예정",
+  "준비 중",
+];
+if (fs.existsSync(pricingPage)) {
+  const source = fs.readFileSync(pricingPage, "utf8");
+  for (const phrase of removedPricingCopy) {
+    if (source.includes(phrase)) {
+      errors.push(`removed pricing copy returned: ${phrase}`);
+    }
+  }
+  // The page must not narrate the release state of the service or of payment.
+  if (/ReleaseStatusLabel|ReleaseNotice/.test(source)) {
+    errors.push("pricing page renders a release-state component");
+  }
+  if (/serviceAvailability/.test(source)) {
+    errors.push("pricing page renders internal service availability state");
+  }
+  // Product, price and validity are stated once; the duplicated box is gone.
+  for (const term of ["판매 상품", "판매 가격"]) {
+    if (new RegExp(`<dt>\\s*${term}\\s*</dt>`).test(source)) {
+      errors.push(`duplicated sales information returned on /pricing/: ${term}`);
+    }
+  }
+  // The pack cards are the only product table: every pack gives the same service
+  // scope and differs only in quantity, so a second comparison table would
+  // repeat the cards row for row.
+  if (/pricing-table/.test(source)) {
+    errors.push("the duplicated Credit comparison table returned on /pricing/");
+  }
+  if (!source.includes("Credit 판매 상품")) {
+    errors.push("pricing product section must keep the Owner-approved title");
+  }
+  // Every card carries the purchase CTA, and it stays disabled until a real
+  // checkout exists behind it.
+  if (!/pricing-plan__cta/.test(source) || !/disabled=\{!purchaseCta\.enabled\}/.test(source)) {
+    errors.push("pricing cards must carry the purchase CTA in its disabled state");
+  }
+  // globals.css omits the shared footer on this one route, so the page has to
+  // keep publishing everything the footer otherwise carried: the seller
+  // identity, the customer centre and the four policy links.
+  if (!/<BusinessInfoList/.test(source)) {
+    errors.push("pricing page must render the seller identity in its own block");
+  }
+  if (!/<ContactList/.test(source)) {
+    errors.push("pricing page must render the customer centre in its own block");
+  }
+  for (const href of ["/terms/", "/privacy/", "/refund/", "/support/"]) {
+    if (!source.includes(`"${href}"`)) {
+      errors.push(`pricing page must link ${href} because the footer is omitted`);
+    }
+  }
+}
+
 // Consumer-facing routes and the legal documents must never carry internal
 // build or review vocabulary. Test files are excluded: they assert that these
 // tokens are absent, so they have to name them.

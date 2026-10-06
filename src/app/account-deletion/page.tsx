@@ -1,25 +1,14 @@
 import Link from "next/link";
-
-import { ReleaseNotice, ReleaseStatusLabel } from "@/components/release-status";
+import { AccountDeletionRequest } from "@/components/account-deletion-request";
 import { buildPublicMetadata } from "@/lib/brand";
 
-export const metadata = buildPublicMetadata(
-  "계정 삭제 안내 초안 상태",
-  "LegendStudy+ 계정 삭제 웹 경로의 현재 준비 상태와 발행 전 요구사항을 안내합니다.",
-  "/account-deletion",
-  { index: false },
-);
-
+export const metadata = buildPublicMetadata("레전드스터디+ 계정 삭제", "LegendStudy Plus 계정 삭제 방법과 처리 범위 안내", "/account-deletion", { index: false });
 export default function AccountDeletionPage() {
-  return (
-    <div className="policy-page content-wrap content-wrap--detail">
-      <p className="eyebrow eyebrow--accent">LEGENDSTUDY+ / ACCOUNT DELETION</p>
-      <div className="policy-page__heading"><h1>계정 삭제 안내<br />준비 상태</h1><ReleaseStatusLabel status="FOUNDATION_ONLY" /></div>
-      <p className="policy-page__lead">이 URL은 향후 Google Play와 사용자 지원에 필요한 계정 삭제 웹 경로를 준비하기 위한 기반입니다. 현재는 인증, 삭제 요청 접수, 데이터 삭제 API, 처리 완료 통지가 연결되어 있지 않습니다.</p>
-      <section className="policy-section"><h2>현재 제공하지 않는 것</h2><p>이 페이지에서 계정을 즉시 삭제할 수 없으며, 삭제 요청이 접수되거나 처리되었다고 표시하지 않습니다. 로그인 토큰, 앱 세션, 사용자 ID, 학습 기록을 이 웹사이트로 전달하거나 저장하지 않습니다.</p></section>
-      <section className="policy-section"><h2>실제 삭제 경로를 열기 전 확인할 항목</h2><ol className="process-list"><li><strong>본인 확인</strong><span>앱 계정·웹 계정의 연결 상태와 보안 수준에 맞는 인증 방식을 정해야 합니다.</span></li><li><strong>삭제 대상과 예외</strong><span>계정, 프로필, 저장 자료, 최근 본 자료, 학습 기록, 시험 기록, LS LAB 답안·피드백, 법정 보관 데이터의 범위를 명시해야 합니다.</span></li><li><strong>처리와 통지</strong><span>삭제 요청 접수, 철회 가능 기간, 완료 시점, 실패·이의제기, 지원 채널을 실제 운영 체계로 연결해야 합니다.</span></li></ol></section>
-      <ReleaseNotice><strong>Store-ready 아님.</strong> 실제 계정 삭제 요청 또는 앱 내 삭제 방법이 운영되고, 공식 지원 채널과 개인정보처리방침이 Published 상태가 되기 전에는 이 페이지를 계정 삭제 요구사항의 완료 근거로 사용하지 않습니다.</ReleaseNotice>
-      <div className="policy-actions"><Link className="button button--outline" href="/privacy">개인정보처리방침 상태 보기</Link><Link className="button button--primary" href="/support">지원 상태 보기</Link></div>
-    </div>
-  );
+  return <div className="policy-page content-wrap content-wrap--detail">
+    <h1>레전드스터디+ 계정 삭제</h1>
+    <section className="policy-section"><h2>앱에서 요청</h2><p>MY → 설정 → 탈퇴 요청에서 안내를 확인합니다. 운영 활성화 전에는 준비 중으로 표시되며 삭제 요청이 접수되지 않습니다.</p></section>
+    <section className="policy-section"><h2>웹에서 요청</h2><AccountDeletionRequest /></section>
+    <section className="policy-section"><h2>삭제와 보존 범위</h2><p>계정·프로필·학교·학년·D-Day·저장 및 최근 본 자료·학습·시험 기록·아바타·논술 답안과 평가 등 계정에 연결된 개인 데이터를 삭제 대상으로 합니다. 기기의 로컬 기록은 앱에서 별도로 정리합니다.</p><p>삭제 요청에는 14일(336시간)의 유예기간이 있습니다. 완료된 삭제의 운영 확인 기록은 완료 후 30일 동안 보관하도록 설계되어 있습니다. 법령에 따른 거래 기록, 운영 기록 및 백업의 구체적인 보존기간은 운영 정책 확정이 필요한 항목이며, 확정 전에는 이 페이지의 삭제 요청 기능을 활성화하지 않습니다.</p></section>
+    <div className="policy-actions"><Link href="/privacy/">개인정보처리방침</Link><Link href="/support/">고객센터</Link></div>
+  </div>;
 }

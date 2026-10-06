@@ -17,6 +17,11 @@
   --ink: #172b45;
   --ink-strong: #0e2138;
   --ink-soft: #56636f;
+  /* PRICING-UX-CLEANUP-1: consumer copy must not read as disabled UI.
+     --ink-soft stays for placeholder and disabled states only; paragraphs use
+     --ink-body (11.6:1 on white) and supporting copy uses --ink-muted (7.5:1). */
+  --ink-body: #2b3a4d;
+  --ink-muted: #46566a;
   --paper: #ffffff;
   --paper-deep: #f4f4f5;
   --surface: #ffffff;
@@ -779,11 +784,11 @@ h1, h2, h3 { text-wrap: pretty; }
 /* ==========================================================================
    Pricing and refund — public commercial information
    Reuses the foundation tokens above. Pricing cards are bordered surfaces,
-   the comparison table scrolls horizontally instead of collapsing, and every
-   state (추천 / 준비 중 / 결제 준비 중) carries text instead of colour alone.
+   and they carry the whole product offer on their own, so there is no second
+   comparison table to scroll. Every state (추천 / 구매하기) carries text instead
+   of colour alone.
    ========================================================================== */
 .pricing-page .policy-page__heading h1 { font-size: clamp(2.3rem, 4.8vw, 3.9rem); }
-.pricing-section__lead { margin: 1rem 0 0; color: var(--ink-soft); font-size: 0.94rem; line-height: 1.8; }
 .pricing-note { margin: 1.25rem 0 0; color: var(--ink-soft); font-size: 0.84rem; line-height: 1.7; }
 
 .pricing-page .button:disabled,
@@ -802,23 +807,10 @@ h1, h2, h3 { text-wrap: pretty; }
 .pricing-plan__price { margin: 0.5rem 0 0; color: var(--ink); font-family: Georgia, "Nanum Myeongjo", serif; font-size: clamp(1.7rem, 2.6vw, 2.05rem); font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .pricing-plan__unit { margin: 0; color: var(--ink-soft); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
 .pricing-plan__value { margin: 0.85rem 0 0; padding-top: 0.85rem; border-top: 1px solid var(--line); color: var(--ink); font-size: 0.95rem; font-weight: 800; }
-.pricing-plan__cta { margin: auto 0 0; padding-top: 1rem; }
-.pricing-plan__cta .button { width: 100%; }
 
-.pricing-table-scroll { margin-top: 1.6rem; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); -webkit-overflow-scrolling: touch; }
-.pricing-table-scroll:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 70%, white); outline-offset: 3px; }
-.pricing-table { width: 100%; min-width: 40rem; border-collapse: separate; border-spacing: 0; font-size: 0.88rem; }
-.pricing-table caption { padding: 0.9rem 1rem; border-bottom: 1px solid var(--line); color: var(--ink-soft); font-size: 0.8rem; line-height: 1.6; text-align: left; }
-.pricing-table th, .pricing-table td { padding: 0.8rem 0.9rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-.pricing-table tbody tr:last-child th, .pricing-table tbody tr:last-child td { border-bottom: 0; }
-.pricing-table thead th { position: sticky; top: 0; z-index: 1; background: var(--surface-muted); color: var(--ink); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.02em; white-space: nowrap; }
-.pricing-table thead th:first-child { left: 0; z-index: 2; }
-.pricing-table tbody th { position: sticky; left: 0; z-index: 1; width: 11rem; background: var(--surface); color: var(--ink); font-size: 0.82rem; font-weight: 800; }
-.pricing-table td { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
-
-.pricing-promo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; align-items: start; margin-top: 1.25rem; }
-.pricing-promo__lead { margin: 0; color: var(--ink-soft); font-size: 0.94rem; line-height: 1.8; }
-.pricing-promo__form { display: grid; gap: 0.5rem; }
+.pricing-promo { display: grid; gap: 0.85rem; justify-items: start; margin-top: 1.25rem; }
+.pricing-promo__lead { max-width: 46rem; margin: 0; color: var(--ink-body); font-size: 0.94rem; line-height: 1.8; }
+.pricing-promo__form { display: grid; gap: 0.5rem; width: 100%; max-width: 27rem; }
 .pricing-promo__form label { color: var(--ink); font-size: 0.8rem; font-weight: 800; }
 .pricing-promo__row { display: flex; gap: 0.55rem; }
 .pricing-promo__row input { flex: 1; min-width: 0; min-height: 2.75rem; padding: 0.65rem 0.8rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--ink); }
@@ -849,7 +841,6 @@ h1, h2, h3 { text-wrap: pretty; }
 
 @media (max-width: 960px) {
   .pricing-plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .pricing-promo { grid-template-columns: 1fr; }
 }
 @media (max-width: 680px) {
   .pricing-page .policy-page__heading h1 { font-size: clamp(1.95rem, 8vw, 2.4rem); }
@@ -858,8 +849,6 @@ h1, h2, h3 { text-wrap: pretty; }
   .pricing-free { flex-direction: column; align-items: flex-start; }
   .pricing-promo__row { flex-direction: column; }
   .pricing-promo__row .button { width: 100%; }
-  .pricing-table { min-width: 38rem; font-size: 0.84rem; }
-  .pricing-table tbody th { width: 9rem; }
 }
 /* TOSS-REVIEW-1: public business identity, customer contacts and legal documents */
 .site-footer__brand { display: grid; gap: 0.5rem; max-width: 46rem; }
@@ -956,3 +945,118 @@ h1, h2, h3 { text-wrap: pretty; }
 .policy-list,
 .policy-definitions dd,
 .contact-list__note { overflow-wrap: anywhere; }
+/* ==========================================================================
+   PRICING-UX-CLEANUP-1 — consumer reading experience on /pricing/
+   The pricing page is a commercial page, so paragraphs stop wearing the grey
+   that reads as disabled UI. --ink-soft is now reserved for placeholder and
+   disabled states. The promotion block, the policy navigation and the business
+   information block are tightened into one left-aligned reading column.
+   ========================================================================== */
+.pricing-page .policy-page__lead,
+.pricing-page .policy-section > p,
+.pricing-page .policy-list,
+.pricing-page .process-list span,
+.pricing-page .pricing-fact p:not(.pricing-fact__statement),
+.pricing-page .pricing-summary dd,
+.pricing-page .pricing-faq details p { color: var(--ink-body); }
+/* Supporting copy stays a step lighter than the paragraph colour but never
+   lighter than the measured 7.5:1 --ink-muted. */
+.pricing-page .pricing-plan__unit,
+.pricing-page .pricing-note,
+.pricing-page .pricing-promo__note,
+.pricing-page .contact-list__note,
+.pricing-page .business-info dt { color: var(--ink-muted); }
+.pricing-page .contact-list__label,
+.pricing-page .business-info dd { color: var(--ink-body); }
+
+/* Only genuinely inactive controls keep the grey. */
+.pricing-page .button:disabled,
+.pricing-page .button:disabled:hover { color: var(--ink-muted); }
+
+/* The 신규 가입 banner is a single statement now that the runtime chip is gone. */
+.pricing-page .pricing-free { flex-direction: column; align-items: flex-start; }
+
+/* 정책 링크 is a navigation strip, not a titled section. */
+.pricing-policy-nav { margin-top: 2.2rem; padding-top: 1.7rem; border-top: 1px solid var(--line); }
+
+/* 사업자정보 closes the page: compact labels, not a display heading. */
+.pricing-business { margin-top: 2.2rem; }
+.pricing-business h2 { font-size: var(--type-h3); font-weight: 700; }
+/* ==========================================================================
+   PRICING-UX-CLEANUP-1B — hierarchy before the Production merge
+   The 신규 가입 banner drops below the price table in visual weight, the coupon
+   section becomes a compact secondary block, and 사업자정보 reads as a small
+   legal block instead of a page section.
+   ========================================================================== */
+.pricing-page .pricing-free {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.35rem 0.6rem;
+  margin-top: 1.3rem; padding: 0.75rem 1rem;
+  border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm); background: var(--surface-muted);
+}
+.pricing-page .pricing-free h2 {
+  margin: 0; font-family: var(--font-ui); font-size: var(--type-body);
+  font-weight: 800; letter-spacing: 0; color: var(--ink-body);
+}
+
+.pricing-page .pricing-promo-section { margin-top: 1.9rem; padding-top: 1.5rem; }
+.pricing-page .pricing-promo-section h2 { font-size: 1.15rem; }
+.pricing-page .pricing-promo { gap: 0.6rem; margin-top: 0.9rem; }
+.pricing-page .pricing-promo__lead { font-size: var(--type-small); line-height: 1.65; }
+.pricing-page .pricing-promo__form { max-width: 22rem; gap: 0.45rem; }
+.pricing-page .pricing-promo__form label { font-size: 0.76rem; }
+.pricing-page .pricing-promo__row { gap: 0.45rem; }
+.pricing-page .pricing-promo__row input { min-height: 2.5rem; padding: 0.55rem 0.7rem; font-size: var(--type-body); }
+.pricing-page .pricing-promo__row .button { min-height: 2.5rem; padding: 0.6rem 0.9rem; font-size: 0.82rem; }
+.pricing-page .pricing-promo__note { font-size: 0.76rem; line-height: 1.55; }
+
+.pricing-page .pricing-business { margin-top: 1.9rem; padding-top: 1.5rem; }
+.pricing-page .pricing-business h2 {
+  font-family: var(--font-ui); font-size: 0.95rem; font-weight: 800;
+  letter-spacing: 0.02em; color: var(--ink-muted);
+}
+
+/* /pricing/ ends with its own customer centre, policy links and seller identity,
+   so the global footer would repeat all of them on this one route. The whole
+   footer is omitted on /pricing/ only. The rule is scoped with :has(), which
+   leaves the markup untouched for every other route, and `display: none` also
+   removes the duplicated footer nav landmark from the accessibility tree
+   instead of leaving a second "정책과 고객지원" navigation behind. Everything the
+   footer otherwise carried is guarded on the page itself in
+   scripts/verify-boundaries.mjs. */
+.site-shell:has(.pricing-page) .site-footer { display: none; }
+
+/* ==========================================================================
+   PRICING-UX-CLEANUP-1D — the cards carry the CTA, the copy stops repeating
+   The pack cards are the only product table now, so each one ends with its own
+   purchase CTA. Payment is not connected yet, so the CTA renders disabled: it
+   keeps the card shape stable for the day the checkout is wired, and it never
+   claims a purchase the service cannot complete.
+   ========================================================================== */
+.pricing-page .pricing-plan__cta {
+  width: 100%; min-height: 2.5rem; margin-top: 1.1rem; padding: 0.6rem 0.9rem;
+  font-size: 0.86rem;
+}
+.pricing-page .pricing-plan__cta:disabled { cursor: not-allowed; }
+/* The hero sentence measures ~72em, so the 48rem reading measure broke it in the
+   middle of a phrase. The wider measure lets it break at the clause boundary
+   instead. Mobile keeps wrapping to the viewport. */
+.pricing-page .policy-page__lead { max-width: 52rem; }
+
+/* Korean prose breaks inside a word by default, which is what made the hero and
+   the policy lists look like they wrapped too early. keep-all moves every break
+   to a word boundary, so the same container width reads as a deliberate line
+   instead of a truncated one. break-word stays as the fallback for the long
+   unbroken tokens (e-mail addresses, numbers) that appear further down. */
+.pricing-page .policy-page__lead,
+.pricing-page .policy-section > p,
+.pricing-page .policy-list li,
+.pricing-page .process-list span,
+.pricing-page .pricing-fact__statement,
+.pricing-page .pricing-summary dd,
+.pricing-page .pricing-faq details p,
+.pricing-page .pricing-note,
+.pricing-page .pricing-promo__lead {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
