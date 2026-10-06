@@ -77,21 +77,25 @@ async function loadSdk() {
 /**
  * Checkout for the sold Credit packs.
  *
- * Order of the consumer journey is fixed: choose a pack, read the order summary,
- * then pay. The browser sends a SKU and a request key only — never a price, a
- * quantity, an owner or a redirect. Every value shown in the order summary comes
- * from the server snapshot returned with the order, so the summary cannot drift
- * from what the payment provider is asked to charge.
+ * The journey is fixed and every screen exists before any payment runtime is
+ * configured: choose a pack, read the order summary, then pay. Only the final
+ * control depends on the backend, so a card reviewer can walk and capture the
+ * whole path on a release where nothing can be charged, and the same page turns
+ * into a working purchase the moment the payment environment is present.
+ *
+ * The browser sends a SKU and a request key only — never a price, a quantity, an
+ * owner or a redirect. Every value in the order summary is the pack the server
+ * snapshot was created from, so the summary cannot drift from the charge.
  */
 export function PaymentCheckout() {
   const [runtime, setRuntime] = useState<PaymentState | null>(null);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   /**
-   * The card link preselects a pack. This is read once at mount: the value only
-   * affects markup that is gated behind the runtime answer, so the first render
-   * is identical on the server and in the browser.
+   * The card link preselects a pack, and a member arriving without one is shown
+   * the smallest pack so the order summary is always concrete. The value only
+   * decides which summary is displayed; it never authorizes anything.
    */
-  const [credits, setCredits] = useState<number | null>(() => skuFromLocation());
+  const [credits, setCredits] = useState<number>(() => skuFromLocation() ?? pricingPlans[0].credits);
   const [order, setOrder] = useState<Order | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -114,11 +118,12 @@ export function PaymentCheckout() {
     };
   }, []);
 
-  const plan = useMemo(() => pricingPlans.find((p) => p.credits === credits) ?? null, [credits]);
+  const plan = useMemo(() => pricingPlans.find((p) => p.credits === credits) ?? pricingPlans[0], [credits]);
+  const payable = runtime !== null && checkoutAvailable(runtime) && signedIn === true;
   const notice = runtime === null ? null : checkoutNotice(runtime);
 
   async function pay() {
-    if (!plan || busy) return;
+    if (!payable || busy) return;
     setBusy(true);
     setMessage(null);
     try {
@@ -158,108 +163,90 @@ export function PaymentCheckout() {
         </p>
       ) : null}
 
-      {runtime !== null && !checkoutAvailable(runtime) ? (
-        <div className="policy-actions">
-          <Link className="button button--outline" href="/pricing/">
-            요금 안내
-          </Link>
-          <Link className="button button--outline" href="/support/">
-            고객센터
-          </Link>
+      <section className="policy-section" aria-labelledby="checkout-plans-title">
+        <h2 id="checkout-plans-title">상품 선택</h2>
+        <div className="pricing-plans">
+          {pricingPlans.map((option) => (
+            <article
+              className="pricing-plan"
+              key={option.id}
+              aria-labelledby={`checkout-plan-${option.id}`}
+              data-selected={option.credits === plan.credits ? "true" : undefined}
+            >
+              <h3 className="pricing-plan__name" id={`checkout-plan-${option.id}`}>
+                {option.name}
+                {option.recommended ? <span className="pricing-plan__badge">추천</span> : null}
+              </h3>
+              <p className="pricing-plan__price">{option.priceLabel}</p>
+              <p className="pricing-plan__unit">Credit당 {option.perCreditLabel}</p>
+              <p className="pricing-plan__value">{option.valueLine}</p>
+              <button
+                className="button button--outline pricing-plan__cta"
+                type="button"
+                disabled={busy}
+                onClick={() => {
+                  setCredits(option.credits);
+                  setOrder(null);
+                  setMessage(null);
+                }}
+              >
+                {option.credits === plan.credits ? "선택됨" : "선택하기"}
+              </button>
+            </article>
+          ))}
         </div>
-      ) : null}
+      </section>
 
-      {signedIn === false ? (
-        <p className="checkout-signin">
-          구매는 레전드스터디 랩 계정으로 로그인한 뒤 진행합니다.{" "}
-          <Link href="/login/">로그인</Link>
+      <section className="policy-section" aria-labelledby="checkout-confirm-title">
+        <h2 id="checkout-confirm-title">주문 확인</h2>
+        <dl className="checkout-summary">
+          <div>
+            <dt>상품</dt>
+            <dd>{plan.name}</dd>
+          </div>
+          <div>
+            <dt>수량</dt>
+            <dd>{plan.credits} Credit</dd>
+          </div>
+          <div>
+            <dt>결제금액</dt>
+            <dd>{plan.priceLabel}</dd>
+          </div>
+          <div>
+            <dt>이용기간</dt>
+            <dd>결제일로부터 {pricingPolicy.paidCreditValidityMonths}개월</dd>
+          </div>
+          <div>
+            <dt>1 Credit 이용 범위</dt>
+            <dd>최초 첨삭 1회 + 동일 답안 재첨삭 1회</dd>
+          </div>
+          <div>
+            <dt>환불</dt>
+            <dd>
+              미사용 시 전액 환불 · <Link href="/refund/">환불정책</Link>
+            </dd>
+          </div>
+        </dl>
+        <div className="policy-actions">
+          <button
+            className="button button--accent"
+            type="button"
+            disabled={!payable || busy}
+            onClick={() => void pay()}
+          >
+            {busy ? "결제창을 여는 중" : "결제하기"}
+          </button>
+        </div>
+        {signedIn !== true ? (
+          <p className="checkout-signin">
+            결제를 진행하려면 <Link href="/login/">로그인</Link>이 필요합니다.
+          </p>
+        ) : null}
+        <p className="checkout-note">
+          결제수단 선택과 카드 정보 입력은 토스페이먼츠 결제창에서 진행합니다. 카드 정보는 레전드스터디에
+          저장하지 않습니다.
         </p>
-      ) : null}
-
-      {runtime !== null && checkoutAvailable(runtime) ? (
-        <>
-          <section className="policy-section" aria-labelledby="checkout-plans-title">
-            <h2 id="checkout-plans-title">상품 선택</h2>
-            <div className="pricing-plans">
-              {pricingPlans.map((option) => (
-                <article
-                  className="pricing-plan"
-                  key={option.id}
-                  aria-labelledby={`checkout-plan-${option.id}`}
-                  data-selected={option.credits === credits ? "true" : undefined}
-                >
-                  <h3 className="pricing-plan__name" id={`checkout-plan-${option.id}`}>
-                    {option.name}
-                  </h3>
-                  <p className="pricing-plan__price">{option.priceLabel}</p>
-                  <p className="pricing-plan__unit">Credit당 {option.perCreditLabel}</p>
-                  <button
-                    className="button button--outline pricing-plan__cta"
-                    type="button"
-                    disabled={busy}
-                    onClick={() => {
-                      setCredits(option.credits);
-                      setOrder(null);
-                      setMessage(null);
-                    }}
-                  >
-                    {option.credits === credits ? "선택됨" : "선택하기"}
-                  </button>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          {plan ? (
-            <section className="policy-section" aria-labelledby="checkout-confirm-title">
-              <h2 id="checkout-confirm-title">주문 확인</h2>
-              <dl className="checkout-summary">
-                <div>
-                  <dt>상품</dt>
-                  <dd>{plan.name}</dd>
-                </div>
-                <div>
-                  <dt>수량</dt>
-                  <dd>{plan.credits} Credit</dd>
-                </div>
-                <div>
-                  <dt>결제금액</dt>
-                  <dd>{plan.priceLabel}</dd>
-                </div>
-                <div>
-                  <dt>이용기간</dt>
-                  <dd>결제일로부터 {pricingPolicy.paidCreditValidityMonths}개월</dd>
-                </div>
-                <div>
-                  <dt>1 Credit 이용 범위</dt>
-                  <dd>최초 첨삭 1회 + 동일 답안 재첨삭 1회</dd>
-                </div>
-                <div>
-                  <dt>환불</dt>
-                  <dd>
-                    미사용 시 전액 환불 · <Link href="/refund/">환불정책</Link>
-                  </dd>
-                </div>
-              </dl>
-              <div className="policy-actions">
-                <button
-                  className="button button--accent"
-                  type="button"
-                  disabled={busy || signedIn !== true}
-                  onClick={() => void pay()}
-                >
-                  {busy ? "결제창을 여는 중" : "결제하기"}
-                </button>
-              </div>
-              {signedIn !== true ? (
-                <p className="checkout-signin">
-                  결제를 진행하려면 <Link href="/login/">로그인</Link>이 필요합니다.
-                </p>
-              ) : null}
-            </section>
-          ) : null}
-        </>
-      ) : null}
+      </section>
 
       {message ? (
         <p className="checkout-message" role="status">

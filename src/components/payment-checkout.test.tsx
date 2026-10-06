@@ -43,8 +43,9 @@ describe('checkout surface', () => {
     vi.stubGlobal('fetch', f);
     render(<PaymentCheckout />);
     await screen.findByText(/결제 준비 중/);
-    expect(screen.queryByText('결제하기')).toBeNull();
-    expect(screen.queryByText('주문 확인')).toBeNull();
+    // The review screens exist, but nothing can be paid and no order is created.
+    expect(screen.getByText('주문 확인')).toBeTruthy();
+    expect(screen.getByText('결제하기')).toBeDisabled();
     expect(f).toHaveBeenCalledTimes(1);
   });
 
@@ -101,7 +102,8 @@ describe('checkout surface', () => {
     vi.stubGlobal('fetch', runtime('TEST'));
     render(<PaymentCheckout />);
     await screen.findByText(/테스트 결제 환경입니다/);
-    expect(screen.queryByText('주문 확인')).toBeNull();
+    const summary = screen.getByRole('region', { name: '주문 확인' });
+    expect(within(summary).getByText('1 Credit')).toBeTruthy();
     expect(screen.getByText('상품 선택')).toBeTruthy();
   });
 });

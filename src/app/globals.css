@@ -1084,6 +1084,14 @@ h1, h2, h3 { text-wrap: pretty; }
   overflow-wrap: anywhere;
 }
 
+.checkout-note {
+  margin: 0.75rem 0 0;
+  color: var(--ink-muted);
+  font-size: var(--type-small);
+  line-height: var(--leading-body);
+  overflow-wrap: anywhere;
+}
+
 .checkout-signin,
 .checkout-message {
   margin: 0.75rem 0;
