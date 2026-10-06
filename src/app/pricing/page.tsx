@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { BusinessInfoList, ContactList } from "@/components/business-info-block";
+import { PricingPlanCta } from "@/components/pricing-plan-cta";
 import { PricingPromoForm } from "@/components/pricing-promo-form";
 import { buildPublicMetadata } from "@/lib/brand";
 import { customerCenter } from "@/lib/business-info";
@@ -11,7 +12,7 @@ import {
   pricingPlans,
   pricingPolicy,
   promotionCopy,
-  purchaseCta,
+  purchaseGuide,
   refundPolicy,
 } from "@/lib/pricing";
 
@@ -38,10 +39,11 @@ const plans = pricingPlans;
  * the cards row for row.
  *
  * Each card carries the purchase CTA. Payment is not connected in this release,
- * so the control is rendered disabled with a neutral label: a control labelled
- * with a runtime state would describe the build to a consumer, and an enabled
- * one would be a fake purchase. Enabling `purchaseCta` wires the same CTA to the
- * real checkout without touching the card markup.
+ * so the control renders disabled with a neutral label: a control labelled with a
+ * runtime state would describe the build to a consumer, and an enabled one would
+ * be a fake purchase. `PricingPlanCta` upgrades the same control to a link to the
+ * real checkout as soon as the payment backend reports a configured runtime, and
+ * the link carries only a SKU. The card markup does not change.
  */
 export default function PricingPage() {
   return (
@@ -72,16 +74,19 @@ export default function PricingPage() {
               <p className="pricing-plan__price">{plan.priceLabel}</p>
               <p className="pricing-plan__unit">Credit당 {plan.perCreditLabel}</p>
               <p className="pricing-plan__value">{plan.valueLine}</p>
-              <button
-                className="button button--outline pricing-plan__cta"
-                type="button"
-                disabled={!purchaseCta.enabled}
-              >
-                {purchaseCta.label}
-              </button>
+              <PricingPlanCta sku={`${plan.credits}c`} />
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="policy-section" aria-labelledby="pricing-purchase-title">
+        <h2 id="pricing-purchase-title">{purchaseGuide.title}</h2>
+        <ul className="policy-list">
+          {purchaseGuide.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
       </section>
 
       <section className="policy-section pricing-promo-section" aria-labelledby="pricing-promo-title">

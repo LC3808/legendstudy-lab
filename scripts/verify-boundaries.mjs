@@ -138,9 +138,21 @@ if (fs.existsSync(pricingPage)) {
     errors.push("pricing product section must keep the Owner-approved title");
   }
   // Every card carries the purchase CTA, and it stays disabled until a real
-  // checkout exists behind it.
-  if (!/pricing-plan__cta/.test(source) || !/disabled=\{!purchaseCta\.enabled\}/.test(source)) {
-    errors.push("pricing cards must carry the purchase CTA in its disabled state");
+  // checkout exists behind it. The control is now a component because its enabled
+  // state comes from the payment runtime, so the page must delegate it and must
+  // never carry a price or quantity of its own into checkout.
+  if (!/<PricingPlanCta\s+sku=/.test(source)) {
+    errors.push("pricing cards must carry the runtime-gated purchase CTA");
+  }
+  if (/<button[^>]*pricing-plan__cta/.test(source)) {
+    errors.push("the pricing page must not hard-code the purchase control");
+  }
+  if (/purchaseCta\.enabled/.test(source)) {
+    errors.push("the pricing page must not decide the CTA state from a build constant");
+  }
+  // The pre-purchase guide states what a consumer must read before paying.
+  if (!/pricing-purchase-title/.test(source) || !/purchaseGuide\.items/.test(source)) {
+    errors.push("pricing page must keep the pre-purchase guide");
   }
   // globals.css omits the shared footer on this one route, so the page has to
   // keep publishing everything the footer otherwise carried: the seller
@@ -156,6 +168,36 @@ if (fs.existsSync(pricingPage)) {
       errors.push(`pricing page must link ${href} because the footer is omitted`);
     }
   }
+}
+
+// Checkout is the payment path a merchant/card reviewer walks. The browser may
+// send a SKU and a request key and nothing else: no price, no quantity, no
+// owner, no redirect, no mode. The server snapshot is the only thing shown and
+// the only thing paid.
+const checkoutComponent = path.join(sourceRoot, "components", "payment-checkout.tsx");
+if (fs.existsSync(checkoutComponent)) {
+  const source = fs.readFileSync(checkoutComponent, "utf8");
+  for (const banned of ["service_role", "SERVICE_ROLE", "PAYMENT_FINANCE_TOKEN"]) {
+    if (source.includes(banned)) {
+      errors.push(`checkout must not hold a privileged payment capability: ${banned}`);
+    }
+  }
+  if (!/sku:\s*`\$\{plan\.credits\}c`/.test(source)) {
+    errors.push("checkout must create the order from a SKU only");
+  }
+  if (!/js\.tosspayments\.com\/v2\/standard/.test(source) || !/requestPayment/.test(source)) {
+    errors.push("checkout must open the official Toss payment window");
+  }
+  if (!/r\.checkout/.test(source)) {
+    errors.push("checkout must pay the server snapshot, not a browser value");
+  }
+  if (!/signedIn/.test(source)) {
+    errors.push("checkout must require an authenticated account");
+  }
+}
+const paymentLayout = path.join(appRoot, "payments", "layout.tsx");
+if (!fs.existsSync(paymentLayout) || !/index:\s*false/.test(fs.readFileSync(paymentLayout, "utf8"))) {
+  errors.push("payment routes must stay out of the search index");
 }
 
 // Consumer-facing routes and the legal documents must never carry internal

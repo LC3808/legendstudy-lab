@@ -1,2 +1,2 @@
-import { PaymentTest } from '@/components/payment-test';
-export default function CheckoutPage(){return <PaymentTest live />;}
+import { PaymentCheckout } from '@/components/payment-checkout';
+export default function CheckoutPage(){return <PaymentCheckout />;}

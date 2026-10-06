@@ -12,6 +12,7 @@ import {
   pricingPolicy,
   promotionCopy,
   purchaseCta,
+  purchaseGuide,
   refundExamples,
   refundPolicy,
   serviceAvailability,
@@ -137,6 +138,15 @@ describe("purchase CTA", () => {
   it("labels every card CTA 구매하기 and keeps it disabled until checkout exists", () => {
     expect(purchaseCta.label).toBe("구매하기");
     expect(purchaseCta.enabled).toBe(false);
+    expect(purchaseCta.href).toBe("/payments/checkout/");
+  });
+
+  it("sends only a SKU to checkout, never a price or a quantity authority", () => {
+    for (const plan of pricingPlans) {
+      expect(`${plan.credits}c`).toMatch(/^\d{1,2}c$/);
+    }
+    expect(purchaseCta.href).not.toContain("price");
+    expect(purchaseCta.href).not.toContain("amount");
   });
 
   it("never labels the CTA with a build or release state", () => {
@@ -231,3 +241,27 @@ describe("public document state", () => {
     expect(policyDocumentState.customerService).toBe("READY");
   });
 });
+describe("purchase guide", () => {
+  it("states the facts a consumer must read before paying", () => {
+    const joined = purchaseGuide.items.join(" ");
+    expect(joined).toContain("로그인");
+    expect(joined).toContain("Credit이 계정에 지급");
+    expect(joined).toContain("3개월");
+    expect(joined).toContain("자동 갱신 결제가 없습니다");
+    expect(joined).toContain("전액 환불");
+  });
+
+  it("keeps the maximum service period at the paid Credit validity window", () => {
+    const servicePeriod = purchaseGuide.items.find((item) => item.includes("서비스 최대 제공기간"));
+    expect(servicePeriod).toContain(`${pricingPolicy.paidCreditValidityMonths}개월`);
+    expect(pricingPolicy.paidCreditValidityMonths).toBeLessThanOrEqual(3);
+  });
+
+  it("never promises admission or uses AI as the headline", () => {
+    const joined = purchaseGuide.items.join(" ");
+    for (const banned of ["합격 보장", "합격 가능성", "AI"]) {
+      expect(joined).not.toContain(banned);
+    }
+  });
+});
+

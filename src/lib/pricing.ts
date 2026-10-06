@@ -143,6 +143,25 @@ export const creditCopy = {
     "관련 법령에 따른 청약철회, 계약해제·해지 및 환급에 관한 소비자의 권리는 본 환불정책과 별도로 보장됩니다.",
 } as const;
 
+/**
+ * Facts a consumer must be able to read before paying.
+ *
+ * Stated on /pricing/ so the product, how Credit is delivered, the validity
+ * window and the maximum service period are all visible before the payment
+ * window opens. This is consumer information, not a build status.
+ */
+export const purchaseGuide = {
+  title: "구매 안내",
+  items: [
+    "구매는 레전드스터디 랩 계정으로 로그인한 뒤 진행합니다.",
+    "결제가 완료되면 구매한 Credit이 계정에 지급됩니다.",
+    `Credit은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있으며, 서비스 최대 제공기간도 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월입니다.`,
+    "1 Credit으로 최초 첨삭 1회와 동일 답안 재첨삭 1회를 이용합니다.",
+    "일회성 구매이며 자동 갱신 결제가 없습니다.",
+    "미사용 Credit은 유효기간 내에 전액 환불되며, 자세한 조건은 환불정책에서 확인할 수 있습니다.",
+  ],
+} as const;
+
 /** Promotion / coupon block copy. Sits directly below the product cards. */
 export const promotionCopy = {
   title: "학교 단체 이용 / 이벤트 프로모션",
@@ -251,7 +270,14 @@ export const paymentState = {
  */
 export const purchaseCta = {
   label: "구매하기",
+  /**
+   * The truthful default a static export renders before the payment runtime has
+   * answered. The control is enabled at runtime by the payment backend, never by
+   * this constant, so the button can never be the thing that authorizes a sale.
+   */
   enabled: false,
+  /** Checkout route the CTA navigates to once the payment runtime is configured. */
+  href: "/payments/checkout/",
 } as const;
 
 export type PolicyDocumentState = "READY" | "NEEDS_OWNER_DATA" | "BLOCKED";
