@@ -1,5 +1,8 @@
 {
   "version": 1,
-  "include": ["/api/auth/kakao/*"],
+  "include": [
+    "/api/auth/kakao/*",
+    "/api/payments/*"
+  ],
   "exclude": []
 }

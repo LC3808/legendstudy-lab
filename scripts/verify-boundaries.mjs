@@ -39,7 +39,7 @@ for (const blockedDependency of ["express", "@trpc/server", "@trpc/client"]) {
 
 // Cloudflare exchange secrets must never be referenced from any browser source.
 for (const file of files) {
-  if (/KAKAO_CLIENT_SECRET|KAKAO_REST_API_KEY/.test(fs.readFileSync(file, "utf8")) && !file.endsWith(".test.ts")) {
+  if (/KAKAO_CLIENT_SECRET|KAKAO_REST_API_KEY|TOSS_TEST_SECRET_KEY|PAYMENT_FINANCE_TOKEN|PAYMENT_SUPPORT_SUBJECTS/.test(fs.readFileSync(file, "utf8")) && !file.endsWith(".test.ts")) {
     errors.push(`server Kakao binding referenced in browser source: ${path.relative(root, file)}`);
   }
 }
@@ -138,9 +138,21 @@ if (fs.existsSync(pricingPage)) {
     errors.push("pricing product section must keep the Owner-approved title");
   }
   // Every card carries the purchase CTA, and it stays disabled until a real
-  // checkout exists behind it.
-  if (!/pricing-plan__cta/.test(source) || !/disabled=\{!purchaseCta\.enabled\}/.test(source)) {
-    errors.push("pricing cards must carry the purchase CTA in its disabled state");
+  // checkout exists behind it. The control is now a component because its enabled
+  // state comes from the payment runtime, so the page must delegate it and must
+  // never carry a price or quantity of its own into checkout.
+  if (!/<PricingPlanCta\s+sku=/.test(source)) {
+    errors.push("pricing cards must carry the runtime-gated purchase CTA");
+  }
+  if (/<button[^>]*pricing-plan__cta/.test(source)) {
+    errors.push("the pricing page must not hard-code the purchase control");
+  }
+  if (/purchaseCta\.enabled/.test(source)) {
+    errors.push("the pricing page must not decide the CTA state from a build constant");
+  }
+  // The pre-purchase guide states what a consumer must read before paying.
+  if (!/pricing-purchase-title/.test(source) || !/purchaseGuide\.items/.test(source)) {
+    errors.push("pricing page must keep the pre-purchase guide");
   }
   // globals.css omits the shared footer on this one route, so the page has to
   // keep publishing everything the footer otherwise carried: the seller
@@ -156,6 +168,55 @@ if (fs.existsSync(pricingPage)) {
       errors.push(`pricing page must link ${href} because the footer is omitted`);
     }
   }
+}
+
+// Checkout is the payment path a merchant/card reviewer walks. The browser may
+// send a SKU and a request key and nothing else: no price, no quantity, no
+// owner, no redirect, no mode. The server snapshot is the only thing shown and
+// the only thing paid.
+const checkoutComponent = path.join(sourceRoot, "components", "payment-checkout.tsx");
+if (fs.existsSync(checkoutComponent)) {
+  const source = fs.readFileSync(checkoutComponent, "utf8");
+  for (const banned of ["service_role", "SERVICE_ROLE", "PAYMENT_FINANCE_TOKEN"]) {
+    if (source.includes(banned)) {
+      errors.push(`checkout must not hold a privileged payment capability: ${banned}`);
+    }
+  }
+  if (!/sku:\s*`\$\{plan\.credits\}c`/.test(source)) {
+    errors.push("checkout must create the order from a SKU only");
+  }
+  if (!/js\.tosspayments\.com\/v2\/standard/.test(source) || !/requestPayment/.test(source)) {
+    errors.push("checkout must open the official Toss payment window");
+  }
+  if (!/r\.checkout/.test(source)) {
+    errors.push("checkout must pay the server snapshot, not a browser value");
+  }
+  if (!/signedIn/.test(source)) {
+    errors.push("checkout must require an authenticated account");
+  }
+}
+// The card-review runtime runs on the real service origin against the Production
+// account. It must stay a TEST merchant runtime, and the checkout may only open for
+// the allowlisted reviewer, whose identity the server resolves itself.
+const paymentRuntimeSource = path.join(root, "cloudflare", "payments.ts");
+if (fs.existsSync(paymentRuntimeSource)) {
+  const source = fs.readFileSync(paymentRuntimeSource, "utf8");
+  for (const [pattern, message] of [
+    [/mode === 'REVIEW'/, "the production card-review runtime mode must exist"],
+    [/PAYMENT_REVIEW_SUBJECTS/, "the card-review runtime must gate on a server-side reviewer allowlist"],
+    [/auth\/v1\/user/, "the card-review runtime must resolve the reviewer from Auth, not from the browser"],
+    [/review && !\(e\.PAYMENT_REVIEW_SUBJECTS/, "a card-review runtime without an allowlist must fail closed"],
+    [/test \? \/\^test_ck_\//, "the card-review runtime must keep the TEST merchant key family"],
+    [/REVIEW_REQUIRED/, "a non-allowlisted member must be refused before any order is created"],
+  ]) {
+    if (!pattern.test(source)) {
+      errors.push(message);
+    }
+  }
+}
+const paymentLayout = path.join(appRoot, "payments", "layout.tsx");
+if (!fs.existsSync(paymentLayout) || !/index:\s*false/.test(fs.readFileSync(paymentLayout, "utf8"))) {
+  errors.push("payment routes must stay out of the search index");
 }
 
 // Consumer-facing routes and the legal documents must never carry internal

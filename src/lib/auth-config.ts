@@ -7,6 +7,8 @@ type AuthEnvironment = {
   url?: string;
   publishableKey?: string;
   providers?: string;
+  approvedPreviewOrigin?: string;
+  approvedPreviewSupabaseUrl?: string;
 };
 
 export type BrowserAuthConfig = {
@@ -28,21 +30,32 @@ function parseProviders(value: string | undefined): SocialProvider[] {
 }
 
 /**
- * Only the LegendStudy app's declared public project URL is accepted. This
- * prevents a mistakenly configured LAB deployment from pointing at another
- * Supabase project while keeping all browser configuration non-secret.
+ * The build declares one exact Preview origin/project pair. Location only checks
+ * that declaration; query strings, storage and callers cannot choose a project.
+ * Production is permanently bound to its existing project. Missing config closes auth.
  */
 export function getBrowserAuthConfig(
   environment: AuthEnvironment = {
     url: process.env.NEXT_PUBLIC_SUPABASE_URL,
     publishableKey: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     providers: process.env.NEXT_PUBLIC_SUPABASE_AUTH_PROVIDERS,
+    approvedPreviewOrigin: process.env.NEXT_PUBLIC_AUTH_PREVIEW_ORIGIN,
+    approvedPreviewSupabaseUrl: process.env.NEXT_PUBLIC_AUTH_PREVIEW_SUPABASE_URL,
   },
+  origin: string | undefined = typeof window === "undefined" ? undefined : window.location.origin,
 ): BrowserAuthConfig | null {
   const url = environment.url?.trim().replace(/\/$/, "");
   const publishableKey = environment.publishableKey?.trim();
 
-  if (url !== legendStudySupabaseUrl || !publishableKey || !/^sb_publishable_[A-Za-z0-9_-]+$/.test(publishableKey)) {
+  const production = origin === "https://lab.legendstudy.com" && url === legendStudySupabaseUrl;
+  const previewOrigin = environment.approvedPreviewOrigin;
+  const previewUrl = environment.approvedPreviewSupabaseUrl;
+  const preview = !!previewOrigin && /^https:\/\/[a-z0-9-]+(?:\.[a-z0-9-]+)*\.pages\.dev$/.test(previewOrigin)
+    && origin === previewOrigin && !!previewUrl
+    && /^https:\/\/[a-z0-9]+\.supabase\.co$/.test(previewUrl)
+    && previewUrl !== legendStudySupabaseUrl && url === previewUrl;
+
+  if ((!production && !preview) || !publishableKey || !/^sb_publishable_[A-Za-z0-9_-]+$/.test(publishableKey)) {
     return null;
   }
 

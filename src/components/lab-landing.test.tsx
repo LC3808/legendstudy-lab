@@ -21,7 +21,13 @@ describe("Axis Data Tracks landing", () => {
     }
 
     expect(container.querySelector(".ll-convergence, .ll-ledger, .ll-convergence-node, svg")).toBeNull();
-    expect(screen.getByText("기능이 아니라, 데이터가 이어집니다.")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "내신부터 수시모집과 수능까지, 대입 준비를 하나로 연결하는 세 가지 축." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "연결된 데이터가, 더 나은 대입 전략을 만듭니다." }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("기능이 아니라, 데이터가 이어집니다.")).not.toBeInTheDocument();
   });
 
   it("retains public CTA destinations rather than adding illustrative product routes", () => {

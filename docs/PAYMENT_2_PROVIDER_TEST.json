@@ -1,0 +1,137 @@
+{
+  "scope": "OFFICIAL_DOCUMENTATION_SANDBOX_NOT_LEGLABN24K",
+  "provider_api_calls": 14,
+  "results": [
+    {
+      "test": "initial_lookup",
+      "http": 200,
+      "status": "IN_PROGRESS",
+      "code": null,
+      "amount": 50000,
+      "balance": 50000,
+      "cancel_count": 0
+    },
+    {
+      "test": "amount_mismatch",
+      "http": 403,
+      "status": null,
+      "code": "FORBIDDEN_REQUEST",
+      "amount": null,
+      "balance": null,
+      "cancel_count": 0
+    },
+    {
+      "test": "confirm",
+      "http": 200,
+      "status": "DONE",
+      "code": null,
+      "amount": 50000,
+      "balance": 50000,
+      "cancel_count": 0
+    },
+    {
+      "test": "confirm_exact_idempotent_retry",
+      "http": 200,
+      "status": "DONE",
+      "code": null,
+      "amount": 50000,
+      "balance": 50000,
+      "cancel_count": 0
+    },
+    {
+      "test": "paid_lookup",
+      "http": 200,
+      "status": "DONE",
+      "code": null,
+      "amount": 50000,
+      "balance": 50000,
+      "cancel_count": 0
+    },
+    {
+      "test": "partial_cancel",
+      "http": 200,
+      "status": "PARTIAL_CANCELED",
+      "code": null,
+      "amount": 50000,
+      "balance": 40000,
+      "cancel_count": 1
+    },
+    {
+      "test": "partial_cancel_exact_retry",
+      "http": 200,
+      "status": "PARTIAL_CANCELED",
+      "code": null,
+      "amount": 50000,
+      "balance": 40000,
+      "cancel_count": 1
+    },
+    {
+      "test": "partial_lookup",
+      "http": 200,
+      "status": "PARTIAL_CANCELED",
+      "code": null,
+      "amount": 50000,
+      "balance": 40000,
+      "cancel_count": 1
+    },
+    {
+      "test": "remaining_full_cancel",
+      "http": 200,
+      "status": "PARTIAL_CANCELED",
+      "code": null,
+      "amount": 50000,
+      "balance": 0,
+      "cancel_count": 2
+    },
+    {
+      "test": "final_lookup",
+      "http": 200,
+      "status": "PARTIAL_CANCELED",
+      "code": null,
+      "amount": 50000,
+      "balance": 0,
+      "cancel_count": 2
+    },
+    {
+      "test": "second_paid_lookup",
+      "http": 200,
+      "status": "DONE",
+      "code": null,
+      "amount": 50000,
+      "balance": 50000,
+      "cancel_count": 0
+    },
+    {
+      "test": "unused_full_cancel",
+      "http": 200,
+      "status": "CANCELED",
+      "code": null,
+      "amount": 50000,
+      "balance": 0,
+      "cancel_count": 1
+    },
+    {
+      "test": "full_cancel_exact_retry",
+      "http": 200,
+      "status": "CANCELED",
+      "code": null,
+      "amount": 50000,
+      "balance": 0,
+      "cancel_count": 1
+    },
+    {
+      "test": "cancelled_lookup",
+      "http": 200,
+      "status": "CANCELED",
+      "code": null,
+      "amount": 50000,
+      "balance": 0,
+      "cancel_count": 1
+    }
+  ],
+  "sandbox_ui_confirmations": 1,
+  "synthetic_transactions": 2,
+  "legendstudy_db_calls": 0,
+  "spendable_credit_created": false,
+  "merchant_leglabn24k_verified": false
+}

@@ -1060,3 +1060,79 @@ h1, h2, h3 { text-wrap: pretty; }
   word-break: keep-all;
   overflow-wrap: break-word;
 }
+
+/* ---------------------------------------------------------------- checkout */
+
+/*
+ * Checkout surface. Reuses the pricing cards for product selection, so the same
+ * product table appears on /pricing/ and on /payments/checkout/.
+ */
+.checkout-page .pricing-plan[data-selected="true"] {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.checkout-notice {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+  color: var(--ink-body);
+  font-size: var(--type-small);
+  line-height: var(--leading-body);
+  overflow-wrap: anywhere;
+}
+
+.checkout-note {
+  margin: 0.75rem 0 0;
+  color: var(--ink-muted);
+  font-size: var(--type-small);
+  line-height: var(--leading-body);
+  overflow-wrap: anywhere;
+}
+
+.checkout-signin,
+.checkout-message {
+  margin: 0.75rem 0;
+  color: var(--ink-body);
+  font-size: var(--type-small);
+  line-height: var(--leading-body);
+  overflow-wrap: anywhere;
+}
+
+.checkout-summary {
+  display: grid;
+  gap: 0;
+  margin: 0 0 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.checkout-summary > div {
+  display: grid;
+  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.checkout-summary dt {
+  color: var(--ink-muted);
+  font-weight: 600;
+}
+
+.checkout-summary dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .checkout-summary > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+
+  .checkout-page .pricing-plans {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

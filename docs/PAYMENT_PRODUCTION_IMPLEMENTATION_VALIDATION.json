@@ -1,0 +1,38 @@
+{
+  "task": "PAYMENT-PRODUCTION-IMPLEMENTATION-1",
+  "status": "COMPLETE",
+  "actual_provider_calls": 0,
+  "production_writes": 0,
+  "production_deployment": false,
+  "main_merge": false,
+  "tests": 225,
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "boundary": "PASS",
+  "build": "PASS_STATIC_EXPORT_WEBPACK",
+  "workerd": {
+    "redirect_cases": 8,
+    "actual_handler_mode_suites": 2,
+    "transport": "INTERCEPTED_SYNTHETIC_ONLY"
+  },
+  "static_scan": {
+    "static_secret_scan": "PASS",
+    "assets": 262,
+    "js": 58,
+    "browser_finance_token": "ABSENT",
+    "browser_toss_secret": "ABSENT",
+    "finding_files": []
+  },
+  "test_e2e": "ACCEPTED_HISTORICAL_COMPLETE",
+  "live_enabled": false,
+  "pricing_branch_merged": false,
+  "app_runtime_migration": "20261004000100_payment_runtime.sql",
+  "app_runtime_sha256": "b1613b352ceed6ab300c08c04decf5bb036d019e4318da159b6f3f859f4a6ab3",
+  "remaining_gates": [
+    "Owner code review",
+    "Fresh Production preflight and exact migration approval",
+    "Finance/live credentials and configuration",
+    "Toss/card approval",
+    "Separate activation and 1 Credit smoke"
+  ]
+}

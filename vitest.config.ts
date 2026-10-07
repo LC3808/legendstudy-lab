@@ -9,7 +9,8 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["src/**/*.test.{ts,tsx}"],
+    environmentOptions: { jsdom: { url: "https://lab.legendstudy.com" } },
+    include: ["src/**/*.test.{ts,tsx}", "cloudflare/**/*.test.ts"],
     setupFiles: ["./src/test/setup.ts"],
     globals: true,
   },
