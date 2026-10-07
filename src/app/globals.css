@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./admin-ql.css";
 
 :root {
   --font-ui: "NanumGothic", "Nanum Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;

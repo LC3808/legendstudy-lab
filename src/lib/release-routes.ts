@@ -17,6 +17,8 @@ export const policyRoutes = [
 ] as const;
 
 export const internalFoundationPathPrefixes = [
+  "/admin",
+  "/ql",
   "/lab",
   "/essay-lab",
   "/my",
