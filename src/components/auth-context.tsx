@@ -21,7 +21,7 @@ export const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const client = useMemo(() => getBrowserAuthClient(), []);
-  const [status, setStatus] = useState<AuthStatus>(() => (client ? "loading" : "unconfigured"));
+  const [status, setStatus] = useState<AuthStatus>("loading");
   const [snapshot, setSnapshot] = useState<AuthSnapshot>({ user: null, recoveryActive: false });
   const snapshotRef = useRef(snapshot);
 
@@ -30,9 +30,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [snapshot]);
 
   useEffect(() => {
-    if (!client) return;
-
     let mounted = true;
+    // Static HTML and the first browser render share the loading state.
+    // Resolve unavailable configuration after hydration, just like a session read.
+    if (!client) {
+      queueMicrotask(() => { if (mounted) setStatus("unconfigured"); });
+      return () => { mounted = false; };
+    }
     const apply = (event: AuthChangeEvent, user: PublicAuthUser | null) => {
       if (!mounted) return;
       const next = nextAuthSnapshot(snapshotRef.current, event, user);

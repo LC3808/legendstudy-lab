@@ -4,11 +4,14 @@ import { beforeEach, expect, it, vi } from "vitest";
 import { useAuth } from "./auth-context";
 import { AuthForm } from "./auth-forms";
 vi.mock("./auth-context", () => ({ useAuth: vi.fn() }));
+const routerQuery = vi.hoisted(() => ({ value: "" }));
+vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(routerQuery.value) }));
 const signInWithPassword = vi.fn();
 const signUp = vi.fn();
 const resetPasswordForEmail = vi.fn();
 beforeEach(() => {
   vi.clearAllMocks();
+  routerQuery.value = "";
   vi.mocked(useAuth).mockReturnValue({ client: { auth: { signInWithPassword, signUp, resetPasswordForEmail } } as never,
     status: "anonymous", user: null, recoveryActive: false, completeRecovery: vi.fn(), signOut: vi.fn() });
 });
@@ -35,4 +38,22 @@ it("preserves recovery email endpoint and neutral notice", async () => {
   fireEvent.click(screen.getByRole("button", { name: "재설정 이메일 보내기" }));
   expect(await screen.findByRole("status")).toHaveTextContent("등록 여부와 관계없이");
   expect(resetPasswordForEmail).toHaveBeenCalledWith("student@example.test", { redirectTo: expect.stringContaining("/reset-password/") });
+});
+
+it("shows concise login copy and retains the form and recovery links", () => {
+  render(<AuthForm mode="login" />);
+  expect(screen.getByRole("heading", { name: "로그인" })).toBeInTheDocument();
+  expect(screen.getByText("하나의 계정으로 모든 서비스를 이용하세요.")).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "비밀번호 찾기" })).toHaveAttribute("href", "/forgot-password");
+  expect(screen.getByRole("link", { name: "회원가입" })).toBeInTheDocument();
+  expect(screen.queryByText("LEGENDSTUDY ACCOUNT / LOGIN")).not.toBeInTheDocument();
+});
+
+it("tracks router next during client navigation rather than capturing stale browser history", () => {
+  routerQuery.value = "next=%2Faccount%2F";
+  const { rerender } = render(<AuthForm mode="login" />);
+  expect(screen.getByRole("link", { name: "회원가입" })).toHaveAttribute("href", "/signup?next=%2Faccount%2F");
+  routerQuery.value = "next=%2Fessay-lab%2F";
+  rerender(<AuthForm mode="login" />);
+  expect(screen.getByRole("link", { name: "회원가입" })).toHaveAttribute("href", "/signup?next=%2Fessay-lab%2F");
 });

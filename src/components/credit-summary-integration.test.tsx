@@ -71,7 +71,7 @@ describe("one Credit authority for MY and 논술 LAB", () => {
   it("renders no balance for an anonymous session", async () => {
     mockClient.auth.getSession.mockResolvedValue({ data: { session: null } });
     render(<EssayCreditStatus />);
-    await waitFor(() => expect(screen.getByRole("link", { name: "로그인하고 첨삭 시작" })).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole("link", { name: "로그인하고 첨삭권 확인" })).toBeInTheDocument());
     expect(mockClient.rpc).not.toHaveBeenCalled();
   });
 });

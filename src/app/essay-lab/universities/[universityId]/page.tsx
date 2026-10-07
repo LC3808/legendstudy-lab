@@ -17,8 +17,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ universityId: string }> }): Promise<Metadata> {
   const { universityId } = await params;
   const university = getUniversity(universityId);
-  if (!university) return buildMetadata("대학 정보를 찾을 수 없음", "요청한 대학 metadata fixture를 찾을 수 없습니다.");
-  return buildMetadata(`${university.universityName} ${university.admissionYear} 논술`, `${university.universityName}의 공개 전형 metadata와 공식 source navigation을 보여주는 LS LAB foundation 페이지입니다.`);
+  if (!university) return buildMetadata("대학 정보를 찾을 수 없음", "요청한 대학 정보를 찾을 수 없습니다.");
+  return buildMetadata(`${university.universityName} ${university.admissionYear} 논술`, `${university.universityName}의 논술 전형과 공식 자료를 확인하세요.`);
 }
 
 export default async function UniversityDetailPage({ params }: { params: Promise<{ universityId: string }> }) {
@@ -37,15 +37,15 @@ export default async function UniversityDetailPage({ params }: { params: Promise
       </section>
       <section className="detail-grid">
         <article className="surface-card">
-          <p className="eyebrow">PUBLIC METADATA</p>
-          <h2>이 foundation에서 보이는 정보</h2>
-          <dl className="metadata-list"><div><dt>공식 source</dt><dd>{university.sourceTitle}</dd></div><div><dt>분류</dt><dd>{university.taxonomyLabel}</dd></div><div><dt>확인일</dt><dd>{university.checkedDate}</dd></div><div><dt>출처</dt><dd>{university.officialAdmissionsUrl.replace(/^https?:\/\//, "")}</dd></div></dl>
-          <p className="detail-copy">{university.sourceNote} public metadata와 공식 navigation만 제공하며, 공식 문제·지문·답안·루브릭은 이 프로젝트에 보관하거나 표시하지 않습니다.</p>
+          <p className="eyebrow">논술 전형</p>
+          <h2>전형과 출처</h2>
+          <dl className="metadata-list"><div><dt>공식 자료</dt><dd>{university.sourceTitle}</dd></div><div><dt>분류</dt><dd>{university.taxonomyLabel}</dd></div><div><dt>확인일</dt><dd>{university.checkedDate}</dd></div><div><dt>출처</dt><dd>{university.officialAdmissionsUrl.replace(/^https?:\/\//, "")}</dd></div></dl>
+          <p className="detail-copy">최신 모집요강과 기출문제는 아래 입학처 공식 자료에서 확인하세요.</p>
           {link ? <OfficialLink link={link} /> : null}
         </article>
-        <aside className="review-card"><p className="eyebrow">SOURCE PROVENANCE</p><h2>자료 상태를 먼저 확인하세요.</h2><p>공개 URL은 출처 확인과 외부 navigation을 위한 것입니다. source-use permission, private package input, 또는 실제 평가 승인을 의미하지 않습니다.</p><ul><li>공식 확인: 공식 source metadata가 확인된 상태</li><li>LS LAB 분석: 미래에 별도 origin을 표시할 영역</li><li>자료 확인 필요: 최신 notice/archive를 다시 확인해야 하는 상태</li></ul></aside>
+        <aside className="review-card"><h2>지원 전 확인하세요.</h2><p>전형 내용은 변경될 수 있습니다. 해당 대학 입학처의 최신 모집요강과 공지를 기준으로 확인하세요.</p></aside>
       </section>
-      <section className="detail-actions"><MockNotice compact /><div><Link className="button button--outline" href={`/essay-lab/universities/${university.id}/${university.admissionYear}`}>연도·track metadata 보기</Link><Link className="button button--accent" href="/essay-lab/questions/synthetic-q-01">합성 연습 패키지 보기 <span aria-hidden="true">→</span></Link></div></section>
+      <section className="detail-actions"><MockNotice compact /><div><Link className="button button--outline" href={`/essay-lab/universities/${university.id}/${university.admissionYear}`}>연도별 전형 보기</Link><Link className="button button--accent" href="/essay-lab/questions/synthetic-q-01">연습 예시 보기 <span aria-hidden="true">→</span></Link></div></section>
     </div>
   );
 }

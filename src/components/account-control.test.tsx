@@ -1,10 +1,14 @@
 // @vitest-environment jsdom
 
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { AccountControl } from "@/components/account-control";
 import { AuthContext, type AuthContextValue } from "@/components/auth-context";
+
+const credit = vi.hoisted(() => ({ state: { status: "loading" } as import("./credit-balance").CreditState }));
+vi.mock("./credit-balance", () => ({ useCreditSummary: () => ({ state: credit.state }) }));
+beforeEach(() => { credit.state = { status: "loading" }; });
 
 function renderWithStatus(status: AuthContextValue["status"]) {
   const value: AuthContextValue = {
@@ -24,12 +28,12 @@ describe("header action cluster", () => {
    * page, which is not what the label promises: the Owner's intended destination
    * is the sale conditions on /pricing/.
    */
-  it("sends the signed-in 이용 안내 entry to /pricing/", () => {
+  it("keeps MY in the signed-in actions and avoids duplicating the shared guide link", () => {
     renderWithStatus("authenticated");
     // Next normalizes a generated trailing slash, so compare the route itself.
     const route = (name: string) =>
       screen.getByRole("link", { name }).getAttribute("href")?.replace(/\/$/, "");
-    expect(route("이용 안내")).toBe("/pricing");
+    expect(screen.queryByRole("link", { name: "이용 안내" })).not.toBeInTheDocument();
     expect(route("마이페이지")).toBe("/account");
     for (const link of screen.getAllByRole("link")) {
       expect(link.getAttribute("href")).not.toContain("how-it-works");
@@ -52,7 +56,18 @@ describe("header action cluster", () => {
     unmount();
 
     const unconfigured = renderWithStatus("unconfigured");
-    expect(route("계정 안내")).toBe("/account");
+    expect(route("로그인")).toBe("/login");
     unconfigured.unmount();
   });
+});
+
+it.each(["loading", "error"] as const)("does not invent a zero balance for %s", (status) => {
+  credit.state = { status };
+  renderWithStatus("authenticated");
+  expect(screen.queryByText(/첨삭권 \d/)).not.toBeInTheDocument();
+});
+it("reads the header balance from the canonical DTO", () => {
+  credit.state = { status: "ready", value: { dto_version: "credit-v1", spendable: 7, paid: 4, free: 3, other: 0, next_expiry: null } };
+  renderWithStatus("authenticated");
+  expect(screen.getByText("첨삭권 7")).toBeInTheDocument();
 });

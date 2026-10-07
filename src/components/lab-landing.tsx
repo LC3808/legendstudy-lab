@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { PersonalEntry } from "@/components/personal-entry";
 
 /**
  * LegendStudy LAB landing — Axis Data Tracks.
@@ -13,17 +13,17 @@ import Link from "next/link";
 const labs = [
   {
     no: "01",
-    title: "내신 분석",
+    title: "내신 LAB",
     copy: "과목별 성적과 변화에서 강점과 보완점을 확인합니다.",
   },
   {
     no: "02",
-    title: "수능·모의고사 분석",
+    title: "모의·수능 LAB",
     copy: "성적의 변화와 현재 위치를 확인합니다.",
   },
   {
     no: "03",
-    title: "논술 첨삭",
+    title: "논술 LAB",
     copy: "대학별 평가 기준에 맞춰 내 답안을 점검하고 다시 써봅니다.",
   },
 ] as const;
@@ -34,11 +34,11 @@ const dataTracks = [
   ["논술", "작성 · 첨삭 · 재작성"],
 ] as const;
 
-function DataTrackGraphic({ compact = false }: { compact?: boolean }) {
+function DataTrackGraphic() {
   return (
-    <figure className={`ll-data-tracks${compact ? " ll-data-tracks--compact" : ""}`}>
+    <figure className="ll-data-tracks">
       <figcaption className="sr-only">
-        내신, 모의고사·수능, 논술의 세 독립 입시 데이터 Track이 하나의 기록으로 연결되는 개념도입니다.
+        내신, 모의고사·수능, 논술의 기록이 하나로 연결되는 개념도입니다.
       </figcaption>
       <div className="ll-data-tracks__list">
         {dataTracks.map(([label, detail]) => (
@@ -76,10 +76,6 @@ export function LabLanding() {
               내신과 모의고사·수능, 그리고 논술까지. 흩어진 입시 데이터를 연결해 지금의 위치를
               이해하고 다음 선택을 더 명확하게 만듭니다.
             </p>
-            <div className="ll-hero__actions">
-              <a className="ll-link" href="#three-labs">세 개의 LAB 보기 <span aria-hidden="true">↓</span></a>
-              <Link className="ll-link" href="/lab/how-it-works/">이용 안내</Link>
-            </div>
           </div>
         </div>
         <DataTrackGraphic />
@@ -110,13 +106,12 @@ export function LabLanding() {
             보완할 것이 더 선명해집니다.
           </p>
         </div>
-        <DataTrackGraphic compact />
       </section>
 
       <section className="ll-cta ll-wrap" aria-labelledby="cta-title">
         <h2 className="ll-section-title" id="cta-title">내 기록으로 시작하세요.</h2>
         <div className="ll-cta__actions">
-          <Link className="ll-btn ll-btn--navy" href="/login/">LegendStudy 계정으로 시작하기 <span aria-hidden="true">→</span></Link>
+          <PersonalEntry className="ll-btn ll-btn--navy">레전드스터디 계정으로 시작하기 <span aria-hidden="true">→</span></PersonalEntry>
         </div>
       </section>
     </div>

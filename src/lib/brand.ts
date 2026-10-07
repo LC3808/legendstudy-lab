@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 export const brand = {
   productName: "LegendStudy LAB",
   byline: "by 레전드스터디+",
-  phaseLabel: "SERVICE GUIDE",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || undefined,
 } as const;
 

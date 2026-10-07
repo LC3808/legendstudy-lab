@@ -88,9 +88,8 @@ export function ContactList({ showName = false }: { showName?: boolean }) {
 export function CustomerCenterFooterContact() {
   return (
     <p className="site-footer__contact">
-      <span className="site-footer__contact-name">{customerCenter.displayName}</span>
-      <a href={customerCenter.primary.href}>{customerCenter.primary.display}</a>
-      <a href={customerCenter.secondary.href}>{customerCenter.secondary.display}</a>
+      <span>고객 지원 <a href={customerCenter.primary.href}>{customerCenter.primary.display}</a></span>
+      <span>일반/제휴 문의 <a href={customerCenter.secondary.href}>{customerCenter.secondary.display}</a></span>
     </p>
   );
 }

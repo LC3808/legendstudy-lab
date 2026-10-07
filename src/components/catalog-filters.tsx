@@ -28,7 +28,7 @@ export function CatalogFilters({ universities }: { universities: UniversityPubli
 
   return (
     <div className="catalog-filter">
-      <div className="catalog-filter__controls" aria-label="대학 metadata 필터">
+      <div className="catalog-filter__controls" aria-label="대학 검색 조건">
         <label className="search-control">
           <span className="sr-only">대학명 검색</span>
           <span aria-hidden="true">⌕</span>
@@ -38,7 +38,7 @@ export function CatalogFilters({ universities }: { universities: UniversityPubli
         <label className="select-control"><span>연도</span><select value={year} onChange={(event) => setYear(event.target.value)}><option>2027</option></select></label>
         <label className="select-control"><span>유형</span><select value={taxonomy} onChange={(event) => setTaxonomy(event.target.value)}>{taxonomies.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
       </div>
-      <div className="catalog-filter__summary"><strong>{results.length}</strong>개 reviewed public fixture · 42개 대학/53개 모집단위 전체 inventory를 import하지 않은 foundation subset</div>
+      <div className="catalog-filter__summary"><strong>{results.length}</strong>개 대학</div>
       <div className="university-grid">
         {results.map((university) => (
           <article className="university-card" key={university.id}>
@@ -51,7 +51,7 @@ export function CatalogFilters({ universities }: { universities: UniversityPubli
           </article>
         ))}
       </div>
-      {results.length === 0 ? <div className="empty-state"><h2>일치하는 대학이 없습니다.</h2><p>이 foundation은 소수의 reviewed public fixture만 사용합니다. 검색어나 필터를 조정해 보세요.</p></div> : null}
+      {results.length === 0 ? <div className="empty-state"><h2>일치하는 대학이 없습니다.</h2><p>검색어나 필터를 조정해 보세요.</p></div> : null}
     </div>
   );
 }

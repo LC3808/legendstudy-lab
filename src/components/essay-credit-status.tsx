@@ -11,7 +11,7 @@ import { useCreditSummary } from '@/components/credit-balance';
  */
 const purchaseHref = '/pricing/';
 const historyHref = '/my/essays/';
-const loginHref = '/login/';
+const loginHref = '/login/?next=%2Fessay-lab%2F';
 
 /** 2027.01.07 — the expiry is a date, so it must not render in the visitor's locale. */
 export function formatExpiry(value: string) {
@@ -46,9 +46,9 @@ export function EssayCreditStatus() {
   if (state.status === 'signed-out') {
     return (
       <section className="essay-credit" aria-live="polite">
-        <p className="essay-credit__meta">로그인하면 내 첨삭권을 확인하고 답안을 제출할 수 있습니다.</p>
+        <p className="essay-credit__meta">로그인하면 내 첨삭권을 확인할 수 있습니다.</p>
         <div className="essay-credit__actions">
-          <Link className="button button--primary button--small" href={loginHref}>로그인하고 첨삭 시작</Link>
+          <Link className="button button--primary button--small" href={loginHref}>로그인하고 첨삭권 확인</Link>
         </div>
       </section>
     );

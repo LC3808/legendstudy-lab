@@ -19,7 +19,7 @@ describe("EssayEditor", () => {
   it("counts characters and saves a temporary browser-local draft", async () => {
     const user = userEvent.setup();
     render(<EssayEditor question={syntheticQuestion} />);
-    const textarea = screen.getByLabelText("합성 문제 답안 작성");
+    const textarea = screen.getByLabelText("연습 문제 답안 작성");
     await user.type(textarea, "가 나");
     expect(screen.getByText("2자")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "임시 저장" }));
@@ -31,11 +31,11 @@ describe("EssayEditor", () => {
     const user = userEvent.setup();
     const confirm = vi.spyOn(window, "confirm").mockReturnValue(false);
     render(<EssayEditor question={syntheticQuestion} />);
-    await user.click(screen.getByRole("button", { name: /Mock 제출/ }));
+    await user.click(screen.getByRole("button", { name: /피드백 예시 보기/ }));
     expect(confirm).toHaveBeenCalledTimes(1);
     expect(push).not.toHaveBeenCalled();
     confirm.mockReturnValue(true);
-    await user.click(screen.getByRole("button", { name: /Mock 제출/ }));
+    await user.click(screen.getByRole("button", { name: /피드백 예시 보기/ }));
     expect(push).toHaveBeenCalledWith("/essay-lab/evaluation/mock-attempt-001");
   });
 });

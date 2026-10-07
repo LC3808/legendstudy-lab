@@ -16,3 +16,12 @@ export function appendReturnPath(pathname: string, returnPath: string): string {
   const safeReturnPath = getSafeReturnPath(returnPath);
   return `${pathname}?next=${encodeURIComponent(safeReturnPath)}`;
 }
+
+/** Auth screens cannot be their own post-login destination. Payment paths remain valid. */
+export function getAuthReturnPath(candidate: string | null | undefined): string {
+  const safe = getSafeReturnPath(candidate);
+  try {
+    const pathname = decodeURIComponent(new URL(safe, "https://legendstudy-lab.invalid").pathname);
+    return /^\/(?:login|signup|forgot-password|reset-password|auth|api)(?:\/|$)/i.test(pathname) ? "/account/" : safe;
+  } catch { return "/account/"; }
+}

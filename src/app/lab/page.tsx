@@ -5,7 +5,7 @@ import { buildPublicMetadata } from "@/lib/brand";
 
 export const metadata: Metadata = buildPublicMetadata(
   "LegendStudy LAB",
-  "LegendStudy LAB의 canonical 서비스 소개 페이지로 이동합니다.",
+  "LegendStudy LAB으로 이동합니다.",
   "/",
   { index: false },
 );

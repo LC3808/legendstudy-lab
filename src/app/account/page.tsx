@@ -17,7 +17,8 @@ export const metadata: Metadata = buildPublicMetadata(
  * the three analysis entries and the account/settings block below them.
  */
 const entries = [
-  { href: "/score-analysis/", title: "성적 분석", body: "성적·학습 기록 기반 분석 영역입니다." },
+  { href: "/score-analysis/", title: "내신 LAB", body: "성적·학습 기록 기반 분석 영역입니다." },
+  { href: "/exam-analysis/", title: "모의·수능 LAB", body: "모의고사·수능 성적 기반 영역별 분석" },
   { href: "/essay-lab/", title: "논술 LAB", body: "대학별 논술 자료와 첨삭 흐름을 확인합니다." },
   { href: "/my/essays/", title: "내 기록", body: "내 계정에 귀속된 논술·학습 기록입니다." },
 ] as const;

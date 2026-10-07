@@ -30,7 +30,7 @@ describe("논술 LAB 첨삭권 현황", () => {
 
   it("offers sign-in instead of a balance to a signed-out visitor", () => {
     renderWith({ status: "signed-out" });
-    expect(route("로그인하고 첨삭 시작")).toBe("/login");
+    expect(route("로그인하고 첨삭권 확인")).toBe("/login?next=%2Fessay-lab%2F");
     expect(screen.queryByText(/\d+개/)).not.toBeInTheDocument();
     expect(screen.queryByText(/무료 \d/)).not.toBeInTheDocument();
     expect(screen.queryByText("첨삭권이 없습니다.")).not.toBeInTheDocument();

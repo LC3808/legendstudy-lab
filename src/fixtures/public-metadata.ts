@@ -163,23 +163,23 @@ export const reviewedUniversities: UniversityPublicMetadata[] = [
 export const syntheticQuestion: EssayQuestionPublic = {
   id: "synthetic-q-01",
   title: "연습 문제 1 · 관점 비교와 근거 연결",
-  universityLabel: "LS LAB 합성 연습 패키지",
-  yearLabel: "Mock 2027",
+  universityLabel: "논술 LAB 연습 예시",
+  yearLabel: "연습용 예시",
   trackLabel: "인문·사회형",
   timeLimitLabel: "90분 연습",
   questionPrompt: "두 관점이 공동의 문제를 바라보는 방식의 차이를 비교하고, 주어진 사례에서 어느 관점이 더 설득력 있는지 근거를 들어 서술하세요.",
   passages: [
     {
-      label: "[가] · 합성 발췌문",
+      label: "[가] · 연습용 지문",
       text: "공동의 판단은 단순한 합의보다, 서로 다른 이유를 검토하고 설명 가능한 선택을 만드는 과정에서 강해진다.",
     },
     {
-      label: "[나] · 합성 발췌문",
+      label: "[나] · 연습용 지문",
       text: "한정된 시간 안에서의 선택은 완전한 정보보다 중요한 기준을 먼저 세우고 그 기준을 일관되게 적용하는 일에 달려 있다.",
     },
   ],
   origin: "SYNTHETIC_CONTENT",
-  safetyNotice: "이 문제·지문·예시 피드백은 사용자 흐름을 검증하기 위한 합성 fixture입니다. 특정 대학의 기출, 모의논술, 공식 답안 또는 채점 기준이 아닙니다.",
+  safetyNotice: "직접 만든 연습용 문제·지문·피드백입니다. 특정 대학의 기출, 모의논술, 공식 답안 또는 채점 기준이 아닙니다.",
 };
 
 export const mockAttempts: EssayAttempt[] = [
@@ -199,7 +199,7 @@ export const mockAttempts: EssayAttempt[] = [
     yearLabel: syntheticQuestion.yearLabel,
     questionTitle: "자료 활용의 우선순위",
     status: "EVALUATED_MOCK",
-    evaluationDateLabel: "Mock history",
+    evaluationDateLabel: "예시 기록",
     isSynthetic: true,
   },
 ];

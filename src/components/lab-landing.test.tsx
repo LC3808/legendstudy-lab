@@ -3,21 +3,22 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { AuthProvider } from "@/components/auth-context";
 import { LabLanding } from "@/components/lab-landing";
 
 describe("Axis Data Tracks landing", () => {
   it("keeps the fixed two-line Hero and the three service axes", () => {
-    const { container } = render(<LabLanding />);
+    const { container } = render(<AuthProvider><LabLanding /></AuthProvider>);
 
     expect(screen.getByRole("heading", { level: 1, name: "데이터가 쌓일수록,나의 가능성은 선명해집니다." })).toBeInTheDocument();
-    expect(screen.getAllByText("하나의 기록으로 연결됩니다.")).toHaveLength(2);
+    expect(screen.getAllByText("하나의 기록으로 연결됩니다.")).toHaveLength(1);
 
-    for (const title of ["내신 분석", "수능·모의고사 분석", "논술 첨삭"]) {
+    for (const title of ["내신 LAB", "모의·수능 LAB", "논술 LAB"]) {
       expect(screen.getByRole("heading", { level: 3, name: title })).toBeInTheDocument();
     }
 
     for (const label of ["내신", "모의고사 · 수능", "논술"]) {
-      expect(screen.getAllByText(label).length).toBeGreaterThanOrEqual(2);
+      expect(screen.getAllByText(label).length).toBeGreaterThanOrEqual(1);
     }
 
     expect(container.querySelector(".ll-convergence, .ll-ledger, .ll-convergence-node, svg")).toBeNull();
@@ -31,7 +32,7 @@ describe("Axis Data Tracks landing", () => {
   });
 
   it("states the value in short copy instead of explaining implementation", () => {
-    render(<LabLanding />);
+    render(<AuthProvider><LabLanding /></AuthProvider>);
 
     // One sentence per axis card, and the axis cards carry no status label.
     expect(screen.getByText("과목별 성적과 변화에서 강점과 보완점을 확인합니다.")).toBeInTheDocument();
@@ -59,11 +60,11 @@ describe("Axis Data Tracks landing", () => {
   });
 
   it("retains public CTA destinations rather than adding illustrative product routes", () => {
-    render(<LabLanding />);
+    render(<AuthProvider><LabLanding /></AuthProvider>);
 
-    expect(screen.getByRole("link", { name: /세 개의 LAB 보기/ })).toHaveAttribute("href", "#three-labs");
-    expect(screen.getByRole("link", { name: "이용 안내" })).toHaveAttribute("href", "/lab/how-it-works");
-    expect(screen.getByRole("link", { name: /LegendStudy 계정으로 시작하기/ })).toHaveAttribute("href", "/login");
+    expect(screen.queryByRole("link", { name: /세 개의 LAB 보기/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "이용 안내" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /레전드스터디 계정으로 시작하기/ })).toHaveAttribute("href", "/login?next=%2Faccount%2F");
     expect(screen.queryByRole("link", { name: "공개 범위 보기" })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /나의 입시 데이터 확인하기/ })).not.toBeInTheDocument();
   });

@@ -12,7 +12,7 @@ import {
 
 describe("release routes", () => {
   it("preserves the canonical root and stable public entry paths", () => {
-    expect(publicReleasePaths).toEqual(["/", "/pricing/", "/lab/coverage/", "/lab/how-it-works/"]);
+    expect(publicReleasePaths).toEqual(["/", "/pricing/"]);
     expect(policyRoutes.map((route) => route.href)).toEqual([
       "/privacy/",
       "/terms/",
@@ -68,16 +68,16 @@ describe("release routes", () => {
 
   it("maps the authenticated product menu to existing foundation routes", () => {
     expect(authenticatedProductRoutes.map((route) => route.href)).toEqual([
-      "/",
       "/score-analysis/",
-      "/score-analysis/",
+      "/exam-analysis/",
       "/essay-lab/",
+      "/pricing/",
     ]);
     expect(authenticatedProductRoutes.map((route) => route.label)).toEqual([
-      "홈",
-      "내신 분석 LAB",
-      "모의·수능 분석 LAB",
+      "내신 LAB",
+      "모의·수능 LAB",
       "논술 LAB",
+      "이용 안내",
     ]);
     // The account and support entries live in the header action cluster and in
     // MY, so the product menu carries only the three service axes.

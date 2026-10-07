@@ -5,7 +5,7 @@ const originLabels: Record<OriginType, string> = {
   LSLAB_DERIVED: "LS LAB 분석",
   MODEL_DERIVED: "AI 평가",
   HUMAN_REVIEWED: "사람 검수",
-  SYNTHETIC_CONTENT: "합성 예시",
+  SYNTHETIC_CONTENT: "연습 예시",
 };
 
 const sourceStatusLabels: Record<PublicSourceStatus, string> = {
@@ -27,9 +27,9 @@ export function SourceStatusLabel({ status }: { status: PublicSourceStatus }) {
 
 export function MockNotice({ compact = false }: { compact?: boolean }) {
   return (
-    <aside className={`mock-notice ${compact ? "mock-notice--compact" : ""}`} aria-label="Mock foundation 안내">
+    <aside className={`mock-notice ${compact ? "mock-notice--compact" : ""}`} aria-label="연습 예시 안내">
       <span className="mock-notice__icon" aria-hidden="true">✦</span>
-      <p><strong>합성 Mock foundation.</strong> 대학·연도·출처 metadata 일부만 공개 fixture로 시연합니다. 문제·지문·학생 답안·AI 평가는 실제 대학 자료나 실서비스 결과가 아닙니다.</p>
+      <p><strong>연습 예시입니다.</strong> 예시 문제와 피드백은 실제 대학 기출문제나 내 답안의 평가 결과가 아닙니다.</p>
     </aside>
   );
 }

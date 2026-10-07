@@ -4,8 +4,8 @@ import { AuthForm } from "@/components/auth-forms";
 import { buildPublicMetadata } from "@/lib/brand";
 
 export const metadata: Metadata = buildPublicMetadata(
-  "LegendStudy Account 로그인",
-  "LegendStudy+와 LegendStudy LAB에서 같은 계정으로 로그인하기 위한 LegendStudy Account 로그인 화면입니다.",
+  "로그인",
+  "하나의 계정으로 모든 서비스를 이용하세요.",
   "/login/",
   { index: false },
 );

@@ -18,40 +18,12 @@ function renderWithStatus(status: AuthContextValue["status"]) {
   return render(<AuthContext.Provider value={value}><SiteNav /></AuthContext.Provider>);
 }
 
-describe("SiteNav session-aware header", () => {
-  it("shows the public menu for an anonymous session", () => {
-    renderWithStatus("anonymous");
-    expect(screen.getByRole("link", { name: "서비스" })).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "내신 분석 LAB" })).not.toBeInTheDocument();
-  });
-
-  // NAV hotfix: 이용 안내 opens the sale conditions, so the header must not send
-  // an anonymous visitor to the release-scope page.
-  it("sends the anonymous 이용 안내 entry to /pricing/", () => {
-    renderWithStatus("anonymous");
-    // Next normalizes a generated trailing slash, so compare the route itself.
-    const usage = screen.getByRole("link", { name: "이용 안내" }).getAttribute("href");
-    expect(usage?.replace(/\/$/, "")).toBe("/pricing");
-    for (const link of screen.getAllByRole("link")) {
-      expect(link.getAttribute("href")).not.toContain("how-it-works");
-    }
-  });
-
-  it("shows the three service axes once signed in", () => {
-    renderWithStatus("authenticated");
-    for (const label of ["홈", "내신 분석 LAB", "모의·수능 분석 LAB", "논술 LAB"]) {
-      expect(screen.getByRole("link", { name: label })).toBeInTheDocument();
-    }
-    expect(screen.queryByRole("link", { name: "서비스" })).not.toBeInTheDocument();
-    // Account and support entries moved to the header action cluster and to MY.
-    for (const label of ["마이페이지", "내 기록", "계정 설정", "고객센터"]) {
-      expect(screen.queryByRole("link", { name: label })).not.toBeInTheDocument();
-    }
-  });
-
-  it("does not show the authenticated menu before the session is known", () => {
-    renderWithStatus("loading");
-    expect(screen.queryByRole("link", { name: "내신 분석 LAB" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "서비스" })).toBeInTheDocument();
+describe("product navigation", () => {
+  it.each(["anonymous", "authenticated", "loading", "unconfigured"] as const)("keeps all LABs public for %s", (status) => {
+    renderWithStatus(status);
+    const expected = [["내신 LAB", "/score-analysis"], ["모의·수능 LAB", "/exam-analysis"], ["논술 LAB", "/essay-lab"], ["이용 안내", "/pricing"]];
+    expect(screen.getAllByRole("link")).toHaveLength(expected.length);
+    for (const [name, href] of expected) expect(screen.getByRole("link", { name })).toHaveAttribute("href", href);
+    for (const name of ["홈", "서비스", "공개 범위"]) expect(screen.queryByRole("link", { name })).not.toBeInTheDocument();
   });
 });

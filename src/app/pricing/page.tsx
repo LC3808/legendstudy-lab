@@ -59,6 +59,12 @@ export default function PricingPage() {
         <PricingPlans />
       </section>
 
+      <section className="policy-section pricing-promo" aria-labelledby="pricing-promo-title">
+        <h2 id="pricing-promo-title">{promotionCopy.title}</h2>
+        <p className="pricing-promo__lead">{promotionCopy.lead}</p>
+        <PricingPromoForm />
+      </section>
+
       <section className="policy-section" aria-labelledby="pricing-purchase-title">
         <h2 id="pricing-purchase-title">{purchaseGuide.title}</h2>
         <ul className="policy-list">
@@ -118,12 +124,6 @@ export default function PricingPage() {
             <dd>{refundPolicy.usedCreditRule}</dd>
           </div>
         </dl>
-      </section>
-
-      <section className="policy-section pricing-promo" aria-labelledby="pricing-promo-title">
-        <h2 id="pricing-promo-title">{promotionCopy.title}</h2>
-        <p className="pricing-promo__lead">{promotionCopy.lead}</p>
-        <PricingPromoForm />
       </section>
 
       <section className="policy-section" aria-labelledby="pricing-faq-title">
