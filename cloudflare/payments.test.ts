@@ -132,3 +132,10 @@ describe('PAYMENT REVIEW runtime',()=>{
   expect(await (await fixture(liveEnv).send('runtime',{})).json()).toEqual({state:'LIVE',mode:'LIVE',consumer_purchase:true});
  });
 });
+
+for (const [rpc,stage] of [['payment_order','BUYER_RPC'],['payment_process','FINANCE_RPC']]) it(`REVIEW identifies ${rpc} 401 without leaking upstream body`,async()=>{
+ const f=fixture(reviewEnv);
+ const io:typeof fetch=async(input,init)=>String(input).endsWith('/'+rpc)?Response.json({code:'PGRST301',message:'sensitive arbitrary detail'},{status:401}):f.io(input,init);
+ const r=await payment(new Request(reviewEnv.PAYMENT_ORIGIN+'/api/payments/confirm',{method:'POST',headers:{Origin:reviewEnv.PAYMENT_ORIGIN!,Authorization:'Bearer synthetic-user-token','Content-Type':'application/json'},body:JSON.stringify({id:ID,request_key:KEY,payment_key:'synthetic-payment',amount:29900})}),reviewEnv,io);
+ expect(r.status).toBe(401);expect(await r.json()).toEqual({error:'ORDER_REQUEST_REJECTED',diagnostic:{stage,code:'PGRST301'}});expect(f.calls.some(c=>c.url.includes('api.tosspayments.com'))).toBe(false);
+});

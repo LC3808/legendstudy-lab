@@ -24,3 +24,19 @@ Evidence before deployment:
 Production deploy and Owner TEST payment/DB assertions remain to be recorded.
 CARD_REVIEW_READY:NO. TOSS_EMAIL_READY:NO until PAID/TEST_RECORDED/NULL and
 CONFIRM SUCCEEDED with payment-attributable spendable delta0 are verified.
+
+## Closeout 2 — actual HTTP401, 2026-10-07
+
+Latest Owner order 3533567e-ea7d-4846-bbd9-f4381e2ba0a4:
+TEST / ORDER_CREATED / NONE / grant NULL; operation count0.
+Production function source independently confirms payment_process raises PT401
+before operation creation when essay_private.uid() is NULL. Therefore zero
+operations alone does not prove the finance RPC was never invoked.
+Reviewer rejection is403; confirm401 can arise at request Authorization validation
+or a buyer/finance RPC. Add bounded REVIEW-only RPC401 stage/code diagnostics;
+no upstream message or credential is returned. Actual runtime source pending.
+Success UI now requires PAID with TEST_RECORDED or LIVE/POSTED; failure retains
+manual retry and account navigation. All existing Home/Nav changes preserved.
+Verification:264 tests PASS, lint/typecheck/boundary PASS, Node22 build PASS.
+The pnpm fallback build hit a local port sandbox limit; direct Node22 same build
+succeeded. No credential/config/schema/provider changes.

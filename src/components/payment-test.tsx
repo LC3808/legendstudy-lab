@@ -11,7 +11,13 @@ declare global { interface Window { TossPayments?: (key: string) => { payment: (
 async function api(action: string, payload: object): Promise<{order: Order; checkout?: Checkout}> {
   const token = await paymentSessionToken();
   const r = await fetch(`/api/payments/${action}`, {method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify(payload)});
-  if (!r.ok) throw new Error(r.status === 401 ? `결제 서버에서 인증을 확인하지 못했습니다. (${action.toUpperCase()}_HTTP_401)` : `결제 확인이 필요합니다. 잠시 후 재확인해 주세요. (${action.toUpperCase()}_HTTP_${r.status})`);
+  if (!r.ok) {
+    const error = await r.json().catch(()=>null);
+    const stage = error?.diagnostic?.stage;
+    const code = error?.diagnostic?.code;
+    const diagnostic = ['BUYER_RPC','FINANCE_RPC'].includes(stage) && ['PT401','PGRST301','PGRST302','PGRST303','UNCLASSIFIED'].includes(code) ? ` [${stage}:${code}]` : error?.error === 'AUTH_REQUIRED' ? ' [AUTH_REQUIRED]' : '';
+    throw new Error(r.status === 401 ? `결제 서버에서 인증을 확인하지 못했습니다. (${action.toUpperCase()}_HTTP_401)${diagnostic}` : `결제 확인이 필요합니다. 잠시 후 재확인해 주세요. (${action.toUpperCase()}_HTTP_${r.status})`);
+  }
   return r.json();
 }
 async function sdk() {
@@ -27,7 +33,7 @@ export function PaymentTest({callback=false,live=false}: {callback?:boolean;live
   async function result() {
     if (inFlight.current) return;
     inFlight.current = true;
-    setBusy(true);setMessage('결제 확인 중');
+    setBusy(true);setOrder(null);setMessage('결제 확인 중');
     try {
       const q=new URLSearchParams(window.location.search);const orderId=q.get('orderId');
       if (!orderId || !/^ls_[a-f0-9]{32}$/.test(orderId)) throw new Error('주문 정보를 확인할 수 없습니다.');
@@ -39,7 +45,7 @@ export function PaymentTest({callback=false,live=false}: {callback?:boolean;live
         // Order UUID is a deterministic operation-scoped key, not owner authority.
         current=(await api('confirm',{id,request_key:id,payment_key:paymentKey,amount})).order;
       } else if (['AUTHORIZATION_PENDING','CANCEL_PENDING'].includes(current.state)) current=(await api('reconcile',{id})).order;
-      setOrder(current);setMessage(current.state==='PAID' ? (current.mode==='LIVE' ? '결제가 확인되어 Credit이 지급되었습니다.' : '테스트 결제 확인 완료. 사용 가능한 Credit은 지급되지 않습니다.') : '주문 상태를 확인했습니다.');
+      setOrder(current);setMessage('주문 상태를 확인했습니다.');
       // Keep only non-secret order identifier for reopening; provider key is no longer needed.
       window.history.replaceState(null,'',`?orderId=${encodeURIComponent(orderId)}`);
     } catch(e) { setMessage(e instanceof Error ? e.message : '재확인이 필요합니다.'); } finally {inFlight.current=false;setBusy(false);}
@@ -57,6 +63,9 @@ export function PaymentTest({callback=false,live=false}: {callback?:boolean;live
       try { await window.TossPayments(clientKey).payment({customerKey}).requestPayment({method:'CARD',...payment}); } catch { throw new Error('결제가 중단되었습니다. 다시 시도할 수 있습니다.'); }
     } catch(e){setMessage(e instanceof Error ? e.message : '결제 준비 중입니다.');}finally{setBusy(false);}
   }
+  const paid = callback && !busy && order?.state === 'PAID' && Number.isSafeInteger(order.quantity) && order.quantity > 0 && ((order.mode === 'TEST' && order.grant_state === 'TEST_RECORDED') || (order.mode === 'LIVE' && order.grant_state === 'POSTED'));
+  if (paid) return <section className="policy-page content-wrap content-wrap--detail"><h1>결제가 완료되었습니다.</h1><p role="status">{order.mode === 'TEST' ? `${order.quantity} Credits 상품의 테스트 결제가 정상적으로 확인되었습니다.` : `${order.quantity} Credits가 지급되었습니다.`}</p><p><Link className="button button--primary" href="/essay-lab/">논술 LAB 시작하기</Link></p><p><Link href="/account/">마이페이지</Link></p></section>;
+  if (callback) return <section className="policy-page content-wrap content-wrap--detail"><h1>결제 확인</h1><p role="status">{message}</p><button disabled={busy} onClick={()=>void result()}>다시 확인</button><p><Link href="/account/">마이페이지</Link></p></section>;
   return <section className="policy-page content-wrap content-wrap--detail"><h1>{callback?'결제 확인':live?'Credit 구매':'결제 테스트 환경'}</h1><p role="status">{message}</p><Link href="/login/">로그인</Link>
     {callback ? <button disabled={busy} onClick={()=>void result()}>재확인</button> : pricingPlans.map(plan=><div key={plan.id}><h2>{plan.name} · {plan.priceLabel}</h2><button disabled={busy || runtime !== (live?'LIVE':'TEST')} onClick={()=>void buy(plan.credits)}>{live?'구매하기':'테스트 결제'}</button></div>)}
     {order && <p>주문 상태: {order.state}</p>}{!callback && <button disabled={busy} onClick={()=>{for(const p of pricingPlans) sessionStorage.removeItem(`payment-${live?'live':'test'}-${p.credits}`);setOrder(null);setMessage(live?'새 주문을 시작할 수 있습니다.':'새 테스트 주문을 시작할 수 있습니다.');}}>{live?'새 주문':'새 테스트 주문'}</button>}<p><Link href="/pricing/">요금 안내</Link> · <Link href="/support/">고객센터</Link></p></section>;

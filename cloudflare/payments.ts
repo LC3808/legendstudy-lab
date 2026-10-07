@@ -9,7 +9,7 @@ export type Env = {
 type Json = Record<string, unknown>;
 type IO = typeof fetch;
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-class Fault extends Error { constructor(public status: number, public code: string) { super(code); } }
+class Fault extends Error { constructor(public status: number, public code: string, public diagnostic?: Json) { super(code); } }
 const fail = (status: number, code: string): never => { throw new Fault(status, code); };
 const headers = { 'Cache-Control': 'no-store', 'Content-Type': 'application/json', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff' };
 function object(v: unknown): Json { if (!v || typeof v !== 'object' || Array.isArray(v)) fail(422, 'INVALID_BODY'); return v as Json; }
@@ -90,7 +90,17 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     const p = await read(request, 2048);
     const rpc = async (name: string, body: Json, finance = false) => {
       const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/rest/v1/rpc/${name}`, { method: 'POST', headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: finance ? `Bearer ${env.PAYMENT_FINANCE_TOKEN}` : bearer!, 'Content-Type': 'application/json' }, body: JSON.stringify({ p: { dto_version: 'payment-v1', ...body } }) });
-      if (!r.ok) { const status = [401,403,404,409,422].includes(r.status) ? r.status : 503; fail(status, status === 503 ? 'RECONCILIATION_REQUIRED' : 'ORDER_REQUEST_REJECTED'); }
+      if (!r.ok) {
+        const status = [401,403,404,409,422].includes(r.status) ? r.status : 503;
+        // REVIEW diagnostics identify only the failed boundary, never an upstream
+        // message, JWT, payment key, or arbitrary response body.
+        if (cfg.review && status === 401) {
+          let code = 'UNCLASSIFIED';
+          try { const error = await read(r, 16384); if (['PT401','PGRST301','PGRST302','PGRST303'].includes(String(error.code))) code = String(error.code); } catch { /* preserve original 401 */ }
+          throw new Fault(401, 'ORDER_REQUEST_REJECTED', { stage: finance ? 'FINANCE_RPC' : 'BUYER_RPC', code });
+        }
+        fail(status, status === 503 ? 'RECONCILIATION_REQUIRED' : 'ORDER_REQUEST_REJECTED');
+      }
       return read(r, 16384);
     };
     if (action === 'orders') {
@@ -179,6 +189,6 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     }
   } catch (e) {
     const f = e instanceof Fault ? e : new Fault(503, 'RECONCILIATION_REQUIRED');
-    return Response.json({ error: f.code, ...(f.code === 'PAYMENT_NOT_CONFIGURED' ? { state: 'NOT_READY', consumer_purchase: false } : {}) }, { status: f.status, headers });
+    return Response.json({ error: f.code, ...(f.diagnostic ? { diagnostic: f.diagnostic } : {}), ...(f.code === 'PAYMENT_NOT_CONFIGURED' ? { state: 'NOT_READY', consumer_purchase: false } : {}) }, { status: f.status, headers });
   }
 }
