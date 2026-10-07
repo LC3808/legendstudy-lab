@@ -268,6 +268,61 @@ for (const relative of [
   }
 }
 
+// The HOME page states the service value in short copy. The Owner removed the
+// implementation-status, identity and policy wording from it, so those blocks
+// must not come back, and the header must keep the simplified product menu.
+const homeFile = path.join(sourceRoot, "components/lab-landing.tsx");
+if (fs.existsSync(homeFile)) {
+  const home = fs.readFileSync(homeFile, "utf8");
+  for (const literal of [
+    "설계 단계",
+    "준비 단계",
+    "기록하고, 분석하고, 이해하고, 결정합니다.",
+    "지금의 위치를 이해하는 것부터.",
+    "공개 범위 보기",
+    "LegendStudy 계정으로 LAB을 시작하세요",
+    "계정과 개인 기록은 분리해 다룹니다",
+    "이 설명은 제품 방향이며",
+    "각 분석이 서로 다른 계정·프로필·데이터 섬으로 나뉘지 않습니다",
+  ]) {
+    if (home.includes(literal)) {
+      errors.push(`removed HOME copy returned to the landing: ${literal}`);
+    }
+  }
+  for (const literal of ["내신 분석", "수능·모의고사 분석", "논술 첨삭"]) {
+    if (!home.includes(literal)) {
+      errors.push(`landing is missing the Owner-confirmed axis label: ${literal}`);
+    }
+  }
+}
+
+const routesFile = path.join(sourceRoot, "lib/release-routes.ts");
+if (fs.existsSync(routesFile)) {
+  const routes = fs.readFileSync(routesFile, "utf8");
+  const menu = routes.slice(
+    routes.indexOf("authenticatedProductRoutes"),
+    routes.indexOf("export const policyRoutes"),
+  );
+  for (const literal of ["홈", "내신 분석 LAB", "모의·수능 분석 LAB", "논술 LAB"]) {
+    if (!menu.includes(literal)) {
+      errors.push(`authenticated product menu is missing the Owner-confirmed entry: ${literal}`);
+    }
+  }
+  for (const literal of ["성적 분석", "내 기록", "마이페이지", "고객센터"]) {
+    if (menu.includes(`label: "${literal}"`)) {
+      errors.push(`retired entry returned to the authenticated product menu: ${literal}`);
+    }
+  }
+}
+
+const shellFile = path.join(sourceRoot, "components/site-shell.tsx");
+if (fs.existsSync(shellFile)) {
+  const shell = fs.readFileSync(shellFile, "utf8");
+  if (shell.includes('href="/support/"')) {
+    errors.push("the customer centre button returned to the header action cluster");
+  }
+}
+
 if (errors.length) {
   console.error("BOUNDARY_AUDIT=FAIL");
   for (const error of errors) console.error(`- ${error}`);

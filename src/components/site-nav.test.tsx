@@ -22,20 +22,24 @@ describe("SiteNav session-aware header", () => {
   it("shows the public menu for an anonymous session", () => {
     renderWithStatus("anonymous");
     expect(screen.getByRole("link", { name: "서비스" })).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "성적 분석" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "내신 분석 LAB" })).not.toBeInTheDocument();
   });
 
-  it("shows the authenticated product menu once signed in", () => {
+  it("shows the three service axes once signed in", () => {
     renderWithStatus("authenticated");
-    for (const label of ["홈", "성적 분석", "논술 LAB", "내 기록", "마이페이지"]) {
+    for (const label of ["홈", "내신 분석 LAB", "모의·수능 분석 LAB", "논술 LAB"]) {
       expect(screen.getByRole("link", { name: label })).toBeInTheDocument();
     }
     expect(screen.queryByRole("link", { name: "서비스" })).not.toBeInTheDocument();
+    // Account and support entries moved to the header action cluster and to MY.
+    for (const label of ["마이페이지", "내 기록", "계정 설정", "고객센터"]) {
+      expect(screen.queryByRole("link", { name: label })).not.toBeInTheDocument();
+    }
   });
 
   it("does not show the authenticated menu before the session is known", () => {
     renderWithStatus("loading");
-    expect(screen.queryByRole("link", { name: "성적 분석" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "내신 분석 LAB" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "서비스" })).toBeInTheDocument();
   });
 });

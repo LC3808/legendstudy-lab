@@ -31,7 +31,6 @@ export function SiteShell({ children }: { children: ReactNode }) {
           <SiteNav />
           <div className="site-header__actions">
             <AccountControl />
-            <Link className="button button--accent button--small" href="/support/">고객센터</Link>
           </div>
         </div>
       </header>

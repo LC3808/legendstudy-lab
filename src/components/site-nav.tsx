@@ -20,7 +20,7 @@ export function SiteNav() {
   return (
     <nav className="site-nav" aria-label="주요 메뉴">
       {items.map((item) => (
-        <Link key={item.href} href={item.href}>{item.label}</Link>
+        <Link key={item.label} href={item.href}>{item.label}</Link>
       ))}
     </nav>
   );

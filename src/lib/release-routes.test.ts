@@ -54,17 +54,20 @@ describe("release routes", () => {
     expect(authenticatedProductRoutes.map((route) => route.href)).toEqual([
       "/",
       "/score-analysis/",
+      "/score-analysis/",
       "/essay-lab/",
-      "/my/essays/",
-      "/account/",
     ]);
     expect(authenticatedProductRoutes.map((route) => route.label)).toEqual([
       "홈",
-      "성적 분석",
+      "내신 분석 LAB",
+      "모의·수능 분석 LAB",
       "논술 LAB",
-      "내 기록",
-      "마이페이지",
     ]);
+    // The account and support entries live in the header action cluster and in
+    // MY, so the product menu carries only the three service axes.
+    for (const label of ["마이페이지", "내 기록", "고객센터", "계정 설정"]) {
+      expect(authenticatedProductRoutes.map((route) => route.label)).not.toContain(label);
+    }
   });
 
   it("does not claim an indexing canonical before an Owner supplies a final origin", () => {

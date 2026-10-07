@@ -7,10 +7,9 @@ export const publicReleaseRoutes = [
 
 export const authenticatedProductRoutes = [
   { href: "/", label: "홈" },
-  { href: "/score-analysis/", label: "성적 분석" },
+  { href: "/score-analysis/", label: "내신 분석 LAB" },
+  { href: "/score-analysis/", label: "모의·수능 분석 LAB" },
   { href: "/essay-lab/", label: "논술 LAB" },
-  { href: "/my/essays/", label: "내 기록" },
-  { href: "/account/", label: "마이페이지" },
 ] as const;
 
 export const policyRoutes = [

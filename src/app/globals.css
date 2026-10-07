@@ -138,7 +138,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 @media (max-width: 680px) { .content-wrap, .content-wrap--wide, .content-wrap--detail { width: min(100% - 1.5rem, 76rem); }.site-header__inner { height: auto; min-height: 4rem; flex-wrap: wrap; padding-block: .45rem; }.site-nav { order: 3; width: 100%; padding-bottom: .2rem; }.site-header__actions { margin-left: auto; }.site-header__actions .text-link { display: none; }.hero { padding-block: 3.5rem; }.hero__metrics { gap: .4rem; }.hero__panel { min-height: 19rem; }.writing-loop { padding-block: 3.8rem; }.writing-loop__cards { grid-template-columns: 1fr; }.trust-strip > div, .workspace-topline > div, .evaluation-heading, .editor-pane__footer { align-items: flex-start; flex-direction: column; }.catalog-filter__controls { grid-template-columns: 1fr 1fr; }.search-control { grid-column: 1 / -1; }.university-grid, .criteria-grid, .metadata-list, .year-page__grid { grid-template-columns: 1fr; }.attempt-list article { grid-template-columns: auto 1fr; }.attempt-list article .button { grid-column: 2; justify-self: start; }.site-footer__inner { flex-direction: column; }.hero h1, .page-intro h1, .detail-hero h1, .year-page h1, .question-overview h1, .evaluation-heading h1, .placeholder-page h1, .login-page h1 { letter-spacing: -.06em; }.workspace-toolbar { flex-direction: column; }.workspace-toolbar .button { width: fit-content; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
 
-
 /* Phase 1 release and policy foundation */
 body { padding-bottom: env(safe-area-inset-bottom); }
 .site-header { padding-top: env(safe-area-inset-top); }
@@ -194,7 +193,6 @@ body { padding-bottom: env(safe-area-inset-bottom); }
 
 @media (max-width: 960px) { .release-hero, .release-steps { grid-template-columns: 1fr; }.release-steps__grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 680px) { .footer-nav { justify-content: flex-start; }.release-hero { padding-block: 3.5rem; }.release-hero__card { padding: 1.35rem; }.release-steps { padding-block: 3.8rem; }.release-steps__grid { grid-template-columns: 1fr; }.release-steps__grid article { min-height: auto; }.policy-page { padding-block: 3.3rem; }.policy-page__heading { flex-direction: column; }.process-list li, .scope-table__head, .scope-table__row { grid-template-columns: 1fr; gap: 0.45rem; }.scope-table__head { display: none; }.scope-table__row { padding: 1rem; }.scope-table__row strong::before, .scope-table__row span::before, .scope-table__row p::before { display: block; margin-bottom: 0.2rem; color: var(--ink-soft); font-size: 0.65rem; font-weight: 800; letter-spacing: 0.08em; }.scope-table__row strong::before { content: "영역"; }.scope-table__row span::before { content: "상태"; }.scope-table__row p::before { content: "설명"; } }
-
 
 /* Shared LegendStudy Account browser-auth UI */
 .account-control { display: flex; align-items: center; gap: 0.35rem; }
@@ -401,7 +399,6 @@ h1, h2, h3 { text-wrap: pretty; }
 .university-card h2, .surface-card h2, .review-card h2,
 .question-aside h2, .next-actions h2 { font-weight: 600; }
 
-
 /* ==========================================================================
    LAB brand landing — Phase 1 (editorial visual direction)
    White/neutral canvas, near-black editorial typography, generous whitespace,
@@ -446,7 +443,6 @@ h1, h2, h3 { text-wrap: pretty; }
 .lab-landing .ll-lab__no::after { content: ""; display: inline-block; width: 0.3rem; height: 0.3rem; margin-left: 0.4rem; border-radius: 50%; background: var(--accent); vertical-align: middle; }
 .lab-landing .ll-lab h3 { margin: 1.4rem 0 0; color: var(--ll-ink); font-family: var(--font-ui); font-size: clamp(1.35rem, 2.2vw, 1.65rem); font-weight: 700; letter-spacing: -0.035em; line-height: 1.3; }
 .lab-landing .ll-lab__copy { margin: 0.75rem 0 0; color: var(--ll-muted); font-size: var(--type-body); line-height: 1.7; }
-.lab-landing .ll-lab__status { display: inline-block; margin-top: 1.1rem; color: var(--ll-muted); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* 03 · Connected Data — typographic / line composition, no dark card */
 .lab-landing .ll-connect { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(2.5rem, 6vw, 5rem); align-items: center; padding-block: clamp(3.5rem, 9vh, 6.5rem); border-top: 1px solid var(--ll-line); }
@@ -461,37 +457,22 @@ h1, h2, h3 { text-wrap: pretty; }
 .lab-landing .ll-map__core strong { color: var(--ll-ink); font-family: var(--font-ui); font-size: clamp(1.5rem, 2.8vw, 2.05rem); font-weight: 700; letter-spacing: -0.04em; }
 
 /* 04 · How LAB helps — the single near-black band (full-bleed) */
-.lab-landing .ll-loop { background: var(--ll-ink); color: #fff; padding-block: clamp(4rem, 10vh, 7rem); }
-.lab-landing .ll-loop .ll-eyebrow { color: rgba(255, 255, 255, 0.55); }
-.lab-landing .ll-loop h2 { color: #fff; }
-.lab-landing .ll-loop__list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3rem); margin: clamp(2.5rem, 6vw, 4rem) 0 0; padding: 0; list-style: none; }
-.lab-landing .ll-loop__list li { padding-top: 1.3rem; border-top: 1px solid rgba(255, 255, 255, 0.24); }
-.lab-landing .ll-loop__list span { color: rgba(255, 255, 255, 0.5); font-family: ui-monospace, monospace; font-size: 0.78rem; font-weight: 700; }
-.lab-landing .ll-loop__list strong { display: block; margin-top: 1rem; color: #fff; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
-.lab-landing .ll-loop__list p { margin: 0.6rem 0 0; color: rgba(255, 255, 255, 0.66); font-size: 0.86rem; line-height: 1.65; }
 
 /* 05 · Start / CTA — editorial, one accent action */
 .lab-landing .ll-cta { padding-block: clamp(4rem, 10vh, 7rem); }
-.lab-landing .ll-cta__copy { margin: 1.15rem 0 0; max-width: 38rem; color: var(--ll-muted); font-size: var(--type-body-lg); line-height: 1.85; }
 .lab-landing .ll-cta__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin-top: 2rem; }
 
 /* Closing honesty note — quiet, borderless */
-.lab-landing .ll-note { padding-block: 0 clamp(4rem, 9vh, 6.5rem); }
-.lab-landing .ll-note p { max-width: 52rem; padding-top: 1.6rem; border-top: 1px solid var(--ll-line); margin: 0; color: var(--ll-muted); font-size: 0.86rem; line-height: 1.8; }
-.lab-landing .ll-note strong { color: var(--ll-ink); font-weight: 700; }
 
 @media (max-width: 900px) {
   .lab-landing .ll-hero__support { margin-left: 0; max-width: 40rem; }
   .lab-landing .ll-connect { grid-template-columns: 1fr; }
-  .lab-landing .ll-loop__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 620px) {
   .lab-landing .ll-labs__grid { grid-template-columns: 1fr; }
-  .lab-landing .ll-loop__list { grid-template-columns: 1fr; }
   .lab-landing .ll-map__source { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
   .lab-landing .ll-map__source span { text-align: left; }
 }
-
 
 /* ===========================================================================
    LAB landing — Axis Convergence implementation
@@ -689,17 +670,6 @@ h1, h2, h3 { text-wrap: pretty; }
   font-weight: 650;
 }
 .lab-landing .ll-lab__copy { max-width: 18rem; color: var(--ll-muted); font-size: 0.9rem; line-height: 1.72; }
-.lab-landing .ll-lab__status {
-  display: flex;
-  align-items: center;
-  gap: 0.46rem;
-  margin-top: 1.25rem;
-  color: var(--ll-muted);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  text-transform: none;
-}
-.lab-landing .ll-lab__status span { width: 0.34rem; height: 0.34rem; border-radius: 50%; background: var(--ll-orange); }
 
 /* Connected Data: a low-density, non-operational ledger. */
 .lab-landing .ll-connect {
@@ -716,24 +686,12 @@ h1, h2, h3 { text-wrap: pretty; }
 .lab-landing .ll-data-tracks--compact .ll-data-tracks__note { margin-top: 1.15rem; }
 
 /* The one dark interval repeats the same data-ledger discipline. */
-.lab-landing .ll-loop { background: var(--ll-navy); padding-block: clamp(4rem, 7vw, 6rem); }
-.lab-landing .ll-loop .ll-section-title { color: #fff; }
-.lab-landing .ll-loop__list { gap: 0; margin-top: clamp(2.5rem, 4vw, 3.5rem); border-top: 1px solid rgba(255, 255, 255, 0.28); }
-.lab-landing .ll-loop__list li { min-height: 11.5rem; padding: 1.35rem clamp(1rem, 2vw, 1.75rem) 1.25rem 0; border-top: 0; border-right: 1px solid rgba(255, 255, 255, 0.16); }
-.lab-landing .ll-loop__list li + li { padding-left: clamp(1rem, 2vw, 1.75rem); }
-.lab-landing .ll-loop__list li:last-child { border-right: 0; }
-.lab-landing .ll-loop__list strong { font-size: 1.1rem; font-weight: 650; }
-.lab-landing .ll-loop__list p { max-width: 13rem; }
 
 .lab-landing .ll-cta { padding-block: clamp(4.5rem, 8vw, 7rem) clamp(4rem, 7vw, 6.2rem); border-top: 1px solid var(--ll-section-rule); }
-.lab-landing .ll-cta__copy { color: var(--ll-muted); font-size: 1rem; }
 .lab-landing .ll-btn { border-radius: 0.45rem; font-weight: 650; }
 .lab-landing .ll-btn--navy { background: var(--ll-navy); color: #fff; }
 .lab-landing .ll-btn--navy:hover { background: var(--ll-navy-deep); }
 .lab-landing .ll-cta__actions { gap: 1rem; }
-.lab-landing .ll-note { padding-bottom: clamp(3.5rem, 6vw, 5.5rem); }
-.lab-landing .ll-note p { max-width: 60rem; color: var(--ll-muted); }
-.lab-landing .ll-note strong { color: var(--ll-navy); }
 
 @media (max-width: 960px) {
   .lab-landing .ll-hero { grid-template-columns: minmax(0, 1.12fr) minmax(19rem, 0.88fr); gap: 2.5rem; }
@@ -758,12 +716,6 @@ h1, h2, h3 { text-wrap: pretty; }
   .lab-landing .ll-lab__copy { margin-top: 0.45rem; }
   .lab-landing .ll-connect { grid-template-columns: 1fr; gap: 2rem; padding-block: 3.8rem; }
   .lab-landing .ll-data-tracks--compact { width: 100%; }
-  .lab-landing .ll-loop { padding-block: 3.8rem; }
-  .lab-landing .ll-loop__list { grid-template-columns: repeat(2, 1fr); }
-  .lab-landing .ll-loop__list li,
-  .lab-landing .ll-loop__list li + li { min-height: 10.5rem; padding: 1.05rem 1rem 1.1rem 0; }
-  .lab-landing .ll-loop__list li:nth-child(2n) { padding-left: 1rem; border-right: 0; }
-  .lab-landing .ll-loop__list li:nth-child(n + 3) { border-top: 1px solid rgba(255, 255, 255, 0.16); }
   .lab-landing .ll-cta { padding-block: 3.8rem 3.5rem; }
 }
 @media (max-width: 460px) {
@@ -772,14 +724,6 @@ h1, h2, h3 { text-wrap: pretty; }
   .lab-landing .ll-wrap { width: min(100% - 2rem, 76rem); }
   .lab-landing .ll-hero { padding-top: 3.8rem; }
   .lab-landing .ll-hero__title { font-size: 2.25rem; letter-spacing: -0.13em; }
-  .lab-landing .ll-hero__support p,
-  .lab-landing .ll-connect__copy,
-  .lab-landing .ll-cta__copy { font-size: 0.95rem; }
-  .lab-landing .ll-loop__list { grid-template-columns: 1fr; }
-  .lab-landing .ll-loop__list li,
-  .lab-landing .ll-loop__list li + li,
-  .lab-landing .ll-loop__list li:nth-child(2n) { min-height: auto; padding: 1.05rem 0 1.25rem; border-right: 0; border-top: 1px solid rgba(255, 255, 255, 0.16); }
-  .lab-landing .ll-loop__list li:first-child { border-top: 0; }
 }
 
 /* ==========================================================================
@@ -808,7 +752,6 @@ h1, h2, h3 { text-wrap: pretty; }
 .pricing-plan__price { margin: 0.5rem 0 0; color: var(--ink); font-family: Georgia, "Nanum Myeongjo", serif; font-size: clamp(1.7rem, 2.6vw, 2.05rem); font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .pricing-plan__unit { margin: 0; color: var(--ink-soft); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
 .pricing-plan__value { margin: 0.85rem 0 0; padding-top: 0.85rem; border-top: 1px solid var(--line); color: var(--ink); font-size: 0.95rem; font-weight: 800; }
-
 
 .pricing-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; margin-top: 1.4rem; }
 .pricing-fact { padding: 1.2rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); }
@@ -984,7 +927,6 @@ h1, h2, h3 { text-wrap: pretty; }
   margin: 0; font-family: var(--font-ui); font-size: var(--type-body);
   font-weight: 800; letter-spacing: 0; color: var(--ink-body);
 }
-
 
 .pricing-page .pricing-business { margin-top: 1.9rem; padding-top: 1.5rem; }
 .pricing-page .pricing-business h2 {

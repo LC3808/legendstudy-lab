@@ -19,7 +19,8 @@ export function AccountControl() {
 
   return (
     <div className="account-control">
-      <Link className="text-link text-link--small" href="/account/">계정 설정</Link>
+      <Link className="text-link text-link--small" href="/lab/how-it-works/">이용 안내</Link>
+      <Link className="text-link text-link--small" href="/account/">마이페이지</Link>
       <button
         className="button button--outline button--small"
         type="button"
