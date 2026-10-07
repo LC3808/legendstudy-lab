@@ -2,7 +2,7 @@
 export type Env = {
   PAYMENT_MODE?: string; PAYMENT_ENABLED?: string; PAYMENT_ORIGIN?: string;
   PAYMENT_SUPABASE_URL?: string; PAYMENT_SUPABASE_PUBLISHABLE_KEY?: string;
-  PAYMENT_FINANCE_TOKEN?: string; PAYMENT_SUPPORT_SUBJECTS?: string;
+  PAYMENT_FINANCE_TOKEN?: string; PAYMENT_SUPPORT_SUBJECTS?: string; PAYMENT_REVIEW_SUBJECTS?: string;
   TOSS_LIVE_CLIENT_KEY?: string; TOSS_LIVE_SECRET_KEY?: string;
   TOSS_TEST_CLIENT_KEY?: string; TOSS_TEST_SECRET_KEY?: string; TOSS_MID?: string;
 };
@@ -24,15 +24,39 @@ function exact(p: Json, keys: string[]) { if (Object.keys(p).some(k => !keys.inc
 function text(v: unknown, max = 200): string { if (typeof v !== 'string' || !v.length || v.length > max) return fail(422, 'INVALID_FIELD'); return v; }
 function id(v: unknown): string { const s = text(v, 36); if (!uuid.test(s)) fail(422, 'INVALID_ID'); return s; }
 function config(e: Env) {
-  const live = e.PAYMENT_MODE === 'LIVE';
-  if (!live && e.PAYMENT_MODE !== 'TEST') fail(503, 'PAYMENT_NOT_CONFIGURED');
-  const clientKey = live ? e.TOSS_LIVE_CLIENT_KEY : e.TOSS_TEST_CLIENT_KEY;
-  const secret = live ? e.TOSS_LIVE_SECRET_KEY : e.TOSS_TEST_SECRET_KEY;
-  if (!(live ? /^live_ck_/ : /^test_ck_/).test(clientKey || '') || !(live ? /^live_sk_/ : /^test_sk_/).test(secret || '') || e.TOSS_MID !== 'leglabn24k' || !e.PAYMENT_FINANCE_TOKEN || !e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) fail(503, 'PAYMENT_NOT_CONFIGURED');
-  const origin = live ? 'https://lab.legendstudy.com' : 'https://legendstudy-lab-payment-test.pages.dev';
-  const db = live ? 'https://stlhijzpjfgwwdgunlsd.supabase.co' : 'https://wsnrwklplnunjktyfmbr.supabase.co';
+  const mode = e.PAYMENT_MODE;
+  const live = mode === 'LIVE';
+  const review = mode === 'REVIEW';
+  if (!live && !review && mode !== 'TEST') fail(503, 'PAYMENT_NOT_CONFIGURED');
+  // REVIEW is the card-review mode: the real service origin and the real Production
+  // database, driven by the Toss TEST merchant. The merchant key family is TEST, so
+  // no real charge is possible, and persistence stays on TEST semantics.
+  const test = !live;
+  const clientKey = test ? e.TOSS_TEST_CLIENT_KEY : e.TOSS_LIVE_CLIENT_KEY;
+  const secret = test ? e.TOSS_TEST_SECRET_KEY : e.TOSS_LIVE_SECRET_KEY;
+  if (!(test ? /^test_ck_/ : /^live_ck_/).test(clientKey || '') || !(test ? /^test_sk_/ : /^live_sk_/).test(secret || '') || e.TOSS_MID !== 'leglabn24k' || !e.PAYMENT_FINANCE_TOKEN || !e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) fail(503, 'PAYMENT_NOT_CONFIGURED');
+  const origin = test && !review ? 'https://legendstudy-lab-payment-test.pages.dev' : 'https://lab.legendstudy.com';
+  const db = test && !review ? 'https://wsnrwklplnunjktyfmbr.supabase.co' : 'https://stlhijzpjfgwwdgunlsd.supabase.co';
   if (e.PAYMENT_ORIGIN !== origin || e.PAYMENT_SUPABASE_URL !== db || !['true','false'].includes(e.PAYMENT_ENABLED || '')) fail(503, 'PAYMENT_NOT_CONFIGURED');
-  return { origin, clientKey, secret, enabled: e.PAYMENT_ENABLED === 'true', mode: e.PAYMENT_MODE! };
+  // A review runtime without a reviewer allowlist is a misconfiguration, not a mode.
+  if (review && !(e.PAYMENT_REVIEW_SUBJECTS || '').split(',').filter(Boolean).length) fail(503, 'PAYMENT_NOT_CONFIGURED');
+  // `mode` stays the persistence and provider mode (TEST|LIVE); `state` is what the browser may see.
+  return { origin, clientKey, secret, enabled: e.PAYMENT_ENABLED === 'true', mode: test ? 'TEST' : 'LIVE', state: mode!, review };
+}
+/**
+ * Server-authoritative reviewer identity for REVIEW. The browser only ever holds a
+ * session token; the subject is resolved by a fresh Auth lookup on every request and
+ * compared against the bounded allowlist, so a browser string can never grant it.
+ */
+async function reviewer(request: Request, env: Env, io: IO): Promise<boolean> {
+  const bearer = request.headers.get('authorization');
+  if (!bearer || !/^Bearer [A-Za-z0-9._-]{10,8192}$/.test(bearer)) return false;
+  try {
+    const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/auth/v1/user`, { headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: bearer } });
+    if (!r.ok) return false;
+    const user = await read(r, 32768);
+    return uuid.test(String(user.id)) && (env.PAYMENT_REVIEW_SUBJECTS || '').split(',').filter(Boolean).includes(String(user.id));
+  } catch { return false; }
 }
 async function call(io: IO, url: string, init: RequestInit): Promise<Response> {
   try {
@@ -55,10 +79,14 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     const action = url.pathname.replace(/\/$/, '').split('/').pop();
     if (action === 'runtime') {
       exact(await read(request, 2048), []);
-      return Response.json({ state: cfg.enabled ? cfg.mode : 'PAUSED', mode: cfg.mode, consumer_purchase: cfg.enabled && cfg.mode === 'LIVE' }, { headers });
+      const allowed = cfg.review ? await reviewer(request, env, io) : false;
+      return Response.json({ state: cfg.enabled ? cfg.state : 'PAUSED', mode: cfg.mode, consumer_purchase: cfg.enabled && (cfg.mode === 'LIVE' || allowed) }, { headers });
     }
     const bearer = request.headers.get('authorization');
     if (!bearer || !/^Bearer [A-Za-z0-9._-]{10,8192}$/.test(bearer)) fail(401, 'AUTH_REQUIRED');
+    // REVIEW exposes the TEST checkout to the reviewer only. Every authenticated
+    // action is gated here, so a non-allowlisted member cannot create an order.
+    if (cfg.review && !(await reviewer(request, env, io))) fail(403, 'REVIEW_REQUIRED');
     const p = await read(request, 2048);
     const rpc = async (name: string, body: Json, finance = false) => {
       const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/rest/v1/rpc/${name}`, { method: 'POST', headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: finance ? `Bearer ${env.PAYMENT_FINANCE_TOKEN}` : bearer!, 'Content-Type': 'application/json' }, body: JSON.stringify({ p: { dto_version: 'payment-v1', ...body } }) });

@@ -6,15 +6,15 @@ const origin='https://legendstudy-lab-payment-test.pages.dev';
 const env:Env={PAYMENT_ENABLED:'true',PAYMENT_MODE:'TEST',PAYMENT_ORIGIN:origin,PAYMENT_SUPABASE_URL:'https://wsnrwklplnunjktyfmbr.supabase.co',PAYMENT_SUPABASE_PUBLISHABLE_KEY:'synthetic-public',PAYMENT_FINANCE_TOKEN:'synthetic-finance',PAYMENT_SUPPORT_SUBJECTS:ID,TOSS_TEST_CLIENT_KEY:['test','ck','fixture'].join('_'),TOSS_TEST_SECRET_KEY:['test','sk','fixture'].join('_'),TOSS_MID:'leglabn24k'};
 const liveEnv:Env={...env,PAYMENT_MODE:'LIVE',PAYMENT_ORIGIN:'https://lab.legendstudy.com',PAYMENT_SUPABASE_URL:'https://stlhijzpjfgwwdgunlsd.supabase.co',TOSS_LIVE_CLIENT_KEY:['live','ck','fixture'].join('_'),TOSS_LIVE_SECRET_KEY:['live','sk','fixture'].join('_')};
 function fixture(base:Env=env){
- let order:Record<string,unknown>={dto_version:'payment-v1',id:ID,order_id:'ls_'+ID.replaceAll('-',''),mode:base.PAYMENT_MODE,sku:'10c',quantity:10,amount:29900,currency:'KRW',state:'ORDER_CREATED',grant_state:'NONE',expires_at:'2099-01-01',paid_at:null,credit_expires_at:null};
+ let order:Record<string,unknown>={dto_version:'payment-v1',id:ID,order_id:'ls_'+ID.replaceAll('-',''),mode:base.PAYMENT_MODE==='LIVE'?'LIVE':'TEST',sku:'10c',quantity:10,amount:29900,currency:'KRW',state:'ORDER_CREATED',grant_state:'NONE',expires_at:'2099-01-01',paid_at:null,credit_expires_at:null};
  let op:Record<string,unknown>={};let storedCreate='';let storedConfirm='';let finishes=0;let cancels=0;
  let provider:Record<string,unknown>={paymentKey:'synthetic-payment',orderId:order.order_id,mId:base.PAYMENT_MODE==='LIVE'?'leglabn24k':'tleglabn24k',currency:'KRW',totalAmount:29900,balanceAmount:29900,status:'IN_PROGRESS',approvedAt:'2026-10-03T00:00:00Z',isPartialCancelable:true};
  const calls:{url:string;body:Record<string,unknown>;headers:Headers}[]=[];
- const f={foreign:false,compensation:false,providerFailure:false,malformed:false,finishFailure:false,cancelFinishFailure:false,cancelFailure:false,refund:29900};
+ const f={subject:ID,foreign:false,compensation:false,providerFailure:false,malformed:false,finishFailure:false,cancelFinishFailure:false,cancelFailure:false,refund:29900};
  const io:typeof fetch=async(input,init)=>{
   const url=String(input);const body=init?.body?JSON.parse(String(init.body)):{};calls.push({url,body,headers:new Headers(init?.headers)});
   const ok=(x:unknown)=>Response.json(x);const err=()=>Response.json({message:'sensitive arbitrary detail'},{status:403});
-  if(url.endsWith('/auth/v1/user'))return ok({id:ID});
+  if(url.endsWith('/auth/v1/user'))return ok({id:f.subject});
   if(url.endsWith('/payment_order')){
    if(f.foreign || new Headers(init?.headers).get('Authorization')!=='Bearer synthetic-user-token')return err();
    if(body.p.action==='create'){
@@ -50,7 +50,7 @@ function fixture(base:Env=env){
  };
  const send=(action:string,p:object,e:Env=base,more:RequestInit={})=>payment(new Request(base.PAYMENT_ORIGIN+'/api/payments/'+action,{method:'POST',headers:{Origin:base.PAYMENT_ORIGIN!,Authorization:'Bearer synthetic-user-token','Content-Type':'application/json'},body:JSON.stringify(p),...more}),e,io);
  const confirm=()=>send('confirm',{id:ID,request_key:KEY,payment_key:'synthetic-payment',amount:29900});
- return {send,confirm,calls,f,order,provider,get finishes(){return finishes;},get cancels(){return cancels;}};
+ return {send,confirm,calls,f,order,provider,io,get finishes(){return finishes;},get cancels(){return cancels;}};
 }
 describe('PAYMENT-2 deterministic APP contract and provider adapter',()=>{
  for(const [sku,amount]of Object.entries({'1c':4900,'3c':11900,'5c':17900,'10c':29900}))it(`canonical SKU ${sku}`,async()=>{const f=fixture();const r=await f.send('orders',{sku,request_key:KEY});const b=await r.json();expect(b.order.amount).toBe(amount);expect(b.checkout.amount.value).toBe(amount);expect(b.checkout.orderId).toBe('ls_'+ID.replaceAll('-',''));});
@@ -110,3 +110,25 @@ describe('LIVE-equivalent runtime, kill switch and support (synthetic transport 
 });
 
 it('support compensation verifies DONE then claims no-grant refund and recovers cancellation',async()=>{const f=fixture(liveEnv);f.f.finishFailure=true;await f.confirm();f.f.foreign=true;f.f.compensation=true;const r=await f.send('support-reconcile',{id:ID,request_key:KEY});expect((await r.json()).order.state).toBe('CANCEL_PENDING');expect(f.finishes).toBe(0);expect(f.calls.some(c=>c.url.endsWith('/payment_compensate'))).toBe(true);expect((await f.send('support-reconcile',{id:ID,request_key:KEY})).ok).toBe(true);expect(f.cancels).toBe(1);});
+
+// REVIEW is the production card-review runtime: the real service origin and the real
+// Production database, driven by the Toss TEST merchant. Only the allowlisted reviewer
+// may open the checkout, and the server resolves that identity itself.
+const reviewEnv:Env={...env,PAYMENT_MODE:'REVIEW',PAYMENT_ORIGIN:'https://lab.legendstudy.com',PAYMENT_SUPABASE_URL:'https://stlhijzpjfgwwdgunlsd.supabase.co',PAYMENT_REVIEW_SUBJECTS:ID};
+const anonymous=(e:Env,action='runtime')=>new Request(e.PAYMENT_ORIGIN+'/api/payments/'+action,{method:'POST',headers:{Origin:e.PAYMENT_ORIGIN!,'Content-Type':'application/json'},body:'{}'});
+describe('PAYMENT REVIEW runtime',()=>{
+ it('an anonymous visitor sees the review runtime but no purchase',async()=>{const f=fixture(reviewEnv);const b=await (await payment(anonymous(reviewEnv),reviewEnv,f.io)).json();expect(b).toEqual({state:'REVIEW',mode:'TEST',consumer_purchase:false});});
+ it('the allowlisted reviewer is the only one who can open the checkout',async()=>{
+  expect((await (await fixture(reviewEnv).send('runtime',{})).json()).consumer_purchase).toBe(true);
+  const denied=fixture(reviewEnv);denied.f.subject=KEY;
+  expect((await (await denied.send('runtime',{})).json()).consumer_purchase).toBe(false);
+ });
+ it('a non-allowlisted member cannot create an order',async()=>{const f=fixture(reviewEnv);f.f.subject=KEY;expect((await f.send('orders',{sku:'3c',request_key:KEY})).status).toBe(403);expect(f.calls.filter(c=>c.url.endsWith('/payment_order'))).toHaveLength(0);});
+ it('the reviewer order stays on TEST semantics with the TEST merchant key',async()=>{const f=fixture(reviewEnv);const b=await (await f.send('orders',{sku:'3c',request_key:KEY})).json();expect(b.order.mode).toBe('TEST');expect(b.order.grant_state).toBe('NONE');expect(b.checkout.clientKey).toBe(reviewEnv.TOSS_TEST_CLIENT_KEY);});
+ it('review without an allowlist is a misconfiguration',async()=>{const f=fixture(reviewEnv);expect((await f.send('runtime',{},{...reviewEnv,PAYMENT_REVIEW_SUBJECTS:''})).status).toBe(503);});
+ it('review refuses a live merchant key',async()=>{const f=fixture(reviewEnv);expect((await f.send('runtime',{},{...reviewEnv,TOSS_TEST_CLIENT_KEY:['live','ck','fixture'].join('_')})).status).toBe(503);});
+ it('TEST and LIVE runtimes are unchanged',async()=>{
+  expect(await (await fixture().send('runtime',{})).json()).toEqual({state:'TEST',mode:'TEST',consumer_purchase:false});
+  expect(await (await fixture(liveEnv).send('runtime',{})).json()).toEqual({state:'LIVE',mode:'LIVE',consumer_purchase:true});
+ });
+});

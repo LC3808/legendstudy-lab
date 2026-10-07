@@ -1,15 +1,32 @@
 import {describe,it,expect} from 'vitest';
-import {purchaseEnabled} from './payment-runtime';
-import {checkoutAvailable,checkoutNotice} from './payment-runtime';
+import {checkoutAvailable,checkoutNotice,checkoutOpen,purchaseEnabled} from './payment-runtime';
 import {validCredit} from '../components/credit-balance';
+
+const states = ['NOT_READY','TEST','REVIEW','LIVE','PAUSED'] as const;
+
 describe('consumer runtime and shared Credit DTO',()=>{
- for(const state of ['NOT_READY','TEST','LIVE','PAUSED'] as const)it(state+' CTA',()=>expect(purchaseEnabled(state)).toBe(state==='LIVE'));
+ for(const state of states)it(state+' CTA',()=>expect(purchaseEnabled(state)).toBe(state==='LIVE'));
  it('canonical 5/4/4/3 snapshots displayed without a local wallet',()=>{for(const paid of [5,4,4,3])expect(validCredit({dto_version:'credit-v1',spendable:paid,paid,free:0,other:0,next_expiry:null})).toBe(true);});
  it('inconsistent, negative and unknown balance rejected',()=>{for(const patch of [{spendable:8},{paid:-1},{dto_version:'other'}])expect(validCredit({dto_version:'credit-v1',spendable:5,paid:5,free:0,other:0,next_expiry:null,...patch})).toBe(false);});
 });
+
+describe('checkout authorization',()=>{
  it('checkout opens only for a configured runtime',()=>{
-  for(const state of ['NOT_READY','TEST','LIVE','PAUSED'] as const)
-   expect(checkoutAvailable(state)).toBe(state==='TEST'||state==='LIVE');
+  for(const state of states)
+   expect(checkoutAvailable(state)).toBe(state==='TEST'||state==='REVIEW'||state==='LIVE');
+ });
+ it('the production review runtime opens for the allowlisted reviewer only',()=>{
+  expect(checkoutOpen('REVIEW',true)).toBe(true);
+  expect(checkoutOpen('REVIEW',false)).toBe(false);
+  // The server answer is the only thing that opens it; a runtime state alone never does.
+  expect(checkoutOpen('NOT_READY',true)).toBe(false);
+  expect(checkoutOpen('PAUSED',true)).toBe(false);
+ });
+ it('TEST and LIVE keep their existing behaviour',()=>{
+  for(const consumerPurchase of [true,false]){
+   expect(checkoutOpen('TEST',consumerPurchase)).toBe(true);
+   expect(checkoutOpen('LIVE',consumerPurchase)).toBe(true);
+  }
  });
  it('never claims a purchase is available without a configured runtime',()=>{
   expect(checkoutNotice('LIVE')).toBeNull();
@@ -24,4 +41,9 @@ describe('consumer runtime and shared Credit DTO',()=>{
   const test=checkoutNotice('TEST') ?? '';
   expect(test).toContain('테스트');
   expect(test).toContain('청구되지 않고');
+  // REVIEW is a TEST charge on the real origin, so the same notice must appear.
+  const review=checkoutNotice('REVIEW') ?? '';
+  expect(review).toContain('테스트');
+  expect(review).toContain('청구되지 않고');
  });
+});

@@ -195,6 +195,25 @@ if (fs.existsSync(checkoutComponent)) {
     errors.push("checkout must require an authenticated account");
   }
 }
+// The card-review runtime runs on the real service origin against the Production
+// account. It must stay a TEST merchant runtime, and the checkout may only open for
+// the allowlisted reviewer, whose identity the server resolves itself.
+const paymentRuntimeSource = path.join(root, "cloudflare", "payments.ts");
+if (fs.existsSync(paymentRuntimeSource)) {
+  const source = fs.readFileSync(paymentRuntimeSource, "utf8");
+  for (const [pattern, message] of [
+    [/mode === 'REVIEW'/, "the production card-review runtime mode must exist"],
+    [/PAYMENT_REVIEW_SUBJECTS/, "the card-review runtime must gate on a server-side reviewer allowlist"],
+    [/auth\/v1\/user/, "the card-review runtime must resolve the reviewer from Auth, not from the browser"],
+    [/review && !\(e\.PAYMENT_REVIEW_SUBJECTS/, "a card-review runtime without an allowlist must fail closed"],
+    [/test \? \/\^test_ck_\//, "the card-review runtime must keep the TEST merchant key family"],
+    [/REVIEW_REQUIRED/, "a non-allowlisted member must be refused before any order is created"],
+  ]) {
+    if (!pattern.test(source)) {
+      errors.push(message);
+    }
+  }
+}
 const paymentLayout = path.join(appRoot, "payments", "layout.tsx");
 if (!fs.existsSync(paymentLayout) || !/index:\s*false/.test(fs.readFileSync(paymentLayout, "utf8"))) {
   errors.push("payment routes must stay out of the search index");

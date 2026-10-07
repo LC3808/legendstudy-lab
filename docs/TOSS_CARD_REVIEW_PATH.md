@@ -1,6 +1,7 @@
 # Toss card review path — LAB web
 
-Status: code ready, deployment and credentials pending Owner action.
+Status: code ready. REVIEW runtime implemented; Production deployment, the payment
+migration and the finance capability are pending.
 Owner-facing only: this document describes the merchant/card review path for the web
 purchase. It is not a consumer page and it is not referenced from `/pricing/`.
 
@@ -34,6 +35,38 @@ produce a spendable Credit; the server refuses that combination. `/pricing/` sho
 an active purchase control only for a runtime the backend reports as configured, so
 a stale static export cannot advertise a purchase that cannot complete.
 
+## REVIEW — the card review on the real service origin
+
+Card review has to run on the service that actually sells, so `REVIEW` is the mode
+that pairs the real origin with the TEST merchant. It is not a new payment
+architecture: it reuses the verified TEST implementation and only changes which
+origin, account and key family are bound together.
+
+| Contract | `REVIEW` value |
+| --- | --- |
+| Origin | `https://lab.legendstudy.com` |
+| Account / database | Production `stlhijzpjfgwwdgunlsd` |
+| Auth | Production Auth |
+| Toss keys | TEST only (`test_ck_…`, `test_sk_…`) |
+| Persistence mode | `TEST` — `payment_private.configuration.mode = 'TEST'`, so an order lands as `TEST_RECORDED` |
+| Real charge | none — the merchant key family is TEST |
+| Credit granted | none — TEST orders cannot post a grant |
+| Checkout entry | the `PAYMENT_REVIEW_SUBJECTS` allowlist only |
+
+The order's mode is owned by the database (`payment_private.configuration`), not by
+the Worker, so a `REVIEW` order cannot become a `LIVE` one by changing a request.
+`REVIEW` therefore keeps the `TEST` guard rails: `safeOrder` still expects
+`TEST_RECORDED`, the provider MID mapping still applies, and no Credit ledger row is
+written. Review orders are separable in Production by `mode = 'TEST'`.
+
+Public behaviour is unchanged: the pricing page renders normally for everyone, and
+the purchase control stays a disabled button for every visitor except the
+allowlisted reviewer. The allowlist is enforced by the Worker, which resolves the
+subject with a fresh `auth/v1/user` lookup on each request and refuses
+non-allowlisted subjects with `403 REVIEW_REQUIRED` before any order is created — a
+browser string cannot grant it. A `REVIEW` runtime with an empty allowlist is
+refused outright as a misconfiguration.
+
 ## Owner actions before the reviewer can pay
 
 The LAB Production Pages project needs the payment environment. The payment backend
@@ -41,13 +74,14 @@ refuses to start with any of these missing (`PAYMENT_NOT_CONFIGURED`, HTTP 503):
 
 | Variable | Value |
 | --- | --- |
-| `PAYMENT_MODE` | `TEST` for review, `LIVE` to sell |
+| `PAYMENT_MODE` | `REVIEW` for the card review on the real origin, `TEST` for the isolated environment, `LIVE` to sell |
 | `PAYMENT_ENABLED` | `true` when purchases should be accepted, `false` to pause |
 | `PAYMENT_ORIGIN` | `https://lab.legendstudy.com` |
 | `PAYMENT_SUPABASE_URL` | `https://stlhijzpjfgwwdgunlsd.supabase.co` |
 | `PAYMENT_SUPABASE_PUBLISHABLE_KEY` | the project's `sb_publishable_…` key |
 | `PAYMENT_FINANCE_TOKEN` | the `essay_finance`-mapped capability token |
 | `PAYMENT_SUPPORT_SUBJECTS` | comma-separated auth user UUIDs allowed on `/payments/support/` |
+| `PAYMENT_REVIEW_SUBJECTS` | comma-separated auth user UUIDs allowed to open the checkout in `REVIEW` (required in `REVIEW`) |
 | `TOSS_MID` | `leglabn24k` |
 | `TOSS_TEST_CLIENT_KEY`, `TOSS_TEST_SECRET_KEY` | Toss TEST pair (`test_ck_…`, `test_sk_…`) for review |
 | `TOSS_LIVE_CLIENT_KEY`, `TOSS_LIVE_SECRET_KEY` | Toss LIVE pair (`live_ck_…`, `live_sk_…`) for selling |

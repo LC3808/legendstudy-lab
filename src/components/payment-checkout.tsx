@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 import { getBrowserAuthClient } from "@/lib/browser-auth-client";
-import { checkoutAvailable, checkoutNotice, paymentState, type PaymentState } from "@/lib/payment-runtime";
+import { checkoutNotice, checkoutOpen, paymentRuntime, type PaymentRuntime } from "@/lib/payment-runtime";
 import { pricingPlans, pricingPolicy } from "@/lib/pricing";
 
 type Order = {
@@ -88,7 +88,7 @@ async function loadSdk() {
  * snapshot was created from, so the summary cannot drift from the charge.
  */
 export function PaymentCheckout() {
-  const [runtime, setRuntime] = useState<PaymentState | null>(null);
+  const [runtime, setRuntime] = useState<PaymentRuntime | null>(null);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   /**
    * The card link preselects a pack, and a member arriving without one is shown
@@ -102,7 +102,7 @@ export function PaymentCheckout() {
 
   useEffect(() => {
     let alive = true;
-    void paymentState().then((next) => {
+    void paymentRuntime().then((next) => {
       if (alive) setRuntime(next);
     });
     void getBrowserAuthClient()
@@ -119,8 +119,8 @@ export function PaymentCheckout() {
   }, []);
 
   const plan = useMemo(() => pricingPlans.find((p) => p.credits === credits) ?? pricingPlans[0], [credits]);
-  const payable = runtime !== null && checkoutAvailable(runtime) && signedIn === true;
-  const notice = runtime === null ? null : checkoutNotice(runtime);
+  const payable = runtime !== null && checkoutOpen(runtime.state, runtime.consumerPurchase) && signedIn === true;
+  const notice = runtime === null ? null : checkoutNotice(runtime.state);
 
   async function pay() {
     if (!payable || busy) return;

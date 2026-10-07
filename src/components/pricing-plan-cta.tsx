@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { checkoutAvailable, paymentState, type PaymentState } from "@/lib/payment-runtime";
+import { checkoutOpen, paymentRuntime, type PaymentRuntime } from "@/lib/payment-runtime";
 import { purchaseCta } from "@/lib/pricing";
 
 /**
@@ -15,21 +15,25 @@ import { purchaseCta } from "@/lib/pricing";
  * Once the backend reports a configured runtime the control becomes a plain link
  * to the real checkout — the link carries a SKU, never a price, a quantity or an
  * owner, and the server remains the only thing that can create an order.
+ *
+ * On the production card-review runtime the control stays disabled for everyone
+ * except the allowlisted reviewer, whose authorization the server answers after
+ * resolving the session itself.
  */
 export function PricingPlanCta({ sku }: { sku: string }) {
-  const [state, setState] = useState<PaymentState>("NOT_READY");
+  const [runtime, setRuntime] = useState<PaymentRuntime>({ state: "NOT_READY", consumerPurchase: false });
 
   useEffect(() => {
     let alive = true;
-    void paymentState().then((next) => {
-      if (alive) setState(next);
+    void paymentRuntime().then((next) => {
+      if (alive) setRuntime(next);
     });
     return () => {
       alive = false;
     };
   }, []);
 
-  if (checkoutAvailable(state)) {
+  if (checkoutOpen(runtime.state, runtime.consumerPurchase)) {
     return (
       <Link className="button button--outline pricing-plan__cta" href={`${purchaseCta.href}?sku=${sku}`}>
         {purchaseCta.label}
