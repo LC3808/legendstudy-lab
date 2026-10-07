@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { getBrowserAuthClient } from '@/lib/browser-auth-client';
+import { paymentSessionToken } from '@/lib/payment-browser-session';
 import { paymentState, type PaymentState } from '@/lib/payment-runtime';
 import { pricingPlans } from '@/lib/pricing';
 
@@ -9,10 +9,9 @@ type Order = { mode?: 'TEST'|'LIVE'; id: string; order_id: string; state: string
 type Checkout = { clientKey: string; customerKey: string; orderId: string; orderName: string; amount: {currency: string; value: number}; successUrl: string; failUrl: string };
 declare global { interface Window { TossPayments?: (key: string) => { payment: (options: {customerKey: string}) => {requestPayment: (options: Omit<Checkout,'clientKey'|'customerKey'> & {method: string}) => Promise<void>} }; } }
 async function api(action: string, payload: object): Promise<{order: Order; checkout?: Checkout}> {
-  const auth = getBrowserAuthClient(); const session = await auth?.auth.getSession();
-  if (!session?.data.session) throw new Error('로그인 후 다시 시도해 주세요.');
-  const r = await fetch(`/api/payments/${action}`, {method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${session.data.session.access_token}`},body:JSON.stringify(payload)});
-  if (!r.ok) throw new Error(r.status === 401 ? '로그인 후 다시 시도해 주세요.' : '결제 확인이 필요합니다. 잠시 후 재확인해 주세요.');
+  const token = await paymentSessionToken();
+  const r = await fetch(`/api/payments/${action}`, {method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify(payload)});
+  if (!r.ok) throw new Error(r.status === 401 ? `결제 서버에서 인증을 확인하지 못했습니다. (${action.toUpperCase()}_HTTP_401)` : `결제 확인이 필요합니다. 잠시 후 재확인해 주세요. (${action.toUpperCase()}_HTTP_${r.status})`);
   return r.json();
 }
 async function sdk() {
@@ -22,9 +21,12 @@ async function sdk() {
 export function PaymentTest({callback=false,live=false}: {callback?:boolean;live?:boolean}) {
   const [message,setMessage]=useState(callback ? '결제 확인 중' : live ? '구매할 상품을 선택해 주세요.' : '실제 청구와 사용 가능한 Credit 지급이 없는 테스트입니다.');
   const [busy,setBusy]=useState(false);const [order,setOrder]=useState<Order|null>(null);
+  const inFlight = useRef(false);
   const [runtime,setRuntime]=useState<PaymentState>('NOT_READY');
   useEffect(()=>{if(!callback)void paymentState().then(setRuntime);},[callback]);
   async function result() {
+    if (inFlight.current) return;
+    inFlight.current = true;
     setBusy(true);setMessage('결제 확인 중');
     try {
       const q=new URLSearchParams(window.location.search);const orderId=q.get('orderId');
@@ -40,7 +42,7 @@ export function PaymentTest({callback=false,live=false}: {callback?:boolean;live
       setOrder(current);setMessage(current.state==='PAID' ? (current.mode==='LIVE' ? '결제가 확인되어 Credit이 지급되었습니다.' : '테스트 결제 확인 완료. 사용 가능한 Credit은 지급되지 않습니다.') : '주문 상태를 확인했습니다.');
       // Keep only non-secret order identifier for reopening; provider key is no longer needed.
       window.history.replaceState(null,'',`?orderId=${encodeURIComponent(orderId)}`);
-    } catch(e) { setMessage(e instanceof Error ? e.message : '재확인이 필요합니다.'); } finally {setBusy(false);}
+    } catch(e) { setMessage(e instanceof Error ? e.message : '재확인이 필요합니다.'); } finally {inFlight.current=false;setBusy(false);}
   }
   useEffect(()=>{if(callback) { const timer=setTimeout(()=>void result(),0);return ()=>clearTimeout(timer); }},[callback]);
   async function buy(quantity:number) {

@@ -47,6 +47,8 @@ function skuFromLocation() {
   return pricingPlans.some((plan) => plan.credits === credits) ? credits : null;
 }
 
+class StaleOrderError extends Error {}
+
 async function call(action: string, payload: object): Promise<{ order: Order; checkout?: Checkout }> {
   const auth = getBrowserAuthClient();
   const session = await auth?.auth.getSession();
@@ -59,7 +61,13 @@ async function call(action: string, payload: object): Promise<{ order: Order; ch
     },
     body: JSON.stringify(payload),
   });
-  if (!r.ok) throw new Error(r.status === 401 ? "로그인 후 다시 시도해 주세요." : "결제 준비 중입니다.");
+  if (!r.ok) {
+    const body = await r.json().catch(() => null);
+    if (action === "orders" && r.status === 409 && body?.error === "ORDER_NOT_CHECKOUT_READY") {
+      throw new StaleOrderError("새 주문이 필요합니다.");
+    }
+    throw new Error(r.status === 401 ? "결제 서버에서 인증을 확인하지 못했습니다. (ORDERS_HTTP_401)" : "결제 준비 중입니다.");
+  }
   return r.json();
 }
 
@@ -135,7 +143,16 @@ export function PaymentCheckout() {
         key = crypto.randomUUID();
         sessionStorage.setItem(slot, key);
       }
-      const r = await call("orders", { sku: `${plan.credits}c`, request_key: key });
+      let r;
+      try {
+        r = await call("orders", { sku: `${plan.credits}c`, request_key: key });
+      } catch (error) {
+        if (!(error instanceof StaleOrderError)) throw error;
+        // Rotate only after the server says this order cannot enter checkout.
+        key = crypto.randomUUID();
+        sessionStorage.setItem(slot, key);
+        r = await call("orders", { sku: `${plan.credits}c`, request_key: key });
+      }
       setOrder(r.order);
       if (!r.checkout) throw new Error("결제 준비 중입니다.");
       await loadSdk();
