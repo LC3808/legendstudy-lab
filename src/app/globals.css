@@ -1246,3 +1246,20 @@ h1, h2, h3 { text-wrap: pretty; }
   .lab-landing .ll-connect { padding: 1.5rem; }
   .score-lab { min-height: 60vh; }
 }
+
+/* MY uses the established public surface tokens without changing public pages. */
+.my-dashboard { padding-block: 3rem 4rem; }
+.my-dashboard h1 { font-size: var(--type-h1); font-weight: 500; }
+.my-surface { margin-top: 1.5rem; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--product-border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--product-shadow); }
+.my-surface h2 { margin: 0 0 1.2rem; font-size: var(--type-h3); }
+.my-surface p { margin-block: .65rem; line-height: 1.75; }
+.my-credit-total { font-size: 1.35rem; }
+.my-goals form { display: flex; flex-wrap: wrap; align-items: end; gap: .7rem; margin-block: 1rem; }
+.my-goals label { display: grid; flex: 1 1 14rem; min-width: 0; gap: .5rem; }
+.my-goals input, .my-goals select { width: 100%; min-width: 0; padding: .7rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: white; }
+.my-target { padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); }
+.my-target > strong { flex-basis: 100%; }
+.my-search-results, .my-record-list { padding: 0; list-style: none; }
+.my-search-results li, .my-record-list li { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-block: .8rem; border-bottom: 1px solid var(--line); }
+.my-essay-records article { border-top: 1px solid var(--line); padding-block: 1rem; }
+.my-essay-records summary { cursor: pointer; padding-block: .8rem; }
