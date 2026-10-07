@@ -35,6 +35,7 @@ it('distinguishes a server confirm 401 from a missing local session',async()=>{
 it('LIVE completion requires canonical POSTED',async()=>{
  vi.stubGlobal('fetch',vi.fn().mockResolvedValue(Response.json({order:{...order,mode:'LIVE',grant_state:'POSTED'}})));
  render(<PaymentTest callback/>);await screen.findByText('1 Credits가 지급되었습니다.');
+ expect(screen.getByText('4,900원')).toBeTruthy();expect(screen.getByText('첨삭권 1개')).toBeTruthy();
  expect(screen.getByRole('link',{name:'논술 LAB 시작하기'})).toHaveAttribute('href','/essay-lab');
  expect(screen.getByRole('link',{name:'마이페이지'})).toHaveAttribute('href','/account');
 });

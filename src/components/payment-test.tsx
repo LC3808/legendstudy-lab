@@ -64,7 +64,22 @@ export function PaymentTest({callback=false,live=false}: {callback?:boolean;live
     } catch(e){setMessage(e instanceof Error ? e.message : '결제 준비 중입니다.');}finally{setBusy(false);}
   }
   const paid = callback && !busy && order?.state === 'PAID' && Number.isSafeInteger(order.quantity) && order.quantity > 0 && ((order.mode === 'TEST' && order.grant_state === 'TEST_RECORDED') || (order.mode === 'LIVE' && order.grant_state === 'POSTED'));
-  if (paid) return <section className="policy-page content-wrap content-wrap--detail"><h1>결제가 완료되었습니다.</h1><p role="status">{order.mode === 'TEST' ? `${order.quantity} Credits 상품의 테스트 결제가 정상적으로 확인되었습니다.` : `${order.quantity} Credits가 지급되었습니다.`}</p><p><Link className="button button--primary" href="/essay-lab/">논술 LAB 시작하기</Link></p><p><Link href="/account/">마이페이지</Link></p></section>;
+  if (paid) return <section className="payment-completion content-wrap" aria-labelledby="payment-completion-title">
+    <div className="payment-completion__card">
+      <div className="payment-completion__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m5 12 4 4L19 6" /></svg></div>
+      <h1 id="payment-completion-title">결제가 완료되었습니다.</h1>
+      <p role="status">{order.mode === 'TEST' ? `${order.quantity} Credits 상품의 테스트 결제가 정상적으로 확인되었습니다.` : `${order.quantity} Credits가 지급되었습니다.`}</p>
+      <div className="payment-completion__summary" aria-label="구매 요약">
+        <strong>{order.quantity} Credits</strong>
+        <span>{order.amount.toLocaleString('ko-KR')}원</span>
+        <small>첨삭권 {order.quantity}개</small>
+      </div>
+      <div className="payment-completion__actions">
+        <Link className="button payment-completion__primary" href="/essay-lab/">논술 LAB 시작하기</Link>
+        <Link className="button button--outline" href="/account/">마이페이지</Link>
+      </div>
+    </div>
+  </section>;
   if (callback) return <section className="policy-page content-wrap content-wrap--detail"><h1>결제 확인</h1><p role="status">{message}</p><button disabled={busy} onClick={()=>void result()}>다시 확인</button><p><Link href="/account/">마이페이지</Link></p></section>;
   return <section className="policy-page content-wrap content-wrap--detail"><h1>{callback?'결제 확인':live?'Credit 구매':'결제 테스트 환경'}</h1><p role="status">{message}</p><Link href="/login/">로그인</Link>
     {callback ? <button disabled={busy} onClick={()=>void result()}>재확인</button> : pricingPlans.map(plan=><div key={plan.id}><h2>{plan.name} · {plan.priceLabel}</h2><button disabled={busy || runtime !== (live?'LIVE':'TEST')} onClick={()=>void buy(plan.credits)}>{live?'구매하기':'테스트 결제'}</button></div>)}

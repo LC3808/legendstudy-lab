@@ -40,3 +40,21 @@ manual retry and account navigation. All existing Home/Nav changes preserved.
 Verification:264 tests PASS, lint/typecheck/boundary PASS, Node22 build PASS.
 The pnpm fallback build hit a local port sandbox limit; direct Node22 same build
 succeeded. No credential/config/schema/provider changes.
+
+## Final known-good evidence — 2026-10-07
+
+Owner restored the existing Production finance binding; no new token/signing.
+Fresh order7ae63803-b544-47ef-9264-29c5ad562eed independently read from Production:
+PAID / TEST_RECORDED / grant_id NULL / TEST / CONFIRM SUCCEEDED(exactly1).
+Payment-linked grants0, payment-attributable spendable delta0, real chargeNO.
+Public runtime REVIEW/TEST; LIVE paymentNO. Owner verified success→essay LAB.
+Root401 was remote payment_process finance JWT rejection PGRST301, not buyer
+session hydration. Existing binding restoration resolved it.
+
+Final presentation-only polish: brand completion card/check icon, canonical
+quantity/amount purchase summary and essay/account CTA. TEST copy never claims
+Credit issuance; LIVE issuance still requires PAID/POSTED. Optional LIVE balance
+omitted because the current response has no authoritative balance. No new API call.
+278tests/lint/typecheck/boundary/build PASS. No backend/config/keys/schema changes.
+Known-good payment runtime frozen. No more payment transactions required.
+Card review TEST evidence ready; external approval remains external; no email sent.
