@@ -95,6 +95,10 @@ export type AdminMemberDetail = {
     gradeLevel: string | null;
     schoolCode: string | null;
     schoolOfficeCode: string | null;
+    emailConfirmed: boolean | null;
+    authProviders: string[] | null;
+    intendedMajor: string | null;
+    targetUniversities: { universityName: string; intendedDivision: string | null }[] | null;
   };
   account: { state: string; deletion: AdminDeletion | null };
   usage: {
@@ -344,6 +348,13 @@ export function parseMemberDetail(raw: unknown): AdminMemberDetail {
       gradeLevel: strOrNull(member.grade_level, "member.grade_level"),
       schoolCode: strOrNull(member.school_code, "member.school_code"),
       schoolOfficeCode: strOrNull(member.school_office_code, "member.school_office_code"),
+      emailConfirmed: member.email_confirmed == null ? null : bool(member.email_confirmed, "member.email_confirmed"),
+      authProviders: member.auth_providers == null ? null : arr(member.auth_providers, "member.auth_providers").map((v) => str(v, "member.auth_providers[]")),
+      intendedMajor: strOrNull(member.intended_major, "member.intended_major"),
+      targetUniversities: member.target_universities == null ? null : arr(member.target_universities, "member.target_universities").map((v) => {
+        const target = record(v, "member.target_universities[]");
+        return { universityName: str(target.university_name, "target.university_name"), intendedDivision: strOrNull(target.intended_division, "target.intended_division") };
+      }),
     },
     account: { state: str(account.state, "account.state"), deletion },
     usage: {

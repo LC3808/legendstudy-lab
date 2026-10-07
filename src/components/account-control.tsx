@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { useAuth } from "@/components/auth-context";
 import { useCreditSummary } from "@/components/credit-balance";
+import { AdminEntry } from "@/components/admin/admin-entry";
 
 // A plain login entry: success resolves to the canonical landing unless a
 // valid internal next is present. It no longer forces a return to /account/.
@@ -21,6 +22,7 @@ export function AccountControl() {
   return (
     <div className="account-control">
       <HeaderCredit />
+      <AdminEntry />
       <Link className="text-link text-link--small" href="/account/">마이페이지</Link>
       <button
         className="button button--outline button--small"

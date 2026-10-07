@@ -46,9 +46,13 @@ function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
         <DetailRow label="계정 ID" value={data.member.accountId} />
         <DetailRow label="이메일" value={data.member.email ?? "-"} />
         <DetailRow label="가입일" value={formatDateTime(data.member.createdAt)} />
+        <DetailRow label="이메일 인증" value={data.member.emailConfirmed === null ? "확인 불가" : data.member.emailConfirmed ? "완료" : "대기"} />
+        <DetailRow label="로그인 방식" value={data.member.authProviders?.join(", ") || "확인 불가"} />
         <DetailRow label="표시 이름" value={data.member.displayName ?? "미입력"} />
         <DetailRow label="학년" value={gradeLabel(data.member.gradeLevel)} />
         <DetailRow label="학교 코드" value={schoolCodeLabel(data.member.schoolCode)} />
+        <DetailRow label="희망 전공" value={data.member.intendedMajor ?? "미입력"} />
+        <DetailRow label="관심 대학·학과" value={data.member.targetUniversities === null ? "확인 불가" : data.member.targetUniversities.map((t) => `${t.universityName}${t.intendedDivision ? ` · ${t.intendedDivision}` : ""}`).join(", ") || "미입력"} />
       </dl>
 
       <h4 className="admin-subhead">계정 상태</h4>
