@@ -4,6 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { PaymentCheckout } from './payment-checkout';
 
+vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(window.location.search) }));
+
 const signedOut = { auth: { getSession: async () => ({ data: { session: null } }) } };
 const signedIn = { auth: { getSession: async () => ({ data: { session: { access_token: 'synthetic-session' } } }) } };
 let client: unknown = signedIn;

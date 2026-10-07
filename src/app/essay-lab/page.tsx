@@ -11,7 +11,7 @@ export const metadata = buildMetadata(
 export default function EssayLabPage() {
   const universities = listUniversities();
   return (
-    <div className="page-section content-wrap">
+    <div className="page-section content-wrap essay-lab-page">
       <div className="page-intro">
         <p className="eyebrow eyebrow--accent">ESSAY LAB / EXPLORE</p>
         <h1>논술 LAB</h1>

@@ -6,7 +6,7 @@ import type { CreditPlan } from "@/lib/pricing";
  * /pricing/ and /payments/checkout/ render the same component with the same
  * class names, so the two pages cannot drift into two visual languages. The card
  * carries quantity and price only; the control is passed in by the page, because
- * what the control does differs (select on the pricing page, pay on checkout).
+ * both routes reuse the same selection and checkout controls.
  *
  * The card markup is identical in every state: recommendation is a badge and the
  * selected state is a data attribute, so nothing about the card changes size and

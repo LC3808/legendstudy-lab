@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { appendReturnPath } from "@/lib/return-to";
 
 import { PlanCard } from "@/components/plan-card";
 import { getBrowserAuthClient } from "@/lib/browser-auth-client";
 import { checkoutNotice, checkoutOpen, paymentRuntime, type PaymentRuntime } from "@/lib/payment-runtime";
-import { pricingPlans, pricingPolicy, purchaseCta } from "@/lib/pricing";
+import { defaultSelectedCredits, pricingPlans, pricingPolicy, purchaseCta } from "@/lib/pricing";
 
 type Order = {
   mode?: "TEST" | "LIVE";
@@ -40,9 +42,7 @@ declare global {
 }
 
 /** Reads the SKU from the card link. Only a SKU is ever taken from the URL. */
-function skuFromLocation() {
-  if (typeof window === "undefined") return null;
-  const sku = new URLSearchParams(window.location.search).get("sku");
+function creditsFromSku(sku: string | null) {
   if (!sku || !/^\d{1,2}c$/.test(sku)) return null;
   const credits = Number(sku.slice(0, -1));
   return pricingPlans.some((plan) => plan.credits === credits) ? credits : null;
@@ -83,30 +83,28 @@ async function loadSdk() {
   });
 }
 
-/**
- * Checkout for the sold Credit packs.
- *
- * The journey is fixed and every screen exists before any payment runtime is
- * configured: choose a pack, read the order summary, then pay. Only the final
- * control depends on the backend, so a card reviewer can walk and capture the
- * whole path on a release where nothing can be charged, and the same page turns
- * into a working purchase the moment the payment environment is present.
- *
- * The browser sends a SKU and a request key only — never a price, a quantity, an
- * owner or a redirect. Every value in the order summary is the pack the server
- * snapshot was created from, so the summary cannot drift from the charge.
+/** One checkout controller for Pricing and the compatibility checkout route.
+ * Orders/SDK/session/return URLs remain on the existing server-snapshot path.
  */
-export function PaymentCheckout() {
+export function PaymentCheckout({ embedded = false }: { embedded?: boolean }) {
+  return <Suspense fallback={<div className="pricing-plans">{pricingPlans.map((plan) =>
+    <PlanCard key={plan.id} plan={plan} selected={plan.credits === defaultSelectedCredits} headingId={`pending-plan-${plan.id}`}>
+      <button className="button button--outline plan-card__button" disabled>{plan.credits === defaultSelectedCredits ? purchaseCta.payLabel : purchaseCta.selectLabel}</button>
+    </PlanCard>
+  )}</div>}><CheckoutQuery embedded={embedded} /></Suspense>;
+}
+
+function CheckoutQuery({ embedded }: { embedded: boolean }) {
+  const params = useSearchParams();
+  const initialCredits = creditsFromSku(params?.get("sku") ?? null) ?? defaultSelectedCredits;
+  return <CheckoutContent key={initialCredits} embedded={embedded} initialCredits={initialCredits} />;
+}
+
+function CheckoutContent({ embedded, initialCredits }: { embedded: boolean; initialCredits: number }) {
   const [runtime, setRuntime] = useState<PaymentRuntime | null>(null);
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
-  /**
-   * The card link preselects a pack, and a member arriving without one is shown
-   * the smallest pack so the order summary is always concrete. The value only
-   * decides which summary is displayed; it never authorizes anything.
-   */
-  const [credits, setCredits] = useState<number>(
-      () => skuFromLocation() ?? pricingPlans.find((p) => p.recommended)?.credits ?? pricingPlans[0].credits,
-    );
+  const [credits, setCredits] = useState(initialCredits);
+  const paying = useRef(false);
   const [order, setOrder] = useState<Order | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -116,8 +114,8 @@ export function PaymentCheckout() {
     void paymentRuntime().then((next) => {
       if (alive) setRuntime(next);
     });
-    void getBrowserAuthClient()
-      ?.auth.getSession()
+    const client = getBrowserAuthClient();
+    void (client ? client.auth.getSession() : Promise.resolve({ data: { session: null } }))
       .then((s) => {
         if (alive) setSignedIn(Boolean(s.data.session));
       })
@@ -130,7 +128,9 @@ export function PaymentCheckout() {
   }, []);
 
   const plan = useMemo(() => pricingPlans.find((p) => p.credits === credits) ?? pricingPlans[0], [credits]);
-  const payable = runtime !== null && checkoutOpen(runtime.state, runtime.consumerPurchase) && signedIn === true;
+  const available = runtime !== null && checkoutOpen(runtime.state, runtime.consumerPurchase);
+  const payable = available && signedIn === true;
+  const loginHref = appendReturnPath("/login/", `${embedded ? "/pricing/" : "/payments/checkout/"}?sku=${plan.credits}c`);
   /**
    * Only a genuine availability state is narrated. The test-environment wording
    * was removed by the Owner: the checkout does not explain the build to a buyer.
@@ -138,7 +138,8 @@ export function PaymentCheckout() {
   const notice = runtime === null ? null : checkoutNotice(runtime.state);
 
   async function pay() {
-    if (!payable || busy) return;
+    if (!payable || paying.current) return;
+    paying.current = true;
     setBusy(true);
     setMessage(null);
     try {
@@ -167,30 +168,22 @@ export function PaymentCheckout() {
     } catch (e) {
       setMessage(e instanceof Error ? e.message : "결제 준비 중입니다.");
     } finally {
+      paying.current = false;
       setBusy(false);
     }
   }
 
-  return (
-    <div className="policy-page content-wrap content-wrap--detail checkout-page">
-      <p className="eyebrow eyebrow--accent">LEGENDSTUDY LAB / CHECKOUT</p>
-      <div className="policy-page__heading">
-        <h1>Credit 구매</h1>
-      </div>
-      <p className="policy-page__lead">논술 첨삭에 사용할 Credit을 선택하고 결제합니다.</p>
-
-      <section className="policy-section" aria-labelledby="checkout-plans-title">
-        <h2 id="checkout-plans-title">상품 선택</h2>
+  const productGrid = (
         <div className="pricing-plans">
           {pricingPlans.map((option) => (
             <PlanCard
               key={option.id}
               plan={option}
               selected={option.credits === plan.credits}
-              headingId={`checkout-plan-${option.id}`}
+              headingId={`${embedded ? "pricing" : "checkout"}-plan-${option.id}`}
             >
               {option.credits === plan.credits ? (
-                <button
+                embedded && available && signedIn === false ? <Link className="button button--accent plan-card__button" href={loginHref}>{purchaseCta.payLabel}</Link> : <button
                   className="button button--accent plan-card__button"
                   type="button"
                   disabled={!payable || busy}
@@ -215,6 +208,25 @@ export function PaymentCheckout() {
             </PlanCard>
           ))}
         </div>
+  );
+  if (embedded) return <>
+    {productGrid}
+    {notice && <p className="checkout-notice" role="status">{notice}</p>}
+    {message && <p className="checkout-message" role="status">{message}</p>}
+    {signedIn === false && <p className="checkout-signin">결제를 진행하려면 <Link href={loginHref}>로그인</Link>이 필요합니다.</p>}
+  </>;
+
+  return (
+    <div className="policy-page content-wrap content-wrap--detail checkout-page">
+      <p className="eyebrow eyebrow--accent">LEGENDSTUDY LAB / CHECKOUT</p>
+      <div className="policy-page__heading">
+        <h1>Credit 구매</h1>
+      </div>
+      <p className="policy-page__lead">논술 첨삭에 사용할 Credit을 선택하고 결제합니다.</p>
+
+      <section className="policy-section" aria-labelledby="checkout-plans-title">
+        <h2 id="checkout-plans-title">상품 선택</h2>
+        {productGrid}
       </section>
 
       {notice ? (
@@ -267,7 +279,7 @@ export function PaymentCheckout() {
         </dl>
         {signedIn !== true ? (
           <p className="checkout-signin">
-            결제를 진행하려면 <Link href="/login/">로그인</Link>이 필요합니다.
+            결제를 진행하려면 <Link href={loginHref}>로그인</Link>이 필요합니다.
           </p>
         ) : null}
       </section>

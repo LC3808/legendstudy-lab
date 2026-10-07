@@ -1196,3 +1196,53 @@ h1, h2, h3 { text-wrap: pretty; }
 @media (max-width: 680px) {
   .catalog-filter__controls { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Shared public surfaces: warm canvas, white content, restrained brand accents. */
+:root {
+  --product-canvas: #f8f7f4;
+  --product-border: #e7e5df;
+  --product-shadow: 0 4px 20px rgba(23, 43, 69, .045), 0 1px 3px rgba(23, 43, 69, .025);
+}
+.site-shell:has(.score-lab, .essay-lab-page, .pricing-page) main { background: var(--product-canvas); }
+.lab-landing { background: var(--product-canvas); --ll-section-rule: var(--product-border); }
+.lab-landing .ll-data-tracks {
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid var(--product-border);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  box-shadow: var(--product-shadow);
+}
+.lab-landing .ll-labs { border-top: 0; padding-top: clamp(2rem, 4vw, 4rem); }
+.lab-landing .ll-labs__grid { gap: 1.25rem; border-top: 0; margin-top: 2.5rem; }
+.lab-landing .ll-lab, .lab-landing .ll-lab + .ll-lab, .lab-landing .ll-lab:last-child {
+  min-height: 14rem; padding: clamp(1.4rem, 2.4vw, 2rem);
+  border: 1px solid var(--product-border); border-radius: var(--radius-lg);
+  background: var(--surface); box-shadow: var(--product-shadow);
+}
+.lab-landing .ll-lab__no { display: inline-block; padding-bottom: .6rem; border-bottom: 2px solid var(--brand); }
+.lab-landing .ll-connect {
+  padding: clamp(2rem, 4vw, 3.5rem); border: 1px solid var(--product-border);
+  border-radius: var(--radius-xl); background: #f0efeb;
+}
+.lab-landing .ll-cta { border-top: 0; text-align: center; }
+.lab-landing .ll-cta__actions { justify-content: center; }
+.score-lab { min-height: 65vh; display: grid; align-items: center; padding-block: clamp(3rem, 7vw, 6rem); }
+.score-lab__surface {
+  width: min(100%, 58rem); margin-inline: auto; padding: clamp(2.25rem, 6vw, 5rem) clamp(1.2rem, 4vw, 3rem);
+  text-align: center; background: var(--surface); border: 1px solid var(--product-border);
+  border-radius: var(--radius-xl); box-shadow: var(--product-shadow);
+}
+.score-lab__surface::before { content: ""; display: block; width: 2rem; height: 3px; margin: 0 auto 1.6rem; background: var(--brand); border-radius: 2px; }
+.score-lab h1 { margin-block: .7rem 1.5rem; }
+.score-lab .button-row { justify-content: center; margin-top: 2rem; }
+.essay-lab-page .page-intro {
+  padding: clamp(1.5rem, 3vw, 2.5rem); border: 1px solid var(--product-border);
+  border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--product-shadow);
+}
+.essay-lab-page .university-card, .pricing-page .plan-card { box-shadow: var(--product-shadow); }
+.essay-lab-page .essay-credit { background: var(--surface); }
+@media (max-width: 760px) {
+  .lab-landing .ll-lab, .lab-landing .ll-lab + .ll-lab, .lab-landing .ll-lab:last-child { min-height: auto; }
+  .lab-landing .ll-connect { padding: 1.5rem; }
+  .score-lab { min-height: 60vh; }
+}
