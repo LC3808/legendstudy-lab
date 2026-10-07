@@ -1136,3 +1136,19 @@ h1, h2, h3 { text-wrap: pretty; }
 }
 .pricing-promo__row input:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 .pricing-promo__note { margin: 0; color: var(--ink-muted); font-size: 0.8rem; line-height: 1.6; }
+
+/* Canonical confirmed order presentation only; no payment runtime changes. */
+.payment-completion { max-width: 38rem; padding-block: clamp(1.5rem, 5vw, 3.5rem); }
+.payment-completion__card { border: 1px solid var(--line-strong); border-radius: var(--radius-xl); background: var(--surface); box-shadow: var(--shadow); padding: clamp(1.25rem, 4vw, 2.5rem); text-align: center; }
+.payment-completion__icon { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; margin: 0 auto 1.25rem; border-radius: 50%; background: var(--brand-soft); color: var(--brand-text); }
+.payment-completion__icon svg { width: 1.75rem; height: 1.75rem; }
+.payment-completion h1 { margin: 0; font-size: clamp(1.45rem, 4vw, 2rem); line-height: 1.4; overflow-wrap: anywhere; }
+.payment-completion p { margin: .85rem 0 1.5rem; color: var(--ink-muted); line-height: 1.75; word-break: keep-all; overflow-wrap: anywhere; }
+.payment-completion__summary { display: grid; gap: .5rem; padding: 1.25rem; border-radius: var(--radius-md); background: var(--surface-muted); }
+.payment-completion__summary strong { font-size: 1.25rem; }
+.payment-completion__summary span { font-size: 1.1rem; font-weight: 700; }
+.payment-completion__summary small { color: var(--ink-muted); }
+.payment-completion__actions { display: grid; gap: .65rem; margin-top: 1.5rem; }
+.payment-completion__actions .button { min-height: 3rem; line-height: 1.5; white-space: normal; }
+.payment-completion__primary { background: var(--brand); color: var(--ink-strong); }
+.payment-completion__primary:hover { background: var(--brand-soft); }
