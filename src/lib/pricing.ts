@@ -110,15 +110,24 @@ export const pricingPolicy = {
  * Internal evaluation strategy must not leak into marketing copy, so the hero
  * deliberately avoids naming an evaluation standard or perspective, and does not
  * carry the purchase-model or reevaluation wording that belongs further down.
+ *
+ * The service name is carried separately so the page can emphasise it without
+ * colouring the whole paragraph.
  */
+const heroLead = "LegendStudy 논술 LAB";
+const heroBody =
+  "은 대학별 논술의 특성을 반영해, 내 답안에서 무엇을 보완해야 하는지 구체적으로 보여주는 논술 첨삭 서비스입니다.";
+
 export const heroCopy = {
   titleLine1: "필요한 만큼 충전하고,",
   titleLine2: "가능성을 좀 더 선명하게.",
-  description:
-    "LegendStudy 논술 LAB은 대학별 논술의 특성을 반영해, 내 답안에서 무엇을 보완해야 하는지 구체적으로 보여주는 논술 첨삭 서비스입니다.",
+  /** Emphasised service name. Rendered bold in the brand identity colour. */
+  descriptionLead: heroLead,
+  descriptionBody: heroBody,
+  description: `${heroLead}${heroBody}`,
   /**
    * Phrases the Owner removed from the hero. Asserted against the hero strings
-   * only — the FAQ and policy sections may still state these as facts.
+   * only — the FAQ and policy sections may still state these facts as facts.
    */
   bannedPhrases: [
     "대학별 평가 기준",
@@ -160,6 +169,22 @@ export const purchaseGuide = {
     "일회성 구매이며 자동 갱신 결제가 없습니다.",
     "미사용 Credit은 유효기간 내에 전액 환불되며, 자세한 조건은 환불정책에서 확인할 수 있습니다.",
   ],
+} as const;
+
+/**
+ * School / group / event promotion entry on the pricing page.
+ *
+ * The Owner keeps the entry point on the page so a school, a group or an event
+ * can hand out a code. The redemption backend does not exist yet, so the field
+ * is published while the action stays disabled and no code is ever reported as
+ * accepted.
+ */
+export const promotionCopy = {
+  title: "학교 단체 이용 / 이벤트 프로모션",
+  lead: "학교나 이벤트에서 받은 쿠폰 번호가 있다면 입력해 주세요.",
+  inputLabel: "쿠폰 번호 입력",
+  inputPlaceholder: "쿠폰 번호",
+  ctaLabel: "적용하기",
 } as const;
 
 /**
@@ -246,28 +271,31 @@ export const paymentState = {
   ctaLabel: "결제 준비 중",
   ctaNote: "결제 기능을 준비하고 있습니다. 결제가 열리면 이 페이지에서 구매할 수 있습니다.",
   provider: "NOT_CONNECTED" as const,
+  promotion: "NOT_IMPLEMENTED" as const,
+  promotionNote: "쿠폰 적용 기능은 결제 기능과 함께 제공될 예정입니다.",
 } as const;
 
 /**
- * Purchase CTA on each product card.
+ * Product-card controls.
  *
- * Payment is not connected in this release, so the control renders disabled
- * with the plain label only. Naming a build state on a shopping page would
- * describe the runtime to a consumer, and an enabled control with no checkout
- * behind it would be a fake purchase. When payment goes live the same CTA is
- * enabled and wired to the real checkout; no other card markup changes.
+ * One pack is always selected, so a card carries either "선택하기" (this pack is
+ * not selected yet) or "결제하기" (this pack is the selection). Both labels are
+ * decided from the selection alone, so the static export and the hydrated page
+ * render the same label and the first click already does the real thing.
+ *
+ * Whether 결제하기 can actually open the checkout is a server fact and is decided
+ * by the payment runtime, never by this module.
  */
 export const purchaseCta = {
-  label: "구매하기",
-  /**
-   * The truthful default a static export renders before the payment runtime has
-   * answered. The control is enabled at runtime by the payment backend, never by
-   * this constant, so the button can never be the thing that authorizes a sale.
-   */
-  enabled: false,
-  /** Checkout route the CTA navigates to once the payment runtime is configured. */
+  selectLabel: "선택하기",
+  payLabel: "결제하기",
+  /** Checkout route the selected pack navigates to. */
   href: "/payments/checkout/",
 } as const;
+
+/** The pack the page shows as selected before the visitor chooses another. */
+export const defaultSelectedCredits =
+  pricingPlans.find((plan) => plan.recommended)?.credits ?? pricingPlans[0].credits;
 
 export type PolicyDocumentState = "READY" | "NEEDS_OWNER_DATA" | "BLOCKED";
 

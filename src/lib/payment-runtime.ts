@@ -34,10 +34,16 @@ export function checkoutOpen(state: PaymentState, consumerPurchase: boolean) {
   return state === 'TEST' || state === 'LIVE' || (state === 'REVIEW' && consumerPurchase);
 }
 
-/** Consumer-facing description of what a non-LIVE runtime means on checkout. */
+/**
+ * Consumer-facing description of a runtime that cannot take a payment.
+ *
+ * `TEST` and `REVIEW` return null: those are merchant/card-review runtimes, and
+ * the Owner removed the build-state sentence from the checkout. The runtime stays
+ * truthful through the control itself, which is disabled until the server
+ * authorizes this visitor.
+ */
 export function checkoutNotice(state: PaymentState): string | null {
-  if (state === 'LIVE') return null;
-  if (state === 'TEST' || state === 'REVIEW') return '테스트 결제 환경입니다. 실제 금액이 청구되지 않고 사용 가능한 Credit도 지급되지 않습니다.';
+  if (state === 'LIVE' || state === 'TEST' || state === 'REVIEW') return null;
   if (state === 'PAUSED') return '현재 결제가 일시 중지되어 있습니다. 잠시 후 다시 시도해 주세요.';
   return '결제 준비 중입니다. 현재는 결제를 진행할 수 없습니다.';
 }

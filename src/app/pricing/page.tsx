@@ -1,14 +1,15 @@
 import Link from "next/link";
 
 import { BusinessInfoList, ContactList } from "@/components/business-info-block";
-import { PricingPlanCta } from "@/components/pricing-plan-cta";
+import { PricingPlans } from "@/components/pricing-plans";
+import { PricingPromoForm } from "@/components/pricing-promo-form";
 import { buildPublicMetadata } from "@/lib/brand";
 import { customerCenter } from "@/lib/business-info";
 import {
   creditCopy,
   heroCopy,
-  pricingPlans,
   pricingPolicy,
+  promotionCopy,
   purchaseGuide,
   refundPolicy,
 } from "@/lib/pricing";
@@ -19,9 +20,6 @@ export const metadata = buildPublicMetadata(
   "/pricing",
 );
 
-/** Sold packs, in price order. The cards are the single product table. */
-const plans = pricingPlans;
-
 /**
  * Public pricing guide.
  *
@@ -31,16 +29,10 @@ const plans = pricingPlans;
  * payment runtime, the release roadmap or any excluded product: those belong in
  * the repository and in the payment handoff document, not on a shopping page.
  *
- * The pack cards are the only product table. Every pack gives the same service
- * scope and differs only in quantity, so a second comparison table would repeat
- * the cards row for row.
- *
- * Each card carries the purchase CTA. Payment is not connected in this release,
- * so the control renders disabled with a neutral label: a control labelled with a
- * runtime state would describe the build to a consumer, and an enabled one would
- * be a fake purchase. `PricingPlanCta` upgrades the same control to a link to the
- * real checkout as soon as the payment backend reports a configured runtime, and
- * the link carries only a SKU. The card markup does not change.
+ * The pack cards are the only product table and they are the same component the
+ * checkout renders, so the two pages share one visual language. One pack is
+ * selected from the first render, which is why the card controls never re-label
+ * themselves after hydration.
  */
 export default function PricingPage() {
   return (
@@ -53,28 +45,18 @@ export default function PricingPage() {
           {heroCopy.titleLine2}
         </h1>
       </div>
-      <p className="policy-page__lead">{heroCopy.description}</p>
+      <p className="policy-page__lead">
+        <strong className="pricing-hero__service">{heroCopy.descriptionLead}</strong>
+        {heroCopy.descriptionBody}
+      </p>
 
       <section className="pricing-free" aria-labelledby="pricing-free-title">
         <h2 id="pricing-free-title">신규 가입 {pricingPolicy.freeSignupCredits} Credits 무료</h2>
       </section>
 
       <section className="policy-section" aria-labelledby="pricing-plans-title">
-        <h2 id="pricing-plans-title">Credit 판매 상품</h2>
-        <div className="pricing-plans">
-          {plans.map((plan) => (
-            <article className="pricing-plan" key={plan.id} aria-labelledby={`pricing-plan-${plan.id}`}>
-              <h3 className="pricing-plan__name" id={`pricing-plan-${plan.id}`}>
-                {plan.name}
-                {plan.recommended ? <span className="pricing-plan__badge">추천</span> : null}
-              </h3>
-              <p className="pricing-plan__price">{plan.priceLabel}</p>
-              <p className="pricing-plan__unit">Credit당 {plan.perCreditLabel}</p>
-              <p className="pricing-plan__value">{plan.valueLine}</p>
-              <PricingPlanCta sku={`${plan.credits}c`} />
-            </article>
-          ))}
-        </div>
+        <h2 id="pricing-plans-title">판매 상품</h2>
+        <PricingPlans />
       </section>
 
       <section className="policy-section" aria-labelledby="pricing-purchase-title">
@@ -85,7 +67,6 @@ export default function PricingPage() {
           ))}
         </ul>
       </section>
-
 
       <section className="policy-section" aria-labelledby="pricing-credit-title">
         <h2 id="pricing-credit-title">1 Credit 이용 범위</h2>
@@ -137,6 +118,12 @@ export default function PricingPage() {
             <dd>{refundPolicy.usedCreditRule}</dd>
           </div>
         </dl>
+      </section>
+
+      <section className="policy-section pricing-promo" aria-labelledby="pricing-promo-title">
+        <h2 id="pricing-promo-title">{promotionCopy.title}</h2>
+        <p className="pricing-promo__lead">{promotionCopy.lead}</p>
+        <PricingPromoForm />
       </section>
 
       <section className="policy-section" aria-labelledby="pricing-faq-title">

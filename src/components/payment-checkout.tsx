@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
+import { PlanCard } from "@/components/plan-card";
 import { getBrowserAuthClient } from "@/lib/browser-auth-client";
 import { checkoutNotice, checkoutOpen, paymentRuntime, type PaymentRuntime } from "@/lib/payment-runtime";
-import { pricingPlans, pricingPolicy } from "@/lib/pricing";
+import { pricingPlans, pricingPolicy, purchaseCta } from "@/lib/pricing";
 
 type Order = {
   mode?: "TEST" | "LIVE";
@@ -130,6 +131,10 @@ export function PaymentCheckout() {
 
   const plan = useMemo(() => pricingPlans.find((p) => p.credits === credits) ?? pricingPlans[0], [credits]);
   const payable = runtime !== null && checkoutOpen(runtime.state, runtime.consumerPurchase) && signedIn === true;
+  /**
+   * Only a genuine availability state is narrated. The test-environment wording
+   * was removed by the Owner: the checkout does not explain the build to a buyer.
+   */
   const notice = runtime === null ? null : checkoutNotice(runtime.state);
 
   async function pay() {
@@ -178,31 +183,24 @@ export function PaymentCheckout() {
         <h2 id="checkout-plans-title">상품 선택</h2>
         <div className="pricing-plans">
           {pricingPlans.map((option) => (
-            <article
-              className="pricing-plan"
+            <PlanCard
               key={option.id}
-              aria-labelledby={`checkout-plan-${option.id}`}
-              data-selected={option.credits === plan.credits ? "true" : undefined}
+              plan={option}
+              selected={option.credits === plan.credits}
+              headingId={`checkout-plan-${option.id}`}
             >
-              <h3 className="pricing-plan__name" id={`checkout-plan-${option.id}`}>
-                {option.name}
-                {option.recommended ? <span className="pricing-plan__badge">추천</span> : null}
-              </h3>
-              <p className="pricing-plan__price">{option.priceLabel}</p>
-              <p className="pricing-plan__unit">Credit당 {option.perCreditLabel}</p>
-              <p className="pricing-plan__value">{option.valueLine}</p>
               {option.credits === plan.credits ? (
                 <button
-                  className="button button--accent pricing-plan__cta"
+                  className="button button--accent plan-card__button"
                   type="button"
                   disabled={!payable || busy}
                   onClick={() => void pay()}
                 >
-                  {busy ? "결제창을 여는 중" : "결제하기"}
+                  {busy ? "결제창을 여는 중" : purchaseCta.payLabel}
                 </button>
               ) : (
                 <button
-                  className="button button--outline pricing-plan__cta"
+                  className="button button--outline plan-card__button"
                   type="button"
                   disabled={busy}
                   onClick={() => {
@@ -211,10 +209,10 @@ export function PaymentCheckout() {
                     setMessage(null);
                   }}
                 >
-                  선택하기
+                  {purchaseCta.selectLabel}
                 </button>
               )}
-            </article>
+            </PlanCard>
           ))}
         </div>
       </section>

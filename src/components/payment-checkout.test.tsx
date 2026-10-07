@@ -49,10 +49,12 @@ describe('checkout surface', () => {
     expect(f).toHaveBeenCalledTimes(1);
   });
 
-  it('labels a TEST runtime as a test and keeps the order summary off the price authority', async () => {
+  it('keeps the order summary off the price authority on the review runtime', async () => {
     vi.stubGlobal('fetch', runtime('TEST'));
     render(<PaymentCheckout />);
-    await screen.findByText(/테스트 결제 환경입니다/);
+    await waitFor(() => expect(screen.getByText('결제하기')).not.toBeDisabled());
+    // The Owner removed the test-environment narration from the checkout.
+    expect(screen.queryByText(/테스트 결제 환경/)).toBeNull();
     expect(await screen.findByText('주문 확인')).toBeTruthy();
     const plan = pricingPlans.find((p) => p.credits === 3);
     expect(plan).toBeTruthy();
@@ -101,7 +103,7 @@ describe('checkout surface', () => {
     window.history.replaceState(null, '', '/payments/checkout/?sku=99c');
     vi.stubGlobal('fetch', runtime('TEST'));
     render(<PaymentCheckout />);
-    await screen.findByText(/테스트 결제 환경입니다/);
+    await waitFor(() => expect(screen.getByText('결제하기')).not.toBeDisabled());
     const summary = screen.getByRole('region', { name: '주문 확인' });
     expect(within(summary).getByText('5 Credit')).toBeTruthy();
     expect(screen.getByText('상품 선택')).toBeTruthy();
@@ -120,6 +122,23 @@ it('replaces an expired server order key once before opening Toss',async()=>{
  fireEvent.click(screen.getByText('결제하기'));await waitFor(()=>expect(requestPayment).toHaveBeenCalledTimes(1));
  expect(JSON.parse(f.mock.calls[1][1].body).request_key).toBe(old);
  expect(JSON.parse(f.mock.calls[2][1].body).request_key).not.toBe(old);
+});
+it('renders the same product card as /pricing/, with one pack selected',async()=>{
+ vi.stubGlobal('fetch',runtime('TEST'));
+ render(<PaymentCheckout/>);
+ await waitFor(()=>expect(screen.getByText('결제하기')).not.toBeDisabled());
+ // Same class names as the pricing page: one card component, one visual language.
+ const cards=document.querySelectorAll('.plan-card');
+ expect(cards.length).toBe(pricingPlans.length);
+ const selected=document.querySelectorAll('.plan-card[data-selected="true"]');
+ expect(selected.length).toBe(1);
+ // Recommendation is a badge and lives on its own pack, independently of which
+ // pack happens to be selected (the URL preselects 3c here).
+ const badges=document.querySelectorAll('.plan-card__badge');
+ expect(badges.length).toBe(pricingPlans.filter((p)=>p.recommended).length);
+ expect(selected[0].querySelector('.plan-card__badge')).toBeNull();
+ expect(screen.getAllByText('선택하기').length).toBe(pricingPlans.length-1);
+ expect(screen.getAllByText('결제하기').length).toBe(1);
 });
 it('does not loop or open Toss when the replacement is also rejected',async()=>{
  const f=vi.fn().mockResolvedValueOnce(Response.json({state:'TEST'})).mockImplementation(()=>Promise.resolve(Response.json({error:'ORDER_NOT_CHECKOUT_READY'},{status:409})));vi.stubGlobal('fetch',f);

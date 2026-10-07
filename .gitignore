@@ -48,3 +48,6 @@ next-env.d.ts
 # Cloudflare local state and runtime secrets
 /.wrangler/
 .dev.vars*
+
+# local visual QA output (screenshots are regenerated, never committed)
+qa-shots/

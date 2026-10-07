@@ -37,13 +37,10 @@ describe('checkout authorization',()=>{
   }
   expect(checkoutNotice('NOT_READY')).toContain('결제 준비 중');
   expect(checkoutNotice('PAUSED')).toContain('일시 중지');
-  // A TEST runtime must say what it is, so nobody mistakes it for a real charge.
-  const test=checkoutNotice('TEST') ?? '';
-  expect(test).toContain('테스트');
-  expect(test).toContain('청구되지 않고');
-  // REVIEW is a TEST charge on the real origin, so the same notice must appear.
-  const review=checkoutNotice('REVIEW') ?? '';
-  expect(review).toContain('테스트');
-  expect(review).toContain('청구되지 않고');
+  // TEST and REVIEW are merchant/card-review runtimes. The Owner removed the
+  // build-state sentence from the checkout, so neither produces a notice; the
+  // runtime stays truthful through the control, which the server gates.
+  expect(checkoutNotice('TEST')).toBeNull();
+  expect(checkoutNotice('REVIEW')).toBeNull();
  });
 });

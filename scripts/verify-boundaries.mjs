@@ -134,21 +134,26 @@ if (fs.existsSync(pricingPage)) {
   if (/pricing-table/.test(source)) {
     errors.push("the duplicated Credit comparison table returned on /pricing/");
   }
-  if (!source.includes("Credit 판매 상품")) {
+  if (!source.includes("판매 상품")) {
     errors.push("pricing product section must keep the Owner-approved title");
   }
-  // Every card carries the purchase CTA, and it stays disabled until a real
-  // checkout exists behind it. The control is now a component because its enabled
-  // state comes from the payment runtime, so the page must delegate it and must
-  // never carry a price or quantity of its own into checkout.
-  if (!/<PricingPlanCta\s+sku=/.test(source)) {
-    errors.push("pricing cards must carry the runtime-gated purchase CTA");
+  // Every card carries the control. The labels ("선택하기" / "결제하기") come from
+  // the module-level selection so the static export and the hydrated page agree,
+  // and the enabled state comes from the payment runtime. The page must delegate
+  // both, and must never carry a hard-coded control or a price of its own.
+  if (!/<PricingPlans\s*\/>/.test(source)) {
+    errors.push("pricing cards must be rendered by the PricingPlans component");
   }
-  if (/<button[^>]*pricing-plan__cta/.test(source)) {
-    errors.push("the pricing page must not hard-code the purchase control");
+  if (/<article[^>]*className="plan-card"/.test(source)) {
+    errors.push("the pricing page must not hard-code the product card markup");
   }
   if (/purchaseCta\.enabled/.test(source)) {
     errors.push("the pricing page must not decide the CTA state from a build constant");
+  }
+  // The Owner keeps the school/group/event entry point on the page even though
+  // the redemption backend does not exist yet.
+  if (!/pricing-promo-title/.test(source) || !/<PricingPromoForm\s*\/>/.test(source)) {
+    errors.push("pricing page must keep the school/group/event promotion entry");
   }
   // The pre-purchase guide states what a consumer must read before paying.
   if (!/pricing-purchase-title/.test(source) || !/purchaseGuide\.items/.test(source)) {
@@ -193,6 +198,15 @@ if (fs.existsSync(checkoutComponent)) {
   }
   if (!/signedIn/.test(source)) {
     errors.push("checkout must require an authenticated account");
+  }
+  // /pricing/ and the checkout render the same card component, so the same pack
+  // cannot look like two different products on the two routes.
+  if (!/<PlanCard\s/.test(source)) {
+    errors.push("checkout must render the same product card as /pricing/");
+  }
+  // The Owner removed the test-environment narration from the checkout.
+  if (/테스트 결제 환경/.test(source)) {
+    errors.push("checkout must not narrate the test environment to a buyer");
   }
 }
 // The card-review runtime runs on the real service origin against the Production
@@ -320,6 +334,39 @@ if (fs.existsSync(shellFile)) {
   const shell = fs.readFileSync(shellFile, "utf8");
   if (shell.includes('href="/support/"')) {
     errors.push("the customer centre button returned to the header action cluster");
+  }
+}
+
+// The product card, the brand identity and the retired selection style.
+const cardFile = path.join(sourceRoot, "components", "plan-card.tsx");
+if (!fs.existsSync(cardFile)) {
+  errors.push("the shared product card component is missing");
+} else {
+  const card = fs.readFileSync(cardFile, "utf8");
+  if (!/data-selected=/.test(card)) {
+    errors.push("the shared product card must expose its selected state");
+  }
+  if (/pricing-plan/.test(card)) {
+    errors.push("the shared product card must not keep the retired per-page class names");
+  }
+}
+const cssFile = path.join(root, "src/app/globals.css");
+if (fs.existsSync(cssFile)) {
+  const css = fs.readFileSync(cssFile, "utf8");
+  // The Owner discarded the red selection border: selection is the brand identity.
+  if (/--checkout-selected|#d02b2b/.test(css)) {
+    errors.push("the discarded red selection style returned to the stylesheet");
+  }
+  if (!/--brand: #ffac14;/.test(css)) {
+    errors.push("the brand identity token is missing from the stylesheet");
+  }
+  if (!/\.plan-card\[data-selected="true"\]/.test(css)) {
+    errors.push("the shared card must carry a selected state style");
+  }
+  // Recommendation is a badge, never a heavier border: the two states must not
+  // be expressible through the same property.
+  if (/\.plan-card:has\(\.plan-card__badge\)/.test(css)) {
+    errors.push("recommendation must not be expressed as a heavier card border");
   }
 }
 

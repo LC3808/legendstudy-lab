@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   calculatePartialRefundKrw,
   creditCopy,
+  defaultSelectedCredits,
   evaluationResultCtaPolicy,
   excludedCreditPackSizes,
   heroCopy,
@@ -10,6 +11,7 @@ import {
   policyDocumentState,
   pricingPlans,
   pricingPolicy,
+  promotionCopy,
   purchaseCta,
   purchaseGuide,
   refundExamples,
@@ -133,10 +135,10 @@ describe("purchase model", () => {
   });
 });
 
-describe("purchase CTA", () => {
-  it("labels every card CTA 구매하기 and keeps it disabled until checkout exists", () => {
-    expect(purchaseCta.label).toBe("구매하기");
-    expect(purchaseCta.enabled).toBe(false);
+describe("product card controls", () => {
+  it("offers 선택하기 and 결제하기, and never the retired 구매하기 label", () => {
+    expect(purchaseCta.selectLabel).toBe("선택하기");
+    expect(purchaseCta.payLabel).toBe("결제하기");
     expect(purchaseCta.href).toBe("/payments/checkout/");
   });
 
@@ -148,10 +150,28 @@ describe("purchase CTA", () => {
     expect(purchaseCta.href).not.toContain("amount");
   });
 
-  it("never labels the CTA with a build or release state", () => {
-    for (const phrase of ["결제 준비 중", "서비스 준비 중", "곧 구매 가능", "출시 예정", "준비 중"]) {
-      expect(purchaseCta.label).not.toContain(phrase);
+  it("knows the labels from the selection alone, never from a build state", () => {
+    for (const label of [purchaseCta.selectLabel, purchaseCta.payLabel]) {
+      for (const phrase of ["결제 준비 중", "서비스 준비 중", "곧 구매 가능", "출시 예정", "준비 중"]) {
+        expect(label).not.toContain(phrase);
+      }
     }
+  });
+
+  /**
+   * The static export must already contain a selection, otherwise the control
+   * would have to re-label itself after hydration — the defect the Owner
+   * reported as a first click that did nothing.
+   */
+  it("preselects a sold pack so the static export already carries a selection", () => {
+    expect(defaultSelectedCredits).toBe(pricingPlans.find((plan) => plan.recommended)?.credits);
+    expect(pricingPlans.some((plan) => plan.credits === defaultSelectedCredits)).toBe(true);
+  });
+
+  it("keeps the school/group/event promotion entry in the module copy", () => {
+    expect(promotionCopy.title).toBe("학교 단체 이용 / 이벤트 프로모션");
+    expect(paymentState.promotion).toBe("NOT_IMPLEMENTED");
+    expect(paymentState.promotionNote).toContain("결제 기능과 함께");
   });
 });
 
@@ -250,4 +270,3 @@ describe("purchase guide", () => {
     }
   });
 });
-
