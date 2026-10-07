@@ -45,17 +45,19 @@ Owner's current names override older APP labels. APP was read only.
 
 ## Auth read-only findings and gap
 
-**Production settings/DB are NOT independently verified in this task.** The cloud
-proxy returned CONNECT 403 for lab.legendstudy.com; GitHub API was also Forbidden.
-No Supabase/Cloudflare/DB credential bindings are provided to this environment.
-Network additions were saved as an environment draft, not applied to the running machine.
-No signup/login/bonus transaction was attempted on Production, and no policy was changed.
+**Production public Auth settings read successfully on 2026-10-07.** Initial proxy
+403 restrictions cleared later in the session. `/auth/v1/settings` on the existing
+Production project returned `disable_signup=false`, `mailer_autoconfirm=false`.
+Only the public publishable configuration was used. No Supabase/Cloudflare/DB
+privileged bindings are provided. No Production signup/login/bonus transaction or
+policy change was attempted.
 
-- Email confirmation ON/OFF: **UNKNOWN**; neither repository defaults nor old acceptance
-  proves current hosted settings.
-- Immediate signup session / pre-confirm login: **UNKNOWN on Production**. LAB preserves
-  SDK behavior: session returned → intended destination; null session → confirmation email
-  notice. This is a client contract, not a hosted-policy claim.
+- Email confirmation: **ON** (`mailer_autoconfirm=false`).
+- New email/password signup does not immediately create a session under this setting;
+  pre-confirm password login requires email confirmation. These are hosted setting /
+  SDK semantics, not a new Production signup/login acceptance test.
+- LAB preserves SDK behavior: session returned → intended destination; null session →
+  confirmation notice. Existing/previously verified accounts are a separate case.
 - Source authority: APP final RC migration `20260929000300` adds +3 at eligible profile
   creation / authenticated recovery claim. `20261001000300` overrides that path: when
   lifecycle is enabled, profile insertion no longer grants directly; verified-email
@@ -83,9 +85,12 @@ No signup/login/bonus transaction was attempted on Production, and no policy was
   static server does not execute Cloudflare redirects or Functions.
 - GitHub-readiness and payment static-secret scan PASS. Fixture build discarded;
   final static build uses no fixture credentials/configuration.
-- Production deploy/live measurements and hosted Auth read-only checks require
-  external access. Local checks are not evidence of Production success; Wiki records
-  the final publication and blocked verification status.
+- Main implementation `65aa9571de6b2a6674274cee66f48c57a77d6481` pushed successfully.
+  Existing Git-connected Production served the new navigation with HTTP200. Final
+  live measurements and release status are recorded in the Unified Wiki closeout.
+- Production bonus timing/idempotency remains unverified without server read access;
+  public Auth settings above were verified. No deployment ID is exposed by the
+  available GitHub status/check/deployment APIs.
 Payment/Toss/finance code, Functions, DB/migrations, Credit hook and account deletion
 implementation are unchanged. No Admin/QL code imported. No transaction/provider smoke
 was run against frozen Payment. Local auth browser checks use entirely intercepted
