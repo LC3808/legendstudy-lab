@@ -51,3 +51,6 @@ next-env.d.ts
 
 # local visual QA output (screenshots are regenerated, never committed)
 qa-shots/
+
+# python bytecode from the local QA scripts
+__pycache__/

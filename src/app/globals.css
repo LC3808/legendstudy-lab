@@ -1165,8 +1165,11 @@ h1, h2, h3 { text-wrap: pretty; }
 .essay-credit__actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .55rem; }
 .essay-credit__actions .button { white-space: normal; }
 
-/* Product shell: Korean prose wraps at word boundaries, with a fallback for long URLs. */
-.site-shell { word-break: keep-all; overflow-wrap: anywhere; }
+/* Product shell: Korean prose wraps at word boundaries, with a fallback for long
+   URLs. `break-word` rather than `anywhere` is deliberate: `anywhere` also
+   shrinks a box's min-content width to one character, which lets a grid or flex
+   track collapse and lets Korean prose wrap syllable by syllable. */
+.site-shell { word-break: keep-all; overflow-wrap: break-word; }
 .site-shell main, .site-header__actions, .site-footer__brand { min-width: 0; }
 .site-header__actions { max-width: 100%; }
 .brand { min-width: 0; max-width: 100%; }
@@ -1205,7 +1208,7 @@ h1, h2, h3 { text-wrap: pretty; }
   --product-shadow: 0 4px 20px rgba(23, 43, 69, .045), 0 1px 3px rgba(23, 43, 69, .025);
 }
 .site-shell:has(.score-lab, .essay-lab-page, .pricing-page) main { background: var(--product-canvas); }
-.lab-landing { background: var(--product-canvas); --ll-section-rule: var(--product-border); }
+.lab-landing { background: var(--product-canvas); --ll-section-rule: color-mix(in srgb, var(--ll-ink) 20%, transparent); }
 .lab-landing .ll-data-tracks {
   padding: clamp(1.5rem, 3vw, 2.5rem);
   border: 1px solid var(--product-border);
@@ -1227,6 +1230,32 @@ h1, h2, h3 { text-wrap: pretty; }
 }
 .lab-landing .ll-cta { border-top: 0; text-align: center; }
 .lab-landing .ll-cta__actions { justify-content: center; }
+
+/* PUBLIC FRONTEND VISUAL FINAL — HOME section boundaries.
+   The landing is four large sections on one canvas. Small cards keep their own
+   hairline; the page rhythm comes from one dark neutral rule at each big section
+   boundary, which is what makes the sections read as sections rather than as one
+   undifferentiated scroll. The rule is drawn at the start of each section so it
+   spans the reading measure, never the viewport. */
+.lab-landing .ll-labs::before,
+.lab-landing .ll-cta::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-bottom: clamp(2.25rem, 4.5vw, 3.5rem);
+  background: var(--ll-section-rule);
+}
+/* The Connected Data band is its own panel, so its boundary rule sits above the
+   panel rather than on its rounded edge. */
+.lab-landing .ll-connect { position: relative; margin-top: clamp(2.5rem, 5vw, 4rem); }
+.lab-landing .ll-connect::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: calc(-1 * clamp(1.25rem, 2.5vw, 2rem));
+  height: 1px;
+  background: var(--ll-section-rule);
+}
 .score-lab { min-height: 65vh; display: grid; align-items: center; padding-block: clamp(3rem, 7vw, 6rem); }
 .score-lab__surface {
   width: min(100%, 58rem); margin-inline: auto; padding: clamp(2.25rem, 6vw, 5rem) clamp(1.2rem, 4vw, 3rem);
@@ -1264,3 +1293,42 @@ h1, h2, h3 { text-wrap: pretty; }
 .my-search-results li, .my-record-list li { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-block: .8rem; border-bottom: 1px solid var(--line); }
 .my-essay-records article { border-top: 1px solid var(--line); padding-block: 1rem; }
 .my-essay-records summary { cursor: pointer; padding-block: .8rem; }
+/* ==========================================================================
+   PUBLIC FRONTEND VISUAL FINAL — LAB hero rhythm and shared surface depth
+
+   The three LAB entries share one visual family: same canvas, same surface,
+   same radius, same shadow. Depth comes from a single soft ambient shadow
+   rather than from borders or decoration, and the hero section fills the view
+   between the header and the footer so a short page reads as composed instead
+   of as a half-empty screen.
+   ========================================================================== */
+:root {
+  --product-shadow-lift: 0 1px 2px rgba(23, 43, 69, .05), 0 24px 48px -28px rgba(23, 43, 69, .22);
+}
+.score-lab {
+  min-height: max(34rem, calc(100svh - 8rem));
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+}
+.score-lab__surface {
+  border-radius: var(--radius-xl);
+  box-shadow: var(--product-shadow-lift);
+}
+.lab-landing .ll-data-tracks { box-shadow: var(--product-shadow-lift); }
+.essay-lab-page .page-intro {
+  border-radius: var(--radius-xl);
+  box-shadow: var(--product-shadow-lift);
+}
+/* The 논술 LAB 첨삭권 bar is the first thing under the hero, so it takes the same
+   radius as the surface above it. */
+.essay-lab-page .essay-credit { border-radius: var(--radius-xl); }
+@media (max-width: 760px) {
+  .score-lab { min-height: max(28rem, calc(100svh - 8rem)); }
+}
+/* PUBLIC FRONTEND VISUAL FINAL — 200% text.
+   A long Korean heading cannot break under `keep-all`, so at 200% text a heading
+   such as 개인정보처리방침 grew wider than the viewport and pushed the whole page
+   sideways. `overflow-wrap: anywhere` breaks a word only when it cannot fit on a
+   line of its own, so normal-size wrapping is unchanged. */
+.site-shell h1,
+.site-shell h2,
+.site-shell h3 { overflow-wrap: anywhere; }
