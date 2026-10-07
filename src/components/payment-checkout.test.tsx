@@ -109,3 +109,21 @@ describe('checkout surface', () => {
 });
 import { pricingPlans } from '@/lib/pricing';
 import { within } from '@testing-library/react';
+
+it('replaces an expired server order key once before opening Toss',async()=>{
+ const old='22222222-2222-4222-8222-222222222222';sessionStorage.setItem('checkout-3',old);
+ const f=vi.fn().mockResolvedValueOnce(Response.json({state:'TEST'}))
+ .mockResolvedValueOnce(Response.json({error:'ORDER_NOT_CHECKOUT_READY'},{status:409}))
+ .mockResolvedValueOnce(Response.json({order,checkout}));vi.stubGlobal('fetch',f);
+ const requestPayment=vi.fn().mockResolvedValue(undefined);window.TossPayments=vi.fn(()=>({payment:()=>({requestPayment})}));
+ render(<PaymentCheckout/>);await waitFor(()=>expect(screen.getByText('결제하기')).not.toBeDisabled());
+ fireEvent.click(screen.getByText('결제하기'));await waitFor(()=>expect(requestPayment).toHaveBeenCalledTimes(1));
+ expect(JSON.parse(f.mock.calls[1][1].body).request_key).toBe(old);
+ expect(JSON.parse(f.mock.calls[2][1].body).request_key).not.toBe(old);
+});
+it('does not loop or open Toss when the replacement is also rejected',async()=>{
+ const f=vi.fn().mockResolvedValueOnce(Response.json({state:'TEST'})).mockImplementation(()=>Promise.resolve(Response.json({error:'ORDER_NOT_CHECKOUT_READY'},{status:409})));vi.stubGlobal('fetch',f);
+ const requestPayment=vi.fn();window.TossPayments=vi.fn(()=>({payment:()=>({requestPayment})}));
+ render(<PaymentCheckout/>);await waitFor(()=>expect(screen.getByText('결제하기')).not.toBeDisabled());fireEvent.click(screen.getByText('결제하기'));
+ await screen.findByText('새 주문이 필요합니다.');expect(f).toHaveBeenCalledTimes(3);expect(requestPayment).not.toHaveBeenCalled();
+});
