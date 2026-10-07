@@ -95,7 +95,9 @@ export function PaymentCheckout() {
    * the smallest pack so the order summary is always concrete. The value only
    * decides which summary is displayed; it never authorizes anything.
    */
-  const [credits, setCredits] = useState<number>(() => skuFromLocation() ?? pricingPlans[0].credits);
+  const [credits, setCredits] = useState<number>(
+      () => skuFromLocation() ?? pricingPlans.find((p) => p.recommended)?.credits ?? pricingPlans[0].credits,
+    );
   const [order, setOrder] = useState<Order | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -153,15 +155,7 @@ export function PaymentCheckout() {
       <div className="policy-page__heading">
         <h1>Credit 구매</h1>
       </div>
-      <p className="policy-page__lead">
-        논술 첨삭에 사용할 Credit을 선택하고 결제를 진행합니다. 결제가 완료되면 Credit이 계정에 지급됩니다.
-      </p>
-
-      {notice ? (
-        <p className="checkout-notice" role="status">
-          {notice}
-        </p>
-      ) : null}
+      <p className="policy-page__lead">논술 첨삭에 사용할 Credit을 선택하고 결제합니다.</p>
 
       <section className="policy-section" aria-labelledby="checkout-plans-title">
         <h2 id="checkout-plans-title">상품 선택</h2>
@@ -180,22 +174,51 @@ export function PaymentCheckout() {
               <p className="pricing-plan__price">{option.priceLabel}</p>
               <p className="pricing-plan__unit">Credit당 {option.perCreditLabel}</p>
               <p className="pricing-plan__value">{option.valueLine}</p>
-              <button
-                className="button button--outline pricing-plan__cta"
-                type="button"
-                disabled={busy}
-                onClick={() => {
-                  setCredits(option.credits);
-                  setOrder(null);
-                  setMessage(null);
-                }}
-              >
-                {option.credits === plan.credits ? "선택됨" : "선택하기"}
-              </button>
+              {option.credits === plan.credits ? (
+                <button
+                  className="button button--accent pricing-plan__cta"
+                  type="button"
+                  disabled={!payable || busy}
+                  onClick={() => void pay()}
+                >
+                  {busy ? "결제창을 여는 중" : "결제하기"}
+                </button>
+              ) : (
+                <button
+                  className="button button--outline pricing-plan__cta"
+                  type="button"
+                  disabled={busy}
+                  onClick={() => {
+                    setCredits(option.credits);
+                    setOrder(null);
+                    setMessage(null);
+                  }}
+                >
+                  선택하기
+                </button>
+              )}
             </article>
           ))}
         </div>
       </section>
+
+      {notice ? (
+        <p className="checkout-notice" role="status">
+          {notice}
+        </p>
+      ) : null}
+
+      {message ? (
+        <p className="checkout-message" role="status">
+          {message}
+        </p>
+      ) : null}
+
+      {order ? (
+        <p className="checkout-message" role="status">
+          주문 상태: {order.state}
+        </p>
+      ) : null}
 
       <section className="policy-section" aria-labelledby="checkout-confirm-title">
         <h2 id="checkout-confirm-title">주문 확인</h2>
@@ -227,38 +250,12 @@ export function PaymentCheckout() {
             </dd>
           </div>
         </dl>
-        <div className="policy-actions">
-          <button
-            className="button button--accent"
-            type="button"
-            disabled={!payable || busy}
-            onClick={() => void pay()}
-          >
-            {busy ? "결제창을 여는 중" : "결제하기"}
-          </button>
-        </div>
         {signedIn !== true ? (
           <p className="checkout-signin">
             결제를 진행하려면 <Link href="/login/">로그인</Link>이 필요합니다.
           </p>
         ) : null}
-        <p className="checkout-note">
-          결제수단 선택과 카드 정보 입력은 토스페이먼츠 결제창에서 진행합니다. 카드 정보는 레전드스터디에
-          저장하지 않습니다.
-        </p>
       </section>
-
-      {message ? (
-        <p className="checkout-message" role="status">
-          {message}
-        </p>
-      ) : null}
-
-      {order ? (
-        <p className="checkout-message" role="status">
-          주문 상태: {order.state}
-        </p>
-      ) : null}
 
       <nav className="policy-actions" aria-label="안내">
         <Link className="button button--outline" href="/pricing/">

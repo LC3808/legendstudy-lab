@@ -33,7 +33,7 @@ describe("AuthForm social OAuth options", () => {
   it("starts Kakao OIDC without calling hosted OAuth", async () => {
     render(<AuthForm mode="login" />);
     await userEvent.setup().click(screen.getByRole("button", { name: "Kakao로 계속하기" }));
-    expect(startKakaoLogin).toHaveBeenCalledWith("/home/");
+    expect(startKakaoLogin).toHaveBeenCalledWith("/");
     expect(signInWithOAuth).not.toHaveBeenCalled();
   });
 

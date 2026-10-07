@@ -2,16 +2,13 @@ import Link from "next/link";
 
 import { BusinessInfoList, ContactList } from "@/components/business-info-block";
 import { PricingPlanCta } from "@/components/pricing-plan-cta";
-import { PricingPromoForm } from "@/components/pricing-promo-form";
 import { buildPublicMetadata } from "@/lib/brand";
 import { customerCenter } from "@/lib/business-info";
 import {
   creditCopy,
   heroCopy,
-  paymentState,
   pricingPlans,
   pricingPolicy,
-  promotionCopy,
   purchaseGuide,
   refundPolicy,
 } from "@/lib/pricing";
@@ -89,13 +86,6 @@ export default function PricingPage() {
         </ul>
       </section>
 
-      <section className="policy-section pricing-promo-section" aria-labelledby="pricing-promo-title">
-        <h2 id="pricing-promo-title">{promotionCopy.title}</h2>
-        <div className="pricing-promo">
-          <p className="pricing-promo__lead">{promotionCopy.lead}</p>
-          <PricingPromoForm />
-        </div>
-      </section>
 
       <section className="policy-section" aria-labelledby="pricing-credit-title">
         <h2 id="pricing-credit-title">1 Credit 이용 범위</h2>
@@ -190,10 +180,6 @@ export default function PricingPage() {
               Credit은 논술 첨삭에 사용하며, 인문논술과 수리논술을 별도 상품으로 나누지 않습니다. 어떤 Credit 상품을
               구매해도 이용할 수 있는 범위는 같습니다.
             </p>
-          </details>
-          <details>
-            <summary>쿠폰 번호는 어떻게 사용하나요?</summary>
-            <p>학교나 이벤트에서 받은 쿠폰 번호를 위 입력란에 입력하면 됩니다. {paymentState.promotionNote}</p>
           </details>
         </div>
       </section>

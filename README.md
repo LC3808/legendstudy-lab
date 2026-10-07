@@ -12,14 +12,14 @@
 | `/lab/` | Legacy compatibility alias | Cloudflare Pages redirects to `/` with HTTP 308 |
 | `/lab/how-it-works/` | Service direction and current boundary | Public and indexable |
 | `/lab/coverage/` | Supported scope and explicit non-features | Public and indexable |
-| `/pricing/` | Credit pricing, payment terms and refund summary | Public and indexable; payment not connected |
+| `/pricing/` | Credit pricing, payment terms and refund summary | Public and indexable; no promotion or coupon block |
 | `/refund/` | Full refund policy for Credit purchases | Public; Owner commercial policy; legal review recommended |
 | `/terms/` | Terms of service for the Credit-based essay product | Public and indexable; Owner-confirmed commercial terms; legal review recommended |
 | `/privacy/` | Privacy policy derived from the real auth and data flow | Public and indexable; remaining Owner items are listed on the page itself |
 | `/support/` | Customer centre with the published contact channels | Public and indexable; phone and support e-mail |
 | `/account-deletion/` | Account deletion URL foundation | No deletion intake or API |
 | `/login/`, `/signup/`, `/forgot-password/`, `/reset-password/` | LegendStudy Account browser-auth routes | `noindex`; LAB Production E2E verified |
-| `/account/` | Session-aware account connection state | `noindex`; does not read or write personal LAB data |
+| `/account/` | MY: personal service hub (성적 분석 / 논술 LAB / 내 기록 / 계정·설정) | `noindex`; does not read or write personal LAB data |
 
 Earlier catalog, synthetic writing, mock evaluation, login, My, and score-analysis routes remain private development foundations. They are absent from public navigation and must not be represented as live services.
 

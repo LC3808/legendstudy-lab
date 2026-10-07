@@ -96,7 +96,7 @@ export function LabLanding() {
       <section className="ll-labs ll-wrap" id="three-labs" aria-labelledby="three-labs-title">
         <div className="ll-section-heading">
           <p className="ll-eyebrow">Three LABs</p>
-          <h2 className="ll-section-title" id="three-labs-title">내신부터 수시모집과 수능까지, 대입 준비를 하나로 연결하는 세 가지 축.</h2>
+          <h2 className="ll-section-title" id="three-labs-title">내신부터 수시모집과 수능까지, 학생의 대입 성공을 이해하는 세 가지 축</h2>
         </div>
         <div className="ll-labs__grid" aria-label="LegendStudy LAB의 세 가지 분석 축">
           {labs.map((lab) => (
@@ -113,7 +113,7 @@ export function LabLanding() {
       <section className="ll-connect ll-wrap" aria-labelledby="connect-title">
         <div className="ll-connect__intro">
           <p className="ll-eyebrow">Connected Data</p>
-          <h2 className="ll-section-title" id="connect-title">연결된 데이터가, 더 나은 대입 전략을 만듭니다.</h2>
+          <h2 className="ll-section-title" id="connect-title">연결된 데이터가 합격 가능성을 높입니다.</h2>
           <p className="ll-connect__copy">
             각 분석이 서로 다른 계정·프로필·데이터 섬으로 나뉘지 않습니다. 세 축의 기록은 같은
             학생의 하나의 입시 데이터로 모여, 지금의 상태를 더 정확하게 설명합니다.

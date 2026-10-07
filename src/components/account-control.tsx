@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { useAuth } from "@/components/auth-context";
 
-// A plain login entry: success resolves to the canonical /home/ unless a
+// A plain login entry: success resolves to the canonical landing unless a
 // valid internal next is present. It no longer forces a return to /account/.
 const loginPath = "/login/";
 

@@ -52,7 +52,7 @@ describe("release routes", () => {
 
   it("maps the authenticated product menu to existing foundation routes", () => {
     expect(authenticatedProductRoutes.map((route) => route.href)).toEqual([
-      "/home/",
+      "/",
       "/score-analysis/",
       "/essay-lab/",
       "/my/essays/",

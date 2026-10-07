@@ -60,7 +60,7 @@ export function AuthForm({ mode }: { mode: AuthFormMode }) {
   const copy = titleFor(mode);
   const providers = useMemo(() => getBrowserAuthConfig()?.socialProviders ?? [], []);
   const returnPath = useMemo(() => {
-    if (typeof window === "undefined") return "/home/";
+    if (typeof window === "undefined") return "/";
     return getSafeReturnPath(new URLSearchParams(window.location.search).get("next"));
   }, []);
   const resetNotice = useMemo(() => {

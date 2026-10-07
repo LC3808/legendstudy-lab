@@ -145,37 +145,37 @@ describe("Kakao OIDC server boundary", () => {
 
 describe("browser transaction and Supabase session seam", () => {
   it("creates independent random state/nonce/verifier and exact SHA-256 representations", async () => {
-    const a = await createKakaoTransaction("//evil.invalid"), b = await createKakaoTransaction("/home/");
+    const a = await createKakaoTransaction("//evil.invalid"), b = await createKakaoTransaction("/");
     expect(new Set([a.state, a.nonce, a.verifier, b.state, b.nonce, b.verifier]).size).toBe(6);
     expect(a.state).toMatch(/^[A-Za-z0-9_-]{43}$/);
     const { createHash } = await import("node:crypto");
     expect(a.nonceHash).toBe(createHash("sha256").update(a.nonce).digest("hex"));
     expect(a.challenge).toBe(createHash("sha256").update(a.verifier).digest("base64url"));
-    expect(a.returnPath).toBe("/home/");
+    expect(a.returnPath).toBe("/");
   });
   it("consumes transaction once and rejects replay", async () => {
-    const transaction = await createKakaoTransaction("/home/");
+    const transaction = await createKakaoTransaction("/");
     const storage = browserStorage(transaction);
     expect(consumeKakaoCallback(`#code=test-code&state=${transaction.state}`, storage).code).toBe("test-code");
     expect(() => consumeKakaoCallback(`#code=test-code&state=${transaction.state}`, storage)).toThrow();
   });
   it("rejects expired, missing code and mismatched state", async () => {
-    const tx = await createKakaoTransaction("/home/");
+    const tx = await createKakaoTransaction("/");
     expect(() => consumeKakaoCallback(`#state=${tx.state}`, browserStorage(tx))).toThrow();
     expect(() => consumeKakaoCallback("#code=test-code&state=wrong", browserStorage(tx))).toThrow();
     expect(() => consumeKakaoCallback(`#code=test-code&state=${tx.state}`, browserStorage({ ...tx, createdAt: Date.now() - 301000 }))).toThrow();
   });
   it("uses official kakao ID-token API with raw nonce and existing client", async () => {
-    const tx = { ...await createKakaoTransaction("/home/"), code: "test-code" };
+    const tx = { ...await createKakaoTransaction("/"), code: "test-code" };
     const signInWithIdToken = vi.fn().mockResolvedValue({ data: { session: {} }, error: null });
     const idToken = token(tx.nonceHash);
     const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
-    expect(await finishKakaoLogin({ auth: { signInWithIdToken } } as never, tx, vi.fn().mockResolvedValue(Response.json({ idToken })))).toBe("/home/");
+    expect(await finishKakaoLogin({ auth: { signInWithIdToken } } as never, tx, vi.fn().mockResolvedValue(Response.json({ idToken })))).toBe("/");
     expect(signInWithIdToken).toHaveBeenCalledWith({ provider: "kakao", token: idToken, nonce: tx.nonce });
     expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=success result=complete");
   });
   it("rejects wrong nonce before Supabase and rejects session failure", async () => {
-    const tx = { ...await createKakaoTransaction("/home/"), code: "test-code" };
+    const tx = { ...await createKakaoTransaction("/"), code: "test-code" };
     const signInWithIdToken = vi.fn().mockResolvedValue({ data: { session: null }, error: null });
     const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
     await expect(finishKakaoLogin({ auth: { signInWithIdToken } } as never, tx, vi.fn().mockResolvedValue(Response.json({ idToken: token("wrong") })))).rejects.toThrow();
@@ -185,7 +185,7 @@ describe("browser transaction and Supabase session seam", () => {
     expect(diagnostic).toHaveBeenCalledWith("KAKAO_OIDC stage=session_creation result=missing");
   });
   it("logs exchange HTTP failures and Supabase failures with safe status/code only", async () => {
-    const tx = { ...await createKakaoTransaction("/home/"), code: "test-code" };
+    const tx = { ...await createKakaoTransaction("/"), code: "test-code" };
     const diagnostic = vi.spyOn(console, "info").mockImplementation(() => undefined);
     const client = { auth: { signInWithIdToken: vi.fn().mockResolvedValue({ data: { session: null }, error: { code: "provider_disabled", message: "private" } }) } } as never;
     await expect(finishKakaoLogin(client, tx, vi.fn().mockResolvedValue(new Response(null, { status: 502 })))).rejects.toThrow();

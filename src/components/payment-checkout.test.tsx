@@ -103,7 +103,7 @@ describe('checkout surface', () => {
     render(<PaymentCheckout />);
     await screen.findByText(/테스트 결제 환경입니다/);
     const summary = screen.getByRole('region', { name: '주문 확인' });
-    expect(within(summary).getByText('1 Credit')).toBeTruthy();
+    expect(within(summary).getByText('5 Credit')).toBeTruthy();
     expect(screen.getByText('상품 선택')).toBeTruthy();
   });
 });

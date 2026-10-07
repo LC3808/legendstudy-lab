@@ -6,7 +6,7 @@ export const publicReleaseRoutes = [
 ] as const;
 
 export const authenticatedProductRoutes = [
-  { href: "/home/", label: "홈" },
+  { href: "/", label: "홈" },
   { href: "/score-analysis/", label: "성적 분석" },
   { href: "/essay-lab/", label: "논술 LAB" },
   { href: "/my/essays/", label: "내 기록" },

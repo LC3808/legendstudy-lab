@@ -162,15 +162,6 @@ export const purchaseGuide = {
   ],
 } as const;
 
-/** Promotion / coupon block copy. Sits directly below the product cards. */
-export const promotionCopy = {
-  title: "학교 단체 이용 / 이벤트 프로모션",
-  lead: "학교나 이벤트에서 받은 쿠폰 번호가 있다면 입력해 주세요.",
-  inputLabel: "쿠폰 번호 입력",
-  inputPlaceholder: "쿠폰 번호",
-  ctaLabel: "적용하기",
-} as const;
-
 /**
  * Refund policy. Owner commercial policy, summarised on /pricing/ and stated in
  * full on /refund/. Do not change the arithmetic without Owner approval.
@@ -255,8 +246,6 @@ export const paymentState = {
   ctaLabel: "결제 준비 중",
   ctaNote: "결제 기능을 준비하고 있습니다. 결제가 열리면 이 페이지에서 구매할 수 있습니다.",
   provider: "NOT_CONNECTED" as const,
-  promotion: "NOT_IMPLEMENTED" as const,
-  promotionNote: "쿠폰 적용 기능은 결제 기능과 함께 제공될 예정입니다.",
 } as const;
 
 /**

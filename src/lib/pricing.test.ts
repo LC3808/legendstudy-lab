@@ -10,7 +10,6 @@ import {
   policyDocumentState,
   pricingPlans,
   pricingPolicy,
-  promotionCopy,
   purchaseCta,
   purchaseGuide,
   refundExamples,
@@ -169,19 +168,6 @@ describe("free signup benefit", () => {
     expect(pricingPolicy.freeCreditCashRefundable).toBe(false);
     expect(creditCopy.freeCreditTerms).toContain("현금으로 환불되지 않습니다");
     expect(creditCopy.freeSignup).toContain("제공할 예정입니다");
-  });
-});
-
-describe("promotion block", () => {
-  it("uses the Owner-approved title, label and CTA", () => {
-    expect(promotionCopy.title).toBe("학교 단체 이용 / 이벤트 프로모션");
-    expect(promotionCopy.inputLabel).toBe("쿠폰 번호 입력");
-    expect(promotionCopy.ctaLabel).toBe("적용하기");
-  });
-
-  it("does not pretend the coupon can be redeemed yet", () => {
-    expect(paymentState.promotion).toBe("NOT_IMPLEMENTED");
-    expect(paymentState.promotionNote).toContain("제공될 예정입니다");
   });
 });
 
