@@ -1,7 +1,15 @@
+/**
+ * The signed-out header menu.
+ *
+ * NAV hotfix: "이용 안내" opens the information a buyer actually needs — the
+ * Credit products, their price, the 1 Credit scope, validity, refunds and who to
+ * contact — and all of that is on /pricing/. It must never route to the release
+ * scope pages, so `/lab/how-it-works/` is not a primary-nav destination, and the
+ * menu carries no second link to the same page.
+ */
 export const publicReleaseRoutes = [
   { href: "/", label: "서비스" },
-  { href: "/lab/how-it-works/", label: "이용 안내" },
-  { href: "/pricing/", label: "요금 안내" },
+  { href: "/pricing/", label: "이용 안내" },
   { href: "/lab/coverage/", label: "공개 범위" },
 ] as const;
 
@@ -32,7 +40,18 @@ export const internalFoundationPathPrefixes = [
   "/account",
 ] as const;
 
-export const publicReleasePaths = publicReleaseRoutes.map((route) => route.href);
+/**
+ * Every public document, including the release-scope page that is no longer a
+ * header destination. robots.ts and the sitemap read this list, so dropping
+ * `/lab/how-it-works/` from the menu does not silently de-index the page itself —
+ * the page survives, it is simply no longer advertised as "이용 안내".
+ */
+export const publicReleasePaths = [
+  "/",
+  "/pricing/",
+  "/lab/coverage/",
+  "/lab/how-it-works/",
+] as const;
 
 /**
  * Public documents that search engines may index alongside the entry routes.

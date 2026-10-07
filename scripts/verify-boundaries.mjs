@@ -337,6 +337,37 @@ if (fs.existsSync(shellFile)) {
   }
 }
 
+// NAV hotfix. "이용 안내" is the consumer entry to the sale conditions — Credit
+// products, price, scope, validity, refunds and support — and those live on
+// /pricing/. No header source may route that label to the release-scope page,
+// and the public menu must not carry two labels for the same destination.
+for (const file of [
+  path.join(sourceRoot, "components/site-nav.tsx"),
+  path.join(sourceRoot, "components/account-control.tsx"),
+  path.join(sourceRoot, "components/site-shell.tsx"),
+  routesFile,
+]) {
+  if (!fs.existsSync(file)) continue;
+  if (fs.readFileSync(file, "utf8").includes('href="/lab/how-it-works/"')) {
+    errors.push(`navigation sends 이용 안내 to the release-scope page: ${path.relative(root, file)}`);
+  }
+}
+if (fs.existsSync(routesFile)) {
+  const routes = fs.readFileSync(routesFile, "utf8");
+  const publicMenu = routes.slice(0, routes.indexOf("export const authenticatedProductRoutes"));
+  if (!/href: "\/pricing\/", label: "이용 안내"/.test(publicMenu)) {
+    errors.push("the public menu must route 이용 안내 to /pricing/");
+  }
+  if (/label: "요금 안내"/.test(publicMenu)) {
+    errors.push("the public menu must not carry a second label for /pricing/");
+  }
+  const entries = [...publicMenu.matchAll(/href: "([^"]+)", label: "([^"]+)"/g)];
+  const destinations = entries.map((entry) => entry[1]);
+  if (new Set(destinations).size !== destinations.length) {
+    errors.push("the public menu must not link the same page twice");
+  }
+}
+
 // The product card, the brand identity and the retired selection style.
 const cardFile = path.join(sourceRoot, "components", "plan-card.tsx");
 if (!fs.existsSync(cardFile)) {

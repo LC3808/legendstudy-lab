@@ -25,6 +25,18 @@ describe("SiteNav session-aware header", () => {
     expect(screen.queryByRole("link", { name: "내신 분석 LAB" })).not.toBeInTheDocument();
   });
 
+  // NAV hotfix: 이용 안내 opens the sale conditions, so the header must not send
+  // an anonymous visitor to the release-scope page.
+  it("sends the anonymous 이용 안내 entry to /pricing/", () => {
+    renderWithStatus("anonymous");
+    // Next normalizes a generated trailing slash, so compare the route itself.
+    const usage = screen.getByRole("link", { name: "이용 안내" }).getAttribute("href");
+    expect(usage?.replace(/\/$/, "")).toBe("/pricing");
+    for (const link of screen.getAllByRole("link")) {
+      expect(link.getAttribute("href")).not.toContain("how-it-works");
+    }
+  });
+
   it("shows the three service axes once signed in", () => {
     renderWithStatus("authenticated");
     for (const label of ["홈", "내신 분석 LAB", "모의·수능 분석 LAB", "논술 LAB"]) {

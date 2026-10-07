@@ -7,11 +7,12 @@ import {
   internalFoundationPathPrefixes,
   policyRoutes,
   publicReleasePaths,
+  publicReleaseRoutes,
 } from "./release-routes";
 
 describe("release routes", () => {
   it("preserves the canonical root and stable public entry paths", () => {
-    expect(publicReleasePaths).toEqual(["/", "/lab/how-it-works/", "/pricing/", "/lab/coverage/"]);
+    expect(publicReleasePaths).toEqual(["/", "/pricing/", "/lab/coverage/", "/lab/how-it-works/"]);
     expect(policyRoutes.map((route) => route.href)).toEqual([
       "/privacy/",
       "/terms/",
@@ -21,6 +22,21 @@ describe("release routes", () => {
     ]);
     expect(internalFoundationPathPrefixes).toContain("/lab");
     expect(internalFoundationPathPrefixes).toContain("/essay-lab");
+  });
+
+  /**
+   * NAV hotfix: the public header reaches the sale conditions through /pricing/,
+   * never through the release-scope pages, and never through two labels that
+   * point at the same page.
+   */
+  it("routes the public menu 이용 안내 to /pricing/ and nowhere near the scope pages", () => {
+    const usage = publicReleaseRoutes.filter((route) => route.label === "이용 안내");
+    expect(usage.map((route) => route.href)).toEqual(["/pricing/"]);
+    for (const route of publicReleaseRoutes) {
+      expect(route.href).not.toBe("/lab/how-it-works/");
+    }
+    const destinations = publicReleaseRoutes.map((route) => route.href);
+    expect(new Set(destinations).size).toBe(destinations.length);
   });
 
   it("keeps the pricing page reachable for reviewers and external crawlers", () => {

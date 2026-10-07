@@ -19,7 +19,10 @@ export function AccountControl() {
 
   return (
     <div className="account-control">
-      <Link className="text-link text-link--small" href="/lab/how-it-works/">이용 안내</Link>
+      {/* 이용 안내 is the entry to the sale conditions a signed-in visitor needs
+          — Credit products, price, scope, validity, refunds and support — and
+          those live on /pricing/, not on the release-scope pages. */}
+      <Link className="text-link text-link--small" href="/pricing/">이용 안내</Link>
       <Link className="text-link text-link--small" href="/account/">마이페이지</Link>
       <button
         className="button button--outline button--small"
