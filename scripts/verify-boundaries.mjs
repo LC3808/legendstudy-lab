@@ -15,7 +15,9 @@ function walk(directory) {
 
 walk(sourceRoot);
 const errors = [];
-const clientFiles = files.filter((file) => fs.readFileSync(file, "utf8").startsWith('"use client"'));
+// The directive may be written with either quote style, so the scan matches both
+// — a single-quoted client component must not escape the server-import check.
+const clientFiles = files.filter((file) => /^['"]use client['"]/.test(fs.readFileSync(file, "utf8")));
 for (const file of clientFiles) {
   const source = fs.readFileSync(file, "utf8");
   if (source.includes("@/server/") || source.includes("server-only") || source.includes("cloudflare/") || source.includes("functions/")) {
@@ -335,6 +337,56 @@ if (fs.existsSync(shellFile)) {
   if (shell.includes('href="/support/"')) {
     errors.push("the customer centre button returned to the header action cluster");
   }
+}
+
+// Credit has exactly one browser authority: the self-scoped `credit_summary()`
+// RPC, read through the shared hook. A screen that reads the ledger itself — or
+// keeps its own balance — can disagree with MY, and the 논술 LAB header must show
+// the same number MY shows.
+const creditReaders = files.filter((file) =>
+  /\.rpc\(\s*['"]credit_summary['"]/.test(fs.readFileSync(file, "utf8")),
+);
+for (const file of creditReaders) {
+  const relative = path.relative(root, file);
+  if (relative !== path.join("src", "components", "credit-balance.tsx")) {
+    errors.push(`Credit must be read through the shared hook, not directly: ${relative}`);
+  }
+}
+const essayCreditStatus = path.join(sourceRoot, "components", "essay-credit-status.tsx");
+if (!fs.existsSync(essayCreditStatus)) {
+  errors.push("the 논술 LAB Credit header component is missing");
+} else {
+  const source = fs.readFileSync(essayCreditStatus, "utf8");
+  if (!/useCreditSummary/.test(source) || !/from ['"]@\/components\/credit-balance['"]/.test(source)) {
+    errors.push("the 논술 LAB Credit header must read the shared Credit hook");
+  }
+  if (/\.rpc\(/.test(source)) {
+    errors.push("the 논술 LAB Credit header must not query Credit itself");
+  }
+  for (const [href, message] of [
+    ['href={purchaseHref}', "the 논술 LAB header must offer the purchase route"],
+    ['href={historyHref}', "the 논술 LAB header must offer the MY essay history route"],
+    ['href={loginHref}', "the 논술 LAB header must offer sign-in to an anonymous visitor"],
+  ]) {
+    if (!source.includes(href)) errors.push(message);
+  }
+  if (!/const historyHref = ['"]\/my\/essays\/['"]/.test(source)) {
+    errors.push("the 논술 LAB history link must be the MY essay history route");
+  }
+  if (!/const purchaseHref = ['"]\/pricing\/['"]/.test(source)) {
+    errors.push("첨삭권 구매 must lead to /pricing/");
+  }
+  // The header speaks in 첨삭권; "Credit" may only appear in a comment that
+  // explains where the number comes from, never in the rendered copy.
+  for (const rendered of source.matchAll(/>([^<>{}]*[가-힣][^<>{}]*)</g)) {
+    if (/Credit/.test(rendered[1])) {
+      errors.push(`the 논술 LAB header must speak in 첨삭권, not in Credit: ${rendered[1].trim()}`);
+    }
+  }
+}
+const essayLabPage = path.join(appRoot, "essay-lab", "page.tsx");
+if (fs.existsSync(essayLabPage) && !/<EssayCreditStatus\s*\/>/.test(fs.readFileSync(essayLabPage, "utf8"))) {
+  errors.push("the 논술 LAB page must render the 첨삭권 header");
 }
 
 // NAV hotfix. "이용 안내" is the consumer entry to the sale conditions — Credit

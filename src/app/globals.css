@@ -1152,3 +1152,14 @@ h1, h2, h3 { text-wrap: pretty; }
 .payment-completion__actions .button { min-height: 3rem; line-height: 1.5; white-space: normal; }
 .payment-completion__primary { background: var(--brand); color: var(--ink-strong); }
 .payment-completion__primary:hover { background: var(--brand-soft); }
+
+/* 논술 LAB header: the visitor's spendable 첨삭권.
+   The number is the only emphasis; the split and the nearest expiry stay
+   secondary so the block never competes with the university catalog below it.
+   It is a compact bar, not a dashboard: the ledger lives in MY. */
+.essay-credit { display: grid; gap: .3rem; margin-top: 1.6rem; padding: .95rem 1.15rem; border: 1px solid var(--line-strong); border-left: 3px solid var(--brand); border-radius: var(--radius-md); background: var(--surface-muted); }
+.essay-credit__count { margin: 0; color: var(--ink); font-size: .96rem; font-weight: 800; }
+.essay-credit__count strong { color: var(--ink-strong); font-family: Georgia, "Nanum Myeongjo", serif; font-size: 1.5rem; letter-spacing: -.02em; }
+.essay-credit__meta { margin: 0; color: var(--ink-muted); font-size: .82rem; line-height: 1.6; overflow-wrap: anywhere; }
+.essay-credit__actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .55rem; }
+.essay-credit__actions .button { white-space: normal; }
