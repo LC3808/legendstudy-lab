@@ -97,10 +97,10 @@ export async function readEssays(client:SupabaseClient,owner:string):Promise<Ess
   return sessions.map(s=>({...s,evaluations:evaluations.filter(e=>e.session_id===s.id)}));
 }
 
-export type MyProfile = { neis_office_code: string | null; neis_school_code: string | null; academic_status: string | null; grade_level: number | null };
+export type MyProfile = { display_name?: string | null; neis_office_code: string | null; neis_school_code: string | null; academic_status: string | null; grade_level: number | null };
 export async function readMyProfile(client: SupabaseClient, owner: string): Promise<MyProfile> {
   await assertOwner(client, owner);
-  const profile = checked(await client.from('profiles').select('neis_office_code,neis_school_code,academic_status,grade_level').eq('id',owner).maybeSingle());
+  const profile = checked(await client.from('profiles').select('display_name,neis_office_code,neis_school_code,academic_status,grade_level').eq('id',owner).maybeSingle());
   await assertOwner(client, owner);
   return profile ?? {neis_office_code:null,neis_school_code:null,academic_status:null,grade_level:null};
 }

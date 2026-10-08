@@ -1,4 +1,5 @@
 "use client";
+import { SchoolDistribution } from "./school-distribution";
 
 import {
   creditOriginLabel,
@@ -6,7 +7,6 @@ import {
   formatCredit,
   formatNumber,
   gradeLabel,
-  schoolCodeLabel,
 } from "@/lib/admin/format";
 import type { AdminDashboard, AdminSupportMetrics } from "@/lib/admin/contract";
 import { formatDateTime, formatDuration } from "@/lib/admin/format";
@@ -120,7 +120,7 @@ export function AdminDashboardView() {
         </div>
       </Section>
 
-      <Section title="프로필" note="학교명은 저장하지 않으며 NEIS 학교 코드로만 집계합니다.">
+      <Section title="프로필">
         <div className="admin-split">
           <div>
             <p className="admin-subhead">학년 분포</p>
@@ -136,17 +136,8 @@ export function AdminDashboardView() {
             )}
           </div>
           <div>
-            <p className="admin-subhead">학교 코드 분포 (상위 20)</p>
-            {data.profile.schoolDistribution.length === 0 ? (
-              <p className="admin-muted">표시할 데이터가 없습니다.</p>
-            ) : (
-              <Bars
-                rows={data.profile.schoolDistribution.map((row) => ({
-                  label: schoolCodeLabel(row.key),
-                  count: row.count,
-                }))}
-              />
-            )}
+            <p className="admin-subhead">학교별 회원 분포 (상위 20)</p>
+            <SchoolDistribution rows={data.profile.schoolDistribution} unsetCount={data.profile.schoolUnsetCount ?? null} />
           </div>
         </div>
       </Section>

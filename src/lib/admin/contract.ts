@@ -26,7 +26,8 @@ export type AdminDashboard = {
   };
   profile: {
     gradeDistribution: AdminDistribution[];
-    schoolDistribution: AdminDistribution[];
+    schoolDistribution: (AdminDistribution & { officeCode?: string | null })[];
+    schoolUnsetCount?: number | null;
   };
   essay: {
     submissions: number;
@@ -251,11 +252,13 @@ export function parseDashboard(raw: unknown): AdminDashboard {
     },
     profile: {
       gradeDistribution: distribution(profile.grade_distribution, "profile.grade_distribution", "key"),
-      schoolDistribution: distribution(
-        profile.school_distribution,
-        "profile.school_distribution",
-        "school_code",
-      ),
+      schoolDistribution: profile.school_distribution_by_identity === undefined
+        ? distribution(profile.school_distribution, "profile.school_distribution", "school_code")
+        : arr(profile.school_distribution_by_identity, "profile.school_distribution_by_identity").slice(0,20).map((entry,index) => {
+          const row=record(entry, `school_distribution_by_identity[${index}]`);
+          return {key:str(row.school_code,"school_code"),officeCode:strOrNull(row.school_office_code,"school_office_code"),count:num(row.count,"school_count")};
+        }),
+      schoolUnsetCount: profile.school_unset_count === undefined ? null : num(profile.school_unset_count,"school_unset_count"),
     },
     essay: {
       submissions: num(essay.submissions, "essay.submissions"),
