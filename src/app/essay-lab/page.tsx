@@ -1,3 +1,4 @@
+import { EssayRuntimeEntry } from "@/components/essay-runtime-entry";
 import { CatalogFilters } from "@/components/catalog-filters";
 import { EssayCreditStatus } from "@/components/essay-credit-status";
 import { buildMetadata } from "@/lib/brand";
@@ -23,6 +24,7 @@ export default function EssayLabPage() {
           authority MY uses. It sits above the catalog because it answers the first
           question a returning writer has before picking a university. */}
       <EssayCreditStatus />
+      <EssayRuntimeEntry />
       <CatalogFilters universities={universities} />
     </div>
   );
