@@ -1305,7 +1305,10 @@ h1, h2, h3 { text-wrap: pretty; }
 
 .my-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.1rem; }
 .my-links { display: flex; flex-wrap: wrap; gap: .6rem; }
-.my-panel { padding: clamp(1rem, 2.2vw, 1.5rem); border: 1px solid var(--product-border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--product-shadow); }
+/* `.my-panel` carries record sections; `.my-surface` is the same surface for the
+   signed-out prompt OwnerArea renders in place of the dashboard. */
+.my-panel, .my-surface { padding: clamp(1rem, 2.2vw, 1.5rem); border: 1px solid var(--product-border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--product-shadow); }
+.my-surface h2 { margin: 0 0 1rem; font-size: clamp(1.05rem, 1.5vw, 1.22rem); font-weight: 700; }
 .my-panel > p { margin-block: .5rem; line-height: 1.75; }
 
 .my-empty { margin: 0; color: var(--ink-muted); line-height: 1.7; }
