@@ -1,3 +1,4 @@
+import {lookupSchoolName} from '@/lib/admin/school';
 import type { SupabaseClient } from '@supabase/supabase-js';
 export type Target = { id: string; university_id: string; intended_division: string | null; universities: { name: string } | null };
 export type Goals = { intended_major: string | null; targets: Target[] };
@@ -110,7 +111,9 @@ export async function saveMyProfile(client: SupabaseClient, owner: string, profi
   if ((office===null)!==(school===null) || [office,school].some(v=>v!==null&&(!v.trim()||v!==v.trim()||v.length>32))) throw new Error('INVALID_SCHOOL');
   if (status!==null&&!['student','retaker','other'].includes(status)) throw new Error('INVALID_STATUS');
   if (grade!==null&&![1,2,3].includes(grade)) throw new Error('INVALID_GRADE');
+  await assertOwner(client,owner);
+  if (office && school && !await lookupSchoolName(office,school,AbortSignal.timeout(15000))) throw new Error('INVALID_SCHOOL');
   await ensureOwnerProfile(client,owner);
-  checked(await client.from('profiles').update({neis_office_code:office,neis_school_code:school,academic_status:status,grade_level:grade}).eq('id',owner).select('id').single());
+  checked(await client.from('profiles').update({neis_office_code:office,neis_school_code:school,academic_status:school?'student':status==='student'?null:status,grade_level:school?grade:null}).eq('id',owner).select('id').single());
   await assertOwner(client,owner);
 }
