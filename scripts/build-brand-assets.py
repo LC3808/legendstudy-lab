@@ -8,14 +8,38 @@ white notebook outline, WHITE pencil body. This script never redraws anything â€
     rounded shape in a browser tab (Chrome does not apply an iOS-style mask), and
   * resamples that artwork down to the sizes each surface needs.
 
-Usage: python3 scripts/build-brand-assets.py <master.png>
+The master itself lives in the APP repository as
+assets/brand/source/legendstudy_app_icon_master.png, and this repo keeps the same file at
+assets/brand/source/ so a build never depends on another checkout. CANONICAL_SHA256 pins
+the Owner-confirmed artwork: if the file ever changes, this script refuses to run rather
+than quietly shipping a different mark.
+
+Usage: python3 scripts/build-brand-assets.py [master.png] [--allow-other-master]
 """
+import hashlib
 import sys
 import struct
+import os
 
 from PIL import Image, ImageDraw
 
-MASTER = sys.argv[1] if len(sys.argv) > 1 else "/home/ubuntu/upload/favicon.png"
+CANONICAL_SHA256 = "e37afa18ceaf9e27ab275c1cb460b512697baa3d745689ed741c871ce079abfe"
+DEFAULT_MASTER = "assets/brand/source/legendstudy_app_icon_master.png"
+MASTER = next((a for a in sys.argv[1:] if not a.startswith("--")), DEFAULT_MASTER)
+
+
+def assert_canonical(path: str) -> None:
+    digest = hashlib.sha256(open(path, "rb").read()).hexdigest()
+    if digest == CANONICAL_SHA256:
+        print(f"  master sha256 {digest[:16]}... matches the canonical artwork")
+        return
+    if "--allow-other-master" in sys.argv:
+        print(f"  WARNING: {path} is not the canonical master ({digest[:16]}...)")
+        return
+    raise SystemExit(
+        f"refusing to build: {path} has sha256 {digest},\n"
+        f"expected {CANONICAL_SHA256} (the Owner-confirmed canonical artwork).\n"
+        "Pass --allow-other-master only if the Owner has replaced the master.")
 
 # Inside the artwork nothing may change; the threshold only separates the flat
 # background outside the rounded square from the icon itself.
@@ -32,6 +56,7 @@ def cut_out_background(image: Image.Image) -> Image.Image:
 
 
 def main() -> None:
+    assert_canonical(MASTER)
     master = cut_out_background(Image.open(MASTER))
     print(f"  master {MASTER} -> {master.size} with a transparent surround")
 
