@@ -61,3 +61,25 @@ Production route, role, data, write and cross-surface axes must remain distinct.
 PAYMENT_TOSS_CHANGED: NO. PUBLIC_FRONTEND_VISUAL_CHANGED_BY_CODEX: NO (only the
 explicitly approved conditional Header functional entry). DB_APPLIED: NONE.
 DESTRUCTIVE_PRODUCTION_ACTIONS: NONE. Overall PARTIAL until hosted gates resolve.
+
+
+## Owner-assisted activation update — 2026-10-08
+
+Owner executed and returned Production ledger rows for all six candidates.
+Signup verified-email guard preserves cutoff/owner/ACL; MY column-only UPDATE
+returns true, table UPDATE false, RLS true. Admin bundle SHA256
+4286b463667b61d3a648fa02cc551d79c7771258fddb55789ab1cd6fde59af6f
+was applied atomically. All 17 public admin function bodies match the reviewed
+originals/corrective; anonymous execute denied, internal helpers denied to client
+roles. Inquiry RLS is enabled with no direct-access policies, as designed.
+Owner reports actual admin session Header/Dashboard/Members/review member Credit
+and Ledger/Payment reads/Ops/Inquiries/QL all working. This is Owner-reported
+authenticated read verification, not proof of finance writes, normal-user denial,
+MY persistence or signup actual E2E. Those remain pending. Finance writes remain off.
+
+School-name follow-up: member detail reuses APP's existing public NEIS Edge
+Function with exact office/school pair matching, timeout, retry and stale-response
+cancellation. No identity/JWT sent, school names not stored, no DB change.
+Member search and dashboard still retain their existing code-based aggregates;
+they lack office identity in their current RPC result. No guessed mapping.
+Public visual and Payment untouched.
