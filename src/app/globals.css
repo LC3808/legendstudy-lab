@@ -1394,7 +1394,20 @@ h1, h2, h3 { text-wrap: pretty; }
   border-radius: var(--radius-xl);
   box-shadow: var(--product-shadow-lift);
 }
-.essay-lab-page .page-intro h1,
+/* The hero leads with the value, not with the service name. `논술 LAB` is the page
+   identity and reads as a restrained brand label; the sentence that says what the
+   service does is the headline. The top padding is trimmed at the same time so the
+   첨삭권 bar and the catalog start sooner. */
+.essay-lab-page { padding-block: 2rem 4rem; }
+.essay-lab-page .page-intro { padding: clamp(1.35rem, 2.2vw, 1.9rem) clamp(1.5rem, 3vw, 2.5rem); }
+.essay-lab-page .essay-hero__label {
+  margin: 0; color: var(--brand-text);
+  font-size: clamp(1.08rem, 1.45vw, 1.22rem); font-weight: 600; letter-spacing: .01em; line-height: 1.3;
+}
+.essay-lab-page .page-intro h1.essay-hero__headline {
+  max-width: 40rem; margin: .65rem 0 0;
+  font-size: clamp(1.6rem, 2.9vw, 2.6rem); font-weight: 700; line-height: 1.26; letter-spacing: -.03em;
+}
 .essay-lab-page .page-intro > p { max-width: 45rem; }
 /* The 논술 LAB 첨삭권 bar is the first thing under the hero, so it takes the same
    radius as the surface above it. */
