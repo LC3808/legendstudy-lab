@@ -88,6 +88,8 @@ function detailPayload() {
       grade_level: "3",
       school_code: "S100",
       school_office_code: "B10",
+      email_confirmed: true, auth_providers: ["email", "google"], intended_major: "공학",
+      target_universities: [{ university_name: "검증대학교", intended_division: "컴퓨터공학과" }],
     },
     account: { state: "NORMAL", deletion: null },
     usage: {
@@ -286,6 +288,9 @@ describe("AdminMembersView", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "보기" }));
     expect(await screen.findByText("회원 상세")).toBeInTheDocument();
+    expect(screen.getByText("email, google")).toBeInTheDocument();
+    expect(screen.getByText("검증대학교 · 컴퓨터공학과")).toBeInTheDocument();
+    expect(screen.getByText("공학")).toBeInTheDocument();
     await waitFor(() => expect(screen.getByText("서비스 이용")).toBeInTheDocument());
     expect(screen.getByText("답안 본문은 이 화면에 표시하지 않습니다.")).toBeInTheDocument();
     expect(screen.getAllByText("미설치").length).toBeGreaterThanOrEqual(1);
