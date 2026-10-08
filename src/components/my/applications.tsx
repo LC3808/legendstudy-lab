@@ -40,7 +40,7 @@ function ApplicationForm({application,done,cancel}:{application?:Application;don
   const input:ApplicationInput={id:application?.id??null,revision:application?.revision??0,year:Number(year),university:university.id,division,admissionType:type,admissionName:name};
   try{await saveApplication(client,user.id,input,requestKey(input));done();}catch(e){setError(e instanceof Error&&e.message==='APPLICATION_CHANGED'?'다른 화면에서 변경되었습니다. 새로고침 후 다시 확인해 주세요.':'저장하지 못했습니다. 입력 내용을 확인하고 다시 시도해 주세요.');}finally{setBusy(false);}
  }
- return <div>
+ return <div className="my-add-panel">
   <form className="my-goal-form" onSubmit={search}><label>지원 대학 검색<input value={query} maxLength={60} onChange={e=>setQuery(e.target.value)} disabled={busy}/></label><button disabled={busy||!query.trim()} className="button button--outline button--small">검색</button></form>
   {results.length>0&&<ul className="my-search-results">{results.map(u=><li key={u.id}>{u.name} <button type="button" disabled={busy} className="text-link" onClick={()=>{setUniversity(u);setResults([]);}}>선택</button></li>)}</ul>}
   <form className="my-goal-form" onSubmit={save}>

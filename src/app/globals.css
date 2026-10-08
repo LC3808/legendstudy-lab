@@ -1474,3 +1474,31 @@ h1, h2, h3 { text-wrap: pretty; }
 .my-study__note { margin: 0; color: var(--ink-muted); font-size: .82rem; }
 .admin-study { max-width: 32rem; margin-top: .4rem; }
 .admin-detail__muted { color: var(--ink-muted); font-size: .84rem; }
+
+/* ===== MY form system — one input/panel/error language across every MY form (Claude 2026-10-09) ===== */
+.my-goal-form label { color: var(--ink-muted); font-size: .86rem; }
+.my-goal-form input, .my-goal-form select, .my-goal-form textarea,
+.my-add-panel input, .my-add-panel select, .my-add-panel textarea {
+  width: 100%; min-width: 0; padding: .7rem; border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm); background: var(--surface); color: var(--ink); font: inherit;
+}
+.my-goal-form input:focus-visible, .my-goal-form select:focus-visible, .my-goal-form textarea:focus-visible,
+.my-add-panel input:focus-visible, .my-add-panel select:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 55%, #fff); outline-offset: 1px; border-color: var(--accent);
+}
+.my-goal-form input:disabled, .my-goal-form select:disabled,
+.my-add-panel input:disabled, .my-add-panel select:disabled {
+  background: var(--surface-muted); color: var(--ink-soft); cursor: not-allowed;
+}
+/* Application records (지원 현황) — consistent record surface */
+.my-target-card { padding: 1rem 1.15rem; margin-bottom: .85rem; border: 1px solid var(--product-border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--product-shadow); }
+.my-target-card:last-of-type { margin-bottom: 1rem; }
+.my-target-card h3 { margin: 0 0 .25rem; font-size: 1rem; }
+.my-target-card p { margin: .2rem 0; color: var(--ink-muted); font-size: .88rem; line-height: 1.55; }
+.my-target-card h4 { margin: 1rem 0 .4rem; font-size: .82rem; color: var(--ink-muted); }
+.my-target-card ul { margin: 0; padding-left: 1.1rem; color: var(--ink-muted); font-size: .84rem; line-height: 1.65; }
+.my-target-card ul li { margin: .25rem 0; }
+/* Consistent inline error across MY forms */
+.my-dashboard [role="alert"] { margin: .7rem 0 0; padding: .6rem .8rem; border: 1px solid color-mix(in srgb, #c0392b 32%, var(--line)); border-radius: var(--radius-sm); background: #fdf1f0; color: #9a2f2f; font-size: .85rem; line-height: 1.55; }
+/* Form action spacing inside MY (override the page-level .button-row default) */
+.my-dashboard .button-row { margin-top: 1rem; }
