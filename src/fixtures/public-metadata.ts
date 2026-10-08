@@ -26,7 +26,7 @@ export const reviewedUniversities: UniversityPublicMetadata[] = [
     taxonomyLabel: "복합형 AAT",
     sourceStatus: "OFFICIAL_PARTIAL",
     sourceTitle: "경북대학교 입학처 수시모집 자료",
-    sourceNote: "2027 전형의 track metadata는 공식 자료 기준으로 표시합니다. 세부 문제·채점 기준은 이 foundation에 포함하지 않습니다.",
+    sourceNote: "2027학년도 전형 정보는 공식 자료를 기준으로 정리했습니다. 세부 문제와 채점 기준은 대학 입학처 자료에서 확인하세요.",
     officialAdmissionsUrl: "https://ipsi1.knu.ac.kr/",
     sourceLinks: [
       {
@@ -55,7 +55,7 @@ export const reviewedUniversities: UniversityPublicMetadata[] = [
     taxonomyLabel: "장문 논술형",
     sourceStatus: "OFFICIAL_CONFIRMED",
     sourceTitle: "부산대학교 입학처 논술 자료 아카이브",
-    sourceNote: "일반전형과 지역인재전형의 모집단위 맥락은 분리되어야 합니다. 답안 분량·세부 문항 수 등 공개되지 않은 값은 표시하지 않습니다.",
+    sourceNote: "일반전형과 지역인재전형은 모집단위가 다릅니다. 공개되지 않은 답안 분량과 문항 수는 안내하지 않습니다.",
     officialAdmissionsUrl: "https://go.pusan.ac.kr/",
     sourceLinks: [
       {
@@ -84,7 +84,7 @@ export const reviewedUniversities: UniversityPublicMetadata[] = [
     taxonomyLabel: "장문 논술형",
     sourceStatus: "OFFICIAL_CONFIRMED",
     sourceTitle: "광운대학교 입학처 기출문제·서식",
-    sourceNote: "인문과 자연의 유형 정보를 공개 metadata로 구분합니다. 학생은 최종 지원 전 입학처의 최신 자료를 다시 확인해야 합니다.",
+    sourceNote: "인문·자연 계열의 유형 정보를 구분해 안내합니다. 최종 지원 전에는 입학처의 최신 자료를 확인하세요.",
     officialAdmissionsUrl: "https://iphak.kw.ac.kr/main.php",
     sourceLinks: [
       {
@@ -113,7 +113,7 @@ export const reviewedUniversities: UniversityPublicMetadata[] = [
     taxonomyLabel: "과학 응답형",
     sourceStatus: "OFFICIAL_CONFIRMED",
     sourceTitle: "아주대학교 입학처 논술 기출문제",
-    sourceNote: "계열별 유형은 공개 metadata로만 시연합니다. 실제 평가 package와 공식 criteria는 이 프로젝트에 존재하지 않습니다.",
+    sourceNote: "계열별 유형 정보만 안내합니다. 실제 평가 기준과 문항은 대학 입학처 자료에서 확인하세요.",
     officialAdmissionsUrl: "https://www.iajou.ac.kr/",
     sourceLinks: [
       {
@@ -142,7 +142,7 @@ export const reviewedUniversities: UniversityPublicMetadata[] = [
     taxonomyLabel: "약술형 응답",
     sourceStatus: "REVIEW_REQUIRED",
     sourceTitle: "서경대학교 입학처 논술 자료",
-    sourceNote: "2027 운영 정보는 공개 metadata로 표시합니다. historical source와 special-format criterion은 별도 검토가 필요합니다.",
+    sourceNote: "2027학년도 운영 정보를 안내합니다. 특수 전형과 일부 자료는 대학 입학처에서 별도로 확인해 주세요.",
     officialAdmissionsUrl: "https://go.skuniv.ac.kr/",
     sourceLinks: [
       {

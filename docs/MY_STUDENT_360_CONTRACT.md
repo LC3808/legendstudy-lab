@@ -88,3 +88,127 @@ Existing-profile MY persistence and Admin/normal-user boundaries were Owner-veri
 A new Web-only user exposed a missing profiles row; 4de6dfa repaired initialization.
 New-user runtime and signup +3 actual delivery are awaiting Owner results. Worker
 heartbeat alone is insufficient. No finance grant or artificial backfill is used.
+
+## 2026-10-08 consolidated follow-up (supersedes runtime status above)
+
+Signup predecessor is CLOSED separately: Owner SQL showed exactly one grant, balance
+3, linked delivery and no expiry; Owner confirmed MY/Essay display. No grant code is
+changed here. LAB school flow 3c432cd is PRODUCTION_DEPLOYED and OWNER_VERIFIED
+(auto student, optional grade, selected grade, reload). New foundation RPCs below are
+IMPLEMENTED / LOCAL_VERIFIED candidates, NOT_PRODUCTION_APPLIED until ledger/runtime
+postflight is recorded. Manus CSS, spacing, card design and public visual remain unchanged.
+
+### Shared identity and school
+
+Auth email; optional profiles.display_name (canonical, not a new nickname); id is the
+same auth.users/profiles key in APP and LAB. academic_status is student/retaker/other;
+parent/teacher are not distinct current enum values. Grade is optional 1–3 for a
+selected school. Selecting the existing NEIS pair saves student automatically;
+unset grade never clears school. Nonstudent flow clears school explicitly.
+School storage is **office + school code only**; there is no school_name column.
+Names resolve by exact pair via the existing public NEIS proxy, with bounded shared
+cache. A client-supplied display name is not persisted. LAB refuses unresolved save;
+DB/older APP still perform structural pair validation, not a newly invented national
+school master. Unresolved code => 학교명 확인 필요; no code => 학교 미설정.
+Admin aggregate uses top20 identity pairs with max4 concurrent/cache resolution,
+not one request per member. Existing counts remain unchanged.
+
+### Targets and Applications
+
+Target = interest, Application = explicit self-reported support record, Outcome =
+append-only event; no automatic conversion. Target one-step university + division
+uses existing universities and intended_division with optional admission_year.
+20261008000500 is HELD: existing UNIQUE NULLS NOT DISTINCT(user,university,year)
+needs replacement to support different divisions. Candidate normalization is
+lower(btrim(coalesce(division,''))); IDs/rows/year/free text are unchanged. Current
+APP selects rows and deletes by row ID; its INSERT omits division/year and uses no
+ON CONFLICT column list. New APP labels include existing division/year when present.
+Old APP can list/remove multiple row IDs but does not display distinct division labels.
+Pinned Flutter regression remains NOT_RUN; no claim of Store RC runtime acceptance.
+Rollback must refuse if multi-division rows no longer satisfy old uniqueness.
+
+Application P0 (20261008000600): profiles owner FK cascade; required admission_year,
+university + historical name snapshot, division/admission_type/admission_name text,
+revision and timestamps. Catalog name is resolved server-side on create/change of
+university, never updated merely because a catalog changes. Future division_id can be
+added without deleting historical text. No nationwide division catalog is shipped.
+Events include created/details_changed and independent planned/submitted/stage_pass/
+accepted/additional_acceptance/rejected/not_registered/registered facts. No linear
+state machine. occurred_at is optional, recorded_at server-owned, supersedes identifies
+an append-only correction (one successor, same application/owner). Detail changes
+keep before/after snapshots and optimistic revision. Stable request keys make ambiguous
+retries idempotent; key reuse with a different command fails. Current event is the
+latest non-superseded occurrence (recorded time fallback), not necessarily most recently
+entered if backdating. Event UI never deletes an old correction silently.
+
+Self RPCs: my_application_save, my_application_event, my_application_delete,
+my_applications(offset), my_application_events(id,offset). No supplied owner UUID.
+Table reads own RLS; direct writes revoked. RPCs lock the canonical account subject
+and reject pending/erasing lifecycle. Application list25/events100 with explicit more
+flags/pages; error is distinct from empty. Explicit student application delete cascades
+its event history. Existing Auth deletion cascades profiles -> applications -> events
+in the AUTH phase; PERSONAL worker/functions are unmodified. Pending/erasing access
+is blocked. No new audit retention exception, orphan PII or future report DB.
+
+### Study handoff
+
+20261008000700 my_study_summary() returns study-summary-v1:
+- today_ms, week_ms, last30_ms: integer **milliseconds**, not rounded session sums.
+- daily7: chronological [{date: YYYY-MM-DD, milliseconds}], exactly seven KST days.
+- timezone Asia/Seoul; week Monday 00:00 through current day; 30d includes today.
+- Union completed active_segments in absolute milliseconds across sessions/devices,
+  then clip to day boundaries. Respect include_in_study_total (excluded mock sessions
+  contribute nothing). Same session UUID is canonical PK, retries do not add a record.
+- as_of server query time; source completed_synced_sessions. No running local draft,
+  unsynced offline time or real-time cross-device handoff is claimed.
+- No records => real zero series; RPC failure => ERROR, never zero. More than2000
+  relevant records => STUDY_HISTORY_LIMIT error; no partial total. 24h carry-in covers
+  sessions crossing midnight. Source index/segments are unchanged; no Web timer DB.
+- Refresh: mount/login, account switch, explicit 새로고침/reload. Owner-bound hook drops
+  stale/in-flight responses on logout/switch. Manus converts total ms to display minutes
+  with floor(ms/60000); it must not sum/union/rebucket inside a visual component.
+
+### Student 360 / Essay / report facts
+
+20261008000800 admin_student360(auth user UUID) supplements existing memberDetail and
+memberCredit; it does not replace them. public.admin_operator + caller lifecycle +
+valid active target are required. quality_operators alone gives no Admin rights.
+Existing member identity/providers/goals/Credit continue through existing RPCs; new
+supplement adds current status, shared Study totals, explicit Applications and Essay.
+Internal account UUID is removed from the default member detail; school name stays primary.
+period_entitlement and academic_performance are null because no reviewed period-pass or
+canonical academic-performance adapter exists here. Existing mock self-practice is not
+silently called a standardized grade record.
+
+my_essay_summary() and Admin share the same private read model. Recent50 sessions plus
+recent50 evaluations have explicit truncation flags. Session counts are real attempt
+counts within that session, not counts of sessions masquerading as attempts; university,
+exam year/question, last submitted time, strengths/rewrite checklist and per-criterion
+1–5 levels come from existing Essay tables. No answer body is returned. The parser
+exposes the comparison context including request_kind; operator reevaluation, invalidated
+or superseding results cannot be a learning-growth point. The existing conservative
+same-question/criterion/definition/metadata/regime/evaluation/contract/evidence gate
+remains; missing context => null, never 100-point normalization or cross-rubric trend.
+
+Future student/admin reports should compose these same DTOs, current memberCredit,
+identity and source timestamps under the corresponding authorization. Null, error,
+window/truncation and self-reported provenance remain visible. No new report store,
+PDF engine, full answer export, admissions prediction or cohort benchmark is implemented.
+
+### Backlog/design authority
+
+Admission Catalog: University -> Academic Year -> canonical division_id; PDF extraction
+-> prior-year diff -> human/Owner verification -> publish. Free text remains historical
+source. Application does not depend on Essay, and Essay does not require Application.
+Cohort insight: NOT_IMPLEMENTED. Future grade/status/performance context, minimum sample
+size, suppression, median/mean/sample count/freshness, year and selection bias must be
+resolved before claims or delivery. School Admin future organization/membership/role/scope
+stays separate from academic school codes and quality allowlist. No new booleans/RBAC.
+
+### Independent Production rollout
+
+The full Target candidate remains on codex/my-data-student360 (implementation6434fe1,
+Manus merge1a215d4). codex/my-foundation-activation preserves current target UI/adapter
+until Owner §74 clearance plus APP validation. It contains only the independent006–008
+functional connection, so Production will not offer multi-division against the old
+unique constraint. Target work/tests remain on the candidate branch; they are not lost.

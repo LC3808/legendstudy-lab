@@ -26,5 +26,5 @@ export function AdminSchoolName({ office, school }: { office: string | null; sch
   }, [office, school, key]);
   if (!office || !school) return <span>{office || school ? "학교 정보 확인 필요" : "미설정"}</span>;
   if (result?.key !== key) return <span>학교명 조회 중…</span>;
-  return result.name ? <span>{result.name} <small>(출처: NEIS)</small></span> : <span>학교명 확인 불가 <button type="button" className="text-link" onClick={() => setAttempt((n) => n + 1)}>다시 조회</button></span>;
+  return result.name ? <span>{result.name}</span> : <span>학교명 확인 불가 <button type="button" className="text-link" onClick={() => setAttempt((n) => n + 1)}>다시 조회</button></span>;
 }

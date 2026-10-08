@@ -1,6 +1,8 @@
 // @vitest-environment jsdom
 import { render, screen, within } from '@testing-library/react';
 import { expect, it, vi } from 'vitest';
+import userEvent from '@testing-library/user-event';
+import {addTarget,searchUniversities} from '@/lib/my/data';
 import { MyDashboard } from './dashboard';
 
 const OWNER = { id: 'owner-1', email: 'review@legendstudy.com' };
@@ -8,6 +10,7 @@ const OWNER = { id: 'owner-1', email: 'review@legendstudy.com' };
 vi.mock('@/components/auth-context', () => ({
   useAuth: () => ({ client: { auth: { getSession: async () => ({ data: { session: { user: OWNER } } }) } }, user: OWNER, status: 'authenticated' }),
 }));
+vi.mock('@/lib/my/foundation', async importOriginal => ({...await importOriginal<typeof import('@/lib/my/foundation')>(),readApplicationPage:async()=>({items:[],has_more:false,offset:0}),readStudy:async()=>({today_ms:0,week_ms:0,last30_ms:0,daily7:[]})}));
 vi.mock('@/components/credit-balance', () => ({
   useCreditSummary: () => ({ state: { status: 'ready', value: { spendable: 3, free: 3, paid: 0, other: 0, next_expiry: '2026-11-01' } }, reload: () => {} }),
 }));
@@ -20,9 +23,9 @@ vi.mock('@/lib/my/data', () => ({
   readEssays: async () => [],
   readHistory: async () => [],
   saveMajor: async () => {},
-  addTarget: async () => {},
+  addTarget: vi.fn().mockResolvedValue(undefined),
   editTarget: async () => {},
-  searchUniversities: async () => [],
+  searchUniversities: vi.fn().mockResolvedValue([]),
   majorOptions: ['사회·상경'],
 }));
 
@@ -36,7 +39,7 @@ it('presents the MY dashboard sections in the agreed order', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
   const headings = [...container.querySelectorAll('.my-section > h2')].map((h) => h.textContent);
-  expect(headings).toEqual(['내 이용 현황', '나의 학교·학년', '나의 목표', '나의 지원 현황', '나의 논술 LAB', '다른 LAB', '계정 및 지원']);
+  expect(headings).toEqual(['내 이용 현황', '나의 학교·학년', '나의 목표', '나의 지원 현황', '나의 학습시간', '나의 논술 LAB', '다른 LAB', '계정 및 지원']);
 });
 
 it('shows the signed-in email as the identity line and nothing invented beside it', async () => {
@@ -85,4 +88,12 @@ it('keeps empty sections short instead of making a large empty card', async () =
   expect(empty).toContain('아직 논술 기록이 없습니다.');
   expect(within(container).getByRole('link', { name: '논술 LAB 시작하기' })).toBeTruthy();
   expect(container.textContent).not.toContain('아직 구현되지 않았습니다');
+});
+it('keeps same-university add disabled while the target constraint rollout is held',async()=>{
+ const user=userEvent.setup();vi.mocked(searchUniversities).mockResolvedValueOnce([{id:'u1',name:'연세대학교'}]);
+ render(<MyDashboard/>);await screen.findByText('사회·상경');
+ await user.click(screen.getByRole('button',{name:'+ 대학·학과 추가'}));
+ await user.type(screen.getByLabelText('대학 찾기'),'연세');await user.click(screen.getByRole('button',{name:'검색'}));
+ expect(await screen.findByRole('button',{name:'추가'})).toBeDisabled();
+ expect(addTarget).not.toHaveBeenCalled();
 });

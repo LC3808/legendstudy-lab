@@ -1,4 +1,6 @@
 import {describe,it,expect,vi} from 'vitest';
+import {lookupSchoolName} from '@/lib/admin/school';
+vi.mock('@/lib/admin/school',()=>({lookupSchoolName:vi.fn().mockResolvedValue('검증 학교')}));
 import type {SupabaseClient} from '@supabase/supabase-js';
 import {historyRows,saveMajor,editTarget,readGoals} from './data';
 const at='2026-10-07T10:00:00Z';
@@ -54,4 +56,22 @@ it('writes only canonical school/status/grade fields and rejects invented roles'
  await saveMyProfile(client,'owner',profile);expect(q.update).toHaveBeenCalledWith(profile);
  await expect(saveMyProfile(client,'owner',{...profile,academic_status:'school_admin'})).rejects.toThrow('INVALID_STATUS');
  await expect(saveMyProfile(client,'owner',{...profile,neis_office_code:null})).rejects.toThrow('INVALID_SCHOOL');
+});
+
+it('school identity implies student with an optional grade and ignores a client school name',async()=>{
+ const {saveMyProfile}=await import('./data');const {client,q}=fixture();
+ await saveMyProfile(client,'owner',{neis_office_code:'J10',neis_school_code:'7530851',academic_status:null,grade_level:null,school_name:'forged'} as never);
+ expect(q.update).toHaveBeenCalledWith({neis_office_code:'J10',neis_school_code:'7530851',academic_status:'student',grade_level:null});
+ expect(lookupSchoolName).toHaveBeenCalledWith('J10','7530851',expect.any(AbortSignal));
+});
+it('rejects an unresolved school identity without changing the shared profile',async()=>{
+ const {saveMyProfile}=await import('./data');const {client,q}=fixture();
+ vi.mocked(lookupSchoolName).mockResolvedValueOnce(null);
+ await expect(saveMyProfile(client,'owner',{neis_office_code:'J10',neis_school_code:'invalid',academic_status:'student',grade_level:null})).rejects.toThrow('INVALID_SCHOOL');
+ expect(q.update).not.toHaveBeenCalled();
+});
+it('nonstudent unset school does not retain a stale grade',async()=>{
+ const {saveMyProfile}=await import('./data');const {client,q}=fixture();
+ await saveMyProfile(client,'owner',{neis_office_code:null,neis_school_code:null,academic_status:'retaker',grade_level:3});
+ expect(q.update).toHaveBeenCalledWith({neis_office_code:null,neis_school_code:null,academic_status:'retaker',grade_level:null});
 });
