@@ -109,7 +109,7 @@ export function LabLanding() {
       </section>
 
       <section className="ll-cta ll-wrap" aria-labelledby="cta-title">
-        <h2 className="ll-section-title" id="cta-title">내 기록으로 시작하세요.</h2>
+        <h2 className="ll-section-title" id="cta-title">이제, 나의 기록을 쌓아보세요.</h2>
         <div className="ll-cta__actions">
           <PersonalEntry className="ll-btn ll-btn--navy">레전드스터디 계정으로 시작하기 <span aria-hidden="true">→</span></PersonalEntry>
         </div>

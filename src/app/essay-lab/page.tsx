@@ -13,7 +13,6 @@ export default function EssayLabPage() {
   return (
     <div className="page-section content-wrap essay-lab-page">
       <div className="page-intro">
-        <p className="eyebrow eyebrow--accent">ESSAY LAB / EXPLORE</p>
         <h1>논술 LAB</h1>
         <p>대학별 논술 전형과 공식 자료를 살펴보세요. 최종 지원 전에는 입학처의 최신 모집요강을 확인하세요.</p>
       </div>

@@ -1314,10 +1314,16 @@ h1, h2, h3 { text-wrap: pretty; }
   box-shadow: var(--product-shadow-lift);
 }
 .lab-landing .ll-data-tracks { box-shadow: var(--product-shadow-lift); }
+/* The hero surface runs the full content width so its left and right edges line up
+   with the 첨삭권 bar and the catalog below it. The sentence keeps its own readable
+   measure, so widening the surface never stretches the text to the surface edges. */
 .essay-lab-page .page-intro {
+  max-width: none;
   border-radius: var(--radius-xl);
   box-shadow: var(--product-shadow-lift);
 }
+.essay-lab-page .page-intro h1,
+.essay-lab-page .page-intro > p { max-width: 45rem; }
 /* The 논술 LAB 첨삭권 bar is the first thing under the hero, so it takes the same
    radius as the surface above it. */
 .essay-lab-page .essay-credit { border-radius: var(--radius-xl); }
