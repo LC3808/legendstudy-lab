@@ -264,12 +264,15 @@ describe("AdminMembersView", () => {
     expect(screen.getByText(/검증고등학교/)).toBeInTheDocument();
     expect(screen.queryByText(member.account_id)).not.toBeInTheDocument();
     expect(screen.queryByText('학교 코드')).not.toBeInTheDocument();
+    expect(screen.getByRole('columnheader',{name:'순번'})).toBeInTheDocument();
+    expect(screen.getByRole('cell',{name:'1'})).toBeInTheDocument();
   });
   it("passes search, status, grade, sort and server offsets without filtering page rows",async()=>{
     const requests:Record<string,unknown>[]=[];
     setSession('authenticated',(fn,p)=>{if(fn==='admin_member_list'){requests.push(p!);return {data:directoryPayload(undefined,30,p?.p_offset as number),error:null};}return okOperator(fn,p);});
     render(<AdminMembersView/>);await screen.findByText('전체 30명 · 조회 30명');
     await userEvent.click(screen.getByRole('button',{name:'다음'}));await waitFor(()=>expect(requests.at(-1)?.p_offset).toBe(25));
+    expect(await screen.findByRole('cell',{name:'26'})).toBeInTheDocument();
     await userEvent.type(screen.getByLabelText('이메일·이름·계정 ID 검색'),'회원');
     await userEvent.selectOptions(screen.getByLabelText('현재 상태'),'student');
     await userEvent.selectOptions(screen.getByLabelText('학년'),'3');

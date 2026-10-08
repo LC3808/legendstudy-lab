@@ -172,8 +172,9 @@ export function AdminMembersView() {
   </section>
   {state.status==='loading'?<AdminLoading label="회원 목록을 불러오는 중입니다"/>:state.status==='error'?<AdminErrorPanel kind={state.kind} onRetry={reload}/>:<section className="admin-section">
    {state.data.items.length===0?<AdminEmpty title={state.data.total===0?'등록된 회원이 없습니다':'조회 결과가 없습니다'} body="검색어와 필터를 확인하세요."/>:<div className="admin-table-scroll" tabIndex={0} role="region" aria-label="회원 목록">
-    <table className="admin-table"><thead><tr>{['회원','계정 상태','학교·학년 / 현재 상태','희망 전공','가입일','상세'].map(t=><th scope="col" key={t}>{t}</th>)}</tr></thead><tbody>
-     {state.data.items.map(m=><tr key={m.accountId}>
+    <table className="admin-table"><thead><tr>{['순번','회원','계정 상태','학교·학년 / 현재 상태','희망 전공','가입일','상세'].map(t=><th scope="col" key={t}>{t}</th>)}</tr></thead><tbody>
+     {state.data.items.map((m,index)=><tr key={m.accountId}>
+      <td>{formatNumber(state.data.offset+index+1)}</td>
       <td>{m.displayName&&<strong>{m.displayName}<br/></strong>}{m.email??'이메일 미등록'}</td>
       <td>{accountStateLabel(m.accountState).label}</td>
       <td>{directorySchoolLabel(m)}{m.grade?` · ${m.grade}학년`:''}<br/>{m.academicStatus?statusLabels[m.academicStatus]:'현재 상태 미설정'}</td>
