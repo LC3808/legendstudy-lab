@@ -1277,22 +1277,91 @@ h1, h2, h3 { text-wrap: pretty; }
   .score-lab { min-height: 60vh; }
 }
 
-/* MY uses the established public surface tokens without changing public pages. */
-.my-dashboard { padding-block: 3rem 4rem; }
-.my-dashboard h1 { font-size: var(--type-h1); font-weight: 500; }
-.my-surface { margin-top: 1.5rem; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--product-border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--product-shadow); }
-.my-surface h2 { margin: 0 0 1.2rem; font-size: var(--type-h3); }
-.my-surface p { margin-block: .65rem; line-height: 1.75; }
-.my-credit-total { font-size: 1.35rem; }
+/* ==========================================================================
+   MY dashboard — the public surface tokens, at dashboard density.
+
+   MY is a 입시·학습 dashboard, not a stack of equal cards. Weight is carried by
+   the metric row (the state a returning writer checks first) and by a hairline
+   between sections; only the record sections take a surface. The page title is
+   a page title, not a hero, so it no longer outranks everything below it.
+   ========================================================================== */
+.my-dashboard { padding-block: 2.5rem 4rem; }
+.my-head { display: grid; gap: .4rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--product-border); }
+.my-dashboard h1 { margin: 0; font-size: clamp(1.6rem, 2.4vw, 2.05rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.25; }
+.my-identity { margin: 0; }
+.my-identity__email { color: var(--ink-muted); font-size: .95rem; overflow-wrap: anywhere; }
+
+.my-section { padding-block: clamp(1.4rem, 2.6vw, 2rem); border-bottom: 1px solid var(--product-border); }
+.my-section--last { border-bottom: 0; padding-bottom: 0; }
+.my-section > h2 { margin: 0 0 1rem; font-size: clamp(1.05rem, 1.5vw, 1.22rem); font-weight: 700; letter-spacing: -.01em; }
+
+.my-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: .85rem; }
+.my-metric { padding: 1rem 1.15rem; border: 1px solid var(--product-border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--product-shadow); }
+.my-metric__label { margin: 0; color: var(--ink-muted); font-size: .8rem; font-weight: 600; }
+.my-metric__value { margin: .3rem 0 0; font-size: 1.9rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
+.my-metric__value--date { font-size: 1.15rem; font-weight: 600; }
+.my-metric__unit { margin-left: .18rem; color: var(--ink-muted); font-size: .95rem; font-weight: 600; }
+.my-metric__meta { margin: .4rem 0 0; color: var(--ink-muted); font-size: .82rem; line-height: 1.5; }
+
+.my-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.1rem; }
+.my-links { display: flex; flex-wrap: wrap; gap: .6rem; }
+.my-panel { padding: clamp(1rem, 2.2vw, 1.5rem); border: 1px solid var(--product-border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--product-shadow); }
+.my-panel > p { margin-block: .5rem; line-height: 1.75; }
+
+.my-empty { margin: 0; color: var(--ink-muted); line-height: 1.7; }
+.my-empty-block, .my-facts-empty { display: grid; gap: .9rem; justify-items: start; }
+.my-note { margin: 0 0 .8rem; color: var(--ink-muted); font-size: .84rem; }
+.my-status { margin: .7rem 0 0; color: var(--ink-muted); font-size: .84rem; }
+.my-status:empty { display: none; }
+
+/* School and status read as facts about the student, not as profile columns. */
+.my-facts { display: grid; gap: .7rem; margin: 0 0 1.1rem; }
+.my-facts > div { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: .75rem; align-items: baseline; }
+.my-facts dt { color: var(--ink-muted); font-size: .86rem; }
+.my-facts dd { margin: 0; font-weight: 600; }
+.my-facts__muted { color: var(--ink-muted); font-weight: 500; }
+
+.my-goal-row { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+.my-goal-row__label { margin: 0; min-width: 5.5rem; color: var(--ink-muted); font-size: .86rem; }
+.my-goal-row__value { margin: 0; font-weight: 600; }
+.my-goal-form { display: flex; flex-wrap: wrap; align-items: end; gap: .7rem; }
+.my-goal-form label { display: grid; gap: .45rem; min-width: 0; flex: 1 1 14rem; }
+.my-goal-block { display: grid; gap: .85rem; justify-items: start; margin-top: 1.1rem; }
+.my-goal-block > h3 { margin: 0; font-size: 1rem; font-weight: 700; }
+.my-add-panel { display: grid; gap: .75rem; justify-items: start; width: 100%; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface-muted); }
+
+.my-target-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: .75rem; width: 100%; }
+.my-target { padding: .9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); }
+.my-target__name { margin: 0 0 .25rem; font-weight: 700; }
+.my-target__division { margin: 0 0 .6rem; color: var(--ink-muted); }
+.my-target form { display: grid; gap: .6rem; }
+.my-target label { display: grid; gap: .35rem; }
+.my-target input { width: 100%; min-width: 0; padding: .55rem .7rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: white; }
+
+/* Two compact navigation cards, not two full-width panels: the tracks stop at a
+   readable width and stay left-aligned instead of stretching across the page. */
+.my-nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 20rem)); justify-content: start; gap: .75rem; }
+.my-nav-card { display: grid; gap: .3rem; padding: .95rem 1.1rem; border: 1px solid var(--product-border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--product-shadow); color: inherit; text-decoration: none; }
+.my-nav-card:hover { border-color: var(--brand); }
+.my-nav-card strong { font-size: 1rem; }
+.my-nav-card span { color: var(--ink-muted); font-size: .84rem; line-height: 1.55; }
+
+.my-search-results, .my-record-list { width: 100%; padding: 0; margin: 0; list-style: none; }
+.my-search-results li, .my-record-list li { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-block: .7rem; border-bottom: 1px solid var(--line); }
+.my-essay-records { display: grid; width: 100%; }
+.my-essay-records article { padding-block: .95rem; border-top: 1px solid var(--line); }
+.my-essay-records h3 { margin: 0 0 .3rem; font-size: 1rem; }
+.my-essay-records p { margin: .2rem 0; color: var(--ink-muted); font-size: .86rem; line-height: 1.6; }
+.my-essay-records summary { cursor: pointer; padding-block: .5rem; }
+
+/* The school editor reuses the shared form row. */
 .my-goals form { display: flex; flex-wrap: wrap; align-items: end; gap: .7rem; margin-block: 1rem; }
 .my-goals label { display: grid; flex: 1 1 14rem; min-width: 0; gap: .5rem; }
 .my-goals input, .my-goals select { width: 100%; min-width: 0; padding: .7rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: white; }
-.my-target { padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); }
-.my-target > strong { flex-basis: 100%; }
-.my-search-results, .my-record-list { padding: 0; list-style: none; }
-.my-search-results li, .my-record-list li { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-block: .8rem; border-bottom: 1px solid var(--line); }
-.my-essay-records article { border-top: 1px solid var(--line); padding-block: 1rem; }
-.my-essay-records summary { cursor: pointer; padding-block: .8rem; }
+@media (max-width: 620px) {
+  .my-facts > div { grid-template-columns: minmax(0, 1fr); gap: .15rem; }
+  .my-goal-row__label { min-width: 0; flex-basis: 100%; }
+}
 /* ==========================================================================
    PUBLIC FRONTEND VISUAL FINAL — LAB hero rhythm and shared surface depth
 
