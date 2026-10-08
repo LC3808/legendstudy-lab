@@ -2,15 +2,14 @@
 
 import { useState, type ReactNode } from "react";
 
-import type { AdminMemberDetail, AdminSearchPage } from "@/lib/admin/contract";
-import { ADMIN_MIN_QUERY } from "@/lib/admin/client";
+import type { AdminMemberDetail } from "@/lib/admin/contract";
+import {defaultMemberFilters,directorySchoolLabel,type MemberDirectory,type MemberFilters} from "@/lib/admin/members";
+import {searchSchools,type SchoolOption} from "@/lib/admin/school";
 import {
   accountStateLabel,
-  formatCredit,
   formatDateTime,
   formatNumber,
   gradeLabel,
-  schoolCodeLabel,
 } from "@/lib/admin/format";
 
 import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
@@ -134,128 +133,57 @@ function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
   );
 }
 
+const statusLabels:Record<string,string>={student:'재학생',retaker:'N수·검정고시 등',other:'기타'};
 export function AdminMembersView() {
-  const [input, setInput] = useState("");
-  const [submitted, setSubmitted] = useState<string | null>(null);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [hint, setHint] = useState<string | null>(null);
-
-  const { state, reload } = useAdminQuery<AdminSearchPage>(
-    submitted ? (client) => client.searchMembers(submitted, { limit: PAGE_LIMIT }) : null,
-    `search:${submitted ?? ""}`,
-  );
-
-  return (
-    <div className="admin-stack">
-      <section className="admin-section">
-        <h2>회원 검색</h2>
-        <form
-          className="admin-search"
-          onSubmit={(event) => {
-            event.preventDefault();
-            const value = input.trim();
-            if (value.length < ADMIN_MIN_QUERY) {
-              setHint("이메일 또는 계정 ID를 3자 이상 입력하세요.");
-              return;
-            }
-            setHint(null);
-            setSelected(null);
-            setSubmitted(value);
-          }}
-        >
-          <label className="admin-search__label" htmlFor="admin-member-query">
-            이메일 또는 계정 ID
-          </label>
-          <div className="admin-search__row">
-            <input
-              id="admin-member-query"
-              className="admin-search__input"
-              type="search"
-              value={input}
-              placeholder="member@legendstudy.com 또는 계정 UUID"
-              autoComplete="off"
-              onChange={(event) => setInput(event.target.value)}
-            />
-            <button type="submit" className="button button--primary button--small">
-              검색
-            </button>
-          </div>
-        </form>
-        {hint ? <p className="admin-hint">{hint}</p> : null}
-        <p className="admin-muted">답안 본문이나 자유 텍스트로는 검색할 수 없습니다.</p>
-      </section>
-
-      {submitted === null ? (
-        <AdminEmpty title="회원을 검색하세요" body="이메일 또는 계정 ID로 조회합니다." />
-      ) : state.status === "loading" ? (
-        <AdminLoading label="회원을 검색하는 중입니다" />
-      ) : state.status === "error" ? (
-        <AdminErrorPanel kind={state.kind} onRetry={reload} />
-      ) : state.data.items.length === 0 ? (
-        <AdminEmpty title="검색 결과가 없습니다" body="이메일 또는 계정 ID를 다시 확인하세요." />
-      ) : (
-        <section className="admin-section">
-          <h2>
-            검색 결과 <span className="admin-muted">{state.data.items.length}건</span>
-          </h2>
-          <div className="admin-table-scroll" tabIndex={0} role="region" aria-label="회원 검색 결과">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th scope="col">이메일</th>
-                  <th scope="col">가입일</th>
-                  <th scope="col">이름</th>
-                  <th scope="col">학년</th>
-                  <th scope="col">학교 코드</th>
-                  <th scope="col">상태</th>
-                  <th scope="col">Credit</th>
-                  <th scope="col">상세</th>
-                </tr>
-              </thead>
-              <tbody>
-                {state.data.items.map((member) => {
-                  const label = accountStateLabel(member.accountState);
-                  return (
-                    <tr key={member.accountId}>
-                      <td>{member.email ?? "-"}</td>
-                      <td>{formatDateTime(member.createdAt)}</td>
-                      <td>{member.displayName ?? "미입력"}</td>
-                      <td>{gradeLabel(member.gradeLevel)}</td>
-                      <td>{schoolCodeLabel(member.schoolCode)}</td>
-                      <td>
-                        <span className={`admin-state__badge admin-state__badge--${label.tone}`}>
-                          {label.label}
-                        </span>
-                      </td>
-                      <td>{formatCredit(member.spendable)}</td>
-                      <td>
-                        <button
-                          type="button"
-                          className="button button--outline button--small"
-                          aria-expanded={selected === member.accountId}
-                          onClick={() =>
-                            setSelected((current) =>
-                              current === member.accountId ? null : member.accountId,
-                            )
-                          }
-                        >
-                          {selected === member.accountId ? "닫기" : "보기"}
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      )}
-
-      {selected ? (
-        <section className="admin-section">
-          <AdminMemberDetailPanel accountId={selected} />
-        </section>
-      ) : null}
+ const [draft,setDraft]=useState<MemberFilters>(defaultMemberFilters);
+ const [filters,setFilters]=useState<MemberFilters>(defaultMemberFilters);
+ const [offset,setOffset]=useState(0);const [selected,setSelected]=useState<string|null>(null);
+ const [schoolQuery,setSchoolQuery]=useState('');const [schools,setSchools]=useState<SchoolOption[]>([]);
+ const [schoolLabel,setSchoolLabel]=useState('');const [schoolBusy,setSchoolBusy]=useState(false);const [hint,setHint]=useState('');
+ const {state,reload}=useAdminQuery<MemberDirectory>(client=>client.listMembers(filters,{limit:PAGE_LIMIT,offset}),JSON.stringify([filters,offset]));
+ const change=<K extends keyof MemberFilters>(key:K,value:MemberFilters[K])=>setDraft(d=>({...d,[key]:value}));
+ function apply(){setFilters({...draft});setOffset(0);setSelected(null);reload();}
+ function page(next:number){setOffset(next);setSelected(null);}
+ async function findSchool(){setSchoolBusy(true);setHint('');try{const result=await searchSchools(schoolQuery);setSchools(result);if(!result.length)setHint('학교 검색 결과가 없습니다.');}catch{setHint('학교 검색을 처리하지 못했습니다. 다시 시도해 주세요.');}finally{setSchoolBusy(false);}}
+ return <div className="admin-stack">
+  <section className="admin-section">
+   <h2>회원 관리</h2>
+   {state.status==='ready'&&<p>전체 {formatNumber(state.data.total)}명 · 조회 {formatNumber(state.data.filteredTotal)}명</p>}
+   <form className="admin-search" onSubmit={e=>{e.preventDefault();apply();}}>
+    <label className="admin-search__label" htmlFor="admin-member-query">이메일·이름·계정 ID 검색</label>
+    <div className="admin-search__row"><input id="admin-member-query" className="admin-search__input" type="search" value={draft.query} maxLength={254} autoComplete="off" onChange={e=>change('query',e.target.value)}/></div>
+    <div className="button-row">
+     <label>계정 상태<select value={draft.accountState} onChange={e=>change('accountState',e.target.value)}><option value="">전체</option>{['NORMAL','DELETION_PENDING','ERASING','ERASED','CANCELLED'].map(x=><option key={x} value={x}>{accountStateLabel(x).label}</option>)}</select></label>
+     <label>현재 상태<select value={draft.academicStatus} onChange={e=>change('academicStatus',e.target.value)}><option value="">전체</option>{Object.entries(statusLabels).map(([k,v])=><option key={k} value={k}>{v}</option>)}<option value="unset">미설정</option></select></label>
+     <label>학년<select value={draft.grade} onChange={e=>change('grade',e.target.value)}><option value="">전체</option>{[1,2,3].map(n=><option key={n} value={n}>{n}학년</option>)}</select></label>
+     <label>정렬<select value={draft.sort} onChange={e=>change('sort',e.target.value as MemberFilters['sort'])}><option value="newest">최근 가입순</option><option value="oldest">오래된 가입순</option></select></label>
     </div>
-  );
+    <fieldset><legend>학교 필터</legend>
+     <label>학교 이름<input value={schoolQuery} maxLength={100} onChange={e=>setSchoolQuery(e.target.value)}/></label>
+     <button type="button" className="button button--outline button--small" disabled={schoolBusy||!schoolQuery.trim()} onClick={()=>void findSchool()}>학교 검색</button>
+     {schools.length>0&&<ul>{schools.map(s=><li key={s.office+':'+s.code}><button type="button" className="text-link" onClick={()=>{setDraft(d=>({...d,office:s.office,school:s.code,schoolUnset:false}));setSchoolLabel(s.name);setSchools([]);}}>{s.name} · {s.address}</button></li>)}</ul>}
+     {draft.school&&<p>{schoolLabel}</p>}
+     <label><input type="checkbox" checked={draft.schoolUnset} onChange={e=>setDraft(d=>({...d,schoolUnset:e.target.checked,office:'',school:''}))}/>학교 미설정</label>
+     <button type="button" className="text-link" onClick={()=>{setDraft(d=>({...d,office:'',school:'',schoolUnset:false}));setSchoolLabel('');setSchools([]);}}>학교 필터 해제</button>
+    </fieldset>
+    <div className="button-row"><button className="button button--primary button--small">검색·필터 적용</button><button type="button" className="button button--outline button--small" onClick={()=>{setDraft(defaultMemberFilters);setFilters(defaultMemberFilters);setOffset(0);setSelected(null);setSchools([]);setSchoolLabel('');setSchoolQuery('');setHint('');reload();}}>초기화</button></div>
+   </form>
+   {hint&&<p role="status">{hint}</p>}
+  </section>
+  {state.status==='loading'?<AdminLoading label="회원 목록을 불러오는 중입니다"/>:state.status==='error'?<AdminErrorPanel kind={state.kind} onRetry={reload}/>:<section className="admin-section">
+   {state.data.items.length===0?<AdminEmpty title={state.data.total===0?'등록된 회원이 없습니다':'조회 결과가 없습니다'} body="검색어와 필터를 확인하세요."/>:<div className="admin-table-scroll" tabIndex={0} role="region" aria-label="회원 목록">
+    <table className="admin-table"><thead><tr>{['회원','계정 상태','학교·학년 / 현재 상태','희망 전공','가입일','상세'].map(t=><th scope="col" key={t}>{t}</th>)}</tr></thead><tbody>
+     {state.data.items.map(m=><tr key={m.accountId}>
+      <td>{m.displayName&&<strong>{m.displayName}<br/></strong>}{m.email??'이메일 미등록'}</td>
+      <td>{accountStateLabel(m.accountState).label}</td>
+      <td>{directorySchoolLabel(m)}{m.grade?` · ${m.grade}학년`:''}<br/>{m.academicStatus?statusLabels[m.academicStatus]:'현재 상태 미설정'}</td>
+      <td>{m.major??'미설정'}</td><td>{formatDateTime(m.createdAt)}</td>
+      <td><button type="button" className="button button--outline button--small" aria-label={`${m.displayName||m.email||'회원'} 상세 ${selected===m.accountId?'닫기':'보기'}`} aria-expanded={selected===m.accountId} onClick={()=>setSelected(selected===m.accountId?null:m.accountId)}>{selected===m.accountId?'닫기':'보기'}</button></td>
+     </tr>)}
+    </tbody></table>
+   </div>}
+   <nav className="button-row" aria-label="회원 목록 페이지"><button className="button button--outline button--small" disabled={offset===0} onClick={()=>page(Math.max(0,offset-PAGE_LIMIT))}>이전</button><span>{Math.floor(offset/PAGE_LIMIT)+1}페이지</span><button className="button button--outline button--small" disabled={offset+PAGE_LIMIT>=state.data.filteredTotal} onClick={()=>page(offset+PAGE_LIMIT)}>다음</button></nav>
+  </section>}
+  {selected&&<section className="admin-section"><AdminMemberDetailPanel key={selected} accountId={selected}/></section>}
+ </div>;
 }

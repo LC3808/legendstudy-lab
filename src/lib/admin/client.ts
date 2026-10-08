@@ -1,3 +1,4 @@
+import {parseMemberDirectory,type MemberDirectory,type MemberFilters} from "./members";
 import {parseStudent360,type Student360} from "./student360";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -44,6 +45,7 @@ export interface AdminClient {
   isOperator(): Promise<boolean>;
   dashboard(): Promise<AdminDashboard>;
   searchMembers(query: string, options?: AdminPageOptions): Promise<AdminSearchPage>;
+  listMembers(filters:MemberFilters,options?:AdminPageOptions):Promise<MemberDirectory>;
   student360(accountId: string): Promise<Student360>;
   memberDetail(accountId: string): Promise<AdminMemberDetail>;
   memberCredit(accountId: string, options?: AdminPageOptions): Promise<AdminCredit>;
@@ -196,6 +198,17 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
         p_offset: clampOffset(options.offset),
       });
       return parseSearchPage(data);
+    },
+
+    async listMembers(filters:MemberFilters,options:AdminPageOptions={}):Promise<MemberDirectory>{
+      await requireSession();
+      const offset=options.offset??0;
+      if(!Number.isSafeInteger(offset)||offset<0||offset>2147483647)throw new AdminError('INVALID_REQUEST');
+      return parseMemberDirectory(await callRpc('admin_member_list',{
+        p_query:filters.query.trim(),p_sort:filters.sort,p_limit:clampLimit(options.limit),p_offset:offset,
+        p_account_state:filters.accountState||null,p_academic_status:filters.academicStatus||null,p_grade:filters.grade?Number(filters.grade):null,
+        p_office:filters.office||null,p_school:filters.school||null,p_school_unset:filters.schoolUnset,
+      }));
     },
 
     async student360(accountId: string): Promise<Student360> {
