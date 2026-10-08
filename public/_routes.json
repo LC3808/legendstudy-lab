@@ -2,7 +2,9 @@
   "version": 1,
   "include": [
     "/api/auth/kakao/*",
-    "/api/payments/*"
+    "/api/payments/*",
+    "/api/math/*",
+    "/api/essay/*"
   ],
   "exclude": []
 }
