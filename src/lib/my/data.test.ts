@@ -31,3 +31,27 @@ it('keeps university division separate and fences target edits by owner and inte
 it('reads interested goals without treating planned targets as applications',async()=>{
  const {client,q}=fixture();expect(await readGoals(client,'owner')).toEqual({intended_major:'공학',targets:[]});expect(q.eq).toHaveBeenCalledWith('user_id','owner');expect(q.eq).toHaveBeenCalledWith('status','interested');
 });
+
+it('creates only the missing owner profile with conflict-ignore and never overwrites APP fields',async()=>{
+ const {ensureOwnerProfile}=await import('./data');
+ const {client,q}=fixture();q.maybeSingle.mockResolvedValue({data:null,error:null});
+ const upsert=vi.fn().mockResolvedValue({error:null});Object.assign(q,{upsert});
+ await ensureOwnerProfile(client,'owner');
+ expect(upsert).toHaveBeenCalledWith({id:'owner'},{onConflict:'id',ignoreDuplicates:true});
+ q.maybeSingle.mockResolvedValue({data:{id:'owner'},error:null});upsert.mockClear();
+ await ensureOwnerProfile(client,'owner');expect(upsert).not.toHaveBeenCalled();
+});
+it('stops missing-profile creation if account changes between read and write',async()=>{
+ const {ensureOwnerProfile}=await import('./data');const {client,q}=fixture();
+ q.maybeSingle.mockResolvedValue({data:null,error:null});
+ vi.mocked(client.auth.getSession).mockResolvedValueOnce({data:{session:{user:{id:'owner'}}},error:null} as never).mockResolvedValue({data:{session:{user:{id:'other'}}},error:null} as never);
+ const upsert=vi.fn();Object.assign(q,{upsert});
+ await expect(ensureOwnerProfile(client,'owner')).rejects.toThrow('ACCOUNT_CHANGED');expect(upsert).not.toHaveBeenCalled();
+});
+it('writes only canonical school/status/grade fields and rejects invented roles',async()=>{
+ const {saveMyProfile}=await import('./data');const {client,q}=fixture();
+ const profile={neis_office_code:'J10',neis_school_code:'7530851',academic_status:'student',grade_level:3};
+ await saveMyProfile(client,'owner',profile);expect(q.update).toHaveBeenCalledWith(profile);
+ await expect(saveMyProfile(client,'owner',{...profile,academic_status:'school_admin'})).rejects.toThrow('INVALID_STATUS');
+ await expect(saveMyProfile(client,'owner',{...profile,neis_office_code:null})).rejects.toThrow('INVALID_SCHOOL');
+});

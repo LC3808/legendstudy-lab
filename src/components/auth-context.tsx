@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { AuthChangeEvent, SupabaseClient } from "@supabase/supabase-js";
 
+import { ensureOwnerProfile } from "@/lib/my/data";
 import { getBrowserAuthClient } from "@/lib/browser-auth-client";
 import { nextAuthSnapshot, type AuthSnapshot, type PublicAuthUser } from "@/lib/auth-state";
 
@@ -60,6 +61,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       listener.subscription.unsubscribe();
     };
   }, [client]);
+
+  // Run outside the Auth callback lock. Existing APP profiles are never updated.
+  useEffect(() => {
+    if (!client || status !== "authenticated" || !snapshot.user || snapshot.recoveryActive) return;
+    void ensureOwnerProfile(client, snapshot.user.id).catch(() => {
+      // MY writes retry initialization and expose a user-facing error if it fails.
+    });
+  }, [client, status, snapshot.user, snapshot.recoveryActive]);
 
   const value = useMemo<AuthContextValue>(() => ({
     client,

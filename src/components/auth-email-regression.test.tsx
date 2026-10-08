@@ -57,3 +57,18 @@ it("tracks router next during client navigation rather than capturing stale brow
   rerender(<AuthForm mode="login" />);
   expect(screen.getByRole("link", { name: "회원가입" })).toHaveAttribute("href", "/signup?next=%2Fessay-lab%2F");
 });
+
+it('shows confirmation completion without redirecting or promising a bonus',()=>{
+ routerQuery.value='confirmed=1&next=%2Faccount%2F';
+ vi.mocked(useAuth).mockReturnValue({...useAuth(),status:'authenticated',user:{id:'u'}});
+ render(<AuthForm mode="login"/>);
+ expect(screen.getByRole('heading',{name:'이메일 인증이 완료되었습니다'})).toBeInTheDocument();
+ expect(screen.getByRole('link',{name:'계속하기'})).toHaveAttribute('href','/account');
+ expect(screen.queryByRole('button',{name:'로그인'})).toBeNull();
+});
+it('replaces the original signup tab form after cross-tab sign-in',()=>{
+ vi.mocked(useAuth).mockReturnValue({...useAuth(),status:'authenticated',user:{id:'u'}});
+ render(<AuthForm mode="signup"/>);
+ expect(screen.getByRole('heading',{name:'로그인되었습니다'})).toBeInTheDocument();
+ expect(screen.queryByRole('button',{name:'회원가입'})).toBeNull();
+});

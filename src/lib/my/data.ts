@@ -10,6 +10,15 @@ function checked<T>(response: { data: T; error: unknown }): T {
   if (response.error) throw new Error('READ_FAILED');
   return response.data;
 }
+/** Shared APP profile. Never overwrite an existing row, including concurrent APP setup. */
+export async function ensureOwnerProfile(client: SupabaseClient, owner: string) {
+  await assertOwner(client, owner);
+  const existing = checked(await client.from('profiles').select('id').eq('id',owner).maybeSingle());
+  if (existing) return;
+  await assertOwner(client, owner);
+  checked(await client.from('profiles').upsert({id:owner}, {onConflict:'id',ignoreDuplicates:true}));
+  await assertOwner(client, owner);
+}
 export async function readGoals(client: SupabaseClient, owner: string): Promise<Goals> {
   await assertOwner(client, owner);
   const [profile, targets] = await Promise.all([
@@ -21,6 +30,7 @@ export async function readGoals(client: SupabaseClient, owner: string): Promise<
 export async function saveMajor(client: SupabaseClient, owner: string, value: string) {
   await assertOwner(client,owner);
   if (value && !majorOptions.includes(value)) throw new Error('INVALID_MAJOR');
+  await ensureOwnerProfile(client,owner);
   checked(await client.from('profiles').update({ intended_major: value || null }).eq('id',owner).select('id').single());
   await assertOwner(client,owner);
 }
@@ -31,7 +41,7 @@ export async function searchUniversities(client: SupabaseClient, owner: string, 
   return checked(await client.from('universities').select('id,name').eq('is_active',true).ilike('name',`%${clean}%`).order('name').limit(20)) as {id:string;name:string}[];
 }
 export async function addTarget(client: SupabaseClient, owner: string, university: string) {
-  await assertOwner(client,owner);
+  await ensureOwnerProfile(client,owner);
   checked(await client.from('student_target_universities').insert({user_id:owner,university_id:university,status:'interested',source:'my'}));
   await assertOwner(client,owner);
 }
@@ -93,4 +103,14 @@ export async function readMyProfile(client: SupabaseClient, owner: string): Prom
   const profile = checked(await client.from('profiles').select('neis_office_code,neis_school_code,academic_status,grade_level').eq('id',owner).maybeSingle());
   await assertOwner(client, owner);
   return profile ?? {neis_office_code:null,neis_school_code:null,academic_status:null,grade_level:null};
+}
+
+export async function saveMyProfile(client: SupabaseClient, owner: string, profile: MyProfile) {
+  const {neis_office_code:office,neis_school_code:school,academic_status:status,grade_level:grade}=profile;
+  if ((office===null)!==(school===null) || [office,school].some(v=>v!==null&&(!v.trim()||v!==v.trim()||v.length>32))) throw new Error('INVALID_SCHOOL');
+  if (status!==null&&!['student','retaker','other'].includes(status)) throw new Error('INVALID_STATUS');
+  if (grade!==null&&![1,2,3].includes(grade)) throw new Error('INVALID_GRADE');
+  await ensureOwnerProfile(client,owner);
+  checked(await client.from('profiles').update({neis_office_code:office,neis_school_code:school,academic_status:status,grade_level:grade}).eq('id',owner).select('id').single());
+  await assertOwner(client,owner);
 }

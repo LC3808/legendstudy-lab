@@ -69,6 +69,7 @@ function AuthFormContent({ mode }: { mode: AuthFormMode }) {
   const providers = useMemo(() => auth.status === "loading" ? [] : getBrowserAuthConfig()?.socialProviders ?? [], [auth.status]);
   // Router-owned query state also works during Link navigation, before the
   // browser history has caught up. Reading window once can lose `next` here.
+  const confirmationReturn = searchParams?.get("confirmed") === "1";
   const returnPath = getAuthReturnPath(searchParams?.get("next"));
   const resetNotice = useMemo(() => {
     if (mode !== "login" || typeof window === "undefined") return null;
@@ -84,11 +85,11 @@ function AuthFormContent({ mode }: { mode: AuthFormMode }) {
   }, [auth.recoveryActive, auth.status, mode]);
 
   useEffect(() => {
-    if (mode === "login" && auth.status === "authenticated" && !submitting && !navigating.current) {
+    if (mode === "login" && !confirmationReturn && auth.status === "authenticated" && !submitting && !navigating.current) {
       navigating.current = true;
       window.location.replace(returnPath);
     }
-  }, [auth.status, mode, returnPath, submitting]);
+  }, [auth.status, mode, returnPath, submitting, confirmationReturn]);
 
   if (auth.status === "unconfigured") return <AuthConfigurationNotice />;
 
@@ -128,7 +129,7 @@ function AuthFormContent({ mode }: { mode: AuthFormMode }) {
         const { data, error: signUpError } = await auth.client.auth.signUp({
           email: email.trim(),
           password,
-          options: { emailRedirectTo: browserRedirectTo(`/login/?next=${encodeURIComponent(returnPath)}`) },
+          options: { emailRedirectTo: browserRedirectTo(`/login/?next=${encodeURIComponent(returnPath)}&confirmed=1`) },
         });
         if (signUpError) throw signUpError;
         if (data.session) {
@@ -178,6 +179,10 @@ function AuthFormContent({ mode }: { mode: AuthFormMode }) {
       setSubmitting(false);
     }
   };
+
+  if (auth.status === "authenticated" && !auth.recoveryActive && (mode === "signup" || (mode === "login" && confirmationReturn))) {
+    return <div className="auth-page content-wrap"><section className="auth-card"><h1>{confirmationReturn ? "이메일 인증이 완료되었습니다" : "로그인되었습니다"}</h1><p>이제 마이페이지를 이용할 수 있습니다.</p><Link className="button button--primary" href={returnPath}>계속하기</Link></section></div>;
+  }
 
   return (
     <div className="auth-page content-wrap">

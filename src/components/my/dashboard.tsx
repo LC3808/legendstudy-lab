@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { AdminSchoolName as SchoolName } from '@/components/admin/admin-school-name';
+import { ProfileEditor } from './profile-editor';
 import { useState, type FormEvent } from 'react';
 import { useCreditSummary } from '@/components/credit-balance';
 import { useAuth } from '@/components/auth-context';
@@ -19,8 +19,7 @@ export function MyDashboard(){return <div className="my-dashboard content-wrap c
 function CurrentProfile(){
  const result=useOwnerData(readMyProfile);
  if(!result.data)return <DataStatus error={result.error} reload={result.reload}/>;
- const p=result.data;const labels:Record<string,string>={student:'재학생',retaker:'N수·검정고시 등',other:'기타'};
- return <dl className="my-profile"><div><dt>학교</dt><dd><SchoolName office={p.neis_office_code} school={p.neis_school_code}/></dd></div><div><dt>현재 상태</dt><dd>{p.academic_status ? labels[p.academic_status]??'확인 필요' : '설정 안 함'}{p.academic_status==='student'&&p.grade_level ? ` · ${p.grade_level}학년` : ''}</dd></div></dl>;
+ return <ProfileEditor key={JSON.stringify(result.data)} profile={result.data} reload={result.reload}/>;
 }
 function Usage(){
  const {state,reload}=useCreditSummary();

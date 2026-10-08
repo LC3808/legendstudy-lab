@@ -97,3 +97,27 @@ university/division render as summaries with explicit change controls. Failed sa
 stay editable; target cancel discards the draft. Targets are three columns on PC,
 one on mobile; university search/add is a separate section. Only MY-scoped CSS is
 changed under this explicit Owner request; Public Home/Header/LAB/Pricing untouched.
+
+## Confirmed new-web-account profile gap — 2026-10-08
+
+Owner's targeted Production read: email_verified=true, profile_exists=false,
+signup_eligible=true, benefit_delivery_exists=false, signup_grant_count=0.
+APP and LAB share the same canonical profiles and RLS. Web previously only updated
+profiles; missing rows made major save fail, target insertion violate its profile
+FK and prevented the existing benefit worker's profile join from finding the user.
+
+Authenticated non-recovery web sessions now initialize a missing own profile using
+only {id}, onConflict=id/ignoreDuplicates=true, owner checked before read/write and
+after completion. Existing/concurrently-created APP rows are never overwritten.
+Major, target-add and profile editing retry initialization. No new migration, wallet,
+bonus path, manual grant, broad user backfill or lifecycle/finance change.
+
+School settings reuse APP's public NEIS search, exact code pair, grade1–3 and
+student/retaker/other state contract. Only selected school pair, academic_status,
+grade_level are written; name/major/onboarding and unrelated profile fields remain.
+Auth signup return adds a confirmation marker on the existing login route; signed-in
+return shows completion/continue, and original signup tab replaces its form after
+cross-tab sign-in. No window-close workaround and no claim that a bonus was paid.
+Manus owns MY visual redesign; this delta only adds the requested functional forms.
+Actual Production profile creation and worker delivery need Owner verification after
+release. A recent lifecycle heartbeat alone is not evidence of successful benefit work.
