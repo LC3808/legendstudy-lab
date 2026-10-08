@@ -89,14 +89,11 @@ it('keeps empty sections short instead of making a large empty card', async () =
   expect(within(container).getByRole('link', { name: '논술 LAB 시작하기' })).toBeTruthy();
   expect(container.textContent).not.toContain('아직 구현되지 않았습니다');
 });
-it('adds university and division together, allowing a different division but disabling an exact duplicate',async()=>{
+it('keeps same-university add disabled while the target constraint rollout is held',async()=>{
  const user=userEvent.setup();vi.mocked(searchUniversities).mockResolvedValueOnce([{id:'u1',name:'연세대학교'}]);
  render(<MyDashboard/>);await screen.findByText('사회·상경');
  await user.click(screen.getByRole('button',{name:'+ 대학·학과 추가'}));
  await user.type(screen.getByLabelText('대학 찾기'),'연세');await user.click(screen.getByRole('button',{name:'검색'}));
- await user.click(await screen.findByRole('button',{name:'선택'}));
- await user.type(screen.getByLabelText('학과·모집단위'),'경영학과');expect(screen.getByRole('button',{name:'추가'})).toBeDisabled();
- await user.clear(screen.getByLabelText('학과·모집단위'));await user.type(screen.getByLabelText('학과·모집단위'),'경제학부');
- await user.click(screen.getByRole('button',{name:'추가'}));
- expect(addTarget).toHaveBeenCalledWith(expect.anything(),'owner-1','u1','경제학부',null);
+ expect(await screen.findByRole('button',{name:'추가'})).toBeDisabled();
+ expect(addTarget).not.toHaveBeenCalled();
 });

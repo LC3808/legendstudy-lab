@@ -204,3 +204,11 @@ Cohort insight: NOT_IMPLEMENTED. Future grade/status/performance context, minimu
 size, suppression, median/mean/sample count/freshness, year and selection bias must be
 resolved before claims or delivery. School Admin future organization/membership/role/scope
 stays separate from academic school codes and quality allowlist. No new booleans/RBAC.
+
+### Independent Production rollout
+
+The full Target candidate remains on codex/my-data-student360 (implementation6434fe1,
+Manus merge1a215d4). codex/my-foundation-activation preserves current target UI/adapter
+until Owner §74 clearance plus APP validation. It contains only the independent006–008
+functional connection, so Production will not offer multi-division against the old
+unique constraint. Target work/tests remain on the candidate branch; they are not lost.
