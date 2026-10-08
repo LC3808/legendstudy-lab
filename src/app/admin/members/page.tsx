@@ -15,7 +15,7 @@ export default function AdminMembersPage() {
       active="members"
       eyebrow="LEGENDSTUDY / OPERATIONS / MEMBERS"
       title="회원 관리"
-      lead="이메일 또는 계정 ID로만 조회합니다. 답안 본문은 운영 콘솔 기본 화면에 표시하지 않습니다."
+      lead="회원을 검색하고 학교·학년·계정 상태별로 확인하세요."
     >
       <AdminMembersView />
     </AdminSurface>
