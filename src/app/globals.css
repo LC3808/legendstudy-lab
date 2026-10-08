@@ -5,9 +5,10 @@
   /* The self-hosted Nanum Gothic faces are declared in fonts-nanum-gothic.css. The
      fallbacks only cover the moment before the webfont loads. */
   /* Header brand mark height. The mark is a full-bleed orange tile, so its whole
-     height reads as weight next to the 20px wordmark (cap height ~14px). 22px keeps
-     the tile just above the caps so [icon] LegendStudy LAB reads as one lockup. */
-  --brand-mark: 22px;
+     height carries weight where the old small-glyph icon did not. Measured against
+     the 20px wordmark (cap height ~14px, em box 20px), 32px is the smallest size that
+     still reads as a mark while [icon] LegendStudy LAB stays one lockup. */
+  --brand-mark: 32px;
   --font-ui: "Nanum Gothic", "NanumGothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   --type-display: clamp(2.3rem, 4.6vw, 4.25rem);
   --type-h1: clamp(2.1rem, 4vw, 3.55rem);
@@ -76,7 +77,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .site-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(14px); }
 .site-header__inner { width: min(100% - 2.5rem, 92rem); min-height: 4.25rem; height: auto; padding-block: 0.6rem; margin-inline: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.2rem; }
 .brand { display: inline-flex; align-items: center; gap: 0.7rem; min-width: max-content; }
-.brand__mark { display: block; width: var(--brand-mark); height: var(--brand-mark); overflow: hidden; border: 1px solid color-mix(in srgb, #ffac0a 45%, var(--line)); border-radius: 0.55rem; background: white; box-shadow: 0 0.25rem 0.7rem rgba(255, 172, 10, 0.16); }
+.brand__mark { display: block; width: var(--brand-mark); height: var(--brand-mark); overflow: hidden; border-radius: 0.6rem; background: #ffa300; box-shadow: 0 0.25rem 0.7rem rgba(255, 163, 0, 0.18); }
 .brand__mark img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .brand__name { font-family: var(--font-ui); font-size: 1.25rem; font-weight: 700; letter-spacing: -0.055em; }
 .brand__phase { padding: 0.25rem 0.5rem; border: 1px solid var(--line); border-radius: 99px; color: var(--ink-soft); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; }
@@ -507,8 +508,8 @@ h1, h2, h3 { text-wrap: pretty; }
   width: var(--brand-mark);
   height: var(--brand-mark);
   border: 0;
-  border-radius: 0;
-  background: transparent;
+  border-radius: 0.6rem;
+  background: #ffa300;
   box-shadow: none;
 }
 .site-shell:has(.lab-landing) .brand__phase {

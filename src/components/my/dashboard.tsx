@@ -1,5 +1,7 @@
 'use client';
 import Link from 'next/link';
+import {ApplicationsPanel} from './applications';
+import {StudySummaryPanel} from './study-summary';
 import { ProfileEditor } from './profile-editor';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { useCreditSummary } from '@/components/credit-balance';
@@ -30,7 +32,8 @@ export function MyDashboard(){
    <section className="my-section" aria-labelledby="my-usage-title"><h2 id="my-usage-title">내 이용 현황</h2><Usage /></section>
    <section className="my-section" aria-labelledby="my-school-title"><h2 id="my-school-title">나의 학교·학년</h2><div className="my-panel"><CurrentProfile /></div></section>
    <section className="my-section" aria-labelledby="my-goals-title"><h2 id="my-goals-title">나의 목표</h2><div className="my-panel"><GoalsPanel /></div></section>
-   <section className="my-section" aria-labelledby="my-application-title"><h2 id="my-application-title">나의 지원 현황</h2><p className="my-empty">등록된 지원 내역이 없습니다.</p></section>
+   <section className="my-section" aria-labelledby="my-application-title"><h2 id="my-application-title">나의 지원 현황</h2><ApplicationsPanel /></section>
+   <section className="my-section" aria-labelledby="my-study-title"><h2 id="my-study-title">나의 학습시간</h2><StudySummaryPanel /></section>
    <section className="my-section" aria-labelledby="my-essay-title"><h2 id="my-essay-title">나의 논술 LAB</h2><EssayRecords compact emptyAction={<Link className="button button--primary button--small" href="/essay-lab/">논술 LAB 시작하기</Link>} /></section>
    <section className="my-section" aria-labelledby="my-labs-title"><h2 id="my-labs-title">다른 LAB</h2>
     <nav className="my-nav-grid" aria-label="다른 LAB 바로가기">
@@ -45,7 +48,7 @@ export function MyDashboard(){
  </div>;
 }
 
-/** The only identity the Web app holds today. No nickname field exists for Web accounts. */
+/** Email from Auth; canonical optional profiles.display_name is reserved for the visual handoff. */
 function Identity(){
  const {user}=useAuth();
  if(!user?.email)return null;

@@ -76,6 +76,10 @@ const member = {
   spendable: 7,
 };
 
+function directoryPayload(items: unknown[] = [{account_id:member.account_id,email:member.email,display_name:'회원',created_at:member.created_at,account_state:'NORMAL',academic_status:'student',grade_level:3,intended_major:'공학',school_name:'검증고등학교',school_state:'resolved'}],total=items.length,offset=0){
+ return {version:'admin-members-v1',as_of:'2026-10-08T00:00:00Z',total,filtered_total:total,limit:25,offset,items};
+}
+
 function detailPayload() {
   return {
     dto_version: "admin-v1",
@@ -141,6 +145,7 @@ function creditPayload() {
 type Handler = (fn: string, params?: Record<string, unknown>) => { data?: unknown; error?: unknown };
 
 function payloadFor(fn: string) {
+  if (fn === "admin_member_list") return directoryPayload();
   if (fn === "admin_dashboard") return dashboardPayload();
   if (fn === "admin_member_search") return searchPayload([member]);
   if (fn === "admin_member_detail") return detailPayload();
@@ -253,44 +258,49 @@ describe("AdminDashboardView", () => {
 });
 
 describe("AdminMembersView", () => {
-  it("starts empty and explains the allowed search keys", () => {
-    setSession("authenticated");
-    render(<AdminMembersView />);
-    expect(screen.getByText("회원을 검색하세요")).toBeInTheDocument();
-    expect(screen.getByLabelText("이메일 또는 계정 ID")).toBeInTheDocument();
+  it("loads a bounded directory immediately with total count and school names", async () => {
+    setSession('authenticated');render(<AdminMembersView/>);
+    expect(await screen.findByText('전체 1명 · 조회 1명')).toBeInTheDocument();
+    expect(screen.getByText(/검증고등학교/)).toBeInTheDocument();
+    expect(screen.queryByText(member.account_id)).not.toBeInTheDocument();
+    expect(screen.queryByText('학교 코드')).not.toBeInTheDocument();
+    expect(screen.getByRole('columnheader',{name:'순번'})).toBeInTheDocument();
+    expect(screen.getByRole('cell',{name:'1'})).toBeInTheDocument();
   });
-
-  it("rejects a short query without calling the backend", async () => {
-    setSession("authenticated");
-    render(<AdminMembersView />);
-    const input = screen.getByLabelText("이메일 또는 계정 ID");
-    await userEvent.type(input, "ab");
-    await userEvent.click(screen.getByRole("button", { name: "검색" }));
-    expect(await screen.findByText("이메일 또는 계정 ID를 3자 이상 입력하세요.")).toBeInTheDocument();
+  it("passes search, status, grade, sort and server offsets without filtering page rows",async()=>{
+    const requests:Record<string,unknown>[]=[];
+    setSession('authenticated',(fn,p)=>{if(fn==='admin_member_list'){requests.push(p!);return {data:directoryPayload(undefined,30,p?.p_offset as number),error:null};}return okOperator(fn,p);});
+    render(<AdminMembersView/>);await screen.findByText('전체 30명 · 조회 30명');
+    await userEvent.click(screen.getByRole('button',{name:'다음'}));await waitFor(()=>expect(requests.at(-1)?.p_offset).toBe(25));
+    expect(await screen.findByRole('cell',{name:'26'})).toBeInTheDocument();
+    await userEvent.type(screen.getByLabelText('이메일·이름·계정 ID 검색'),'회원');
+    await userEvent.selectOptions(screen.getByLabelText('현재 상태'),'student');
+    await userEvent.selectOptions(screen.getByLabelText('학년'),'3');
+    await userEvent.selectOptions(screen.getByLabelText('정렬'),'oldest');
+    await userEvent.click(screen.getByRole('button',{name:'검색·필터 적용'}));
+    await waitFor(()=>expect(requests.at(-1)).toMatchObject({p_query:'회원',p_offset:0,p_academic_status:'student',p_grade:3,p_sort:'oldest',p_limit:25}));
   });
-
-  it("renders an empty result state", async () => {
-    setSession("authenticated", () => ({ data: searchPayload([]), error: null }));
-    render(<AdminMembersView />);
-    await userEvent.type(screen.getByLabelText("이메일 또는 계정 ID"), "nobody@legendstudy.com");
-    await userEvent.click(screen.getByRole("button", { name: "검색" }));
-    expect(await screen.findByText("검색 결과가 없습니다")).toBeInTheDocument();
+  it("distinguishes empty database, no results and RPC failure",async()=>{
+    setSession('authenticated',()=>({data:directoryPayload([]),error:null}));const view=render(<AdminMembersView/>);
+    expect(await screen.findByText('등록된 회원이 없습니다')).toBeInTheDocument();view.unmount();
+    setSession('authenticated',()=>({data:{...directoryPayload([],10),filtered_total:0},error:null}));const second=render(<AdminMembersView/>);
+    expect(await screen.findByText('조회 결과가 없습니다')).toBeInTheDocument();second.unmount();
+    setSession('authenticated',()=>({error:{code:'42501'}}));render(<AdminMembersView/>);
+    expect(await screen.findByRole('button',{name:'다시 시도'})).toBeInTheDocument();expect(screen.queryByText('등록된 회원이 없습니다')).not.toBeInTheDocument();
   });
 
   it("lists a member and opens the detail with credit history", async () => {
     setSession("authenticated", okOperator);
     render(<AdminMembersView />);
-    await userEvent.type(screen.getByLabelText("이메일 또는 계정 ID"), "member@legendstudy.com");
-    await userEvent.click(screen.getByRole("button", { name: "검색" }));
 
     expect(await screen.findByText("member@legendstudy.com")).toBeInTheDocument();
-    expect(screen.getByText("정상")).toBeInTheDocument();
+    expect(screen.getAllByText("정상").length).toBeGreaterThan(0);
 
-    await userEvent.click(screen.getByRole("button", { name: "보기" }));
+    await userEvent.click(screen.getByRole("button", { name: "회원 상세 보기" }));
     expect(await screen.findByText("회원 상세")).toBeInTheDocument();
     expect(screen.getByText("email, google")).toBeInTheDocument();
     expect(screen.getByText("검증대학교 · 컴퓨터공학과")).toBeInTheDocument();
-    expect(screen.getByText("공학")).toBeInTheDocument();
+    expect(screen.getAllByText("공학").length).toBeGreaterThan(0);
     await waitFor(() => expect(screen.getByText("서비스 이용")).toBeInTheDocument());
     expect(screen.getByText("답안 본문은 이 화면에 표시하지 않습니다.")).toBeInTheDocument();
     expect(screen.getAllByText("미설치").length).toBeGreaterThanOrEqual(1);
