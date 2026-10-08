@@ -5,10 +5,11 @@
   /* The self-hosted Nanum Gothic faces are declared in fonts-nanum-gothic.css. The
      fallbacks only cover the moment before the webfont loads. */
   /* Header brand mark height. The mark is a full-bleed orange tile, so its whole
-     height carries weight where the old small-glyph icon did not. Measured against
-     the 20px wordmark (cap height ~14px, em box 20px), 32px is the smallest size that
-     still reads as a mark while [icon] LegendStudy LAB stays one lockup. */
-  --brand-mark: 32px;
+     height carries weight next to the wordmark. Rendered against the 20px wordmark
+     (cap height ~14px, em box 20px), 34px is the value where [icon] LegendStudy LAB
+     reads as one lockup and the mark stops leading the name. 40px led, 32px read
+     slightly under the wordmark. */
+  --brand-mark: 34px;
   --font-ui: "Nanum Gothic", "NanumGothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   --type-display: clamp(2.3rem, 4.6vw, 4.25rem);
   --type-h1: clamp(2.1rem, 4vw, 3.55rem);

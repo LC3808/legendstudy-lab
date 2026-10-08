@@ -24,7 +24,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <header className="site-header">
         <div className="site-header__inner">
           <Link className="brand" href="/" aria-label="LegendStudy LAB 홈">
-            <span className="brand__mark" aria-hidden="true"><Image src="/brand/legendstudy-app-icon.png" width={1024} height={1024} alt="" unoptimized /></span>
+            <span className="brand__mark" aria-hidden="true"><Image src="/brand/legendstudy-app-icon.png" width={256} height={256} alt="" unoptimized /></span>
             <span className="brand__name">{brand.productName}</span>
           </Link>
           <SiteNav />
