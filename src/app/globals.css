@@ -1446,3 +1446,31 @@ h1, h2, h3 { text-wrap: pretty; }
 .my-profile dt { color:var(--text-muted); }
 .my-profile dd { margin: .5rem 0 0; }
 @media (max-width:767px) { .my-target-grid { grid-template-columns:minmax(0,1fr); } }
+
+/* ===== MY / ADMIN EXPERIENCE (Claude 2026-10-09) — scoped, no brand/header change ===== */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* Warm product background so MY/Admin read as the LAB family; white info surfaces keep hierarchy. */
+.site-shell:has(.my-dashboard), .site-shell:has(.admin-page) { background: #f7f4ee; }
+
+/* 나의 학습시간 — calm dashboard (summary + 7-day bars + average line) */
+.my-study { display: grid; gap: 1.1rem; }
+.my-study__stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr)); gap: .6rem; margin: 0; }
+.my-study__stats > div { padding: .7rem .85rem; border: 1px solid var(--product-border); border-radius: var(--radius-md); background: var(--surface); }
+.my-study__stats dt { color: var(--ink-muted); font-size: .72rem; font-weight: 700; }
+.my-study__stats dd { margin: .3rem 0 0; color: var(--ink); font-size: 1.05rem; font-weight: 800; letter-spacing: -.01em; }
+.my-study__chart { margin: 0; }
+.my-study__chart svg { display: block; width: 100%; height: clamp(8.5rem, 22vw, 11rem); overflow: visible; }
+.my-study__bar { fill: color-mix(in srgb, var(--ink) 78%, transparent); }
+.my-study__bar--today { fill: var(--accent); }
+.my-study__avg { stroke: var(--accent-dark); stroke-width: 1.5; stroke-dasharray: 5 4; opacity: .85; }
+.my-study__xaxis { display: grid; grid-template-columns: repeat(7, 1fr); margin-top: .4rem; }
+.my-study__xaxis span { text-align: center; color: var(--ink-muted); font-size: .72rem; }
+.my-study__xaxis span.is-today { color: var(--ink); font-weight: 800; }
+.my-study__caption { margin: .6rem 0 0; color: var(--ink-muted); font-size: .76rem; }
+.my-study__empty { padding: 2.25rem 1rem; border: 1px dashed var(--line-strong); border-radius: var(--radius-md); text-align: center; }
+.my-study__empty-title { margin: 0; color: var(--ink); font-weight: 700; }
+.my-study__empty-sub { margin: .5rem 0 0; color: var(--ink-muted); font-size: .84rem; }
+.my-study__note { margin: 0; color: var(--ink-muted); font-size: .82rem; }
+.admin-study { max-width: 32rem; margin-top: .4rem; }
+.admin-detail__muted { color: var(--ink-muted); font-size: .84rem; }

@@ -48,5 +48,7 @@ export async function addApplicationEvent(client:SupabaseClient,owner:string,id:
 export async function deleteApplication(client:SupabaseClient,owner:string,id:string){await rpc(client,owner,'my_application_delete',{p_id:id});}
 /** Presentation unit conversion only; aggregation remains on the shared server. */
 export function studyMinutes(ms:number){return Math.floor(ms/60000);}
+/** Readable duration from the same ms: "2시간 15분" / "45분" / "0분". Presentation only. */
+export function studyDuration(ms:number){const m=studyMinutes(ms);if(m<=0)return '0분';const h=Math.floor(m/60),r=m%60;return h?`${h}시간${r?` ${r}분`:''}`:`${r}분`;}
 
 export async function readEssaySummary(client:SupabaseClient,owner:string){return parseEssaySummary(await rpc(client,owner,'my_essay_summary'));}
