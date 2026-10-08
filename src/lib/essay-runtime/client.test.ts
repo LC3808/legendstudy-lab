@@ -16,7 +16,7 @@ function fixture(){
   queries.push({table,columns,limit});
   if(table==='essay_practice_sessions')return session?[{id:session,user_id:owner,question_id:question}]:[];
   if(table==='essay_drafts')return [{body,revision}];
-  if(table==='essay_evaluations'&&filters.id)return [{id:evaluation,session_id:session,overall_summary:'평가 결과',rewrite_checklist:['논거 보완']}];
+  if(table==='essay_evaluations'&&filters.id)return [{id:evaluation,attempt_id:attempt,session_id:session,overall_summary:'평가 결과',rewrite_checklist:['논거 보완']}];
   return [];
  }};
  return {store,calls,queries,switchUser:()=>{owner=question;}};
@@ -33,6 +33,17 @@ describe('APP-compatible Humanities Web binding',()=>{
   await reload.history();expect(f.queries.every(x=>x.limit<=50)).toBe(true);
   expect(f.queries.filter(x=>x.table==='essay_attempts').every(x=>!x.columns.split(',').includes('body'))).toBe(true);
   expect(f.calls.map(x=>x.name)).not.toContain('credit_post_grant');
+ });
+ it('optional component history distinguishes legacy null, errors and switched accounts',async()=>{
+  const f=fixture(),base=f.store.rpc,c=new EssayRuntimeClient(f.store,question,true);await c.open();
+  f.store.rpc=async(n,args)=>n==='essay_component_result'?null:base(n,args);
+  expect(await c.componentResult(evaluation)).toBeNull();
+  f.store.rpc=async(n,args)=>n==='essay_component_result'?{version:'essay-composition-v1',evaluationId:evaluation,attemptId:question,sections:[{}]}:base(n,args);
+  await expect(c.componentResult(evaluation)).rejects.toMatchObject({code:'INVALID_RESPONSE'});
+  f.store.rpc=async(n,args)=>{if(n==='essay_component_result')throw {code:'PGRST202'};return base(n,args);};
+  await expect(c.componentResult(evaluation)).rejects.toMatchObject({code:'PGRST202'});
+  f.store.rpc=async(n,args)=>{if(n==='essay_component_result'){f.switchUser();return {version:'essay-composition-v1',evaluationId:evaluation,attemptId:attempt,sections:[{}]};}return base(n,args);};
+  await expect(c.componentResult(evaluation)).rejects.toThrow();
  });
  it('does not reserve Credit when server runtime admission fails',async()=>{
   const f=fixture(),c=new EssayRuntimeClient(f.store,question,true);await c.open();

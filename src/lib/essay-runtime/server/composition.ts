@@ -1,5 +1,5 @@
 /** Server-only composition of unbilled evaluators. No wallet or child evaluation RPC.
- * A Production persistence adapter is REQUIRED; current SQL cannot store this envelope.
+ * The candidate persistence adapter requires additive SQL deployment and reviewed content.
  * Never connect a user request directly to these trusted claim/plan objects.
  */
 import type { MathEvaluationInput, MathEvaluatorAdapter } from '../../math-eval/types';
@@ -88,6 +88,9 @@ export function unbilledQuantitative(input:MathEvaluationInput,adapter:MathEvalu
   if(signal.aborted)throw new IndeterminateComponent();
   check(validateMathEval(output,input).ok);
   check(output.selected_extraction===input.selectedExtractionId);
-  return {feedback:output,requiresReview:output.overall.status==='NEEDS_HUMAN_REVIEW'};
+  // No unrevealed hints, generated solutions, source references or provider metadata.
+  const feedback={overall:output.overall,steps:output.steps,errors:output.errors,core:output.core,
+   criteria:output.criteria,rubric:output.rubric,progression:output.progression};
+  return {feedback,requiresReview:output.overall.status==='NEEDS_HUMAN_REVIEW'};
  };
 }

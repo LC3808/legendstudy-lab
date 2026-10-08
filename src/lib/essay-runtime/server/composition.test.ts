@@ -56,7 +56,8 @@ describe('single parent mixed orchestration (fixture persistence, not Production
  it('reuses pure Math validator without a separately billed child RPC',async()=>{
   const output=baseOutput();const adapter={providerId:'fixture',modelId:'fixture',evaluate:async()=>({output})};
   const evaluate=unbilledQuantitative(evalInput(),adapter);
-  const result=await evaluate(new AbortController().signal);expect(result.feedback).toEqual(output);
+  const result=await evaluate(new AbortController().signal);expect(result.feedback).toMatchObject({overall:output.overall});
+  for(const key of ['hints','generated_solution','references','provenance'])expect(result.feedback).not.toHaveProperty(key);
   output.selected_extraction='foreign';await expect(evaluate(new AbortController().signal)).rejects.toThrow();
  });
 });

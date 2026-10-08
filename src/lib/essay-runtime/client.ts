@@ -106,6 +106,18 @@ export class EssayRuntimeClient {
       {id:evaluationId,session_id:this.session(),status:'completed'},1,'completed_at.desc,id.desc'));
     if(rows.length!==1)throw new EssayRuntimeError('PT404');return rows[0];
   }
+  /** Optional additive result read. Not called unless the component DB contract is deployed. */
+  async componentResult(evaluationId:string){
+    const parent=await this.result(evaluationId); // Existing owner/session/status boundary first.
+    const value=await this.call(()=>this.transport.rpc('essay_component_result',{p_evaluation:uuid(evaluationId)}));
+    if(value===null)return null; // Legacy completed evaluation, not an RPC error.
+    if(!value||typeof value!=='object'||Array.isArray(value))throw new EssayRuntimeError('INVALID_RESPONSE');
+    const result=value as Row;
+    if(result.version!=='essay-composition-v1'||result.evaluationId!==evaluationId||result.attemptId!==parent.attempt_id||
+       !Array.isArray(result.sections)||result.sections.length<1||result.sections.length>8)
+      throw new EssayRuntimeError('INVALID_RESPONSE');
+    uuid(result.attemptId);return result;
+  }
   async history(){
     const id=this.session();
     const [attempts,evaluations]=await Promise.all([

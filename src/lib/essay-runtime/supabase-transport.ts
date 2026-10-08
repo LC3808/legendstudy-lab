@@ -2,7 +2,7 @@
 import type {SupabaseClient} from '@supabase/supabase-js';
 import {EssayRuntimeError,type EssayTransport,type Row} from './client';
 const tables=new Set(['essay_practice_sessions','essay_drafts','essay_attempts','essay_evaluations','essay_evaluation_dimensions']);
-const rpcs=new Set(['essay_open_session','essay_save_draft','essay_submit_attempt','essay_request_evaluation','essay_evaluation_status']);
+const rpcs=new Set(['essay_open_session','essay_save_draft','essay_submit_attempt','essay_request_evaluation','essay_evaluation_status','essay_component_result']);
 export function essaySupabaseTransport(client:SupabaseClient,currentUserId:()=>string|null):EssayTransport {
  return {
   userId:currentUserId,
