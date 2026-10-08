@@ -86,6 +86,19 @@ export class EssayRuntimeClient {
     const regime='essay-v1.3',key=await essayRequestId(`${attemptId}/${regime}`);this.guard();
     return uuid(await this.call(()=>this.transport.rpc('essay_request_evaluation',{p_attempt:attemptId,p_key:key,p_regime:regime})));
   }
+  /** Only a confirmed released failure may get a NEW evaluation key. Unknown retry
+   * continues status/read with the original key; it must never reserve again. */
+  async retryFailedEvaluation(attemptId:string,failedEvaluationId:string,admit:()=>Promise<void>){
+    this.write();uuid(attemptId);uuid(failedEvaluationId);
+    const status=await this.status(failedEvaluationId);
+    if(status.state!=='failed'||!status.no_credit_consumed)throw new EssayRuntimeError('RETRY_NOT_CONFIRMED');
+    const owned=await this.call(()=>this.transport.rows('essay_evaluations','id,attempt_id',
+      {id:failedEvaluationId,attempt_id:attemptId,session_id:this.session()},1,'id.asc'));
+    if(owned.length!==1||owned[0].id!==failedEvaluationId||owned[0].attempt_id!==attemptId)throw new EssayRuntimeError('PT404');
+    await this.call(admit);
+    const regime='essay-v1.3',key=await essayRequestId(`${attemptId}/${regime}/retry/${failedEvaluationId}`);this.guard();
+    return uuid(await this.call(()=>this.transport.rpc('essay_request_evaluation',{p_attempt:attemptId,p_key:key,p_regime:regime})));
+  }
   async status(evaluationId:string){return parseEssayStatus(await this.call(()=>this.transport.rpc('essay_evaluation_status',{p_evaluation:uuid(evaluationId)})));}
   async result(evaluationId:string){
     const status=await this.status(evaluationId);if(status.state!=='completed')throw new EssayRuntimeError(status.state.toUpperCase());

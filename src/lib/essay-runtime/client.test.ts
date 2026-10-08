@@ -58,3 +58,18 @@ describe('APP-compatible Humanities Web binding',()=>{
   expect(()=>parseEssayStatus({state:'completed'})).toThrow();
  });
 });
+
+it('only a confirmed released failure creates one stable retry key; uncertain states never reserve',async()=>{
+ const f=fixture(),c=new EssayRuntimeClient(f.store,question,true);await c.open();
+ let state='reconciling';let released=false;
+ const rpc=f.store.rpc;
+ f.store.rpc=async(name,args)=>name==='essay_evaluation_status'?{state,credit_state:released?'released':'pending',credit_mode:'paid',no_credit_consumed:released,release_confirmed:released}:rpc(name,args);
+ f.store.rows=async()=>[{id:evaluation,attempt_id:attempt}];
+ await expect(c.retryFailedEvaluation(attempt,evaluation,async()=>{})).rejects.toMatchObject({code:'RETRY_NOT_CONFIRMED'});
+ state='failed';await expect(c.retryFailedEvaluation(attempt,evaluation,async()=>{})).rejects.toMatchObject({code:'RETRY_NOT_CONFIRMED'});
+ expect(f.calls.filter(x=>x.name==='essay_request_evaluation')).toHaveLength(0);
+ released=true;await c.retryFailedEvaluation(attempt,evaluation,async()=>{});await c.retryFailedEvaluation(attempt,evaluation,async()=>{});
+ const calls=f.calls.filter(x=>x.name==='essay_request_evaluation');expect(calls[0].args).toEqual(calls[1].args);
+ expect(calls[0].args.p_key).not.toBe(await essayRequestId(`${attempt}/essay-v1.3`));
+ f.store.rows=async()=>[];await expect(c.retryFailedEvaluation(attempt,evaluation,async()=>{})).rejects.toMatchObject({code:'PT404'});
+});

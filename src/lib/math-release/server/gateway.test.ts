@@ -18,7 +18,7 @@ describe("gateway privilege and provider boundary",()=>{
  });
  it("completed owner retry reads learning state without re-claim or provider",async()=>{
   const privileged=vi.fn(),adapter=vi.fn();
-  const student=vi.fn(async(fn:string,args:unknown)=>{expect(fn).toBe("math_learning");expect(args).toMatchObject({action:"read_learning_state"});return {result:{evaluation_id:id,evaluation_state:"COMPLETED"}};});
+  const student=vi.fn(async(fn:string,args:unknown)=>{expect(fn).toBe("math_learning");expect(args).toMatchObject({action:"read_learning_state"});return {result:{evaluation_id:id,evaluation_state:"COMPLETED",valid_evaluation_available:true}};});
   const response=await evaluationGateway({enabled:true,origin:"https://test.example",authenticate:async()=>true,student:()=>({rpc:student}),worker:new MathEvaluationWorkerClient({rpc:privileged}),adapter:{providerId:"synthetic",modelId:"synthetic",evaluate:adapter}})(request());
   expect(response.status).toBe(200);expect(privileged).not.toHaveBeenCalled();expect(adapter).not.toHaveBeenCalled();
  });
@@ -45,4 +45,10 @@ describe("gateway privilege and provider boundary",()=>{
  it("stream size bound rejects a chunked oversized upload",async()=>{
   await expect(boundedBody(new Response("123456"),3)).rejects.toThrow("BODY_BOUND");
  });
+});
+
+it.each(['INVALIDATED','COMPLETED'])('does not report unusable %s as completion or invoke another provider',async state=>{
+ const privileged=vi.fn(),evaluate=vi.fn();
+ const handler=evaluationGateway({enabled:true,origin:'https://test.example',authenticate:async()=>true,student:()=>({rpc:async()=>({result:{evaluation_id:id,evaluation_state:state,valid_evaluation_available:false}})}),worker:new MathEvaluationWorkerClient({rpc:privileged}),adapter:{providerId:'fixture',modelId:'fixture',evaluate}});
+ const response=await handler(request());expect(response.status).toBe(409);expect(await response.json()).not.toEqual({code:'COMPLETED'});expect(privileged).not.toHaveBeenCalled();expect(evaluate).not.toHaveBeenCalled();
 });

@@ -15,7 +15,7 @@ for (const file of ['public/_routes.json', ...(fs.existsSync('out/_routes.json')
 function visit(file){
  if(visited.has(file))return;visited.add(file);
  const source=fs.readFileSync(file,'utf8');
- if(file.includes('/math-release/server/')||file.includes('/quality/')||file.includes('/functions/'))throw Error('PRIVILEGED_BROWSER_IMPORT');
+ if(file.includes('/math-release/server/')||file.includes('/essay-runtime/server/')||file.includes('/quality/')||file.includes('/functions/'))throw Error('PRIVILEGED_BROWSER_IMPORT');
  if(/MATH_(?:PROVIDER_API_KEY|EXTRACTION_WORKER_JWT|EVALUATION_WORKER_JWT)/.test(source))throw Error('SECRET_BROWSER_REFERENCE');
  const ast=ts.createSourceFile(file,source,ts.ScriptTarget.Latest,true);
  function walk(node){
@@ -28,6 +28,7 @@ function visit(file){
  }walk(ast);
 }
 visit(path.join(root,'src/components/math-release/student-route.tsx'));
+visit(path.join(root,'src/components/essay-runtime-entry.tsx'));
 if(fs.existsSync('src/app/math-render-check'))throw Error('LOCAL_FIXTURE_REMAINS');
 let assets=0;
 function scan(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,item.name);if(item.isDirectory())scan(p);else if(/\.(?:html|js|json|txt|map)$/.test(p)){assets++;const text=fs.readFileSync(p,'utf8');if(/MATH_PRIVATE_CANARY_|MATH_PROVIDER_API_KEY|MATH_EXTRACTION_WORKER_JWT|MATH_EVALUATION_WORKER_JWT/.test(text))throw Error('PRIVILEGED_ASSET');}}}

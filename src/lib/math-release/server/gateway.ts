@@ -30,9 +30,10 @@ export function evaluationGateway(ports: MathGatewayPorts) {
       const owned = await ports.student(bearer).rpc("math_learning", {
         dto_version: "math-learning-v1", action: "read_learning_state", payload,
       });
-      const state = (owned as { result?: { evaluation_id?: string; evaluation_state?: string } })?.result;
+      const state = (owned as { result?: { evaluation_id?: string; evaluation_state?: string; valid_evaluation_available?: boolean } })?.result;
       if (!state || state.evaluation_id !== payload.evaluation_id) return reply(403, "ACCESS_DENIED");
-      if (["COMPLETED", "INVALIDATED"].includes(state.evaluation_state ?? "")) return reply(200, "COMPLETED");
+      if (state.evaluation_state === "INVALIDATED") return reply(409, "EVALUATION_INVALIDATED");
+      if (state.evaluation_state === "COMPLETED") return state.valid_evaluation_available === true ? reply(200, "COMPLETED") : reply(409, "RETRY_STATUS_CHECK");
       if (state.evaluation_state !== "REQUESTED") return reply(409, "RETRY_STATUS_CHECK");
       const result = await runWorkerEvaluation({ worker: ports.worker, adapter: ports.adapter, evaluationId: payload.evaluation_id });
       return reply(result.finalized ? 200 : 422, result.finalized ? "COMPLETED" : "EVALUATION_FAILED");
