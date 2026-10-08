@@ -1338,3 +1338,14 @@ h1, h2, h3 { text-wrap: pretty; }
 .site-shell h1,
 .site-shell h2,
 .site-shell h3 { overflow-wrap: anywhere; }
+
+/* MY saved goals and APP profile, scoped to the Owner-requested account surface. */
+.my-target-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+.my-target-grid .my-target { min-width:0; overflow-wrap:anywhere; }
+.my-target-grid .my-target form { display:grid; }
+.my-target-grid .my-target label { flex-basis:auto; }
+.my-saved-goal { display:flex; align-items:center; flex-wrap:wrap; gap:1rem; }
+.my-profile { display:flex; flex-wrap:wrap; gap:1rem 3rem; }
+.my-profile dt { color:var(--text-muted); }
+.my-profile dd { margin: .5rem 0 0; }
+@media (max-width:767px) { .my-target-grid { grid-template-columns:minmax(0,1fr); } }

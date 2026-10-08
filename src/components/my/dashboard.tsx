@@ -1,19 +1,27 @@
 'use client';
 import Link from 'next/link';
+import { AdminSchoolName as SchoolName } from '@/components/admin/admin-school-name';
 import { useState, type FormEvent } from 'react';
 import { useCreditSummary } from '@/components/credit-balance';
 import { useAuth } from '@/components/auth-context';
 import { OwnerArea, useOwnerData, DataStatus, dateLabel } from './owner-data';
-import { readGoals, readHistory, readEssays, saveMajor, addTarget, editTarget, searchUniversities, majorOptions, assertOwner, type Goals, type Target } from '@/lib/my/data';
+import { readMyProfile, readGoals, readHistory, readEssays, saveMajor, addTarget, editTarget, searchUniversities, majorOptions, assertOwner, type Goals, type Target } from '@/lib/my/data';
 
 export function MyDashboard(){return <div className="my-dashboard content-wrap content-wrap--detail"><h1>마이페이지</h1><OwnerArea>
  <section className="my-surface"><h2>내 이용 현황</h2><Usage /></section>
+ <section className="my-surface"><h2>나의 현재 학교·상태</h2><CurrentProfile /></section>
  <section className="my-surface"><h2>나의 목표</h2><GoalsPanel /></section>
  <section className="my-surface"><h2>나의 지원 현황</h2><p>등록된 지원 내역이 없습니다.</p></section>
  <section className="my-surface"><h2>나의 논술 LAB</h2><EssayRecords compact /><Link className="text-link" href="/my/essays/">기록 보기 →</Link></section>
  <section className="my-surface"><h2>다른 LAB</h2><div className="button-row"><Link className="button button--outline" href="/score-analysis/">내신 LAB</Link><Link className="button button--outline" href="/exam-analysis/">모의·수능 LAB</Link></div></section>
  <section className="my-surface"><h2>계정 및 지원</h2><div className="button-row"><Link className="button button--outline" href="/account/settings/">계정 설정</Link><Link className="button button--outline" href="/support/">고객센터</Link></div></section>
  </OwnerArea></div>;}
+function CurrentProfile(){
+ const result=useOwnerData(readMyProfile);
+ if(!result.data)return <DataStatus error={result.error} reload={result.reload}/>;
+ const p=result.data;const labels:Record<string,string>={student:'재학생',retaker:'N수·검정고시 등',other:'기타'};
+ return <dl className="my-profile"><div><dt>학교</dt><dd><SchoolName office={p.neis_office_code} school={p.neis_school_code}/></dd></div><div><dt>현재 상태</dt><dd>{p.academic_status ? labels[p.academic_status]??'확인 필요' : '설정 안 함'}{p.academic_status==='student'&&p.grade_level ? ` · ${p.grade_level}학년` : ''}</dd></div></dl>;
+}
 function Usage(){
  const {state,reload}=useCreditSummary();
  return <>{state.status==='ready'?<><p className="my-credit-total">내 첨삭권 <strong>{state.value.spendable}개</strong></p><p>무료 {state.value.free} · 구매 {state.value.paid}{state.value.other>0&&` · 기타 ${state.value.other}`}</p>{state.value.next_expiry&&<p>가장 가까운 만료일 {dateLabel(state.value.next_expiry)}</p>}</>:<DataStatus error={state.status==='error'} reload={reload}/>}<div className="button-row"><Link className="button button--primary" href="/pricing/">첨삭권 구매</Link><Link className="button button--outline" href="/account/credits/">구매·사용 내역</Link></div></>;
@@ -23,27 +31,29 @@ function GoalsPanel(){
  if(!result.data)return <DataStatus error={result.error} reload={result.reload}/>;
  return <GoalsEditor key={JSON.stringify(result.data)} data={result.data} reload={result.reload}/>;
 }
-function GoalsEditor({data,reload}:{data:Goals;reload:()=>void}){
- const {client,user}=useAuth();const [major,setMajor]=useState(data.intended_major??'');const [query,setQuery]=useState('');
+export function GoalsEditor({data,reload}:{data:Goals;reload:()=>void}){
+ const {client,user}=useAuth();const [major,setMajor]=useState(data.intended_major??'');const [query,setQuery]=useState('');const [editingMajor,setEditingMajor]=useState(false);
  const [results,setResults]=useState<{id:string;name:string}[]>([]);const [busy,setBusy]=useState(false);const [message,setMessage]=useState('');
  async function run(action:()=>Promise<void>,refresh=true){
-  if(!client||!user||busy)return;setBusy(true);setMessage('');
-  try{await assertOwner(client,user.id);await action();await assertOwner(client,user.id);if(refresh)reload();}
-  catch{setMessage('처리하지 못했습니다. 잠시 후 다시 시도해 주세요.');}finally{setBusy(false);}
+  if(!client||!user||busy)return false;setBusy(true);setMessage('');
+  try{await assertOwner(client,user.id);await action();await assertOwner(client,user.id);if(refresh)reload();return true;}
+  catch{setMessage('처리하지 못했습니다. 잠시 후 다시 시도해 주세요.');return false;}finally{setBusy(false);}
  }
  return <div className="my-goals">
-  <form onSubmit={e=>{e.preventDefault();void run(()=>saveMajor(client!,user!.id,major));}}><label>희망 전공 분야<select value={major} disabled={busy} onChange={e=>setMajor(e.target.value)}><option value="">아직 정하지 않았어요</option>{data.intended_major&&!majorOptions.includes(data.intended_major)&&<option>{data.intended_major}</option>}{majorOptions.map(v=><option key={v}>{v}</option>)}</select></label><button className="button button--outline" disabled={busy}>전공 분야 저장</button></form>
+  {editingMajor ? <form onSubmit={async e=>{e.preventDefault();if(await run(()=>saveMajor(client!,user!.id,major)))setEditingMajor(false);}}><label>희망 전공 분야<select value={major} disabled={busy} onChange={e=>setMajor(e.target.value)}><option value="">아직 정하지 않았어요</option>{data.intended_major&&!majorOptions.includes(data.intended_major)&&<option>{data.intended_major}</option>}{majorOptions.map(v=><option key={v}>{v}</option>)}</select></label><button className="button button--outline" disabled={busy}>전공 분야 저장</button></form> : <div className="my-saved-goal"><p>희망 전공 분야 : <strong>{data.intended_major || '아직 정하지 않았어요'}</strong></p><button className="button button--outline button--small" type="button" disabled={busy} onClick={()=>setEditingMajor(true)}>전공 분야 변경</button></div>}
+
   <h3>관심 대학</h3>
   {data.targets.length===0&&<p>관심 대학을 추가해 보세요.</p>}
-  {data.targets.map(t=><TargetEditor key={t.id} target={t} busy={busy} save={value=>run(()=>editTarget(client!,user!.id,t.id,value))}/>)}
+  <div className="my-target-grid">{data.targets.map(t=><TargetEditor key={t.id} target={t} busy={busy} save={value=>run(()=>editTarget(client!,user!.id,t.id,value))}/>)}</div>
+  <h3>대학 및 학과 추가</h3>
   <form onSubmit={e=>{e.preventDefault();void run(async()=>{const values=await searchUniversities(client!,user!.id,query);await assertOwner(client!,user!.id);setResults(values);setMessage(values.length?'':'검색 결과가 없습니다.');},false);}}><label>대학 찾기<input value={query} maxLength={60} disabled={busy} onChange={e=>setQuery(e.target.value)}/></label><button className="button button--outline" disabled={busy||!query.trim()}>검색</button></form>
   {results.length>0&&<ul className="my-search-results">{results.map(u=><li key={u.id}><span>{u.name}</span><button className="button button--outline button--small" disabled={busy||data.targets.length>=5||data.targets.some(t=>t.university_id===u.id)} onClick={()=>void run(()=>addTarget(client!,user!.id,u.id))}>추가</button></li>)}</ul>}
   <p role="status">{message}</p>
  </div>;
 }
-function TargetEditor({target,busy,save}:{target:Target;busy:boolean;save:(value:string|null)=>Promise<void>}){
- const [division,setDivision]=useState(target.intended_division??'');
- return <form className="my-target" onSubmit={(e:FormEvent)=>{e.preventDefault();void save(division);}}><strong>{target.universities?.name??'관심 대학'}</strong><label>희망 학과·모집단위<input value={division} maxLength={120} disabled={busy} onChange={e=>setDivision(e.target.value)}/></label><div className="button-row"><button className="button button--outline button--small" disabled={busy}>학과 저장</button><button className="text-link" type="button" disabled={busy} onClick={()=>void save(null)}>삭제</button></div></form>;
+export function TargetEditor({target,busy,save}:{target:Target;busy:boolean;save:(value:string|null)=>Promise<boolean>}){
+ const [division,setDivision]=useState(target.intended_division??'');const [editing,setEditing]=useState(false);
+ return <article className="my-target"><strong>{target.universities?.name??'관심 대학'}</strong>{editing ? <form onSubmit={async(e:FormEvent)=>{e.preventDefault();if(await save(division))setEditing(false);}}><label>희망 학과·모집단위<input value={division} maxLength={120} disabled={busy} onChange={e=>setDivision(e.target.value)}/></label><div className="button-row"><button className="button button--outline button--small" disabled={busy}>학과 저장</button><button className="text-link" type="button" disabled={busy} onClick={()=>{setDivision(target.intended_division??'');setEditing(false);}}>취소</button></div></form> : <><p>{target.intended_division||'희망 학과 미설정'}</p><div className="button-row"><button className="button button--outline button--small" type="button" disabled={busy} onClick={()=>setEditing(true)}>변경</button><button className="text-link" type="button" disabled={busy} onClick={()=>void save(null)}>삭제</button></div></>}</article>;
 }
 export function CreditHistory(){
  const result=useOwnerData(readHistory);

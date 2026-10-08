@@ -83,3 +83,17 @@ cancellation. No identity/JWT sent, school names not stored, no DB change.
 Member search and dashboard still retain their existing code-based aggregates;
 they lack office identity in their current RPC result. No guessed mapping.
 Public visual and Payment untouched.
+
+## MY follow-up — 2026-10-08
+
+Owner reports all five actual MY checks PASS: Credit read, goal save, reload,
+logout/login persistence, account-switch isolation. Normal/review Admin/QL denial
+also Owner-confirmed. Signup actual E2E and safe finance grant remain pending.
+Owner then requested APP current school/status and clearer saved-goal presentation.
+MY now reads the same profiles NEIS pair, academic_status and grade_level under
+owner checks/RLS. APP labels student/retaker/other are reused; school names use the
+existing NEIS proxy, no new schema or profile writes. Saved major and target
+university/division render as summaries with explicit change controls. Failed saves
+stay editable; target cancel discards the draft. Targets are three columns on PC,
+one on mobile; university search/add is a separate section. Only MY-scoped CSS is
+changed under this explicit Owner request; Public Home/Header/LAB/Pricing untouched.
