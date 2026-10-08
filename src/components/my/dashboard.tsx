@@ -1,5 +1,7 @@
 'use client';
 import Link from 'next/link';
+import {ApplicationsPanel} from './applications';
+import {StudySummaryPanel} from './study-summary';
 import { ProfileEditor } from './profile-editor';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { useCreditSummary } from '@/components/credit-balance';
@@ -30,7 +32,8 @@ export function MyDashboard(){
    <section className="my-section" aria-labelledby="my-usage-title"><h2 id="my-usage-title">내 이용 현황</h2><Usage /></section>
    <section className="my-section" aria-labelledby="my-school-title"><h2 id="my-school-title">나의 학교·학년</h2><div className="my-panel"><CurrentProfile /></div></section>
    <section className="my-section" aria-labelledby="my-goals-title"><h2 id="my-goals-title">나의 목표</h2><div className="my-panel"><GoalsPanel /></div></section>
-   <section className="my-section" aria-labelledby="my-application-title"><h2 id="my-application-title">나의 지원 현황</h2><p className="my-empty">등록된 지원 내역이 없습니다.</p></section>
+   <section className="my-section" aria-labelledby="my-application-title"><h2 id="my-application-title">나의 지원 현황</h2><ApplicationsPanel /></section>
+   <section className="my-section" aria-labelledby="my-study-title"><h2 id="my-study-title">나의 학습시간</h2><StudySummaryPanel /></section>
    <section className="my-section" aria-labelledby="my-essay-title"><h2 id="my-essay-title">나의 논술 LAB</h2><EssayRecords compact emptyAction={<Link className="button button--primary button--small" href="/essay-lab/">논술 LAB 시작하기</Link>} /></section>
    <section className="my-section" aria-labelledby="my-labs-title"><h2 id="my-labs-title">다른 LAB</h2>
     <nav className="my-nav-grid" aria-label="다른 LAB 바로가기">
@@ -45,7 +48,7 @@ export function MyDashboard(){
  </div>;
 }
 
-/** The only identity the Web app holds today. No nickname field exists for Web accounts. */
+/** Email from Auth; canonical optional profiles.display_name is reserved for the visual handoff. */
 function Identity(){
  const {user}=useAuth();
  if(!user?.email)return null;
@@ -98,6 +101,7 @@ function GoalsPanel(){
  */
 export function GoalsEditor({data,reload}:{data:Goals;reload:()=>void}){
  const {client,user}=useAuth();const [major,setMajor]=useState(data.intended_major??'');const [query,setQuery]=useState('');const [editingMajor,setEditingMajor]=useState(false);
+ const [selected,setSelected]=useState<{id:string;name:string}|null>(null);const [division,setDivision]=useState('');const [year,setYear]=useState('');
  const [results,setResults]=useState<{id:string;name:string}[]>([]);const [busy,setBusy]=useState(false);const [message,setMessage]=useState('');const [adding,setAdding]=useState(false);
  async function run(action:()=>Promise<void>,refresh=true){
   if(!client||!user||busy)return false;setBusy(true);setMessage('');
@@ -120,8 +124,13 @@ export function GoalsEditor({data,reload}:{data:Goals;reload:()=>void}){
     ?<button type="button" className="button button--outline button--small" disabled={busy||data.targets.length>=5} onClick={()=>setAdding(true)}>+ 대학·학과 추가</button>
     :<div className="my-add-panel">
       <form className="my-goal-form" onSubmit={e=>{e.preventDefault();void run(async()=>{const values=await searchUniversities(client!,user!.id,query);await assertOwner(client!,user!.id);setResults(values);setMessage(values.length?'':'검색 결과가 없습니다.');},false);}}><label>대학 찾기<input value={query} maxLength={60} disabled={busy} onChange={e=>setQuery(e.target.value)} placeholder="대학 이름을 검색해 주세요"/></label><button className="button button--outline button--small" disabled={busy||!query.trim()}>검색</button></form>
-      {results.length>0&&<ul className="my-search-results">{results.map(u=><li key={u.id}><span>{u.name}</span><button className="button button--outline button--small" disabled={busy||data.targets.length>=5||data.targets.some(t=>t.university_id===u.id)} onClick={()=>void run(()=>addTarget(client!,user!.id,u.id))}>추가</button></li>)}</ul>}
-      <button type="button" className="text-link" disabled={busy} onClick={()=>{setAdding(false);setResults([]);setMessage('');}}>닫기</button>
+      {results.length>0&&<ul className="my-search-results">{results.map(u=><li key={u.id}><span>{u.name}</span><button className="button button--outline button--small" disabled={busy||data.targets.length>=5} onClick={()=>{setSelected(u);setResults([]);}}>선택</button></li>)}</ul>}
+      {selected&&<form className="my-goal-form" onSubmit={async e=>{e.preventDefault();if(await run(()=>addTarget(client!,user!.id,selected.id,division,year?Number(year):null))){setSelected(null);setDivision('');setYear('');setAdding(false);}}}>
+       <p>{selected.name}</p><label>학과·모집단위<input value={division} maxLength={120} disabled={busy} onChange={e=>setDivision(e.target.value)}/></label>
+       <label>입학연도 (선택)<input type="number" min={1900} max={2200} value={year} disabled={busy} onChange={e=>setYear(e.target.value)}/></label>
+       <button className="button button--outline button--small" disabled={busy||data.targets.length>=5||data.targets.some(t=>t.university_id===selected.id&&(t.admission_year??null)===(year?Number(year):null)&&(t.intended_division??'').trim().toLowerCase()===division.trim().toLowerCase())}>추가</button>
+      </form>}
+      <button type="button" className="text-link" disabled={busy} onClick={()=>{setAdding(false);setSelected(null);setResults([]);setMessage('');}}>닫기</button>
      </div>}
    <p role="status" className="my-status">{message}</p>
   </div>
@@ -130,7 +139,7 @@ export function GoalsEditor({data,reload}:{data:Goals;reload:()=>void}){
 
 export function TargetEditor({target,busy,save}:{target:Target;busy:boolean;save:(value:string|null)=>Promise<boolean>}){
  const [division,setDivision]=useState(target.intended_division??'');const [editing,setEditing]=useState(false);
- return <article className="my-target"><p className="my-target__name">{target.universities?.name??'관심 대학'}</p>{editing ? <form onSubmit={async(e:FormEvent)=>{e.preventDefault();if(await save(division))setEditing(false);}}><label>희망 학과·모집단위<input value={division} maxLength={120} disabled={busy} onChange={e=>setDivision(e.target.value)}/></label><div className="button-row"><button className="button button--outline button--small" disabled={busy}>학과 저장</button><button className="text-link" type="button" disabled={busy} onClick={()=>{setDivision(target.intended_division??'');setEditing(false);}}>취소</button></div></form> : <><p className="my-target__division">{target.intended_division||'희망 학과 미설정'}</p><div className="button-row"><button className="button button--outline button--small" type="button" disabled={busy} onClick={()=>setEditing(true)}>변경</button><button className="text-link" type="button" disabled={busy} onClick={()=>void save(null)}>삭제</button></div></>}</article>;
+ return <article className="my-target"><p className="my-target__name">{target.universities?.name??'관심 대학'}</p>{editing ? <form onSubmit={async(e:FormEvent)=>{e.preventDefault();if(await save(division))setEditing(false);}}><label>희망 학과·모집단위<input value={division} maxLength={120} disabled={busy} onChange={e=>setDivision(e.target.value)}/></label><div className="button-row"><button className="button button--outline button--small" disabled={busy}>학과 저장</button><button className="text-link" type="button" disabled={busy} onClick={()=>{setDivision(target.intended_division??'');setEditing(false);}}>취소</button></div></form> : <><p className="my-target__division">{target.intended_division||'희망 학과 미설정'}{target.admission_year?` · ${target.admission_year}학년도`:''}</p><div className="button-row"><button className="button button--outline button--small" type="button" disabled={busy} onClick={()=>setEditing(true)}>변경</button><button className="text-link" type="button" disabled={busy} onClick={()=>void save(null)}>삭제</button></div></>}</article>;
 }
 
 export function CreditHistory(){

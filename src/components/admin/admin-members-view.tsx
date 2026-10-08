@@ -16,6 +16,7 @@ import {
 import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
 import { AdminMemberCreditPanel } from "./admin-member-credit-panel";
 
+import {Student360Panel} from "./student360-panel";
 import { AdminSchoolName } from "./admin-school-name";
 
 const PAGE_LIMIT = 25;
@@ -45,7 +46,6 @@ function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
     <div className="admin-detail">
       <h3>회원 상세</h3>
       <dl className="admin-detail__grid">
-        <DetailRow label="계정 ID" value={data.member.accountId} />
         <DetailRow label="이메일" value={data.member.email ?? "-"} />
         <DetailRow label="가입일" value={formatDateTime(data.member.createdAt)} />
         <DetailRow label="이메일 인증" value={data.member.emailConfirmed === null ? "확인 불가" : data.member.emailConfirmed ? "완료" : "대기"} />
@@ -129,6 +129,7 @@ function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
       <p className="admin-muted">답안 본문은 이 화면에 표시하지 않습니다.</p>
 
       <AdminMemberCreditPanel accountId={accountId} />
+      <Student360Panel accountId={accountId} />
     </div>
   );
 }

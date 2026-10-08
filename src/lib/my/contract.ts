@@ -18,12 +18,13 @@ export function myGoals(goals:Goals) {return {intendedMajor:goals.intended_major
 export type DimensionPoint = {
  evaluationId:string;attemptId:string;questionId:string;criterionId:string;definitionVersion:string;
  questionMetadataVersion:string;regimeKey:string;evaluationVersion:string;contractVersion:string;
- evidenceManifest:string;status:string;invalidatedAt:string|null;completedAt:string|null;
+ evidenceManifest:string;status:string;requestKind:string;invalidatedAt:string|null;completedAt:string|null;
  submittedAt:string;supersedesEvaluationId:string|null;level:number|null;
 };
 export function comparableDimensionDelta(before:DimensionPoint,after:DimensionPoint):number|null {
  const keys=['questionId','criterionId','definitionVersion','questionMetadataVersion','regimeKey','evaluationVersion','contractVersion','evidenceManifest'] as const;
  if(keys.some(k=>!before[k]||before[k]!==after[k]))return null;
+ if(before.requestKind!=='student'||after.requestKind!=='student')return null;
  if(before.status!=='completed'||after.status!=='completed'||before.invalidatedAt||after.invalidatedAt||!before.completedAt||!after.completedAt)return null;
  if(before.attemptId===after.attemptId||before.evaluationId===after.evaluationId||before.supersedesEvaluationId||after.supersedesEvaluationId)return null;
  const earlier=Date.parse(before.submittedAt),later=Date.parse(after.submittedAt);

@@ -1,6 +1,6 @@
 import {lookupSchoolName} from '@/lib/admin/school';
 import type { SupabaseClient } from '@supabase/supabase-js';
-export type Target = { id: string; university_id: string; intended_division: string | null; universities: { name: string } | null };
+export type Target = { id: string; university_id: string; intended_division: string | null; admission_year?: number | null; universities: { name: string } | null };
 export type Goals = { intended_major: string | null; targets: Target[] };
 export const majorOptions = ['인문·어학','사회·상경','자연·이학','공학','의약·보건','교육','예체능','자유전공·융합'];
 export async function assertOwner(client: SupabaseClient, owner: string) {
@@ -24,7 +24,7 @@ export async function readGoals(client: SupabaseClient, owner: string): Promise<
   await assertOwner(client, owner);
   const [profile, targets] = await Promise.all([
     client.from('profiles').select('intended_major').eq('id',owner).maybeSingle(),
-    client.from('student_target_universities').select('id,university_id,intended_division,universities(name)').eq('user_id',owner).eq('status','interested').order('created_at').limit(100),
+    client.from('student_target_universities').select('id,university_id,intended_division,admission_year,universities(name)').eq('user_id',owner).eq('status','interested').order('created_at').limit(100),
   ]);
   return { intended_major: checked(profile)?.intended_major ?? null, targets: checked(targets) as unknown as Target[] };
 }
@@ -41,9 +41,10 @@ export async function searchUniversities(client: SupabaseClient, owner: string, 
   if (!clean) return [];
   return checked(await client.from('universities').select('id,name').eq('is_active',true).ilike('name',`%${clean}%`).order('name').limit(20)) as {id:string;name:string}[];
 }
-export async function addTarget(client: SupabaseClient, owner: string, university: string) {
+export async function addTarget(client: SupabaseClient, owner: string, university: string, division = '', admissionYear: number | null = null) {
+  if (division.trim().length>120 || (admissionYear!==null&&(!Number.isInteger(admissionYear)||admissionYear<1900||admissionYear>2200))) throw new Error('INVALID_TARGET');
   await ensureOwnerProfile(client,owner);
-  checked(await client.from('student_target_universities').insert({user_id:owner,university_id:university,status:'interested',source:'my'}));
+  checked(await client.from('student_target_universities').insert({user_id:owner,university_id:university,intended_division:division.trim()||null,admission_year:admissionYear,status:'interested',source:'my'}));
   await assertOwner(client,owner);
 }
 export async function editTarget(client: SupabaseClient, owner: string, id: string, division: string | null) {

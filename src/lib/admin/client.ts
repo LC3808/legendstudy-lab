@@ -1,3 +1,4 @@
+import {parseStudent360,type Student360} from "./student360";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import {
@@ -43,6 +44,7 @@ export interface AdminClient {
   isOperator(): Promise<boolean>;
   dashboard(): Promise<AdminDashboard>;
   searchMembers(query: string, options?: AdminPageOptions): Promise<AdminSearchPage>;
+  student360(accountId: string): Promise<Student360>;
   memberDetail(accountId: string): Promise<AdminMemberDetail>;
   memberCredit(accountId: string, options?: AdminPageOptions): Promise<AdminCredit>;
   paymentOrders(options?: AdminOrderOptions): Promise<AdminPaymentPage>;
@@ -194,6 +196,12 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
         p_offset: clampOffset(options.offset),
       });
       return parseSearchPage(data);
+    },
+
+    async student360(accountId: string): Promise<Student360> {
+      await requireSession();
+      if (!accountId) throw new AdminError("INVALID_REQUEST");
+      return parseStudent360(await callRpc("admin_student360", {p_account_id:accountId}));
     },
 
     async memberDetail(accountId: string): Promise<AdminMemberDetail> {

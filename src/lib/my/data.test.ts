@@ -75,3 +75,9 @@ it('nonstudent unset school does not retain a stale grade',async()=>{
  await saveMyProfile(client,'owner',{neis_office_code:null,neis_school_code:null,academic_status:'retaker',grade_level:3});
  expect(q.update).toHaveBeenCalledWith({neis_office_code:null,neis_school_code:null,academic_status:'retaker',grade_level:null});
 });
+
+it('inserts a target university/division/year in one owner-scoped write',async()=>{
+ const {addTarget}=await import('./data');const {client,q}=fixture();const insert=vi.fn().mockResolvedValue({data:null,error:null});Object.assign(q,{insert});
+ await addTarget(client,'owner','university',' 경제학부 ',2027);
+ expect(insert).toHaveBeenCalledWith({user_id:'owner',university_id:'university',intended_division:'경제학부',admission_year:2027,status:'interested',source:'my'});
+});
