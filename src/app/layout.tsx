@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import "./fonts-nanum-gothic.css";
 import "./globals.css";
 import { AuthProvider } from "@/components/auth-context";
 import { SiteShell } from "@/components/site-shell";
