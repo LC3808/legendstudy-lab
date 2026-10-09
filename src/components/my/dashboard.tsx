@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import {ReturnNavigation} from './return-navigation';
 import {LabCards} from './lab-cards';
 import {ApplicationsPanel} from './applications';
 import {StudySummaryPanel} from './study-summary';
@@ -133,7 +134,7 @@ export function TargetEditor({target,busy,save}:{target:Target;busy:boolean;save
 
 export function CreditHistory(){
  const result=useOwnerData(readHistory);
- return <div className="my-dashboard content-wrap content-wrap--detail"><header className="my-head"><h1>구매·사용 내역</h1></header><OwnerArea path="/account/credits/"><section className="my-panel">{!result.data?<DataStatus error={result.error} reload={result.reload}/>:result.data.length===0?<p className="my-empty">아직 첨삭권 내역이 없습니다.</p>:<><p className="my-note">최근 내역 · 최대 100개</p><table className="user-credit-history"><caption className="sr-only">첨삭권 구매·사용 내역</caption><thead><tr><th scope="col">날짜</th><th scope="col">개수</th><th scope="col">사유</th></tr></thead><tbody>{result.data.map(r=><tr key={r.id}><td data-label="날짜">{dateLabel(r.at)}</td><td data-label="개수">{r.delta>0?'+':''}{r.delta}개</td><td data-label="사유">{r.label}</td></tr>)}</tbody></table></>}<Link className="text-link" href="/account/">마이페이지 →</Link></section></OwnerArea></div>;
+ return <div className="my-dashboard content-wrap content-wrap--detail"><header className="my-head"><h1>구매·사용 내역</h1></header><OwnerArea path="/account/credits/"><ReturnNavigation href="/account/" label="마이페이지"/><section className="my-panel">{!result.data?<DataStatus error={result.error} reload={result.reload}/>:result.data.length===0?<p className="my-empty">아직 첨삭권 내역이 없습니다.</p>:<><p className="my-note">최근 내역 · 최대 100개</p><table className="user-credit-history"><caption className="sr-only">첨삭권 구매·사용 내역</caption><thead><tr><th scope="col">날짜</th><th scope="col">개수</th><th scope="col">사유</th></tr></thead><tbody>{result.data.map(r=><tr key={r.id}><td data-label="날짜">{dateLabel(r.at)}</td><td data-label="개수">{r.delta>0?'+':''}{r.delta}개</td><td data-label="사유">{r.label}</td></tr>)}</tbody></table></>}<Link className="text-link" href="/account/">마이페이지 →</Link></section></OwnerArea></div>;
 }
 
 export function EssayRecords({compact=false,emptyAction=null}:{compact?:boolean;emptyAction?:ReactNode}){
@@ -148,5 +149,5 @@ export function EssayRecords({compact=false,emptyAction=null}:{compact?:boolean;
  })}</div><Link className="text-link" href="/my/essays/">기록 보기 →</Link></>;
 }
 
-export function MyEssays(){return <div className="my-dashboard content-wrap content-wrap--detail"><header className="my-head"><h1>나의 논술 기록</h1></header><OwnerArea path="/my/essays/"><section className="my-panel"><EssayRecords/><Link className="text-link" href="/account/">마이페이지 →</Link></section></OwnerArea></div>;}
+export function MyEssays(){return <div className="my-dashboard content-wrap content-wrap--detail"><header className="my-head"><h1>나의 첨삭 기록</h1></header><OwnerArea path="/my/essays/"><section className="my-panel"><EssayRecords/><Link className="text-link" href="/account/">마이페이지 →</Link></section></OwnerArea></div>;}
 export function AccountSettings(){const {user,signOut}=useAuth();const [busy,setBusy]=useState(false);const [error,setError]=useState(false);return <div className="my-dashboard content-wrap content-wrap--detail"><header className="my-head"><h1>계정 설정</h1></header><OwnerArea path="/account/settings/"><section className="my-panel"><p className="my-identity__email">{user?.email}</p><div className="my-links"><Link className="button button--outline button--small" href="/forgot-password/">비밀번호 재설정</Link><Link className="button button--outline button--small" href="/account-deletion/">계정 삭제 안내</Link><button className="button button--outline button--small" disabled={busy} onClick={async()=>{setBusy(true);setError(false);try{await signOut();}catch{setError(true);}finally{setBusy(false);}}}>로그아웃</button></div>{error&&<p role="alert">로그아웃하지 못했습니다. 다시 시도해 주세요.</p>}</section></OwnerArea></div>;}

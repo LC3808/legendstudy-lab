@@ -23,3 +23,5 @@ it('does not claim no records when a source failed',async()=>{
  state.fail=true;render(<EssayDashboard/>);expect(await screen.findByRole('alert')).toBeVisible();
  expect(screen.queryByText('아직 첨삭 기록이 없습니다.')).toBeNull();
 });
+
+vi.mock('next/navigation',()=>({useRouter:()=>({back:vi.fn(),replace:vi.fn()})}));

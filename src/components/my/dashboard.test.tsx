@@ -105,3 +105,5 @@ it('renders only date, signed quantity and user reason in purchase history',asyn
  expect(within(table).getAllByRole('cell').map(el=>el.textContent)).toEqual(['2026. 10. 9.','+2개','관리자 지급 · 테스트']);
  expect(table).not.toHaveTextContent('private-id');
 });
+
+vi.mock('next/navigation',()=>({useRouter:()=>({back:vi.fn(),replace:vi.fn()})}));

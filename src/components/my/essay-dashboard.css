@@ -16,3 +16,19 @@
  .essay-personal p, .essay-personal li { orphans: 3; widows: 3; }
  .essay-personal .my-metrics { break-inside: avoid; }
 }
+.essay-personal select { display: block; width: 100%; max-width: 100%; min-width: 0; padding: .7rem; border: 1px solid var(--line, #d8d8d8); border-radius: .5rem; background: white; color: inherit; font: inherit; }
+.essay-personal .history-filters { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,12rem),1fr)); gap: 1rem; padding-block: 1rem; }
+.essay-personal .report-feedback { padding-block: 1rem; border-bottom: 1px solid var(--line,#ddd); white-space: pre-wrap; }
+.essay-personal .report-feedback h4 { margin: 0 0 .5rem; }
+.essay-personal blockquote { margin-inline: 0; padding-inline-start: 1rem; border-inline-start: 2px solid #ccd2d8; }
+.essay-personal .report-comparison { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,18rem),1fr)); gap: 1rem; }
+.essay-personal .report-comparison dl > div { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
+.essay-personal .report-comparison dt { min-width: 4em; }
+.essay-personal .report-comparison dd { margin: 0; }
+.essay-personal .my-actions { flex-wrap: wrap; }
+.essay-personal .evaluation-report section { margin-block: 1.5rem; }
+@media print {
+ .essay-personal .report-feedback { break-inside: avoid; }
+ .essay-personal .report-comparison { display: block; }
+ .essay-personal details { display: none; }
+}
