@@ -1,172 +1,62 @@
-"use client";
+'use client';
+import {useRef, useState} from 'react';
+import {useAuth} from '@/components/auth-context';
+import {requestCreditGrant, type CreditGrantInput} from '@/lib/admin/finance-boundary';
 
-import { useState } from "react";
-
-import { useAuth } from "@/components/auth-context";
-import { CREDIT_GRANT_REASONS } from "@/lib/admin/grant-reasons";
-import { AdminError, describeError } from "@/lib/admin/errors";
-import { creditOriginLabel } from "@/lib/admin/format";
-import { requestCreditGrant } from "@/lib/admin/finance-boundary";
-
-import { useAdminClient } from "./admin-surface";
-
-const MAX_QUANTITY = 1000;
-
-/**
- * 운영자 Credit 지급.
- *
- * 지급은 canonical 지급 경로만 사용하며, 그 함수의 EXECUTE는 재무 전용 역할에만
- * 열려 있습니다. 브라우저 세션은 그 역할을 가질 수 없으므로 지급은 서버 경계(`/api/admin/credit-grant`)를 통해서만
- * 이루어지고, 경계가 검증한 운영자 신원이 actor로 기록됩니다.
- *
- * 요청 키는 원장의 멱등 키이므로 네트워크 오류 후 다시 시도해도 두 번 지급되지
- * 않습니다.
- */
-function GrantForm({
-  accountId,
-  onGranted,
-}: {
-  accountId: string;
-  onGranted: () => void;
-}) {
-  const { client: supabase } = useAuth();
-  const admin = useAdminClient();
-  const origins = Object.keys(CREDIT_GRANT_REASONS);
-
-  const [origin, setOrigin] = useState(origins[0]);
-  const [reason, setReason] = useState(CREDIT_GRANT_REASONS[origins[0]][0]);
-  const [quantity, setQuantity] = useState("1");
-  const [busy, setBusy] = useState(false);
-  const [notice, setNotice] = useState<string | null>(null);
-  const [failure, setFailure] = useState<string | null>(null);
-
-  function changeOrigin(next: string) {
-    setOrigin(next);
-    setReason(CREDIT_GRANT_REASONS[next][0]);
-  }
-
-  async function submit(event: React.FormEvent) {
-    event.preventDefault();
-    const parsed = Number(quantity);
-    if (!Number.isInteger(parsed) || parsed < 1 || parsed > MAX_QUANTITY) {
-      setFailure(`지급 수량은 1 이상 ${MAX_QUANTITY} 이하의 정수로 입력해 주세요.`);
-      return;
-    }
-    if (!supabase) {
-      setFailure("로그인이 필요합니다.");
-      return;
-    }
-    setBusy(true);
-    setFailure(null);
-    setNotice(null);
-    try {
-      // A fresh key per submission makes a double-click one grant, not two.
-      const result = await requestCreditGrant(supabase, {
-        accountId,
-        quantity: parsed,
-        origin,
-        reason,
-        requestKey: crypto.randomUUID(),
-      });
-      setNotice(
-        `${creditOriginLabel(result.origin)} ${result.quantity} Credit을 지급했습니다.`,
-      );
-      setQuantity("1");
-      admin?.memberCredit(accountId).catch(() => undefined);
-      onGranted();
-    } catch (error) {
-      setFailure(describeError(error));
-      if (error instanceof AdminError && error.kind === "NOT_INSTALLED") {
-        setNotice(null);
-      }
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  return (
-    <form className="admin-grant" onSubmit={submit}>
-      <h3>Credit 지급</h3>
-      <p className="admin-section__note">
-        지급 사유는 원장에 그대로 기록됩니다. 지급 후에는 정정 거래로만 되돌릴 수
-        있습니다.
-      </p>
-
-      <div className="admin-grant__grid">
-        <div className="admin-grant__field">
-          <label htmlFor="grant-origin">지급 구분</label>
-          <select
-            id="grant-origin"
-            value={origin}
-            onChange={(event) => changeOrigin(event.target.value)}
-            disabled={busy}
-          >
-            {origins.map((value) => (
-              <option key={value} value={value}>
-                {creditOriginLabel(value)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="admin-grant__field">
-          <label htmlFor="grant-reason">지급 사유</label>
-          <select
-            id="grant-reason"
-            value={reason}
-            onChange={(event) => setReason(event.target.value)}
-            disabled={busy}
-          >
-            {CREDIT_GRANT_REASONS[origin].map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="admin-grant__field">
-          <label htmlFor="grant-quantity">수량</label>
-          <input
-            id="grant-quantity"
-            type="number"
-            inputMode="numeric"
-            min={1}
-            max={MAX_QUANTITY}
-            step={1}
-            value={quantity}
-            onChange={(event) => setQuantity(event.target.value)}
-            disabled={busy}
-          />
-        </div>
-      </div>
-
-      {notice ? (
-        <p className="admin-notice" role="status">
-          {notice}
-        </p>
-      ) : null}
-      {failure ? (
-        <p className="admin-error admin-error--inline" role="alert">
-          {failure}
-        </p>
-      ) : null}
-
-      <button className="button button--accent" type="submit" disabled={busy}>
-        {busy ? "지급 중입니다" : "Credit 지급"}
-      </button>
-      <p className="admin-section__note">
-        회원에게 미치는 영향이 큰 작업입니다. 지급 구분과 수량을 다시 확인해 주세요.
-      </p>
-    </form>
-  );
+export function AdminCreditGrantForm({accountId,email,onGranted}:{accountId:string;email:string|null;onGranted:()=>void}) {
+ const {client,user,status}=useAuth();
+ return <GrantForm key={`${user?.id}:${accountId}`} accountId={accountId} email={email}
+  client={status==='authenticated'?client:null} actor={user?.id??''} onGranted={onGranted}/>;
 }
-
-/** Finance writes remain closed: existing Production credential reuse is unverified.
- * No signing material, new JWT or backend route is introduced by this reconciliation.
- */
-const FINANCE_WRITE_AVAILABLE = false;
-export function AdminCreditGrantForm(props: { accountId: string; onGranted: () => void }) {
-  if (!FINANCE_WRITE_AVAILABLE) return <div className="admin-panel"><h3>Credit 지급</h3><p>현재 지급 기능을 사용할 수 없습니다. 조회는 계속 이용할 수 있습니다.</p><button className="button button--outline" disabled>Credit 지급</button></div>;
-  return <GrantForm {...props} />;
+function GrantForm({accountId,email,client,actor,onGranted}:{accountId:string;email:string|null;client:ReturnType<typeof useAuth>['client'];actor:string;onGranted:()=>void}) {
+ const [quantity,setQuantity]=useState(1);const [reason,setReason]=useState('');
+ const [busy,setBusy]=useState(false);const [notice,setNotice]=useState('');
+ const [pending,setPending]=useState<CreditGrantInput|null>(null);
+ const lock=useRef(false);const dialog=useRef<HTMLDialogElement>(null);const trigger=useRef<HTMLButtonElement>(null);
+ const storageKey=`legendstudy-admin-grant:${actor}:${accountId}`;
+ function open() {
+  if(!client||!email)return;
+  try {
+   const saved=sessionStorage.getItem(storageKey);
+   if(saved){const p=JSON.parse(saved) as CreditGrantInput;
+    if(p.accountId!==accountId||typeof p.requestKey!=='string'||!Number.isInteger(p.quantity)||typeof p.reason!=='string')throw Error();
+    setPending(p);setQuantity(p.quantity);setReason(p.reason);
+    setNotice('이전 요청의 결과를 확인합니다. 같은 요청으로 재시도해도 중복 지급되지 않습니다.');
+   } else {setPending(null);setNotice('');}
+   dialog.current?.showModal();
+  }catch{setNotice('이전 지급 요청을 확인하지 못했습니다. 새 지급을 중단했습니다.');}
+ }
+ async function grant(){
+  if(lock.current||!client||!email||!actor)return;
+  if(!Number.isInteger(quantity)||quantity<1||quantity>100||!reason.trim()||reason.trim().length>500){setNotice('수량 1~100과 지급 사유를 입력하세요.');return;}
+  lock.current=true;setBusy(true);
+  try {
+   const input=pending??{accountId,email,quantity,reason:reason.trim(),requestKey:crypto.randomUUID()};
+   // Persist BEFORE sending. A reload or lost response must retry the same key.
+   sessionStorage.setItem(storageKey,JSON.stringify(input));setPending(input);
+   await requestCreditGrant(client,input);
+   sessionStorage.removeItem(storageKey);setPending(null);setQuantity(1);setReason('');
+   setNotice(`${input.quantity} Credit을 지급했습니다.`);dialog.current?.close();onGranted();
+  }catch{setNotice('지급 완료를 확인하지 못했습니다. 같은 요청으로 다시 시도해 주세요. 대상 정보가 변경됐다면 운영 확인이 필요합니다.');}
+  finally{lock.current=false;setBusy(false);}
+ }
+ return <div className="admin-panel">
+  <button ref={trigger} type="button" className="button button--outline button--small" disabled={!email||!client} onClick={open}>Credit 지급</button>
+  {notice?<p role="status" className="admin-hint">{notice}</p>:null}
+  <dialog ref={dialog} className="my-lab-dialog" aria-labelledby="credit-grant-title" onCancel={event=>{if(lock.current)event.preventDefault();}} onClose={()=>trigger.current?.focus()}>
+   <h3 id="credit-grant-title">Credit 지급 확인</h3>
+   <p>대상 이메일: {pending?.email??email}</p><p style={{overflowWrap:'anywhere'}}>회원 UID: {accountId}</p>
+   <p className="admin-muted">운영 지급 · 만료 없음 · 유료 구매 Credit과 별도 기록</p>
+   <form className="admin-stack" onSubmit={event=>{event.preventDefault();void grant();}}>
+    <label htmlFor="grant-quantity">지급 수량 (1~100)</label>
+    <input className="admin-search__input" id="grant-quantity" type="number" min={1} max={100} required value={quantity} disabled={busy||!!pending} onChange={e=>setQuantity(Number(e.target.value))}/>
+    <label htmlFor="grant-reason">지급 사유</label>
+    <textarea className="admin-search__input" id="grant-reason" required maxLength={500} rows={3} value={reason} disabled={busy||!!pending} onChange={e=>setReason(e.target.value)}/>
+    <p>위 회원에게 {quantity} Credit을 지급합니다. 대상과 사유를 확인하세요.</p>
+    {notice?<p role="status">{notice}</p>:null}
+    <div className="admin-search__row"><button type="button" className="button button--outline" disabled={busy} onClick={()=>dialog.current?.close()}>닫기</button>
+    <button type="submit" className="button button--primary" disabled={busy||!reason.trim()||quantity<1||quantity>100}>{busy?'지급 중입니다':pending?'동일 요청 다시 확인':'확인 후 지급'}</button></div>
+   </form>
+  </dialog>
+ </div>;
 }

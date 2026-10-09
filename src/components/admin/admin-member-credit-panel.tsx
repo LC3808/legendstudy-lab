@@ -13,18 +13,11 @@ import type { AdminCredit } from "@/lib/admin/contract";
 
 import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
 
+import {AdminCreditGrantForm} from "./admin-credit-grant-form";
+
 const PAGE_LIMIT = 25;
 
-/**
- * Credit read + history for one account.
- *
- * Read-only. There is deliberately no grant, adjustment or reversal control:
- * writing Credit requires the canonical server-side grant function and a
- * separately provisioned finance capability, neither of which ADMIN-P0-A has.
- * The disabled placeholder below marks where ADMIN-P0-B attaches and carries no
- * href and no database call.
- */
-export function AdminMemberCreditPanel({ accountId }: { accountId: string }) {
+export function AdminMemberCreditPanel({ accountId, email }: { accountId: string; email: string|null }) {
   const { state, reload } = useAdminQuery<AdminCredit>(
     (client) => client.memberCredit(accountId, { limit: PAGE_LIMIT }),
     `credit:${accountId}`,
@@ -40,13 +33,8 @@ export function AdminMemberCreditPanel({ accountId }: { accountId: string }) {
     <div className="admin-credit">
       <div className="admin-credit__head">
         <h3>Credit</h3>
-        <button type="button" className="button button--outline button--small" disabled>
-          Credit 지급 (준비 중)
-        </button>
+        <AdminCreditGrantForm accountId={accountId} email={email} onGranted={reload} />
       </div>
-      <p className="admin-muted">
-        관리자 Credit 지급은 결제·재무 권한이 연결된 뒤 열립니다. 이 화면에서는 조회만 가능합니다.
-      </p>
 
       {summary === null ? (
         <AdminEmpty

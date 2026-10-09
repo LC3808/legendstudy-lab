@@ -15,7 +15,7 @@ export default function AdminCreditPage() {
       active="credit"
       eyebrow="LEGENDSTUDY / OPERATIONS / CREDIT"
       title="Credit 관리"
-      lead="Credit 잔액과 지급·거래 내역을 조회합니다. 이번 단계는 조회 전용이며 지급 기능은 열려 있지 않습니다."
+      lead="회원별 Credit 잔액과 거래 내역을 확인하고 운영 Credit을 지급합니다."
     >
       <AdminCreditView />
     </AdminSurface>

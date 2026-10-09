@@ -37,9 +37,8 @@ import { AdminError, mapRpcError } from "./errors";
  * token, an answer body or an inquiry body. Authorization is enforced by the
  * database; `isOperator()` is defense-in-depth UI gating only.
  *
- * The client is read-only with respect to money. Finance controls are disabled
- * in this release; no finance server or credential is introduced. The retained
- * browser contract never calls finance-only ledger functions directly.
+ * The client is read-only with respect to money. Manual grants use a separate Admin-authorized RPC adapter; no finance
+ * credential is introduced and finance-only functions remain inaccessible.
  */
 export interface AdminClient {
   isOperator(): Promise<boolean>;

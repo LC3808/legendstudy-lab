@@ -7,23 +7,19 @@ import { ADMIN_MIN_QUERY } from "@/lib/admin/client";
 import { accountStateLabel, creditOriginLabel, formatCredit, formatNumber } from "@/lib/admin/format";
 
 import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
-import { AdminCreditGrantForm } from "./admin-credit-grant-form";
 import { AdminMemberCreditPanel } from "./admin-member-credit-panel";
 
 /**
  * Credit overview.
  *
  * Shows the aggregate Credit picture and routes an operator to one member's
- * grant and transaction history. Issuing Credit remains disabled until existing
- * finance authority can be safely reused and verified.
+ * grant and transaction history. Manual support grants use the Admin-authorized canonical ledger RPC.
  */
 export function AdminCreditView() {
   const [input, setInput] = useState("");
   const [submitted, setSubmitted] = useState<string | null>(null);
   const [accountId, setAccountId] = useState<string | null>(null);
   const [hint, setHint] = useState<string | null>(null);
-  // Re-mounts the member panel after a grant so the ledger shown is the new one.
-  const [creditNonce, setCreditNonce] = useState(0);
 
   const summary = useAdminQuery<AdminDashboard>((client) => client.dashboard(), "credit-overview");
   const lookup = useAdminQuery<AdminSearchPage>(
@@ -78,7 +74,7 @@ export function AdminCreditView() {
           </>
         )}
         <p className="admin-muted">
-          이 화면은 조회 전용입니다. 관리자 Credit 지급은 재무 권한이 연결된 뒤 열립니다.
+          회원 조회 후 운영 Credit을 지급할 수 있습니다.
         </p>
       </section>
 
@@ -158,14 +154,9 @@ export function AdminCreditView() {
       {accountId ? (
         <>
           <section className="admin-section">
-            <AdminMemberCreditPanel key={creditNonce} accountId={accountId} />
+            <AdminMemberCreditPanel key={accountId} accountId={accountId} email={lookup.state.status === "ready" ? lookup.state.data.items.find(m=>m.accountId===accountId)?.email??null:null} />
           </section>
-          <section className="admin-section">
-            <AdminCreditGrantForm
-              accountId={accountId}
-              onGranted={() => setCreditNonce((value) => value + 1)}
-            />
-          </section>
+
         </>
       ) : null}
     </div>

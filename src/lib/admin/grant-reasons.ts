@@ -13,4 +13,4 @@ export const CREDIT_GRANT_REASONS: Record<string, readonly string[]> = {
   b2b_program: ["program_allocation"],
 };
 
-export const CREDIT_GRANT_MAX_QUANTITY = 1000;
+export const CREDIT_GRANT_MAX_QUANTITY = 100;

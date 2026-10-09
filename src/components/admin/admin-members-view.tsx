@@ -127,7 +127,7 @@ function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
       </div>
       <p className="admin-muted">답안 본문은 이 화면에 표시하지 않습니다.</p>
 
-      <AdminMemberCreditPanel accountId={accountId} />
+      <AdminMemberCreditPanel key={accountId} accountId={accountId} email={data.member.email} />
       <Student360Panel accountId={accountId} />
     </div>
   );

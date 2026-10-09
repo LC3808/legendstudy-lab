@@ -305,22 +305,22 @@ describe("AdminMembersView", () => {
     expect(screen.getByText("답안 본문은 이 화면에 표시하지 않습니다.")).toBeInTheDocument();
     expect(screen.getAllByText("미설치").length).toBeGreaterThanOrEqual(1);
 
-    // Credit history, and no write control that could actually fire.
+    // Credit history and authenticated operator grant control.
     expect(await screen.findByText("지급 단위")).toBeInTheDocument();
     // The origin label and the transaction-type label share the same Korean copy.
     expect(screen.getAllByText("신규 가입 무료").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByRole("button", { name: /Credit 지급/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Credit 지급/ })).toBeEnabled();
   });
 });
 
 describe("AdminCreditView", () => {
-  it("shows the aggregate and states that granting is not open", async () => {
+  it("shows the aggregate and grant guidance", async () => {
     setSession("authenticated", okOperator);
     render(<AdminCreditView />);
     expect(await screen.findByText("Credit 현황")).toBeInTheDocument();
     expect(screen.getByText("현재 사용 가능")).toBeInTheDocument();
     expect(
-      screen.getByText(/관리자 Credit 지급은 재무 권한이 연결된 뒤 열립니다/),
+      screen.getByText(/회원 조회 후 운영 Credit을 지급할 수 있습니다/),
     ).toBeInTheDocument();
   });
 

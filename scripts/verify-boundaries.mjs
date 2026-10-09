@@ -588,12 +588,16 @@ if (!fs.existsSync(opsRuntime)) {
   }
 }
 
-// This release has no approved finance write transport. Never import a minting path.
+// Manual support grants use an Owner-approved Admin RPC. Finance transports and
+// credential minting remain closed; Payment/Toss authority is unchanged.
 for (const f of ["cloudflare/admin-finance.ts", "functions/api/admin/credit-grant.ts", "functions/api/admin/payment-support.ts"]) {
   if (fs.existsSync(f)) errors.push(`unapproved Admin finance transport: ${f}`);
 }
 const grantForm = fs.readFileSync("src/components/admin/admin-credit-grant-form.tsx", "utf8");
-if (!/const FINANCE_WRITE_AVAILABLE = false;/.test(grantForm)) errors.push("Admin finance writes must remain closed until existing credential reuse is verified");
+const grantBoundary = fs.readFileSync("src/lib/admin/finance-boundary.ts", "utf8");
+if (!grantBoundary.includes("client.rpc('admin_manual_credit_grant'") || /essay_admin_grant|essay_finance|SERVICE_ROLE|PAYMENT_FINANCE_TOKEN/.test(grantBoundary + grantForm)) {
+  errors.push("Admin manual grants must use only the authenticated Admin RPC without finance credentials");
+}
 
 if (errors.length) {
   console.error("BOUNDARY_AUDIT=FAIL");
