@@ -308,7 +308,7 @@ describe("AdminMembersView", () => {
     // Credit history and authenticated operator grant control.
     expect(await screen.findByText("지급 단위")).toBeInTheDocument();
     // The origin label and the transaction-type label share the same Korean copy.
-    expect(screen.getAllByText("신규 가입 무료").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("신규가입 무료").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByRole("button", { name: /Credit 지급/ })).toBeEnabled();
   });
 });

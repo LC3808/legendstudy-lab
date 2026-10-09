@@ -15,6 +15,8 @@ import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admi
 
 import {AdminCreditGrantForm} from "./admin-credit-grant-form";
 
+import {formatCreditReason, formatCreditActor} from "@/lib/credit-display";
+
 const PAGE_LIMIT = 25;
 
 export function AdminMemberCreditPanel({ accountId, email }: { accountId: string; email: string|null }) {
@@ -138,8 +140,8 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
                       <td className={entry.balanceDelta < 0 ? "admin-delta--down" : "admin-delta--up"}>
                         {formatDelta(entry.balanceDelta)}
                       </td>
-                      <td>{entry.reasonCode ?? "-"}</td>
-                      <td>{entry.actorKind ?? "-"}</td>
+                      <td className="credit-history-text">{formatCreditReason(entry.reasonCode,entry.balanceDelta)}</td>
+                      <td>{formatCreditActor(entry.actorKind)}</td>
                       <td>{formatDateTime(entry.createdAt)}</td>
                     </tr>
                   ))}

@@ -77,35 +77,7 @@ export function accountStateLabel(state: string): { label: string; tone: StateTo
   }
 }
 
-export function creditOriginLabel(origin: string): string {
-  const map: Record<string, string> = {
-    signup_bonus: "신규 가입 무료",
-    purchase: "구매",
-    promotion: "이벤트·프로모션",
-    admin_grant: "운영 지급",
-    compensation: "보상",
-    b2b_program: "학교 단체",
-  };
-  return map[origin] ?? origin;
-}
-
-export function transactionTypeLabel(type: string): string {
-  const map: Record<string, string> = {
-    purchase: "구매",
-    signup_bonus: "신규 가입 무료",
-    promotion: "프로모션",
-    admin_grant: "운영 지급",
-    compensation: "보상",
-    b2b_program: "학교 단체",
-    reserve: "예약",
-    consume: "사용",
-    release: "예약 해제",
-    refund: "환불",
-    expiration: "만료",
-    adjustment: "정정",
-  };
-  return map[type] ?? type;
-}
+export {formatCreditGrantType as creditOriginLabel, formatCreditGrantType as transactionTypeLabel} from '../credit-display';
 
 /** Signed delta with an explicit sign, so a direction is never ambiguous. */
 export function formatDelta(value: number): string {

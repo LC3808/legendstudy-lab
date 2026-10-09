@@ -405,9 +405,9 @@ describe("admin formatting", () => {
   });
 
   it("labels credit origins and transaction types", () => {
-    expect(creditOriginLabel("admin_grant")).toBe("운영 지급");
+    expect(creditOriginLabel("admin_grant")).toBe("관리자 지급");
     expect(transactionTypeLabel("expiration")).toBe("만료");
-    expect(transactionTypeLabel("unknown_type")).toBe("unknown_type");
+    expect(transactionTypeLabel("unknown_type")).toBe("기타 Credit 내역");
     expect(formatCredit(7)).toContain("7");
     expect(formatCredit(null)).toBe("-");
   });

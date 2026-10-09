@@ -75,3 +75,15 @@ it('nonstudent unset school does not retain a stale grade',async()=>{
  await saveMyProfile(client,'owner',{neis_office_code:null,neis_school_code:null,academic_status:'retaker',grade_level:3});
  expect(q.update).toHaveBeenCalledWith({neis_office_code:null,neis_school_code:null,academic_status:'retaker',grade_level:null});
 });
+
+it('uses shared labels for MY/Essay history without changing the original ledger facts',()=>{
+ const facts=[
+  {id:'signup',decision_id:null,transaction_type:'signup_bonus',balance_delta:3,created_at:at,reason_code:'signup_bonus_v1',actor_reference:'system/signup_bonus'},
+  {id:'manual',decision_id:null,transaction_type:'admin_grant',balance_delta:1,created_at:at,reason_code:'manual_support: 오류 보상',actor_reference:'operator/private-uuid'},
+ ];
+ const original=structuredClone(facts);facts.forEach(Object.freeze);Object.freeze(facts);
+ const rows=historyRows(facts,[]);
+ expect(rows[0]).toMatchObject({label:'신규가입 무료',reason:'가입 축하 Credit 3개',actor:'자동 지급',delta:3});
+ expect(rows[1]).toMatchObject({label:'관리자 지급',reason:'오류 보상',actor:'관리자',delta:1});
+ expect(facts).toEqual(original);expect(rows.reduce((n,r)=>n+r.delta,0)).toBe(4);
+});

@@ -1,3 +1,4 @@
+import {formatCreditGrantType,formatCreditReason,formatCreditActor} from '@/lib/credit-display';
 import {lookupSchoolName} from '@/lib/admin/school';
 import type { SupabaseClient } from '@supabase/supabase-js';
 export type Target = { id: string; university_id: string; intended_division: string | null; universities: { name: string } | null };
@@ -54,10 +55,9 @@ export async function editTarget(client: SupabaseClient, owner: string, id: stri
     .eq('id',id).eq('user_id',owner).eq('status','interested').select('id').single());
   await assertOwner(client,owner);
 }
-export type Transaction = {id:string;decision_id:string|null;transaction_type:string;balance_delta:number;created_at:string;credit_grants?:{origin:string}|null};
+export type Transaction = {id:string;decision_id:string|null;transaction_type:string;balance_delta:number;created_at:string;credit_grants?:{origin:string}|null;reason_code?:string|null;actor_reference?:string|null};
 export type Decision = {id:string;credits_required:number;status:string;created_at:string};
-export type HistoryRow = {id:string;label:string;delta:number;at:string};
-const labels:Record<string,string>={purchase:'첨삭권 구매',signup_bonus:'신규가입 무료 첨삭권',promotion:'프로모션 첨삭권',admin_grant:'첨삭권 지급',compensation:'보상 첨삭권',b2b_program:'단체 첨삭권',refund:'첨삭권 복원',expiration:'첨삭권 만료',adjustment:'첨삭권 조정'};
+export type HistoryRow = {id:string;label:string;delta:number;at:string;reason?:string;actor?:string};
 export function historyRows(transactions:Transaction[],decisions:Decision[]):HistoryRow[] {
   const rows:HistoryRow[]=[];const consumes=new Map<string,HistoryRow>();
   for(const t of transactions){
@@ -66,7 +66,7 @@ export function historyRows(transactions:Transaction[],decisions:Decision[]):His
       const row=consumes.get(t.decision_id)??{id:t.decision_id,label:'논술 첨삭 사용',delta:0,at:t.created_at};
       row.delta+=t.balance_delta;consumes.set(t.decision_id,row);continue;
     }
-    rows.push({id:t.id,label:labels[t.transaction_type]??'첨삭권 변동',delta:t.balance_delta,at:t.created_at});
+    rows.push({id:t.id,label:formatCreditGrantType(t.transaction_type),delta:t.balance_delta,at:t.created_at,reason:formatCreditReason(t.reason_code,t.balance_delta),actor:formatCreditActor(t.actor_reference)});
   }
   rows.push(...consumes.values());
   for(const d of decisions)if(d.status==='settled'&&d.credits_required===0&&!consumes.has(d.id)) rows.push({id:d.id,label:'추가 차감 없는 첨삭',delta:0,at:d.created_at});
@@ -77,7 +77,7 @@ export async function readHistory(client:SupabaseClient,owner:string):Promise<Hi
   const account=checked(await client.from('credit_accounts').select('id').eq('user_id',owner).maybeSingle());
   if(!account)return [];
   const [tx,decisions]=await Promise.all([
-    client.from('credit_transactions').select('id,decision_id,transaction_type,balance_delta,created_at,credit_grants(origin)').eq('account_id',account.id).not('transaction_type','in','(reserve,release)').order('created_at',{ascending:false}).limit(200),
+    client.from('credit_transactions').select('id,decision_id,transaction_type,balance_delta,created_at,reason_code,actor_reference,credit_grants(origin)').eq('account_id',account.id).not('transaction_type','in','(reserve,release)').order('created_at',{ascending:false}).limit(200),
     client.from('essay_billing_decisions').select('id,credits_required,status,created_at').eq('account_id',account.id).eq('credits_required',0).eq('status','settled').order('created_at',{ascending:false}).limit(100),
   ]);
   const transactions=checked(tx) as unknown as Transaction[];

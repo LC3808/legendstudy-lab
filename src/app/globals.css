@@ -1509,3 +1509,6 @@ h1, h2, h3 { text-wrap: pretty; }
 .my-lab-dialog { max-width: min(28rem,calc(100% - 2rem)); padding: 1.5rem; border: 1px solid var(--product-border); border-radius: var(--radius-lg); background: var(--surface); color: var(--ink); }
 .my-lab-dialog::backdrop { background: rgb(0 0 0 / .35); }
 @media (max-width: 48rem) { .my-lab-grid { grid-template-columns: 1fr; } }
+
+/* Recorded Credit reasons can be long; keep existing tables/lists readable. */
+.credit-history-text { overflow-wrap: anywhere; white-space: normal; min-width: 0; }
