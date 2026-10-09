@@ -1,5 +1,7 @@
 # Math Production configuration recovery — 2026-10-09
 
+> SECURITY FOLLOW-UP (Oct09): the Legacy signing secret was subsequently pasted into chat. Do not use the original-token generation/re-registration instructions below with that exposed key. Current Production has the provider Secret but neither Worker JWT (Preview also absent). Review the dependency evidence in Unified Daily before replacement/revocation; no runtime or Ledger change is authorized by this note.
+
 **PARTIAL.** Existing code, migrations, ledger and authentication design are unchanged.
 
 ## Verified evidence
