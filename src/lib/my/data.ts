@@ -87,13 +87,13 @@ export async function readHistory(client:SupabaseClient,owner:string):Promise<Hi
   if(complete.length===1000)throw new Error('HISTORY_LIMIT');
   return historyRows([...transactions.filter(t=>t.transaction_type!=='consume'),...complete],checked(decisions) as Decision[]).slice(0,100);
 }
-export type Evaluation={id:string;session_id:string;status:string;requested_at:string;completed_at:string|null;invalidated_at:string|null;regime_key:string;essay_evaluation_dimensions:{level_1_to_5:number|null;explanation:string;display_order:number}[]};
+export type Evaluation={id:string;attempt_id?:string;session_id:string;status:string;requested_at:string;completed_at:string|null;invalidated_at:string|null;regime_key:string;essay_evaluation_dimensions:{level_1_to_5:number|null;explanation:string;display_order:number}[]};
 export type EssayRecord={id:string;created_at:string;essay_questions:{label:string;essay_exams:{admission_year:number;universities:{name:string}|null}|null}|null;evaluations:Evaluation[]};
 export async function readEssays(client:SupabaseClient,owner:string):Promise<EssayRecord[]> {
   await assertOwner(client,owner);
   const sessions=checked(await client.from('essay_practice_sessions').select('id,created_at,essay_questions(label,essay_exams(admission_year,universities(name)))').eq('user_id',owner).order('created_at',{ascending:false}).limit(50)) as unknown as Omit<EssayRecord,'evaluations'>[];
   if(!sessions.length)return [];
-  const evaluations=checked(await client.from('essay_evaluations').select('id,session_id,status,requested_at,completed_at,invalidated_at,regime_key,essay_evaluation_dimensions(level_1_to_5,explanation,display_order)').in('session_id',sessions.map(s=>s.id)).order('requested_at',{ascending:false}).limit(1000)) as unknown as Evaluation[];
+  const evaluations=checked(await client.from('essay_evaluations').select('id,attempt_id,session_id,status,requested_at,completed_at,invalidated_at,regime_key,essay_evaluation_dimensions(level_1_to_5,explanation,display_order)').in('session_id',sessions.map(s=>s.id)).order('requested_at',{ascending:false}).limit(1000)) as unknown as Evaluation[];
   if(evaluations.length===1000)throw new Error('HISTORY_LIMIT');
   return sessions.map(s=>({...s,evaluations:evaluations.filter(e=>e.session_id===s.id)}));
 }

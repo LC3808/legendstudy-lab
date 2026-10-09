@@ -39,7 +39,7 @@ it('presents the MY dashboard sections in the agreed order', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
   const headings = [...container.querySelectorAll('.my-section > h2')].map((h) => h.textContent);
-  expect(headings).toEqual(['내 이용 현황', '나의 학교·학년', '나의 목표', '나의 지원 현황', '나의 학습시간', '나의 논술 LAB', '다른 LAB', '계정 및 지원']);
+  expect(headings).toEqual(['내 이용 현황', '나의 학교·학년', '나의 목표', '나의 지원 현황', 'LAB', '나의 학습시간', '계정 및 지원']);
 });
 
 it('shows the signed-in email as the identity line and nothing invented beside it', async () => {
@@ -85,8 +85,7 @@ it('keeps empty sections short instead of making a large empty card', async () =
   await screen.findByText('사회·상경');
   const empty = [...container.querySelectorAll('.my-empty')].map((p) => p.textContent);
   expect(empty).toContain('등록된 지원 내역이 없습니다.');
-  expect(empty).toContain('아직 논술 기록이 없습니다.');
-  expect(within(container).getByRole('link', { name: '논술 LAB 시작하기' })).toBeTruthy();
+  expect(within(container).getByRole('link', { name: /논술 LAB.*내 논술/ })).toHaveAttribute('href','/account/essay');
   expect(container.textContent).not.toContain('아직 구현되지 않았습니다');
 });
 it('keeps same-university add disabled while the target constraint rollout is held',async()=>{

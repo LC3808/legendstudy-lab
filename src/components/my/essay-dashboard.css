@@ -1,0 +1,18 @@
+.essay-personal .my-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.essay-personal .my-panel { margin-bottom: 1rem; overflow-wrap: anywhere; }
+.essay-personal .essay-answer { white-space: pre-wrap; overflow-wrap: anywhere; }
+.essay-personal .my-metric__value { font-size: clamp(1.2rem,3vw,2rem); overflow-wrap: anywhere; }
+@media (max-width: 40rem) { .essay-personal .my-metrics { grid-template-columns: 1fr; } }
+@media print {
+ @page { size: A4; margin: 16mm; }
+ body:has(.essay-personal) { background: white; color: black; }
+ body:has(.essay-personal) .site-header, body:has(.essay-personal) .site-footer,
+ .essay-personal .report-controls, .essay-personal button, .essay-personal nav,
+ .essay-personal .my-actions { display: none !important; }
+ .essay-personal { width: 100%; max-width: none; padding: 0; }
+ .essay-personal .my-panel { box-shadow: none; border: 0; padding: 0; }
+ .essay-personal .my-section { break-inside: auto; }
+ .essay-personal h2, .essay-personal h3, .essay-personal h4 { break-after: avoid; }
+ .essay-personal p, .essay-personal li { orphans: 3; widows: 3; }
+ .essay-personal .my-metrics { break-inside: avoid; }
+}

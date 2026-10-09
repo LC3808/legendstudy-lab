@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import {LabCards} from './lab-cards';
 import {ApplicationsPanel} from './applications';
 import {StudySummaryPanel} from './study-summary';
 import { ProfileEditor } from './profile-editor';
@@ -33,14 +34,8 @@ export function MyDashboard(){
    <section className="my-section" aria-labelledby="my-school-title"><h2 id="my-school-title">나의 학교·학년</h2><div className="my-panel"><CurrentProfile /></div></section>
    <section className="my-section" aria-labelledby="my-goals-title"><h2 id="my-goals-title">나의 목표</h2><div className="my-panel"><GoalsPanel /></div></section>
    <section className="my-section" aria-labelledby="my-application-title"><h2 id="my-application-title">나의 지원 현황</h2><ApplicationsPanel /></section>
+   <section className="my-section" aria-labelledby="my-labs-title"><h2 id="my-labs-title">LAB</h2><LabCards /></section>
    <section className="my-section" aria-labelledby="my-study-title"><h2 id="my-study-title">나의 학습시간</h2><StudySummaryPanel /></section>
-   <section className="my-section" aria-labelledby="my-essay-title"><h2 id="my-essay-title">나의 논술 LAB</h2><EssayRecords compact emptyAction={<Link className="button button--primary button--small" href="/essay-lab/">논술 LAB 시작하기</Link>} /></section>
-   <section className="my-section" aria-labelledby="my-labs-title"><h2 id="my-labs-title">다른 LAB</h2>
-    <nav className="my-nav-grid" aria-label="다른 LAB 바로가기">
-     <Link className="my-nav-card" href="/score-analysis/"><strong>내신 LAB</strong><span>과목별 성적과 변화에서 강점과 보완점을 확인합니다.</span></Link>
-     <Link className="my-nav-card" href="/exam-analysis/"><strong>모의·수능 LAB</strong><span>성적의 변화와 현재 위치를 확인합니다.</span></Link>
-    </nav>
-   </section>
    <section className="my-section my-section--last" aria-labelledby="my-account-title"><h2 id="my-account-title">계정 및 지원</h2>
     <div className="my-links"><Link className="button button--outline button--small" href="/account/settings/">계정 설정</Link><Link className="button button--outline button--small" href="/support/">고객센터</Link></div>
    </section>
@@ -67,7 +62,7 @@ function CurrentProfile(){
  * values are shown; a period entitlement has no authority yet, so no 이용권 metric
  * is invented here.
  */
-function Usage(){
+export function Usage(){
  const {state,reload}=useCreditSummary();
  if(state.status!=='ready')return <DataStatus error={state.status==='error'} reload={reload}/>;
  const value=state.value;

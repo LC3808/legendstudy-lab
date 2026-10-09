@@ -1502,3 +1502,10 @@ h1, h2, h3 { text-wrap: pretty; }
 .my-dashboard [role="alert"] { margin: .7rem 0 0; padding: .6rem .8rem; border: 1px solid color-mix(in srgb, #c0392b 32%, var(--line)); border-radius: var(--radius-sm); background: #fdf1f0; color: #9a2f2f; font-size: .85rem; line-height: 1.55; }
 /* Form action spacing inside MY (override the page-level .button-row default) */
 .my-dashboard .button-row { margin-top: 1rem; }
+
+/* MY LAB controls reuse the existing MY surface tokens. */
+.my-lab-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.my-lab-grid button { font: inherit; text-align: left; cursor: pointer; }
+.my-lab-dialog { max-width: min(28rem,calc(100% - 2rem)); padding: 1.5rem; border: 1px solid var(--product-border); border-radius: var(--radius-lg); background: var(--surface); color: var(--ink); }
+.my-lab-dialog::backdrop { background: rgb(0 0 0 / .35); }
+@media (max-width: 48rem) { .my-lab-grid { grid-template-columns: 1fr; } }
