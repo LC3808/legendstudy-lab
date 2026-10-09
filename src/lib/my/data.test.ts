@@ -83,7 +83,7 @@ it('uses shared labels for MY/Essay history without changing the original ledger
  ];
  const original=structuredClone(facts);facts.forEach(Object.freeze);Object.freeze(facts);
  const rows=historyRows(facts,[]);
- expect(rows[0]).toMatchObject({label:'신규가입 무료',reason:'가입 축하 Credit 3개',actor:'자동 지급',delta:3});
- expect(rows[1]).toMatchObject({label:'관리자 지급',reason:'오류 보상',actor:'관리자',delta:1});
- expect(facts).toEqual(original);expect(rows.reduce((n,r)=>n+r.delta,0)).toBe(4);
+ expect(rows[0]).toMatchObject({label:'신규가입 무료',delta:3});
+ expect(rows[1]).toMatchObject({label:'관리자 지급 · 오류 보상',delta:1});
+ expect(JSON.stringify(rows)).not.toMatch(/operator|system|manual_support|signup_bonus_v1/);expect(facts).toEqual(original);expect(rows.reduce((n,r)=>n+r.delta,0)).toBe(4);
 });

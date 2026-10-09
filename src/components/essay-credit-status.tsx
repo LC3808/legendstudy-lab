@@ -70,6 +70,8 @@ export function EssayCreditStatus() {
       <section className="essay-credit" aria-live="polite">
         <p className="essay-credit__count">첨삭권이 없습니다.</p>
         <div className="essay-credit__actions">
+          <Link className="button button--outline button--small" href="/account/essay/">내 논술 분석</Link>
+          <Link className="button button--outline button--small" href={historyHref}>나의 첨삭 기록</Link>
           <Link className="button button--primary button--small" href={purchaseHref}>첨삭권 구매</Link>
         </div>
       </section>
@@ -85,6 +87,7 @@ export function EssayCreditStatus() {
           a purchase-only date. */}
       {expiry ? <p className="essay-credit__meta">가장 가까운 만료일 {expiry}</p> : null}
       <div className="essay-credit__actions">
+        <Link className="button button--outline button--small" href="/account/essay/">내 논술 분석</Link>
         <Link className="button button--outline button--small" href={historyHref}>나의 첨삭 기록</Link>
         <Link className="button button--primary button--small" href={purchaseHref}>첨삭권 구매</Link>
       </div>

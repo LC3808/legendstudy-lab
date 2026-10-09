@@ -38,3 +38,24 @@ export function formatCreditActor(raw:string|null|undefined):string {
 function lookup(map:Readonly<Record<string,string>>,key:string,fallback:string):string {
  return Object.hasOwn(map,key)?map[key]:fallback;
 }
+
+/** User history deliberately omits internal codes and actor references. Admin formatting stays above. */
+export function formatUserCreditReason(type:string,raw?:string|null):string {
+ const labels:Readonly<Record<string,string>>={
+  signup_bonus:'신규가입 무료',signup_bonus_v1:'신규가입 무료',
+  admin_grant:'관리자 지급',manual_support:'관리자 지급',purchase:'첨삭권 구매',
+  consume:'논술 첨삭 이용',promotion:'프로모션 지급',refund:'환불',
+  compensation:'이용 보상',b2b_program:'학교 단체 지급',expiration:'만료',adjustment:'정정',
+ };
+ const reason=raw?.trim()??'';
+ const label=lookup(labels,type,'첨삭권 내역');
+ if(type==='admin_grant'||type==='manual_support') {
+  if(reason.startsWith('manual_support:')) {
+   const detail=formatCreditReason(reason);
+   return detail==='관리자 지급'?label:`${label} · ${detail}`;
+  }
+  // Canonical fixed reason codes have existing human-readable labels.
+  if(Object.hasOwn(reasons,reason))return reason==='manual_support'?label:formatCreditReason(reason);
+ }
+ return label;
+}

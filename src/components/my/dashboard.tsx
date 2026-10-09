@@ -62,14 +62,14 @@ function CurrentProfile(){
  * values are shown; a period entitlement has no authority yet, so no 이용권 metric
  * is invented here.
  */
-export function Usage(){
+export function Usage({balanceLabel="첨삭권"}:{balanceLabel?:string}={}){
  const {state,reload}=useCreditSummary();
  if(state.status!=='ready')return <DataStatus error={state.status==='error'} reload={reload}/>;
  const value=state.value;
  return <>
   <div className="my-metrics">
    <article className="my-metric">
-    <p className="my-metric__label">첨삭권</p>
+    <p className="my-metric__label">{balanceLabel}</p>
     <p className="my-metric__value">{value.spendable}<span className="my-metric__unit">개</span></p>
     <p className="my-metric__meta">무료 {value.free} · 구매 {value.paid}{value.other>0?` · 기타 ${value.other}`:''}</p>
    </article>
@@ -133,7 +133,7 @@ export function TargetEditor({target,busy,save}:{target:Target;busy:boolean;save
 
 export function CreditHistory(){
  const result=useOwnerData(readHistory);
- return <div className="my-dashboard content-wrap content-wrap--detail"><header className="my-head"><h1>구매·사용 내역</h1></header><OwnerArea path="/account/credits/"><section className="my-panel">{!result.data?<DataStatus error={result.error} reload={result.reload}/>:result.data.length===0?<p className="my-empty">아직 첨삭권 내역이 없습니다.</p>:<><p className="my-note">최근 내역 · 최대 100개</p><ul className="my-record-list">{result.data.map(r=><li key={r.id}><div><strong>{r.label}</strong>{r.reason&&<p className="credit-history-text">{r.reason}</p>}{r.actor&&<p>{r.actor}</p>}<p>{dateLabel(r.at)}</p></div><span>{r.delta>0?'+':''}{r.delta}개</span></li>)}</ul></>}<Link className="text-link" href="/account/">마이페이지 →</Link></section></OwnerArea></div>;
+ return <div className="my-dashboard content-wrap content-wrap--detail"><header className="my-head"><h1>구매·사용 내역</h1></header><OwnerArea path="/account/credits/"><section className="my-panel">{!result.data?<DataStatus error={result.error} reload={result.reload}/>:result.data.length===0?<p className="my-empty">아직 첨삭권 내역이 없습니다.</p>:<><p className="my-note">최근 내역 · 최대 100개</p><table className="user-credit-history"><caption className="sr-only">첨삭권 구매·사용 내역</caption><thead><tr><th scope="col">날짜</th><th scope="col">개수</th><th scope="col">사유</th></tr></thead><tbody>{result.data.map(r=><tr key={r.id}><td data-label="날짜">{dateLabel(r.at)}</td><td data-label="개수">{r.delta>0?'+':''}{r.delta}개</td><td data-label="사유">{r.label}</td></tr>)}</tbody></table></>}<Link className="text-link" href="/account/">마이페이지 →</Link></section></OwnerArea></div>;
 }
 
 export function EssayRecords({compact=false,emptyAction=null}:{compact?:boolean;emptyAction?:ReactNode}){

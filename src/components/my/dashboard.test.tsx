@@ -2,8 +2,8 @@
 import { render, screen, within } from '@testing-library/react';
 import { expect, it, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import {addTarget,searchUniversities} from '@/lib/my/data';
-import { MyDashboard } from './dashboard';
+import {addTarget,searchUniversities,readHistory} from '@/lib/my/data';
+import { MyDashboard, CreditHistory } from './dashboard';
 
 const OWNER = { id: 'owner-1', email: 'review@legendstudy.com' };
 
@@ -21,7 +21,7 @@ vi.mock('@/lib/my/data', () => ({
   readMyProfile: async () => ({ neis_office_code: 'B10', neis_school_code: '7130001', academic_status: 'student', grade_level: 2 }),
   readGoals: async () => ({ intended_major: '사회·상경', targets: [{ id: '1', university_id: 'u1', intended_division: '경영학과', universities: { name: '연세대학교' } }] }),
   readEssays: async () => [],
-  readHistory: async () => [],
+  readHistory: vi.fn().mockResolvedValue([]),
   saveMajor: async () => {},
   addTarget: vi.fn().mockResolvedValue(undefined),
   editTarget: async () => {},
@@ -95,4 +95,13 @@ it('keeps same-university add disabled while the target constraint rollout is he
  await user.type(screen.getByLabelText('대학 찾기'),'연세');await user.click(screen.getByRole('button',{name:'검색'}));
  expect(await screen.findByRole('button',{name:'추가'})).toBeDisabled();
  expect(addTarget).not.toHaveBeenCalled();
+});
+
+it('renders only date, signed quantity and user reason in purchase history',async()=>{
+ vi.mocked(readHistory).mockResolvedValueOnce([{id:'private-id',label:'관리자 지급 · 테스트',delta:2,at:'2026-10-09T00:00:00Z'}]);
+ render(<CreditHistory/>);
+ const table=await screen.findByRole('table');
+ expect(within(table).getAllByRole('columnheader').map(el=>el.textContent)).toEqual(['날짜','개수','사유']);
+ expect(within(table).getAllByRole('cell').map(el=>el.textContent)).toEqual(['2026. 10. 9.','+2개','관리자 지급 · 테스트']);
+ expect(table).not.toHaveTextContent('private-id');
 });

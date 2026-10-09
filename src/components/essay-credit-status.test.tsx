@@ -46,7 +46,8 @@ describe("논술 LAB 첨삭권 현황", () => {
     renderWith({ status: "ready", value: { dto_version: "credit-v1", spendable: 0, paid: 0, free: 0, other: 0, next_expiry: null } });
     expect(screen.getByText("첨삭권이 없습니다.")).toBeInTheDocument();
     expect(route("첨삭권 구매")).toBe("/pricing");
-    expect(screen.queryByRole("link", { name: "나의 첨삭 기록" })).not.toBeInTheDocument();
+    expect(route("나의 첨삭 기록")).toBe("/my/essays");
+    expect(route("내 논술 분석")).toBe("/account/essay");
   });
 
   it("shows the count, the split, the nearest expiry and both destinations", () => {
@@ -58,7 +59,7 @@ describe("논술 LAB 첨삭권 현황", () => {
     expect(screen.getByText("5개")).toBeInTheDocument();
     expect(screen.getByText("무료 3 · 구매 2")).toBeInTheDocument();
     expect(screen.getByText("가장 가까운 만료일 2027.01.07")).toBeInTheDocument();
-    // 나의 첨삭 기록 is the MY essay history route: one history, not a second one.
+    expect(route("내 논술 분석")).toBe("/account/essay");
     expect(route("나의 첨삭 기록")).toBe("/my/essays");
     expect(route("첨삭권 구매")).toBe("/pricing");
   });
