@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { CreditBalance } from "@/components/credit-balance";
@@ -66,6 +66,16 @@ describe("one Credit authority for MY and 논술 LAB", () => {
     render(<EssayCreditStatus />);
     await waitFor(() => expect(screen.getByText(/첨삭권을 확인하지 못했습니다/)).toBeInTheDocument());
     expect(screen.queryByText(/내 첨삭권/)).not.toBeInTheDocument();
+  });
+
+  it("refreshes every mounted balance after an evaluation settles", async () => {
+    mockClient.rpc.mockResolvedValue({ data: ready, error: null });
+    render(<><CreditBalance /><EssayCreditStatus /></>);
+    await screen.findByText("5개");
+    mockClient.rpc.mockResolvedValue({ data: { ...ready, spendable: 4, free: 2 }, error: null });
+    act(() => window.dispatchEvent(new Event("legendstudy:credit-refresh")));
+    await screen.findByText("4개");
+    expect(screen.getByText(/사용 가능 4 Credits/)).toBeInTheDocument();
   });
 
   it("renders no balance for an anonymous session", async () => {

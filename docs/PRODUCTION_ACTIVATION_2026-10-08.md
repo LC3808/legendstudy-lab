@@ -121,3 +121,24 @@ cross-tab sign-in. No window-close workaround and no claim that a bonus was paid
 Manus owns MY visual redesign; this delta only adds the requested functional forms.
 Actual Production profile creation and worker delivery need Owner verification after
 release. A recent lifecycle heartbeat alone is not evidence of successful benefit work.
+
+## Math WEB / native APP user flow — 2026-10-10
+
+Owner-approved test-account-only integration continues from fetched main8991b51
+on `codex/essay-production-user-flow`. Existing Math workspace, gateway, Provider,
+private storage and shared RPC/ledger contracts are reused. The WEB now freezes
+submitted inputs before the first network response, refreshes canonical Credit
+readers and History after evaluation, and can retry a pending evaluation using
+its existing ID. Switching to an incomplete evaluation clears the previous result.
+No Payment/Toss/IAP, schema, worker authentication or allowlist change in this code.
+
+Local validation: 13 relevant UI tests PASS (including Credit refresh, typed answer,
+evidence confirmation, included reevaluation and account isolation); TypeScript,
+targeted ESLint and static build PASS. Existing dependency symlink requires
+`next build --webpack` locally; the standard isolated build remains unchanged.
+These tests use synthetic transports and are not actual Provider E2E evidence.
+
+At implementation checkpoint: production remains on its existing deployment,
+Math runtime gates OFF, one existing approved test UID retained; public HOLD.
+Actual WEB/APP submissions, Credit transactions and physical QA are pending the
+bounded runtime activation. Unified Wiki owns the final operational evidence.

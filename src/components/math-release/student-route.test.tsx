@@ -48,6 +48,7 @@ describe("student route integration",()=>{
   expect(screen.getByRole("link",{name:"로그인"})).toBeTruthy();
  });
  it("typed answer → result → hint → solution → resolve → included reevaluation → history",async()=>{
+  const refresh = vi.fn(); window.addEventListener("legendstudy:credit-refresh", refresh);
   const f=fixture();vi.stubGlobal("fetch",vi.fn(async()=>Response.json({status:"COMPLETED"})));
   render(<AuthContext.Provider value={f.auth}><MathStudentRoute enabled/></AuthContext.Provider>);
   await screen.findByText("연습 문제 · 식을 계산하세요");
@@ -64,6 +65,9 @@ describe("student route integration",()=>{
   fireEvent.click(screen.getByRole("button",{name:"답안 제출 · 입력 확인"}));
   fireEvent.click(await screen.findByRole("button",{name:"재첨삭 요청 · 포함 여부 확인"}));
   await waitFor(()=>expect(f.actions.some(x=>x.action==="request_reevaluation")).toBe(true));
+  await waitFor(()=>expect(refresh).toHaveBeenCalledTimes(2));
+  window.removeEventListener("legendstudy:credit-refresh", refresh);
+  expect(f.actions.filter(x=>x.action==="history").length).toBeGreaterThanOrEqual(3);
   expect(f.count()).toBe(2);expect(screen.getByRole("region",{name:"학습 기록"})).toBeTruthy();
  });
  it("image upload → actual row id normalization → correction → confirmation",async()=>{

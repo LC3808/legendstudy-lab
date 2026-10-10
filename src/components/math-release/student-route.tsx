@@ -49,6 +49,7 @@ function Workspace({ client }: { client: SupabaseClient }) {
   const [learning, setLearning] = useState<LearningState | null>(null), [history, setHistory] = useState<LearningHistoryResult | null>(null);
   const [hints, setHints] = useState<Partial<Record<HintLevel,string>>>({}), [solution, setSolution] = useState<RevealSolutionResult | null>(null);
   const [corrections, setCorrections] = useState<Record<string,string>>({});
+  const [frozen, setFrozen] = useState(false);
   const [busy, setBusy] = useState(false), [notice, setNotice] = useState("");
   const [result, setResult] = useState<{ overall?: { explanation?: string }; steps?: { id: string; representation: string; explanation: string }[] } | null>(null);
   const [prior, setPrior] = useState<LearningState | null>(null);
@@ -92,10 +93,14 @@ function Workspace({ client }: { client: SupabaseClient }) {
     }).catch(() => { if (alive.current) setNotice(unavailable); });
     return () => { alive.current = false; };
   }, [client, rpc]);
+  async function reloadHistory() {
+    const wire = await rpc.rpc("math_input", { dto_version: "math-input-v1", action: "history", payload: { limit: 20 } }) as { result: { attempts: { evaluations?: { evaluation_id?: string; id?: string }[] }[] } };
+    if (alive.current) setEvaluations(wire.result.attempts.flatMap((row, index) => (row.evaluations ?? []).flatMap(e => e.evaluation_id || e.id ? [{ id: (e.evaluation_id ?? e.id)!, label: `학습 기록 ${index + 1}` }] : [])));
+  }
   async function readEvaluation(id: string) {
     const state = await learnClient.readLearningState(id);
     if (!state.valid_evaluation_available) {
-      if (alive.current) { setLearning(state); setNotice(state.evaluation_state === "FAILED" ? "평가가 완료되지 않았습니다. 새 답안을 작성하거나 잠시 후 다시 시도해 주세요." : "평가를 진행하고 있습니다. 잠시 후 결과를 다시 확인해 주세요."); }
+      if (alive.current) { setResult(null); setHistory(null); setLearning(state); setNotice(state.evaluation_state === "FAILED" ? "평가가 완료되지 않았습니다. 새 답안을 작성하거나 잠시 후 다시 시도해 주세요." : "평가를 진행하고 있습니다. 잠시 후 결과를 다시 확인해 주세요."); }
       return;
     }
     const wire = await rpc.rpc("math_input", { dto_version: "math-input-v1", action: "read_result", payload: { evaluation_id: id } }) as { result: { output: typeof result } };
@@ -107,6 +112,7 @@ function Workspace({ client }: { client: SupabaseClient }) {
     if (!state.valid_evaluation_available) setNotice("평가 결과를 아직 확인할 수 없습니다. 잠시 후 결과를 다시 확인해 주세요.");
   }
   async function submit() {
+    setFrozen(true);
     let id = attempt;
     if (!id) {
       const payload = { client_submission_id: key("attempt"), leaf_id: leaf, kind: "INITIAL" as const,
@@ -127,7 +133,11 @@ function Workspace({ client }: { client: SupabaseClient }) {
     const response = prior ? await learnClient.requestReevaluation(attempt, key("evaluation")) :
       ((await rpc.rpc("math_input", { dto_version: "math-input-v1", action: "request_evaluation", payload: { attempt_id: attempt, client_submission_id: key("evaluation") } })) as { result: { evaluation_id: string } }).result;
     try { await gateway("evaluate", { evaluation_id: response.evaluation_id }); }
-    finally { await readEvaluation(response.evaluation_id); }
+    finally {
+      window.dispatchEvent(new Event("legendstudy:credit-refresh"));
+      await readEvaluation(response.evaluation_id);
+      await reloadHistory();
+    }
   }
   const regions = input?.candidate_regions ?? [];
   const readiness = { status: input?.can_request_evaluation ? "READY_FOR_EVALUATION" : "NEEDS_CONFIRMATION", confirmationRequired: regions.map(fromWireCandidateRegion) } as ReadinessResult;
@@ -136,18 +146,19 @@ function Workspace({ client }: { client: SupabaseClient }) {
   const chosen = catalog.find(row => row.leaf_id === leaf);
   return <main className="math-student" aria-busy={busy}>
     <h1>수리논술</h1><p>답안의 풀이 과정을 확인하고 다시 풀며 학습하세요.</p>
+    <p>1 Credit은 최초 첨삭 1회와 14일 이내 같은 답안의 재첨삭 1회를 포함합니다.</p>
     {notice && <p role="alert">{notice}</p>}
     <fieldset disabled={busy}>
       <label htmlFor="math-question">문제 선택</label>
-      <select id="math-question" value={leaf} disabled={!!attempt || !!prior} onChange={e => setLeaf(e.target.value)}>
+      <select id="math-question" value={leaf} disabled={frozen || !!prior} onChange={e => setLeaf(e.target.value)}>
         {catalog.map(row => <option key={row.leaf_id} value={row.leaf_id}>{row.label} · {row.statement.slice(0,80)}</option>)}
       </select>
       {!catalog.length && <p>현재 준비된 문제가 없습니다.</p>}
       {chosen && <section aria-label="문제"><p>{chosen.problem_statement}</p><p>{chosen.statement}</p></section>}
       <label htmlFor="math-answer">내 답안</label>
-      <textarea id="math-answer" value={answer} maxLength={30000} disabled={!!attempt} onChange={e => setAnswer(e.target.value)} rows={8} />
+      <textarea id="math-answer" value={answer} maxLength={30000} disabled={frozen} onChange={e => setAnswer(e.target.value)} rows={8} />
       <label htmlFor="math-file">답안 사진 또는 PDF (20MB 이하)</label>
-      <input id="math-file" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" disabled={!!attempt} onChange={e => {
+      <input id="math-file" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" disabled={frozen} onChange={e => {
         const selected = e.target.files?.[0] ?? null;
         if (selected && (selected.size > 20971520 || !["image/png","image/jpeg","image/webp","application/pdf"].includes(selected.type))) { setFile(null); setNotice("지원하는 사진 또는 20MB 이하 PDF를 선택해 주세요."); return; }
         setFile(selected);
@@ -159,9 +170,13 @@ function Workspace({ client }: { client: SupabaseClient }) {
         await inputClient.confirmExtraction(attempt!, String(input!.candidate?.run_id ?? input!.candidate?.id), regions.map(row => ({ region_id: row.region_id, raw_text: corrections[row.region_id], normalized_math: corrections[row.region_id] })));
         const state = await inputClient.readInput(attempt!); if (alive.current) setInput(state);
       })}>확인한 답안 저장</button>}
-      <button type="button" onClick={() => { setAttempt(null); setInput(null); setPrior(null); setLearning(null); setResult(null); setAnswer(""); setFile(null); setHints({}); setSolution(null); setCorrections({}); keys.current.clear(); }}>새 답안 작성</button>
+      <button type="button" onClick={() => { setFrozen(false); setAttempt(null); setInput(null); setPrior(null); setLearning(null); setResult(null); setAnswer(""); setFile(null); setHints({}); setSolution(null); setCorrections({}); keys.current.clear(); }}>새 답안 작성</button>
       {input?.can_request_evaluation && <button type="button" onClick={() => void run(evaluate)}>{prior ? "재첨삭 요청 · 포함 여부 확인" : "첨삭 요청 · 첨삭권 1개"}</button>}
       {learning && <button type="button" onClick={() => void run(() => readEvaluation(learning.evaluation_id))}>결과 다시 확인</button>}
+      {learning?.evaluation_state === "REQUESTED" && <button type="button" onClick={() => void run(async () => {
+        try { await gateway("evaluate", { evaluation_id: learning.evaluation_id }); }
+        finally { window.dispatchEvent(new Event("legendstudy:credit-refresh")); await readEvaluation(learning.evaluation_id); await reloadHistory(); }
+      })}>같은 첨삭 처리 다시 요청</button>}
       {learning?.valid_evaluation_available && <>
         <section aria-label="첨삭 결과"><h2>첨삭 결과</h2>
           {result?.overall?.explanation && <p>{result.overall.explanation.replace(/^[A-Z_]+$/, "답안의 풀이 과정과 개선 안내를 확인해 주세요.")}</p>}
@@ -180,7 +195,7 @@ function Workspace({ client }: { client: SupabaseClient }) {
             const result = await learnClient.revealSolution(learning.evaluation_id, selected.target, key("solution"), selected.solution_id);
             if (alive.current) setSolution(result);
           })}
-          onResolve={() => { setPrior(learning); setLeaf(learning.leaf_id); setAttempt(null); setInput(null); setAnswer(""); setFile(null); setCorrections({}); keys.current.clear(); }} solutionProvenance={solution?.provenance} />
+          onResolve={() => { setFrozen(false); setPrior(learning); setLeaf(learning.leaf_id); setAttempt(null); setInput(null); setAnswer(""); setFile(null); setCorrections({}); keys.current.clear(); }} solutionProvenance={solution?.provenance} />
         {solution && <section aria-label="해설"><h2>해설</h2><p>{solution.body}</p></section>}
         <LearningDelta view={summarizeReevaluationDelta(learning.reevaluation_delta as ReevaluationDelta | null)} />
       </>}

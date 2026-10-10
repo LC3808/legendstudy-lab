@@ -47,12 +47,14 @@ export function useCreditSummary(): { state: CreditState; reload: () => void } {
       else setState({ status: 'ready', value: r.data });
     }
     void load();
+    const refresh = () => { setState({ status: 'loading' }); setVersion(v => v + 1); };
+    window.addEventListener('legendstudy:credit-refresh', refresh);
     const subscription = client?.auth.onAuthStateChange((event) => {
       if (event === 'INITIAL_SESSION') return;
       setState({ status: 'loading' });
       setVersion(v => v + 1);
     });
-    return () => { active = false; subscription?.data.subscription.unsubscribe(); };
+    return () => { active = false; window.removeEventListener('legendstudy:credit-refresh', refresh); subscription?.data.subscription.unsubscribe(); };
   }, [version]);
   const reload = useCallback(() => { setState({ status: 'loading' }); setVersion(v => v + 1); }, []);
   return { state, reload };
