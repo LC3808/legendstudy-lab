@@ -18,7 +18,7 @@ const labs = [
   },
   {
     no: "02",
-    title: "모의·수능 LAB",
+    title: "수능 LAB",
     copy: "성적의 변화와 현재 위치를 확인합니다.",
   },
   {

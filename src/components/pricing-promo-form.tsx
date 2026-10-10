@@ -1,6 +1,6 @@
 "use client";
 
-import { paymentState, promotionCopy } from "@/lib/pricing";
+import { promotionCopy } from "@/lib/pricing";
 
 /**
  * Coupon / promotion code shell for the public pricing page.
@@ -35,7 +35,7 @@ export function PricingPromoForm() {
         </button>
       </div>
       <p className="pricing-promo__note" id={noteId} role="status">
-        {paymentState.promotionNote}
+        적용 준비 중
       </p>
     </form>
   );

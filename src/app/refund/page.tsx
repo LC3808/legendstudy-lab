@@ -21,8 +21,7 @@ export default function RefundPage() {
         <h1>환불정책</h1>
       </div>
       <p className="policy-page__lead">
-        LegendStudy LAB의 Credit 판매에 적용되는 환불 기준입니다. 결제 기능은 아직 열려 있지 않지만, 결제가 시작되면
-        이 기준이 적용됩니다.
+        LegendStudy LAB의 Credit 판매에 적용되는 환불 기준입니다.
       </p>
 
       <section className="policy-section">
@@ -61,7 +60,7 @@ export default function RefundPage() {
 
       <section className="policy-section">
         <h2>미사용 Credit 환불</h2>
-        <p>{refundPolicy.unused}을 환불합니다. 결제 수단과 결제 내역을 확인한 뒤 환불을 진행합니다.</p>
+        <p>{refundPolicy.unused}합니다. 결제 수단과 결제 내역을 확인한 뒤 환불을 진행합니다.</p>
       </section>
 
       <section className="policy-section">

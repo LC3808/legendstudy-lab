@@ -162,7 +162,6 @@ export const creditCopy = {
 export const purchaseGuide = {
   title: "구매 안내",
   items: [
-    "구매는 레전드스터디 랩 계정으로 로그인한 뒤 진행합니다.",
     "결제가 완료되면 구매한 Credit이 계정에 지급됩니다.",
     `Credit은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있으며, 서비스 최대 제공기간도 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월입니다.`,
     "1 Credit으로 최초 첨삭 1회와 동일 답안 재첨삭 1회를 이용합니다.",

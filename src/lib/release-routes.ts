@@ -1,7 +1,7 @@
 /** The same product destinations are public before and after sign-in. */
 export const publicReleaseRoutes = [
   { href: "/score-analysis/", label: "내신 LAB" },
-  { href: "/exam-analysis/", label: "모의·수능 LAB" },
+  { href: "/exam-analysis/", label: "수능 LAB" },
   { href: "/essay-lab/", label: "논술 LAB" },
   { href: "/pricing/", label: "이용 안내" },
 ] as const;

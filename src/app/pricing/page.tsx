@@ -93,7 +93,7 @@ export default function PricingPage() {
         <ol className="process-list">
           <li>
             <strong>최초 첨삭</strong>
-            <span>답안을 확인하고 대학별 평가·채점 기준에 맞춰 첨삭 결과와 개선점을 확인합니다.</span>
+            <span>답안을 제출하고 대학별 평가·채점 기준에 맞춰 첨삭 결과와 개선점을 확인합니다.</span>
           </li>
           <li>
             <strong>답안 수정</strong>

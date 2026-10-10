@@ -54,7 +54,7 @@ describe("student route integration",()=>{
   await screen.findByText("연습 문제 · 식을 계산하세요");
   fireEvent.change(screen.getByLabelText("내 답안"),{target:{value:"x = 2"}});
   fireEvent.click(screen.getByRole("button",{name:"답안 제출 · 입력 확인"}));
-  fireEvent.click(await screen.findByRole("button",{name:"첨삭 요청 · 첨삭권 1개"}));
+  fireEvent.click(await screen.findByRole("button",{name:"첨삭 진행"}));
   await screen.findByText("풀이를 확인했습니다");
   fireEvent.click(screen.getByRole("button",{name:"힌트 보기"}));await screen.findByText("양변의 부호를 확인하세요");
   fireEvent.click(screen.getByRole("button",{name:/해설/}));
@@ -63,7 +63,7 @@ describe("student route integration",()=>{
   fireEvent.click(screen.getByRole("button",{name:"답안을 다시 작성해 보세요"}));
   fireEvent.change(screen.getByLabelText("내 답안"),{target:{value:"x = 3"}});
   fireEvent.click(screen.getByRole("button",{name:"답안 제출 · 입력 확인"}));
-  fireEvent.click(await screen.findByRole("button",{name:"재첨삭 요청 · 포함 여부 확인"}));
+  fireEvent.click(await screen.findByRole("button",{name:"재첨삭"}));
   await waitFor(()=>expect(f.actions.some(x=>x.action==="request_reevaluation")).toBe(true));
   await waitFor(()=>expect(refresh).toHaveBeenCalledTimes(2));
   window.removeEventListener("legendstudy:credit-refresh", refresh);
@@ -78,7 +78,7 @@ describe("student route integration",()=>{
   fireEvent.click(screen.getByRole("button",{name:"답안 제출 · 입력 확인"}));
   const correction=await screen.findByLabelText("수정할 내용");fireEvent.change(correction,{target:{value:"x²"}});
   fireEvent.click(screen.getByRole("button",{name:"수정"}));fireEvent.click(screen.getByRole("button",{name:"확인한 답안 저장"}));
-  await screen.findByRole("button",{name:"첨삭 요청 · 첨삭권 1개"});
+  await screen.findByRole("button",{name:"첨삭 진행"});
   expect(f.actions.find(x=>x.action==="confirm_extraction")?.payload.run_id).toBe(uuid);
   expect(f.actions.find(x=>x.action==="confirm_extraction")?.payload.regions).toEqual([{region_id:uuid,raw_text:"x²",normalized_math:"x²"}]);
  });

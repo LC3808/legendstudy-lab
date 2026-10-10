@@ -4,7 +4,7 @@ import {afterEach,describe,expect,it,vi} from 'vitest';
 import {EssayRuntimeEntry} from './essay-runtime-entry';
 const state=vi.hoisted(()=>({auth:{} as Record<string,unknown>}));
 vi.mock('@/components/auth-context',()=>({useAuth:()=>state.auth}));
-vi.mock('@/components/math-release/student-route',()=>({MathStudentRoute:()=> <div>math-workspace</div>}));
+vi.mock('@/components/math-release/student-route',()=>({MathStudentRoute:({evaluationEnabled}:{evaluationEnabled:boolean})=> <div>math-workspace<button disabled={!evaluationEnabled}>첨삭 진행</button></div>}));
 const client={auth:{getSession:async()=>({data:{session:{access_token:'fixture'}}})}};
 function login(id='A'){state.auth={status:'authenticated',user:{id},client};}
 const response=(enabled:boolean)=>Response.json({version:'essay-web-v1',types:{math:enabled}});
@@ -23,6 +23,11 @@ describe('runtime admission entry',()=>{
   await screen.findByRole('alert');expect(screen.queryByText('math-workspace')).not.toBeInTheDocument();
   login('C');vi.stubGlobal('fetch',vi.fn(async()=>response(true)));view.rerender(<EssayRuntimeEntry workspace/>);
   await screen.findByText('math-workspace');
+ });
+ it('shows an approved catalog with evaluation disabled',async()=>{
+  login();vi.stubGlobal('fetch',vi.fn(async()=>Response.json({version:'essay-web-v1',catalog:{math:true},types:{math:false}})));
+  render(<EssayRuntimeEntry workspace/>);await screen.findByText('math-workspace');
+  expect(screen.getByRole('button',{name:'첨삭 진행'})).toBeDisabled();
  });
  it('discards previous account admission even when its response arrives after account switch',async()=>{
   let finish!:(value:Response)=>void;

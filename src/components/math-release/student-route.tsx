@@ -20,12 +20,12 @@ import type { CoreView, HintLevel } from "@/lib/math-learning/types";
 import "./student-route.css";
 type Catalog = { leaf_id: string; statement: string; problem_statement: string; label: string; response_format: string };
 const unavailable = "지금은 요청을 처리할 수 없습니다. 로그인 상태와 연결을 확인한 뒤 다시 시도해 주세요.";
-export function MathStudentRoute({ enabled }: { enabled: boolean }) {
+export function MathStudentRoute({ enabled, evaluationEnabled = enabled }: { enabled: boolean; evaluationEnabled?: boolean }) {
   const auth = useAuth();
   if (!enabled) return <main className="math-student"><h1>수리논술</h1><p>서비스를 준비하고 있습니다.</p><Link href="/">LAB 홈으로</Link></main>;
   if (auth.status === "loading") return <main className="math-student"><h1>수리논술</h1><p>로그인을 확인하고 있습니다.</p></main>;
   if (!auth.user || !auth.client) return <main className="math-student"><h1>수리논술</h1><p>내 답안과 학습 기록을 보려면 로그인해 주세요.</p><Link href="/login/">로그인</Link></main>;
-  return <Workspace key={auth.user.id} client={auth.client} />;
+  return <Workspace key={auth.user.id} client={auth.client} evaluationEnabled={evaluationEnabled} />;
 }
 function LocalPreview({ file }: { file: File }) {
   const image = useRef<HTMLImageElement>(null), link = useRef<HTMLAnchorElement>(null);
@@ -41,7 +41,7 @@ function LocalPreview({ file }: { file: File }) {
     // eslint-disable-next-line @next/next/no-img-element
     <img ref={image} alt="선택한 답안 미리보기" style={{ maxHeight: "24rem", objectFit: "contain" }} />;
 }
-function Workspace({ client }: { client: SupabaseClient }) {
+function Workspace({ client, evaluationEnabled }: { client: SupabaseClient; evaluationEnabled: boolean }) {
   const alive = useRef(true), keys = useRef(new Map<string, string>());
   const [catalog, setCatalog] = useState<Catalog[]>([]), [leaf, setLeaf] = useState("");
   const [answer, setAnswer] = useState(""), [file, setFile] = useState<File | null>(null);
@@ -155,6 +155,7 @@ function Workspace({ client }: { client: SupabaseClient }) {
       </select>
       {!catalog.length && <p>현재 준비된 문제가 없습니다.</p>}
       {chosen && <section aria-label="문제"><p>{chosen.problem_statement}</p><p>{chosen.statement}</p></section>}
+      {!evaluationEnabled && <p>문항을 확인할 수 있습니다. 현재 첨삭은 이용할 수 없습니다.</p>}
       <label htmlFor="math-answer">내 답안</label>
       <textarea id="math-answer" value={answer} maxLength={30000} disabled={frozen} onChange={e => setAnswer(e.target.value)} rows={8} />
       <label htmlFor="math-file">답안 사진 또는 PDF (20MB 이하)</label>
@@ -164,16 +165,16 @@ function Workspace({ client }: { client: SupabaseClient }) {
         setFile(selected);
       }} />
       {file && <><p>선택한 파일: {file.name}</p><LocalPreview key={file.name + file.lastModified} file={file}/></>}
-      <button type="button" disabled={!leaf || (!answer.trim() && !file)} onClick={() => void run(submit)}>답안 제출 · 입력 확인</button>
+      <button type="button" disabled={!evaluationEnabled || !leaf || (!answer.trim() && !file)} onClick={() => void run(submit)}>답안 제출 · 입력 확인</button>
       {input && <MathInputFlow readiness={readiness} onConfirm={intent => setCorrections(current => ({ ...current, [intent.regionId]: intent.confirmedRawText }))} />}
       {!!regions.length && !input?.can_request_evaluation && <button type="button" disabled={regions.some(row => corrections[row.region_id] === undefined)} onClick={() => void run(async () => {
         await inputClient.confirmExtraction(attempt!, String(input!.candidate?.run_id ?? input!.candidate?.id), regions.map(row => ({ region_id: row.region_id, raw_text: corrections[row.region_id], normalized_math: corrections[row.region_id] })));
         const state = await inputClient.readInput(attempt!); if (alive.current) setInput(state);
       })}>확인한 답안 저장</button>}
       <button type="button" onClick={() => { setFrozen(false); setAttempt(null); setInput(null); setPrior(null); setLearning(null); setResult(null); setAnswer(""); setFile(null); setHints({}); setSolution(null); setCorrections({}); keys.current.clear(); }}>새 답안 작성</button>
-      {input?.can_request_evaluation && <button type="button" onClick={() => void run(evaluate)}>{prior ? "재첨삭 요청 · 포함 여부 확인" : "첨삭 요청 · 첨삭권 1개"}</button>}
+      {input?.can_request_evaluation && <button type="button" disabled={!evaluationEnabled} onClick={() => void run(evaluate)}>{prior ? "재첨삭" : "첨삭 진행"}</button>}
       {learning && <button type="button" onClick={() => void run(() => readEvaluation(learning.evaluation_id))}>결과 다시 확인</button>}
-      {learning?.evaluation_state === "REQUESTED" && <button type="button" onClick={() => void run(async () => {
+      {learning?.evaluation_state === "REQUESTED" && <button type="button" disabled={!evaluationEnabled} onClick={() => void run(async () => {
         try { await gateway("evaluate", { evaluation_id: learning.evaluation_id }); }
         finally { window.dispatchEvent(new Event("legendstudy:credit-refresh")); await readEvaluation(learning.evaluation_id); await reloadHistory(); }
       })}>같은 첨삭 처리 다시 요청</button>}

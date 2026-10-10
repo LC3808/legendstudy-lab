@@ -10,9 +10,18 @@ afterEach(()=>vi.unstubAllGlobals());
 describe('four-type release boundary',()=>{
  it('keeps all types closed to anonymous and missing/expired server worker config without network or Credit calls',async()=>{
   const network=vi.fn();vi.stubGlobal('fetch',network);
-  for(const [req,bindings] of [[request(false),env],[request(),{}],[request(),{...env,MATH_EVALUATION_WORKER_JWT:jwt('math_evaluation_worker',0)}]] as const){
+  for(const [req,bindings] of [[request(false),env],[request(),{}]] as const){
    const res=await onRequestGet({request:req,env:bindings});expect(Object.values((await res.json()).types)).toEqual([false,false,false,false]);expect(res.headers.get('cache-control')).toContain('no-store');
   }expect(network).not.toHaveBeenCalled();
+ });
+ it('allows only approved catalog browsing while evaluation switches are off',async()=>{
+  for(const foreign of [false,true]) {
+   const calls:string[]=[];
+   vi.stubGlobal('fetch',vi.fn(async(input:string)=>{calls.push(input);return Response.json(input.endsWith('/auth/v1/user')?{id:foreign?'00000000-0000-4000-8000-000000000002':id}:[{leaf_id:id}]);}));
+   const body=await (await onRequestGet({request:request(),env:{...env,MATH_ENABLED:'false',MATH_PROVIDER_CALLS_ENABLED:'false'}})).json();
+   expect(body.catalog.math).toBe(!foreign);expect(body.types.math).toBe(false);
+   expect(calls.some(x=>/evaluation|reserve|provider|runtime_status/.test(x))).toBe(false);
+  }
  });
  it('requires verified subject, enabled DB switch and catalog; mixed/science/human worker cannot be inferred from Math',async()=>{
   const calls:string[]=[];

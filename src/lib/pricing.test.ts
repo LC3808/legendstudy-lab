@@ -250,7 +250,7 @@ describe("public document state", () => {
 describe("purchase guide", () => {
   it("states the facts a consumer must read before paying", () => {
     const joined = purchaseGuide.items.join(" ");
-    expect(joined).toContain("로그인");
+    expect(joined).not.toContain("구매는 레전드스터디 랩 계정");
     expect(joined).toContain("Credit이 계정에 지급");
     expect(joined).toContain("3개월");
     expect(joined).toContain("자동 갱신 결제가 없습니다");

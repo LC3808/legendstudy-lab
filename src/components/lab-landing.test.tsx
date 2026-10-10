@@ -13,7 +13,7 @@ describe("Axis Data Tracks landing", () => {
     expect(screen.getByRole("heading", { level: 1, name: "데이터가 쌓일수록,나의 가능성은 선명해집니다." })).toBeInTheDocument();
     expect(screen.getAllByText("하나의 기록으로 연결됩니다.")).toHaveLength(1);
 
-    for (const title of ["내신 LAB", "모의·수능 LAB", "논술 LAB"]) {
+    for (const title of ["내신 LAB", "수능 LAB", "논술 LAB"]) {
       expect(screen.getByRole("heading", { level: 3, name: title })).toBeInTheDocument();
     }
 

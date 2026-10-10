@@ -75,7 +75,7 @@ describe("release routes", () => {
     ]);
     expect(authenticatedProductRoutes.map((route) => route.label)).toEqual([
       "내신 LAB",
-      "모의·수능 LAB",
+      "수능 LAB",
       "논술 LAB",
       "이용 안내",
     ]);
