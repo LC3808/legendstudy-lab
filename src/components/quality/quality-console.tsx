@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import {QualityBack} from "./quality-back";
+import {MathQualityRead} from "./math-quality-read";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useAuth } from "@/components/auth-context";
@@ -64,6 +66,7 @@ function OperatorGateView({ auth }: { auth: ReturnType<typeof useAuth> }) {
     () => (auth.client ? createHumanReviewClient(auth.client) : null),
     [auth.client],
   );
+  const [source,setSource]=useState<"general"|"math">("general");
   const [gate, setGate] = useState<OperatorGate>("checking");
   const [errorKind, setErrorKind] = useState<QualityErrorKind | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
@@ -130,7 +133,7 @@ function OperatorGateView({ auth }: { auth: ReturnType<typeof useAuth> }) {
     );
   }
 
-  return <QualityWorkspace quality={quality as QualityClient} humanReview={humanReview as HumanReviewClient} />;
+  return <><div className="content-wrap content-wrap--wide ql-source-controls"><QualityBack/><div role="group" aria-label="논술 유형"><button className="button button--outline button--small" aria-pressed={source==='general'} onClick={()=>setSource('general')}>일반 논술</button><button className="button button--outline button--small" aria-pressed={source==='math'} onClick={()=>setSource('math')}>수리논술</button></div></div>{source==='math'&&auth.client?<MathQualityRead client={auth.client}/>:<QualityWorkspace quality={quality as QualityClient} humanReview={humanReview as HumanReviewClient}/>}</>;
 }
 
 function GateShell({ children }: { children: React.ReactNode }) {

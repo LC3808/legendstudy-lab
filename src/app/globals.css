@@ -1548,3 +1548,8 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
   .pricing-page .pricing-free__state { white-space: normal; }
   .refund-page .business-info > div { grid-template-columns: minmax(0, 1fr); }
 }
+
+.lab-preview-button:disabled, .lab-preview-button:disabled:hover, .lab-preview-button:disabled:active {
+  color:var(--ink-soft); background:var(--surface-muted); border-color:var(--line);
+  cursor:not-allowed; transform:none;
+}

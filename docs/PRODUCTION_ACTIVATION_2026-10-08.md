@@ -227,3 +227,38 @@ Public activation remains HOLD; Math flags and DB evaluation switch stay OFF,
 existing single-account allowlist retained. No APP main merge or store submission.
 Prior actual Math E2E evidence and its unresolved OAuth/first-install/orphan recovery
 and Worker-expiry follow-ups remain in the preceding section, outside this UI task.
+
+## Admin quality and LAB preview — 2026-10-10
+
+Existing `/ql` only consumed `ql_list_cases`/`ql_case_detail` (essay_evaluations).
+Live read-only audit: general evaluations0, completed Math8, linked reevaluations4,
+Math human judgments0. Empty general list does not mean missing History.
+`qlm_quality` and operator-gated `qlm_list_cases`/`qlm_case_detail`/`qlm_review_state`
+already exist. Completed active-student Math evaluations are selected directly;
+there is no separate QA-case registration required. Existing Math client fixtures
+have a different nested detail/review DTO shape than live projections. A bounded
+read adapter in the same module consumes the verified wire shape without changing
+RPCs, models or old consumer contracts. General console/review writes are preserved.
+
+UI: general/Math selectors preserve two-column list/detail. Math uses existing
+EvaluationReport/mathReport and comparison for initial/linked revised results.
+Answers load only on selection; list has evaluation date/short evaluation ID,
+no account identity/answer bodies. Unreviewed filter uses stored human_review_state,
+not student score or inferred judgment. This added Math surface is read-only;
+no judgment is fabricated or submitted. Missing university/year metadata is not
+invented; current detail RPC exposes problem/leaf/profile but not problem-set
+university/year joins. Existing stored feedback/rubric/answer/comparison displayed.
+
+Authorization: is_quality_operator + lifecycle checks remain authoritative;
+qlm wrapper/domain RPCs recheck operator and subject state. math_attempts,
+math_evaluations, quality_operators, human_quality_judgments have RLS enabled and
+anon/authenticated direct SELECT denied. No grants, migrations, policy, production
+record mutations, Provider calls or Credit transactions. Public HOLD unchanged.
+
+Added neutral back button with same-origin prior-page check and /admin fallback
+for direct/external entry; does not alter Auth. Both score preview routes share
+one disabled gray button with no link or active hover behavior, preserving headings.
+TypeScript, ESLint and production static build PASS;151 related tests PASS across
+14 suites (quality auth/read/review, Math adapter, admin operations, preview, reports).
+Production UI/responsive verification and deployed SHA are recorded in Unified Wiki
+at final closeout; do not infer deployment from this source commit alone.

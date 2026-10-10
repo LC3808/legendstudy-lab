@@ -117,8 +117,8 @@ export function QualityCaseList({
 
       {state === "loaded" && cases.length === 0 ? (
         <div className="ql-state ql-state--empty" data-availability="empty">
-          <p>검토할 논술 평가가 아직 없습니다.</p>
-          <small>실제 평가 사례가 생성되면 최신순으로 이곳에 표시됩니다.</small>
+          <p>등록된 일반 논술 평가가 없습니다.</p>
+          <small>수리논술 평가는 상단의 수리논술에서 확인하세요.</small>
         </div>
       ) : null}
 

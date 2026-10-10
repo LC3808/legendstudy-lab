@@ -55,3 +55,32 @@ export class MathQualityClient {
     return callRuntime<QlmHistoryResult>(this.transport, "qlm_quality", QLM_RUNTIME_DTO, "history", payload);
   }
 }
+
+/** Production read projection (verified against deployed qlm_* RPCs). The older
+ * domain fixtures are not the stored-result wire shape. Never coerce them. */
+export type StoredMathCase={evaluation_id:string;completed_at:string;leaf_id:string};
+export type StoredMathDetail=Record<string,unknown>&{dto_version:'qlm-read-v1';evaluation_id:string};
+export type StoredMathReview={math_evaluation_id:string;availability:string;human_review_state?:string;total_count?:number};
+export class StoredMathQualityReader {
+ constructor(private readonly transport:MathRpcTransport){}
+ private async read(action:string,payload:Record<string,unknown>,version:string){
+  const value=await callRuntime<Record<string,unknown>>(this.transport,'qlm_quality',QLM_RUNTIME_DTO,action,payload);
+  if(!value||value.dto_version!==version)throw Error('INVALID_QUALITY_RESPONSE');
+  return value;
+ }
+ async list(before?:StoredMathCase){
+  const value=await this.read('list',{limit:50,...(before?{before_at:before.completed_at,before_id:before.evaluation_id}:{})},'qlm-read-v1');
+  if(!Array.isArray(value.cases)||value.cases.some(v=>!v||typeof v.evaluation_id!=='string'||typeof v.completed_at!=='string'||typeof v.leaf_id!=='string'))throw Error('INVALID_QUALITY_RESPONSE');
+  return value.cases as StoredMathCase[];
+ }
+ async detail(id:string){
+  const value=await this.read('detail',{evaluation_id:id},'qlm-read-v1');
+  if(value.evaluation_id!==id||typeof value.output!=='object'||!value.output)throw Error('INVALID_QUALITY_RESPONSE');
+  return value as StoredMathDetail;
+ }
+ async reviewState(ids:string[]){
+  const value=await this.read('review_state',{evaluation_ids:ids},'hq-math-read-v1');
+  if(!Array.isArray(value.cases)||value.cases.some(v=>!v||typeof v.math_evaluation_id!=='string'||typeof v.availability!=='string'))throw Error('INVALID_QUALITY_RESPONSE');
+  return value.cases as StoredMathReview[];
+ }
+}

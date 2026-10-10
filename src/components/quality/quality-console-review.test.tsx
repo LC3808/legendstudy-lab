@@ -17,6 +17,8 @@ const reviewRows: HqCaseReviewState[] = [
   { evaluation_id: ID2, availability: "AVAILABLE", human_review_state: "UNREVIEWED", active_count: 0, has_material_issue: false },
 ];
 
+vi.mock("next/navigation",()=>({useRouter:()=>({back:vi.fn(),replace:vi.fn()})}));
+
 const mocks = vi.hoisted(() => ({
   auth: { status: "authenticated" as string, client: {} as unknown, user: { id: "u-1", email: "op@example.com" } as unknown },
   quality: { isOperator: vi.fn(), listCases: vi.fn(), getCaseDetail: vi.fn() },

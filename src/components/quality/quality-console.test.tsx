@@ -12,6 +12,8 @@ import {
 } from "@/lib/quality/fixtures";
 import { parseListEnvelope } from "@/lib/quality/contract";
 
+vi.mock("next/navigation",()=>({useRouter:()=>({back:vi.fn(),replace:vi.fn()})}));
+
 const mocks = vi.hoisted(() => ({
   auth: { status: "authenticated" as string, client: {} as unknown, user: { id: "u-1", email: "op@example.com" } as unknown },
   quality: {
@@ -66,7 +68,7 @@ describe("QualityConsole operator workspace", () => {
     mocks.quality.isOperator.mockResolvedValue(true);
     mocks.quality.listCases.mockResolvedValue(emptyPage);
     render(<QualityConsole />);
-    expect(await screen.findByText("검토할 논술 평가가 아직 없습니다.")).toBeInTheDocument();
+    expect(await screen.findByText("등록된 일반 논술 평가가 없습니다.")).toBeInTheDocument();
   });
 
   it("T7 + T11: operator sees populated list and NO answer body in the list", async () => {

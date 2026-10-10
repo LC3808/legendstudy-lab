@@ -624,3 +624,9 @@
   overflow-wrap: anywhere;
   min-width: 0;
 }
+
+.ql-source-controls { display:flex; flex-wrap:wrap; align-items:center; gap:1rem; padding-top:1.5rem; }
+.ql-source-controls [role="group"] { display:flex; flex-wrap:wrap; gap:.5rem; }
+.ql-source-controls button[aria-pressed="true"] { background:var(--ink); color:white; }
+.ql-workspace__detail, .ql-workspace__list { min-width:0; overflow-wrap:anywhere; }
+.ql-workspace__detail .essay-answer { white-space:pre-wrap; overflow-wrap:anywhere; }
