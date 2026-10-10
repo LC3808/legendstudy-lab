@@ -25,11 +25,15 @@ vi.mock("@/lib/browser-auth-client", () => ({
   getBrowserAuthClient: () => mockClient,
 }));
 
+let pathname = "/essay-lab/";
+vi.mock("next/navigation", () => ({ usePathname: () => pathname }));
+
 const ready = { dto_version: "credit-v1", spendable: 5, paid: 2, free: 3, other: 0, next_expiry: "2027-01-07T14:59:59.000Z" };
 
 beforeEach(() => {
   mockClient.rpc.mockReset();
-  mockClient.auth.getSession.mockClear();
+  mockClient.auth.getSession.mockResolvedValue({ data: { session: { user: { id: "user-1" } } } });
+  pathname = "/essay-lab/";
 });
 
 describe("one Credit authority for MY and 논술 LAB", () => {
@@ -74,6 +78,26 @@ describe("one Credit authority for MY and 논술 LAB", () => {
     await screen.findByText("5개");
     mockClient.rpc.mockResolvedValue({ data: { ...ready, spendable: 4, free: 2 }, error: null });
     act(() => window.dispatchEvent(new Event("legendstudy:credit-refresh")));
+    await screen.findByText("4개");
+    expect(screen.getByText(/사용 가능 4 Credits/)).toBeInTheDocument();
+  });
+
+  it("reloads the persistent header after another device spends Credit and the route changes", async () => {
+    mockClient.rpc.mockResolvedValue({ data: ready, error: null });
+    const view = render(<EssayCreditStatus />);
+    await screen.findByText("5개");
+    mockClient.rpc.mockResolvedValue({ data: { ...ready, spendable: 4, free: 2 }, error: null });
+    pathname = "/my/essays/";
+    view.rerender(<EssayCreditStatus />);
+    await screen.findByText("4개");
+  });
+
+  it.each(["focus", "visibilitychange"])("refreshes all balances on %s after an external spend", async (event) => {
+    mockClient.rpc.mockResolvedValue({ data: ready, error: null });
+    render(<><CreditBalance /><EssayCreditStatus /></>);
+    await screen.findByText("5개");
+    mockClient.rpc.mockResolvedValue({ data: { ...ready, spendable: 4, free: 2 }, error: null });
+    act(() => (event === "focus" ? window : document).dispatchEvent(new Event(event)));
     await screen.findByText("4개");
     expect(screen.getByText(/사용 가능 4 Credits/)).toBeInTheDocument();
   });

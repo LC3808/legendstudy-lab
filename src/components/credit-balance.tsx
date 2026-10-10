@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { getBrowserAuthClient } from '@/lib/browser-auth-client';
 
 export type CreditSummary = {dto_version:string;spendable:number;paid:number;free:number;other:number;next_expiry:string|null};
@@ -33,6 +34,7 @@ export type CreditState =
 export function useCreditSummary(): { state: CreditState; reload: () => void } {
   const [state, setState] = useState<CreditState>({ status: 'loading' });
   const [version, setVersion] = useState(0);
+  const pathname = usePathname();
   useEffect(() => {
     let active = true;
     const client = getBrowserAuthClient();
@@ -48,14 +50,23 @@ export function useCreditSummary(): { state: CreditState; reload: () => void } {
     }
     void load();
     const refresh = () => { setState({ status: 'loading' }); setVersion(v => v + 1); };
+    const visible = () => { if (document.visibilityState === 'visible') refresh(); };
     window.addEventListener('legendstudy:credit-refresh', refresh);
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', visible);
     const subscription = client?.auth.onAuthStateChange((event) => {
       if (event === 'INITIAL_SESSION') return;
       setState({ status: 'loading' });
       setVersion(v => v + 1);
     });
-    return () => { active = false; window.removeEventListener('legendstudy:credit-refresh', refresh); subscription?.data.subscription.unsubscribe(); };
-  }, [version]);
+    return () => {
+      active = false;
+      window.removeEventListener('legendstudy:credit-refresh', refresh);
+      window.removeEventListener('focus', refresh);
+      document.removeEventListener('visibilitychange', visible);
+      subscription?.data.subscription.unsubscribe();
+    };
+  }, [version, pathname]);
   const reload = useCallback(() => { setState({ status: 'loading' }); setVersion(v => v + 1); }, []);
   return { state, reload };
 }
