@@ -78,6 +78,14 @@ export class StoredMathQualityReader {
   if(value.evaluation_id!==id||typeof value.output!=='object'||!value.output)throw Error('INVALID_QUALITY_RESPONSE');
   return value as StoredMathDetail;
  }
+ async history(id:string, before?:{created_at:string;judgment_id:string}) {
+  const value=await this.read('history',{evaluation_id:id,limit:20,...(before?{before_at:before.created_at,before_id:before.judgment_id}:{})},'hq-math-read-v1');
+  if(!Array.isArray(value.judgments))throw Error('INVALID_QUALITY_RESPONSE');
+  return value;
+ }
+ async submit(judgment:Record<string,unknown>) {
+  return this.read('submit_judgment',{judgment},'hq-math-write-v1');
+ }
  async reviewState(ids:string[]){
   const value=await this.read('review_state',{evaluation_ids:ids},'hq-math-read-v1');
   if(!Array.isArray(value.cases)||value.cases.some(v=>!v||typeof v.math_evaluation_id!=='string'||typeof v.availability!=='string'))throw Error('INVALID_QUALITY_RESPONSE');

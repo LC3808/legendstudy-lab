@@ -4,6 +4,8 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { StoredMathQualityReader, type StoredMathCase, type StoredMathDetail, type StoredMathReview } from '@/lib/math-quality/runtime/quality-client';
 import { mathReport, object, text } from '@/lib/my/evaluation-report';
 import { EvaluationReport, EvaluationComparison } from '@/components/my/evaluation-report';
+import { traceGroups, answerChanges } from '@/lib/math-quality/traceability';
+import { MathReviewHistory } from './math-review-history';
 import { QlSection, QlStructuredValue } from './quality-primitives';
 /** Read-only existing operator RPCs. No review writes, direct tables or service key. */
 export function MathQualityRead({ client }: {
@@ -14,9 +16,10 @@ export function MathQualityRead({ client }: {
     const [cases, setCases] = useState<StoredMathCase[]>([]), [reviews, setReviews] = useState<StoredMathReview[]>([]);
     const [busy, setBusy] = useState(true), [error, setError] = useState(false), [more, setMore] = useState(false), [reload, setReload] = useState(0), [unreviewed, setUnreviewed] = useState(false);
     const [selected, setSelected] = useState<string | null>(null), [detail, setDetail] = useState<StoredMathDetail | null>(null), [prior, setPrior] = useState<StoredMathDetail | null>(null), [detailError, setDetailError] = useState(false);
+    const [details, setDetails] = useState<Record<string, StoredMathDetail>>({});
     const generation = useRef(0), selection = useRef(0);
-    useEffect(() => { const generations = generation, selections = selection; const g = ++generations.current; reader.list().then(async (rows) => ({ rows, states: rows.length ? await reader.reviewState(rows.map(r => r.evaluation_id)) : [] })).then(({ rows, states }) => { if (g !== generation.current)
-        return; setCases(rows); setReviews(states); setMore(rows.length === 50); setBusy(false); }).catch(() => { if (g === generation.current) {
+    useEffect(() => { const generations = generation, selections = selection; const g = ++generations.current; reader.list().then(async (rows) => ({ rows, states: rows.length ? await reader.reviewState(rows.map(r => r.evaluation_id)) : [], loaded: await Promise.all(rows.map(r => reader.detail(r.evaluation_id))) })).then(({ rows, states, loaded }) => { if (g !== generation.current)
+        return; setDetails(Object.fromEntries(loaded.map(d => [d.evaluation_id,d]))); setCases(rows); setReviews(states); setMore(rows.length === 50); setBusy(false); }).catch(() => { if (g === generation.current) {
         setError(true);
         setBusy(false);
     } }); return () => { generations.current++; selections.current++; }; }, [reader, reload]);
@@ -24,10 +27,12 @@ export function MathQualityRead({ client }: {
     const loadMore = async () => { const g = generation.current; setBusy(true); try {
         const rows = await reader.list(cases.at(-1));
         const states = rows.length ? await reader.reviewState(rows.map(r => r.evaluation_id)) : [];
+        const loaded = await Promise.all(rows.map(r => reader.detail(r.evaluation_id)));
         if (g !== generation.current)
             return;
         setCases(v => [...v, ...rows.filter(r => !v.some(c => c.evaluation_id === r.evaluation_id))]);
         setReviews(v => [...v, ...states]);
+        setDetails(v => ({...v,...Object.fromEntries(loaded.map(d=>[d.evaluation_id,d]))}));
         setMore(rows.length === 50);
     }
     catch {
@@ -59,13 +64,16 @@ export function MathQualityRead({ client }: {
  <div className="ql-list__filters"><label><input type="checkbox" checked={unreviewed} onChange={e => setUnreviewed(e.target.checked)}/>미검토만 (불러온 범위)</label><button className="button button--outline button--small" onClick={next} disabled={!cases.some(c => isUnreviewed(c.evaluation_id))}>다음 미검토</button></div>
  {busy && <p role="status">목록을 확인하고 있습니다.</p>}{error && <p role="alert">수리논술 기록을 불러오지 못했습니다. 권한과 연결 상태를 확인해 주세요.</p>}
  {!busy && !error && !visible.length && <p className="ql-state">현재 조건에 맞는 수리논술 평가가 없습니다.</p>}
- <ul className="ql-list__items">{visible.map(c => <li key={c.evaluation_id}><button className={`ql-case ${selected === c.evaluation_id ? 'ql-case--selected' : ''}`} onClick={() => void select(c.evaluation_id)} aria-pressed={selected === c.evaluation_id}><strong>수리논술 · {new Date(c.completed_at).toLocaleString('ko-KR')}</strong><span>{isUnreviewed(c.evaluation_id) ? '미검토' : '검수 상태 확인됨'}</span><span className="ql-case__meta">평가 {c.evaluation_id.slice(0, 8)}</span></button></li>)}</ul>{more && <button className="button button--outline ql-list__more" onClick={() => void loadMore()} disabled={busy}>더 불러오기</button>}</div></aside>
+ <p className="ql-privacy-note">사용자 가명키·대학·학년도는 현재 조회 계약에 없어 미확인으로 표시합니다. 답안 과정은 명시된 이전 평가 관계로만 연결합니다.</p>
+ {traceGroups(cases.filter(c=>details[c.evaluation_id]).map(c=>({...c,detail:details[c.evaluation_id]}))).map(g=><section key={g.key}><h2>{g.label}</h2><p>수리논술 · {g.rubric}</p>{g.processes.map(p=><section key={p.id}><h3>답안 과정 {p.id.slice(0,8)}</h3><p>사용자: 확인되지 않음</p>{p.reason&&<p role="status">{p.reason}</p>}<ul className="ql-list__items">{p.records.filter(c=>visible.some(v=>v.evaluation_id===c.evaluation_id)).map(c=><li key={c.evaluation_id}><button className={`ql-case ${selected===c.evaluation_id?'ql-case--selected':''}`} onClick={()=>void select(c.evaluation_id)} aria-pressed={selected===c.evaluation_id}><strong>{text(c.detail.prior_evaluation_id)?'재첨삭':'최초 첨삭'} · {new Date(c.completed_at).toLocaleString('ko-KR')}</strong><span>{isUnreviewed(c.evaluation_id)?'미검토':'검수 상태 확인'}</span><span className="ql-case__meta">평가 {c.evaluation_id.slice(0,8)}</span></button></li>)}</ul></section>)}</section>)}{more && <button className="button button--outline ql-list__more" onClick={() => void loadMore()} disabled={busy}>더 불러오기</button>}</div></aside>
  <main className="ql-workspace__detail" aria-label="수리논술 평가 상세"><div className="ql-detail"><p className="eyebrow">CASE DETAIL</p>{detailError ? <p role="alert">평가 상세를 불러오지 못했습니다.</p> : !detail ? <p>{selected ? '평가를 확인하고 있습니다.' : '왼쪽에서 평가를 선택하세요.'}</p> : <>
  <h2>{text(object(detail.problem).title) || '수리논술'} · {text(object(detail.leaf).label) || '문항'}</h2>
  <p>{prior ? '재첨삭' : '최초 첨삭'} · {cases.find(c => c.evaluation_id === detail.evaluation_id)?.completed_at ? new Date(cases.find(c => c.evaluation_id === detail.evaluation_id)!.completed_at).toLocaleString('ko-KR') : ''}</p>
  <p className="ql-privacy-note">계정 식별정보는 표시하지 않습니다. 답안은 품질 검수 목적으로만 확인하세요.</p>
- <QlSection title="관리자 검수 상태"><QlStructuredValue value={reviews.find(r => r.math_evaluation_id === detail.evaluation_id)?.human_review_state ?? null}/><p>기존 검수 이력은 보존됩니다. 이 수리논술 화면은 조회 전용입니다.</p></QlSection>
+ <QlSection title="관리자 검수 상태"><QlStructuredValue value={reviews.find(r => r.math_evaluation_id === detail.evaluation_id)?.human_review_state ?? null}/><p>AI 평가의 품질을 검토하며 학생의 성적을 변경하지 않습니다.</p></QlSection>
  {prior && <EvaluationReport report={mathReport(prior)} title="최초 답안과 첨삭" voiceType="math"/>}<EvaluationReport report={mathReport(detail)} title={prior ? '재작성 답안과 재첨삭' : '제출 답안과 첨삭'} voiceType="math"/>{prior && <EvaluationComparison before={mathReport(prior)} after={mathReport(detail)}/>} 
+ {prior&&<QlSection title="조언과 수정 추적"><h3>AI가 제시한 조언</h3>{mathReport(prior).actions.length?mathReport(prior).actions.map((a,i)=><p key={i}>{a}</p>):<p>저장된 개선 조언이 없습니다.</p>}<h3>학생 답안의 실제 문장 변경</h3><p>문장 차이이며 조언 수용 여부나 인과관계를 뜻하지 않습니다.</p><h4>이전 답안에만 있는 문장</h4>{answerChanges(mathReport(prior).answer,mathReport(detail).answer).removed.map((a,i)=><p key={i}>{a}</p>)}<h4>재작성 답안에만 있는 문장</h4>{answerChanges(mathReport(prior).answer,mathReport(detail).answer).added.map((a,i)=><p key={i}>{a}</p>)}<p>학생 만족도·학습 경험: 확인되지 않음</p></QlSection>}
+ <MathReviewHistory key={detail.evaluation_id} reader={reader} detail={detail}/>
  <QlSection title="평가 기준 근거"><QlStructuredValue value={detail.criteria}/></QlSection>
  </>}</div></main></div></div>;
 }

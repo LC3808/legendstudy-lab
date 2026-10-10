@@ -262,3 +262,83 @@ TypeScript, ESLint and production static build PASS;151 related tests PASS acros
 14 suites (quality auth/read/review, Math adapter, admin operations, preview, reports).
 Production UI/responsive verification and deployed SHA are recorded in Unified Wiki
 at final closeout; do not infer deployment from this source commit alone.
+
+## Quality traceability refinement — 2026-10-10
+
+Owner scope: source/contract/automated validation only on APP; no mobile device,
+ADB, installation, login or logout. New independent branch
+`codex/quality-traceability-refinement` starts from verified UX closeout.
+
+### Verified relationships and limits
+
+Read-only Production audit: 8 completed Math evaluations, 1 student, 4 independent
+lineages, 4 explicit prior-evaluation edges; 0 cross-student or cross-lineage edges.
+All 8 have source bindings and output hashes. General evaluations0 and Math human
+judgments0. No rows or Credit ledger were modified. UI groups by canonical problem
+and pinned evaluation profile/rubric, then follows explicit prior-evaluation edges.
+Independent roots remain separate even for one student/problem. Cycles, foreign
+leaves and missing parents are not silently merged. Pagination scope is explicit.
+Answers and stored feedback remain original; literal line edits do not claim that
+advice caused improvement. Existing comparable-rubric checks remain authoritative.
+Student satisfaction/experience without responses is explicitly unconfirmed.
+
+**PARTIAL metadata boundary:** deployed `qlm_list_cases` returns evaluation/date/leaf
+only; detail returns attempt/prior/problem/profile but omits student/lineage and
+exam/university metadata. The UI cannot safely provide cross-process user grouping,
+pseudonym or university/year classification. It displays missing information rather
+than deriving a user from attempt ID. Problem IDs remain distinct under the missing
+metadata heading. Current active content is `Math synthetic smoke` / 합성 검증 문제,
+2026, verification_status=review, not an official exam offering.
+
+Minimal Owner-review proposal (NOT APPLIED): extend only the existing operator read
+projection with server-derived purpose-scoped student reference, lineage/root keys,
+problem-set/exam/university IDs, verified names/year and rubric version. Prefer a
+server-generated stable reference; do not expose raw Auth UID/name/email. A pseudonym
+remains personal data and must keep the existing lifecycle/operator fence. Preserve
+current DTO fields, sorting/cursors and ACLs; no new table, RLS grant, history rewrite,
+backfill or QA registration. Acceptance: 8 evaluations => 1 pseudonymous user /4
+separate lineages,4 correct pairs; unrelated user/lineage fixtures remain separated;
+anonymous/nonoperator denied. Any SQL-function migration requires separate Owner
+approval and the canonical APP migration/rollback workflow before deployment.
+
+### Existing Human Review reuse
+
+Math history and deliberate review submission use existing `qlm_quality` history /
+submit_judgment actions and hq-math-write-v1 (11 canonical dimensions, output hash,
+server-derived reviewer and idempotency key). No read RPC acquires write privileges.
+Absent artifacts use existing conditional NA rules; no prefilled positive verdict.
+Unknown save responses retry the same immutable payload/key. History denial blocks
+save. New UI saves append to existing history; it never alters student evaluation.
+No production review was submitted during QA. Automated write tests are mocks.
+RLS=true and authenticated direct SELECT/INSERT=false on all4 protected tables;
+anon RPC execute=false, authenticated execute=true with existing operator/lifecycle
+checks verified in deployed definitions. This is an ACL audit, not new live role E2E.
+
+### WEB service audit
+
+| Flow | Current evidence |
+|---|---|
+| Math catalog/detail/answer | IMPLEMENTED; active synthetic problem1; approved catalog read remains separate from evaluation flags |
+| Image upload/extraction | IMPLEMENTED; prior real PNG/private upload/extraction acceptance retained; PDF/native image not newly verified |
+| Submission/Provider/Credit/reevaluation/History | IMPLEMENTED; prior real E2E retained, current code/contract tests only; no new Provider/Credit transaction |
+| Quality link | IMPLEMENTED; reads same stored evaluations and explicit prior relations |
+| Humanities | PARTIAL; canonical general contracts/provider foundation exist, published questions0/criteria0/evaluations0 prevent actual service acceptance |
+| Econ/Business | PARTIAL; reviewed mixed-component planning/one-parent persistence candidate exists; canonical deployed composition RPC/provider/content binding not verified for activation |
+| Science | PARTIAL; adapter/schema/validation foundation exists; reviewed official content/rubric/production binding and actual provider acceptance absent |
+
+All non-Math availability values remain false. No speculative provider/schema engine
+was added. Existing Private Storage/GATE/allowlist/Credit settlement maintained.
+Current CF flags false; encrypted Worker bindings are masked by CF API, so expiry
+cannot be freshly decoded from that read. Last verified expiry is Oct16 18:57:41 KST.
+Renewal: Owner-controlled existing dedicated signer issues only the existing Math
+worker roles for this project, check role/iss/aud/exp without logging token, replace
+only corresponding encrypted Pages bindings, redeploy and verify admission while
+keeping flags OFF. Never rotate global Auth keys or substitute service_role. Renewal
+is separate from this UI release; no credential was issued or changed here.
+
+Preservation review: (1) existing submission/evaluation/review times retained;
+(2) original answers/results/hash/source remain reproducible; (3) no evaluation
+UPDATE or historical backfill; (4) canonical student identity stays server-side;
+(5) learning/interest/application/outcome remain distinct; (6) operator-only minimum
+PII and existing retention/lifecycle gates; (7) comparison is derived, not stored
+as a new fact or student-satisfaction measure.

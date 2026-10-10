@@ -43,6 +43,7 @@ function fakeClient() {
                 result = { dto_version: 'qlm-read-v1', cases: rows };
             else if (r.action === 'review_state')
                 result = { dto_version: 'hq-math-read-v1', cases: rows.map((x, i) => ({ math_evaluation_id: x.evaluation_id, availability: 'AVAILABLE', human_review_state: i ? 'REVIEWED_ACCEPTABLE' : 'UNREVIEWED' })) };
+            else if (r.action === 'history') result = {dto_version:'hq-math-read-v1',judgments:[],next_cursor:null};
             else
                 result = { dto_version: 'qlm-read-v1', evaluation_id: r.payload.evaluation_id, typed_answer: r.payload.evaluation_id === 'first' ? 'First stored answer' : 'Revised stored answer', prior_evaluation_id: r.payload.evaluation_id === 'revised' ? 'first' : null, output: { overall: { explanation: 'Stored provider result' } }, leaf: { statement: 'Original question' } };
             return { data: { dto_version: 'qlm-runtime-v1', action: r.action, result }, error: null };
@@ -58,9 +59,9 @@ describe('stored Math quality read-only integration', () => {
         fireEvent.click(screen.getByRole('button', { name: '다음 미검토' }));
         await screen.findByRole('heading', { name: '최초 답안과 첨삭' });
         expect(screen.getByRole('heading', { name: '재작성 답안과 재첨삭' })).toBeVisible();
-        expect(screen.getByText('First stored answer')).toBeInTheDocument();
-        expect(screen.getByText('Revised stored answer')).toBeInTheDocument();
-        expect(c.rpc.mock.calls.every(([fn, { p_request }]) => fn === 'qlm_quality' && ['list', 'detail', 'review_state'].includes(p_request.action))).toBe(true);
+        expect(screen.getAllByText('First stored answer').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('Revised stored answer').length).toBeGreaterThan(0);
+        expect(c.rpc.mock.calls.every(([fn, { p_request }]) => fn === 'qlm_quality' && ['list', 'detail', 'review_state', 'history'].includes(p_request.action))).toBe(true);
     });
     it('denial fails closed without invented empty-list success', async () => {
         const c = { rpc: vi.fn(async () => ({ data: null, error: { code: '42501' } })) };
