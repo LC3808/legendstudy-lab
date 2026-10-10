@@ -174,6 +174,10 @@ function Workspace({ client, evaluationEnabled }: { client: SupabaseClient; eval
       <button type="button" onClick={() => { setFrozen(false); setAttempt(null); setInput(null); setPrior(null); setLearning(null); setResult(null); setAnswer(""); setFile(null); setHints({}); setSolution(null); setCorrections({}); keys.current.clear(); }}>새 답안 작성</button>
       {input?.can_request_evaluation && <button type="button" disabled={!evaluationEnabled} onClick={() => void run(evaluate)}>{prior ? "재첨삭" : "첨삭 진행"}</button>}
       {learning && <button type="button" onClick={() => void run(() => readEvaluation(learning.evaluation_id))}>결과 다시 확인</button>}
+      {learning && ['REQUESTED','PROCESSING'].includes(learning.evaluation_state) && <button type="button" onClick={() => void run(async () => {
+        try { await gateway('recover', {evaluation_id: learning.evaluation_id}); }
+        finally { await readEvaluation(learning.evaluation_id); await reloadHistory(); window.dispatchEvent(new Event('legendstudy:credit-refresh')); }
+      })}>지연된 처리 상태 확인</button>}
       {learning?.evaluation_state === "REQUESTED" && <button type="button" disabled={!evaluationEnabled} onClick={() => void run(async () => {
         try { await gateway("evaluate", { evaluation_id: learning.evaluation_id }); }
         finally { window.dispatchEvent(new Event("legendstudy:credit-refresh")); await readEvaluation(learning.evaluation_id); await reloadHistory(); }

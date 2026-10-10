@@ -305,7 +305,7 @@ if (fs.existsSync(homeFile)) {
       errors.push(`removed HOME copy returned to the landing: ${literal}`);
     }
   }
-  for (const literal of ["내신 LAB", "모의·수능 LAB", "논술 LAB"]) {
+  for (const literal of ["내신 LAB", "수능 LAB", "논술 LAB"]) {
     if (!home.includes(literal)) {
       errors.push(`landing is missing the Owner-confirmed axis label: ${literal}`);
     }
@@ -319,7 +319,7 @@ if (fs.existsSync(routesFile)) {
     routes.indexOf("publicReleaseRoutes"),
     routes.indexOf("export const policyRoutes"),
   );
-  for (const literal of ["내신 LAB", "모의·수능 LAB", "논술 LAB", "이용 안내"]) {
+  for (const literal of ["내신 LAB", "수능 LAB", "논술 LAB", "이용 안내"]) {
     if (!menu.includes(literal)) {
       errors.push(`authenticated product menu is missing the Owner-confirmed entry: ${literal}`);
     }

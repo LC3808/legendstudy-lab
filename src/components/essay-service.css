@@ -1,0 +1,10 @@
+/* Reuses global palette, button and form conventions. */
+.essay-service { min-width: 0; overflow-wrap: anywhere; }
+.essay-service h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: .75rem; }
+.essay-service h3 { font-size: 1.1rem; font-weight: 650; }
+.essay-service p { margin-block: .75rem; }
+.essay-service label { display: flex; flex-direction: column; gap: .5rem; min-width: 0; max-width: 100%; }
+.essay-service input, .essay-service select, .essay-service textarea { border: 1px solid var(--color-border, #d5d8dc); border-radius: .5rem; padding: .75rem; background: var(--color-surface, white); color: inherit; font: inherit; max-width: 100%; min-width: 0; box-sizing: border-box; }
+.essay-service input:focus-visible, .essay-service select:focus-visible, .essay-service textarea:focus-visible { outline: 2px solid var(--color-navy, #17283f); outline-offset: 2px; }
+.essay-service .catalog-card { border: 1px solid var(--color-border, #d5d8dc); border-radius: .75rem; padding: 1rem; }
+.essay-service button { max-width: 100%; white-space: normal; }

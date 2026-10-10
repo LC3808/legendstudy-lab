@@ -1,3 +1,4 @@
+import {EssayServiceCatalog} from '@/components/essay-service-catalog';
 import {loadResearchPreview} from '@/lib/essay-research/server';
 import {ResearchCatalogView} from '@/components/essay-research-preview';
 import { EssayRuntimeEntry } from "@/components/essay-runtime-entry";
@@ -28,6 +29,7 @@ export default async function EssayLabPage() {
           question a returning writer has before picking a university. */}
       {!preview && <EssayCreditStatus />}
       {!preview && <EssayRuntimeEntry />}
+      {!preview && <EssayServiceCatalog />}
       {preview ? <ResearchCatalogView catalog={preview}/> : <CatalogFilters universities={universities} />}
     </div>
   );

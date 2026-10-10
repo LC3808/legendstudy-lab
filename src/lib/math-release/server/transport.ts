@@ -1,7 +1,7 @@
 import { boundedBody } from "./request";
 import type { MathRpcTransport } from "../../math-input/runtime/transport";
 export interface MathEnvironment {
-  MATH_ALLOWED_SUBJECTS?: string; MATH_ENABLED?: string; MATH_PROVIDER_CALLS_ENABLED?: string; MATH_PROVIDER?: string; MATH_PRIMARY_MODEL?: string;
+  MATH_RECOVERY_ENABLED?: string; MATH_ALLOWED_SUBJECTS?: string; MATH_ENABLED?: string; MATH_PROVIDER_CALLS_ENABLED?: string; MATH_PROVIDER?: string; MATH_PRIMARY_MODEL?: string;
   MATH_PROVIDER_API_KEY?: string; MATH_ORIGIN?: string; MATH_SUPABASE_URL?: string; MATH_PROJECT_REF?: string;
   MATH_SUPABASE_PUBLISHABLE_KEY?: string; MATH_EXTRACTION_WORKER_JWT?: string; MATH_EVALUATION_WORKER_JWT?: string;
 }
