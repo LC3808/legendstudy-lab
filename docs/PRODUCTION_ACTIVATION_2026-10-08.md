@@ -124,21 +124,65 @@ release. A recent lifecycle heartbeat alone is not evidence of successful benefi
 
 ## Math WEB / native APP user flow — 2026-10-10
 
-Owner-approved test-account-only integration continues from fetched main8991b51
-on `codex/essay-production-user-flow`. Existing Math workspace, gateway, Provider,
-private storage and shared RPC/ledger contracts are reused. The WEB now freezes
-submitted inputs before the first network response, refreshes canonical Credit
-readers and History after evaluation, and can retry a pending evaluation using
-its existing ID. Switching to an incomplete evaluation clears the previous result.
-No Payment/Toss/IAP, schema, worker authentication or allowlist change in this code.
+APP `codex/essay-production-user-flow` (implementation56f1635, base6b003888)
+and LAB branch of the same name (implementationb4df1936 + credit-refresh9c66fe2,
+base8991b51) are pushed. Fetch latest refs before continuing; APP main untouched.
+Native Math reuses existing catalog/input/learning/evaluation contracts and WEB
+Provider gateway. No new AI engine, schema, Payment/Toss/IAP or Ledger policy.
+Device-local introduction is separate from Auth, exits to login choice, supports
+Guest without anonymous Auth, and preserves returning Profile/Home routing.
+BrandGate paints official symbol and wordmark before routing, without fixed delay.
 
-Local validation: 13 relevant UI tests PASS (including Credit refresh, typed answer,
-evidence confirmation, included reevaluation and account isolation); TypeScript,
-targeted ESLint and static build PASS. Existing dependency symlink requires
-`next build --webpack` locally; the standard isolated build remains unchanged.
-These tests use synthetic transports and are not actual Provider E2E evidence.
+Validation: Flutter3.47.6 analyze PASS; **1019 tests PASS / 2 opt-in skips / 0 failures**;
+Android debug APK, iOS Simulator and signed iPhone debug builds PASS. LAB16 relevant
+UI tests, TypeScript, targeted lint and static build PASS. Mock tests are separate
+from the following actual Production UI evidence:
 
-At implementation checkpoint: production remains on its existing deployment,
-Math runtime gates OFF, one existing approved test UID retained; public HOLD.
-Actual WEB/APP submissions, Credit transactions and physical QA are pending the
-bounded runtime activation. Unified Wiki owns the final operational evidence.
+- Android SM-G950N: missing Android OAuth client was the configuration cause.
+  Owner registered the verified com.legendstudy.app/debug SHA-1 pair; real Google
+  chooser → Supabase session → new-user Profile setup/Skip → Home → cold relaunch
+  session/Profile persistence PASS. Review-account existing Profile goes straight
+  Home. Release SHA unavailable because release signing material is absent.
+- WEB, physical Android and physical iPhone each completed an actual Math initial
+  evaluation and included reevaluation through their UI, using the same approved
+  Auth UID, existing OpenAI/gpt-5.6-sol Provider and canonical backend.
+  WEB evaluation prefixes2c6af9ee/4a35ac2b; iPhone0ffeb194/a9e65551;
+  Android7432ad79/07512c6f. All six are COMPLETED; no mocked result insertion.
+- Actual Credit4→3→2→1: three consume transactions total−3; three included
+  reevaluations add no debit. One earlier Android requestce4d77dd timed out after
+  entering PROCESSING. Existing math_recover_evaluation after lease expiry marked
+  FAILED/TIMEOUT and released its reservation. Four reserves, three consumes,
+  one release net reserved0. No direct ledger edits or duplicate charge.
+  The original upstream/finalization failure cause remains undetermined; reliable
+  automatic orphan recovery needs follow-up before public activation.
+- WEB→Android History and APP→WEB History/report/comparison verified. Final WEB,
+  Android and iPhone UI balances all1. WEB persistent header could become stale
+  after another device spent Credit; route/focus/visibility canonical reload fixes
+  this without changing billing. Existing Oct09 records remain intact.
+- WEB actual PNG upload → private Storage → actual extraction → confirm four
+  regions → evaluation-ready PASS. This uploaded attempt was not evaluated or
+  charged; PDF upload and native image/voice submission are not claimed.
+- Final post-essay cold relaunch on both physical devices restored Review Home
+  directly, with no login/introduction/Profile setup repeat.
+- Fresh isolated iOS Simulator Next/Start → login choice → Guest Home → relaunch
+  Home PASS; Skip covered by unit tests. Both physical devices used update installs
+  to preserve data. Physical clean-install/brand cold-start capture, populated
+  school/grade/targets restoration and provider-switching matrix remain limited.
+  iPhone Apple button present; Android absent. iPhone Google/Kakao/Apple and Android
+  Kakao actual provider login acceptance remain pending Owner-assisted QA.
+
+Production deployed source9c66fe2 via existing Pages procedure; canonical deployment
+`92f79bf7-7bb5-4fce-867f-735a6b4b8b99` SUCCESS. Final MATH_ENABLED,
+MATH_PROVIDER_CALLS_ENABLED and NEXT_PUBLIC_MATH_ENABLED=false; DB evaluations=false.
+One existing approved UID remains allowlisted; no public widening. Public availability
+HTTP200 reports all four types false; signed-in UI has no available evaluation entry.
+**PUBLIC_ACTIVATION: HOLD.** Humanities/Econ-Business/Science actual Provider QA
+not performed and remain unavailable. Worker JWT expiry2026-10-16 18:57:41 KST:
+renew using existing dedicated authority before expiry. Migration010 not reapplied;
+Target005 HOLD; worker bindings, RLS/private Storage and existing Math E2E preserved.
+No APP main merge, Store submission or release-signing change.
+
+Next: finish remaining physical OAuth/first-install/Profile matrix, investigate
+orphan evaluation recovery and renew Worker credentials before a separately
+approved public release. No further evaluation activation is authorized by this
+closeout. Owner-assisted remaining device authentication QA is requested.
