@@ -1,3 +1,6 @@
+import {loadResearchPreview} from '@/lib/essay-research/server';
+import {researchUniversities} from '@/lib/essay-research/catalog';
+import {ResearchUniversityView} from '@/components/essay-research-preview';
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -9,7 +12,9 @@ import { getUniversityYear, listUniversities } from "@/lib/public-catalog";
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const preview=await loadResearchPreview();
+  if(preview)return researchUniversities(preview).map(u=>({universityId:u.id,year:"2027"}));
   return listUniversities().map((university) => ({
     universityId: university.id,
     year: String(university.admissionYear),
@@ -18,12 +23,17 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ universityId: string; year: string }> }): Promise<Metadata> {
   const { universityId, year } = await params;
+  const preview=await loadResearchPreview();
+  const candidate=preview?.offerings.find(o=>o.universityId===universityId);
+  if(candidate)return {...buildMetadata(`${candidate.name} 전형 연구 미리보기`, '로컬 연구 후보 검토'),robots:{index:false,follow:false}};
   const university = getUniversityYear(universityId, year);
   return university ? buildMetadata(`${university.universityName} ${year} 전형 안내`, `${university.universityName} ${year} 논술 전형 안내입니다.`) : buildMetadata("전형 연도를 찾을 수 없음", "요청한 전형 정보를 찾을 수 없습니다.");
 }
 
 export default async function UniversityYearPage({ params }: { params: Promise<{ universityId: string; year: string }> }) {
   const { universityId, year } = await params;
+  const preview=await loadResearchPreview();
+  if(preview){if(!preview.offerings.some(o=>o.universityId===universityId&&String(o.year)===year))notFound();return <ResearchUniversityView catalog={preview} id={universityId} year={year}/>;}
   const university = getUniversityYear(universityId, year);
   if (!university) notFound();
   const link = university.sourceLinks[0];

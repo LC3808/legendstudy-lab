@@ -1,3 +1,6 @@
+import {loadResearchPreview} from '@/lib/essay-research/server';
+import {researchUniversities} from '@/lib/essay-research/catalog';
+import {ResearchUniversityView} from '@/components/essay-research-preview';
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -10,12 +13,17 @@ import { getUniversity, listUniversities } from "@/lib/public-catalog";
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const preview=await loadResearchPreview();
+  if(preview)return researchUniversities(preview).map(u=>({universityId:u.id}));
   return listUniversities().map((university) => ({ universityId: university.id }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ universityId: string }> }): Promise<Metadata> {
   const { universityId } = await params;
+  const preview=await loadResearchPreview();
+  const candidate=preview?.offerings.find(o=>o.universityId===universityId);
+  if(candidate)return {...buildMetadata(`${candidate.name} 전형 연구 미리보기`, '로컬 연구 후보 검토'),robots:{index:false,follow:false}};
   const university = getUniversity(universityId);
   if (!university) return buildMetadata("대학 정보를 찾을 수 없음", "요청한 대학 정보를 찾을 수 없습니다.");
   return buildMetadata(`${university.universityName} ${university.admissionYear} 논술`, `${university.universityName}의 논술 전형과 공식 자료를 확인하세요.`);
@@ -23,6 +31,8 @@ export async function generateMetadata({ params }: { params: Promise<{ universit
 
 export default async function UniversityDetailPage({ params }: { params: Promise<{ universityId: string }> }) {
   const { universityId } = await params;
+  const preview=await loadResearchPreview();
+  if(preview){if(!preview.offerings.some(o=>o.universityId===universityId))notFound();return <ResearchUniversityView catalog={preview} id={universityId}/>;}
   const university = getUniversity(universityId);
   if (!university) notFound();
   const link = university.sourceLinks[0];

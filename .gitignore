@@ -54,3 +54,6 @@ qa-shots/
 
 # python bytecode from the local QA scripts
 __pycache__/
+
+# Private research preview (never part of export or Git)
+.local/

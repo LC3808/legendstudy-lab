@@ -1,3 +1,5 @@
+import {loadResearchPreview} from '@/lib/essay-research/server';
+import {ResearchCatalogView} from '@/components/essay-research-preview';
 import { EssayRuntimeEntry } from "@/components/essay-runtime-entry";
 import { CatalogFilters } from "@/components/catalog-filters";
 import { EssayCreditStatus } from "@/components/essay-credit-status";
@@ -9,8 +11,9 @@ export const metadata = buildMetadata(
   "대학별 평가 기준에 맞춰 내 답안을 점검하고, 직접 다시 써보세요.",
 );
 
-export default function EssayLabPage() {
+export default async function EssayLabPage() {
   const universities = listUniversities();
+  const preview = await loadResearchPreview();
   return (
     <div className="page-section content-wrap essay-lab-page">
       <div className="page-intro">
@@ -23,9 +26,9 @@ export default function EssayLabPage() {
       {/* The visitor's spendable 첨삭권, read from the same `credit_summary()`
           authority MY uses. It sits above the catalog because it answers the first
           question a returning writer has before picking a university. */}
-      <EssayCreditStatus />
-      <EssayRuntimeEntry />
-      <CatalogFilters universities={universities} />
+      {!preview && <EssayCreditStatus />}
+      {!preview && <EssayRuntimeEntry />}
+      {preview ? <ResearchCatalogView catalog={preview}/> : <CatalogFilters universities={universities} />}
     </div>
   );
 }
