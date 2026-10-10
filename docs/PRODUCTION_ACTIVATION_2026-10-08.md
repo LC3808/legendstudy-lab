@@ -342,3 +342,32 @@ UPDATE or historical backfill; (4) canonical student identity stays server-side;
 (5) learning/interest/application/outcome remain distinct; (6) operator-only minimum
 PII and existing retention/lifecycle gates; (7) comparison is derived, not stored
 as a new fact or student-satisfaction measure.
+
+## Admin Quality metadata completion — 2026-10-10
+
+Bounded Owner approval resolved the prior source implementation blocker; final
+production SQL application is still explicitly awaiting Owner approval. Same
+`codex/quality-traceability-refinement`, preserving prior completed APP/WEB work.
+
+`qlm_list_cases`/`qlm_case_detail` candidate adds versioned quality_metadata only.
+Reader remains compatible with pre-migration DTOs. Grouping uses canonical problem/
+profile/rubric, server pseudonym and validated independent root; cross-user/problem/
+rubric/root edges cannot compare. Missing metadata/parent remains explicit, and
+missing prior detail no longer hides the selected evaluation. University/year only
+render when server verification is true. Human Review persistence is unchanged.
+
+Canonical APP migration20261010134235, original function backup, rollback, impact
+analysis, postflight and evidence:
+https://github.com/LC3808/legendstudy-app/tree/codex/quality-traceability-refinement/supabase/verification/quality_metadata
+
+Live candidate SELECT (read-only):8 evaluations,1 pseudonym,4 independent roots,
+4 initial/reevaluation pairs,0 invalid edges; university/year NULL (synthetic review
+exam). Not applied-RPC or deployed-UI acceptance. Isolated PG17:34 checks PASS incl.
+auth/lifecycle/cursor/ACL/wire preservation/exact rollback. WEB full963 tests PASS,
+then final78 related tests with metadata rendering case PASS; typecheck/lint/build
+PASS. These are synthetic tests, not new Provider/Credit E2E. No mobile device work.
+
+No production deployment in this task. Current deployed version remains501d272 /
+a2e09fea-6472-407b-b0f9-036642a6ed69. Next: Owner final migration approval → approved
+DB path and real-role postflight → existing Pages deployment and operator UI check.
+Public HOLD; no Credit/Payment/Toss/IAP/History/evaluation/student/RLS change.

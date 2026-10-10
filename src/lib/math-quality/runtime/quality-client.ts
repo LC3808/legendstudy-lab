@@ -58,7 +58,7 @@ export class MathQualityClient {
 
 /** Production read projection (verified against deployed qlm_* RPCs). The older
  * domain fixtures are not the stored-result wire shape. Never coerce them. */
-export type StoredMathCase={evaluation_id:string;completed_at:string;leaf_id:string};
+export type StoredMathCase={evaluation_id:string;completed_at:string;leaf_id:string;quality_metadata?:unknown};
 export type StoredMathDetail=Record<string,unknown>&{dto_version:'qlm-read-v1';evaluation_id:string};
 export type StoredMathReview={math_evaluation_id:string;availability:string;human_review_state?:string;total_count?:number};
 export class StoredMathQualityReader {

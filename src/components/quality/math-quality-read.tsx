@@ -5,6 +5,7 @@ import { StoredMathQualityReader, type StoredMathCase, type StoredMathDetail, ty
 import { mathReport, object, text } from '@/lib/my/evaluation-report';
 import { EvaluationReport, EvaluationComparison } from '@/components/my/evaluation-report';
 import { traceGroups, answerChanges } from '@/lib/math-quality/traceability';
+import { qualityMetadata, sameTraceEdge } from '@/lib/math-quality/metadata';
 import { MathReviewHistory } from './math-review-history';
 import { QlSection, QlStructuredValue } from './quality-primitives';
 /** Read-only existing operator RPCs. No review writes, direct tables or service key. */
@@ -47,11 +48,11 @@ export function MathQualityRead({ client }: {
     const visible = cases.filter(c => !unreviewed || isUnreviewed(c.evaluation_id));
     const select = async (id: string) => { const s = ++selection.current; setSelected(id); setDetail(null); setPrior(null); setDetailError(false); try {
         const d = await reader.detail(id);
-        const p = text(d.prior_evaluation_id) ? await reader.detail(text(d.prior_evaluation_id)) : null;
+        const p = text(d.prior_evaluation_id) ? await reader.detail(text(d.prior_evaluation_id)).catch(() => null) : null;
         if (s !== selection.current)
             return;
         setDetail(d);
-        setPrior(p);
+        setPrior(p && sameTraceEdge(p,d) ? p : null);
     }
     catch {
         if (s === selection.current)
@@ -64,11 +65,13 @@ export function MathQualityRead({ client }: {
  <div className="ql-list__filters"><label><input type="checkbox" checked={unreviewed} onChange={e => setUnreviewed(e.target.checked)}/>미검토만 (불러온 범위)</label><button className="button button--outline button--small" onClick={next} disabled={!cases.some(c => isUnreviewed(c.evaluation_id))}>다음 미검토</button></div>
  {busy && <p role="status">목록을 확인하고 있습니다.</p>}{error && <p role="alert">수리논술 기록을 불러오지 못했습니다. 권한과 연결 상태를 확인해 주세요.</p>}
  {!busy && !error && !visible.length && <p className="ql-state">현재 조건에 맞는 수리논술 평가가 없습니다.</p>}
- <p className="ql-privacy-note">사용자 가명키·대학·학년도는 현재 조회 계약에 없어 미확인으로 표시합니다. 답안 과정은 명시된 이전 평가 관계로만 연결합니다.</p>
- {traceGroups(cases.filter(c=>details[c.evaluation_id]).map(c=>({...c,detail:details[c.evaluation_id]}))).map(g=><section key={g.key}><h2>{g.label}</h2><p>수리논술 · {g.rubric}</p>{g.processes.map(p=><section key={p.id}><h3>답안 과정 {p.id.slice(0,8)}</h3><p>사용자: 확인되지 않음</p>{p.reason&&<p role="status">{p.reason}</p>}<ul className="ql-list__items">{p.records.filter(c=>visible.some(v=>v.evaluation_id===c.evaluation_id)).map(c=><li key={c.evaluation_id}><button className={`ql-case ${selected===c.evaluation_id?'ql-case--selected':''}`} onClick={()=>void select(c.evaluation_id)} aria-pressed={selected===c.evaluation_id}><strong>{text(c.detail.prior_evaluation_id)?'재첨삭':'최초 첨삭'} · {new Date(c.completed_at).toLocaleString('ko-KR')}</strong><span>{isUnreviewed(c.evaluation_id)?'미검토':'검수 상태 확인'}</span><span className="ql-case__meta">평가 {c.evaluation_id.slice(0,8)}</span></button></li>)}</ul></section>)}</section>)}{more && <button className="button button--outline ql-list__more" onClick={() => void loadMore()} disabled={busy}>더 불러오기</button>}</div></aside>
+ <p className="ql-privacy-note">가명 사용자는 관리자 검수용 참조입니다. 답안 과정은 확인된 연결 관계로 구분하며, 확인되지 않은 대학·학년도는 표시하지 않습니다.</p>
+ {traceGroups(cases.filter(c=>details[c.evaluation_id]).map(c=>({...c,detail:details[c.evaluation_id]}))).map(g=><section key={g.key}><h2>{g.label}</h2><p>수리논술 · {g.rubric}</p>{g.users.map(u=><section key={u.id}><h3>{u.reference?`가명 사용자 ${u.reference.slice(4,16)}`:'사용자: 확인되지 않음'}</h3>{u.processes.map(p=><section key={p.id}><h3>답안 과정 {p.id.slice(0,8)}</h3>{p.reason&&<p role="status">{p.reason}</p>}<ul className="ql-list__items">{p.records.filter(c=>visible.some(v=>v.evaluation_id===c.evaluation_id)).map(c=><li key={c.evaluation_id}><button className={`ql-case ${selected===c.evaluation_id?'ql-case--selected':''}`} onClick={()=>void select(c.evaluation_id)} aria-pressed={selected===c.evaluation_id}><strong>{text(c.detail.prior_evaluation_id)?'재첨삭':'최초 첨삭'} · {new Date(c.completed_at).toLocaleString('ko-KR')}</strong><span>{isUnreviewed(c.evaluation_id)?'미검토':'검수 상태 확인'}</span><span className="ql-case__meta">평가 {c.evaluation_id.slice(0,8)}</span></button></li>)}</ul></section>)}</section>)}</section>)}{more && <button className="button button--outline ql-list__more" onClick={() => void loadMore()} disabled={busy}>더 불러오기</button>}</div></aside>
  <main className="ql-workspace__detail" aria-label="수리논술 평가 상세"><div className="ql-detail"><p className="eyebrow">CASE DETAIL</p>{detailError ? <p role="alert">평가 상세를 불러오지 못했습니다.</p> : !detail ? <p>{selected ? '평가를 확인하고 있습니다.' : '왼쪽에서 평가를 선택하세요.'}</p> : <>
  <h2>{text(object(detail.problem).title) || '수리논술'} · {text(object(detail.leaf).label) || '문항'}</h2>
- <p>{prior ? '재첨삭' : '최초 첨삭'} · {cases.find(c => c.evaluation_id === detail.evaluation_id)?.completed_at ? new Date(cases.find(c => c.evaluation_id === detail.evaluation_id)!.completed_at).toLocaleString('ko-KR') : ''}</p>
+ <p>{text(detail.prior_evaluation_id) ? '재첨삭' : '최초 첨삭'} · {cases.find(c => c.evaluation_id === detail.evaluation_id)?.completed_at ? new Date(cases.find(c => c.evaluation_id === detail.evaluation_id)!.completed_at).toLocaleString('ko-KR') : ''}</p>
+ <p>{qualityMetadata(detail)?.university || '대학 미확인'} · {qualityMetadata(detail)?.year || '학년도 미확인'}</p>
+ {text(detail.prior_evaluation_id)&&!prior&&<p role="status">이전 평가와의 연결을 확인할 수 없어 비교를 표시하지 않습니다.</p>}
  <p className="ql-privacy-note">계정 식별정보는 표시하지 않습니다. 답안은 품질 검수 목적으로만 확인하세요.</p>
  <QlSection title="관리자 검수 상태"><QlStructuredValue value={reviews.find(r => r.math_evaluation_id === detail.evaluation_id)?.human_review_state ?? null}/><p>AI 평가의 품질을 검토하며 학생의 성적을 변경하지 않습니다.</p></QlSection>
  {prior && <EvaluationReport report={mathReport(prior)} title="최초 답안과 첨삭" voiceType="math"/>}<EvaluationReport report={mathReport(detail)} title={prior ? '재작성 답안과 재첨삭' : '제출 답안과 첨삭'} voiceType="math"/>{prior && <EvaluationComparison before={mathReport(prior)} after={mathReport(detail)}/>} 

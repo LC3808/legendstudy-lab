@@ -31,7 +31,7 @@ for (const exam of [false, true])
         expect(screen.getByRole('heading', { name: exam ? '수능 LAB' : '내신 LAB' })).toBeVisible();
     });
 const rows = [{ evaluation_id: 'revised', completed_at: '2026-10-10T10:00:00Z', leaf_id: 'leaf' }, { evaluation_id: 'first', completed_at: '2026-10-09T10:00:00Z', leaf_id: 'leaf' }];
-function fakeClient() {
+function fakeClient(metadata = false) {
     return { rpc: vi.fn(async (_fn: string, { p_request: r }: {
             p_request: {
                 action: string;
@@ -46,6 +46,10 @@ function fakeClient() {
             else if (r.action === 'history') result = {dto_version:'hq-math-read-v1',judgments:[],next_cursor:null};
             else
                 result = { dto_version: 'qlm-read-v1', evaluation_id: r.payload.evaluation_id, typed_answer: r.payload.evaluation_id === 'first' ? 'First stored answer' : 'Revised stored answer', prior_evaluation_id: r.payload.evaluation_id === 'revised' ? 'first' : null, output: { overall: { explanation: 'Stored provider result' } }, leaf: { statement: 'Original question' } };
+            if(metadata&&r.action==='detail'){
+                const d=result as Record<string,unknown>,id=String(r.payload.evaluation_id),revised=id==='revised';
+                Object.assign(d,{attempt_id:'attempt-'+id,leaf_id:'leaf',profile_id:'profile',profile:{rubric_version:'v1'},problem:{id:'problem'},quality_metadata:{version:'quality-metadata-v1',student_reference:'qs1_'+ 'a'.repeat(64),attempt_id:'attempt-'+id,root_attempt_id:'attempt-first',lineage_id:'attempt-first',predecessor_attempt_id:revised?'attempt-first':null,prior_evaluation_id:revised?'first':null,relationship_state:revised?'LINKED':'ROOT',problem_id:'problem',problem_set_id:'set',problem_label:'Stored question label',leaf_id:'leaf',evaluation_profile_id:'profile',rubric_version:'v1',exam_metadata_verified:false,university_name:null,academic_year:null}});
+            }
             return { data: { dto_version: 'qlm-runtime-v1', action: r.action, result }, error: null };
         }) };
 }
@@ -76,4 +80,14 @@ describe('stored Math quality read-only integration', () => {
         unmount();
         await waitFor(() => expect(screen.queryByRole('main')).toBeNull());
     });
+});
+
+it('renders server pseudonym, independent lineage and unverified exam state',async()=>{
+ const c=fakeClient(true);render(<MathQualityRead client={c as unknown as SupabaseClient}/>);
+ await screen.findByRole('heading',{name:'가명 사용자 aaaaaaaaaaaa'});
+ expect(screen.getAllByRole('heading',{name:/답안 과정/})).toHaveLength(1);
+ fireEvent.click(screen.getByRole('button',{name:/평가 revised/}));
+ await screen.findByRole('heading',{name:'최초 답안과 첨삭'});
+ expect(screen.getByText('대학 미확인 · 학년도 미확인')).toBeVisible();
+ expect(c.rpc.mock.calls.every(([, {p_request}])=>p_request.action!=='submit')).toBe(true);
 });
