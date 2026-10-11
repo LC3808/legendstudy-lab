@@ -4,31 +4,53 @@ Status PARTIAL / CONTRACT VERIFIED / NO NEW LIVE E2E. APP canonical task evidenc
 `wiki/essay-full-service-implementation-20261011.md`, branch
 `codex/essay-full-service-implementation`. No native UI rewrite or new backend.
 
-## Oct11 Owner-approved catalog release — preflight
+## Oct11 Catalog Production release + Owner scope correction — COMPLETE
 
-Owner separately authorized the migration-free public Catalog/UX deployment.
-This supersedes the previous accumulated-branch deployment hold below only for this
-bounded release; no metadata migration or evaluation activation is authorized.
-Existing `qlm_quality` RPC/action/cursor arguments are unchanged. Nullable additive
-metadata parsing and explicit unknown-user UI accept legacy responses; the existing
-legacy list/detail/filter regression now explicitly verifies the missing-user state.
-Production read-only inspection confirms metadata is absent, Math8 completed/1 failed,
-and general questions/evaluations0. No migration is needed for the public read model.
+Catalog-only release is live at https://lab.legendstudy.com/essay-lab/ . Cloudflare
+canonical deployment `9d802cb2-13c8-42b1-8909-6c2bcccde573` succeeded at
+2026-10-11T01:30:33Z, source `35fd8f97aa791aeb2bdc855c8c06a3ab7a22f867` (pushed and
+remote SHA verified before deployment). Direct Pages upload of webpack static output
+and compiled Functions used existing project/production branch selector; no Git main
+merge. Subsequent changes in this closeout are documentation only.
 
-42 universities/49 offerings retain 가나다 order and canonical identity/nulls.
-Detail now separates RLS question availability from server-admitted AI availability;
-failed question reads are not reported as an empty catalog. Tests cover ID changes
-and failed reads. Core priorities are internal: APP roadmap §16 records the11-member
-review worklist, Owner-only final selection, Pusan/Kyungpook priority and Gangnam/Eulji
-deferral. No priority field is shipped in public data.
+**Current preparation scope: minimum20, metropolitan minimum15, Pusan+Kyungpook
+required; no upper cap.** Restore the existing Manus30-university inventory in full:
+30 A-stage universities,28 unique metropolitan (21 with Seoul offerings,11 with
+Gyeonggi/Incheon offerings,4 overlap), plus Pusan/Kyungpook. Previous11 was a mistaken
+planning subset of10 detailed research entries plus Pusan, never a code/API cap.
+All11 remain;19 less-reviewed candidates restored. APP `wiki/roadmap-essay-lab.md` §16
+is the canonical30-row A–H readiness matrix and source/identity/type comparison.
+The historical10–15 Core strategy is not a current scope limit. Final named Core
+approval was not found in available records; preparation membership does not infer it.
+Gangnam/Eulji remain public and special-format deferred. All42/49 public data unchanged.
 
-Preflight:111 WEB files,1016 passed/1 optional private-source skipped; lint/types,
-client/server boundaries, secret/path audit and Node22 webpack static build PASS.
-Current production public env reused without exposing server credentials. No flag or
-allowlist change is part of deployment. Math/reviewed-runtime/recovery remain closed.
-Rollback target is existing Pages deployment `a2e09fea-6472-407b-b0f9-036642a6ed69`
-(source501d272); restoring it requires no DB rollback because this release changes
-no production data or SQL. Live deployment/result is recorded after verification.
+Live UI QA:42 distinct university names across4 pages; search; all region/type/year
+controls; same-offering campus filters; Pusan/SKKU/Eulji common detail and2027 route;
+source URLs and actual-question empty states. Science+metro returns2, Math returns19,
+economics returns0 from verified data (no invented mappings). Catalogue and Pusan
+long-campus detail have no overflow at360/375/390/768/1280/1440. Separate copy of the
+same built HTML at root-font32px (200% text simulation) passes catalog/Kyungpook detail
+at all6 widths; this is not a claim of live browser text zoom or native device QA.
+
+Preflight:111 WEB files/1016 passed/1 optional private-source skipped; lint/types,
+client/server boundaries, secret/path audit and Node22 webpack build PASS. Actual
+production public client config reused. Production env including allowlist compares
+exactly equal before/after; Math flags false, reviewed-runtime/recovery flags unset.
+Read-only postflight Math COMPLETED8/FAILED1, general questions/evaluations0 unchanged.
+New Provider calls/Credit transactions/DB changes0. Direct command-line admission
+probe hit Cloudflare403 before app code, not counted as application-gate E2E evidence.
+Gate preservation evidence is unchanged server configuration, UI and regression tests.
+
+No migration was required: nullable additive quality metadata accepts existing legacy
+RPC responses with explicit unknown-user state; action/cursor contracts unchanged,
+legacy list/detail/filter regression PASS. This bounded release authorization supersedes
+the prior accumulated-branch deployment hold below. Pending metadata/recovery migrations
+remain NOT_APPLIED; evaluation/public activation HOLD. Actual official Humanities
+Worker/Provider/content readiness remains incomplete, independently of this release.
+
+Rollback: previous Pages deployment `a2e09fea-6472-407b-b0f9-036642a6ed69` (501d272),
+without DB rollback. Rollback was not needed or executed. Payment/Toss/IAP, Credit
+Ledger, Auth/Profile/RLS/private storage and existing Math E2E contracts preserved.
 
 ## Oct11 runtime/catalog continuation (current)
 
