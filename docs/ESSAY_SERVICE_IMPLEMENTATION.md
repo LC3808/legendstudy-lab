@@ -4,6 +4,32 @@ Status PARTIAL / CONTRACT VERIFIED / NO NEW LIVE E2E. APP canonical task evidenc
 `wiki/essay-full-service-implementation-20261011.md`, branch
 `codex/essay-full-service-implementation`. No native UI rewrite or new backend.
 
+## Oct11 Owner-approved catalog release — preflight
+
+Owner separately authorized the migration-free public Catalog/UX deployment.
+This supersedes the previous accumulated-branch deployment hold below only for this
+bounded release; no metadata migration or evaluation activation is authorized.
+Existing `qlm_quality` RPC/action/cursor arguments are unchanged. Nullable additive
+metadata parsing and explicit unknown-user UI accept legacy responses; the existing
+legacy list/detail/filter regression now explicitly verifies the missing-user state.
+Production read-only inspection confirms metadata is absent, Math8 completed/1 failed,
+and general questions/evaluations0. No migration is needed for the public read model.
+
+42 universities/49 offerings retain 가나다 order and canonical identity/nulls.
+Detail now separates RLS question availability from server-admitted AI availability;
+failed question reads are not reported as an empty catalog. Tests cover ID changes
+and failed reads. Core priorities are internal: APP roadmap §16 records the11-member
+review worklist, Owner-only final selection, Pusan/Kyungpook priority and Gangnam/Eulji
+deferral. No priority field is shipped in public data.
+
+Preflight:111 WEB files,1016 passed/1 optional private-source skipped; lint/types,
+client/server boundaries, secret/path audit and Node22 webpack static build PASS.
+Current production public env reused without exposing server credentials. No flag or
+allowlist change is part of deployment. Math/reviewed-runtime/recovery remain closed.
+Rollback target is existing Pages deployment `a2e09fea-6472-407b-b0f9-036642a6ed69`
+(source501d272); restoring it requires no DB rollback because this release changes
+no production data or SQL. Live deployment/result is recorded after verification.
+
 ## Oct11 runtime/catalog continuation (current)
 
 Public pages now consume `src/data/essay-public-catalog.json`, generated from retained

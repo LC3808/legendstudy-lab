@@ -58,6 +58,8 @@ describe('stored Math quality read-only integration', () => {
         const c = fakeClient();
         render(<MathQualityRead client={c as unknown as SupabaseClient}/>);
         await screen.findByRole('button', { name: /평가 revised/ });
+        expect(screen.getAllByRole('heading',{name:'사용자: 확인되지 않음'}).length).toBeGreaterThan(0);
+        expect(screen.queryByText(/가명 사용자 [a-f0-9]{12}/)).toBeNull();
         fireEvent.click(screen.getByRole('checkbox'));
         expect(screen.queryByRole('button', { name: /평가 first/ })).toBeNull();
         fireEvent.click(screen.getByRole('button', { name: '다음 미검토' }));
