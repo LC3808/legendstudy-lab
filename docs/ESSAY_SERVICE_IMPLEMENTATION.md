@@ -4,30 +4,24 @@ Status PARTIAL / CONTRACT VERIFIED / NO NEW LIVE E2E. APP canonical task evidenc
 `wiki/essay-full-service-implementation-20261011.md`, branch
 `codex/essay-full-service-implementation`. No native UI rewrite or new backend.
 
-## Oct11 Catalog/detail UX refinement — release candidate
+## Oct11 Catalog/detail UX final refinement — COMPLETE / LIVE
 
-Reuses existing discovery, RLS question reads and runtime; no evaluation contract
-change. White cards/muted surface, restrained shadow, type/status badges, Navy44–48px
-CTA and intrinsic4/2/1 layout. Detail has Hero, semantic sections, aligned admissions
-facts, actual exam-year questions, separate source cards and disabled future-service
-CTA. No repeated material+AI preparation paragraphs. Exact Owner22/GroupA4/B18 and
-existing30 source-ID cohorts are regression-tested; default42 preserved. 주요 대학
-includes22 + Seoul (32 currently), not an applicant rank. Unknown applicants/rates
-remain null, so8000 threshold/statistical sorting await verified data, not assumptions.
+Production source `d39cb5b29565ae48ccd31188402d347e72145388`; Pages
+`437bd406-9afe-4a5c-80da-98d098802ac9` succeeded2026-10-11T02:10:07.770175Z.
+Actual domain catalog/detail/search/filter/mobile/empty-state QA passed. Production
+configuration maps, allowlist and disabled evaluation flags unchanged; public HOLD.
+Rollback: `9d802cb2-13c8-42b1-8909-6c2bcccde573` / `35fd8f97aa791aeb2bdc855c8c06a3ab7a22f867`.
 
-Existing APP generator now projects52 verified Master rows within49 offerings into
-scoped admission facts (including source status/basis/date);10 Manus research records
-supply27 official reference links. No PDF body, answer or private evidence published.
-Original IDs/campuses/years/source URLs/dates compare equal to the deployed baseline.
-All42 universities/27 canonical UUIDs/15 nulls retained. Special-format badge derives
-only from actual literal source text, never the Owner development grouping.
+White/shadow cards/Navy CTA and structured detail reuse52 scoped Master rows plus10
+research records/27 official references.42/49 public,30 preparation,Owner22 focus and
+GroupA4/B18 preserved. Unknown statistics are not ranked;主要 대학=22+Seoul=32.
+Final live-QA correction hides unresolved source notes without changing raw research.
+1022 WEB tests +5 Python PASS,1 optional skip; lint/types/build/boundaries/audit PASS.
+Six widths and200% text-size simulation checked. No Provider/Credit/DB/device change.
 
-Checks:113 WEB files,1022 PASS/1 optional skip; Python projection5 PASS; lint/types/
-boundaries/audit/Node22 webpack PASS. Local browser6 widths360/375/390/768/1280/1440
-catalog/detail no overflow, actual4/2/1 columns; 200% root-font32px built-copy simulation
-also passes6 widths. Keyboard Tab focus outline, semantic headings/form labels,
-external rel protection,>=44px CTA and CSS reduced-motion verified. Before captured
-from actual Production Konkuk detail/cards. Live release result follows after deploy.
+[Canonical policy, full release evidence and verification limits](https://github.com/LC3808/legendstudy-app/blob/codex/essay-full-service-implementation/wiki/essay-full-service-implementation-20261011.md#oct11-catalogdetail-ux-final-refinement--complete).
+Future runtime/migration approvals remain separate; documentation commits after this
+release do not change the deployed source SHA. Prior records below are historical.
 
 ## Oct11 Catalog Production release + Owner scope correction — COMPLETE
 
