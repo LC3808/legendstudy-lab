@@ -168,3 +168,4 @@
 .discovery-result select { min-height:44px; max-width:100%; }
 .catalog-sort-note { color:var(--ink-muted); font-size:var(--type-small); margin:0 0 1rem; }
 .discovery-filters input,.discovery-filters select { height:auto; min-height:48px; }
+.discovery-result select { padding-inline:.25rem; }
