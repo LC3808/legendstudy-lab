@@ -17,5 +17,6 @@ it('keeps an unmapped university browsable with an honest empty state',()=>{
  render(<UniversityCatalogDetail university={catalogUniversity('eulji')!}/>);
  expect(screen.getByText('기출문제를 준비하고 있어요.')).toBeVisible();
  expect(screen.getByRole('button',{name:'서비스 추후 제공'})).toBeDisabled();
+ expect(screen.queryByText(/NOT PUBLISHED/)).toBeNull();
  expect(screen.getAllByRole('heading',{name:'성남캠퍼스'})).toHaveLength(2);
 });

@@ -82,7 +82,6 @@
               "facts": {
                 "intake_count": "176명",
                 "exam_time": "일반 90분; 의예과 100분",
-                "question_count": "일반 3문항; 의예과 detailed count NOT PUBLISHED in this inventory",
                 "csat_minimum": "없음 (약학과·의예과·간호학과만 적용)",
                 "essay_weight": "100%",
                 "school_record_weight": "0%"
@@ -294,11 +293,9 @@
               "sourceId": "LSL27-047",
               "name": "수시모집 논술(AAT)전형; 인문계열·자연계열 I·자연계열 II의 3개 응시계열",
               "facts": {
-                "intake_count": "550명 (2027 수시 논술(AAT)전형 전체; 캠퍼스별 별도 집계는 이 행에서 NOT PUBLISHED)",
                 "exam_date": "2026-11-28(토) — FINAL 2027 OFFICIAL PROSPECTUS",
                 "exam_time": "2026-11-28(토), 각 100분: 인문 09:30–11:10; 자연 I 15:30–17:10; 자연 II 16:30–18:10.",
                 "question_count": "인문 6문항 내외; 자연 I 3문항 내외; 자연 II 3문항 내외. 각 문제에는 소문항이 있을 수 있음.",
-                "answer_length": "2027 모집요강은 문항별 글자 수를 공표하지 않음. 2026 공식 가이드(과거 실제 형식 설명)는 인문을 단답형·약술형으로 설명하며 답안 분량을 50–150자라고 요약하고, 약술형은 약 50–300자까지 가능하다고 설명함. 자연계열은 문항별 답안 공간 안에 작성. 2027 문항별 길이는 NOT PUBLISHED.",
                 "csat_minimum": "APPLIES. 한국사 응시. 일반학과: IT대학 수학 포함 상위 2개 영역 등급합 5 이내; 경상·간호·사범·행정·자율전공 상위 2개 5 이내; 공과·첨단기술융합·공학첨단자율 수학 포함 상위 2개 6 이내; 인문·사회·자연·농업생명·생활과학 상위 2개 6 이내. 의예·치의예는 수학 포함 3개 4 이내, 수의예·약학은 수학 포함 3개 5 이내. 전자공학부 모바일AI공학전공은 수학(미적분/기하)·과탐 등급합 3 이내. 생태환경대학·과학기술대학·자율미래인재학부는 미적용. 탐구 및 지정 응시영역의 세부 조건은 공식 모집요강 75–76쪽 참조.",
                 "essay_weight": "논술(AAT) 350점, 70%",
                 "school_record_weight": "학생부교과 150점, 30%"
@@ -367,7 +364,6 @@
               "sourceId": "LSL27-031",
               "name": "국제캠퍼스 모집단위 논술우수자전형",
               "facts": {
-                "intake_count": "International Campus subtotal NOT PUBLISHED in a standalone field; university-wide 471명",
                 "exam_date": "2026-11-21 to 2026-11-22",
                 "exam_time": "120분",
                 "question_count": "인문·체육·사회 2문항 내외; 자연 수학 6문항 내외; 의·약학 수학·과학 각 4문항 내외",
@@ -594,9 +590,7 @@
               "facts": {
                 "intake_count": "187명",
                 "exam_date": "자연 2026-11-28; 인문 2026-11-29",
-                "exam_time": "자연 120분; 인문 NOT PUBLISHED",
                 "question_count": "인문 2문제; 자연 2문제(각 5개 내외 소문제)",
-                "answer_length": "인문 각 750자 내외; 자연 NOT PUBLISHED",
                 "csat_minimum": "없음",
                 "essay_weight": "80%",
                 "school_record_weight": "20%"
@@ -1051,9 +1045,7 @@
             {
               "sourceId": "LSL27-010",
               "name": "논술전형",
-              "facts": {
-                "csat_minimum": "수능최저 적용 여부 NOT PUBLISHED"
-              },
+              "facts": {},
               "sourceStatus": "OFFICIAL_CONFIRMED",
               "verifiedAt": "2026-09-18",
               "sourceUrl": "http://admission.smu.ac.kr/_seoul/board/bbs.html?bbsid=seoul_dataroom&ctg_cd=susi",
@@ -1153,7 +1145,6 @@
                 "intake_count": "214명",
                 "exam_time": "60분",
                 "question_count": "국어 4 + 수학 4 = 8문항",
-                "answer_length": "약술형; 별도 글자 수 NOT PUBLISHED",
                 "csat_minimum": "없음",
                 "essay_weight": "100%",
                 "school_record_weight": "0%"
@@ -1351,7 +1342,6 @@
                 "exam_date": "2026-11-22",
                 "exam_time": "100분",
                 "question_count": "3문제",
-                "answer_length": "지정 답안란; character/line limit NOT PUBLISHED",
                 "csat_minimum": "적용 (2027 final guide, unit-specific)",
                 "essay_weight": "100%",
                 "school_record_weight": "0% (student record only final tie-break)"
@@ -1505,8 +1495,7 @@
               "facts": {
                 "exam_date": "인문·자유전공 2026-11-28; 자연 2026-11-29",
                 "exam_time": "120분",
-                "question_count": "인문 2; 자연 대문항 3(소문항 9); 자유전공 2",
-                "answer_length": "인문 400–500자 및 800–900자; 자유전공 1번 600–700자; 자연 NOT PUBLISHED"
+                "question_count": "인문 2; 자연 대문항 3(소문항 9); 자유전공 2"
               },
               "sourceStatus": "OFFICIAL_CONFIRMED",
               "verifiedAt": "2026-09-18",
@@ -1918,11 +1907,9 @@
               "sourceId": "LSL27-037",
               "name": "성남캠퍼스 모집단위 논술우수자전형",
               "facts": {
-                "intake_count": "Seongnam Campus subtotal NOT PUBLISHED",
                 "exam_date": "2026-10-16 to 2026-10-17 (unit/session-specific)",
                 "exam_time": "70분",
                 "question_count": "국어 7 + 수학 7 = 14문항",
-                "answer_length": "노트형 답안지; individual character/line limit NOT PUBLISHED",
                 "csat_minimum": "없음",
                 "essay_weight": "80%",
                 "school_record_weight": "20%"
@@ -1964,11 +1951,9 @@
               "sourceId": "LSL27-038",
               "name": "의정부캠퍼스 모집단위 논술우수자전형",
               "facts": {
-                "intake_count": "Uijeongbu Campus subtotal NOT PUBLISHED",
                 "exam_date": "2026-10-16 to 2026-10-17 (unit/session-specific)",
                 "exam_time": "70분",
                 "question_count": "국어 7 + 수학 7 = 14문항",
-                "answer_length": "노트형 답안지; individual character/line limit NOT PUBLISHED",
                 "csat_minimum": "없음",
                 "essay_weight": "80%",
                 "school_record_weight": "20%"
@@ -2112,7 +2097,6 @@
               "sourceId": "LSL27-039",
               "name": "일반형 — 다빈치캠퍼스 모집단위",
               "facts": {
-                "intake_count": "Da Vinci Campus subtotal NOT PUBLISHED; university-wide 일반형 403명",
                 "csat_minimum": "없음 (다빈치캠퍼스 전체)",
                 "essay_weight": "70%",
                 "school_record_weight": "30% (교과20%+출결10%)"
@@ -2217,7 +2201,6 @@
                 "exam_date": "2026-11-22",
                 "exam_time": "80분",
                 "question_count": "9문항",
-                "answer_length": "노트형 답안지; individual length NOT PUBLISHED",
                 "csat_minimum": "없음",
                 "essay_weight": "80%",
                 "school_record_weight": "20%"
@@ -2316,7 +2299,6 @@
               "sourceId": "LSL27-041",
               "name": "논술전형",
               "facts": {
-                "intake_count": "Global Campus subtotal NOT PUBLISHED; university-wide 452명",
                 "csat_minimum": "적용",
                 "essay_weight": "100%",
                 "school_record_weight": "0%"
@@ -2356,7 +2338,6 @@
               "sourceId": "LSL27-025",
               "name": "논술전형",
               "facts": {
-                "intake_count": "452명 (서울·글로벌 합산; 서울 단독 NOT PUBLISHED)",
                 "csat_minimum": "수능최저 적용(정확 기준은 최종 요강 확인 필요)",
                 "essay_weight": "100%",
                 "school_record_weight": "0%"

@@ -8,7 +8,7 @@ it('does not infer evaluation types from administrative humanities or medical la
 it('preserves official admissions scope and never invents applicant statistics',()=>{
  const details=publicCatalog.universities.flatMap(u=>u.offerings.flatMap(o=>o.admissionDetails??[]));
  expect(details.length).toBeGreaterThanOrEqual(49);
- for(const d of details){expect(d.applicants).toBeNull();expect(d.competitionRatio).toBeNull();expect(d.sourceUrl).toMatch(/^https?:/);for(const value of Object.values(d.facts))expect(value).not.toMatch(/^(UNKNOWN|NOT PUBLISHED)/);}
+ for(const d of details){expect(d.applicants).toBeNull();expect(d.competitionRatio).toBeNull();expect(d.sourceUrl).toMatch(/^https?:/);for(const value of Object.values(d.facts))expect(value).not.toMatch(/(UNKNOWN|NOT PUBLISHED|UNVERIFIED|NOT CONFIRMED)/i);}
  const pnu=catalogUniversity('pnu')!.offerings.flatMap(o=>o.admissionDetails??[]);
  expect(pnu.map(d=>d.facts.intake_count)).toEqual(expect.arrayContaining([expect.stringContaining('342명'),expect.stringContaining('21명')]));
  expect(catalogUniversity('konkuk')!.offerings[0].admissionDetails![0].facts.essay_weight).toBe('100%');
