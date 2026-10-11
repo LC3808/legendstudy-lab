@@ -4,7 +4,7 @@ Status PARTIAL / CONTRACT VERIFIED / NO NEW LIVE E2E. APP canonical task evidenc
 `wiki/essay-full-service-implementation-20261011.md`, branch
 `codex/essay-full-service-implementation`. No native UI rewrite or new backend.
 
-## Oct11 Catalog sorting correction — implementation verified
+## Oct11 Catalog sorting correction — LIVE / statistics unavailable
 
 Default service priority: gate-approved actual service, fixed Owner22, additional
 Seoul/verified >=8000 cohort, future service; Kangnam/Eulji explicitly last.
@@ -15,8 +15,13 @@ verified applicant/rate totals exist in retained data; applicant/competition opt
 therefore transparently fall back to names. Owner22 order is not fabricated statistics.
 1034 WEB tests PASS/1 optional skip; lint/types/build/boundary audits PASS.
 Six widths360–1440 checked; 200% text simulation prompted removal of fixed filter
-heights. Production verification and final policy are recorded in the canonical APP
-`wiki/essay-full-service-implementation-20261011.md` after release.
+heights. Production source `00106fb46fb774fbddd6318c0ddd0a920acc2846`, Pages
+`28e4c1ff-9c0d-4104-89da-e93a3bd6aa26`, success2026-10-11T03:01:04.376194Z.
+Live all4 pages:42 distinct, first22 Owner cohort, last Kangnam/Eulji; search/filter/
+all sort options and6 responsive widths PASS. Production config/allowlist unchanged.
+Rollback `997c9086`/`2fa8af7`. Exact Gachon/Cau/SKKU numeric order is unverified;
+explicit missing-statistics alphabetical fallback applies inside groups. Canonical
+APP `wiki/essay-full-service-implementation-20261011.md` records full evidence.
 
 ## Oct11 Owner visual fidelity — DEPLOYED / official logo1 pending
 
