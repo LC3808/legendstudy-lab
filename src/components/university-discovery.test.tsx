@@ -19,3 +19,16 @@ it('shows the reference search affordance and separates type, materials and AI r
  expect(screen.getAllByText('AI 첨삭 준비 중').length).toBeGreaterThan(0);
  expect(screen.queryByText('첨삭 가능')).toBeNull();
 });
+it('defaults to service priority, supports explicit alphabetical order, and resets pagination on sort changes',()=>{
+ render(<UniversityDiscovery/>);
+ expect(screen.getByRole('combobox',{name:'대학 정렬'})).toHaveValue('service');
+ expect(screen.queryByRole('link',{name:'강남대학교'})).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:'다음'}));
+ fireEvent.change(screen.getByRole('combobox',{name:'대학 정렬'}),{target:{value:'name'}});
+ expect(screen.getByText('1 / 4')).toBeVisible();
+ expect(screen.getByRole('link',{name:'강남대학교'})).toBeVisible();
+ fireEvent.change(screen.getByRole('combobox',{name:'대학 정렬'}),{target:{value:'applicants'}});
+ expect(screen.getByText('검증된 2027학년도 통계가 없는 대학은 대학명순으로 표시합니다.')).toBeVisible();
+ fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:'을지'}});
+ expect(screen.getByRole('link',{name:'을지대학교'})).toBeVisible();
+});

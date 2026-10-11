@@ -4,6 +4,20 @@ Status PARTIAL / CONTRACT VERIFIED / NO NEW LIVE E2E. APP canonical task evidenc
 `wiki/essay-full-service-implementation-20261011.md`, branch
 `codex/essay-full-service-implementation`. No native UI rewrite or new backend.
 
+## Oct11 Catalog sorting correction — implementation verified
+
+Default service priority: gate-approved actual service, fixed Owner22, additional
+Seoul/verified >=8000 cohort, future service; Kangnam/Eulji explicitly last.
+Current public HOLD supplies no ready university. Published question presence never
+promotes readiness. Filters preserve the canonical university cohort and all42/49.
+Within groups verified2027 totals descend, unknowns use Korean name order. No
+verified applicant/rate totals exist in retained data; applicant/competition options
+therefore transparently fall back to names. Owner22 order is not fabricated statistics.
+1034 WEB tests PASS/1 optional skip; lint/types/build/boundary audits PASS.
+Six widths360–1440 checked; 200% text simulation prompted removal of fixed filter
+heights. Production verification and final policy are recorded in the canonical APP
+`wiki/essay-full-service-implementation-20261011.md` after release.
+
 ## Oct11 Owner visual fidelity — DEPLOYED / official logo1 pending
 
 Source `2fa8af7f0794f9f0a2e13225f42b8ede9d6db8c9`, Pages

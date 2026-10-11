@@ -164,3 +164,7 @@
 .university-card > .university-badges { min-height:1.75rem; }
 .university-card .university-badge { font-size:.8125rem; }
 @media (max-width:39.99em) { .university-discovery-page.content-wrap {width:calc(100% - 1.5rem);} }
+/* Catalog sort remains reachable at narrow widths and enlarged text. */
+.discovery-result select { min-height:44px; max-width:100%; }
+.catalog-sort-note { color:var(--ink-muted); font-size:var(--type-small); margin:0 0 1rem; }
+.discovery-filters input,.discovery-filters select { height:auto; min-height:48px; }
