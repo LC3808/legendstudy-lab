@@ -4,7 +4,7 @@ Status PARTIAL / CONTRACT VERIFIED / NO NEW LIVE E2E. APP canonical task evidenc
 `wiki/essay-full-service-implementation-20261011.md`, branch
 `codex/essay-full-service-implementation`. No native UI rewrite or new backend.
 
-## Oct11 Demand data integration — Owner fallback correction
+## Oct11 Demand data integration — COMPLETE / LIVE
 
 Recovered the existing44-campus applicant workbook (SHA256
 `5bac5decaf773096df341f1037154c0748f1f2f667d4f29087e10d4cdc001efb`). Its own notice
@@ -18,7 +18,12 @@ ranks/counts. Default unknowns now use Owner order, explicitly superseding the e
 alphabetical fallback: Gachon→Cau→SKKU. Name sort stays alphabetical; future verified
 2027 totals precede unknowns within each cohort. Deferred Kangnam/Eulji remain last.
 All42/49,30 preparation,22 focus and existing design/contracts preserved. Public HOLD.
-Release evidence and source limitations: canonical APP task/Wiki below.
+Deployed source `2f22fe62cf79299f356eb0f797846b9235bd3b4a`, Pages
+`ff21b878-c428-494e-bdae-2870c90cbe13`, success2026-10-11T03:10:03.465758Z.
+117 WEB files/1041 PASS,1 optional skip; lint/types/build/audits PASS. Live all42,
+exact Owner22 order, tail2, filters/search/name sort/Cau detail/mobile verified.
+Config maps/allowlist unchanged. Rollback28e4c1ff/source00106fb. Source verification
+remains pending; implementation/deployment complete. Canonical APP task/Wiki below.
 
 ## Oct11 Catalog sorting correction — LIVE / statistics unavailable
 
