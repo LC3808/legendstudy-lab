@@ -1,9 +1,10 @@
 'use client';
 import {useEffect,useState} from 'react';
+import {CatalogIcon} from './university-identity';
 import {useAuth} from './auth-context';
 /** Question visibility is a public RLS read. Catalog presence never grants
  * evaluation readiness: that requires the existing per-question server admission. */
-export function UniversityAvailability({id,later=false}:{id:string|null;later?:boolean}){
+export function UniversityAvailability({id,later=false,detailed=false,typesKnown=false}:{id:string|null;later?:boolean;detailed?:boolean;typesKnown?:boolean}){
  const {client,user}=useAuth();
  const [state,setState]=useState<'checking'|'missing'|'questions'|'unknown'>(id?'checking':'missing');
  useEffect(()=>{
@@ -17,5 +18,6 @@ export function UniversityAvailability({id,later=false}:{id:string|null;later?:b
   return()=>{active=false;};
  },[client,id,user?.id]);
  const label=state==='checking'?'문항 확인 중':state==='unknown'?'문항 상태 확인 필요':later?'서비스 추후 제공':state==='questions'?'평가 준비 중':'자료 준비 중';
+ if(detailed)return <ul className="university-status-lines"><li><CatalogIcon kind="document"/><span>{typesKnown?'논술 유형 확인':'논술 유형 확인 중'}</span></li><li><CatalogIcon kind="book"/><span role="status">{state==='checking'?'기출문항 확인 중':state==='unknown'?'문항 상태 확인 필요':state==='questions'?'기출문항 제공':'기출문제 준비 중'}</span></li><li><CatalogIcon kind="sparkle"/><span>{later?'서비스 추후 제공':'AI 첨삭 준비 중'}</span></li></ul>;
  return <span className="university-badge university-badge--status" role="status">{label}</span>;
 }

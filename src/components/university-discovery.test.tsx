@@ -12,3 +12,10 @@ it('keeps all42 browsable and offers preferred22 plus Seoul without exposing dev
  fireEvent.click(screen.getByRole('button',{name:'전체 42개'}));expect(screen.getByText('42개 대학 · 전형 정보 기준')).toBeVisible();
  expect(screen.queryByText('GROUP A')).toBeNull();expect(screen.queryByText('CORE')).toBeNull();
 });
+it('shows the reference search affordance and separates type, materials and AI readiness',()=>{
+ render(<UniversityDiscovery/>);
+ expect(screen.getByPlaceholderText('대학명을 검색해 보세요.')).toHaveAttribute('type','search');
+ expect(screen.getByRole('img',{name:'가천대학교 로고'})).toBeVisible();
+ expect(screen.getAllByText('AI 첨삭 준비 중').length).toBeGreaterThan(0);
+ expect(screen.queryByText('첨삭 가능')).toBeNull();
+});

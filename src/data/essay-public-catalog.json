@@ -13,6 +13,7 @@
           "id": "gachon-essay-2027-9376e81d",
           "campus": "Global Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술전형"
@@ -56,6 +57,7 @@
           "id": "catholic-essay-2027-07752642",
           "campus": "Sungsim Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술전형"
@@ -108,6 +110,7 @@
           "id": "kangnam-essay-2027-4ac7a098",
           "campus": "본교",
           "region": "경기·인천",
+          "sourceRegion": "경기도 용인시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술전형"
@@ -151,6 +154,7 @@
           "id": "konkuk-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -218,6 +222,7 @@
           "id": "kyonggi-essay-2027-57d5f4b3",
           "campus": "Suwon Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(논술우수자전형)"
@@ -269,6 +274,7 @@
           "id": "knu-essay-2027-c846e3ca",
           "campus": "대구캠퍼스 및 상주 소재 모집단위를 포괄하는 대학 단위 전형",
           "region": "기타 지역",
+          "sourceRegion": "대구광역시 / 경상북도",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(AAT: Academic Aptitude Test)전형"
@@ -339,6 +345,7 @@
           "id": "kyunghee-essay-2027-c77be43b",
           "campus": "International Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(논술우수자전형)"
@@ -386,6 +393,7 @@
           "id": "kyunghee-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -441,6 +449,7 @@
           "id": "korea-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -485,6 +494,7 @@
           "id": "korea-essay-2027-ec433195",
           "campus": "세종캠퍼스",
           "region": "기타 지역",
+          "sourceRegion": "세종특별자치시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(지역인재전형)",
@@ -564,6 +574,7 @@
           "id": "kwangwoon-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -634,6 +645,7 @@
           "id": "kookmin-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -687,6 +699,7 @@
           "id": "dankook-essay-2027-24f004fe",
           "campus": "Jukjeon Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(논술우수자전형)"
@@ -747,6 +760,7 @@
           "id": "duksung-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -790,6 +804,7 @@
           "id": "dongguk-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -861,6 +876,7 @@
           "id": "dongduk-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -906,6 +922,7 @@
           "id": "pnu-essay-2027-1fb36248",
           "campus": "부산·양산·밀양캠퍼스 (2027 수시모집요강 표기; 논술 모집단위별 실제 수업 캠퍼스 및 고사장은 NOT PUBLISHED)",
           "region": "기타 지역",
+          "sourceRegion": "부산광역시·경상남도",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -980,6 +997,7 @@
           "id": "syu-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -1023,6 +1041,7 @@
           "id": "sangmyung-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -1068,6 +1087,7 @@
           "id": "sogang-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -1119,6 +1139,7 @@
           "id": "seokyeong-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -1171,6 +1192,7 @@
           "id": "seoultech-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -1219,6 +1241,7 @@
           "id": "uos-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -1272,6 +1295,7 @@
           "id": "swu-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술우수자전형"
@@ -1315,6 +1339,7 @@
           "id": "skku-essay-2027-3e1a07e5",
           "campus": "Natural Sciences Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술위주(수리형)"
@@ -1360,6 +1385,7 @@
           "id": "skku-essay-2027-c6a66764",
           "campus": "인문사회과학캠퍼스(서울)",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술위주"
@@ -1426,6 +1452,7 @@
           "id": "sungshin-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -1469,6 +1496,7 @@
           "id": "sejong-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -1519,6 +1547,7 @@
           "id": "suwon-essay-2027-b27ebd06",
           "campus": "Main Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "교과논술전형"
@@ -1573,6 +1602,7 @@
           "id": "sookmyung-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -1628,6 +1658,7 @@
           "id": "soongsil-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -1676,6 +1707,7 @@
           "id": "shinhan-essay-2027-6d63670b",
           "campus": "Uijeongbu·Dongducheon Campuses",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술전형"
@@ -1719,6 +1751,7 @@
           "id": "ajou-essay-2027-b27ebd06",
           "campus": "Main Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(논술우수자전형)"
@@ -1775,6 +1808,7 @@
           "id": "yonsei-essay-2027-78416a2a",
           "campus": "미래캠퍼스",
           "region": "기타 지역",
+          "sourceRegion": "강원특별자치도",
           "admissionYear": 2027,
           "admissionNames": [
             "논술우수자전형"
@@ -1820,6 +1854,7 @@
           "id": "yonsei-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -1884,6 +1919,7 @@
           "id": "eulji-essay-2027-87280a6b",
           "campus": "Seongnam Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(논술우수자)"
@@ -1928,6 +1964,7 @@
           "id": "eulji-essay-2027-ae7ad02b",
           "campus": "Uijeongbu Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(논술우수자)"
@@ -1980,6 +2017,7 @@
           "id": "ewha-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -2028,6 +2066,7 @@
           "id": "inha-essay-2027-b27ebd06",
           "campus": "Main Campus",
           "region": "경기·인천",
+          "sourceRegion": "Incheon Metropolitan City",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(논술우수자)"
@@ -2076,6 +2115,7 @@
           "id": "cau-essay-2027-e772c8aa",
           "campus": "Da Vinci Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(일반형)"
@@ -2115,6 +2155,7 @@
           "id": "cau-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(일반형)",
@@ -2174,6 +2215,7 @@
           "id": "tukorea-essay-2027-b27ebd06",
           "campus": "Main Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(논술우수자)"
@@ -2227,6 +2269,7 @@
           "id": "koreatech-essay-2027-4ac7a098",
           "campus": "본교",
           "region": "기타 지역",
+          "sourceRegion": "충청남도",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(일반전형)"
@@ -2278,6 +2321,7 @@
           "id": "hufs-essay-2027-9376e81d",
           "campus": "Global Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(논술전형)"
@@ -2317,6 +2361,7 @@
           "id": "hufs-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -2364,6 +2409,7 @@
           "id": "kau-essay-2027-b27ebd06",
           "campus": "Main Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(논술우수자)"
@@ -2416,6 +2462,7 @@
           "id": "hanshin-essay-2027-b27ebd06",
           "campus": "Main Campus",
           "region": "경기·인천",
+          "sourceRegion": "Gyeonggi-do",
           "admissionYear": 2027,
           "admissionNames": [
             "논술(논술)전형"
@@ -2461,6 +2508,7 @@
           "id": "hanyang-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"
@@ -2523,6 +2571,7 @@
           "id": "hongik-essay-2027-51b66d68",
           "campus": "서울캠퍼스",
           "region": "서울",
+          "sourceRegion": "서울특별시",
           "admissionYear": 2027,
           "admissionNames": [
             "논술"

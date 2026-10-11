@@ -115,6 +115,52 @@
 @media (prefers-reduced-motion:reduce) { .university-card {transition:none;} html {scroll-behavior:auto;} }
 .university-disabled { flex-shrink:0; min-height:46px; padding:.7rem 1rem; background:#e0e5e9; color:#536171; border-radius:var(--radius-sm); font-size:var(--type-small); font-weight:700; cursor:not-allowed; }
 /* Intrinsic rem-based columns also reflow when the reader enlarges text. */
-.discovery-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr)); }
+.discovery-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,max(14rem,calc((100% - 3rem)/4))),1fr)); }
 .university-info-grid > :only-child { grid-column:1/-1; }
 @media (min-width:60em) { .university-info-grid > :only-child .university-facts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:2rem; } }
+
+/* Owner visual reference, Oct11: identity, three distinct facts, compact black CTA. */
+.university-discovery { background:#f7f8fa; padding:clamp(.75rem,2vw,1.5rem); }
+.discovery-topline { margin-bottom:.5rem; }
+.discovery-filters { grid-template-columns:minmax(0,6fr) repeat(3,minmax(0,1fr)); gap:1rem; }
+.discovery-filters label { color:var(--ink); font-weight:700; }
+.discovery-filters input,.discovery-filters select { height:48px; border-radius:.75rem; font-weight:500; background:white; }
+.university-search { position:relative; display:block; }
+.university-search > .catalog-icon { position:absolute; left:.9rem; top:50%; transform:translateY(-50%); width:20px; height:20px; color:#8290a3; pointer-events:none; }
+.university-search input { padding-left:2.8rem; }
+.university-search input::placeholder { color:#64748b; opacity:1; }
+.discovery-result { color:var(--ink); font-weight:600; }
+.university-card { position:relative; padding:1.25rem; border-radius:18px; background:linear-gradient(140deg,#fff 50%,#f8fbff 100%); border-color:#e0e5ed; box-shadow:0 2px 5px rgba(15,35,60,.035),0 7px 16px rgba(15,35,60,.07); transition:transform 200ms ease,box-shadow 200ms ease,border-color 200ms ease; }
+@media (hover:hover) { .university-card:hover { transform:translateY(-2px); box-shadow:0 4px 8px rgba(15,35,60,.04),0 10px 24px rgba(15,35,60,.11); } }
+.university-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:.6rem; margin-bottom:.8rem; }
+.university-logo { display:block; width:auto; max-width:112px; height:56px; object-fit:contain; object-position:left center; flex-shrink:0; }
+.university-monogram { width:56px; height:56px; flex-shrink:0; }
+.university-regions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:.3rem; min-width:0; }
+.university-badge { border-radius:999px; font-size:.8rem; padding:.25rem .7rem; }
+.university-badge--region { background:#eff2f6; color:#42556d; }
+.university-badge--region[data-region="서울"],.university-badge--type[data-type="인문"] { background:#ffebed; color:#a92232; }
+.university-badge--region[data-region="경기·인천"],.university-badge--type[data-type="수리"] { background:#e8f1ff; color:#175cac; }
+.university-badge--region[data-region="대구·경북"],.university-badge--region[data-region="부산·경남"],.university-badge--type[data-type="과학"],.university-badge--type[data-type="단답·약술형"] { background:#e5f6ef; color:#17634c; }
+.university-badge--type[data-type="경제·경영"] { background:#f1eafb; color:#684193; }
+.university-card-heading { margin-bottom:.3rem; }
+.university-card h3 { font-size:1.25rem; line-height:1.4; font-weight:800; }
+.university-card-meta { margin-bottom:.55rem; font-size:.875rem; }
+.university-card-meta p { margin:0; }
+.university-card-status { margin:.9rem 0 .8rem; padding-top:.7rem; border-top:1px solid #e5e9ef; }
+.university-status-lines { display:grid; gap:.35rem; padding:0; margin:0; list-style:none; }
+.university-status-lines li { display:flex; align-items:center; gap:.6rem; color:#526175; font-size:.875rem; line-height:1.5; }
+.catalog-icon { flex-shrink:0; }
+.university-primary { background:#171717; border-color:#171717; color:white; min-height:44px; border-radius:11px; padding:.6rem .85rem; }
+.university-primary:hover { background:#303030; border-color:#303030; }
+.university-detail-identity { display:flex; align-items:center; flex-wrap:wrap; gap:1.2rem; margin-bottom:1rem; }
+.university-detail-identity .university-regions { justify-content:flex-start; }
+@media (max-width:59.99em) { .discovery-filters {grid-template-columns:repeat(3,minmax(0,1fr));}.discovery-filters label:first-child {grid-column:1/-1;} }
+@media (max-width:39.99em) { .discovery-filters {grid-template-columns:minmax(0,1fr);} .university-card {padding:1.1rem;} .university-logo {height:48px;max-width:104px;} .university-monogram {width:48px;height:48px;} }
+@media (prefers-reduced-motion:reduce) { .university-card {transition:none;}.university-card:hover {transform:none;} }
+.university-logo[data-dark-surface] { background:#17283f; padding:.35rem; border-radius:.3rem; }
+.university-discovery-page.content-wrap { width:calc(100% - 3rem); max-width:1600px; }
+.university-card h3 { font-size:1.4rem; }
+.university-card-meta,.university-status-lines li { font-size:.9375rem; }
+.university-card > .university-badges { min-height:1.75rem; }
+.university-card .university-badge { font-size:.8125rem; }
+@media (max-width:39.99em) { .university-discovery-page.content-wrap {width:calc(100% - 1.5rem);} }

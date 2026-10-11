@@ -1,0 +1,298 @@
+{
+  "catholic": {
+    "src": "/university-logos/catholic.png",
+    "sourcePage": "https://www.catholic.ac.kr/ko/index.do",
+    "sourceAsset": "https://www.catholic.ac.kr/_res/cuk/ko/img/main/main_header_logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "08239cae91f487a4d9a08c53b4c86c4dac4f5176afdb5a83f6a5122b029c9d50"
+  },
+  "konkuk": {
+    "src": "/university-logos/konkuk.png",
+    "sourcePage": "https://admission.konkuk.ac.kr/admission/37981/subview.do",
+    "sourceAsset": "https://admission.konkuk.ac.kr/sites/admission/images/common/img-header-logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "40943910d8d6c06acb398faae554194e52f17443ff7ecff50d1081332adb9fe2"
+  },
+  "kyonggi": {
+    "src": "/university-logos/kyonggi.png",
+    "sourcePage": "https://www.kyonggi.ac.kr/www/index.do",
+    "sourceAsset": "https://www.kyonggi.ac.kr/common/images/layout/logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "93b49a1028cc7a0545bb33c15a94a445c569bf93a9c5b5719d46f63b47b6e4b1"
+  },
+  "knu": {
+    "src": "/university-logos/knu.png",
+    "sourcePage": "https://www.knu.ac.kr/wbbs/wbbs/main/main.action",
+    "sourceAsset": "https://www.knu.ac.kr/wbbs/assets/images/common/tablet_header_logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "47d1a89fdfebb601a8760a87a8488873e1be44b2d57a00c318d4ff36e6d0e9f7",
+    "darkSurface": true
+  },
+  "kyunghee": {
+    "src": "/university-logos/kyunghee.png",
+    "sourcePage": "https://www.khu.ac.kr/kor/user/main/view.do",
+    "sourceAsset": "https://www.khu.ac.kr/cmmn/file/imageSrc.do?atchFileId=f25a4a11986440c5ab843d159d3bde78&fileSn=3",
+    "verifiedAt": "2026-10-11",
+    "sha256": "d850ebe49f34cbe251f1935b1d3127629f1b43b3c6f747449ecffce7d87e2f1b"
+  },
+  "korea": {
+    "src": "/university-logos/korea.png",
+    "sourcePage": "https://www.korea.ac.kr/sites/ko/index.do",
+    "sourceAsset": "https://www.korea.ac.kr/sites/ko/images/common/logo_c.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "c10ea1604e9b6edb808acd6d8003397bcecca18a7df8b718a68f27a187e5a6be"
+  },
+  "duksung": {
+    "src": "/university-logos/duksung.png",
+    "sourcePage": "https://www.duksung.ac.kr/main.do?isMaster=N&isLogined=N&viewPrefix=%2FWEB-INF%2Fjsp%2Fcms&urlRootPath=&siteResourcePath=%2Fsite%2Fduksung",
+    "sourceAsset": "https://www.duksung.ac.kr/site/duksung/common/img/logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "0303a209c7d6ad994b9a70ea1d76e12b84099dd45cd2abdad500a4687f9a2783"
+  },
+  "dongguk": {
+    "src": "/university-logos/dongguk.png",
+    "sourcePage": "https://www.dongguk.edu/main",
+    "sourceAsset": "https://www.dongguk.edu/resources/images/site/common/header_logo_color.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "f123e2c705ee1c597c21a5c2b83762d0393b5791de2349a632685fc7c06dd538"
+  },
+  "dongduk": {
+    "src": "/university-logos/dongduk.png",
+    "sourcePage": "https://www.dongduk.ac.kr/www/main/index.do",
+    "sourceAsset": "https://www.dongduk.ac.kr/ncmsrsc/templete/www01/img/common/icon_logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "cb663b44a3668b7a09d444aca955b443d41b578f0486fd2519582d1c9c8e79c2"
+  },
+  "pnu": {
+    "src": "/university-logos/pnu.png",
+    "sourcePage": "https://www.pusan.ac.kr/kor/intro.do",
+    "sourceAsset": "https://www.pusan.ac.kr/_contents/kor/_Img/Main/intro/intro80-logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "86c2f4f0043e1abab7047b73ea3b0596743f79d77dd6adc1df0dab7e773af8fd"
+  },
+  "syu": {
+    "src": "/university-logos/syu.png",
+    "sourcePage": "https://www.syu.ac.kr",
+    "sourceAsset": "https://www.syu.ac.kr/wp-content/themes/syu-main/images/logo/new_logo_black.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "442e0b8ae220b734958a076a6a0f7d201f8525068cb8a1da1cde31f275222bfc"
+  },
+  "sangmyung": {
+    "src": "/university-logos/sangmyung.png",
+    "sourcePage": "https://www.smu.ac.kr/kor/intro/uiLogo.do",
+    "sourceAsset": "https://www.smu.ac.kr/_res/kor/img/sub1/ic-sub1-symbol1.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "b1089e3849ba2719976261ef1f549dc1a1226df680702edca18a7766aca60e5b"
+  },
+  "seokyeong": {
+    "src": "/university-logos/seokyeong.png",
+    "sourcePage": "https://www.skuniv.ac.kr/intro",
+    "sourceAsset": "https://www.skuniv.ac.kr/wp-content/uploads/2025/10/59447f92-b298-4a56-a591-608cc6619fd0.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "58889554bdcaa218098e71f5a9378ce4ad3c3ad07a73e745cb953b843f640a47",
+    "darkSurface": true
+  },
+  "seoultech": {
+    "src": "/university-logos/seoultech.svg",
+    "sourcePage": "https://www.seoultech.ac.kr",
+    "sourceAsset": "https://www.seoultech.ac.kr/site/ko/2021/res/img/logo_on.svg",
+    "verifiedAt": "2026-10-11",
+    "sha256": "511d5d9ad9fd060641f8510bd43c18210479e0044c237cb15e0e4c14742c663e"
+  },
+  "uos": {
+    "src": "/university-logos/uos.png",
+    "sourcePage": "https://admission.uos.ac.kr/admissionNew/main.do",
+    "sourceAsset": "https://admission.uos.ac.kr/images/admissionNew/common/logo_on.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "31f56bfdff41a2510eb1922eb1a6232267d577ce8669eccdf1827672a98a9714"
+  },
+  "skku": {
+    "src": "/university-logos/skku.png",
+    "sourcePage": "https://www.skku.edu/skku/index.do",
+    "sourceAsset": "https://www.skku.edu/_res/skku//img/common/logo_o.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "d02d96d5701b9e78032a5740c9b990c9d5973489a680bc7d54bf69c391020b67"
+  },
+  "sungshin": {
+    "src": "/university-logos/sungshin.jpg",
+    "sourcePage": "https://www.sungshin.ac.kr/sites/main_kor/main.jsp",
+    "sourceAsset": "https://www.sungshin.ac.kr/sites/main_kor/images/common/logo.jpg",
+    "verifiedAt": "2026-10-11",
+    "sha256": "02f230821d8468b6c386854323404b313445e8bf42c7ba247ef68eca97edc105"
+  },
+  "sejong": {
+    "src": "/university-logos/sejong.png",
+    "sourcePage": "https://www.sejong.ac.kr/kor/index.do",
+    "sourceAsset": "https://www.sejong.ac.kr/_res/sejong/_share/img/sj-common/img-logo02-active@2x.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "018c6cce1111bb6108429badf1be14ac1a517f2b346a4e95303c4e9a51253032"
+  },
+  "suwon": {
+    "src": "/university-logos/suwon.png",
+    "sourcePage": "https://www.suwon.ac.kr",
+    "sourceAsset": "https://www.suwon.ac.kr/intro/images/ipsi/intro_logo2.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "23e2cc3c3dd783d3be68f12b3e4e721cd735bbc826a6e4a94354e4567d496d17"
+  },
+  "sookmyung": {
+    "src": "/university-logos/sookmyung.svg",
+    "sourcePage": "https://www.sookmyung.ac.kr:443/kr/index.do",
+    "sourceAsset": "https://www.sookmyung.ac.kr:443/cms/etcResourceDown.do?site=%24cms%24PoZwFghgTgpkA&key=%24cms%24BYEwtANg9g5lYHcB0BnAbjIA",
+    "verifiedAt": "2026-10-11",
+    "sha256": "b0eae498bb7af7265a0225b29b47f42f8c05c8ede472f87cede453920c027321",
+    "darkSurface": true
+  },
+  "shinhan": {
+    "src": "/university-logos/shinhan.png",
+    "sourcePage": "https://www.shinhan.ac.kr/sites/kr/index.do",
+    "sourceAsset": "https://www.shinhan.ac.kr/sites/kr/images/logo_b.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "c52cc6c4ecb320432cf2f90b5786ecb19580d842b21e6acbb620c6014932d87e"
+  },
+  "ajou": {
+    "src": "/university-logos/ajou.png",
+    "sourcePage": "https://www.ajou.ac.kr/kr/index.do",
+    "sourceAsset": "https://www.ajou.ac.kr/_res/ajou/kr/img/common/img-logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "1f6f63016e1b6620682ec54704794ce724d118bcfd99bb5c0c95f875449677b7"
+  },
+  "eulji": {
+    "src": "/university-logos/eulji.png",
+    "sourcePage": "https://www.eulji.ac.kr",
+    "sourceAsset": "https://www.eulji.ac.kr/univ/eulji/images/svg/eulji_logo_type-w.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "2c482505f0a894388a00cfb9c9561f98eedc5a3cf7c74b696a152945a63f4926",
+    "darkSurface": true
+  },
+  "inha": {
+    "src": "/university-logos/inha.png",
+    "sourcePage": "https://www.inha.ac.kr/kr/index.do",
+    "sourceAsset": "https://www.inha.ac.kr/sites/kr/images/logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "b1a1e3e00d458cb865f12414934d1ae79184cd81786102a6a88eb7e25c624f9d"
+  },
+  "tukorea": {
+    "src": "/university-logos/tukorea.svg",
+    "sourcePage": "https://www.tukorea.ac.kr/intro/index.html",
+    "sourceAsset": "https://www.tukorea.ac.kr/intro/img/logo.svg",
+    "verifiedAt": "2026-10-11",
+    "sha256": "bd0541e77b7e92f95229f14c4f3df883c4f766457371e70b855a7819101c6b87",
+    "darkSurface": true
+  },
+  "hufs": {
+    "src": "/university-logos/hufs.png",
+    "sourcePage": "https://www.hufs.ac.kr/hufs/index.do",
+    "sourceAsset": "https://www.hufs.ac.kr/sites/hufs/images/common/logo-top-color.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "45b6612becf74542a373b171617bacbc90063021d938024c7530842c92029974"
+  },
+  "kau": {
+    "src": "/university-logos/kau.png",
+    "sourcePage": "https://kau.ac.kr/index/main.php",
+    "sourceAsset": "https://kau.ac.kr/images/main/logo_kau_on.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "d04df19c07b10a7bb9395456383c0392b79d0ca0ee5221100cc02c7db7f29c9d"
+  },
+  "hanshin": {
+    "src": "/university-logos/hanshin.jpg",
+    "sourcePage": "https://www.hs.ac.kr/kor/index.do",
+    "sourceAsset": "https://www.hs.ac.kr/sites/testPub/images/logo.jpg",
+    "verifiedAt": "2026-10-11",
+    "sha256": "77e5ff23cacdaf68bc62f9b75fe3a4ae87216acd7f56072603fe26546982c46b"
+  },
+  "hanyang": {
+    "src": "/university-logos/hanyang.png",
+    "sourcePage": "https://www.hanyang.ac.kr/home",
+    "sourceAsset": "https://www.hanyang.ac.kr/o/hyu_homepage-theme/images/icons/logo_global.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "c0af1d2f2ecc05c8ad3432c7ff52a00d5c36e9abf97eb637150f69a7df2efd82",
+    "darkSurface": true
+  },
+  "hongik": {
+    "src": "/university-logos/hongik.svg",
+    "sourcePage": "https://www.hongik.ac.kr/kr/index.do",
+    "sourceAsset": "https://www.hongik.ac.kr/_res/hongik/_share/etc/img-logo-on.svg",
+    "verifiedAt": "2026-10-11",
+    "sha256": "5bf980564f9b9f39d09f2057c6521a94eea165b8082266fc10b8923188d2d775"
+  },
+  "kangnam": {
+    "src": "/university-logos/kangnam.png",
+    "sourcePage": "https://www.kangnam.ac.kr",
+    "sourceAsset": "https://www.kangnam.ac.kr/css/images/logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "16b76444eb2b95e44df110efd902db6bd4e8d51e53973f4f84c2bda32a18f020",
+    "darkSurface": true
+  },
+  "soongsil": {
+    "src": "/university-logos/soongsil.png",
+    "sourcePage": "https://ssu.ac.kr/%ea%b8%b0%ed%83%80%ec%84%9c%eb%b9%84%ec%8a%a4/total_search/",
+    "sourceAsset": "https://ssu.ac.kr/wp-content/themes/SSUMainSiteV2/assets/images/logo_dark.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "17613ce0cd5d15827f05538c36a046d7e7096fdefd22c6c84afb18bddc351ed5"
+  },
+  "ewha": {
+    "src": "/university-logos/ewha.svg",
+    "sourcePage": "https://www.ewha.ac.kr/ewha/index.do",
+    "sourceAsset": "https://www.ewha.ac.kr/ewha/index.do#header-logo-wrap",
+    "verifiedAt": "2026-10-11",
+    "sha256": "ec8e477d0f2b5963d3d914fa287eeb3d2fd5d8e5e773bb58801de854f446c6ee",
+    "darkSurface": true
+  },
+  "kwangwoon": {
+    "src": "/university-logos/kwangwoon.png",
+    "sourcePage": "https://www.kw.ac.kr/ko/",
+    "sourceAsset": "https://www.kw.ac.kr/ko/img/logo2.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "66140fbf8b165005e6f32cfee480f803fe948396edce013b72fdc06da4e37337"
+  },
+  "kookmin": {
+    "src": "/university-logos/kookmin.png",
+    "sourcePage": "https://www.kookmin.ac.kr/user/index.do",
+    "sourceAsset": "https://www.kookmin.ac.kr/content/05sub/style0005/images/common/kmu_logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "312cebfaf74498a363c15c2caf78fc4f230e282e97f1f1373a84fd4c32d4eb53"
+  },
+  "swu": {
+    "src": "/university-logos/swu.png",
+    "sourcePage": "https://www.swu.ac.kr/swu/index.do",
+    "sourceAsset": "https://www.swu.ac.kr/sites/swu/images/common/logo_c.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "b56b422e54c8c1613da7c254cc2f5065d17d1672a8e37b593d69e814f87714b5"
+  },
+  "yonsei": {
+    "src": "/university-logos/yonsei.png",
+    "sourcePage": "https://www.yonsei.ac.kr/sc/index.do",
+    "sourceAsset": "https://www.yonsei.ac.kr/sites/sc/images/common/img-header-logo-color.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "fa035eaca2fb89e1cba785f3049693d415827458a85e7f6c1ab3a9de78bd28a8"
+  },
+  "gachon": {
+    "src": "/university-logos/gachon.png",
+    "sourcePage": "https://search.gachon.ac.kr/search/front/Search.jsp",
+    "sourceAsset": "https://search.gachon.ac.kr/search/front/images/search_logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "f5d9c19a140a41116616a6998cb01da7f339d689fe32ff9638478a294c6286cd"
+  },
+  "cau": {
+    "src": "/university-logos/cau.png",
+    "sourcePage": "https://newchn.cau.ac.kr/cms/FR_CON/index.do?MENU_ID=220",
+    "sourceAsset": "https://newchn.cau.ac.kr/cau/img/chn/layout/logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "4d57b19cf23634116be377b70ceb037c82718fd8327a4ff97468d7040ef15d17"
+  },
+  "koreatech": {
+    "src": "/university-logos/koreatech.png",
+    "sourcePage": "https://www.koreatech.ac.kr/sitemap.es?mid=a10901000000",
+    "sourceAsset": "https://www.koreatech.ac.kr/template/template01/img/layout/logo.png",
+    "verifiedAt": "2026-10-11",
+    "sha256": "15c776002e45b50f0f9373e8a4dcb9bc2dace49eb4fae073e5c8c0fab7a10c03"
+  },
+  "dankook": {
+    "src": "/university-logos/dankook.png",
+    "sourcePage": "https://www.dankook.ac.kr/web/kor/home",
+    "sourceAsset": "https://www.dankook.ac.kr/documents/d/global/dku_mix_white",
+    "verifiedAt": "2026-10-11",
+    "sha256": "0651b4c1d7390872cdf3a3412133154eea10d8336ef9e754791d9dfe52d1949c",
+    "darkSurface": true
+  }
+}

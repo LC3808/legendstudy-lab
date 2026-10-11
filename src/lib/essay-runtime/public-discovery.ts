@@ -1,7 +1,7 @@
 import {isPriorityUniversity} from './catalog-policy';
 import data from '@/data/essay-public-catalog.json';
 export type AdmissionDetail={sourceId:string;name:string;facts:Partial<Record<'intake_count'|'exam_date'|'exam_time'|'question_count'|'answer_length'|'csat_minimum'|'essay_weight'|'school_record_weight',string>>;sourceStatus:string;verifiedAt:string;sourceUrl:string;documentUrl:string|null;documentBasis:string;applicants:null;competitionRatio:null};
-export type Offering={id:string;campus:string;region:string;admissionYear:number;admissionNames:string[];types:string[];rawEssayTypes:string[];sourceIds:string[];sources:string[];verifiedAt:string;sourceStatus:string;admissionDetails?:AdmissionDetail[]};
+export type Offering={id:string;campus:string;region:string;sourceRegion?:string;admissionYear:number;admissionNames:string[];types:string[];rawEssayTypes:string[];sourceIds:string[];sources:string[];verifiedAt:string;sourceStatus:string;admissionDetails?:AdmissionDetail[]};
 export type CatalogUniversity={sourceUniversityId:string;universityId:string|null;canonicalSlug:string|null;name:string;researchSources?:{url:string;label:string;verifiedAt:string}[];offerings:Offering[]};
 export const publicCatalog=data as {version:string;asOf:string;universities:CatalogUniversity[]};
 export function filterCatalog(query:string,region:string,type:string,year:string){
