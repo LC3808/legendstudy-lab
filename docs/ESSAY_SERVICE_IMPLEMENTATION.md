@@ -4,6 +4,31 @@ Status PARTIAL / CONTRACT VERIFIED / NO NEW LIVE E2E. APP canonical task evidenc
 `wiki/essay-full-service-implementation-20261011.md`, branch
 `codex/essay-full-service-implementation`. No native UI rewrite or new backend.
 
+## Oct11 Catalog/detail UX refinement — release candidate
+
+Reuses existing discovery, RLS question reads and runtime; no evaluation contract
+change. White cards/muted surface, restrained shadow, type/status badges, Navy44–48px
+CTA and intrinsic4/2/1 layout. Detail has Hero, semantic sections, aligned admissions
+facts, actual exam-year questions, separate source cards and disabled future-service
+CTA. No repeated material+AI preparation paragraphs. Exact Owner22/GroupA4/B18 and
+existing30 source-ID cohorts are regression-tested; default42 preserved. 주요 대학
+includes22 + Seoul (32 currently), not an applicant rank. Unknown applicants/rates
+remain null, so8000 threshold/statistical sorting await verified data, not assumptions.
+
+Existing APP generator now projects52 verified Master rows within49 offerings into
+scoped admission facts (including source status/basis/date);10 Manus research records
+supply27 official reference links. No PDF body, answer or private evidence published.
+Original IDs/campuses/years/source URLs/dates compare equal to the deployed baseline.
+All42 universities/27 canonical UUIDs/15 nulls retained. Special-format badge derives
+only from actual literal source text, never the Owner development grouping.
+
+Checks:113 WEB files,1022 PASS/1 optional skip; Python projection5 PASS; lint/types/
+boundaries/audit/Node22 webpack PASS. Local browser6 widths360/375/390/768/1280/1440
+catalog/detail no overflow, actual4/2/1 columns; 200% root-font32px built-copy simulation
+also passes6 widths. Keyboard Tab focus outline, semantic headings/form labels,
+external rel protection,>=44px CTA and CSS reduced-motion verified. Before captured
+from actual Production Konkuk detail/cards. Live release result follows after deploy.
+
 ## Oct11 Catalog Production release + Owner scope correction — COMPLETE
 
 Catalog-only release is live at https://lab.legendstudy.com/essay-lab/ . Cloudflare

@@ -7,12 +7,12 @@ vi.mock('./auth-context',()=>({useAuth:()=>({client:{from:()=>{const query={sele
 it('does not infer evaluation readiness from question presence and clears an old university status',async()=>{
  setup.reject=false;setup.value={data:[{id:'published-question'}],error:null};
  const {rerender}=render(<UniversityAvailability id="canonical-id"/>);
- await screen.findByText('문항 제공');expect(screen.getByText('AI 첨삭 가능 여부는 문항에서 확인해 주세요.')).toBeVisible();
+ await screen.findByText('평가 준비 중');
  expect(screen.queryByRole('button',{name:'첨삭 가능'})).toBeNull();
- rerender(<UniversityAvailability id={null}/>);await screen.findByText('자료 준비 중');expect(screen.queryByText('문항 제공')).toBeNull();
+ rerender(<UniversityAvailability id={null}/>);await screen.findByText('자료 준비 중');expect(screen.queryByText('평가 준비 중')).toBeNull();
 });
 it('distinguishes a failed read from an empty catalog without opening evaluation',async()=>{
  setup.reject=true;render(<UniversityAvailability id="canonical-id"/>);
- await screen.findByText('자료 상태 확인 필요');expect(screen.getByText('AI 첨삭 준비 중')).toBeVisible();
+ await screen.findByText('문항 상태 확인 필요');
  await waitFor(()=>expect(screen.queryByText('자료 준비 중')).toBeNull());setup.reject=false;
 });

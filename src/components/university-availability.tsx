@@ -3,8 +3,8 @@ import {useEffect,useState} from 'react';
 import {useAuth} from './auth-context';
 /** Question visibility is a public RLS read. Catalog presence never grants
  * evaluation readiness: that requires the existing per-question server admission. */
-export function UniversityAvailability({id}:{id:string|null}){
- const {client}=useAuth();
+export function UniversityAvailability({id,later=false}:{id:string|null;later?:boolean}){
+ const {client,user}=useAuth();
  const [state,setState]=useState<'checking'|'missing'|'questions'|'unknown'>(id?'checking':'missing');
  useEffect(()=>{
   let active=true;
@@ -15,9 +15,7 @@ export function UniversityAvailability({id}:{id:string|null}){
    if(active)setState(error?'unknown':data?.length?'questions':'missing');
   })().catch(()=>{if(active)setState('unknown');});
   return()=>{active=false;};
- },[client,id]);
- return <div className="university-availability" role="status">
-  <p>{state==='checking'?'자료 상태 확인 중':state==='missing'?'자료 준비 중':state==='questions'?'문항 제공':'자료 상태 확인 필요'}</p>
-  <p>{state==='questions'?'AI 첨삭 가능 여부는 문항에서 확인해 주세요.':'AI 첨삭 준비 중'}</p>
- </div>;
+ },[client,id,user?.id]);
+ const label=state==='checking'?'문항 확인 중':state==='unknown'?'문항 상태 확인 필요':later?'서비스 추후 제공':state==='questions'?'평가 준비 중':'자료 준비 중';
+ return <span className="university-badge university-badge--status" role="status">{label}</span>;
 }

@@ -28,7 +28,21 @@
             "https://admission.gachon.ac.kr/upload/BBS0021/20260522154511HBZYTW.PDF"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-028",
+              "name": "2027 수시 논술전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.gachon.ac.kr/upload/BBS0021/20260522154511HBZYTW.PDF",
+              "documentUrl": "https://admission.gachon.ac.kr/upload/BBS0021/20260522154511HBZYTW.PDF",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -60,7 +74,28 @@
             "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EA%B0%80%ED%86%A8%EB%A6%AD%EB%8C%80%ED%95%99%EA%B5%90/%EA%B0%80%ED%86%A8%EB%A6%AD%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-029",
+              "name": "논술전형",
+              "facts": {
+                "intake_count": "176명",
+                "exam_time": "일반 90분; 의예과 100분",
+                "question_count": "일반 3문항; 의예과 detailed count NOT PUBLISHED in this inventory",
+                "csat_minimum": "없음 (약학과·의예과·간호학과만 적용)",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EA%B0%80%ED%86%A8%EB%A6%AD%EB%8C%80%ED%95%99%EA%B5%90/%EA%B0%80%ED%86%A8%EB%A6%AD%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EA%B0%80%ED%86%A8%EB%A6%AD%EB%8C%80%ED%95%99%EA%B5%90/%EA%B0%80%ED%86%A8%EB%A6%AD%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -89,7 +124,21 @@
             "http://admission.kangnam.ac.kr/doumi/notice.htm?bbsid=notice&ctg_cd=&page=1&skey=&keyword=&mode=view&bltn_seq=39528"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-046",
+              "name": "논술전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "http://admission.kangnam.ac.kr/doumi/notice.htm?bbsid=notice&ctg_cd=&page=1&skey=&keyword=&mode=view&bltn_seq=39528",
+              "documentUrl": "http://admission.kangnam.ac.kr/bbs/filedown.php?bbsid=notice&file_seq=4156",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -121,7 +170,42 @@
             "https://admission.konkuk.ac.kr/admission/37981/subview.do"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-001",
+              "name": "논술우수자전형",
+              "facts": {
+                "csat_minimum": "수능최저 적용(정확 기준은 공식 2027 수시요강 참조)",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.konkuk.ac.kr/admission/37981/subview.do",
+              "documentUrl": "https://www.konkuk.ac.kr/nctgrBbs/admission/3/6282/1195210/artclView.do",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://admission.konkuk.ac.kr/admission/37917/subview.do",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://admission.konkuk.ac.kr/nctgrBbs/admission/1/6282/1188068/artclView.do",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://www.konkuk.ac.kr/nctgrBbs/admission/9/6287/1205037/artclView.do",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
         }
       ]
     },
@@ -153,7 +237,26 @@
             "https://enter.kyonggi.ac.kr/ajaxfile/FR_SVC/FileDownload.do?FILE_ORG_NM=%EA%B2%BD%EA%B8%B0%EB%8C%80_2027%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95%28%EA%B3%B5%EC%A7%80%EC%9A%A9%29.pdf&FILE_NM=202606/1781506250597_0.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-030",
+              "name": "언어·사회 논술 / 수리 논술",
+              "facts": {
+                "intake_count": "185명 (수원 캠퍼스: 언어·사회 93명, 수리 92명)",
+                "csat_minimum": "없음",
+                "essay_weight": "90%",
+                "school_record_weight": "10%"
+              },
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://enter.kyonggi.ac.kr/ajaxfile/FR_SVC/FileDownload.do?FILE_ORG_NM=%EA%B2%BD%EA%B8%B0%EB%8C%80_2027%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95%28%EA%B3%B5%EC%A7%80%EC%9A%A9%29.pdf&FILE_NM=202606/1781506250597_0.pdf",
+              "documentUrl": "https://enter.kyonggi.ac.kr/ajaxfile/FR_SVC/FileDownload.do?FILE_ORG_NM=%EA%B2%BD%EA%B8%B0%EB%8C%80_2027%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95%28%EA%B3%B5%EC%A7%80%EC%9A%A9%29.pdf&FILE_NM=202606/1781506250597_0.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -172,7 +275,8 @@
             "논술(AAT: Academic Aptitude Test)전형"
           ],
           "types": [
-            "인문"
+            "인문",
+            "단답·약술형"
           ],
           "rawEssayTypes": [
             "2027 공식 모집요강상 논술형·약술형·풀이형. 인문은 교과목 통합, 자연 I은 수학 및 교과목 통합, 자연 II는 수학 및 의학논술."
@@ -184,7 +288,47 @@
             "https://ipsi1.knu.ac.kr/mojib/?m_type=SUSI"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-047",
+              "name": "수시모집 논술(AAT)전형; 인문계열·자연계열 I·자연계열 II의 3개 응시계열",
+              "facts": {
+                "intake_count": "550명 (2027 수시 논술(AAT)전형 전체; 캠퍼스별 별도 집계는 이 행에서 NOT PUBLISHED)",
+                "exam_date": "2026-11-28(토) — FINAL 2027 OFFICIAL PROSPECTUS",
+                "exam_time": "2026-11-28(토), 각 100분: 인문 09:30–11:10; 자연 I 15:30–17:10; 자연 II 16:30–18:10.",
+                "question_count": "인문 6문항 내외; 자연 I 3문항 내외; 자연 II 3문항 내외. 각 문제에는 소문항이 있을 수 있음.",
+                "answer_length": "2027 모집요강은 문항별 글자 수를 공표하지 않음. 2026 공식 가이드(과거 실제 형식 설명)는 인문을 단답형·약술형으로 설명하며 답안 분량을 50–150자라고 요약하고, 약술형은 약 50–300자까지 가능하다고 설명함. 자연계열은 문항별 답안 공간 안에 작성. 2027 문항별 길이는 NOT PUBLISHED.",
+                "csat_minimum": "APPLIES. 한국사 응시. 일반학과: IT대학 수학 포함 상위 2개 영역 등급합 5 이내; 경상·간호·사범·행정·자율전공 상위 2개 5 이내; 공과·첨단기술융합·공학첨단자율 수학 포함 상위 2개 6 이내; 인문·사회·자연·농업생명·생활과학 상위 2개 6 이내. 의예·치의예는 수학 포함 3개 4 이내, 수의예·약학은 수학 포함 3개 5 이내. 전자공학부 모바일AI공학전공은 수학(미적분/기하)·과탐 등급합 3 이내. 생태환경대학·과학기술대학·자율미래인재학부는 미적용. 탐구 및 지정 응시영역의 세부 조건은 공식 모집요강 75–76쪽 참조.",
+                "essay_weight": "논술(AAT) 350점, 70%",
+                "school_record_weight": "학생부교과 150점, 30%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://ipsi1.knu.ac.kr/mojib/?m_type=SUSI",
+              "documentUrl": "https://ipsi1.knu.ac.kr/upload_data/mojib/20260904091056_32.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://www.knu.ac.kr/wbbs/wbbs/bbs/btin/viewBtin.action?bbs_cde=28&btin.bbs_cde=28&btin.doc_no=1333182&btin.appl_no=000000&btin.page=1&btin.search_type=&btin.search_text=&popupDeco=&btin.note_div=row&menu_idx=214",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://www.knu.ac.kr/wbbs/wbbs/bbs/btin/viewBtin.action?bbs_cde=28&btin.bbs_cde=28&btin.doc_no=1330530&btin.appl_no=000000&btin.page=1&btin.search_type=&btin.search_text=&popupDeco=&btin.note_div=row&menu_idx=214",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://use.go.kr/jinhak/user/bbs/BD_selectBbs.do?q_bbsSn=1095&q_bbsDocNo=20260402092157117",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
         }
       ]
     },
@@ -217,7 +361,30 @@
             "https://iphak.khu.ac.kr/file/download.do?sfn=20260826010029371_2027%ed%95%99%eb%85%84%eb%8f%84+%ea%b2%bd%ed%9d%ac%eb%8c%80%ed%95%99%ea%b5%90+%ec%88%98%ec%8b%9c+%eb%aa%a8%ec%a7%91%ec%9a%94%ea%b0%95-%ec%b5%9c%ec%a2%85_20260811%28%ea%b3%b5%ec%a7%80%29.pdf&ofn=2027%ed%95%99%eb%85%84%eb%8f%84+%ea%b2%bd%ed%9d%ac%eb%8c%80%ed%95%99%ea%b5%90+%ec%88%98%ec%8b%9c+%eb%aa%a8%ec%a7%91%ec%9a%94%ea%b0%95-%ec%b5%9c%ec%a2%85_20260811%28%ea%b3%b5%ec%a7%80%29.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-031",
+              "name": "국제캠퍼스 모집단위 논술우수자전형",
+              "facts": {
+                "intake_count": "International Campus subtotal NOT PUBLISHED in a standalone field; university-wide 471명",
+                "exam_date": "2026-11-21 to 2026-11-22",
+                "exam_time": "120분",
+                "question_count": "인문·체육·사회 2문항 내외; 자연 수학 6문항 내외; 의·약학 수학·과학 각 4문항 내외",
+                "answer_length": "인문·체육·사회: 각 1,000자 내외; 자연/의·약: 지정 답안란",
+                "csat_minimum": "적용 (모집단위별 기준; final guide 참조)",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://iphak.khu.ac.kr/file/download.do?sfn=20260826010029371_2027%ed%95%99%eb%85%84%eb%8f%84+%ea%b2%bd%ed%9d%ac%eb%8c%80%ed%95%99%ea%b5%90+%ec%88%98%ec%8b%9c+%eb%aa%a8%ec%a7%91%ec%9a%94%ea%b0%95-%ec%b5%9c%ec%a2%85_20260811%28%ea%b3%b5%ec%a7%80%29.pdf&ofn=2027%ed%95%99%eb%85%84%eb%8f%84+%ea%b2%bd%ed%9d%ac%eb%8c%80%ed%95%99%ea%b5%90+%ec%88%98%ec%8b%9c+%eb%aa%a8%ec%a7%91%ec%9a%94%ea%b0%95-%ec%b5%9c%ec%a2%85_20260811%28%ea%b3%b5%ec%a7%80%29.pdf",
+              "documentUrl": "https://iphak.khu.ac.kr/file/download.do?sfn=20260826010029371_2027%ed%95%99%eb%85%84%eb%8f%84+%ea%b2%bd%ed%9d%ac%eb%8c%80%ed%95%99%ea%b5%90+%ec%88%98%ec%8b%9c+%eb%aa%a8%ec%a7%91%ec%9a%94%ea%b0%95-%ec%b5%9c%ec%a2%85_20260811%28%ea%b3%b5%ec%a7%80%29.pdf&ofn=2027%ed%95%99%eb%85%84%eb%8f%84+%ea%b2%bd%ed%9d%ac%eb%8c%80%ed%95%99%ea%b5%90+%ec%88%98%ec%8b%9c+%eb%aa%a8%ec%a7%91%ec%9a%94%ea%b0%95-%ec%b5%9c%ec%a2%85_20260811%28%ea%b3%b5%ec%a7%80%29.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         },
         {
           "id": "kyunghee-essay-2027-51b66d68",
@@ -238,7 +405,33 @@
             "https://iphak.khu.ac.kr/submenu.do?menuurl=RnNfVbLHUGrJz9kJgEyRDQ%3D%3D&board_seq=2234&categoryid="
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-002",
+              "name": "논술우수자전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://iphak.khu.ac.kr/submenu.do?menuurl=RnNfVbLHUGrJz9kJgEyRDQ%3D%3D&board_seq=2234&categoryid=",
+              "documentUrl": null,
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://iphak.khu.ac.kr/detail.do?menuurl=89BGs%2Bk748ajyySWoWlQPw%3D%3D&board_seq=15627&pageNo=1&categoryid=27&userpwd=",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://iphak.khu.ac.kr/detail.do?menuurl=89BGs%2Bk748ajyySWoWlQPw%3D%3D&board_seq=16903&pageNo=1&categoryid=27&userpwd=",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
         }
       ]
     },
@@ -270,7 +463,27 @@
             "https://oku.korea.ac.kr/attach/202605/1780023076409_0.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-003",
+              "name": "논술전형",
+              "facts": {
+                "intake_count": "351명",
+                "exam_time": "80분",
+                "csat_minimum": "국어·수학·영어·탐구 4개 영역 등급합 8 이내 및 한국사 4등급 이내(의학과 제외)",
+                "essay_weight": "100%",
+                "school_record_weight": "0% (동점자 교과성적 활용)"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://oku.korea.ac.kr/attach/202605/1780023076409_0.pdf",
+              "documentUrl": "https://oku.korea.ac.kr/attach/202605/1780023076409_0.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         },
         {
           "id": "korea-essay-2027-ec433195",
@@ -297,7 +510,51 @@
             "https://oku.korea.ac.kr/sejong/cms/FR_BBS_CON/BoardView.do?MENU_ID=570&CONTENTS_NO=&SITE_NO=3&BOARD_SEQ=8&BBS_SEQ=1885"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-050",
+              "name": "약학과",
+              "facts": {
+                "intake_count": "6명",
+                "exam_date": "2026-11-28",
+                "exam_time": "120분",
+                "question_count": "3문제 내외(문제별 소문항 있음)",
+                "answer_length": "문항별 지정 답안란",
+                "csat_minimum": "국어·수학·영어·탐구(과탐 2과목 평균) 중 3개 영역 등급 합 5 이내; 수학 미적분/기하 중 택1",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://oku.korea.ac.kr/sejong/cms/FR_BBS_CON/BoardView.do?MENU_ID=570&CONTENTS_NO=&SITE_NO=3&BOARD_SEQ=8&BBS_SEQ=1885",
+              "documentUrl": "https://oku.korea.ac.kr/attach/202605/1780045234886_0.pdf",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            },
+            {
+              "sourceId": "LSL27-051",
+              "name": "전 모집단위(약학과 포함)",
+              "facts": {
+                "intake_count": "308명",
+                "exam_date": "2026-11-28",
+                "exam_time": "120분",
+                "question_count": "인문 2문제 내외; 자연Ⅰ 6문제 내외; 약학과 3문제 내외(문제별 소문항 있음)",
+                "answer_length": "인문 문항별 700자 내외; 자연계열 지정 답안란",
+                "csat_minimum": "일반 모집단위: 국어·수학·영어·탐구(상위 1) 중 2개 합 6 이내; 3개 자유전공: 1개 3등급 이내; 약학과: 국어·수학·영어·탐구(2과목 평균) 중 3개 합 5 이내",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://oku.korea.ac.kr/sejong/cms/FR_BBS_CON/BoardView.do?MENU_ID=570&CONTENTS_NO=&SITE_NO=3&BOARD_SEQ=8&BBS_SEQ=1885",
+              "documentUrl": "https://oku.korea.ac.kr/attach/202605/1780045234886_0.pdf",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -329,7 +586,47 @@
             "https://iphak.kw.ac.kr/upload_data/mojib/20260526155135_27.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-004",
+              "name": "논술우수자전형",
+              "facts": {
+                "intake_count": "187명",
+                "exam_date": "자연 2026-11-28; 인문 2026-11-29",
+                "exam_time": "자연 120분; 인문 NOT PUBLISHED",
+                "question_count": "인문 2문제; 자연 2문제(각 5개 내외 소문제)",
+                "answer_length": "인문 각 750자 내외; 자연 NOT PUBLISHED",
+                "csat_minimum": "없음",
+                "essay_weight": "80%",
+                "school_record_weight": "20%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://iphak.kw.ac.kr/upload_data/mojib/20260526155135_27.pdf",
+              "documentUrl": "https://iphak.kw.ac.kr/upload_data/mojib/20260526155135_27.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://iphak.kw.ac.kr/pds/pds_view.php?bn=43270&m_type=SUSI&nPage=1&f=&s=",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://iphak.kw.ac.kr/pds/pds_view.php?bn=43920&m_type=SUSI&nPage=1&f=&s=",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://iphak.kw.ac.kr/pds/pds_view.php?bn=43151&m_type=SUSI&nPage=1&f=&s=",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
         }
       ]
     },
@@ -347,7 +644,9 @@
           "admissionNames": [
             "논술"
           ],
-          "types": [],
+          "types": [
+            "단답·약술형"
+          ],
           "rawEssayTypes": [
             "주관식 단답형·단문형 서술(국어·수학)"
           ],
@@ -358,7 +657,29 @@
             "https://admission.kookmin.ac.kr/common/file_download.php?id=contents&no=180&col=1"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-005",
+              "name": "논술전형",
+              "facts": {
+                "exam_date": "모집단위별 시간 2026-07-23 공지 예정",
+                "exam_time": "90분",
+                "question_count": "인문 국어 8+수학 2; 자연 국어 2+수학 8",
+                "answer_length": "국어: 문항별 글자 수 제한이 있을 수 있음; 수학: 풀이과정 미작성",
+                "csat_minimum": "인문/자연: 국어·수학·영어·탐구 중 2개 영역 등급합 6 이내; 한국사 응시 필수",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.kookmin.ac.kr/common/file_download.php?id=contents&no=180&col=1",
+              "documentUrl": "https://admission.kookmin.ac.kr/common/file_download.php?id=contents&no=180&col=1",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -387,7 +708,38 @@
             "https://ipsi.dankook.ac.kr/jukjeon/notice/list.html?bbsid=juk_info&bltn_seq=50954&mode=view&ctg_cd=01"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-032",
+              "name": "2027 수시 논술우수자전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://ipsi.dankook.ac.kr/jukjeon/notice/list.html?bbsid=juk_info&bltn_seq=50954&mode=view&ctg_cd=01",
+              "documentUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EB%8B%A8%EA%B5%AD%EB%8C%80%ED%95%99%EA%B5%90/%EB%8B%A8%EA%B5%AD%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://ipsi.dankook.ac.kr/jukjeon/doumi/nonsul_list.html?bbsid=juk_pds09&camp_type=&ctg_cd=&page=1&skey=&keyword=&mode=view&bltn_seq=48047",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://ipsi.dankook.ac.kr/jukjeon/doumi/ex_list.html?bbsid=juk_issue&camp_type=&ctg_cd=&page=1&skey=&keyword=&mode=view&bltn_seq=45076",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://ipsi.dankook.ac.kr/jukjeon/doumi/ex_list.html?bbsid=juk_issue&camp_type=&ctg_cd=01&page=1&skey=&keyword=&mode=view&bltn_seq=44670",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
         }
       ]
     },
@@ -416,7 +768,21 @@
             "https://enter.duksung.ac.kr/notice/view.php?bn=6947&m_type=&nPage=1&f=ALL&s=%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-006",
+              "name": "논술전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://enter.duksung.ac.kr/notice/view.php?bn=6947&m_type=&nPage=1&f=ALL&s=%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95",
+              "documentUrl": "https://enter.duksung.ac.kr/_common/new_download_file.php?menu=boardfile&file_no=971",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -448,7 +814,46 @@
             "https://ipsi.dongguk.edu/upload/file/20260623144248DQV7LA.PDF"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-007",
+              "name": "논술전형",
+              "facts": {
+                "exam_date": "2026-11-22",
+                "exam_time": "인문 100분; 자연 90분",
+                "question_count": "각 3개",
+                "answer_length": "인문: 2문항 250–400자, 1문항 550–700자; 자연: 2문항 15줄 이내, 1문항 27줄 이내",
+                "csat_minimum": "인문/자연 2개 영역 등급합 5 이내(계열별 필수영역 조건); 경찰행정 2개 합4; 약학 3개 합4; 한국사 4등급",
+                "essay_weight": "70%",
+                "school_record_weight": "교과 20% + 출결 10%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://ipsi.dongguk.edu/upload/file/20260623144248DQV7LA.PDF",
+              "documentUrl": "https://ipsi.dongguk.edu/upload/file/20260623144248DQV7LA.PDF",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://ipsi.dongguk.edu/admission/html/rolling/dataView.asp?BOARD_IDX=37031&s_cate=BBS0402",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://ipsi.dongguk.edu/admission/html/rolling/dataView.asp?BOARD_IDX=38278&s_cate=BBS0402",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://ipsi.dongguk.edu/admission/html/rolling/dataView.asp?BOARD_IDX=34440&s_cate=BBS0402",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
         }
       ]
     },
@@ -466,7 +871,9 @@
           "admissionNames": [
             "논술"
           ],
-          "types": [],
+          "types": [
+            "단답·약술형"
+          ],
           "rawEssayTypes": [
             "약술형 논술(2027부터 변경)"
           ],
@@ -477,7 +884,21 @@
             "https://ipsi.dongduk.ac.kr/ipsi/contents/nontime-doc.do?schM=view&page=1&viewCount=10&id=91947&schBdcode=_ipsi_admdoc01&schGroupCode=&etc1=78"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-008",
+              "name": "논술우수자전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://ipsi.dongduk.ac.kr/ipsi/contents/nontime-doc.do?schM=view&page=1&viewCount=10&id=91947&schBdcode=_ipsi_admdoc01&schGroupCode=&etc1=78",
+              "documentUrl": null,
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -511,7 +932,47 @@
             "https://go.pusan.ac.kr/college_2016/pages/index.asp?p=3&mj=01"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-048",
+              "name": "논술전형",
+              "facts": {
+                "intake_count": "342명 — 인문·사회 104명, 자연 238명 (의·약학계열 16명 포함)",
+                "exam_date": "2026-11-28 (토)",
+                "exam_time": "2026-11-28 (토) — 자연계열(의·약학계열 포함) 09:30–11:10, 100분; 인문·사회계열 15:30–17:10, 100분",
+                "csat_minimum": "적용. 공통: 한국사 4등급 이내, 국어·수학·영어·사회/과학탐구 2과목·한국사 응시. 인문·사회는 대체로 2개 영역 등급합 5 이내, 경영학과는 3개 영역 등급합 7 이내. 자연(비의·약학)은 모집단위별 수학 포함 2개 영역 등급합 5 이내(과학탐구 1과목 필수 여부는 모집단위별 상이). 의·약학계열은 수학 포함 3개 영역 등급합 4 이내; 탐구는 2과목 응시, 의예과는 2과목 평균, 그 외는 상위 1과목 반영. 세부 모집단위 기준은 공식 모집요강 p.57–58 참조.",
+                "essay_weight": "80%",
+                "school_record_weight": "학생부 교과 20%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://go.pusan.ac.kr/college_2016/pages/index.asp?p=3&mj=01",
+              "documentUrl": "https://go.pusan.ac.kr/down/mojib/RF%280%29_260831172054.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            },
+            {
+              "sourceId": "LSL27-049",
+              "name": "지역인재전형",
+              "facts": {
+                "intake_count": "21명 — 약학부 6명, 의예과 10명, 한의학전문대학원 학·석사통합과정 5명",
+                "exam_date": "2026-11-28 (토)",
+                "exam_time": "2026-11-28 (토) — 자연계열(의·약학계열 포함) 09:30–11:10, 100분",
+                "csat_minimum": "적용. 한국사 4등급 이내; 국어·수학·영어·사회/과학탐구 2과목·한국사 응시. 약학부·의예과·한의학전문대학원 학·석사통합과정 모두 수학 포함 3개 영역 등급합 4 이내. 탐구는 2과목 응시, 의예과는 2과목 평균, 약학부·한의학전문대학원은 상위 1과목 반영.",
+                "essay_weight": "80%",
+                "school_record_weight": "학생부 교과 20%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://go.pusan.ac.kr/college_2016/pages/index.asp?p=3&mj=01",
+              "documentUrl": "https://go.pusan.ac.kr/down/mojib/RF%280%29_260831172054.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -540,7 +1001,21 @@
             "https://ipsi.syu.ac.kr/2016_syu/pages/index.asp?p=8&mj=01"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-009",
+              "name": "논술우수자전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://ipsi.syu.ac.kr/2016_syu/pages/index.asp?p=8&mj=01",
+              "documentUrl": "https://ipsi.syu.ac.kr/upload_data/mojib/RF(0)_260828113341.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -558,7 +1033,9 @@
           "admissionNames": [
             "논술"
           ],
-          "types": [],
+          "types": [
+            "단답·약술형"
+          ],
           "rawEssayTypes": [
             "약술형 논술"
           ],
@@ -569,7 +1046,23 @@
             "http://admission.smu.ac.kr/_seoul/board/bbs.html?bbsid=seoul_dataroom&ctg_cd=susi"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-010",
+              "name": "논술전형",
+              "facts": {
+                "csat_minimum": "수능최저 적용 여부 NOT PUBLISHED"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "http://admission.smu.ac.kr/_seoul/board/bbs.html?bbsid=seoul_dataroom&ctg_cd=susi",
+              "documentUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2026/%EC%83%81%EB%AA%85%EB%8C%80%ED%95%99%EA%B5%90/%EC%83%81%EB%AA%85%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -601,7 +1094,26 @@
             "http://admission.sogang.ac.kr/upload/GUIDES/20250430181056FTR2FK.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-011",
+              "name": "논술(일반)",
+              "facts": {
+                "intake_count": "171명",
+                "csat_minimum": "국어·수학·영어·탐구(1) 4개 중 3개 영역 등급합 7 이내 및 한국사 4등급",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "http://admission.sogang.ac.kr/upload/GUIDES/20250430181056FTR2FK.pdf",
+              "documentUrl": "http://admission.sogang.ac.kr/upload/GUIDES/20250430181056FTR2FK.pdf",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -619,7 +1131,9 @@
           "admissionNames": [
             "논술"
           ],
-          "types": [],
+          "types": [
+            "단답·약술형"
+          ],
           "rawEssayTypes": [
             "통합 약술형 논술"
           ],
@@ -630,7 +1144,29 @@
             "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2026/%EC%84%9C%EA%B2%BD%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%9C%EA%B2%BD%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-012",
+              "name": "논술우수자",
+              "facts": {
+                "intake_count": "214명",
+                "exam_time": "60분",
+                "question_count": "국어 4 + 수학 4 = 8문항",
+                "answer_length": "약술형; 별도 글자 수 NOT PUBLISHED",
+                "csat_minimum": "없음",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2026/%EC%84%9C%EA%B2%BD%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%9C%EA%B2%BD%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95.pdf",
+              "documentUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2026/%EC%84%9C%EA%B2%BD%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%9C%EA%B2%BD%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -659,7 +1195,26 @@
             "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EC%84%9C%EC%9A%B8%EA%B3%BC%ED%95%99%EA%B8%B0%EC%88%A0%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%9C%EC%9A%B8%EA%B3%BC%ED%95%99%EA%B8%B0%EC%88%A0%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-013",
+              "name": "논술전형",
+              "facts": {
+                "intake_count": "165명",
+                "csat_minimum": "없음",
+                "essay_weight": "70%",
+                "school_record_weight": "30%"
+              },
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EC%84%9C%EC%9A%B8%EA%B3%BC%ED%95%99%EA%B8%B0%EC%88%A0%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%9C%EC%9A%B8%EA%B3%BC%ED%95%99%EA%B8%B0%EC%88%A0%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EC%84%9C%EC%9A%B8%EA%B3%BC%ED%95%99%EA%B8%B0%EC%88%A0%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%9C%EC%9A%B8%EA%B3%BC%ED%95%99%EA%B8%B0%EC%88%A0%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -690,7 +1245,29 @@
             "https://file.uos.ac.kr/upload/admission/2027%ED%95%99%EB%85%84%EB%8F%84%20%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%20%EC%8B%A0%EC%9E%85%EC%83%9D%20%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-014",
+              "name": "논술전형",
+              "facts": {
+                "intake_count": "88명",
+                "exam_date": "2026-10-03 10:00",
+                "exam_time": "120분",
+                "question_count": "4문항",
+                "csat_minimum": "없음",
+                "essay_weight": "80%",
+                "school_record_weight": "20%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://file.uos.ac.kr/upload/admission/2027%ED%95%99%EB%85%84%EB%8F%84%20%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%20%EC%8B%A0%EC%9E%85%EC%83%9D%20%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95.pdf",
+              "documentUrl": "https://file.uos.ac.kr/upload/admission/2027%ED%95%99%EB%85%84%EB%8F%84%20%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%20%EC%8B%A0%EC%9E%85%EC%83%9D%20%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95.pdf",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -719,7 +1296,21 @@
             "https://www.swu.ac.kr/bbs/swu/157/138473/artclView.do?layout=unknown"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-015",
+              "name": "논술우수자전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://www.swu.ac.kr/bbs/swu/157/138473/artclView.do?layout=unknown",
+              "documentUrl": null,
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -750,7 +1341,30 @@
             "https://admission.skku.edu/admission/html/rolling/guide.html"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-033",
+              "name": "수리형",
+              "facts": {
+                "intake_count": "204명",
+                "exam_date": "2026-11-22",
+                "exam_time": "100분",
+                "question_count": "3문제",
+                "answer_length": "지정 답안란; character/line limit NOT PUBLISHED",
+                "csat_minimum": "적용 (2027 final guide, unit-specific)",
+                "essay_weight": "100%",
+                "school_record_weight": "0% (student record only final tie-break)"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.skku.edu/admission/html/rolling/guide.html",
+              "documentUrl": null,
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         },
         {
           "id": "skku-essay-2027-c6a66764",
@@ -771,7 +1385,44 @@
             "https://admission.skku.edu/upload/guide/20260813104526BBPE44.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-016",
+              "name": "언어형",
+              "facts": {
+                "intake_count": "172명",
+                "exam_date": "2026-11-21~22",
+                "csat_minimum": "수능최저 적용(정확 기준은 공식 수시요강 p.11 참조)",
+                "essay_weight": "100%",
+                "school_record_weight": "0% (학생부는 최종 동점자 처리만 활용)"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.skku.edu/upload/guide/20260813104526BBPE44.pdf",
+              "documentUrl": "https://admission.skku.edu/upload/guide/20260813104526BBPE44.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://admission.skku.edu/admission/html/rolling/questionView.html?idx=59319",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://admission.skku.edu/admission/html/rolling/questionView.html?idx=59052",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://admission.skku.edu/admission/html/rolling/question.html",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
         }
       ]
     },
@@ -800,7 +1451,21 @@
             "https://ipsi.sungshin.ac.kr/guide/dataroom.htm?bbsid=notice&ctg_cd=all&mode=view&bltn_seq=36050"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-017",
+              "name": "논술우수자전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://ipsi.sungshin.ac.kr/guide/dataroom.htm?bbsid=notice&ctg_cd=all&mode=view&bltn_seq=36050",
+              "documentUrl": "https://ipsi.sungshin.ac.kr/guide/recruit.htm?ctg_cd=susi",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -832,7 +1497,26 @@
             "https://ipsi.sejong.ac.kr/ipsi/early/notice.do?mode=view&articleNo=2785"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-018",
+              "name": "논술우수자전형",
+              "facts": {
+                "exam_date": "인문·자유전공 2026-11-28; 자연 2026-11-29",
+                "exam_time": "120분",
+                "question_count": "인문 2; 자연 대문항 3(소문항 9); 자유전공 2",
+                "answer_length": "인문 400–500자 및 800–900자; 자유전공 1번 600–700자; 자연 NOT PUBLISHED"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://ipsi.sejong.ac.kr/ipsi/early/notice.do?mode=view&articleNo=2785",
+              "documentUrl": null,
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -850,7 +1534,9 @@
           "admissionNames": [
             "교과논술전형"
           ],
-          "types": [],
+          "types": [
+            "단답·약술형"
+          ],
           "rawEssayTypes": [
             "약술형 교과 서술·논술: 국어+수학"
           ],
@@ -861,7 +1547,30 @@
             "https://ipsi.suwon.ac.kr/upload_data/guide/1787878393_6045.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-034",
+              "name": "교과논술전형",
+              "facts": {
+                "intake_count": "434명",
+                "exam_date": "자연 2026-11-21; 인문/디지털콘텐츠 2026-11-22",
+                "exam_time": "80분",
+                "question_count": "인문 국어10+수학5=15; 자연 국어5+수학10=15",
+                "answer_length": "국어: 두세 핵심어로 이뤄진 문장으로 간략 서술; 수학: 핵심 풀이과정 서술; 노트형 답안지",
+                "csat_minimum": "없음",
+                "essay_weight": "75% (실질; 명목 80%)",
+                "school_record_weight": "25% (실질; 명목 20%)"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://ipsi.suwon.ac.kr/upload_data/guide/1787878393_6045.pdf",
+              "documentUrl": "https://ipsi.suwon.ac.kr/upload_data/guide/1787878393_6045.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -890,7 +1599,33 @@
             "https://admission.sookmyung.ac.kr/admission/html/counsel/noticeView.asp?p_board_idx=54119"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-019",
+              "name": "논술우수자전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.sookmyung.ac.kr/admission/html/counsel/noticeView.asp?p_board_idx=54119",
+              "documentUrl": null,
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://admission.sookmyung.ac.kr/admission/html/rolling/essay.asp",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://www.sookmyung.ac.kr/kr/news/sm-news.do?mode=view&articleNo=93780&title=%EC%9E%85%ED%95%99%EC%B2%98%2C+2026+%ED%95%99%EB%B6%80%EB%AA%A8+%EC%A7%84%ED%95%99%EC%BD%98%EC%84%9C%ED%8A%B8+%EA%B0%9C%EC%B5%9C%E2%80%A6%ED%8A%B9%EA%B0%95%C2%B71%3A1+%EA%B0%9C%EB%B3%84%EC%83%81%EB%8B%B4+%EB%93%B1+%ED%92%8D%EC%84%B1%ED%95%9C+%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8+%EC%9A%B4%EC%98%81",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
         }
       ]
     },
@@ -919,7 +1654,26 @@
             "https://iphak.ssu.ac.kr/upload/2027_plan.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-020",
+              "name": "논술우수자전형",
+              "facts": {
+                "intake_count": "246명",
+                "csat_minimum": "국어·수학·영어·사회/과학탐구(1) 중 2개 영역 등급합 6 이내",
+                "essay_weight": "90%",
+                "school_record_weight": "10%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://iphak.ssu.ac.kr/upload/2027_plan.pdf",
+              "documentUrl": "https://iphak.ssu.ac.kr/upload/2027_plan.pdf",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -948,7 +1702,21 @@
             "https://ipsi.shinhan.ac.kr/sjmain.do"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-035",
+              "name": "2027 수시 논술전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://ipsi.shinhan.ac.kr/sjmain.do",
+              "documentUrl": null,
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -981,7 +1749,30 @@
             "https://www.iajou.ac.kr/_common/new_download_file.php?menu=boardfile&file_no=4601"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-036",
+              "name": "논술우수자전형",
+              "facts": {
+                "intake_count": "182명",
+                "exam_date": "2026-12-05 (official schedule table; unit/time slot applies)",
+                "exam_time": "120분",
+                "question_count": "2문항(각 세부문제 출제)",
+                "answer_length": "자연/약학/의학: 문항별 A3 1쪽 이내; 인문: 문항당 800자 내외",
+                "csat_minimum": "없음(의학과: 국어·수학·영어·탐구 중 등급합 6 이내; 약학과: 3개 영역 등급합 5 이내)",
+                "essay_weight": "80%",
+                "school_record_weight": "20%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://www.iajou.ac.kr/_common/new_download_file.php?menu=boardfile&file_no=4601",
+              "documentUrl": "https://www.iajou.ac.kr/_common/new_download_file.php?menu=boardfile&file_no=4601",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -1013,7 +1804,28 @@
             "https://mirae.yonsei.ac.kr/wj/2349/subview.do"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-045",
+              "name": "자율융합계열(인문/자연), 기후에너지시스템공학부, 의공학부, AI반도체학부, 데이터사이언스학부, 소프트웨어학부",
+              "facts": {
+                "intake_count": "182명",
+                "exam_date": "2026-10-16",
+                "exam_time": "120분",
+                "csat_minimum": "미적용",
+                "essay_weight": "90%",
+                "school_record_weight": "10%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://mirae.yonsei.ac.kr/wj/2349/subview.do",
+              "documentUrl": "https://admission.yonsei.ac.kr/mirae/upload/guide/202609091128343AZAWL.PDF",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         },
         {
           "id": "yonsei-essay-2027-51b66d68",
@@ -1038,7 +1850,38 @@
             "https://www2.yonsei.ac.kr/entrance/plan/2027_plan.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-021",
+              "name": "논술전형",
+              "facts": {
+                "intake_count": "288명",
+                "csat_minimum": "없음",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://www2.yonsei.ac.kr/entrance/plan/2027_plan.pdf",
+              "documentUrl": "https://www2.yonsei.ac.kr/entrance/plan/2027_plan.pdf",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://www2.yonsei.ac.kr/entrance/2025/2026%ED%95%99%EB%85%84%EB%8F%84_%EC%97%B0%EC%84%B8%EB%8C%80%ED%95%99%EA%B5%90_%EB%8C%80%ED%95%99%EB%B3%84%EA%B3%A0%EC%82%AC_%EC%9E%90%EB%A3%8C%EC%A7%91.pdf",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://www2.yonsei.ac.kr/entrance/2024/2025%ED%95%99%EB%85%84%EB%8F%84_%EC%97%B0%EC%84%B8%EB%8C%80%ED%95%99%EA%B5%90_%EB%8C%80%ED%95%99%EB%B3%84%EA%B3%A0%EC%82%AC%EC%9E%90%EB%A3%8C%EC%A7%91.pdf",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
         }
       ]
     },
@@ -1056,7 +1899,9 @@
           "admissionNames": [
             "논술(논술우수자)"
           ],
-          "types": [],
+          "types": [
+            "단답·약술형"
+          ],
           "rawEssayTypes": [
             "약술형/쉬운 논술: 국어+수학"
           ],
@@ -1067,7 +1912,30 @@
             "https://admission.eulji.ac.kr/"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-037",
+              "name": "성남캠퍼스 모집단위 논술우수자전형",
+              "facts": {
+                "intake_count": "Seongnam Campus subtotal NOT PUBLISHED",
+                "exam_date": "2026-10-16 to 2026-10-17 (unit/session-specific)",
+                "exam_time": "70분",
+                "question_count": "국어 7 + 수학 7 = 14문항",
+                "answer_length": "노트형 답안지; individual character/line limit NOT PUBLISHED",
+                "csat_minimum": "없음",
+                "essay_weight": "80%",
+                "school_record_weight": "20%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.eulji.ac.kr/",
+              "documentUrl": null,
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         },
         {
           "id": "eulji-essay-2027-ae7ad02b",
@@ -1077,7 +1945,9 @@
           "admissionNames": [
             "논술(논술우수자)"
           ],
-          "types": [],
+          "types": [
+            "단답·약술형"
+          ],
           "rawEssayTypes": [
             "약술형/쉬운 논술: 국어+수학"
           ],
@@ -1088,7 +1958,30 @@
             "https://admission.eulji.ac.kr/"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-038",
+              "name": "의정부캠퍼스 모집단위 논술우수자전형",
+              "facts": {
+                "intake_count": "Uijeongbu Campus subtotal NOT PUBLISHED",
+                "exam_date": "2026-10-16 to 2026-10-17 (unit/session-specific)",
+                "exam_time": "70분",
+                "question_count": "국어 7 + 수학 7 = 14문항",
+                "answer_length": "노트형 답안지; individual character/line limit NOT PUBLISHED",
+                "csat_minimum": "없음",
+                "essay_weight": "80%",
+                "school_record_weight": "20%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.eulji.ac.kr/",
+              "documentUrl": null,
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -1120,7 +2013,23 @@
             "https://admission.ewha.ac.kr/admission/html/ewharo/noticeView.asp?idx=14986"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-022",
+              "name": "논술전형",
+              "facts": {
+                "csat_minimum": "수능최저 적용(정확 기준은 공식 2027 수시요강 참조)"
+              },
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.ewha.ac.kr/admission/html/ewharo/noticeView.asp?idx=14986",
+              "documentUrl": null,
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -1149,7 +2058,26 @@
             "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EC%9D%B8%ED%95%98%EB%8C%80%ED%95%99%EA%B5%90/%EC%9D%B8%ED%95%98%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-044",
+              "name": "논술우수자전형",
+              "facts": {
+                "intake_count": "457명",
+                "csat_minimum": "미적용 (의예과: 국어·수학·영어·과탐 중 3개 영역 각 1등급 이내)",
+                "essay_weight": "80%",
+                "school_record_weight": "20%"
+              },
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EC%9D%B8%ED%95%98%EB%8C%80%ED%95%99%EA%B5%90/%EC%9D%B8%ED%95%98%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EC%9D%B8%ED%95%98%EB%8C%80%ED%95%99%EA%B5%90/%EC%9D%B8%ED%95%98%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -1178,7 +2106,26 @@
             "https://admission.cau.ac.kr/"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-039",
+              "name": "일반형 — 다빈치캠퍼스 모집단위",
+              "facts": {
+                "intake_count": "Da Vinci Campus subtotal NOT PUBLISHED; university-wide 일반형 403명",
+                "csat_minimum": "없음 (다빈치캠퍼스 전체)",
+                "essay_weight": "70%",
+                "school_record_weight": "30% (교과20%+출결10%)"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.cau.ac.kr/",
+              "documentUrl": null,
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         },
         {
           "id": "cau-essay-2027-51b66d68",
@@ -1203,7 +2150,33 @@
             "https://admission.cau.ac.kr/main.do"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-023",
+              "name": "논술(일반형)",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.cau.ac.kr/detail.do?menuurl=shTyaGgSAy79vI5n2yB%2FhA%3D%3D&board_seq=3051&pageNo=1",
+              "documentUrl": "https://admission.cau.ac.kr/file/download.do?sfn=20260529044343378_04da5c8413c64789bc81c456915f222a.pdf&ofn=2027%ed%95%99%eb%85%84%eb%8f%84+%ec%a4%91%ec%95%99%eb%8c%80%ed%95%99%ea%b5%90+%ec%9e%85%ed%95%99%ec%a0%84%ed%98%95%ec%8b%9c%ed%96%89%ea%b3%84%ed%9a%8d",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            },
+            {
+              "sourceId": "LSL27-024",
+              "name": "논술(창의형)",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://admission.cau.ac.kr/main.do",
+              "documentUrl": "https://admission.cau.ac.kr/file/download.do?sfn=20260727012327971_2151656fa5b541bd87edea17a6755f39.pdf&ofn=%EC%A4%91%EC%95%99%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84%20%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -1234,7 +2207,30 @@
             "https://iphak.tukorea.ac.kr/"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-040",
+              "name": "논술우수자전형",
+              "facts": {
+                "intake_count": "200명",
+                "exam_date": "2026-11-22",
+                "exam_time": "80분",
+                "question_count": "9문항",
+                "answer_length": "노트형 답안지; individual length NOT PUBLISHED",
+                "csat_minimum": "없음",
+                "essay_weight": "80%",
+                "school_record_weight": "20%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://iphak.tukorea.ac.kr/",
+              "documentUrl": null,
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -1266,7 +2262,26 @@
             "https://www.koreatech.ac.kr/board.es?mid=a40601000000&bid=0036&act=view&list_no=53638&nPage=22"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-053",
+              "name": "공학·ICT·사회융합자율전공",
+              "facts": {
+                "intake_count": "150명",
+                "csat_minimum": "미적용",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://www.koreatech.ac.kr/board.es?mid=a40601000000&bid=0036&act=view&list_no=53638&nPage=22",
+              "documentUrl": "https://www.koreatech.ac.kr/boardDownload.es?mid=a40601000000&bid=0036&list_no=53638&seq=1",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -1295,7 +2310,26 @@
             "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-041",
+              "name": "논술전형",
+              "facts": {
+                "intake_count": "Global Campus subtotal NOT PUBLISHED; university-wide 452명",
+                "csat_minimum": "적용",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         },
         {
           "id": "hufs-essay-2027-51b66d68",
@@ -1316,7 +2350,26 @@
             "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-025",
+              "name": "논술전형",
+              "facts": {
+                "intake_count": "452명 (서울·글로벌 합산; 서울 단독 NOT PUBLISHED)",
+                "csat_minimum": "수능최저 적용(정확 기준은 최종 요강 확인 필요)",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -1348,7 +2401,27 @@
             "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%ED%95%AD%EA%B3%B5%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%ED%95%AD%EA%B3%B5%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-042",
+              "name": "논술우수자전형",
+              "facts": {
+                "intake_count": "198명",
+                "question_count": "2문항",
+                "csat_minimum": "적용 (모집단위별 기준)",
+                "essay_weight": "100%",
+                "school_record_weight": "0%"
+              },
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%ED%95%AD%EA%B3%B5%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%ED%95%AD%EA%B3%B5%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentUrl": "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%ED%95%AD%EA%B3%B5%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%ED%95%AD%EA%B3%B5%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -1366,7 +2439,9 @@
           "admissionNames": [
             "논술(논술)전형"
           ],
-          "types": [],
+          "types": [
+            "단답·약술형"
+          ],
           "rawEssayTypes": [
             "약술형 논술 (official 2027 guide)"
           ],
@@ -1377,7 +2452,21 @@
             "https://ent.hs.ac.kr/upload_data/mojib/RF(0)_26052893427.pdf"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-043",
+              "name": "논술전형",
+              "facts": {},
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://ent.hs.ac.kr/upload_data/mojib/RF(0)_26052893427.pdf",
+              "documentUrl": "https://ent.hs.ac.kr/upload_data/mojib/RF(0)_26052893427.pdf",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     },
@@ -1406,7 +2495,40 @@
             "https://site.hanyang.ac.kr/documents/11081467/141054756/2027%ED%95%99%EB%85%84%EB%8F%84+%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90+%EC%8B%A0%EC%9E%85%ED%95%99+%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf/027468c2-d69a-e7b4-9437-1e66d12f76f4?t=1745975250171"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_PARTIAL"
+          "sourceStatus": "OFFICIAL_PARTIAL",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-026",
+              "name": "논술",
+              "facts": {
+                "intake_count": "228명"
+              },
+              "sourceStatus": "OFFICIAL_PARTIAL",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://site.hanyang.ac.kr/documents/11081467/141054756/2027%ED%95%99%EB%85%84%EB%8F%84+%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90+%EC%8B%A0%EC%9E%85%ED%95%99+%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf/027468c2-d69a-e7b4-9437-1e66d12f76f4?t=1745975250171",
+              "documentUrl": "https://site.hanyang.ac.kr/documents/11081467/141054756/2027%ED%95%99%EB%85%84%EB%8F%84+%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90+%EC%8B%A0%EC%9E%85%ED%95%99+%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf/027468c2-d69a-e7b4-9437-1e66d12f76f4?t=1745975250171",
+              "documentBasis": "시행계획 포함",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://go.hanyang.ac.kr/web/pds/pds_view.do?bn=14860&m_type=SUSI",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://go.hanyang.ac.kr/web/pds/pds_view.do?bn=14858&m_type=SUSI",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
+        },
+        {
+          "url": "https://go.hanyang.ac.kr/web/pds/pds_view.do?bn=14861&m_type=SUSI",
+          "label": "입학처 논술 참고 자료",
+          "verifiedAt": "2026-09-16"
         }
       ]
     },
@@ -1438,11 +2560,33 @@
             "https://www.hongik.ac.kr/kr/admission/recruitment.do?mode=download&articleNo=152315&attachNo=91150"
           ],
           "verifiedAt": "2026-09-18",
-          "sourceStatus": "OFFICIAL_CONFIRMED"
+          "sourceStatus": "OFFICIAL_CONFIRMED",
+          "admissionDetails": [
+            {
+              "sourceId": "LSL27-027",
+              "name": "논술전형",
+              "facts": {
+                "intake_count": "384명",
+                "exam_date": "인문 2026-10-03 (서울-인문); 전체 일정은 최종 요강 참조",
+                "exam_time": "120분",
+                "answer_length": "인문: 총 1,600자 내외; 자연: 문항별 지정 답안란",
+                "essay_weight": "90%",
+                "school_record_weight": "10%"
+              },
+              "sourceStatus": "OFFICIAL_CONFIRMED",
+              "verifiedAt": "2026-09-18",
+              "sourceUrl": "https://www.hongik.ac.kr/kr/admission/recruitment.do?mode=download&articleNo=152315&attachNo=91150",
+              "documentUrl": "https://www.hongik.ac.kr/kr/admission/recruitment.do?mode=download&articleNo=152315&attachNo=91150",
+              "documentBasis": "공식 전형 자료",
+              "applicants": null,
+              "competitionRatio": null
+            }
+          ]
         }
       ]
     }
   ],
   "evaluationRouting": "QUESTION_RUNTIME_ONLY",
+  "researchSha256": "a504e3ec9791b815eb2e88334f80008921a5f90570a47afbe8b783f226c17462",
   "sourceSha256": "1f4eb95829323b8bad5aa84f5bc58337374b27e59fe283e9eac49f44fd61b248"
 }
