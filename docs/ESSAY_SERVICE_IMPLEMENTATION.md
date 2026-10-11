@@ -4,6 +4,20 @@ Status PARTIAL / CONTRACT VERIFIED / NO NEW LIVE E2E. APP canonical task evidenc
 `wiki/essay-full-service-implementation-20261011.md`, branch
 `codex/essay-full-service-implementation`. No native UI rewrite or new backend.
 
+## Oct11 Owner visual fidelity — DEPLOYED / official logo1 pending
+
+Source `2fa8af7f0794f9f0a2e13225f42b8ede9d6db8c9`, Pages
+`997c9086-0147-4fd4-9cac-a7d56990e85c`, success2026-10-11T02:47:15.580263Z.
+41 official logos with URL/date/SHA manifest; Sogang temporary monogram. No image
+fabrication/recolor/crop; original white marks use a dark contrast surface. Cards
+match the target's logo/region/types/three icon rows/black CTA hierarchy; actual
+source data overrides illustrative labels.42/49,30/22 and all service gates retained.
+114 WEB files/1026 PASS,1 optional skip; Python5/lint/types/build/audits PASS. Six
+widths/200% text simulation and live domain screenshots/search/detail/disabled states
+verified. Target and actual screenshots compared side-by-side; no activation changes.
+Env maps/allowlist identical. Rollback `437bd406` / `d39cb5b`. Later docs-only commits
+are distinct from deployed source. [Canonical policy and evidence](https://github.com/LC3808/legendstudy-app/blob/codex/essay-full-service-implementation/wiki/essay-full-service-implementation-20261011.md#oct11-university-catalog-visual-fidelity--ui-live--logo1-pending).
+
 ## Oct11 Catalog/detail UX final refinement — COMPLETE / LIVE
 
 Production source `d39cb5b29565ae48ccd31188402d347e72145388`; Pages
