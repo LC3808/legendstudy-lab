@@ -4,6 +4,22 @@ Status PARTIAL / CONTRACT VERIFIED / NO NEW LIVE E2E. APP canonical task evidenc
 `wiki/essay-full-service-implementation-20261011.md`, branch
 `codex/essay-full-service-implementation`. No native UI rewrite or new backend.
 
+## Oct11 Demand data integration — Owner fallback correction
+
+Recovered the existing44-campus applicant workbook (SHA256
+`5bac5decaf773096df341f1037154c0748f1f2f667d4f29087e10d4cdc001efb`). Its own notice
+says all counts/rates await official cross-verification. Scoped research extraction
+`data/research/essay-demand-2027.json` links all44 rows to existing42 canonical IDs;
+Korea Sejong/Yonsei Mirae remain distinct rows with exact existing offering IDs.
+Other multi-campus scope is not inferred, and records are never automatically summed.
+`project-catalog-demand.mjs` creates the verified-only public sort projection. No
+provisional numbers reach the browser; Owner22 policy remains separate from reported
+ranks/counts. Default unknowns now use Owner order, explicitly superseding the earlier
+alphabetical fallback: Gachon→Cau→SKKU. Name sort stays alphabetical; future verified
+2027 totals precede unknowns within each cohort. Deferred Kangnam/Eulji remain last.
+All42/49,30 preparation,22 focus and existing design/contracts preserved. Public HOLD.
+Release evidence and source limitations: canonical APP task/Wiki below.
+
 ## Oct11 Catalog sorting correction — LIVE / statistics unavailable
 
 Default service priority: gate-approved actual service, fixed Owner22, additional

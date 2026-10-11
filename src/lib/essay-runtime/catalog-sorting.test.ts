@@ -3,7 +3,7 @@ import {sortCatalog,servicePriority,type CatalogSortingEvidence,type CatalogSort
 import {publicCatalog,filterCatalog,type CatalogUniversity} from './public-discovery';
 import {priorityUniversityIds} from './catalog-policy';
 const ids=(rows:CatalogUniversity[])=>rows.map(u=>u.sourceUniversityId);
-const stats=(applicants:number|null,competitionRatio:number|null)=>({admissionYear:2027 as const,sourceUrl:'https://example.edu/admission',verifiedAt:'2026-09-18',applicants,competitionRatio});
+const stats=(applicants:number|null,competitionRatio:number|null)=>({verificationStatus:'verified' as const,admissionYear:2027 as const,sourceUrl:'https://example.edu/admission',verifiedAt:'2026-09-18',applicants,competitionRatio});
 describe('public catalog sorting',()=>{
  it('retains42 universities/49offerings; prioritizes exactly Owner22, keeps Busan/Kyungpook and defers Kangnam/Eulji',()=>{
   const result=sortCatalog(publicCatalog.universities);
@@ -12,10 +12,11 @@ describe('public catalog sorting',()=>{
   expect(ids(result.slice(-2))).toEqual(['kangnam','eulji']);
   expect(ids(result)).toContain('knu');expect(ids(result)).toContain('pnu');
  });
- it('keeps original data immutable and sorts unknowns alphabetically within each service group',()=>{
+ it('keeps original data immutable and uses Owner order for unknown priority statistics and alphabetical names for the remaining cohorts',()=>{
   const before=JSON.stringify(publicCatalog);
   const sorted=sortCatalog(publicCatalog.universities);
-  for(const group of [1,2,3,4]){
+  expect(ids(sorted.slice(0,22))).toEqual([...priorityUniversityIds]);
+  for(const group of [2,3,4]){
    const rows=sorted.filter(u=>servicePriority(u)===group);
    expect(rows).toEqual([...rows].sort((a,b)=>a.name.localeCompare(b.name,'ko-KR')));
   }
@@ -48,6 +49,13 @@ describe('public catalog sorting',()=>{
  it('ignores invalid statistics and never fabricates current numbers',()=>{
   expect(publicCatalog.universities.flatMap(u=>u.offerings.flatMap(o=>o.admissionDetails??[])).every(d=>d.applicants===null&&d.competitionRatio===null)).toBe(true);
   const rows=publicCatalog.universities;
-  expect(sortCatalog(rows,'applicants',{statistics:{cau:{...stats(999999,5),sourceUrl:''}}})).toEqual(sortCatalog(rows,'name'));
+  expect(sortCatalog(rows,'applicants',{statistics:{cau:{...stats(999999,5),sourceUrl:''}}})).toEqual(sortCatalog(rows,'service'));
  });
+});
+
+it('uses verified totals before Owner fallback without mistaking development priority for service availability',()=>{
+ const rows=publicCatalog.universities;
+ const evidence:CatalogSortingEvidence={statistics:{skku:stats(10000,30),cau:stats(null,null)}};
+ expect(ids(sortCatalog(rows,'service',evidence)).slice(0,3)).toEqual(['skku','gachon','cau']);
+ expect(ids(sortCatalog(rows,'service')).slice(0,3)).toEqual(['gachon','cau','skku']);
 });

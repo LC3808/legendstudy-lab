@@ -1,0 +1,512 @@
+{
+  "version": 1,
+  "sourceSha256": "5bac5decaf773096df341f1037154c0748f1f2f667d4f29087e10d4cdc001efb",
+  "universities": {
+    "gachon": {
+      "universityId": "a9e38cdc-9593-4c60-b8a6-698133f48518",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-5"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "catholic": {
+      "universityId": "c5850ef5-616e-4ebb-aeac-3f6a3e7c4d0a",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-28"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "kangnam": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-43"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "konkuk": {
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-13"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "kyonggi": {
+      "universityId": "295f71b3-12da-4122-b743-f0c2c8bebe44",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-25"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "knu": {
+      "universityId": "72bc4be0-6e72-4c72-adc5-8ee54279f3bd",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-24"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "kyunghee": {
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-8"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "korea": {
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-11",
+        "row-44"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "kwangwoon": {
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-32"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "kookmin": {
+      "universityId": "88aa2231-6a1c-47ee-a063-b168cdaf85ad",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-12"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "dankook": {
+      "universityId": "bdae801b-e46e-449f-9211-0a440f8eb78d",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-31"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "duksung": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-30"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "dongguk": {
+      "universityId": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-18"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "dongduk": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-42"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "pnu": {
+      "universityId": "08303fd3-ec87-4976-a9a9-547a1d52f996",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-26"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "syu": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-23"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "sangmyung": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-34"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "sogang": {
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-14"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "seokyeong": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-36"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "seoultech": {
+      "universityId": "52ec1dd2-b27b-4a5e-9ebb-a85cb8079ff2",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-33"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "uos": {
+      "universityId": "0598e08a-20d6-4814-9511-6abe22814355",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-46"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "swu": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-41"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "skku": {
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-7"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "sungshin": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-37"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "sejong": {
+      "universityId": "447d2f79-fb0a-4a02-bce6-d214244b683d",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-19"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "suwon": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-29"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "sookmyung": {
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-27"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "soongsil": {
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-16"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "shinhan": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-45"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "ajou": {
+      "universityId": "25f8c2a3-7a6c-445a-80c5-f62f7b1ca4c6",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-22"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "yonsei": {
+      "universityId": "9076637b-d827-5bb6-8e4e-954bd2a05805",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-20",
+        "row-48"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "eulji": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-38"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "ewha": {
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-15"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "inha": {
+      "universityId": "e40f4b8f-8949-4726-a774-2b6f0e6d8939",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-17"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "cau": {
+      "universityId": "ffad67a6-107f-47b7-a1cb-ab61687ffb9f",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-6"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "tukorea": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-39"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "koreatech": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-40"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "hufs": {
+      "universityId": "1fd29b0d-1141-4ff0-b1b3-c4f201854476",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-10"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "kau": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-35"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "hanshin": {
+      "universityId": null,
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-47"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "hanyang": {
+      "universityId": "1090e1be-174e-5042-abd3-ca929c6e26f8",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-9"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    },
+    "hongik": {
+      "universityId": "15f50d54-001d-49b9-836b-a5d9c76b9c0a",
+      "admissionYear": 2027,
+      "sourceRecords": [
+        "row-21"
+      ],
+      "verificationStatus": "unverified",
+      "applicants": null,
+      "competitionRatio": null,
+      "sourceUrl": null,
+      "verifiedAt": null
+    }
+  }
+}

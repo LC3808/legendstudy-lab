@@ -28,7 +28,7 @@ it('defaults to service priority, supports explicit alphabetical order, and rese
  expect(screen.getByText('1 / 4')).toBeVisible();
  expect(screen.getByRole('link',{name:'강남대학교'})).toBeVisible();
  fireEvent.change(screen.getByRole('combobox',{name:'대학 정렬'}),{target:{value:'applicants'}});
- expect(screen.getByText('검증된 2027학년도 통계가 없는 대학은 대학명순으로 표시합니다.')).toBeVisible();
+ expect(screen.getByText('검증된 2027학년도 통계가 없는 대학은 서비스 우선순위를 적용합니다.')).toBeVisible();
  fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:'을지'}});
  expect(screen.getByRole('link',{name:'을지대학교'})).toBeVisible();
 });
