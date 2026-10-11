@@ -4,6 +4,51 @@ Status PARTIAL / CONTRACT VERIFIED / NO NEW LIVE E2E. APP canonical task evidenc
 `wiki/essay-full-service-implementation-20261011.md`, branch
 `codex/essay-full-service-implementation`. No native UI rewrite or new backend.
 
+## Oct11 runtime/catalog continuation (current)
+
+Public pages now consume `src/data/essay-public-catalog.json`, generated from retained
+Manus V2 source:42 universities/49 offerings.27 existing Production UUID matches and
+15 explicit nulls; original sourceUniversityId is reused, no WEB-specific identity.
+Home/list/common detail/admission-year routes replace the five public sample list.
+Search, three combined offering filters and12-per-page pagination preserve campuses,
+official sources and2027 admission vs actual past-exam years. Source links retain
+existing verification dates; no new42-site research or invented academic metadata.
+Core candidates stay internal and Owner-undecided. See data README for regeneration.
+
+The existing Python ReviewedRuntimeWorker now has APP `runtime_host.py` private
+WSGI/admission/evaluate adapter; Pages worker-binding supports existing service
+binding or explicit HTTPS origin/internal token. Rights/visual-content/provider/
+reviewer/persistence preflight fails closed. Online Auth/allowlist/RLS, durable
+journal, reviewer source/receipt sink and deployment composition remain required;
+this is not a provisioned runtime. No current live Humanities Provider proof.
+
+Writer keeps Sep28 APP f153c43/ebbc43c42:58 desktop and mobile tabs. Shared RecordDetail
+renders stored results in approved order, five-level label/star/details, core
+priorities, direct 다시 써보기 and separately labeled/collapsed AI vs official examples.
+Actual selected previous evaluation is required for comparison; no forced pairing.
+Official student passage/figure delivery and real tone/feedback acceptance remain
+incomplete. Native APP unchanged, same canonical history and credit contract.
+
+Current checks:1014 WEB PASS +1 optional private V2 fixture skip (110 files),26 Python
+contract PASS using synthetic HTTP. Lint/types/boundaries/build PASS, existing Node22.
+Browser catalog/detail360/375/390/768/1280/1440 no overflow; catalog/detail200% root-font32px
+simulation passes (temporary build style removed). Search/pagination/combined filters
+and missing-university Empty State checked. Localhost Auth intentionally closed by
+existing origin policy, unchanged; authenticated writer/result visual E2E pending.
+Separate anonymous actual PostgREST GET: published questions200/0 rows, verified
+exams200/21 rows. Production SQL general evaluation0, Math completed8/failed1.
+
+Cloudflare read-only current: production source501d272, deploymenta2e09fea; Math
+switches false, general runtime/recovery switches unset, allowlist preserved. Opaque
+worker JWT validity cannot be inferred. No deployment, Provider/Credit/data write or
+migration apply. Earlier QA metadata consumers await paired migration/deployment
+approval; do not bypass that review with an accumulated-branch deployment.
+APP canonical Wiki and `supabase/verification/essay_service/runtime-integration-review.md`
+record impacts/rollback and exact activation prerequisites. General public HOLD.
+
+The following sections document the previous full-service checkpoint; their old
+catalog and missing-adapter descriptions are superseded above, not their gates.
+
 ## Mounted student paths
 
 `/essay-lab/` reads existing verified active exams and published questions under

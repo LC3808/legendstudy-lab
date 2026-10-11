@@ -38,9 +38,9 @@ function HumanDetail({row}:{row:RecordItem}){
  const load=useCallback((c:SupabaseClient,o:string)=>readEssayDetail(c,o,row),[row]);const result=useOwnerData(load);
  if(!result.data)return <DataStatus error={result.error} reload={result.reload}/>;
  const reports=result.data.attempts.flatMap(a=>result.data!.evaluations.filter(e=>e.attempt_id===a.id).map(e=>({attempt:a,report:humanReport(e,a.body,row.question,a)})));
- const initial=reports.find(r=>r.attempt.attempt_no===1)?.report;
  const revised=reports.find(r=>r.attempt.id===row.id&&r.attempt.attempt_no>1)?.report;
- return <>{result.data.attempts.filter(a=>!reports.some(r=>r.attempt.id===a.id)).map(a=><article className="my-panel" key={a.id}><h3>{a.attempt_no===1?"최초 답안":"재작성 답안"}</h3><p className="essay-answer">{a.body}</p><p>완료된 평가가 없습니다.</p></article>)}{reports.map(({report,attempt})=><EvaluationReport voiceType="humanities_social" key={report.id} title={attempt.attempt_no===1?'최초 평가':'재첨삭 평가'} report={report}/>)}<EvaluationComparison before={initial} after={revised&&initial?{...revised,priorId:initial.id}:undefined}/></>;
+ const initial=reports.find(r=>r.report.id===revised?.priorId)?.report;
+ return <>{result.data.attempts.filter(a=>!reports.some(r=>r.attempt.id===a.id)).map(a=><article className="my-panel" key={a.id}><h3>{a.attempt_no===1?"최초 답안":"재작성 답안"}</h3><p className="essay-answer">{a.body}</p><p>완료된 평가가 없습니다.</p></article>)}{reports.map(({report,attempt})=><EvaluationReport voiceType="humanities_social" key={report.id} title={attempt.attempt_no===1?'최초 평가':'재첨삭 평가'} report={report}/>)}<EvaluationComparison before={initial} after={revised}/></>;
 
 }
 function MathDetail({row}:{row:RecordItem}){

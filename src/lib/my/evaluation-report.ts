@@ -1,7 +1,7 @@
 /** Display-only contract growth-display-v1. Never persists or re-evaluates results. */
 export type Feedback={title:string;explanation:string;evidence:string;action:string};
 export type Criterion={id:string;name:string;value:string;stars:number|null;feedback:string};
-export type Report={id:string;answer:string;question:string;summary:string;rubric:Criterion[];strengths:Feedback[];weaknesses:Feedback[];actions:string[];nextSteps:string[];pins:string[];priorId:string|null};
+export type Report={id:string;answer:string;question:string;summary:string;rubric:Criterion[];strengths:Feedback[];weaknesses:Feedback[];actions:string[];nextSteps:string[];pins:string[];priorId:string|null;evidenceLabels?:string[];example?:string};
 export function object(v:unknown):Record<string,unknown>{return v!==null&&typeof v==='object'&&!Array.isArray(v)?v as Record<string,unknown>:{};}
 export function array(v:unknown):unknown[]{return Array.isArray(v)?v:[];}
 export function text(v:unknown):string{return typeof v==='string'?v:'';}
@@ -29,10 +29,12 @@ export function humanReport(value:unknown,answer='',question='',attempt:unknown=
  return {id:text(v.id),answer,question,summary:text(v.overall_summary),
  rubric:array(v.essay_evaluation_dimensions).map(object).sort((a,b)=>Number(a.display_order)-Number(b.display_order)).map(d=>({id:text(d.criterion_id),name:text(object(d.essay_evaluation_criteria).label)||`평가 항목 ${d.display_order??''}`,value:'',stars:rating(d.level_1_to_5),feedback:text(d.explanation)})),
  strengths:array(v.strengths).map(s=>({title:'잘한 점',explanation:text(s),evidence:'',action:''})).filter(s=>s.explanation!==''),
- weaknesses:progress.filter(p=>p.status!=='resolved').map(p=>({title:text(p.title),explanation:text(p.explanation),evidence:'',action:text(p.next_action)})),
- actions:progress.map(p=>text(p.next_action)).filter(Boolean),nextSteps:array(v.rewrite_checklist).map(text).filter(Boolean),
+ weaknesses:progress.filter(p=>p.status!=='resolved').map(p=>({title:text(p.title),explanation:text(p.explanation),evidence:array(object(p.scaffolding_observation).sentences).map(object).map(s=>text(s.quote)).filter(q=>q&&answer.includes(q)).join('\n'),action:text(p.next_action)})),
+ actions:progress.filter(p=>p.status!=='resolved'&&(v.contract_version!=='1.3'||object(p.scaffolding_observation).core_focus===true)).map(p=>text(p.next_action)).filter(Boolean),nextSteps:array(v.rewrite_checklist).map(text).filter(Boolean),
  // Legacy results without pinned conditions are intentionally not compared.
- pins:v.evidence_completeness==='complete'&&criteria.length&&criteria.every(c=>text(c.id)&&text(c.version))&&Object.keys(object(a.conditions_snapshot)).length ? [text(v.session_id),text(v.question_id),text(v.regime_key),text(v.contract_version),text(a.mode),text(a.question_metadata_version),stable(a.conditions_snapshot),stable(criteria.map(c=>({id:c.id,version:c.version})).sort((a,b)=>text(a.id).localeCompare(text(b.id))))]:[],priorId:null};
+ pins:v.evidence_completeness==='complete'&&criteria.length&&criteria.every(c=>text(c.id)&&text(c.version))&&Object.keys(object(a.conditions_snapshot)).length ? [text(v.session_id),text(v.question_id),text(v.regime_key),text(v.contract_version),text(a.mode),text(a.question_metadata_version),stable(a.conditions_snapshot),stable(criteria.map(c=>({id:c.id,version:c.version})).sort((a,b)=>text(a.id).localeCompare(text(b.id))))]:[],priorId:text(object(snapshot.scaffolding_context).selected_previous_evaluation_id)||null,
+ evidenceLabels:[...new Set(array(v.essay_evaluation_evidence).map(object).map(e=>({question:'문제 요구',passage:'제시문',exam_intent:'대학 공식 출제 의도',scoring_criteria:'대학 공식 평가 기준'}[text(object(e.essay_question_evidence).role)]??'')).filter(Boolean))],
+ example:array(Array.isArray(v.essay_generated_rewrites)?v.essay_generated_rewrites:[v.essay_generated_rewrites]).map(object).filter(r=>r.status==='completed'&&r.origin==='ai_generated').map(r=>text(r.body)).find(Boolean)};
 }
 export type Change={id:string;name:string;before:Criterion;after:Criterion;direction:'IMPROVED'|'UNCHANGED'|'DECLINED'|'UNAVAILABLE'};
 export function compareReports(before:Report,after:Report):Change[]|null{

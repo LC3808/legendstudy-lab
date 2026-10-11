@@ -1,36 +1,6 @@
-import {EssayServiceCatalog} from '@/components/essay-service-catalog';
-import {loadResearchPreview} from '@/lib/essay-research/server';
-import {ResearchCatalogView} from '@/components/essay-research-preview';
-import { EssayRuntimeEntry } from "@/components/essay-runtime-entry";
-import { CatalogFilters } from "@/components/catalog-filters";
-import { EssayCreditStatus } from "@/components/essay-credit-status";
-import { buildMetadata } from "@/lib/brand";
-import { listUniversities } from "@/lib/public-catalog";
-
-export const metadata = buildMetadata(
-  "논술 LAB",
-  "대학별 평가 기준에 맞춰 내 답안을 점검하고, 직접 다시 써보세요.",
-);
-
-export default async function EssayLabPage() {
-  const universities = listUniversities();
-  const preview = await loadResearchPreview();
-  return (
-    <div className="page-section content-wrap essay-lab-page">
-      <div className="page-intro">
-        {/* Owner-approved copy. `논술 LAB` is the page identity, so it is a label;
-            the sentence describing what the service does is the headline. This
-            wording is copy authority and is not rewritten without Owner approval. */}
-        <p className="essay-hero__label">논술 LAB</p>
-        <h1 className="essay-hero__headline">대학별 평가 기준에 맞춰 내 답안을 점검하고, 직접 다시 써보세요.</h1>
-      </div>
-      {/* The visitor's spendable 첨삭권, read from the same `credit_summary()`
-          authority MY uses. It sits above the catalog because it answers the first
-          question a returning writer has before picking a university. */}
-      {!preview && <EssayCreditStatus />}
-      {!preview && <EssayRuntimeEntry />}
-      {!preview && <EssayServiceCatalog />}
-      {preview ? <ResearchCatalogView catalog={preview}/> : <CatalogFilters universities={universities} />}
-    </div>
-  );
-}
+import {UniversityDiscovery} from '@/components/university-discovery';
+import {EssayCreditStatus} from '@/components/essay-credit-status';
+import {EssayRuntimeEntry} from '@/components/essay-runtime-entry';
+import {buildMetadata} from '@/lib/brand';
+export const metadata=buildMetadata('논술 LAB','대학별 논술 기출문제를 살펴보고 나에게 필요한 첨삭을 시작하세요.');
+export default function EssayLabPage(){return <div className="page-section content-wrap essay-lab-page"><div className="page-intro"><p className="essay-hero__label">논술 LAB</p><h1 className="essay-hero__headline">대학별 논술 기출문제를 살펴보고<br/>나에게 필요한 첨삭을 시작하세요.</h1></div><EssayCreditStatus/><EssayRuntimeEntry/><UniversityDiscovery/></div>;}

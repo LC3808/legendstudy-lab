@@ -1,0 +1,1448 @@
+{
+  "version": "essay-public-catalog-v1",
+  "asOf": "2026-09-18",
+  "identityVerifiedAt": "2026-10-11",
+  "universities": [
+    {
+      "sourceUniversityId": "gachon",
+      "universityId": "a9e38cdc-9593-4c60-b8a6-698133f48518",
+      "canonicalSlug": "gachon",
+      "name": "가천대학교",
+      "offerings": [
+        {
+          "id": "gachon-essay-2027-9376e81d",
+          "campus": "Global Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술전형"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "2027 OFFICIAL PLAN CONFIRMS ESSAY TRACK; detailed type NOT PUBLISHED in the verified source extract"
+          ],
+          "sourceIds": [
+            "LSL27-028"
+          ],
+          "sources": [
+            "https://admission.gachon.ac.kr/upload/BBS0021/20260522154511HBZYTW.PDF"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "catholic",
+      "universityId": "c5850ef5-616e-4ebb-aeac-3f6a3e7c4d0a",
+      "canonicalSlug": "catholic",
+      "name": "가톨릭대학교",
+      "offerings": [
+        {
+          "id": "catholic-essay-2027-07752642",
+          "campus": "Sungsim Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술전형"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "언어논술/수리논술 (모집단위별); 의예과 별도 수리논술"
+          ],
+          "sourceIds": [
+            "LSL27-029"
+          ],
+          "sources": [
+            "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EA%B0%80%ED%86%A8%EB%A6%AD%EB%8C%80%ED%95%99%EA%B5%90/%EA%B0%80%ED%86%A8%EB%A6%AD%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "kangnam",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "강남대학교",
+      "offerings": [
+        {
+          "id": "kangnam-essay-2027-4ac7a098",
+          "campus": "본교",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술전형"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "NOT PUBLISHED"
+          ],
+          "sourceIds": [
+            "LSL27-046"
+          ],
+          "sources": [
+            "http://admission.kangnam.ac.kr/doumi/notice.htm?bbsid=notice&ctg_cd=&page=1&skey=&keyword=&mode=view&bltn_seq=39528"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "konkuk",
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
+      "canonicalSlug": "konkuk",
+      "name": "건국대학교",
+      "offerings": [
+        {
+          "id": "konkuk-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "인문사회계: 통합교과형; 자연계: 수리논술"
+          ],
+          "sourceIds": [
+            "LSL27-001"
+          ],
+          "sources": [
+            "https://admission.konkuk.ac.kr/admission/37981/subview.do"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "kyonggi",
+      "universityId": "295f71b3-12da-4122-b743-f0c2c8bebe44",
+      "canonicalSlug": "kyonggi",
+      "name": "경기대학교",
+      "offerings": [
+        {
+          "id": "kyonggi-essay-2027-57d5f4b3",
+          "campus": "Suwon Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(논술우수자전형)"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "언어·사회 논술 또는 수리 논술"
+          ],
+          "sourceIds": [
+            "LSL27-030"
+          ],
+          "sources": [
+            "https://enter.kyonggi.ac.kr/ajaxfile/FR_SVC/FileDownload.do?FILE_ORG_NM=%EA%B2%BD%EA%B8%B0%EB%8C%80_2027%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95%28%EA%B3%B5%EC%A7%80%EC%9A%A9%29.pdf&FILE_NM=202606/1781506250597_0.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "knu",
+      "universityId": "72bc4be0-6e72-4c72-adc5-8ee54279f3bd",
+      "canonicalSlug": "kyungpook",
+      "name": "경북대학교",
+      "offerings": [
+        {
+          "id": "knu-essay-2027-c846e3ca",
+          "campus": "대구캠퍼스 및 상주 소재 모집단위를 포괄하는 대학 단위 전형",
+          "region": "기타 지역",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(AAT: Academic Aptitude Test)전형"
+          ],
+          "types": [
+            "인문"
+          ],
+          "rawEssayTypes": [
+            "2027 공식 모집요강상 논술형·약술형·풀이형. 인문은 교과목 통합, 자연 I은 수학 및 교과목 통합, 자연 II는 수학 및 의학논술."
+          ],
+          "sourceIds": [
+            "LSL27-047"
+          ],
+          "sources": [
+            "https://ipsi1.knu.ac.kr/mojib/?m_type=SUSI"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "kyunghee",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
+      "canonicalSlug": "kyunghee",
+      "name": "경희대학교",
+      "offerings": [
+        {
+          "id": "kyunghee-essay-2027-c77be43b",
+          "campus": "International Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(논술우수자전형)"
+          ],
+          "types": [
+            "인문",
+            "수리",
+            "과학"
+          ],
+          "rawEssayTypes": [
+            "인문·체육/사회: 통합형; 자연: 수리; 의·약학: 수리(60%)+과학(40%)"
+          ],
+          "sourceIds": [
+            "LSL27-031"
+          ],
+          "sources": [
+            "https://iphak.khu.ac.kr/file/download.do?sfn=20260826010029371_2027%ed%95%99%eb%85%84%eb%8f%84+%ea%b2%bd%ed%9d%ac%eb%8c%80%ed%95%99%ea%b5%90+%ec%88%98%ec%8b%9c+%eb%aa%a8%ec%a7%91%ec%9a%94%ea%b0%95-%ec%b5%9c%ec%a2%85_20260811%28%ea%b3%b5%ec%a7%80%29.pdf&ofn=2027%ed%95%99%eb%85%84%eb%8f%84+%ea%b2%bd%ed%9d%ac%eb%8c%80%ed%95%99%ea%b5%90+%ec%88%98%ec%8b%9c+%eb%aa%a8%ec%a7%91%ec%9a%94%ea%b0%95-%ec%b5%9c%ec%a2%85_20260811%28%ea%b3%b5%ec%a7%80%29.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        },
+        {
+          "id": "kyunghee-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "NOT PUBLISHED"
+          ],
+          "sourceIds": [
+            "LSL27-002"
+          ],
+          "sources": [
+            "https://iphak.khu.ac.kr/submenu.do?menuurl=RnNfVbLHUGrJz9kJgEyRDQ%3D%3D&board_seq=2234&categoryid="
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "korea",
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "canonicalSlug": "korea",
+      "name": "고려대학교",
+      "offerings": [
+        {
+          "id": "korea-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "인문: 제시문 기반 논술; 자연: 수학논술"
+          ],
+          "sourceIds": [
+            "LSL27-003"
+          ],
+          "sources": [
+            "https://oku.korea.ac.kr/attach/202605/1780023076409_0.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        },
+        {
+          "id": "korea-essay-2027-ec433195",
+          "campus": "세종캠퍼스",
+          "region": "기타 지역",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(지역인재전형)",
+            "논술(일반전형)"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "수리논술Ⅱ 문제풀이형",
+            "인문·체능: 교과 통합형 서술형; 자연Ⅰ: 수리논술Ⅰ 문제풀이형; 약학과: 수리논술Ⅱ 문제풀이형"
+          ],
+          "sourceIds": [
+            "LSL27-050",
+            "LSL27-051"
+          ],
+          "sources": [
+            "https://oku.korea.ac.kr/sejong/cms/FR_BBS_CON/BoardView.do?MENU_ID=570&CONTENTS_NO=&SITE_NO=3&BOARD_SEQ=8&BBS_SEQ=1885"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "kwangwoon",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "canonicalSlug": "kwangwoon",
+      "name": "광운대학교",
+      "offerings": [
+        {
+          "id": "kwangwoon-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "인문: 통합교과형; 자연: 수리논술"
+          ],
+          "sourceIds": [
+            "LSL27-004"
+          ],
+          "sources": [
+            "https://iphak.kw.ac.kr/upload_data/mojib/20260526155135_27.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "kookmin",
+      "universityId": "88aa2231-6a1c-47ee-a063-b168cdaf85ad",
+      "canonicalSlug": "kookmin",
+      "name": "국민대학교",
+      "offerings": [
+        {
+          "id": "kookmin-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "주관식 단답형·단문형 서술(국어·수학)"
+          ],
+          "sourceIds": [
+            "LSL27-005"
+          ],
+          "sources": [
+            "https://admission.kookmin.ac.kr/common/file_download.php?id=contents&no=180&col=1"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "dankook",
+      "universityId": "bdae801b-e46e-449f-9211-0a440f8eb78d",
+      "canonicalSlug": "dankook",
+      "name": "단국대학교",
+      "offerings": [
+        {
+          "id": "dankook-essay-2027-24f004fe",
+          "campus": "Jukjeon Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(논술우수자전형)"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "2027 OFFICIAL PLAN CONFIRMS ESSAY TRACK; detailed type NOT PUBLISHED"
+          ],
+          "sourceIds": [
+            "LSL27-032"
+          ],
+          "sources": [
+            "https://ipsi.dankook.ac.kr/jukjeon/notice/list.html?bbsid=juk_info&bltn_seq=50954&mode=view&ctg_cd=01"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "duksung",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "덕성여자대학교",
+      "offerings": [
+        {
+          "id": "duksung-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "NOT PUBLISHED"
+          ],
+          "sourceIds": [
+            "LSL27-006"
+          ],
+          "sources": [
+            "https://enter.duksung.ac.kr/notice/view.php?bn=6947&m_type=&nPage=1&f=ALL&s=%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "dongguk",
+      "universityId": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
+      "canonicalSlug": "dongguk",
+      "name": "동국대학교",
+      "offerings": [
+        {
+          "id": "dongguk-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "인문: 통합교과형; 자연: 풀이과정 중심 수리논술"
+          ],
+          "sourceIds": [
+            "LSL27-007"
+          ],
+          "sources": [
+            "https://ipsi.dongguk.edu/upload/file/20260623144248DQV7LA.PDF"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "dongduk",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "동덕여자대학교",
+      "offerings": [
+        {
+          "id": "dongduk-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "약술형 논술(2027부터 변경)"
+          ],
+          "sourceIds": [
+            "LSL27-008"
+          ],
+          "sources": [
+            "https://ipsi.dongduk.ac.kr/ipsi/contents/nontime-doc.do?schM=view&page=1&viewCount=10&id=91947&schBdcode=_ipsi_admdoc01&schGroupCode=&etc1=78"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "pnu",
+      "universityId": "08303fd3-ec87-4976-a9a9-547a1d52f996",
+      "canonicalSlug": "pusan",
+      "name": "부산대학교",
+      "offerings": [
+        {
+          "id": "pnu-essay-2027-1fb36248",
+          "campus": "부산·양산·밀양캠퍼스 (2027 수시모집요강 표기; 논술 모집단위별 실제 수업 캠퍼스 및 고사장은 NOT PUBLISHED)",
+          "region": "기타 지역",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "인문·사회: 인문 및 사회 교과목 통합 논술. 자연: 수학 논술. 약학부·의예과·한의학전문대학원 학·석사통합과정은 자연계열 내 별도 의·약학계열 수학 문항. 2027 공식 모집요강이 문항 수·답안 글자 수는 NOT PUBLISHED.",
+            "자연계열 수학 논술이며, 약학부·의예과·한의학전문대학원 학·석사통합과정은 별도 의·약학계열 수학 문항. 2027 공식 모집요강이 문항 수·답안 글자 수는 NOT PUBLISHED."
+          ],
+          "sourceIds": [
+            "LSL27-048",
+            "LSL27-049"
+          ],
+          "sources": [
+            "https://go.pusan.ac.kr/college_2016/pages/index.asp?p=3&mj=01"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "syu",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "삼육대학교",
+      "offerings": [
+        {
+          "id": "syu-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "NOT PUBLISHED"
+          ],
+          "sourceIds": [
+            "LSL27-009"
+          ],
+          "sources": [
+            "https://ipsi.syu.ac.kr/2016_syu/pages/index.asp?p=8&mj=01"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "sangmyung",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "상명대학교",
+      "offerings": [
+        {
+          "id": "sangmyung-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "약술형 논술"
+          ],
+          "sourceIds": [
+            "LSL27-010"
+          ],
+          "sources": [
+            "http://admission.smu.ac.kr/_seoul/board/bbs.html?bbsid=seoul_dataroom&ctg_cd=susi"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "sogang",
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "canonicalSlug": "sogang",
+      "name": "서강대학교",
+      "offerings": [
+        {
+          "id": "sogang-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "인문·인문자연: 통합교과형; 자연: 수리형"
+          ],
+          "sourceIds": [
+            "LSL27-011"
+          ],
+          "sources": [
+            "http://admission.sogang.ac.kr/upload/GUIDES/20250430181056FTR2FK.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "seokyeong",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "서경대학교",
+      "offerings": [
+        {
+          "id": "seokyeong-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "통합 약술형 논술"
+          ],
+          "sourceIds": [
+            "LSL27-012"
+          ],
+          "sources": [
+            "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2026/%EC%84%9C%EA%B2%BD%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%9C%EA%B2%BD%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "seoultech",
+      "universityId": "52ec1dd2-b27b-4a5e-9ebb-a85cb8079ff2",
+      "canonicalSlug": "seoultech",
+      "name": "서울과학기술대학교",
+      "offerings": [
+        {
+          "id": "seoultech-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "제시문과 함께 주어지는 문항에 답하는 논술형"
+          ],
+          "sourceIds": [
+            "LSL27-013"
+          ],
+          "sources": [
+            "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EC%84%9C%EC%9A%B8%EA%B3%BC%ED%95%99%EA%B8%B0%EC%88%A0%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%9C%EC%9A%B8%EA%B3%BC%ED%95%99%EA%B8%B0%EC%88%A0%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "uos",
+      "universityId": "0598e08a-20d6-4814-9511-6abe22814355",
+      "canonicalSlug": "uos",
+      "name": "서울시립대학교",
+      "offerings": [
+        {
+          "id": "uos-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "수리논술"
+          ],
+          "sourceIds": [
+            "LSL27-014"
+          ],
+          "sources": [
+            "https://file.uos.ac.kr/upload/admission/2027%ED%95%99%EB%85%84%EB%8F%84%20%EC%88%98%EC%8B%9C%EB%AA%A8%EC%A7%91%20%EC%8B%A0%EC%9E%85%EC%83%9D%20%EB%AA%A8%EC%A7%91%EC%9A%94%EA%B0%95.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "swu",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "서울여자대학교",
+      "offerings": [
+        {
+          "id": "swu-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술우수자전형"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "NOT PUBLISHED"
+          ],
+          "sourceIds": [
+            "LSL27-015"
+          ],
+          "sources": [
+            "https://www.swu.ac.kr/bbs/swu/157/138473/artclView.do?layout=unknown"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "skku",
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f",
+      "canonicalSlug": "sungkyunkwan",
+      "name": "성균관대학교",
+      "offerings": [
+        {
+          "id": "skku-essay-2027-3e1a07e5",
+          "campus": "Natural Sciences Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술위주(수리형)"
+          ],
+          "types": [
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "수리논술: 수학·수학I·수학II"
+          ],
+          "sourceIds": [
+            "LSL27-033"
+          ],
+          "sources": [
+            "https://admission.skku.edu/admission/html/rolling/guide.html"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        },
+        {
+          "id": "skku-essay-2027-c6a66764",
+          "campus": "인문사회과학캠퍼스(서울)",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술위주"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "논술"
+          ],
+          "sourceIds": [
+            "LSL27-016"
+          ],
+          "sources": [
+            "https://admission.skku.edu/upload/guide/20260813104526BBPE44.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "sungshin",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "성신여자대학교",
+      "offerings": [
+        {
+          "id": "sungshin-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "NOT PUBLISHED"
+          ],
+          "sourceIds": [
+            "LSL27-017"
+          ],
+          "sources": [
+            "https://ipsi.sungshin.ac.kr/guide/dataroom.htm?bbsid=notice&ctg_cd=all&mode=view&bltn_seq=36050"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "sejong",
+      "universityId": "447d2f79-fb0a-4a02-bce6-d214244b683d",
+      "canonicalSlug": "sejong",
+      "name": "세종대학교",
+      "offerings": [
+        {
+          "id": "sejong-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "인문논술/수리논술/자유전공 통합교과형"
+          ],
+          "sourceIds": [
+            "LSL27-018"
+          ],
+          "sources": [
+            "https://ipsi.sejong.ac.kr/ipsi/early/notice.do?mode=view&articleNo=2785"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "suwon",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "수원대학교",
+      "offerings": [
+        {
+          "id": "suwon-essay-2027-b27ebd06",
+          "campus": "Main Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "교과논술전형"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "약술형 교과 서술·논술: 국어+수학"
+          ],
+          "sourceIds": [
+            "LSL27-034"
+          ],
+          "sources": [
+            "https://ipsi.suwon.ac.kr/upload_data/guide/1787878393_6045.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "sookmyung",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "canonicalSlug": "sookmyung",
+      "name": "숙명여자대학교",
+      "offerings": [
+        {
+          "id": "sookmyung-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "NOT PUBLISHED"
+          ],
+          "sourceIds": [
+            "LSL27-019"
+          ],
+          "sources": [
+            "https://admission.sookmyung.ac.kr/admission/html/counsel/noticeView.asp?p_board_idx=54119"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "soongsil",
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb",
+      "canonicalSlug": "soongsil",
+      "name": "숭실대학교",
+      "offerings": [
+        {
+          "id": "soongsil-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "통합교과형"
+          ],
+          "sourceIds": [
+            "LSL27-020"
+          ],
+          "sources": [
+            "https://iphak.ssu.ac.kr/upload/2027_plan.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "shinhan",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "신한대학교",
+      "offerings": [
+        {
+          "id": "shinhan-essay-2027-6d63670b",
+          "campus": "Uijeongbu·Dongducheon Campuses",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술전형"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "2027 official essay-guide announced; detailed type NOT PUBLISHED in the captured official text"
+          ],
+          "sourceIds": [
+            "LSL27-035"
+          ],
+          "sources": [
+            "https://ipsi.shinhan.ac.kr/sjmain.do"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "ajou",
+      "universityId": "25f8c2a3-7a6c-445a-80c5-f62f7b1ca4c6",
+      "canonicalSlug": "ajou",
+      "name": "아주대학교",
+      "offerings": [
+        {
+          "id": "ajou-essay-2027-b27ebd06",
+          "campus": "Main Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(논술우수자전형)"
+          ],
+          "types": [
+            "인문",
+            "수리",
+            "과학"
+          ],
+          "rawEssayTypes": [
+            "인문: 통합논술(언어·사회); 자연/약학: 수리논술; 의학: 수리논술+과학논술(생명과학)"
+          ],
+          "sourceIds": [
+            "LSL27-036"
+          ],
+          "sources": [
+            "https://www.iajou.ac.kr/_common/new_download_file.php?menu=boardfile&file_no=4601"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "yonsei",
+      "universityId": "9076637b-d827-5bb6-8e4e-954bd2a05805",
+      "canonicalSlug": "yonsei",
+      "name": "연세대학교",
+      "offerings": [
+        {
+          "id": "yonsei-essay-2027-78416a2a",
+          "campus": "미래캠퍼스",
+          "region": "기타 지역",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술우수자전형"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "인문: 인문·사회과학적 사고력(인문/사회·융합 문제); 자연: 수리적 사고력(수학·융합 문제)"
+          ],
+          "sourceIds": [
+            "LSL27-045"
+          ],
+          "sources": [
+            "https://mirae.yonsei.ac.kr/wj/2349/subview.do"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        },
+        {
+          "id": "yonsei-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [
+            "인문",
+            "수리",
+            "과학"
+          ],
+          "rawEssayTypes": [
+            "인문: 다면사고형 통합논술; 자연·통합: 수리·통합형(과학 제시문 서논술 포함)"
+          ],
+          "sourceIds": [
+            "LSL27-021"
+          ],
+          "sources": [
+            "https://www2.yonsei.ac.kr/entrance/plan/2027_plan.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "eulji",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "을지대학교",
+      "offerings": [
+        {
+          "id": "eulji-essay-2027-87280a6b",
+          "campus": "Seongnam Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(논술우수자)"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "약술형/쉬운 논술: 국어+수학"
+          ],
+          "sourceIds": [
+            "LSL27-037"
+          ],
+          "sources": [
+            "https://admission.eulji.ac.kr/"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        },
+        {
+          "id": "eulji-essay-2027-ae7ad02b",
+          "campus": "Uijeongbu Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(논술우수자)"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "약술형/쉬운 논술: 국어+수학"
+          ],
+          "sourceIds": [
+            "LSL27-038"
+          ],
+          "sources": [
+            "https://admission.eulji.ac.kr/"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "ewha",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "canonicalSlug": "ewha",
+      "name": "이화여자대학교",
+      "offerings": [
+        {
+          "id": "ewha-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "인문: 통합교과형; 자연: 수리논술"
+          ],
+          "sourceIds": [
+            "LSL27-022"
+          ],
+          "sources": [
+            "https://admission.ewha.ac.kr/admission/html/ewharo/noticeView.asp?idx=14986"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "inha",
+      "universityId": "e40f4b8f-8949-4726-a774-2b6f0e6d8939",
+      "canonicalSlug": "inha",
+      "name": "인하대학교",
+      "offerings": [
+        {
+          "id": "inha-essay-2027-b27ebd06",
+          "campus": "Main Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(논술우수자)"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "2027 OFFICIAL PLAN CONFIRMS ESSAY TRACK; detailed essay type NOT PUBLISHED"
+          ],
+          "sourceIds": [
+            "LSL27-044"
+          ],
+          "sources": [
+            "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%EC%9D%B8%ED%95%98%EB%8C%80%ED%95%99%EA%B5%90/%EC%9D%B8%ED%95%98%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "cau",
+      "universityId": "ffad67a6-107f-47b7-a1cb-ab61687ffb9f",
+      "canonicalSlug": "chungang",
+      "name": "중앙대학교",
+      "offerings": [
+        {
+          "id": "cau-essay-2027-e772c8aa",
+          "campus": "Da Vinci Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(일반형)"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "논술 (detailed Da Vinci unit/type combination NOT PUBLISHED in a standalone field)"
+          ],
+          "sourceIds": [
+            "LSL27-039"
+          ],
+          "sources": [
+            "https://admission.cau.ac.kr/"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        },
+        {
+          "id": "cau-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(일반형)",
+            "논술(창의형)"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "NOT PUBLISHED",
+            "NOT PUBLISHED"
+          ],
+          "sourceIds": [
+            "LSL27-023",
+            "LSL27-024"
+          ],
+          "sources": [
+            "https://admission.cau.ac.kr/detail.do?menuurl=shTyaGgSAy79vI5n2yB%2FhA%3D%3D&board_seq=3051&pageNo=1",
+            "https://admission.cau.ac.kr/main.do"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "tukorea",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "한국공학대학교",
+      "offerings": [
+        {
+          "id": "tukorea-essay-2027-b27ebd06",
+          "campus": "Main Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(논술우수자)"
+          ],
+          "types": [
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "수리논술"
+          ],
+          "sourceIds": [
+            "LSL27-040"
+          ],
+          "sources": [
+            "https://iphak.tukorea.ac.kr/"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "koreatech",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "한국기술교육대학교",
+      "offerings": [
+        {
+          "id": "koreatech-essay-2027-4ac7a098",
+          "campus": "본교",
+          "region": "기타 지역",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(일반전형)"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "공학·ICT: 수리논술; 사회: 자료제시형 언어논술"
+          ],
+          "sourceIds": [
+            "LSL27-053"
+          ],
+          "sources": [
+            "https://www.koreatech.ac.kr/board.es?mid=a40601000000&bid=0036&act=view&list_no=53638&nPage=22"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "hufs",
+      "universityId": "1fd29b0d-1141-4ff0-b1b3-c4f201854476",
+      "canonicalSlug": "hufs",
+      "name": "한국외국어대학교",
+      "offerings": [
+        {
+          "id": "hufs-essay-2027-9376e81d",
+          "campus": "Global Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(논술전형)"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "논술고사 (official plan; detailed Global-campus type NOT PUBLISHED)"
+          ],
+          "sourceIds": [
+            "LSL27-041"
+          ],
+          "sources": [
+            "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        },
+        {
+          "id": "hufs-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "논술"
+          ],
+          "sourceIds": [
+            "LSL27-025"
+          ],
+          "sources": [
+            "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%EC%99%B8%EA%B5%AD%EC%96%B4%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "kau",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "한국항공대학교",
+      "offerings": [
+        {
+          "id": "kau-essay-2027-b27ebd06",
+          "campus": "Main Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(논술우수자)"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "공학수리논술/이학수리논술/언어논술 (unit-specific)"
+          ],
+          "sourceIds": [
+            "LSL27-042"
+          ],
+          "sources": [
+            "https://cdn013.negagea.net/dgsmidc/omr/seoul/web/univ_info2025/%ED%95%9C%EA%B5%AD%ED%95%AD%EA%B3%B5%EB%8C%80%ED%95%99%EA%B5%90/%ED%95%9C%EA%B5%AD%ED%95%AD%EA%B3%B5%EB%8C%80%ED%95%99%EA%B5%90_2027%ED%95%99%EB%85%84%EB%8F%84_%EB%8C%80%ED%95%99%EC%9E%85%ED%95%99%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "hanshin",
+      "universityId": null,
+      "canonicalSlug": null,
+      "name": "한신대학교",
+      "offerings": [
+        {
+          "id": "hanshin-essay-2027-b27ebd06",
+          "campus": "Main Campus",
+          "region": "경기·인천",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술(논술)전형"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "약술형 논술 (official 2027 guide)"
+          ],
+          "sourceIds": [
+            "LSL27-043"
+          ],
+          "sources": [
+            "https://ent.hs.ac.kr/upload_data/mojib/RF(0)_26052893427.pdf"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "hanyang",
+      "universityId": "1090e1be-174e-5042-abd3-ca929c6e26f8",
+      "canonicalSlug": "hanyang",
+      "name": "한양대학교",
+      "offerings": [
+        {
+          "id": "hanyang-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [],
+          "rawEssayTypes": [
+            "NOT PUBLISHED"
+          ],
+          "sourceIds": [
+            "LSL27-026"
+          ],
+          "sources": [
+            "https://site.hanyang.ac.kr/documents/11081467/141054756/2027%ED%95%99%EB%85%84%EB%8F%84+%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90+%EC%8B%A0%EC%9E%85%ED%95%99+%EC%A0%84%ED%98%95%EA%B3%84%ED%9A%8D.pdf/027468c2-d69a-e7b4-9437-1e66d12f76f4?t=1745975250171"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_PARTIAL"
+        }
+      ]
+    },
+    {
+      "sourceUniversityId": "hongik",
+      "universityId": "15f50d54-001d-49b9-836b-a5d9c76b9c0a",
+      "canonicalSlug": "hongik",
+      "name": "홍익대학교",
+      "offerings": [
+        {
+          "id": "hongik-essay-2027-51b66d68",
+          "campus": "서울캠퍼스",
+          "region": "서울",
+          "admissionYear": 2027,
+          "admissionNames": [
+            "논술"
+          ],
+          "types": [
+            "인문",
+            "수리"
+          ],
+          "rawEssayTypes": [
+            "인문: 통합교과형; 자연: 수리형"
+          ],
+          "sourceIds": [
+            "LSL27-027"
+          ],
+          "sources": [
+            "https://www.hongik.ac.kr/kr/admission/recruitment.do?mode=download&articleNo=152315&attachNo=91150"
+          ],
+          "verifiedAt": "2026-09-18",
+          "sourceStatus": "OFFICIAL_CONFIRMED"
+        }
+      ]
+    }
+  ],
+  "evaluationRouting": "QUESTION_RUNTIME_ONLY",
+  "sourceSha256": "1f4eb95829323b8bad5aa84f5bc58337374b27e59fe283e9eac49f44fd61b248"
+}

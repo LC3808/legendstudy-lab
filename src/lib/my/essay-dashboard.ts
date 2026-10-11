@@ -39,7 +39,7 @@ export async function readEssayDetail(client:SupabaseClient,owner:string,row:Rec
  if(!session)throw Error('NOT_FOUND');
  const [a,e]=await Promise.all([
   client.from('essay_attempts').select('id,attempt_no,body,mode,conditions_snapshot,question_metadata_version').eq('session_id',session.id).order('attempt_no').limit(50),
-  client.from('essay_evaluations').select('id,attempt_id,session_id,question_id,regime_key,contract_version,evidence_completeness,input_snapshot,overall_summary,strengths,rewrite_checklist,essay_improvement_progress(title,explanation,next_action,status),essay_evaluation_dimensions(criterion_id,display_order,level_1_to_5,explanation,essay_evaluation_criteria(label,definition_version))').eq('session_id',session.id).eq('status','completed').is('invalidated_at',null).order('completed_at').limit(50),
+  client.from('essay_evaluations').select('id,attempt_id,session_id,question_id,regime_key,contract_version,evidence_completeness,input_snapshot,overall_summary,strengths,rewrite_checklist,essay_improvement_progress(title,explanation,next_action,status,scaffolding_observation),essay_generated_rewrites(status,origin,body),essay_evaluation_evidence(essay_question_evidence(role)),essay_evaluation_dimensions(criterion_id,display_order,level_1_to_5,explanation,essay_evaluation_criteria(label,definition_version))').eq('session_id',session.id).eq('status','completed').is('invalidated_at',null).order('completed_at').limit(50),
  ]);
  await assertOwner(client,owner);
  return {attempts:checked(a),evaluations:checked(e)} as unknown as EssayDetail;

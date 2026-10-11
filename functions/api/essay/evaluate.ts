@@ -1,13 +1,15 @@
-import {essayEvaluationGateway,type ReviewedWorkerBinding} from '../../../src/lib/essay-runtime/server/gateway';
+import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
+import {essayEvaluationGateway} from '../../../src/lib/essay-runtime/server/gateway';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import {parseEssayStatus} from '../../../src/lib/essay-runtime/client';
 import {boundedBody} from '../../../src/lib/math-release/server/request';
-type Environment=MathEnvironment&{ESSAY_REVIEWED_RUNTIME_ENABLED?:string;ESSAY_REVIEWED_WORKER?:ReviewedWorkerBinding};
+type Environment=MathEnvironment&WorkerEnvironment&{ESSAY_REVIEWED_RUNTIME_ENABLED?:string};
 export async function onRequestPost({request,env}:{request:Request;env:Environment}){
- if(env.ESSAY_REVIEWED_RUNTIME_ENABLED!=='true'||!env.ESSAY_REVIEWED_WORKER)return Response.json({code:'EVALUATION_UNAVAILABLE'},{status:503,headers:{'Cache-Control':'no-store'}});
+ if(env.ESSAY_REVIEWED_RUNTIME_ENABLED!=='true')return Response.json({code:'EVALUATION_UNAVAILABLE'},{status:503,headers:{'Cache-Control':'no-store'}});
  try{
+  const worker=reviewedWorkerBinding(env);if(!worker)throw Error('WORKER_UNAVAILABLE');
   const transport=serverTransport(env);
-  return essayEvaluationGateway({enabled:true,origin:env.MATH_ORIGIN??'',authenticate:async token=>!!await transport.subject(token),worker:env.ESSAY_REVIEWED_WORKER,
+  return essayEvaluationGateway({enabled:true,origin:env.MATH_ORIGIN??'',authenticate:async token=>!!await transport.subject(token),worker,
    ownedAttempt:async(token,id)=>{
     const response=await transport.request(`/rest/v1/essay_attempts?id=eq.${id}&select=id,question_metadata_version,essay_practice_sessions!inner(question_id)`,token);
     if(!response.ok)return null;
