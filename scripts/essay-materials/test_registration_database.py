@@ -4,7 +4,7 @@ from pathlib import Path
 from prepare_registration import prepare,sql_document,rollback_document
 ROOT=Path(__file__).resolve().parents[2]
 def main():
- p=argparse.ArgumentParser();p.add_argument('--app-root',required=True,type=Path);p.add_argument('--pg-bin',required=True,type=Path);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--app-root',required=True,type=Path);p.add_argument('--pg-bin',required=True,type=Path);p.add_argument('--migration',type=Path);a=p.parse_args()
  env={k:v for k,v in os.environ.items() if not k.startswith('PG')};env['LC_ALL']='C'
  def run(cmd,**kw):return subprocess.run(list(map(str,cmd)),env=env,text=True,capture_output=True,**kw)
  versions=next(ast.literal_eval(n.value) for n in ast.parse((a.app_root/'tool/test_math_ownership_bootstrap.py').read_text()).body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='VERSIONS' for t in n.targets))
@@ -24,7 +24,19 @@ def main():
    for u in db['universities']:sql('insert into public.universities(id,slug,name) values('+','.join(quote(u[k]) for k in ['id','slug','name'])+')')
    for e in db['exams']:sql('insert into public.essay_exams(id,university_id,admission_year,exam_key,exam_name,exam_kind,campus,field_or_division,session_label) values('+','.join(quote(e[k]) for k in ['id','universityId','year'])+",'fixture-"+e['id']+"','fixture',"+','.join(quote(e[k]) for k in ['kind','campus','track','session'])+')')
    before=sql('select jsonb_agg(to_jsonb(e) order by id) from public.essay_exams e')
-   sql(sql_document(plan));sql(sql_document(plan))
+   install=a.migration.read_text() if a.migration else sql_document(plan)
+   security=sql("select jsonb_agg(to_jsonb(p) order by tablename,policyname) from pg_policies p where schemaname='public' and tablename in ('essay_exams','essay_questions')")
+   sql(install);sql(install)
+   assert sql("select jsonb_agg(to_jsonb(p) order by tablename,policyname) from pg_policies p where schemaname='public' and tablename in ('essay_exams','essay_questions')")==security
+   for role in ('anon','authenticated'):
+    assert sql(f'set role {role};select count(*) from public.essay_questions')=='0'
+    sql(f"set role {role};insert into public.essay_questions(essay_exam_id,question_key,label,metadata_version) values ('{plan['exams'][0]['examId']}','forged','forged','forged');",'permission denied')
+    sql(f"set role {role};update public.essay_questions set is_published=true;",'permission denied')
+    sql(f"set role {role};delete from public.essay_questions;",'permission denied')
+   if a.migration:
+    sql('alter table public.essay_questions disable row level security;')
+    sql(install,'RLS_REQUIRED')
+    sql('alter table public.essay_questions enable row level security;')
    assert sql('select count(*) from public.essay_questions')=='234'
    assert sql('select count(*) from public.essay_exams')=='96'
    assert sql('select count(*) from public.essay_questions where is_published')=='0'
@@ -38,7 +50,7 @@ def main():
    sql(rollback_document(plan))
    assert sql('select count(*) from public.essay_questions')=='0'
    assert sql('select jsonb_agg(to_jsonb(e) order by id) from public.essay_exams e')==before
-   print(json.dumps({'database':'local PostgreSQL17','registrationRecords':76,'questions':234,'heldExams':1,'applyReplay':'PASS','noPublication':'PASS','editedRollbackDenied':'PASS','exactBaselineRestored':'PASS','productionApplied':False}))
+   print(json.dumps({'database':'local PostgreSQL17','registrationRecords':76,'questions':234,'heldExams':1,'applyReplay':'PASS','anonymousAuthenticatedReadHiddenWriteDenied':'PASS','rlsDriftRejected':bool(a.migration),'policiesPreserved':'PASS','noPublication':'PASS','editedRollbackDenied':'PASS','exactBaselineRestored':'PASS','productionApplied':False}))
   finally:
    if started:run([a.pg_bin/'pg_ctl','-D',data,'-m','fast','-w','stop'])
 if __name__=='__main__':main()
