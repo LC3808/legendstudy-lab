@@ -17,7 +17,7 @@ export function freezeExam(ownerId:string,catalog:ExamCatalog,answers:ExamAnswer
   const q=catalog.questions.find(q=>q.id===a.questionId);
   requireThat(q&&id(q.id)&&q.rubricVersion&&q.evidenceVersion,'QUESTION_NOT_IN_EXAM');
   requireThat(a.body.trim()&&a.body.length<=30000&&Number.isSafeInteger(a.revision)&&a.revision>=0,'INVALID_ANSWER');
-  return {...a,rubricVersion:q.rubricVersion,evidenceVersion:q.evidenceVersion};
+  return {questionId:a.questionId,body:a.body,revision:a.revision,rubricVersion:q.rubricVersion,evidenceVersion:q.evidenceVersion};
  }).sort((a,b)=>a.questionId.localeCompare(b.questionId));
  return {version:'essay-exam-unit-v1',ownerId,examId:catalog.examId,universityId:catalog.universityId,kind:catalog.kind,year:catalog.year,track:catalog.track,session:catalog.session,campus:catalog.campus,answers:selected};
 }

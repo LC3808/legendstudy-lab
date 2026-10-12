@@ -1,0 +1,66 @@
+{
+  "owner": "00000000-0000-4000-8000-000000000006",
+  "catalog": {
+    "examId": "00000000-0000-4000-8000-000000000001",
+    "universityId": "00000000-0000-4000-8000-000000000002",
+    "year": 2025,
+    "track": "인문",
+    "session": "오후",
+    "campus": "서울",
+    "kind": "MOCK_ESSAY",
+    "billing": "EXAM",
+    "reviewed": true,
+    "questions": [
+      {
+        "id": "00000000-0000-4000-8000-000000000003",
+        "rubricVersion": "r1",
+        "evidenceVersion": "e1"
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000000004",
+        "rubricVersion": "r1",
+        "evidenceVersion": "e1"
+      }
+    ]
+  },
+  "answers": [
+    {
+      "questionId": "00000000-0000-4000-8000-000000000004",
+      "body": "학생 합성 답안 4",
+      "revision": 1
+    },
+    {
+      "questionId": "00000000-0000-4000-8000-000000000003",
+      "body": "학생 합성 답안 3",
+      "revision": 1
+    }
+  ],
+  "snapshot": {
+    "version": "essay-exam-unit-v1",
+    "ownerId": "00000000-0000-4000-8000-000000000006",
+    "examId": "00000000-0000-4000-8000-000000000001",
+    "universityId": "00000000-0000-4000-8000-000000000002",
+    "kind": "MOCK_ESSAY",
+    "year": 2025,
+    "track": "인문",
+    "session": "오후",
+    "campus": "서울",
+    "answers": [
+      {
+        "questionId": "00000000-0000-4000-8000-000000000003",
+        "body": "학생 합성 답안 3",
+        "revision": 1,
+        "rubricVersion": "r1",
+        "evidenceVersion": "e1"
+      },
+      {
+        "questionId": "00000000-0000-4000-8000-000000000004",
+        "body": "학생 합성 답안 4",
+        "revision": 1,
+        "rubricVersion": "r1",
+        "evidenceVersion": "e1"
+      }
+    ]
+  },
+  "hash": "735dd448797b3a8dffecd560bd6f9f0186c807684483676cab66431ba7ed3279"
+}

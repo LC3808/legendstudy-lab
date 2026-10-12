@@ -1,3 +1,4 @@
+import fixture from './exam-unit.fixture.json';
 import {expect,it} from 'vitest';
 import {freezeExam,freezeReevaluation,examRequestHash,compareCriteria,type ExamCatalog} from './exam-unit';
 const id=(n:number)=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
@@ -32,4 +33,11 @@ it('only identical rubric criteria compare; decline is not growth',()=>{
  expect(compareCriteria([a],[a])[0].change).toBe('MAINTAINED');
  expect(compareCriteria([a],[{...a,level:5}])[0].change).toBe('IMPROVED');
  expect(compareCriteria([a],[{...a,rubricVersion:'r2'}])[0].change).toBe('NOT_COMPARABLE');
+});
+
+it('matches Native snapshot and SHA-256 without accepting extra client properties',async()=>{
+ const snapshot=freezeExam(fixture.owner,fixture.catalog as ExamCatalog,fixture.answers.map(a=>({...a,credits:0})));
+ expect(snapshot).toEqual(fixture.snapshot);
+ expect(await examRequestHash(snapshot,null)).toBe(fixture.hash);
+ expect(snapshot.answers[0]).not.toHaveProperty('credits');
 });

@@ -1,3 +1,5 @@
+-- Historical storage-shape rehearsal; do not combine with the newer local atomic
+-- candidate in legendstudy-app/supabase/candidates/essay_exam_unit. Neither is deployable.
 -- DESIGN REHEARSAL ONLY. NOT a deployable migration. Ends with ROLLBACK.
 -- No RPC, grants, ledger writes, source edits, or active runtime binding.
 -- Move an approved complete migration into APP's canonical path only after atomic
