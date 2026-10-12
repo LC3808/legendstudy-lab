@@ -169,3 +169,12 @@
 .catalog-sort-note { color:var(--ink-muted); font-size:var(--type-small); margin:0 0 1rem; }
 .discovery-filters input,.discovery-filters select { height:auto; min-height:48px; }
 .discovery-result select { padding-inline:.25rem; }
+
+/* Phase 1: the landing page selects a university; detail retains its information. */
+.university-discovery--essay-first .discovery-filters { grid-template-columns:minmax(0,1fr); }
+.university-discovery--essay-first .university-card { min-height:0; gap:1rem; }
+.university-discovery--essay-first .university-card-top,
+.university-discovery--essay-first .university-card-heading { margin:0; }
+.university-discovery--essay-first .discovery-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+@media (max-width:59.99em) { .university-discovery--essay-first .discovery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:39.99em) { .university-discovery--essay-first .discovery-grid { grid-template-columns:minmax(0,1fr); } }

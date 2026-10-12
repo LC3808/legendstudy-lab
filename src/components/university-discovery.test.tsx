@@ -32,3 +32,29 @@ it('defaults to service priority, supports explicit alphabetical order, and rese
  fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:'을지'}});
  expect(screen.getByRole('link',{name:'을지대학교'})).toBeVisible();
 });
+
+it('keeps essay-first selection compact without changing all42 routes or priority order',()=>{
+ const {container}=render(<UniversityDiscovery essayFirst/>);
+ expect(screen.getByText('UNIVERSITY SEARCH')).toBeVisible();
+ expect(screen.getByRole('heading',{name:'대학 찾기'})).toBeVisible();
+ for(const name of ['지역','논술 유형','전형 학년도'])expect(screen.queryByRole('combobox',{name})).toBeNull();
+ expect(screen.getByRole('img',{name:'가천대학교 로고'})).toBeVisible();
+ expect(container.querySelector('.university-card-meta,.university-card-status,.university-regions,.university-badges')).toBeNull();
+ const names:string[]=[];
+ for(let page=0;page<4;page++){
+  const links=screen.getAllByRole('link',{name:/첨삭 시작하기$/});
+  for(const link of links){expect(link.getAttribute('href')).toMatch(/^\/essay-lab\/universities\/[^/]+\/?$/);names.push(link.getAttribute('aria-label')!.replace(' 첨삭 시작하기',''));}
+  if(page<3)fireEvent.click(screen.getByRole('button',{name:'다음'}));
+ }
+ expect(new Set(names).size).toBe(42);
+ expect(names.slice(0,3)).toEqual(['가천대학교','중앙대학교','성균관대학교']);
+ expect(names.slice(-2)).toEqual(['강남대학교','을지대학교']);
+ fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:'성균관'}});
+ expect(screen.getByRole('status')).toHaveTextContent('1개 대학');
+ expect(screen.getByRole('link',{name:'성균관대학교 첨삭 시작하기'}).getAttribute('href')).toMatch(/^\/essay-lab\/universities\/skku\/?$/);
+ fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:''}});
+ fireEvent.click(screen.getByRole('button',{name:'주요 대학'}));
+ expect(screen.getByRole('status')).toHaveTextContent('32개 대학');
+ fireEvent.change(screen.getByRole('combobox',{name:'대학 정렬'}),{target:{value:'name'}});
+ expect(screen.getByText('1 / 3')).toBeVisible();
+});
