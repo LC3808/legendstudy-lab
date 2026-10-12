@@ -56,3 +56,37 @@ are reused as provenance; they are not evidence of production API + Credit E2E.
 Neither source metadata nor browser-only drafts grant Provider readiness. Exam-unit
 atomic settlement, canonical question registration, shared History/QA and Provider
 rights remain required before submission can be enabled. Existing Math is untouched.
+
+## Canonical registration review — 2026-10-13
+
+`prepare_registration.py` joins the existing source registry to the read-only
+`db-catalog-preflight-20261012.json` snapshot (51 DB university rows,22 exams,
+0 general essay questions). These DB counts are not the public42-university scope.
+No database connection or write is made by the generator. Existing IDs are preserved;
+new candidate UUIDs are deterministic and remain outside the public source registry.
+Review output: `sql/registration-review/registration-plan.json`,
+`register-review-only.sql`, `rollback-review-only.sql`.
+
+76 exam/subject records (74 new,2 existing),234 question metadata rows are planned.
+Yonsei2025 additional natural source1/3 questions is held: its body does not establish
+whether it is the existing additional exam. Never resolve this by filename alone.
+This is NOT77 fully verified exams or234 approved Evaluation Packages.
+
+Registration is unpublished/inactive and changes no privileges, RLS, ledger or
+original evidence. It does not authorize evaluation or by itself enable account
+Draft. Publication/verification requires separate reviewed provenance and rights.
+The production apply path remains the canonical APP migration process after Owner
+approval; these review-only DML files have NOT been promoted or applied.
+
+Validation: `python3 -m unittest discover -s scripts/essay-materials -p test_registration.py`
+(3 PASS), then `python3 scripts/essay-materials/test_registration_database.py
+--app-root <APP-checkout> --pg-bin /opt/homebrew/opt/postgresql@17/bin`.
+Disposable PG17 using actual15 legacy prerequisites: apply replay PASS, no publication
+PASS, edited-row rollback denied PASS, exact22-exam baseline restored PASS. Production
+applied NO. Rollback refuses changed records or practice sessions and relies on
+existing FK restrictions; never force-delete student records.
+
+The shared public Catalog can enrich exact source keys with canonical UUIDs only
+from published anonymous-RLS metadata, same university/year/kind and preserved exam
+identity. Ambiguous mappings fail closed. No Worker credentials are used and
+`evaluationReady` remains false. Both clients consume the same response.

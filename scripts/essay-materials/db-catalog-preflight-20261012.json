@@ -1,0 +1,460 @@
+{
+  "exams": [
+    {
+      "id": "f95339d5-ffe8-59ff-960a-31ba637cf37b",
+      "kind": "mock",
+      "year": 2025,
+      "track": "자연계열(수학)",
+      "campus": null,
+      "session": null,
+      "universityId": "9076637b-d827-5bb6-8e4e-954bd2a05805"
+    },
+    {
+      "id": "96153040-bcac-5006-82a4-147a98d0b553",
+      "kind": "admission",
+      "year": 2025,
+      "track": "인문계열",
+      "campus": null,
+      "session": null,
+      "universityId": "9076637b-d827-5bb6-8e4e-954bd2a05805"
+    },
+    {
+      "id": "1825b3d9-3e15-519f-947c-8867cfbdaa67",
+      "kind": "admission",
+      "year": 2025,
+      "track": "자연계열(수학)",
+      "campus": null,
+      "session": null,
+      "universityId": "9076637b-d827-5bb6-8e4e-954bd2a05805"
+    },
+    {
+      "id": "3cf7c549-32bc-5cdb-b1f5-4e8b24958559",
+      "kind": "admission",
+      "year": 2025,
+      "track": "자연계열(수학)",
+      "campus": null,
+      "session": "추가시험",
+      "universityId": "9076637b-d827-5bb6-8e4e-954bd2a05805"
+    },
+    {
+      "id": "ef67de3d-7c9f-505a-90dd-339a8658dc3a",
+      "kind": "mock",
+      "year": 2025,
+      "track": "언어 논술",
+      "campus": null,
+      "session": null,
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    },
+    {
+      "id": "df2ca870-5d5b-56c6-8257-0bd997b1bdc4",
+      "kind": "mock",
+      "year": 2025,
+      "track": "수리 논술",
+      "campus": null,
+      "session": null,
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    },
+    {
+      "id": "e15a43a8-5a50-501a-8a60-a632316240e8",
+      "kind": "admission",
+      "year": 2025,
+      "track": "언어형",
+      "campus": null,
+      "session": "1교시",
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    },
+    {
+      "id": "306ac6e2-572a-59f1-bf2f-cb0394ec04f1",
+      "kind": "admission",
+      "year": 2025,
+      "track": "언어형",
+      "campus": null,
+      "session": "2교시",
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    },
+    {
+      "id": "e3b1b7b2-26ef-5a4f-8c5a-749aa0b5d949",
+      "kind": "admission",
+      "year": 2025,
+      "track": "수리형",
+      "campus": null,
+      "session": "1교시",
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    },
+    {
+      "id": "56a562f2-992e-5302-af54-1508b6a4c1c8",
+      "kind": "admission",
+      "year": 2025,
+      "track": "수리형",
+      "campus": null,
+      "session": "2교시",
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    },
+    {
+      "id": "405fa544-7f65-5e56-88e6-a2959d32dd30",
+      "kind": "admission",
+      "year": 2025,
+      "track": "수리형",
+      "campus": null,
+      "session": "3교시",
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    },
+    {
+      "id": "071a6834-4bc1-586b-bacd-33d89d1d39cd",
+      "kind": "mock",
+      "year": 2025,
+      "track": "인문·체육계",
+      "campus": null,
+      "session": "온라인",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d"
+    },
+    {
+      "id": "a5ce6865-b88d-57ef-9aa5-605ebc4e806c",
+      "kind": "mock",
+      "year": 2025,
+      "track": "의·약학계",
+      "campus": null,
+      "session": "온라인",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d"
+    },
+    {
+      "id": "2946d60b-cc6b-586b-b769-1f21718b4df7",
+      "kind": "mock",
+      "year": 2025,
+      "track": "자연계",
+      "campus": null,
+      "session": "온라인",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d"
+    },
+    {
+      "id": "2919c142-21d7-539d-952a-5382d16dbdf7",
+      "kind": "mock",
+      "year": 2025,
+      "track": "사회계",
+      "campus": null,
+      "session": "온라인",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d"
+    },
+    {
+      "id": "04119637-2d7b-52b4-8e84-4cbd76d0275c",
+      "kind": "admission",
+      "year": 2025,
+      "track": "인문·체육계",
+      "campus": null,
+      "session": "11월 16일 오전",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d"
+    },
+    {
+      "id": "d190bb2e-711c-5bfb-9f79-19729e03bf8e",
+      "kind": "admission",
+      "year": 2025,
+      "track": "의·약학계",
+      "campus": null,
+      "session": "11월 16일 오후",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d"
+    },
+    {
+      "id": "de947c5e-7c9d-5190-a025-aeefb0631bcd",
+      "kind": "admission",
+      "year": 2025,
+      "track": "자연계",
+      "campus": null,
+      "session": "11월 17일 오전",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d"
+    },
+    {
+      "id": "0b3faf34-a53d-5a9e-8ffd-c270783f4d26",
+      "kind": "admission",
+      "year": 2025,
+      "track": "사회계",
+      "campus": null,
+      "session": "11월 17일 오후",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d"
+    },
+    {
+      "id": "a6667288-75ad-50d4-b237-d2a08e2bff8b",
+      "kind": "mock",
+      "year": 2025,
+      "track": "인문계열",
+      "campus": null,
+      "session": null,
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "id": "66ad79a8-7ea9-525d-a8f7-dc8c0e92b3e5",
+      "kind": "mock",
+      "year": 2025,
+      "track": "인문계열",
+      "campus": null,
+      "session": null,
+      "universityId": "1090e1be-174e-5042-abd3-ca929c6e26f8"
+    },
+    {
+      "id": "a1050000-0000-4000-8000-000000000002",
+      "kind": "other",
+      "year": 2026,
+      "track": null,
+      "campus": null,
+      "session": null,
+      "universityId": "a1050000-0000-4000-8000-000000000001"
+    }
+  ],
+  "universities": [
+    {
+      "id": "a1050000-0000-4000-8000-000000000001",
+      "name": "합성 검증용 — 실제 대학 아님",
+      "slug": "math-synthetic-smoke-20261005"
+    },
+    {
+      "id": "b5ac5045-b2eb-4c20-a1f0-c36f04e4fab6",
+      "name": "서울대학교",
+      "slug": "seoul-national"
+    },
+    {
+      "id": "9076637b-d827-5bb6-8e4e-954bd2a05805",
+      "name": "연세대학교",
+      "slug": "yonsei"
+    },
+    {
+      "id": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "name": "고려대학교",
+      "slug": "korea"
+    },
+    {
+      "id": "4acee829-94d4-5f8a-b440-a72e423d439f",
+      "name": "성균관대학교",
+      "slug": "sungkyunkwan"
+    },
+    {
+      "id": "1090e1be-174e-5042-abd3-ca929c6e26f8",
+      "name": "한양대학교",
+      "slug": "hanyang"
+    },
+    {
+      "id": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "name": "서강대학교",
+      "slug": "sogang"
+    },
+    {
+      "id": "ffad67a6-107f-47b7-a1cb-ab61687ffb9f",
+      "name": "중앙대학교",
+      "slug": "chungang"
+    },
+    {
+      "id": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
+      "name": "경희대학교",
+      "slug": "kyunghee"
+    },
+    {
+      "id": "1fd29b0d-1141-4ff0-b1b3-c4f201854476",
+      "name": "한국외국어대학교",
+      "slug": "hufs"
+    },
+    {
+      "id": "0598e08a-20d6-4814-9511-6abe22814355",
+      "name": "서울시립대학교",
+      "slug": "uos"
+    },
+    {
+      "id": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "name": "이화여자대학교",
+      "slug": "ewha"
+    },
+    {
+      "id": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "name": "숙명여자대학교",
+      "slug": "sookmyung"
+    },
+    {
+      "id": "15f50d54-001d-49b9-836b-a5d9c76b9c0a",
+      "name": "홍익대학교",
+      "slug": "hongik"
+    },
+    {
+      "id": "88aa2231-6a1c-47ee-a063-b168cdaf85ad",
+      "name": "국민대학교",
+      "slug": "kookmin"
+    },
+    {
+      "id": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb",
+      "name": "숭실대학교",
+      "slug": "soongsil"
+    },
+    {
+      "id": "447d2f79-fb0a-4a02-bce6-d214244b683d",
+      "name": "세종대학교",
+      "slug": "sejong"
+    },
+    {
+      "id": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
+      "name": "동국대학교",
+      "slug": "dongguk"
+    },
+    {
+      "id": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
+      "name": "건국대학교",
+      "slug": "konkuk"
+    },
+    {
+      "id": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "name": "광운대학교",
+      "slug": "kwangwoon"
+    },
+    {
+      "id": "52ec1dd2-b27b-4a5e-9ebb-a85cb8079ff2",
+      "name": "서울과학기술대학교",
+      "slug": "seoultech"
+    },
+    {
+      "id": "c5850ef5-616e-4ebb-aeac-3f6a3e7c4d0a",
+      "name": "가톨릭대학교",
+      "slug": "catholic"
+    },
+    {
+      "id": "e40f4b8f-8949-4726-a774-2b6f0e6d8939",
+      "name": "인하대학교",
+      "slug": "inha"
+    },
+    {
+      "id": "25f8c2a3-7a6c-445a-80c5-f62f7b1ca4c6",
+      "name": "아주대학교",
+      "slug": "ajou"
+    },
+    {
+      "id": "a9e38cdc-9593-4c60-b8a6-698133f48518",
+      "name": "가천대학교",
+      "slug": "gachon"
+    },
+    {
+      "id": "bdae801b-e46e-449f-9211-0a440f8eb78d",
+      "name": "단국대학교",
+      "slug": "dankook"
+    },
+    {
+      "id": "295f71b3-12da-4122-b743-f0c2c8bebe44",
+      "name": "경기대학교",
+      "slug": "kyonggi"
+    },
+    {
+      "id": "3d5d162d-5736-4930-91bc-1cfe26876b60",
+      "name": "인천대학교",
+      "slug": "incheon"
+    },
+    {
+      "id": "274c35c9-7135-40e9-97f5-19ce3f572c8b",
+      "name": "명지대학교",
+      "slug": "myongji"
+    },
+    {
+      "id": "08303fd3-ec87-4976-a9a9-547a1d52f996",
+      "name": "부산대학교",
+      "slug": "pusan"
+    },
+    {
+      "id": "72bc4be0-6e72-4c72-adc5-8ee54279f3bd",
+      "name": "경북대학교",
+      "slug": "kyungpook"
+    },
+    {
+      "id": "f6396984-c0a3-4000-ad01-838bb1ae2ca1",
+      "name": "전남대학교",
+      "slug": "chonnam"
+    },
+    {
+      "id": "a43bc36c-65ea-4f87-943c-c897c1e15857",
+      "name": "전북대학교",
+      "slug": "jeonbuk"
+    },
+    {
+      "id": "8dc048bb-c1cb-4520-80c5-95fdaf216866",
+      "name": "충남대학교",
+      "slug": "chungnam"
+    },
+    {
+      "id": "6ccec6b3-d2bf-4926-bb46-398211aa6991",
+      "name": "충북대학교",
+      "slug": "chungbuk"
+    },
+    {
+      "id": "0397d2cf-0de1-40f0-8952-31d884065264",
+      "name": "경상국립대학교",
+      "slug": "gnu"
+    },
+    {
+      "id": "d3375d8b-2ce3-4ff8-a95c-6d8127b149a7",
+      "name": "강원대학교",
+      "slug": "kangwon"
+    },
+    {
+      "id": "c53426e9-fd95-455f-8719-65949acfc3a6",
+      "name": "제주대학교",
+      "slug": "jeju"
+    },
+    {
+      "id": "ee6a98b1-cc25-4d0f-bb8e-810c5f1838f1",
+      "name": "한국과학기술원(KAIST)",
+      "slug": "kaist"
+    },
+    {
+      "id": "3da83c80-2703-4b08-90bc-4c81c3a86c47",
+      "name": "포항공과대학교(POSTECH)",
+      "slug": "postech"
+    },
+    {
+      "id": "0961d2d2-1f56-4d73-a748-99ffb315091e",
+      "name": "울산과학기술원(UNIST)",
+      "slug": "unist"
+    },
+    {
+      "id": "0551756e-a642-4a55-860a-305adc898cc5",
+      "name": "광주과학기술원(GIST)",
+      "slug": "gist"
+    },
+    {
+      "id": "5b1686f3-1e1f-47d4-8bf8-bdbf94d66b01",
+      "name": "대구경북과학기술원(DGIST)",
+      "slug": "dgist"
+    },
+    {
+      "id": "1e9b16de-aea0-40a0-ba9c-cffa6b4d829e",
+      "name": "영남대학교",
+      "slug": "yeungnam"
+    },
+    {
+      "id": "449fccf3-762c-498a-90dc-21ad2f6ac4b7",
+      "name": "계명대학교",
+      "slug": "keimyung"
+    },
+    {
+      "id": "7874b743-0325-47b4-8983-b9067e75e468",
+      "name": "조선대학교",
+      "slug": "chosun"
+    },
+    {
+      "id": "48c9bab6-a34e-47b0-b7c1-cd529876ede1",
+      "name": "동아대학교",
+      "slug": "donga"
+    },
+    {
+      "id": "ab8bee6f-632c-4ef1-bd5f-0ffb74e23c35",
+      "name": "부경대학교",
+      "slug": "pknu"
+    },
+    {
+      "id": "94642ac2-c5e7-4eec-aee6-e97fa3c96bc9",
+      "name": "한림대학교",
+      "slug": "hallym"
+    },
+    {
+      "id": "6f05c615-c57c-4ef7-aeaa-271b09f7623e",
+      "name": "울산대학교",
+      "slug": "ulsan"
+    },
+    {
+      "id": "eff85fe1-992d-4a73-ad22-b34977720380",
+      "name": "순천향대학교",
+      "slug": "soonchunhyang"
+    }
+  ],
+  "questionCount": 0
+}
