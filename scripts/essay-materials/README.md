@@ -90,3 +90,19 @@ The shared public Catalog can enrich exact source keys with canonical UUIDs only
 from published anonymous-RLS metadata, same university/year/kind and preserved exam
 identity. Ambiguous mappings fail closed. No Worker credentials are used and
 `evaluationReady` remains false. Both clients consume the same response.
+
+
+## Oct13 operational read and universal continuation
+
+Canonical APP migrations `20261012212352` (private registration) and
+`20261012215054` (worker-only private metadata RPC) are now Owner-approved/APPLIED.
+Earlier NOT_APPLIED descriptions above are historical review snapshots.
+Read-back confirms76 exams/234 exact IDs, unpublished0→0. No evaluation activation.
+WEB POST checks existing Auth/allowlist before the narrow worker read; Native uses
+this same endpoint. ESSAY_REGISTRY_WORKER_JWT configuration remains missing, so live
+private gateway is not verified. Public GET/source drafting remain available.
+WEB/Native ordered multi-image drafts reuse existing local stores; shared image
+storage/upload and exam evaluation/Credit/History/QA are not yet operational.
+The APP common package adapter reuses exact accepted Hanyang/Sookmyung source inputs,
+with all21 universities retained and role candidates mapped from existing inventory.
+No original PDF/private evidence is copied here; no actual Provider/Credit E2E claimed.

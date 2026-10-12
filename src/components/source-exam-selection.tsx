@@ -7,7 +7,24 @@ import {SourceExamWriter} from './source-exam-writer';
 export function SourceExamSelection({sourceId}:{sourceId:string}){
  const auth=useAuth();
  const [rows,setRows]=useState(()=>sourceExams(sourceId));
- useEffect(()=>{let active=true;void fetch('/api/essay/catalog').then(async r=>{if(!r.ok)return;const data=await r.json();if(active&&data.version==='essay-source-registry-v1'&&Array.isArray(data.exams))setRows(data.exams.filter((e:SourceExam)=>e.sourceUniversityId===sourceId&&e.verification==='VERIFIED'));}).catch(()=>{});return()=>{active=false;};},[sourceId]);
+ useEffect(()=>{
+  let active=true;
+  // Clear former account metadata immediately; private responses are never cached.
+  queueMicrotask(()=>{if(active)setRows(sourceExams(sourceId));});
+  void (async()=>{
+   let response:Response;
+   const session=auth.client?(await auth.client.auth.getSession()).data.session:null;
+   if(!active)return;
+   if(session&&session.user.id===auth.user?.id){
+    response=await fetch('/api/essay/catalog',{method:'POST',headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store'});
+    if(!response.ok)response=await fetch('/api/essay/catalog');
+   }else response=await fetch('/api/essay/catalog');
+   if(!response.ok)return;
+   const data=await response.json();
+   if(active&&data.version==='essay-source-registry-v1'&&Array.isArray(data.exams))setRows(data.exams.filter((e:SourceExam)=>e.sourceUniversityId===sourceId&&e.verification==='VERIFIED'));
+  })().catch(()=>{});
+  return()=>{active=false;};
+ },[sourceId,auth.client,auth.user?.id]);
  return <Selection key={`${sourceId}:${auth.user?.id??'guest'}`} rows={rows.some(e=>e.sourceUniversityId===sourceId)?rows.filter(e=>e.sourceUniversityId===sourceId):sourceExams(sourceId)} owner={auth.user?.id??'guest'}/>;
 }
 function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
