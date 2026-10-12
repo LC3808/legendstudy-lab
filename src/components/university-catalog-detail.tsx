@@ -18,7 +18,6 @@ export function UniversityCatalogDetail({university:u,year}:{university:CatalogU
   <header className="university-detail-hero"><div><UniversityLogo university={u}/><h1>{u.name}</h1>
    {(research||fallback)&&<a className="university-source-button" href={research?.url??fallback} target="_blank" rel="noopener noreferrer">{research?'공식 논술 자료 확인':'공식 입학처 자료 확인'} <span aria-hidden="true">↗</span></a>}
   </div></header>
-  <UniversityEssayStart universityId={u.universityId} sourceId={u.sourceUniversityId}/>
   <details className="essay-schedule"><summary>2027학년도 논술 일정</summary>
    {schedule.length?<div className="university-info-grid">{schedule.map(d=><article className="university-panel" key={d.sourceId}>
     <h3>{d.name}</h3><dl className="university-facts"><div><dt>캠퍼스</dt><dd>{d.campus}</dd></div>
@@ -28,5 +27,6 @@ export function UniversityCatalogDetail({university:u,year}:{university:CatalogU
     {officialUrl(d.documentUrl??d.sourceUrl)&&<a href={officialUrl(d.documentUrl??d.sourceUrl)!} target="_blank" rel="noopener noreferrer">일정 출처 확인 ↗</a>}
    </article>)}</div>:<p>확인된 시험 일정이 없습니다. 공식 입학처 자료를 확인해 주세요.</p>}
   </details>
+  <UniversityEssayStart universityId={u.universityId} sourceId={u.sourceUniversityId}/>
  </div></div>;
 }
