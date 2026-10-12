@@ -197,7 +197,7 @@
 .essay-submission-selection input { width:20px; height:20px; min-height:20px; margin:0; flex-shrink:0; }
 .essay-submit-gate { border-top:1px solid var(--line); padding-block:1rem; }
 .essay-submit-gate p { color:var(--ink-muted); }
-.essay-schedule { margin-top:2rem; border-top:1px solid var(--line-strong); padding-block:1rem; }
+.essay-schedule { margin-top:0; border-bottom:1px solid var(--line-strong); padding-block:1rem; }
 .essay-schedule summary { cursor:pointer; min-height:44px; font-weight:700; padding-block:.75rem; }
 .essay-schedule > div { margin-top:1rem; }
 .essay-start [hidden] { display:none!important; }
