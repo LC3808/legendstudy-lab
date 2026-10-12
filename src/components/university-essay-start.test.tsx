@@ -2,6 +2,7 @@
 import {render,screen,fireEvent,waitFor} from '@testing-library/react';
 import {beforeEach,it,expect,vi} from 'vitest';
 import {UniversityEssayStart} from './university-essay-start';
+vi.mock('@/lib/essay-runtime/source-registry',()=>({sourceExams:()=>[]}));
 const f=vi.hoisted(()=>({user:{id:'owner'} as {id:string}|null,client:{},exams:vi.fn(),questions:vi.fn()}));
 vi.mock('./auth-context',()=>({useAuth:()=>({client:f.client,user:f.user,status:f.user?'authenticated':'anonymous'})}));
 vi.mock('@/lib/essay-runtime/catalog',async original=>({...await original<typeof import('@/lib/essay-runtime/catalog')>(),loadExams:f.exams,loadQuestions:f.questions}));

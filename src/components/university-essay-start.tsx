@@ -1,5 +1,7 @@
 'use client';
 import Link from 'next/link';
+import {sourceExams} from '@/lib/essay-runtime/source-registry';
+import {SourceExamSelection} from './source-exam-selection';
 import {useCallback,useEffect,useState} from 'react';
 import {useAuth} from './auth-context';
 import {EssayQuestionDraft} from './essay-service-workspace';
@@ -44,6 +46,7 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
  // A display-policy distinction only; never used to authorize a Provider or bill.
  const examUnit=!!exam&&/인문|언어|사회|경제|경영/.test(exam.field_or_division??'');
  function chooseQuestion(id:string){setQuestionId(id);if(id)setVisited(old=>old.includes(id)?old:[...old,id]);}
+ if(sourceExams(sourceId).length&&(!universityId||(authStatus==='anonymous'||authStatus==='unconfigured')||status==='error'||(status==='ready'&&!rows.length)))return <SourceExamSelection sourceId={sourceId}/>;
  return <section className="university-section essay-start" aria-label="논술 첨삭 시작">
   <div className="discovery-topline"><h2>논술 첨삭 시작</h2><Link href="/my/essays/">나의 첨삭 기록 →</Link></div>
   {!universityId?<p className="university-empty">기출문제를 준비하고 있어요.</p>:authStatus==='loading'?<p role="status">로그인을 확인하고 있습니다.</p>:!user||!client?<p><Link href={`/login/?next=${encodeURIComponent(`/essay-lab/universities/${sourceId}/`)}`}>로그인</Link>하면 이용 가능한 기출문항을 확인하고 답안을 이어 쓸 수 있습니다.</p>:status==='loading'?<p role="status">기출문항을 불러오고 있습니다.</p>:status==='error'?<p role="alert">기출문항을 불러오지 못했습니다. 연결을 확인하고 새로고침해 주세요.</p>:!rows.length?<p className="university-empty">기출문제를 준비하고 있어요.</p>:<>
