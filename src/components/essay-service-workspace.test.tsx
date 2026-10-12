@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import {render,screen,fireEvent,waitFor} from '@testing-library/react';
 import {beforeEach,it,expect,vi} from 'vitest';
-import {EssayServiceWorkspace} from './essay-service-workspace';
+import {EssayServiceWorkspace,EssayQuestionDraft} from './essay-service-workspace';
 const f=vi.hoisted(()=>({client:{auth:{getSession:async()=>({data:{session:null}})}},question:'00000000-0000-4000-8000-000000000002',user:{id:'00000000-0000-4000-8000-000000000001'} as {id:string}|null,save:vi.fn(),submit:vi.fn(),revoke:vi.fn()}));
 vi.mock('next/navigation',()=>({useSearchParams:()=>new URLSearchParams({question:f.question})}));
 vi.mock('./auth-context',()=>({useAuth:()=>({status:f.user?'authenticated':'anonymous',user:f.user,client:f.client})}));
@@ -18,3 +18,12 @@ it('CAS conflict keeps unsaved answer and does not submit',async()=>{
 });
 it('guest uses existing login destination and opens no private workspace',()=>{f.user=null;render(<EssayServiceWorkspace/>);expect(screen.getByRole('link',{name:'로그인'}).getAttribute('href')).toContain('next=');expect(screen.queryByLabelText('내 답안')).toBeNull();});
 it('unmount revokes the owner client',async()=>{const view=render(<EssayServiceWorkspace/>);await screen.findByLabelText('내 답안');view.unmount();expect(f.revoke).toHaveBeenCalled();});
+
+it('inline Phase2 restores and saves Draft but cannot use legacy submit or evaluation',async()=>{
+ const dirty=vi.fn();render(<EssayQuestionDraft questionId={f.question} onDirtyChange={dirty}/>);
+ const answer=await screen.findByLabelText('내 답안');await waitFor(()=>expect(answer).toBeEnabled());
+ fireEvent.change(answer,{target:{value:'시험 묶음용 답안'}});await waitFor(()=>expect(dirty).toHaveBeenCalledWith(f.question,true));
+ fireEvent.click(screen.getByRole('button',{name:'답안 저장'}));await waitFor(()=>expect(f.save).toHaveBeenCalledWith('시험 묶음용 답안',1));
+ expect(screen.queryByRole('button',{name:'답안 제출'})).toBeNull();expect(f.submit).not.toHaveBeenCalled();
+ expect(screen.queryByText('첨삭 진행')).toBeNull();
+});

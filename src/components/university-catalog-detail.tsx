@@ -1,27 +1,32 @@
 import Link from 'next/link';
-import {UniversityLogo,UniversityRegions} from './university-identity';
-import {campusLabel,type CatalogUniversity,type AdmissionDetail} from '@/lib/essay-runtime/public-discovery';
-import {isPriorityUniversity} from '@/lib/essay-runtime/catalog-policy';
-import {UniversityAvailability} from './university-availability';
-import {EssayTypeBadges} from './university-badges';
-import {EssayServiceCatalog} from './essay-service-catalog';
+import {UniversityLogo} from './university-identity';
+import {campusLabel,type CatalogUniversity} from '@/lib/essay-runtime/public-discovery';
+import {officialUrl} from '@/lib/essay-runtime/catalog';
+import {UniversityEssayStart} from './university-essay-start';
 import './essay-service.css';
-const labels:Record<keyof AdmissionDetail['facts'],string>={intake_count:'모집인원',exam_date:'논술고사 일정',exam_time:'시험 시간',question_count:'문항 수',answer_length:'답안 분량',csat_minimum:'수능최저학력기준',essay_weight:'논술 반영',school_record_weight:'학생부 반영'};
+
 export function UniversityCatalogDetail({university:u,year}:{university:CatalogUniversity;year?:string}){
  const offerings=u.offerings.filter(o=>!year||String(o.admissionYear)===year);
- const years=[...new Set(offerings.map(o=>o.admissionYear))];
- const details=offerings.flatMap(o=>(o.admissionDetails??[]).map(d=>({...d,campus:campusLabel(o.campus),year:o.admissionYear})));
- const sources=offerings.flatMap(o=>[...o.sources.map(url=>({url,title:`${o.admissionYear}학년도 전형 자료`,campus:campusLabel(o.campus),date:o.verifiedAt})),...(o.admissionDetails??[]).filter(d=>d.documentUrl&&d.documentUrl!==o.sources[0]).map(d=>({url:d.documentUrl!,title:`${o.admissionYear}학년도 ${d.documentBasis}`,campus:campusLabel(o.campus),date:d.verifiedAt}))]);
- const uniqueSources=sources.filter((s,i)=>s.url&&sources.findIndex(x=>x.url===s.url&&x.campus===s.campus)===i);
- return <div className="university-detail-wrap"><div className="content-wrap essay-service university-detail">
- <Link className="university-back" href="/essay-lab/universities/">← 대학 목록</Link>
- <header className="university-detail-hero"><div><div className="university-detail-identity"><UniversityLogo university={u}/><UniversityRegions offerings={offerings}/></div><p className="university-eyebrow">{years.join(' · ')}학년도 논술전형</p><h1>{u.name}</h1><p className="university-hero-meta">{[...new Set(offerings.map(o=>campusLabel(o.campus)))].join(' · ')}</p><EssayTypeBadges types={offerings.flatMap(o=>o.types)}/></div><UniversityAvailability id={u.universityId} later={!isPriorityUniversity(u.sourceUniversityId)}/></header>
- <nav className="university-section-nav" aria-label="대학 상세 목차"><a href="#admission">전형 안내</a><a href="#features">논술 특징</a><a href="#schedule">모집·일정</a><a href="#questions">기출문항</a><a href="#sources">공식 자료</a></nav>
- <section id="admission" className="university-section"><div className="university-section-title"><span aria-hidden="true">01</span><h2>논술전형 안내</h2></div><div className="university-info-grid">{offerings.map(o=><article className="university-panel" key={o.id}><p className="university-eyebrow">{o.admissionYear}학년도</p><h3>{campusLabel(o.campus)}</h3><dl className="university-facts"><div><dt>전형명</dt><dd>{o.admissionNames.join(' · ')}</dd></div><div><dt>지역</dt><dd>{o.region}</dd></div><div><dt>논술 유형</dt><dd>{o.types.length?<EssayTypeBadges types={o.types}/>:'공식 자료 참조'}</dd></div><div><dt>자료 기준</dt><dd>{o.admissionYear}학년도 전형</dd></div><div><dt>확인일</dt><dd><time dateTime={o.verifiedAt}>{o.verifiedAt}</time></dd></div></dl><a className="university-source-button" href={o.sources[0]} target="_blank" rel="noopener noreferrer">공식 입학처 자료 보기 <span aria-hidden="true">↗</span></a></article>)}</div></section>
- <section id="features" className="university-section"><div className="university-section-title"><span aria-hidden="true">02</span><h2>대학별 논술 특징</h2></div><div className="university-panel university-feature-list">{offerings.map(o=><div key={o.id}><h3>{campusLabel(o.campus)}</h3><EssayTypeBadges types={o.types}/>{o.rawEssayTypes.map(t=>t.replace(/\s*2027 공식 모집요강이.*NOT PUBLISHED\./,'')).filter(t=>!/(NOT PUBLISHED|UNKNOWN|UNVERIFIED|NOT CONFIRMED)/i.test(t)).map((t,i)=><p key={i}>{t}</p>)}{!o.types.length&&<p>세부 출제 형식은 공식 전형 자료에서 확인해 주세요.</p>}</div>)}</div></section>
- <section id="schedule" className="university-section"><div className="university-section-title"><span aria-hidden="true">03</span><h2>전형 일정 및 모집 정보</h2></div><div className="university-info-grid">{details.filter(d=>Object.keys(d.facts).length).map(d=><article className="university-panel" key={d.sourceId}><p className="university-eyebrow">{d.campus} · {d.year}</p><h3>{d.name}</h3><dl className="university-facts">{Object.entries(d.facts).map(([k,v])=><div key={k}><dt>{labels[k as keyof AdmissionDetail['facts']]}</dt><dd>{v}</dd></div>)}</dl><p className="university-source-note">{d.documentBasis} 기준 · 확인일 {d.verifiedAt}{d.sourceStatus==='OFFICIAL_PARTIAL'?' · 확인된 항목만 제공':''}</p></article>)}</div><p className="university-source-note">모집단위에 따라 적용 기준이 다를 수 있습니다. 지원 전 공식 자료의 해당 모집단위를 확인해 주세요.</p></section>
- <section id="questions" className="university-section"><div className="university-section-title"><span aria-hidden="true">04</span><h2>기출문항</h2></div><div className="university-panel"><p className="university-source-note">전형 정보와 별도로, 실제 시험 학년도를 기준으로 제공합니다.</p>{u.universityId?<EssayServiceCatalog universityId={u.universityId} embedded/>:<div className="university-empty"><span aria-hidden="true">▤</span><p>기출문제를 준비하고 있어요.</p></div>}</div></section>
- <section className="university-section"><div className="university-section-title"><span aria-hidden="true">05</span><h2>AI 첨삭 서비스</h2></div><div className="university-service-panel"><div><h3>한 번의 답안에서, 더 나은 다음 답안으로</h3><p>이용 가능한 문항에서 첨삭 제공 여부를 확인할 수 있습니다.</p></div><button className="university-disabled" disabled>서비스 추후 제공</button></div></section>
- <section id="sources" className="university-section"><div className="university-section-title"><h2>공식 자료</h2><span className="university-badge university-badge--verified">출처 확인</span></div><div className="university-info-grid">{uniqueSources.map(s=><article className="university-panel university-source-card" key={s.url+s.campus}><p className="university-eyebrow">{u.name} 입학처</p><h3>{s.title}</h3><p>{s.campus}</p><p className="university-source-note">자료 확인일 <time dateTime={s.date}>{s.date}</time></p><a className="university-source-button" href={s.url} target="_blank" rel="noopener noreferrer">입학처 원문 보기 <span aria-hidden="true">↗</span></a></article>)}</div>{!!u.researchSources?.length&&<details className="university-archive"><summary>기출·논술 참고 자료 더 보기</summary><ul>{u.researchSources.map((s,i)=><li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label} {i+1} ↗</a><span>확인일 {s.verifiedAt}</span></li>)}</ul></details>}</section>
+ const schedule=offerings.filter(o=>o.admissionYear===2027).flatMap(o=>(o.admissionDetails??[])
+  .filter(d=>['OFFICIAL_CONFIRMED','OFFICIAL_PARTIAL'].includes(d.sourceStatus)&&(d.facts.exam_date||d.facts.exam_time))
+  .map(d=>({...d,campus:campusLabel(o.campus)})));
+ // Reuse reviewed source records. Never relabel an admissions guide as past questions.
+ const research=u.researchSources?.find(s=>officialUrl(s.url));
+ const fallback=offerings.flatMap(o=>o.sources).find(s=>officialUrl(s));
+ return <div className="university-detail-wrap"><div className="content-wrap essay-service university-detail university-detail--essay-first">
+  <Link className="university-back" href="/essay-lab/">← 대학 목록</Link>
+  <header className="university-detail-hero"><div><UniversityLogo university={u}/><h1>{u.name}</h1>
+   {(research||fallback)&&<a className="university-source-button" href={research?.url??fallback} target="_blank" rel="noopener noreferrer">{research?'공식 논술 자료 확인':'공식 입학처 자료 확인'} <span aria-hidden="true">↗</span></a>}
+  </div></header>
+  <UniversityEssayStart universityId={u.universityId} sourceId={u.sourceUniversityId}/>
+  <details className="essay-schedule"><summary>2027학년도 논술 일정</summary>
+   {schedule.length?<div className="university-info-grid">{schedule.map(d=><article className="university-panel" key={d.sourceId}>
+    <h3>{d.name}</h3><dl className="university-facts"><div><dt>캠퍼스</dt><dd>{d.campus}</dd></div>
+     {d.facts.exam_date&&<div><dt>시험 날짜</dt><dd>{d.facts.exam_date}</dd></div>}
+     {d.facts.exam_time&&<div><dt>시험 시간</dt><dd>{d.facts.exam_time}</dd></div>}
+    </dl><p className="university-source-note">{d.documentBasis} · 확인일 {d.verifiedAt}</p>
+    {officialUrl(d.documentUrl??d.sourceUrl)&&<a href={officialUrl(d.documentUrl??d.sourceUrl)!} target="_blank" rel="noopener noreferrer">일정 출처 확인 ↗</a>}
+   </article>)}</div>:<p>확인된 시험 일정이 없습니다. 공식 입학처 자료를 확인해 주세요.</p>}
+  </details>
  </div></div>;
 }

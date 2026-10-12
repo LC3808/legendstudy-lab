@@ -3,20 +3,28 @@ import {render,screen} from '@testing-library/react';
 import {it,expect,vi} from 'vitest';
 import {UniversityCatalogDetail} from './university-catalog-detail';
 import {catalogUniversity} from '@/lib/essay-runtime/public-discovery';
-vi.mock('./auth-context',()=>({useAuth:()=>({client:null,user:null})}));
-it('uses real admissions fields and sources while keeping admissions and question years separate',()=>{
+vi.mock('./auth-context',()=>({useAuth:()=>({client:null,user:null,status:'anonymous'})}));
+it('puts writing entry first and hides admission details without removing source data',()=>{
  render(<UniversityCatalogDetail university={catalogUniversity('konkuk')!}/>);
  expect(screen.getByRole('heading',{name:'건국대학교',level:1})).toBeVisible();
- expect(screen.getByText('100%')).toBeVisible();expect(screen.getByText('0%')).toBeVisible();
- expect(screen.queryByText('지원자 수')).toBeNull();
- expect(screen.getByRole('heading',{name:'공식 자료'})).toBeVisible();
+ expect(screen.getByRole('heading',{name:'논술 첨삭 시작'})).toBeVisible();
+ expect(screen.queryByText('100%')).toBeNull();expect(screen.queryByText('0%')).toBeNull();
+ expect(screen.queryByRole('heading',{name:'논술전형 안내'})).toBeNull();
+ expect(screen.queryByText('2027학년도 논술전형')).toBeNull();
  for(const a of screen.getAllByRole('link').filter(a=>a.getAttribute('target')==='_blank'))expect(a.getAttribute('rel')).toContain('noopener');
- expect(screen.queryByRole('button',{name:'첨삭 시작하기'})).toBeNull();
+ expect(screen.getByText('2027학년도 논술 일정').closest('details')).not.toHaveAttribute('open');
+ expect(screen.getByRole('link',{name:'← 대학 목록'}).getAttribute('href')).toMatch(/^\/essay-lab\/?$/);
 });
-it('keeps an unmapped university browsable with an honest empty state',()=>{
+it('keeps an unmapped university honest without fake question choices',()=>{
  render(<UniversityCatalogDetail university={catalogUniversity('eulji')!}/>);
  expect(screen.getByText('기출문제를 준비하고 있어요.')).toBeVisible();
- expect(screen.getByRole('button',{name:'서비스 추후 제공'})).toBeDisabled();
+ expect(screen.queryByRole('combobox')).toBeNull();
  expect(screen.queryByText(/NOT PUBLISHED/)).toBeNull();
- expect(screen.getAllByRole('heading',{name:'성남캠퍼스'})).toHaveLength(2);
+});
+it('uses verified schedule facts and distinguishes duration from unknown start time',()=>{
+ render(<UniversityCatalogDetail university={catalogUniversity('skku')!}/>);
+ expect(screen.getByText('2026-11-22')).toBeInTheDocument();
+ expect(screen.getByText('100분')).toBeInTheDocument();
+ expect(screen.queryByText('시작 시간')).toBeNull();
+ expect(screen.queryByText('모집인원')).toBeNull();
 });

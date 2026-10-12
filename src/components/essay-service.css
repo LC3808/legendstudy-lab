@@ -25,7 +25,7 @@
 @media (min-width: 56.25em) {
  .essay-writing-tabs { display: none; }
  .essay-writing-grid { grid-template-columns: minmax(0,42fr) minmax(0,58fr); }
- .essay-writing-grid .essay-reading-pane,.essay-writing-grid .essay-answer-pane { display: block; max-height: 80vh; overflow-y: auto; padding: 1rem; }
+ .essay-writing-grid[data-panel] .essay-reading-pane,.essay-writing-grid[data-panel] .essay-answer-pane { display: block; max-height: 80vh; overflow-y: auto; padding: 1rem; }
 }
 
 .discovery-filters { display: flex; flex-wrap: wrap; gap: 1rem; margin-block: 1rem; }
@@ -184,3 +184,20 @@
 .university-logo-frame { display:block; position:relative; width:112px; height:56px; overflow:hidden; flex-shrink:0; }
 .university-logo-frame .university-logo--padded { position:absolute; width:calc(100% * 518 / 195); max-width:none; height:auto; left:calc(-100% * 171 / 195); top:50%; transform:translateY(-50%); }
 @media (max-width:39.99em) { .university-logo-frame {width:104px;height:48px;} }
+/* Essay-first university detail: selection and writing precede optional schedule. */
+.university-detail--essay-first { max-width:82rem; }
+.university-detail--essay-first .university-detail-hero { padding-block:1rem 1.5rem; }
+.essay-start h2 { font-size:var(--type-h3); margin:0; }
+.essay-selection-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr)); gap:1rem; margin-block:1.5rem; }
+.essay-selection-grid label { display:grid; gap:.5rem; min-width:0; }
+.essay-selection-grid select { width:100%; min-width:0; min-height:48px; height:auto; }
+.essay-inline-draft { padding-block:1rem; }
+.essay-submission-selection { background:var(--surface-muted); padding:1rem; border-radius:var(--radius-md); }
+.essay-submission-selection label { display:flex; flex-direction:row; justify-content:flex-start; align-items:center; gap:.5rem; margin-block:1rem; }
+.essay-submission-selection input { width:20px; height:20px; min-height:20px; margin:0; flex-shrink:0; }
+.essay-submit-gate { border-top:1px solid var(--line); padding-block:1rem; }
+.essay-submit-gate p { color:var(--ink-muted); }
+.essay-schedule { margin-top:2rem; border-top:1px solid var(--line-strong); padding-block:1rem; }
+.essay-schedule summary { cursor:pointer; min-height:44px; font-weight:700; padding-block:.75rem; }
+.essay-schedule > div { margin-top:1rem; }
+.essay-start [hidden] { display:none!important; }
