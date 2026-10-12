@@ -75,3 +75,37 @@ access and content/provider prerequisites are collected in the final closeout.
 
 Preserved: Signup CLOSED; Target005 HOLD; Payment/Toss/IAP unchanged; MY/Admin and
 Manus Header/Icon/Favicon/global CSS unchanged by this task.
+
+## 2026-10-12 material ingestion follow-up (supersedes old runtime inventory only)
+
+Owner local ZIP inventory and readonly production inspection: 20 archives, 1,030
+unique PDFs, 21 catalog university mappings. DB has 22 essay_exams (21 verified
+catalog exams + 1 synthetic Math record), **0 essay_questions**. This does not
+invalidate existing Math E2E or count Math's separate questions as missing.
+
+`scripts/essay-materials/` builds private metadata/text review candidates. 581 review
+groups are NOT verified exams. SKKU2025 language session1 exact-source package is
+reused (3 existing structures); no other package is marked executable. Source files
+and derived private text never enter Git. Provider transmission rights are unverified.
+
+`server/exam-unit.ts` is an unmounted contract candidate: same-exam immutable set,
+unchanged-answer inheritance, 14-day/one-rewrite eligibility, version-bound comparison.
+It does not reserve or consume Credit. Repeated legacy question RPC calls are forbidden
+as an implementation of one exam credit. Existing composition is unbilled but its
+current parent persistence still targets a single question; it is not an exam bridge.
+
+Storage SQL under the tooling directory is a local, automatic-rollback rehearsal,
+not a deployable migration. Dependencies were stubbed for PostgreSQL17 checks.
+Remaining: exact question membership/snapshot/lifecycle guards, account/cycle locks,
+atomic reservation/settlement/release, lease fencing, authenticated History/QA projections,
+real-schema concurrency and rollback tests. Source questions and rights must be reviewed
+before an end-to-end test plan can be executed. No production apply/deploy/Provider call.
+
+Essay gateway now preserves **confirmed reservation** HTTP402/PT402 and422/PT422
+without exposing DB diagnostics. Unknown network/worker outcomes keep existing pending
+status behavior, including worker402/422 AFTER reservation. Shared Math transport and
+ledger untouched. Current admission.ts directly calls readReviewedAdmission with a
+bound worker; the old callEssayGateway/ctx review location does not exist at this HEAD.
+Other Grok issues remain separate; no blanket claim that the review is resolved.
+
+Canonical policy/status and handoff live in the existing Unified Wiki. Public AI HOLD.

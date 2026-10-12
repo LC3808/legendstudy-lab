@@ -1,0 +1,93 @@
+{
+  "version": "essay-material-inventory-v1",
+  "archives": 20,
+  "missing_archives": [],
+  "total_pdfs": 1030,
+  "unique_pdfs": 1030,
+  "duplicate_occurrences": 0,
+  "duplicate_groups": 0,
+  "pdf_errors": 2,
+  "low_text_pdfs": 173,
+  "by_archive": {
+    "건국대.zip": 56,
+    "경북대.zip": 52,
+    "경희대.zip": 105,
+    "광운대.zip": 38,
+    "논술1차.zip": 82,
+    "동국대.zip": 39,
+    "부산대.zip": 32,
+    "서강대.zip": 31,
+    "성균관대.zip": 45,
+    "세종대.zip": 42,
+    "숙명여대.zip": 87,
+    "숭실대.zip": 24,
+    "아주대.zip": 56,
+    "연세대2.zip": 69,
+    "이화여대.zip": 26,
+    "인하대.zip": 36,
+    "중앙대.zip": 60,
+    "한국외대.zip": 20,
+    "한양대.zip": 109,
+    "홍익대.zip": 21
+  },
+  "year_candidates": {
+    "2022": 229,
+    "2025": 120,
+    "2026": 72,
+    "2023": 194,
+    "2024": 177,
+    "2021": 210,
+    "2027": 24,
+    "2020": 4
+  },
+  "exam_type_candidates": {
+    "None": 571,
+    "MOCK_ESSAY": 418,
+    "REGULAR_ADMISSION_ESSAY": 41
+  },
+  "verified_exams": 0,
+  "verified_questions": 0,
+  "evaluation_allowed": false,
+  "classification": "UNREVIEWED_CANDIDATES_NOT_CANONICAL_EXAMS",
+  "universities_mapped": 21,
+  "unmapped_occurrences": 0,
+  "review_groups": 581,
+  "reused_existing_packages": 1,
+  "existing_question_structures_reused": 3,
+  "new_verified_exams": 0,
+  "new_verified_questions": 0,
+  "verification_states": {
+    "BODY_REVIEW_REQUIRED": 854,
+    "VISUAL_OR_OCR_REVIEW_REQUIRED": 173,
+    "OUTSIDE_ESSAY_SCOPE": 1,
+    "PDF_REPAIR_REQUIRED": 2
+  },
+  "parsed_pages": 9027,
+  "original_archives_unchanged": 20,
+  "database": {
+    "essay_exams_total": 22,
+    "verified_catalog_exams": 21,
+    "synthetic_math_exam": 1,
+    "essay_questions": 0,
+    "read_only": true
+  },
+  "tests": {
+    "vitest_passed": 1062,
+    "vitest_skipped": 1,
+    "python_passed": 7,
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "boundary_audit": "PASS",
+    "secret_audit": "PASS",
+    "local_sql": "STUB_DEPENDENCIES_ONLY_PASS"
+  },
+  "runtime": {
+    "new_exam_unit_rpc_mounted": false,
+    "provider_e2e": false,
+    "credit_transaction": false,
+    "production_migration": false,
+    "production_deployment": false,
+    "public_activation": "HOLD"
+  }
+}

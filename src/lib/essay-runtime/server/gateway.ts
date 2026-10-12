@@ -1,3 +1,4 @@
+import {ReservationRejected} from './reservation';
 import {boundedBody} from '../../math-release/server/request';
 import {essayRequestId} from '../client';
 /** Internal binding to the existing reviewed worker. Never a URL supplied by the browser. */
@@ -35,7 +36,9 @@ export function essayEvaluationGateway(ports:EssayGatewayPorts){return async(req
   if(body.retry_evaluation_id&&!await ports.releasedFailure(token,body.attempt_id,body.retry_evaluation_id))return reply(409,'RETRY_NOT_CONFIRMED');
   const permit=await readReviewedAdmission(ports.worker,owned);if(!permit)return reply(503,'EVALUATION_UNAVAILABLE');
   const key=await essayRequestId(`${body.attempt_id}/${permit.regime}${body.retry_evaluation_id?`/retry/${body.retry_evaluation_id}`:""}`);
-  const created=await ports.requestEvaluation(token,{p_attempt:body.attempt_id,p_key:key,p_regime:permit.regime});
+  let created:unknown;
+  try{created=await ports.requestEvaluation(token,{p_attempt:body.attempt_id,p_key:key,p_regime:permit.regime});}
+  catch(error){if(error instanceof ReservationRejected)return reply(error.status,error.message);throw error;}
   if(!id(created))throw Error('INVALID_RESPONSE');evaluation=created;
   // The worker repeats canonical owner/status/snapshot/reviewer gates. Unknown dispatch is
   // resumable; do not reserve a new job, declare failure, or release Credit in this gateway.

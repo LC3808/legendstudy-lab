@@ -1,3 +1,4 @@
+import {requestEssayReservation} from '../../../src/lib/essay-runtime/server/reservation';
 import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
 import {essayEvaluationGateway} from '../../../src/lib/essay-runtime/server/gateway';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
@@ -23,7 +24,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Environme
     if(!Array.isArray(rows)||rows.length!==1||rows[0].id!==evaluation||rows[0].attempt_id!==attempt||rows[0].status!=='failed')return false;
     const state=parseEssayStatus(await transport.rpcRaw('essay_evaluation_status',{p_evaluation:evaluation},token));
     return state.state==='failed'&&state.no_credit_consumed;
-   },requestEvaluation:(token,args)=>transport.rpcRaw('essay_request_evaluation',args,token),
+   },requestEvaluation:(token,args)=>requestEssayReservation(transport.request,token,args),
   })(request);
  }catch{return Response.json({code:'EVALUATION_UNAVAILABLE'},{status:503,headers:{'Cache-Control':'no-store'}});}
 }

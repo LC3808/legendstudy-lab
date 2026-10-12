@@ -1,3 +1,4 @@
+import {ReservationRejected} from './reservation';
 import {it,expect,vi} from 'vitest';
 import {essayEvaluationGateway} from './gateway';
 const a='00000000-0000-4000-8000-000000000001',e='00000000-0000-4000-8000-000000000002';
@@ -13,3 +14,6 @@ it('worker completion prose is never treated as stored completion',async()=>{con
 
 it('unconfirmed failure cannot create a new billing request',async()=>{const p=fixture();p.ports.releasedFailure.mockResolvedValue(false);expect((await essayEvaluationGateway(p.ports)(request(e))).status).toBe(409);expect(p.requestEvaluation).not.toHaveBeenCalled();expect(p.fetch).not.toHaveBeenCalled();});
 it('released failure retry has a stable distinct key bound to the failed evaluation',async()=>{const p=fixture();const handler=essayEvaluationGateway(p.ports);await handler(request());await handler(request(e));await handler(request(e));expect(p.requestEvaluation.mock.calls[0]).not.toEqual(p.requestEvaluation.mock.calls[1]);expect(p.requestEvaluation.mock.calls[1]).toEqual(p.requestEvaluation.mock.calls[2]);expect(p.ports.releasedFailure).toHaveBeenCalledWith('synthetic',a,e);});
+
+it.each([402,422] as const)('preserves confirmed reservation denial %s without worker dispatch',async status=>{const p=fixture();p.requestEvaluation.mockRejectedValue(new ReservationRejected(status));const response=await essayEvaluationGateway(p.ports)(request());expect(response.status).toBe(status);expect(p.fetch).toHaveBeenCalledTimes(1);});
+it.each([402,422] as const)('post-reservation worker %s remains resumable',async status=>{const p=fixture(),original=p.fetch.getMockImplementation()!;p.fetch.mockImplementation(async r=>r.url.endsWith('/evaluate')?new Response(null,{status}):original(r));const response=await essayEvaluationGateway(p.ports)(request());expect(response.status).toBe(202);expect(await response.json()).toEqual({code:'STATUS_CHECK_REQUIRED',evaluation_id:e});});
