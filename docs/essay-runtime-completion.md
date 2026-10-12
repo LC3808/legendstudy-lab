@@ -33,3 +33,14 @@ also unavailable. No new secrets issued. Real content approval cannot be replace
 
 Preserved current main c2b2f14, including Claude MY/Admin and Manus visual files.
 Payment/Toss/IAP/Signup/Credit architecture/Target005 unchanged. No Production DB mutation.
+
+
+## 2026-10-12 — shared source Catalog and photo-first input (PARTIAL)
+
+WEB and Native APP now read the same public `/api/essay/catalog`:21 universities,77 exam/subject records,237 answer inputs. The existing JSON source keys remain; no new canonical UUIDs were invented. This is selection metadata, not a completed evaluation package inventory.
+Question `inputMode` controls presentation only. Natural/math/science defaults to camera/image; humanities/business remains text-first. It does not classify science as Math, route providers or change billing.
+WEB image drafts use owner/question-keyed IndexedDB; text draft behavior remains. Question switching/reload preserves images, and confirmed account deletion purges local drafts. APP uses its private native store. Neither is a shared cloud Draft contract.
+The shared photo control also feeds the existing Math upload/extraction/confirmation flow. APP now uses those same server endpoints and existing RPCs; no new evaluator or Ledger.
+169 related tests PASS; lint/typecheck/build PASS. Browser image restoration/question isolation and360/375/390/768/1280/1440 at100/200% PASS. Actual Provider/Credit transactions not executed.
+New source evaluationReady remains false for every record. Canonical question registration, official package completion/rights, atomic exam billing and shared exam History/QA remain incomplete. Existing exam-unit freeze/hash/comparison helpers are preserved, not presented as an implemented atomic DB adapter.
+No production DB migration, permission change, Credit transaction, or public activation. Public HOLD remains.

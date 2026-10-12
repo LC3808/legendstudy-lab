@@ -1,4 +1,5 @@
 "use client";
+import {AnswerImageInput} from "../answer-image-input";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -156,15 +157,16 @@ function Workspace({ client, evaluationEnabled }: { client: SupabaseClient; eval
       {!catalog.length && <p>현재 준비된 문제가 없습니다.</p>}
       {chosen && <section aria-label="문제"><p>{chosen.problem_statement}</p><p>{chosen.statement}</p></section>}
       {!evaluationEnabled && <p>문항을 확인할 수 있습니다. 현재 첨삭은 이용할 수 없습니다.</p>}
+      <AnswerImageInput file={file?.type.startsWith("image/")?file:null} onChange={setFile} disabled={frozen}/>
       <label htmlFor="math-answer">내 답안</label>
       <textarea id="math-answer" value={answer} maxLength={30000} disabled={frozen} onChange={e => setAnswer(e.target.value)} rows={8} />
-      <label htmlFor="math-file">답안 사진 또는 PDF (20MB 이하)</label>
-      <input id="math-file" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" disabled={frozen} onChange={e => {
+      <label htmlFor="math-file">PDF 첨부 (선택, 20MB 이하)</label>
+      <input id="math-file" type="file" accept="application/pdf" disabled={frozen} onChange={e => {
         const selected = e.target.files?.[0] ?? null;
         if (selected && (selected.size > 20971520 || !["image/png","image/jpeg","image/webp","application/pdf"].includes(selected.type))) { setFile(null); setNotice("지원하는 사진 또는 20MB 이하 PDF를 선택해 주세요."); return; }
         setFile(selected);
       }} />
-      {file && <><p>선택한 파일: {file.name}</p><LocalPreview key={file.name + file.lastModified} file={file}/></>}
+      {file?.type === "application/pdf" && <><p>선택한 파일: {file.name}</p><LocalPreview key={file.name + file.lastModified} file={file}/></>}
       <button type="button" disabled={!evaluationEnabled || !leaf || (!answer.trim() && !file)} onClick={() => void run(submit)}>답안 제출 · 입력 확인</button>
       {input && <MathInputFlow readiness={readiness} onConfirm={intent => setCorrections(current => ({ ...current, [intent.regionId]: intent.confirmedRawText }))} />}
       {!!regions.length && !input?.can_request_evaluation && <button type="button" disabled={regions.some(row => corrections[row.region_id] === undefined)} onClick={() => void run(async () => {

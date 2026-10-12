@@ -1,5 +1,6 @@
 "use client";
 
+import {purgeSourceDrafts} from "@/lib/source-image-draft";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "./auth-context";
@@ -28,6 +29,8 @@ export function AccountDeletionRequest({ enabled = process.env.NEXT_PUBLIC_ACCOU
       const deadline = data.scheduled_deletion_at;
       if (["DELETION_PENDING", "ERASING"].includes(data.state) && (typeof deadline !== "string" || !Number.isFinite(Date.parse(deadline)))) throw Error();
       if (operation === "request" && !["DELETION_PENDING", "ERASING", "ERASED"].includes(data.state)) throw Error();
+      if(["DELETION_PENDING","ERASING","ERASED"].includes(data.state))await purgeSourceDrafts(owner);
+      if(ownerRef.current!==owner)return;
       setReceipt({ owner, state: data.state, deadline: typeof deadline === "string" ? deadline : null });
       setConfirmedOwner(null);
     } catch {

@@ -12,7 +12,7 @@ exams=[]
 def add(u,year,kind,track,session,sha,labels,dbid=None,campus=None,locators=None,lengths=None):
  key='source:'+hashlib.sha256((u+'|'+str(year)+'|'+kind+'|'+track+'|'+str(session)+'|'+str(campus)).encode()).hexdigest()
  if any(e['key']==key for e in exams):raise ValueError('Duplicate identity requires review: '+key)
- exams.append({'key':key,'dbExamId':dbid,'universityId':universities[u]['universityId'],'sourceUniversityId':u,'year':year,'kind':kind,'track':track,'session':session,'campus':campus,'verification':'VERIFIED','verificationScope':'exam_identity_and_question_labels','sourceHashes':sha,'questions':[{'key':key+':'+str(n),'dbQuestionId':None,'label':'문제 '+str(n),'sourceLocator':(locators or {}).get(str(n)),'lengthLabel':(lengths or {}).get(str(n))} for n in labels],'evaluationReady':False})
+ exams.append({'key':key,'dbExamId':dbid,'universityId':universities[u]['universityId'],'sourceUniversityId':u,'year':year,'kind':kind,'track':track,'session':session,'campus':campus,'verification':'VERIFIED','verificationScope':'exam_identity_and_question_labels','sourceHashes':sha,'questions':[{'key':key+':'+str(n),'dbQuestionId':None,'inputMode':'image' if re.search('자연|수학|물리|화학|생명|지구|과학',track) else 'text','label':'문제 '+str(n),'sourceLocator':(locators or {}).get(str(n)),'lengthLabel':(lengths or {}).get(str(n))} for n in labels],'evaluationReady':False})
 for x in strict:
  if x['sha'] not in approved:continue
  track=x['track'];session=None

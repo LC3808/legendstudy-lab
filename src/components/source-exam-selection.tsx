@@ -1,12 +1,14 @@
 'use client';
 import Link from 'next/link';
-import {useCallback,useState} from 'react';
+import {useCallback,useState,useEffect} from 'react';
 import {useAuth} from './auth-context';
 import {sourceExams,type SourceExam} from '@/lib/essay-runtime/source-registry';
 import {SourceExamWriter} from './source-exam-writer';
 export function SourceExamSelection({sourceId}:{sourceId:string}){
  const auth=useAuth();
- return <Selection key={`${sourceId}:${auth.user?.id??'guest'}`} rows={sourceExams(sourceId)} owner={auth.user?.id??'guest'}/>;
+ const [rows,setRows]=useState(()=>sourceExams(sourceId));
+ useEffect(()=>{let active=true;void fetch('/api/essay/catalog').then(async r=>{if(!r.ok)return;const data=await r.json();if(active&&data.version==='essay-source-registry-v1'&&Array.isArray(data.exams))setRows(data.exams.filter((e:SourceExam)=>e.sourceUniversityId===sourceId&&e.verification==='VERIFIED'));}).catch(()=>{});return()=>{active=false;};},[sourceId]);
+ return <Selection key={`${sourceId}:${auth.user?.id??'guest'}`} rows={rows.some(e=>e.sourceUniversityId===sourceId)?rows.filter(e=>e.sourceUniversityId===sourceId):sourceExams(sourceId)} owner={auth.user?.id??'guest'}/>;
 }
 function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
  const [year,setYear]=useState(''),[kind,setKind]=useState(''),[track,setTrack]=useState(''),[examKey,setExamKey]=useState(''),[questionKey,setQuestionKey]=useState('');
@@ -31,7 +33,7 @@ function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
    {exams.length>1&&<label>캠퍼스·시험 회차<select aria-label="캠퍼스·시험 회차" value={exam?.key??''} onChange={e=>reset(()=>setExamKey(e.target.value))}><option value="">시험 회차 선택</option>{exams.map(e=><option key={e.key} value={e.key}>{[e.campus,e.session].filter(Boolean).join(' · ')||'회차 구분 없음'}</option>)}</select></label>}
   </div>
   {exam&&<><div className="essay-question-tabs" role="tablist" aria-label="문항 선택">{exam.questions.map(q=><button className="button button--outline" key={q.key} role="tab" aria-selected={question?.key===q.key} onClick={()=>setQuestionKey(q.key)}>{q.label}</button>)}</div>
-   {/인문|언어|사회|경제|경영/.test(exam.track)&&<fieldset className="essay-submission-selection"><legend>첨삭받을 문항</legend><button className="button button--outline" onClick={()=>setIncluded(exam.questions.map(q=>q.key))}>전체 문항 선택</button>{exam.questions.map(q=><label key={q.key}><input type="checkbox" checked={included.includes(q.key)} onChange={e=>setIncluded(old=>e.target.checked?[...old,q.key]:old.filter(key=>key!==q.key))}/>{q.label}</label>)}<p>전체 또는 일부 문항을 선택할 수 있습니다. 최초 첨삭은 문항 묶음당 1 Credit, 14일 이내 같은 문항 집합의 재첨삭 1회가 포함됩니다. 최초 제출 후 새 문항은 추가할 수 없습니다.</p></fieldset>}
+   {/인문|언어|사회|경제|경영|상경/.test(exam.track)&&<fieldset className="essay-submission-selection"><legend>첨삭받을 문항</legend><button className="button button--outline" onClick={()=>setIncluded(exam.questions.map(q=>q.key))}>전체 문항 선택</button>{exam.questions.map(q=><label key={q.key}><input type="checkbox" checked={included.includes(q.key)} onChange={e=>setIncluded(old=>e.target.checked?[...old,q.key]:old.filter(key=>key!==q.key))}/>{q.label}</label>)}<p>전체 또는 일부 문항을 선택할 수 있습니다. 최초 첨삭은 문항 묶음당 1 Credit, 14일 이내 같은 문항 집합의 재첨삭 1회가 포함됩니다. 최초 제출 후 새 문항은 추가할 수 없습니다.</p></fieldset>}
    {exam.questions.map(q=><div key={q.key} hidden={question?.key!==q.key}><SourceExamWriter key={`${owner}:${q.key}`} exam={exam} question={q} owner={owner} onDirty={onDirty}/></div>)}
    <div className="essay-submit-gate"><button className="button button--primary" disabled>첨삭 준비 중</button><p>지금은 답안을 작성하고 이 브라우저에서 이어 쓸 수 있습니다.</p></div>
   </>}

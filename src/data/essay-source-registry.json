@@ -152,28 +152,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:9c09906aaa7579e85ab9390c2ee1ff3434dfb53362699ce390c489bf9a0fbba3:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:9c09906aaa7579e85ab9390c2ee1ff3434dfb53362699ce390c489bf9a0fbba3:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:9c09906aaa7579e85ab9390c2ee1ff3434dfb53362699ce390c489bf9a0fbba3:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -199,14 +203,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:d0167c7b82981ad317c1ea53cf9401a94a9f576cba215928ca20291ca73299d3:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -232,14 +238,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:909252ddaa6b71ac9f4d4ae755bb6a238785f890f64a0af11c2c4ddf70b04495:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -265,28 +273,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a31bdaa7716d4150af88cd0cbd85f34745dd283f5c0b072b26f0f5c0b007f5b7:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a31bdaa7716d4150af88cd0cbd85f34745dd283f5c0b072b26f0f5c0b007f5b7:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a31bdaa7716d4150af88cd0cbd85f34745dd283f5c0b072b26f0f5c0b007f5b7:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -312,21 +324,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:164555b9170b5acfb639e266141f298e7aa0e2556782e6b9e72492e924cb2c28:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:164555b9170b5acfb639e266141f298e7aa0e2556782e6b9e72492e924cb2c28:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -352,21 +367,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:f8b1caecf4af4b728ed89fb04fea4145c763b1497da43b3dde39c4b6457db7e6:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:f8b1caecf4af4b728ed89fb04fea4145c763b1497da43b3dde39c4b6457db7e6:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -392,21 +410,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:4234be5a99057933de896945457df041128d757f646d6cecb7be6d98d9f09a67:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:4234be5a99057933de896945457df041128d757f646d6cecb7be6d98d9f09a67:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -432,21 +453,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:b5a40d1877fd4b441dd3be66c2503341e92750cee6a3fba435366e51c2a83a18:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:b5a40d1877fd4b441dd3be66c2503341e92750cee6a3fba435366e51c2a83a18:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -472,21 +496,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:4d9c4618c93132f29300e02bd3ae6361b95b5d428962f7c9fdd627e888eb901f:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:4d9c4618c93132f29300e02bd3ae6361b95b5d428962f7c9fdd627e888eb901f:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -512,21 +539,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:0fefd6a47fec3c81f75acd6401f7fe892218a2506886f4fcca8144ba518e9cd1:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:0fefd6a47fec3c81f75acd6401f7fe892218a2506886f4fcca8144ba518e9cd1:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -552,21 +582,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:bc2ebe58f5a7d98b8da2d072556b0d49963b37e433c59d3647d7f454c7d2c5c0:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:bc2ebe58f5a7d98b8da2d072556b0d49963b37e433c59d3647d7f454c7d2c5c0:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -592,28 +625,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:b5c46e40e6978f89a696e2840f3ced5557a0936917d5c6a494595ee01eec6df3:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:b5c46e40e6978f89a696e2840f3ced5557a0936917d5c6a494595ee01eec6df3:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:b5c46e40e6978f89a696e2840f3ced5557a0936917d5c6a494595ee01eec6df3:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -639,21 +676,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:d7e29c3b42ba2b2ebdab1b4cac76edc9c1634279bed577a90b9f5d171aaab339:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:d7e29c3b42ba2b2ebdab1b4cac76edc9c1634279bed577a90b9f5d171aaab339:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -679,21 +719,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:0bcdce2e9954bc60a5bd0aa7b648d6917607108a9b798de98fa99d909d9447fc:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:0bcdce2e9954bc60a5bd0aa7b648d6917607108a9b798de98fa99d909d9447fc:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -719,21 +762,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:86b9ce6144d1bb0b32a4f0c34161ccdfbd338a413ed2fd4a02cf6c8e87bdff30:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:86b9ce6144d1bb0b32a4f0c34161ccdfbd338a413ed2fd4a02cf6c8e87bdff30:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -759,28 +805,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a2f9eb4e84a635d65bf8b4bbc621d53f5e3566a5dd9a77403fa8c261aa61f7b5:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a2f9eb4e84a635d65bf8b4bbc621d53f5e3566a5dd9a77403fa8c261aa61f7b5:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a2f9eb4e84a635d65bf8b4bbc621d53f5e3566a5dd9a77403fa8c261aa61f7b5:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -806,14 +856,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a1e8df891b50667cf19cc78b5d1a35e50d1b5ec6a178413c25798963229d3f28:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -839,21 +891,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:ac04e2e914f4da6acf1aafbd417fbbe03c8c7d24d8f80fd22fa8b7bd76f68abc:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:ac04e2e914f4da6acf1aafbd417fbbe03c8c7d24d8f80fd22fa8b7bd76f68abc:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -879,21 +934,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:0b84177169810cdd2896ecdfb26e03f0414d9a9b759ab13e5096cc6b557d3f41:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:0b84177169810cdd2896ecdfb26e03f0414d9a9b759ab13e5096cc6b557d3f41:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -919,21 +977,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:a6f39221ba8f4d5c290b9ccf10260b97680944c8b4fb2fe5f55c69b7178bdf97:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:a6f39221ba8f4d5c290b9ccf10260b97680944c8b4fb2fe5f55c69b7178bdf97:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -959,21 +1020,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:8cee38f63118ad3919b63930bfd87db5e7f48d7deee0c852683fc3c74953f710:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:8cee38f63118ad3919b63930bfd87db5e7f48d7deee0c852683fc3c74953f710:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -999,21 +1063,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:ff87b8be3849ec087387287a8b68088819b274aa75821c908db10cbb32982960:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:ff87b8be3849ec087387287a8b68088819b274aa75821c908db10cbb32982960:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -1039,21 +1106,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:7b3fccadc441925527d7d66cd5fa0a71118dc763bbb4a40950c279660a5ef899:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:7b3fccadc441925527d7d66cd5fa0a71118dc763bbb4a40950c279660a5ef899:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1079,21 +1149,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:16fff908b5d5ed4ebecec73fdb4281875845319a3eede448b64f9526be4d8be0:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:16fff908b5d5ed4ebecec73fdb4281875845319a3eede448b64f9526be4d8be0:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1119,21 +1192,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:fc14077fac7d79431f35228112f53d187ca85380e25c273dbc1a1cac22d2870f:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:fc14077fac7d79431f35228112f53d187ca85380e25c273dbc1a1cac22d2870f:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -1159,21 +1235,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:d6cc24d73c08a3b210c66928ea81517a277a0c227157644cde26818ac08eba44:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:d6cc24d73c08a3b210c66928ea81517a277a0c227157644cde26818ac08eba44:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -1199,21 +1278,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:1a2ca8e7f361b6f6ca3a7cf0f4899970362db2d8813b91f51dcb3710fab27397:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:1a2ca8e7f361b6f6ca3a7cf0f4899970362db2d8813b91f51dcb3710fab27397:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1239,21 +1321,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:e08397b0e108e92d074cf53b4dddbf4d9400803b03101e19eb297b7e0ad105aa:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:e08397b0e108e92d074cf53b4dddbf4d9400803b03101e19eb297b7e0ad105aa:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1279,21 +1364,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:b9f690e08db0a352e94ed467af8555c324c804a6a71a65649e04cae7a59b802c:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:b9f690e08db0a352e94ed467af8555c324c804a6a71a65649e04cae7a59b802c:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1319,21 +1407,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:dc5b3e812a60ed1766af528ef74ab3d70c6202097785d0199a714629306bbc9f:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:dc5b3e812a60ed1766af528ef74ab3d70c6202097785d0199a714629306bbc9f:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1359,21 +1450,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:773d4e058712657cd9f1f27bf13c33990840151f4d0480274b88c562d9f3962f:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:773d4e058712657cd9f1f27bf13c33990840151f4d0480274b88c562d9f3962f:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1399,21 +1493,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:89c5e396478fb95134eaa94f4d67ebebfeaf61fdddf967c40466ed5d938cd3c3:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:89c5e396478fb95134eaa94f4d67ebebfeaf61fdddf967c40466ed5d938cd3c3:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1439,21 +1536,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:65bf33c14303f1f0839c2156f1a11bf258187dd63d39947326a3ab4e4d5604e9:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:65bf33c14303f1f0839c2156f1a11bf258187dd63d39947326a3ab4e4d5604e9:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1479,14 +1579,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:ce29682bab7a56a1941845ad6e70a80fa54955111eb47b764a58b339d95a5884:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -1512,14 +1614,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:b86727f198939bc6d8549922ee1cc0903f200e5794ba33a23b0de8ca41a744c5:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -1545,14 +1649,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:77d7e587f96f4bc44db4a3f1b60646772a627e0a85f139eb6922717cbc24ffea:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1578,14 +1684,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:76ed73ad13b3e0051207aebd3cdf5e19c1e9752a82c58794b2f122b6115c4f06:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1611,14 +1719,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:1e6729a56df27337b643d1a1c3b11dc9aa81ab6c0266c86104061ebf2a141741:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -1644,14 +1754,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:cd74505ff64db7a4194a10a4c696c344bebc32bf09e923d265beaca9f4d6a8cf:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1677,28 +1789,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:320897fc0244298eb016bc1747ff111dce1fd63c90e16cfd90962686f175f49c:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:320897fc0244298eb016bc1747ff111dce1fd63c90e16cfd90962686f175f49c:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:320897fc0244298eb016bc1747ff111dce1fd63c90e16cfd90962686f175f49c:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1724,28 +1840,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:6377fb8256baac599cd2469218924200cbaa917f5a186aae95a86b5696ca932a:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:6377fb8256baac599cd2469218924200cbaa917f5a186aae95a86b5696ca932a:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:6377fb8256baac599cd2469218924200cbaa917f5a186aae95a86b5696ca932a:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1771,28 +1891,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a354ede68029ede894ea45986fbb43c33fa18170391fa21d26a42ee8ff7ac4c3:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a354ede68029ede894ea45986fbb43c33fa18170391fa21d26a42ee8ff7ac4c3:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a354ede68029ede894ea45986fbb43c33fa18170391fa21d26a42ee8ff7ac4c3:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1818,21 +1942,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:e0ce43aace785d90a9e218d3c0a50fbf1e46e67ac49c614180e165b7f82a3f5e:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:e0ce43aace785d90a9e218d3c0a50fbf1e46e67ac49c614180e165b7f82a3f5e:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1858,42 +1985,48 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:af9a85b530794418c695da6602ede593df4da090e5aac79891791275c97a9bd2:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:af9a85b530794418c695da6602ede593df4da090e5aac79891791275c97a9bd2:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:af9a85b530794418c695da6602ede593df4da090e5aac79891791275c97a9bd2:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:af9a85b530794418c695da6602ede593df4da090e5aac79891791275c97a9bd2:5",
           "dbQuestionId": null,
           "label": "문제 5",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:af9a85b530794418c695da6602ede593df4da090e5aac79891791275c97a9bd2:6",
           "dbQuestionId": null,
           "label": "문제 6",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1919,28 +2052,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:0cb3623191bd1faf9f7579f8ea29a28f0a6bbbf154c1090b2eadbd8e49361c9d:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:0cb3623191bd1faf9f7579f8ea29a28f0a6bbbf154c1090b2eadbd8e49361c9d:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:0cb3623191bd1faf9f7579f8ea29a28f0a6bbbf154c1090b2eadbd8e49361c9d:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -1966,21 +2103,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:f4eb70a6f7e283ddbdbead3e19d5e25cf63c9d7a61e7fce8d3e4932c0a99fa97:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:f4eb70a6f7e283ddbdbead3e19d5e25cf63c9d7a61e7fce8d3e4932c0a99fa97:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2006,42 +2146,48 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:9f9db39f5148f19740abdaef93a9aa615d8a4a6278aaf95a4d2b35432e228c56:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:9f9db39f5148f19740abdaef93a9aa615d8a4a6278aaf95a4d2b35432e228c56:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:9f9db39f5148f19740abdaef93a9aa615d8a4a6278aaf95a4d2b35432e228c56:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:9f9db39f5148f19740abdaef93a9aa615d8a4a6278aaf95a4d2b35432e228c56:5",
           "dbQuestionId": null,
           "label": "문제 5",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:9f9db39f5148f19740abdaef93a9aa615d8a4a6278aaf95a4d2b35432e228c56:6",
           "dbQuestionId": null,
           "label": "문제 6",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2067,21 +2213,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:621ea7a49a94f02441ab7dc5a9eea7a4a36f1698e61825b42bdff5cf5ed7573f:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:621ea7a49a94f02441ab7dc5a9eea7a4a36f1698e61825b42bdff5cf5ed7573f:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2107,28 +2256,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:31584bf6068e47873075f7be49045a54accc1aa68859436133eaffd3f5199c85:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:31584bf6068e47873075f7be49045a54accc1aa68859436133eaffd3f5199c85:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:31584bf6068e47873075f7be49045a54accc1aa68859436133eaffd3f5199c85:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2154,28 +2307,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a21e2a9643c1ed3cce268e1caac9695626f7d0fdfaf585bc17059087e297baaa:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a21e2a9643c1ed3cce268e1caac9695626f7d0fdfaf585bc17059087e297baaa:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:a21e2a9643c1ed3cce268e1caac9695626f7d0fdfaf585bc17059087e297baaa:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2201,21 +2358,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:edbb79f4ffbab05740dadc90f54034ef9311c6cbdd49d9e4101701beee650547:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:edbb79f4ffbab05740dadc90f54034ef9311c6cbdd49d9e4101701beee650547:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2241,21 +2401,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:bbe036d855b0b22b3c8df34607d2f49564def91ec0e52feb3ad4832e8ac1f28b:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:bbe036d855b0b22b3c8df34607d2f49564def91ec0e52feb3ad4832e8ac1f28b:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2281,21 +2444,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:33eb34c14fb0c520802f8c02ce8e8ead860f3a7ae553645d9e3ea0da02cc787d:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:33eb34c14fb0c520802f8c02ce8e8ead860f3a7ae553645d9e3ea0da02cc787d:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2321,21 +2487,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:2a1ac033768719201df42ec9bbfad55f554703ffabe6da69312b838327f2f81d:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:2a1ac033768719201df42ec9bbfad55f554703ffabe6da69312b838327f2f81d:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2361,21 +2530,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:9f90960140ee0941a40ea5d0b9296f95f455c0be40a1db946818988acf03432a:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:9f90960140ee0941a40ea5d0b9296f95f455c0be40a1db946818988acf03432a:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2401,21 +2573,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:b710306342675e677f097f4d3c063c6bbf2c6ce9dac188cffd883b1f49d10a6c:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:b710306342675e677f097f4d3c063c6bbf2c6ce9dac188cffd883b1f49d10a6c:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2441,21 +2616,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:02e4339cb9b1a1c0a3e64bc771c3571567121fbdf79dc588edeb6c587fe6ed1f:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:02e4339cb9b1a1c0a3e64bc771c3571567121fbdf79dc588edeb6c587fe6ed1f:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2481,21 +2659,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:6e733bb387bd6bab7fe9c439e0933a70b3ac3aa4dd7dfda9dfd5a21b924d905f:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:6e733bb387bd6bab7fe9c439e0933a70b3ac3aa4dd7dfda9dfd5a21b924d905f:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2521,21 +2702,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:2c1bbf32f9e80b9c419007ad3124a43eaed6aaeee47742456f1e4877447f03a8:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:2c1bbf32f9e80b9c419007ad3124a43eaed6aaeee47742456f1e4877447f03a8:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2561,28 +2745,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:2055b86e558f65e30343755cc7f21ca839db86b4035b48e5cf68db60aae7ab60:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:2055b86e558f65e30343755cc7f21ca839db86b4035b48e5cf68db60aae7ab60:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:2055b86e558f65e30343755cc7f21ca839db86b4035b48e5cf68db60aae7ab60:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2608,21 +2796,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:98d05f63000d26f1c6850c15637edf3e7a8dab97558e0f79593e2f6972b5de9d:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:98d05f63000d26f1c6850c15637edf3e7a8dab97558e0f79593e2f6972b5de9d:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2648,21 +2839,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:bda146975b5f0849b4ec8dc70334f5d43d8013be02ea59458c5ee94b449bf31c:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:bda146975b5f0849b4ec8dc70334f5d43d8013be02ea59458c5ee94b449bf31c:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2688,21 +2882,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:94560c2cb47c902bcd50fb7b01b404d6c00d3c7017aa64e2b1a0916671ee8e91:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:94560c2cb47c902bcd50fb7b01b404d6c00d3c7017aa64e2b1a0916671ee8e91:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2728,21 +2925,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:5516c394a6b6efb22b0eb7c5acd77bbb096fddaaced2fd95423c77e6e33ee152:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:5516c394a6b6efb22b0eb7c5acd77bbb096fddaaced2fd95423c77e6e33ee152:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2768,14 +2968,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:54d180a6e2959247734e05e1052135680d42ed68b4d7566ab58f72eda22b775d:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2801,14 +3003,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:c94c995d23476fd7beef58f4922225ef2bc8c10b1da2fc92ee4c333885ad9a69:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2834,21 +3038,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": "PDF 1–8쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:193050877be179f174c83c44c30253ccc7c396a87f60f34bb15cc0d68e6d2f1c:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": "PDF 9–13쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:193050877be179f174c83c44c30253ccc7c396a87f60f34bb15cc0d68e6d2f1c:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": "PDF 14–18쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2874,7 +3081,8 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": "PDF 2–3쪽",
-          "lengthLabel": "1,200자"
+          "lengthLabel": "1,200자",
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2901,28 +3109,32 @@
           "dbQuestionId": null,
           "label": "문제 1-1",
           "sourceLocator": "해당 문항 PDF 2쪽",
-          "lengthLabel": "300±30자"
+          "lengthLabel": "300±30자",
+          "inputMode": "text"
         },
         {
           "key": "source:3771fdf639c94e01f4b0bdc978c08e79df64e13df9c1d836a4fefcde4cdc050c:1-2",
           "dbQuestionId": null,
           "label": "문제 1-2",
           "sourceLocator": "해당 문항 PDF 2쪽",
-          "lengthLabel": "600±60자"
+          "lengthLabel": "600±60자",
+          "inputMode": "text"
         },
         {
           "key": "source:3771fdf639c94e01f4b0bdc978c08e79df64e13df9c1d836a4fefcde4cdc050c:2-1",
           "dbQuestionId": null,
           "label": "문제 2-1",
           "sourceLocator": "해당 문항 PDF 2쪽",
-          "lengthLabel": "300±30자"
+          "lengthLabel": "300±30자",
+          "inputMode": "text"
         },
         {
           "key": "source:3771fdf639c94e01f4b0bdc978c08e79df64e13df9c1d836a4fefcde4cdc050c:2-2",
           "dbQuestionId": null,
           "label": "문제 2-2",
           "sourceLocator": "해당 문항 PDF 2쪽",
-          "lengthLabel": "600±60자"
+          "lengthLabel": "600±60자",
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -2948,28 +3160,32 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:0ae28a27b90a7a9c5eb8a0d855ae3e3494fda8b7b5cd061c1aa41fe4470402db:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:0ae28a27b90a7a9c5eb8a0d855ae3e3494fda8b7b5cd061c1aa41fe4470402db:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:0ae28a27b90a7a9c5eb8a0d855ae3e3494fda8b7b5cd061c1aa41fe4470402db:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -2995,21 +3211,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:27935245c1e353e1418b4ce018f28bef3329bdf56e1116b1416adfb9cb9020eb:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:27935245c1e353e1418b4ce018f28bef3329bdf56e1116b1416adfb9cb9020eb:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -3035,21 +3254,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:fb119b1708e9b646bdf7134283d8e03572367eca2afc893a9869495984f0bd81:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:fb119b1708e9b646bdf7134283d8e03572367eca2afc893a9869495984f0bd81:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -3075,7 +3297,8 @@
           "dbQuestionId": null,
           "label": "논술 문항",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -3101,21 +3324,24 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:ea38eb0658d2bc88c6810d372fa857a99328f822db943d89a1f289fc32285dc2:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:ea38eb0658d2bc88c6810d372fa857a99328f822db943d89a1f289fc32285dc2:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -3141,14 +3367,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         },
         {
           "key": "source:91e6738fc6fd284c53c55f6e0b46ba466b91427ddfcbf0543e31bee6d85aa372:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": null,
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
@@ -3175,14 +3403,16 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": "문제 1 자료 PDF 1쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:c7e6913eb84947386beefc4f659617957e11758f174117897f3ceda635081996:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": "문제 2 자료 PDF 1쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
@@ -3208,49 +3438,56 @@
           "dbQuestionId": null,
           "label": "문제 1",
           "sourceLocator": "공식 보고서 인쇄면 93쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:06ce30c195c160b5c8bd2bdcff13b2bc7e675fc09b12d6746f01e18985a9e05c:2",
           "dbQuestionId": null,
           "label": "문제 2",
           "sourceLocator": "공식 보고서 인쇄면 95쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:06ce30c195c160b5c8bd2bdcff13b2bc7e675fc09b12d6746f01e18985a9e05c:3",
           "dbQuestionId": null,
           "label": "문제 3",
           "sourceLocator": "공식 보고서 인쇄면 97쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:06ce30c195c160b5c8bd2bdcff13b2bc7e675fc09b12d6746f01e18985a9e05c:4",
           "dbQuestionId": null,
           "label": "문제 4",
           "sourceLocator": "공식 보고서 인쇄면 99쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:06ce30c195c160b5c8bd2bdcff13b2bc7e675fc09b12d6746f01e18985a9e05c:5",
           "dbQuestionId": null,
           "label": "문제 5",
           "sourceLocator": "공식 보고서 인쇄면 101쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:06ce30c195c160b5c8bd2bdcff13b2bc7e675fc09b12d6746f01e18985a9e05c:6",
           "dbQuestionId": null,
           "label": "문제 6",
           "sourceLocator": "공식 보고서 인쇄면 103쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         },
         {
           "key": "source:06ce30c195c160b5c8bd2bdcff13b2bc7e675fc09b12d6746f01e18985a9e05c:7",
           "dbQuestionId": null,
           "label": "문제 7",
           "sourceLocator": "공식 보고서 인쇄면 106쪽",
-          "lengthLabel": null
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false
