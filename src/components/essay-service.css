@@ -178,3 +178,9 @@
 .university-discovery--essay-first .discovery-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
 @media (max-width:59.99em) { .university-discovery--essay-first .discovery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (max-width:39.99em) { .university-discovery--essay-first .discovery-grid { grid-template-columns:minmax(0,1fr); } }
+
+/* SKKU official asset: 518x97 canvas, visible alpha bounds x171..365/y25..71.
+   Present its original wordmark at the shared width without altering the asset. */
+.university-logo-frame { display:block; position:relative; width:112px; height:56px; overflow:hidden; flex-shrink:0; }
+.university-logo-frame .university-logo--padded { position:absolute; width:calc(100% * 518 / 195); max-width:none; height:auto; left:calc(-100% * 171 / 195); top:50%; transform:translateY(-50%); }
+@media (max-width:39.99em) { .university-logo-frame {width:104px;height:48px;} }

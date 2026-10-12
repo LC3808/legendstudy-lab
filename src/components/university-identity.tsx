@@ -2,7 +2,8 @@ import Image from 'next/image';
 import logos from '@/data/university-logos.json';
 import type {CatalogUniversity,Offering} from '@/lib/essay-runtime/public-discovery';
 export function UniversityLogo({university:u}:{university:CatalogUniversity}){
- const asset=(logos as Record<string,{src:string;darkSurface?:boolean}>)[u.sourceUniversityId];
+ const asset=(logos as Record<string,{src:string;darkSurface?:boolean;paddedWordmark?:boolean}>)[u.sourceUniversityId];
+ if(asset?.paddedWordmark)return <span className="university-logo-frame"><Image className="university-logo university-logo--padded" src={asset.src} alt={`${u.name} 로고`} width={518} height={97} unoptimized/></span>;
  return asset?<Image className="university-logo" data-dark-surface={asset.darkSurface||undefined} src={asset.src} alt={`${u.name} 로고`} width={112} height={56} unoptimized/>:<span className="university-monogram" aria-label={`${u.name} 로고 준비 중`}>{u.name.slice(0,1)}</span>;
 }
 export function regionLabels(offerings:Offering[]){

@@ -108,6 +108,7 @@
   },
   "skku": {
     "src": "/university-logos/skku.png",
+    "paddedWordmark": true,
     "sourcePage": "https://www.skku.edu/skku/index.do",
     "sourceAsset": "https://www.skku.edu/_res/skku//img/common/logo_o.png",
     "verifiedAt": "2026-10-11",
