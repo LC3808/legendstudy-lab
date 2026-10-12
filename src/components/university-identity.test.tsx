@@ -17,10 +17,11 @@ it('renders a sourced original logo and keeps missing assets explicitly marked',
  const missing={...catalogUniversity('gachon')!,sourceUniversityId:'not-in-manifest'};
  render(<UniversityLogo university={missing}/>);expect(screen.getByLabelText('가천대학교 로고 준비 중')).toBeVisible();
 });
-it('records official-source provenance for each logo without changing university identities',()=>{
+it('records official or Owner-supplied provenance for each logo without changing university identities',()=>{
  for(const [id,a] of Object.entries(assets)){
   expect(publicCatalog.universities.some(u=>u.sourceUniversityId===id)).toBe(true);
-  expect(new URL(a.sourcePage).hostname).toMatch(/\.(ac\.kr|edu)$/);
+  if('sourcePage' in a)expect(new URL(a.sourcePage).hostname).toMatch(/\.(ac\.kr|edu)$/);
+  else {expect(a.sourceKind).toBe('owner-supplied');expect(a.sourceFilename).toBe('sogang.jpeg');}
   expect(a.sha256).toMatch(/^[a-f0-9]{64}$/);expect(a.src).toMatch(/^\/university-logos\//);
  }
 });

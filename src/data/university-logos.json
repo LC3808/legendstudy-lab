@@ -295,5 +295,12 @@
     "verifiedAt": "2026-10-11",
     "sha256": "0651b4c1d7390872cdf3a3412133154eea10d8336ef9e754791d9dfe52d1949c",
     "darkSurface": true
+  },
+  "sogang": {
+    "src": "/university-logos/sogang.jpeg",
+    "sourceKind": "owner-supplied",
+    "sourceFilename": "sogang.jpeg",
+    "receivedAt": "2026-10-12",
+    "sha256": "cb14e27355808e3fa6bc471409d77cca0f22dbec1bbda2f8b31ae17ce11cc7be"
   }
 }
