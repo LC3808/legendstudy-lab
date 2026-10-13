@@ -24,7 +24,8 @@ export type AdminNavKey =
   | "payment"
   | "inquiries"
   | "essay"
-  | "quality";
+  | "quality"
+  | "materials";
 
 type NavEntry = { key: AdminNavKey; label: string; href: string | null };
 
@@ -43,6 +44,7 @@ export const ADMIN_NAV: readonly NavEntry[] = [
   // own authorization (quality_operators) is what guards it; this link grants
   // nothing and the two roles are deliberately not merged.
   { key: "quality", label: "AI 품질", href: "/ql/" },
+  { key: "materials", label: "논술 자료 검수", href: "/admin/materials/" },
 ] as const;
 
 export function useAdminClient(): AdminClient | null {
