@@ -58,3 +58,7 @@
 .material-list-heading progress{height:8px;border:0;border-radius:8px;overflow:hidden}
 .material-list-heading progress::-webkit-progress-bar{background:#e5e9ef}
 .material-list-heading progress::-webkit-progress-value{background:#174a85}
+.material-source-controls{border:1px solid #d7dce3;border-radius:10px;padding:14px;margin:18px 0;background:#f8fafc}
+.material-source-controls>summary{cursor:pointer;min-height:32px;font-weight:600}
+.material-review-split{align-items:start}
+@media(min-width:900px){.material-review-split>section{position:sticky;top:20px}}
