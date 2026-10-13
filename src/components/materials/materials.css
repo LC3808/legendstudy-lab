@@ -50,3 +50,11 @@
 .material-empty{padding:32px 16px;background:white;border:1px solid #d7dce3;border-radius:10px}
 .material-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 @media(max-width:899px){.material-exam-table{display:none}.material-exam-mobile{display:block;border:1px solid #d7dce3;border-radius:10px;background:white}.material-exam-mobile li{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px;border-bottom:1px solid #e5e9ef}.material-exam-mobile li:last-child{border-bottom:0}.material-exam-mobile li>div{flex:1 1 160px;min-width:0}.material-exam-mobile p{margin:4px 0}.material-toolbar label{flex:1 1 140px}.material-toolbar .material-search{flex-basis:100%}}
+.material-exam-header{border-bottom:1px solid #d7dce3;padding-bottom:20px;margin-top:20px}
+.material-evidence-editor+.material-evidence-editor{border-top:1px solid #d7dce3;margin-top:24px;padding-top:20px}
+.materials-console .material-document-editor{min-height:420px;width:100%;font-size:1rem;line-height:1.9;resize:vertical;padding:18px;background:#fffefb}
+.material-source-label{font-size:.85rem;color:#526176;margin:8px 0 16px}
+.material-save-bar{position:sticky;bottom:0;background:#f7f8fa;border-top:1px solid #d7dce3;padding:12px;z-index:2}
+.material-list-heading progress{height:8px;border:0;border-radius:8px;overflow:hidden}
+.material-list-heading progress::-webkit-progress-bar{background:#e5e9ef}
+.material-list-heading progress::-webkit-progress-value{background:#174a85}

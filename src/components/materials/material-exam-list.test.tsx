@@ -23,7 +23,7 @@ describe('university review workflow',()=>{
   fireEvent.click(screen.getByRole('button',{name:'필터 초기화'}));expect(within(table).getAllByRole('row')).toHaveLength(3);
  });
  it('returns to the reviewed university and updates counts from successful server save; preserves filters',async()=>{
-  const detail:Detail={examId:'old',questions:[],documents:[],history:[],review:{revision:0,state:'IN_REVIEW',approvalRequested:false,body:{documents:[],mappings:[],checks:Object.fromEntries(Object.keys(checks).map(k=>[k,true]))}}};
+  const detail:Detail={examId:'old',questions:[],documents:[],history:[],review:{revision:0,state:'IN_REVIEW',approvalRequested:false,body:{documents:[],mappings:[{questionId:"q",sourceHash:"a".repeat(64),role:"question",startPage:1,endPage:1,verification:"VERIFIED"}],checks:Object.fromEntries(Object.keys(checks).map(k=>[k,true]))}}};
   const saved:Detail={...detail,review:{...detail.review,revision:1,state:'VERIFIED'}};
   const client={allowed:async()=>true,list:async()=>rows,documents:async()=>[],detail:async()=>detail,save:vi.fn(async()=>saved)} as unknown as ReturnType<typeof materialsClient>;
   render(<AuthorizedConsole client={client} owner="test"/>);

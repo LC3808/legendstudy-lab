@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import {render,screen,fireEvent,waitFor,cleanup} from '@testing-library/react';
 import {afterEach,it,expect,vi} from 'vitest';
-import {ReviewEditor} from './materials-console';
+import {ReviewEditor} from './review-editor';
 import type {Detail} from '@/lib/materials/contract';
 import type {materialsClient} from '@/lib/materials/client';
 afterEach(cleanup);
