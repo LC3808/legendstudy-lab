@@ -1,0 +1,30 @@
+.materials-console {max-width:1440px;margin:auto;padding:clamp(16px,3vw,40px);color:#17283f;overflow-wrap:anywhere}
+.material-toolbar {display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-block:16px}
+.materials-console button,.material-pdf button {min-height:44px;padding:8px 14px;border:1px solid #d7dce3;border-radius:8px;background:white;color:#17283f;cursor:pointer}
+.materials-console button:disabled,.material-pdf button:disabled {opacity:.5;cursor:default}
+.materials-console input,.materials-console select,.materials-console textarea {max-width:100%;padding:8px;border:1px solid #d7dce3;border-radius:6px;min-height:44px}
+.materials-console label {display:grid;gap:6px;min-width:0}
+.material-exams {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}
+.material-exams button {display:grid;gap:10px;text-align:left;background:white;box-shadow:0 4px 14px #0f233c0f}
+.material-review-split {display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+.material-review-split>* {min-width:0}
+.material-mapping {border-bottom:1px solid #ddd;padding:16px 0;display:flex;gap:8px;flex-wrap:wrap}
+.materials-console fieldset {min-width:0;border:1px solid #d7dce3;padding:16px;margin:12px 0}
+.materials-console .material-check {display:flex;align-items:center;gap:10px;min-height:44px}
+.material-pdf-scroll {overflow:auto;max-height:70vh;min-height:250px;background:#edf0f4;overscroll-behavior:contain}
+.material-pdf canvas {display:block;margin:8px auto}
+.material-pdf input {width:4.5em;min-height:44px}
+.materials-console textarea {min-height:120px;width:100%}
+.materials-console :focus-visible,.material-pdf :focus-visible {outline:3px solid #42658c;outline-offset:3px}
+@media(min-width:900px){.material-review-split{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.materials-console h1{font-size:1.8rem;font-weight:750;margin:16px 0 24px}
+.materials-console h2{font-size:1.35rem;font-weight:700;margin:20px 0 12px}
+.materials-console h3{font-size:1.1rem;font-weight:650;margin:20px 0 12px}
+.materials-console fieldset{background:white;border-radius:12px}
+.materials-console input[type=checkbox]{width:20px;height:20px;min-height:20px;flex-shrink:0}
+.materials-console .material-mapping label:has(input[type=checkbox]){display:flex;align-items:center}
+
+.materials-console input,.materials-console select,.materials-console textarea{box-sizing:border-box;min-width:0;width:auto}
+.materials-console input[type=file]{width:100%}
+.materials-console textarea{width:100%}
+.material-toolbar>*{max-width:100%;min-width:0}

@@ -57,3 +57,6 @@ __pycache__/
 
 # Private research preview (never part of export or Git)
 .local/
+/public/pdf.worker.min.mjs
+
+/public/pdf.min.mjs

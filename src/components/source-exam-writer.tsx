@@ -1,5 +1,7 @@
 'use client';
-import {useEffect,useState,useRef} from 'react';
+import {useEffect,useState,useRef,type CSSProperties} from 'react';
+import {StudentQuestionPdf} from './materials/student-pdf';
+import {studentPdf} from '@/lib/materials/student-asset';
 import {useAuth} from './auth-context';
 import {EssayRuntimeClient} from '@/lib/essay-runtime/client';
 import {essaySupabaseTransport} from '@/lib/essay-runtime/supabase-transport';
@@ -11,6 +13,8 @@ import type {SourceExam,SourceQuestion} from '@/lib/essay-runtime/source-registr
 /** Source-keyed draft until canonical question registration; never passed to a billing RPC. */
 export function SourceExamWriter({exam,question,owner,onDirty}:{exam:SourceExam;question:SourceQuestion;owner:string;onDirty:(key:string,value:boolean)=>void}){
  const auth=useAuth();
+ const asset=studentPdf(question.studentPdf,question.dbQuestionId??'');
+ const [split,setSplit]=useState(42);
  const sync=useRef<SourceDraftSync|null>(null);
  const [syncNotice,setSyncNotice]=useState(''),[serverBody,setServerBody]=useState<string|null>(null),[syncBusy,setSyncBusy]=useState(false),[optionalImage,setOptionalImage]=useState(false);
  const [photo,setPhoto]=useState<File[]>([]),[photoBusy,setPhotoBusy]=useState(false),[imageReady,setImageReady]=useState(false),[photoNotice,setPhotoNotice]=useState(''),[photoDirty,setPhotoDirty]=useState(false);
@@ -44,7 +48,7 @@ export function SourceExamWriter({exam,question,owner,onDirty}:{exam:SourceExam;
  useEffect(()=>{const before=(event:BeforeUnloadEvent)=>{if(body!==stored||photoDirty){event.preventDefault();event.returnValue='';}};window.addEventListener('beforeunload',before);return()=>window.removeEventListener('beforeunload',before);},[body,stored,photoDirty]);
  return <section className="essay-service essay-inline-draft" aria-label={`${question.label} 답안 작성`}>
   <div className="essay-writing-tabs" role="tablist" aria-label="문제와 답안"><button role="tab" aria-selected={panel==='question'} onClick={()=>setPanel('question')}>문제 보기</button><button role="tab" aria-selected={panel==='answer'} onClick={()=>setPanel('answer')}>답안 작성</button></div>
-  <div className="essay-writing-grid" data-panel={panel}><aside className="essay-reading-pane"><h3>{question.label}</h3><p>{exam.year}학년도 · {exam.kind==='mock'?'모의논술':'수시 논술'} · {exam.track}{exam.session?` · ${exam.session}`:''}</p><p>상단 공식 자료 링크에서 문제와 제시문을 확인하세요.</p>{question.sourceLocator&&<p>{question.sourceLocator}</p>}{question.lengthLabel&&<p>답안 분량: {question.lengthLabel}</p>}</aside>
+  <label className="essay-split-control">문제 영역 너비 <input type="range" min="30" max="65" value={split} onChange={e=>setSplit(Number(e.target.value))}/></label><div className="essay-writing-grid" data-panel={panel} style={{'--essay-split':`${split}fr`,'--essay-answer':`${100-split}fr`} as CSSProperties}><aside className="essay-reading-pane"><h3>{question.label}</h3><p>{exam.year}학년도 · {exam.kind==='mock'?'모의논술':'수시 논술'} · {exam.track}{exam.session?` · ${exam.session}`:''}</p>{asset?<StudentQuestionPdf asset={asset} owner={owner}/>:<p>상단 공식 자료 링크에서 문제와 제시문을 확인하세요.</p>}{question.sourceLocator&&<p>{question.sourceLocator}</p>}{question.lengthLabel&&<p>답안 분량: {question.lengthLabel}</p>}</aside>
    <div className="essay-answer-pane">{(question.inputMode==='image'||optionalImage||photo.length>0)&&<><AnswerImagesInput files={photo} onChange={f=>void changePhoto(f)} disabled={!ready||!imageReady||photoBusy}/><p role="status">{photoNotice}</p>{photoDirty&&!photoBusy&&<button className="button button--outline" onClick={()=>void changePhoto(photo)}>사진 저장 다시 시도</button>}</>}{question.inputMode!=='image'&&!optionalImage&&photo.length===0&&<button className="button button--outline" onClick={()=>setOptionalImage(true)}>수식·도표 이미지 첨부</button>}<label htmlFor={`answer-${question.key}`}>{question.inputMode==='image'?'추가 설명 (선택)':`${question.label} 답안`}</label><textarea id={`answer-${question.key}`} value={body} disabled={!ready||syncBusy} onChange={e=>edit(e.target.value)} maxLength={30000} rows={question.inputMode==='image'?4:14}/><p>{Array.from(body).length.toLocaleString('ko-KR')}자 · 공백 포함 참고 수치</p><p role="status">{notice}</p>{question.dbQuestionId&&question.accountDraftReady!==false&&owner!=='guest'&&<button className="button button--outline" disabled={!ready||syncBusy} onClick={()=>void syncDraft()}>계정 답안 확인·저장</button>}<p role="status">{syncNotice}</p>{serverBody!==null&&<details><summary>계정에 저장된 답안</summary><p style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>{serverBody}</p></details>}</div>
   </div>
  </section>;
