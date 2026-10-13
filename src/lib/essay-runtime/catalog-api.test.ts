@@ -26,7 +26,9 @@ it('never requests another Supabase project',async()=>{
 
 import {onRequestPost} from '../../../functions/api/essay/catalog';
 const subject='00000000-0000-4000-8000-000000000001';
-const privateEnv={MATH_SUPABASE_URL:legendStudySupabaseUrl,MATH_PROJECT_REF:'stlhijzpjfgwwdgunlsd',MATH_SUPABASE_PUBLISHABLE_KEY:'sb_publishable_test',MATH_ALLOWED_SUBJECTS:subject,MATH_ORIGIN:'https://lab.legendstudy.com',ESSAY_REGISTRY_WORKER_JWT:'private-worker-fixture'};
+// Deliberately invalid signature: transport is mocked; never an operational token.
+const workerFixture=[btoa(JSON.stringify({alg:'ES256'})).replace(/=/g,''),btoa(JSON.stringify({role:'essay_worker',exp:Math.floor(Date.now()/1000)+3600})).replace(/=/g,''),'fixture'].join('.');
+const privateEnv={MATH_SUPABASE_URL:legendStudySupabaseUrl,MATH_PROJECT_REF:'stlhijzpjfgwwdgunlsd',MATH_SUPABASE_PUBLISHABLE_KEY:'sb_publishable_test',MATH_ALLOWED_SUBJECTS:subject,MATH_ORIGIN:'https://lab.legendstudy.com',ESSAY_REGISTRY_WORKER_JWT:workerFixture};
 it('private registry authenticates the existing allowlist and never enables drafting or evaluation',async()=>{
  const exam=source.exams[0];
  const row={id:subject,essay_exam_id:subject,question_key:exam.questions[0].key,metadata_version:'source-registration-v1',is_published:false,essay_exams:{university_id:exam.universityId,admission_year:exam.year,exam_kind:exam.kind}};
@@ -35,9 +37,9 @@ it('private registry authenticates the existing allowlist and never enables draf
  expect(r.status).toBe(200);expect(r.headers.get('cache-control')).toContain('no-store');
  const data=await r.json();expect(data.exams[0].questions[0]).toMatchObject({dbQuestionId:subject,accountDraftReady:false});expect(data.exams[0].evaluationReady).toBe(false);
  expect(request.mock.calls[0][1].headers.Authorization).toBe('Bearer student');
- expect(request.mock.calls[1][1].headers.Authorization).toBe('Bearer private-worker-fixture');
+ expect(request.mock.calls[1][1].headers.Authorization).toBe(`Bearer ${workerFixture}`);
  expect(JSON.parse(request.mock.calls[1][1].body)).toEqual({p_subject:subject});
- expect(JSON.stringify(data)).not.toContain('private-worker-fixture');
+ expect(JSON.stringify(data)).not.toContain(workerFixture);
 });
 it('denies foreign origins, missing auth/configuration and unallowlisted subjects before RPC',async()=>{
  const request=vi.fn().mockResolvedValue(Response.json({id:'00000000-0000-4000-8000-000000000002'}));vi.stubGlobal('fetch',request);

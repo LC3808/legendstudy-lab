@@ -1,4 +1,5 @@
 import registry from '../../../src/data/essay-source-registry.json';
+import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {publicCatalog as catalog} from '../../../src/lib/essay-runtime/public-discovery';
 import {officialUrl} from '../../../src/lib/essay-runtime/catalog';
 import {connectPublishedQuestions} from '../../../src/lib/essay-runtime/canonical-catalog';
@@ -27,7 +28,8 @@ export async function onRequestGet(context?:{env:MathEnvironment}){
 export async function onRequestPost({request,env}:{request:Request;env:MathEnvironment&{ESSAY_REGISTRY_WORKER_JWT?:string}}){
  const headers={'Cache-Control':'private, no-store','Vary':'Authorization, Origin','X-Content-Type-Options':'nosniff'};
  const unavailable=()=>Response.json({code:'REGISTRY_UNAVAILABLE'},{status:503,headers});
- if(!env.ESSAY_REGISTRY_WORKER_JWT||env.MATH_SUPABASE_URL!==legendStudySupabaseUrl)return unavailable();
+ const workerCredential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);
+ if(!workerCredential||env.MATH_SUPABASE_URL!==legendStudySupabaseUrl)return unavailable();
  const origin=request.headers.get('origin');
  if(origin&&origin!==env.MATH_ORIGIN)return Response.json({code:'ACCESS_DENIED'},{status:403,headers});
  const token=request.headers.get('authorization')?.match(/^Bearer ([^\s]+)$/)?.[1];
@@ -35,7 +37,7 @@ export async function onRequestPost({request,env}:{request:Request;env:MathEnvir
  try{
   const transport=serverTransport(env);
   const subject=await transport.subject(token);
-  const rows=await transport.rpcRaw('essay_registered_questions',{p_subject:subject},env.ESSAY_REGISTRY_WORKER_JWT);
+  const rows=await transport.rpcRaw('essay_registered_questions',{p_subject:subject},workerCredential);
   const exams=connectPublishedQuestions(registry.exams as SourceExam[],rows,true);
   const response=await onRequestGet();const base=await response.json() as Record<string,unknown>;
   return Response.json({...base,exams},{headers});
