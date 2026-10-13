@@ -28,3 +28,25 @@
 .materials-console input[type=file]{width:100%}
 .materials-console textarea{width:100%}
 .material-toolbar>*{max-width:100%;min-width:0}
+.material-university-tabs{display:flex;overflow-x:auto;gap:0;border:1px solid #d7dce3;border-radius:10px;background:white;margin-block:24px;max-width:100%;padding:3px;scroll-padding:6px}
+.material-university-tabs button{flex:0 0 auto;display:grid;gap:5px;border:0;border-radius:6px;min-width:100px;padding:12px 16px}
+.material-university-tabs button[aria-pressed=true]{background:#eaf1fb;color:#174a85;box-shadow:inset 0 -3px #174a85}
+.material-university-tabs span{font-size:.875rem}
+.material-list-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.material-list-heading h2{margin:0 0 8px}
+.material-list-heading progress{max-width:100%;width:180px;accent-color:#174a85}
+.material-search{flex:1 1 220px}
+.material-list-count{margin:16px 0;font-size:.875rem;color:#526176}
+.material-exam-table{width:100%;border-collapse:separate;border-spacing:0;background:white;border:1px solid #d7dce3;border-radius:10px;overflow:hidden;text-align:left;font-size:.9rem}
+.material-exam-table th,.material-exam-table td{padding:12px;border-bottom:1px solid #e5e9ef;vertical-align:middle}
+.material-exam-table thead{background:#f3f5f8}
+.material-exam-table tbody tr:last-child>*{border-bottom:0}
+.material-exam-table tbody tr:hover{background:#f8fafc}
+.material-exam-table small,.material-exam-mobile small{display:block;margin-top:4px}
+.materials-console .material-review-action{background:#17283f;color:white;border-color:#17283f;white-space:nowrap}
+.material-state{display:inline-block;background:#edf0f4;color:#465369;border-radius:5px;padding:4px 8px;font-size:.85rem}
+.material-state.is-complete{background:#e4f3ea;color:#21613c}
+.material-exam-mobile{display:none;list-style:none;padding:0;margin:0}
+.material-empty{padding:32px 16px;background:white;border:1px solid #d7dce3;border-radius:10px}
+.material-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:899px){.material-exam-table{display:none}.material-exam-mobile{display:block;border:1px solid #d7dce3;border-radius:10px;background:white}.material-exam-mobile li{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px;border-bottom:1px solid #e5e9ef}.material-exam-mobile li:last-child{border-bottom:0}.material-exam-mobile li>div{flex:1 1 160px;min-width:0}.material-exam-mobile p{margin:4px 0}.material-toolbar label{flex:1 1 140px}.material-toolbar .material-search{flex-basis:100%}}
