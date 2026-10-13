@@ -1,5 +1,5 @@
 import {it,expect,vi,beforeEach} from 'vitest';
-import {onRequestPost} from '../../../../functions/api/materials/analyze';
+import {onRequestPost} from '../../../functions/api/materials/analyze';
 const mocks=vi.hoisted(()=>({rpc:vi.fn(),provider:vi.fn()}));
 vi.mock('@/lib/math-release/server/transport',()=>({serverTransport:()=>({rpcRaw:mocks.rpc})}));
 vi.mock('@/lib/math-release/server/provider',()=>({candidateJson:mocks.provider}));
