@@ -62,3 +62,5 @@
 .material-source-controls>summary{cursor:pointer;min-height:32px;font-weight:600}
 .material-review-split{align-items:start}
 @media(min-width:900px){.material-review-split>section{position:sticky;top:20px}}
+
+.student-pdf-overlay{position:fixed;inset:0;z-index:1000;background:white;overflow:auto}.student-pdf-window{padding:16px;min-width:0;background:white;min-height:100dvh}.student-pdf-window>header{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;z-index:1;padding:8px 0}.student-pdf-window>header button{min-height:44px;min-width:64px}.student-pdf-window .material-pdf-scroll{max-height:none}
