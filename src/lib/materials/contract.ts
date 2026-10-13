@@ -11,3 +11,8 @@ export function classifyPages(pages:string[],hash:string):Mapping[]{
  const markers:Partial<Record<keyof typeof roles,RegExp>>={question:/(문제|문항|논제)\s*\d|제시문/,intent:/출제\s*의도/,explanation:/해설|풀이/,criteria:/평가\s*(기준|요소)/,scoring:/채점\s*기준|배점/,model_answer:/(예시|우수|모범)\s*답안/};
  return pages.flatMap((text,i)=>Object.entries(markers).filter(([,re])=>re.test(text)).map(([role])=>({questionId:'',sourceHash:hash,role:role as keyof typeof roles,startPage:i+1,endPage:i+1,evidenceText:text.slice(0,4000),verification:'NEEDS_REVIEW' as const})));
 }
+
+/** Review can be saved incomplete; package creation needs a real question body. */
+export function packageContentIssues(body:ReviewBody,questions:Detail['questions']):string[]{
+ return questions.filter(q=>!body.mappings.some(m=>m.questionId===q.id&&m.role==='question'&&m.evidenceText?.trim())).map(q=>`${q.label}: 문제 본문 연결이 비어 있습니다.`);
+}
