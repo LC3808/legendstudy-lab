@@ -24,7 +24,7 @@ export function StudentQuestionPdf({asset,owner}:{asset:StudentPdf;owner:string}
   const root=w.document.createElement('main');w.document.body.appendChild(root);setTarget(root);w.focus();
  }
 
- const load=useCallback(async()=>{if(!auth.client||auth.user?.id!==owner)throw Error('LOGIN_REQUIRED');const {data,error}=await auth.client.storage.from('essay-student-questions').download(asset.assetId+'.pdf');if(error||!data)throw Error('PDF_UNAVAILABLE');const bytes=new Uint8Array(await data.arrayBuffer());if(await hashPdf(bytes)!==asset.sha256)throw Error('ASSET_CHANGED');return bytes;},[auth.client,auth.user?.id,asset,owner]);
+ const load=useCallback(async()=>{if(!auth.client||auth.user?.id!==owner)throw Error('LOGIN_REQUIRED');const {data,error}=await auth.client.storage.from(asset.bucket??'essay-student-questions').download(asset.assetId+'.pdf');if(error||!data)throw Error('PDF_UNAVAILABLE');const bytes=new Uint8Array(await data.arrayBuffer());if(await hashPdf(bytes)!==asset.sha256)throw Error('ASSET_CHANGED');return bytes;},[auth.client,auth.user?.id,asset,owner]);
  const viewer=<section className="student-pdf-window" role="dialog" aria-modal="true" aria-label="문제 보기" onKeyDown={e=>{if(e.key==='Escape')close();}}><header><strong>문제 보기</strong><button autoFocus onClick={close}>닫기</button></header><MaterialPdfViewer load={load} positionKey={`essay-pdf:${owner}:${asset.assetId}:${asset.sha256}`} jumpPage={asset.startPage}/></section>;
  return <><button ref={trigger} className="button button--outline" onClick={open}>문제 보기 ↗</button>{target&&createPortal(viewer,target)}{mobile&&createPortal(<div className="student-pdf-overlay">{viewer}</div>,document.body)}</>;
 }

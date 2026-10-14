@@ -3062,7 +3062,7 @@
     },
     {
       "key": "source:f894ce8fb5c04b1e165a7f9cfe474e9d5376df185999bbccdad99015130550ce",
-      "dbExamId": null,
+      "dbExamId": "345d3caa-3438-58c3-8f80-62a6242179ec",
       "universityId": "1090e1be-174e-5042-abd3-ca929c6e26f8",
       "sourceUniversityId": "hanyang",
       "year": 2024,
@@ -3078,11 +3078,23 @@
       "questions": [
         {
           "key": "source:f894ce8fb5c04b1e165a7f9cfe474e9d5376df185999bbccdad99015130550ce:1",
-          "dbQuestionId": null,
+          "dbQuestionId": "4cbe8b69-2ccc-5c4e-9e77-0644f90e2cde",
           "label": "문제 1",
           "sourceLocator": "PDF 2–3쪽",
           "lengthLabel": "1,200자",
-          "inputMode": "text"
+          "inputMode": "text",
+          "accountDraftReady": false,
+          "studentPdf": {
+            "kind": "student_question",
+            "questionId": "4cbe8b69-2ccc-5c4e-9e77-0644f90e2cde",
+            "bucket": "essay-material-originals",
+            "assetId": "4f3b87f2197a042c8abdd361584e3e03ab4bd4d15bc5341273dee27b7b6fc73b",
+            "sha256": "4f3b87f2197a042c8abdd361584e3e03ab4bd4d15bc5341273dee27b7b6fc73b",
+            "pageCount": 3,
+            "startPage": 2,
+            "verification": "VERIFIED",
+            "studentDisplay": "APPROVED"
+          }
         }
       ],
       "evaluationReady": false
