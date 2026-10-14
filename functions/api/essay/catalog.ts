@@ -40,6 +40,6 @@ export async function onRequestPost({request,env}:{request:Request;env:MathEnvir
   const rows=await transport.rpcRaw('essay_registered_questions',{p_subject:subject},workerCredential);
   const exams=connectPublishedQuestions(registry.exams as SourceExam[],rows,true);
   const response=await onRequestGet();const base=await response.json() as Record<string,unknown>;
-  return Response.json({...base,exams},{headers});
+  return Response.json({...base,exams,registration:{registeredQuestions:Array.isArray(rows)?rows.length:0}},{headers});
  }catch{return unavailable();}
 }

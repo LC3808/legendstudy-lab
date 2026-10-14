@@ -18,10 +18,11 @@ export function SourceExamSelection({sourceId}:{sourceId:string}){
    if(!active)return;
    if(session&&session.user.id===auth.user?.id){
     response=await fetch('/api/essay/catalog',{method:'POST',headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store'});
-    if(!response.ok)response=await fetch('/api/essay/catalog');
+    if(!response.ok){console.info('Essay registry HTTP',response.status);response=await fetch('/api/essay/catalog');}
    }else response=await fetch('/api/essay/catalog');
    if(!response.ok)return;
    const data=await response.json();
+   if(Number.isInteger(data.registration?.registeredQuestions))console.info('Essay registry HTTP verified',response.status,'registered questions',data.registration.registeredQuestions);
    if(active&&data.version==='essay-source-registry-v1'&&Array.isArray(data.exams))setRows(data.exams.filter((e:SourceExam)=>e.sourceUniversityId===sourceId&&e.verification==='VERIFIED'));
   })().catch(()=>{});
   return()=>{active=false;};

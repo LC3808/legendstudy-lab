@@ -35,7 +35,7 @@ it('private registry authenticates the existing allowlist and never enables draf
  const request=vi.fn().mockResolvedValueOnce(Response.json({id:subject})).mockResolvedValueOnce(Response.json([row]));vi.stubGlobal('fetch',request);
  const r=await onRequestPost({request:new Request('https://lab.legendstudy.com/api/essay/catalog',{method:'POST',headers:{Authorization:'Bearer student'}}),env:privateEnv});
  expect(r.status).toBe(200);expect(r.headers.get('cache-control')).toContain('no-store');
- const data=await r.json();expect(data.exams[0].questions[0]).toMatchObject({dbQuestionId:subject,accountDraftReady:false});expect(data.exams[0].evaluationReady).toBe(false);
+ const data=await r.json();expect(data.registration).toEqual({registeredQuestions:1});expect(data.exams[0].questions[0]).toMatchObject({dbQuestionId:subject,accountDraftReady:false});expect(data.exams[0].evaluationReady).toBe(false);
  expect(request.mock.calls[0][1].headers.Authorization).toBe('Bearer student');
  expect(request.mock.calls[1][1].headers.Authorization).toBe(`Bearer ${workerFixture}`);
  expect(JSON.parse(request.mock.calls[1][1].body)).toEqual({p_subject:subject});
