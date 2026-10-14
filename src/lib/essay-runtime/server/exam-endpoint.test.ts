@@ -30,3 +30,18 @@ it('E2E scope pins server idempotency to the single approved submission',async()
  expect((await send(body,{ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:key})})).status).toBe(202);
  expect(JSON.parse(m.request.mock.calls[0][2].body).p_key).toBe(key);
 });
+
+it('rewrite E2E scope admits only its pinned parent and request, preserving readiness',async()=>{
+ const parent='33333333-3333-4333-8333-333333333333';
+ const key='22222222-2222-4222-8222-222222222222';
+ const extra={ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:key,parentId:parent})};
+ expect((await send({action:'availability',examId:id},extra)).status).toBe(200);
+ for(const parentId of [undefined,id])expect((await send({...body,parentId},extra)).status).toBe(403);
+ expect(m.request).not.toHaveBeenCalled();
+ expect((await send({...body,parentId:parent},extra)).status).toBe(202);
+ expect(JSON.parse(m.request.mock.calls[0][2].body)).toMatchObject({p_key:key,p_parent:parent});
+});
+it('malformed parent scope fails closed before reservation',async()=>{
+ expect((await send(body,{ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:id,parentId:'invalid'})})).status).toBe(403);
+ expect(m.request).not.toHaveBeenCalled();
+});

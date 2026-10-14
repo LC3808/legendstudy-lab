@@ -16,8 +16,8 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const transport=serverTransport(env),subject=await transport.subject(token);
   const input=JSON.parse(new TextDecoder().decode(await boundedBody(request,1048576))) as Record<string,unknown>;
   // Optional server-only single-submission scope for explicitly approved operating E2E.
-  const scope=env.ESSAY_E2E_SCOPE?JSON.parse(env.ESSAY_E2E_SCOPE) as {subject:string;exam:string;requestKey:string}:null;
-  if(scope&&(!uuid(scope.subject)||!uuid(scope.exam)||!uuid(scope.requestKey)||subject!==scope.subject||input.examId!==scope.exam||input.parentId!=null))return reply({code:'ACCESS_DENIED'},403);
+  const scope=env.ESSAY_E2E_SCOPE?JSON.parse(env.ESSAY_E2E_SCOPE) as {subject:string;exam:string;requestKey:string;parentId?:string}:null;
+  if(scope&&(!uuid(scope.subject)||!uuid(scope.exam)||!uuid(scope.requestKey)||subject!==scope.subject||input.examId!==scope.exam||(scope.parentId!==undefined&&!uuid(scope.parentId))||(input.action==='submit'&&(input.parentId??null)!==(scope.parentId??null))))return reply({code:'ACCESS_DENIED'},403);
   const worker=reviewedWorkerBinding(env),credential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);
   if(!worker||!credential)return reply({code:'WORKER_UNAVAILABLE'},503);
   const dispatch=async(path:string,payload:unknown)=>worker.fetch(new Request('https://essay-worker.internal'+path,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(90000)}));
