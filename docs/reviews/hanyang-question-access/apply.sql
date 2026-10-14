@@ -1,4 +1,4 @@
--- Pending Owner approval. Read one verified question-only PDF; no data changes.
+-- Owner approved and applied 2026-10-14; migration 20261014002156. Read one verified question-only PDF; no data changes.
 begin;
 do $$begin
  if not exists(select 1 from pg_policies where schemaname='storage' and tablename='objects' and policyname='hanyang_2024_question_read') then
