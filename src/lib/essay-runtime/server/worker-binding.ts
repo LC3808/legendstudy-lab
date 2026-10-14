@@ -1,9 +1,18 @@
 import type {ReviewedWorkerBinding} from './gateway';
 export type WorkerEnvironment={ESSAY_REVIEWED_WORKER?:ReviewedWorkerBinding;ESSAY_WORKER_ORIGIN?:string;ESSAY_WORKER_SERVICE_TOKEN?:string};
-/** Reuse a service binding when provisioned. A private Python host is an explicit
- * alternative for the existing ReviewedRuntimeWorker; no new evaluator is created. */
+/** Reuse a private Cloudflare service binding with the existing host credential. */
 export function reviewedWorkerBinding(env:WorkerEnvironment):ReviewedWorkerBinding|undefined{
- if(env.ESSAY_REVIEWED_WORKER)return env.ESSAY_REVIEWED_WORKER;
+ if(env.ESSAY_REVIEWED_WORKER){
+  if(!env.ESSAY_WORKER_SERVICE_TOKEN||env.ESSAY_WORKER_SERVICE_TOKEN.length<32)return undefined;
+  return {async fetch(request){
+   const url=new URL(request.url);
+   if(url.origin!=='https://essay-worker.internal'||!['/admission','/evaluate','/exam-admission','/exam-evaluate'].includes(url.pathname)||url.search||request.method!=='POST')throw Error('INVALID_WORKER_REQUEST');
+   const headers=new Headers(request.headers);headers.set('X-Essay-Service-Token',env.ESSAY_WORKER_SERVICE_TOKEN!);
+   const response=await env.ESSAY_REVIEWED_WORKER!.fetch(new Request(request,{headers,redirect:'manual'}));
+   if(response.status>=300&&response.status<400)throw Error('WORKER_REDIRECT_DENIED');
+   return response;
+  }};
+ }
  if(!env.ESSAY_WORKER_ORIGIN||!env.ESSAY_WORKER_SERVICE_TOKEN||env.ESSAY_WORKER_SERVICE_TOKEN.length<32)return undefined;
  const origin=new URL(env.ESSAY_WORKER_ORIGIN);
  if(origin.protocol!=='https:'||origin.username||origin.password||origin.origin!==env.ESSAY_WORKER_ORIGIN)throw Error('INVALID_WORKER_ORIGIN');
