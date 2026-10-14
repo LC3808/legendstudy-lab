@@ -16,3 +16,17 @@ it('passes verified subject and same request key to one reservation then runs ex
 it('ambiguous dispatch preserves reserved identity and never refunds or reserves again',async()=>{m.dispatch.mockImplementation(async(r:Request)=>{if(r.url.endsWith('/exam-admission'))return Response.json({ready:true});throw Error('network');});const r=await send();expect(r.status).toBe(202);expect(await r.json()).toEqual({runId:id,code:'STATUS_CHECK_REQUIRED'});expect(m.request).toHaveBeenCalledTimes(1);});
 it('rejects image/unknown fields rather than silently dropping them',async()=>{const r=await send({...body,answers:[{...body.answers[0],images:['x']}] });expect(r.status).toBe(422);expect(m.request).not.toHaveBeenCalled();});
 it('keeps insufficient balance distinct from validation failure',async()=>{m.request.mockResolvedValue(Response.json({message:'INSUFFICIENT_CREDIT'},{status:400}));expect((await send()).status).toBe(402);expect(m.dispatch).toHaveBeenCalledTimes(1);});
+
+it('E2E scope rejects another account/exam or rewrite before reservation',async()=>{
+ const scope={subject:id,exam:id,requestKey:id};
+ for(const payload of [{...body,examId:'22222222-2222-4222-8222-222222222222'},{...body,parentId:id}]){
+  expect((await send(payload,{ESSAY_E2E_SCOPE:JSON.stringify(scope)})).status).toBe(403);
+ }
+ m.subject.mockResolvedValue('22222222-2222-4222-8222-222222222222');
+ expect((await send(body,{ESSAY_E2E_SCOPE:JSON.stringify(scope)})).status).toBe(403);expect(m.request).not.toHaveBeenCalled();
+});
+it('E2E scope pins server idempotency to the single approved submission',async()=>{
+ const key='22222222-2222-4222-8222-222222222222';
+ expect((await send(body,{ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:key})})).status).toBe(202);
+ expect(JSON.parse(m.request.mock.calls[0][2].body).p_key).toBe(key);
+});
