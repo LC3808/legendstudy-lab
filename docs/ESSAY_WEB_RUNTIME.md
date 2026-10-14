@@ -109,3 +109,20 @@ bound worker; the old callEssayGateway/ctx review location does not exist at thi
 Other Grok issues remain separate; no blanket claim that the review is resolved.
 
 Canonical policy/status and handoff live in the existing Unified Wiki. Public AI HOLD.
+
+## Oct14 shared exam API connection — LOCAL VERIFIED / OPERATING HOLD
+
+The new /api/essay/exam route verifies Auth/allowlist, checks the private reviewed
+host before reservation, calls the shared worker-only exam RPC and preserves run/key
+on ambiguous dispatch. Native uses the same endpoint. No worker secret reaches
+clients. ESSAY_EXAM_RUNTIME_ENABLED defaults OFF and is not configured by this change.
+Existing writers, result cards, comparison and History are reused. Eligible parent
+selection requests same-set free rewrite; server owns eligibility and revision pins.
+No new result screen, Provider, Ledger, PDF/admin UX or Math/payment change.
+
+16 focused tests, typecheck, changed-file ESLint and Node22 webpack build PASS.
+An earlier full suite hit a pre-existing source-registry null-ID expectation; do not
+claim full suite PASS. New DB API/policy candidate and private host are not deployed.
+No real Provider/Credit E2E, production release or public activation in this step.
+Canonical status and SQL impact/rollback are in APP wiki/essay-runtime-completion.md
+and supabase/candidates/essay_exam_unit/README.md, mirrored in Unified Wiki.

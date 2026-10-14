@@ -1,4 +1,5 @@
 'use client';
+import {readExamReports} from '@/lib/my/exam-history';
 import Link from 'next/link';
 import {useCallback,useState} from 'react';
 import {OwnerArea,useOwnerData,DataStatus,dateLabel} from './owner-data';
@@ -32,7 +33,7 @@ function PersonalContent(){
  </>;
 }
 export function RecordDetail({row}:{row:RecordItem}){
- return row.source==='essay'?<HumanDetail row={row}/>:<MathDetail row={row}/>;
+ return row.source==='exam'?<ExamDetail row={row}/>:row.source==='essay'?<HumanDetail row={row}/>:<MathDetail row={row}/>;
 }
 function HumanDetail({row}:{row:RecordItem}){
  const load=useCallback((c:SupabaseClient,o:string)=>readEssayDetail(c,o,row),[row]);const result=useOwnerData(load);
@@ -56,4 +57,11 @@ function MathDetail({row}:{row:RecordItem}){
  const reports=result.data.evaluations.map(e=>({prior:e.prior,report:mathReport(e.result)}));
  const before=reports.find(r=>r.prior)?.report,after=reports.find(r=>!r.prior)?.report;
  return <>{!reports.some(r=>!r.prior)&&<article className="my-panel"><h3>{row.rewrite?"재작성 답안":"최초 답안"}</h3><p className="essay-answer">{result.data.input.attempt?.typed_answer||"첨부 답안 · 비공개 보관"}</p><p>완료된 평가가 없습니다.</p></article>}{reports.map(({report,prior})=><EvaluationReport key={report.id} title={prior?'최초 평가':row.rewrite?'재첨삭 평가':'최초 평가'} report={report}/>)}<EvaluationComparison before={before} after={after}/></>;
+}
+
+function ExamDetail({row}:{row:RecordItem}){
+ const load=useCallback((c:SupabaseClient,o:string)=>readExamReports(c,o,row.id),[row.id]);const data=useOwnerData(load);
+ if(!data.data)return <DataStatus error={data.error} reload={data.reload}/>;
+ if(!data.data.current.length)return <p>평가가 완료되면 결과를 확인할 수 있습니다.</p>;
+ return <>{data.data.current.map(report=><div key={report.id}><EvaluationReport voiceType="humanities_social" title={row.rewrite?'재첨삭 평가':'최초 평가'} report={report}/><EvaluationComparison before={data.data!.previous.find(p=>p.id===report.priorId)} after={row.rewrite?report:undefined}/></div>)}</>;
 }

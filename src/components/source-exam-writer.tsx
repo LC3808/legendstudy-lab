@@ -11,7 +11,7 @@ import {sourceImageDraft} from '@/lib/source-image-draft';
 import {temporaryDraftStore} from '@/lib/temporary-draft-store';
 import type {SourceExam,SourceQuestion} from '@/lib/essay-runtime/source-registry';
 /** Source-keyed draft until canonical question registration; never passed to a billing RPC. */
-export function SourceExamWriter({exam,question,owner,onDirty}:{exam:SourceExam;question:SourceQuestion;owner:string;onDirty:(key:string,value:boolean)=>void}){
+export function SourceExamWriter({exam,question,owner,onDirty,onDraft}:{exam:SourceExam;question:SourceQuestion;owner:string;onDirty:(key:string,value:boolean)=>void;onDraft?:(key:string,body:string,images:boolean)=>void}){
  const auth=useAuth();
  const asset=studentPdf(question.studentPdf,question.dbQuestionId??'');
  const [split,setSplit]=useState(42);
@@ -20,6 +20,7 @@ export function SourceExamWriter({exam,question,owner,onDirty}:{exam:SourceExam;
  const [photo,setPhoto]=useState<File[]>([]),[photoBusy,setPhotoBusy]=useState(false),[imageReady,setImageReady]=useState(false),[photoNotice,setPhotoNotice]=useState(''),[photoDirty,setPhotoDirty]=useState(false);
  const key=`legendstudy:essay-source-draft:v1:${owner}:${question.key}`;
  const [body,setBody]=useState(''),[stored,setStored]=useState(''),[ready,setReady]=useState(false),[notice,setNotice]=useState(''),[panel,setPanel]=useState('answer');
+ useEffect(()=>{if(ready&&imageReady)onDraft?.(question.key,body,photo.length>0);},[ready,imageReady,question.key,body,photo.length,onDraft]);
  useEffect(()=>{let active=true;queueMicrotask(()=>{if(!active)return;try{const value=temporaryDraftStore.read(key);setBody(value);setStored(value);setNotice('이 브라우저에 자동 저장됩니다.');setReady(true);}catch{setNotice('브라우저 저장을 사용할 수 없습니다. 답안을 복사해 보관해 주세요.');setReady(true);}});return()=>{active=false;};},[key]);
  useEffect(()=>{
   if(!auth.client||!question.dbQuestionId||question.accountDraftReady===false||owner==='guest'||auth.user?.id!==owner)return;

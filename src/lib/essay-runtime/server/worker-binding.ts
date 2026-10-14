@@ -9,7 +9,7 @@ export function reviewedWorkerBinding(env:WorkerEnvironment):ReviewedWorkerBindi
  if(origin.protocol!=='https:'||origin.username||origin.password||origin.origin!==env.ESSAY_WORKER_ORIGIN)throw Error('INVALID_WORKER_ORIGIN');
  return {async fetch(request){
   const url=new URL(request.url);
-  if(url.origin!=='https://essay-worker.internal'||!['/admission','/evaluate'].includes(url.pathname)||url.search||request.method!=='POST')throw Error('INVALID_WORKER_REQUEST');
+  if(url.origin!=='https://essay-worker.internal'||!['/admission','/evaluate','/exam-admission','/exam-evaluate'].includes(url.pathname)||url.search||request.method!=='POST')throw Error('INVALID_WORKER_REQUEST');
   const response=await fetch(origin.origin+url.pathname,{method:'POST',redirect:'manual',signal:request.signal,headers:{'Content-Type':'application/json','X-Essay-Service-Token':env.ESSAY_WORKER_SERVICE_TOKEN!,...(request.headers.get('authorization')?{Authorization:request.headers.get('authorization')!}:{})},body:await request.text()});
   if(response.status>=300&&response.status<400)throw Error('WORKER_REDIRECT_DENIED');
   return response;

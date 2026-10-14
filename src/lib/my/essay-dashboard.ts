@@ -1,19 +1,21 @@
+import {readExamDashboard} from './exam-history';
 import type {SupabaseClient} from '@supabase/supabase-js';
 import {assertOwner, readEssays} from './data';
 export type Attempt={id:string;session_id:string;attempt_no:number;submitted_at:string};
-export type RecordItem={id:string;source:'essay'|'math';question:string;university:string|null;year?:number|null;essayType?:string|null;at:string;rewrite:boolean;evaluations:{id:string;status:string;at:string;completedAt:string|null;valid:boolean}[];sessionId?:string};
+export type RecordItem={id:string;source:'essay'|'math'|'exam';question:string;university:string|null;year?:number|null;essayType?:string|null;at:string;rewrite:boolean;evaluations:{id:string;status:string;at:string;completedAt:string|null;valid:boolean}[];sessionId?:string};
 function checked<T>(value:{data:T;error:unknown}){if(value.error)throw Error('READ_FAILED');return value.data;}
 export async function readEssayDashboard(client:SupabaseClient,owner:string):Promise<RecordItem[]>{
+ const exams=await readExamDashboard(client,owner);
  const sessions=await readEssays(client,owner);
- if(!sessions.length)return [];
+ if(!sessions.length)return exams;
  const attempts=checked(await client.from('essay_attempts').select('id,session_id,attempt_no,submitted_at').in('session_id',sessions.map(s=>s.id)).order('submitted_at',{ascending:false}).limit(501)) as Attempt[];
  if(attempts.length>500)throw Error('HISTORY_LIMIT');
  await assertOwner(client,owner);
- return attempts.map(a=>{
+ return [...exams,...attempts.map(a=>{
   const s=sessions.find(s=>s.id===a.session_id)!;
-  return {id:a.id,sessionId:s.id,source:'essay',question:s.essay_questions?.label??'논술 문제',university:s.essay_questions?.essay_exams?.universities?.name??null,year:s.essay_questions?.essay_exams?.admission_year??null,at:a.submitted_at,rewrite:a.attempt_no>1,
+  return {id:a.id,sessionId:s.id,source:'essay' as const,question:s.essay_questions?.label??'논술 문제',university:s.essay_questions?.essay_exams?.universities?.name??null,year:s.essay_questions?.essay_exams?.admission_year??null,at:a.submitted_at,rewrite:a.attempt_no>1,
    evaluations:s.evaluations.filter(e=>e.attempt_id===a.id).map(e=>({id:e.id,status:e.status,at:e.requested_at,completedAt:e.completed_at,valid:!e.invalidated_at}))};
- });
+ })];
 }
 export async function mathRead(client:SupabaseClient,owner:string,action:string,payload:Record<string,unknown>){
  await assertOwner(client,owner);

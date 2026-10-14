@@ -1,0 +1,37 @@
+import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
+import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
+import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
+import {boundedBody} from '../../../src/lib/math-release/server/request';
+type Env=MathEnvironment&WorkerEnvironment&{ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
+const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(v);
+/** Shared Native/Web gateway. Disabled until DB/host/content/E2E authorization. */
+export async function onRequestPost({request,env}:{request:Request;env:Env}){
+ const headers={'Cache-Control':'private, no-store','Vary':'Authorization, Origin'};
+ const reply=(body:unknown,status=200)=>Response.json(body,{status,headers});
+ if(env.ESSAY_EXAM_RUNTIME_ENABLED!=='true')return reply({code:'EVALUATION_UNAVAILABLE'},503);
+ const origin=request.headers.get('origin');if(origin&&origin!==env.MATH_ORIGIN)return reply({code:'ACCESS_DENIED'},403);
+ const token=request.headers.get('authorization')?.match(/^Bearer ([^\s]+)$/)?.[1];if(!token)return reply({code:'LOGIN_REQUIRED'},401);
+ let run:string|undefined;
+ try{
+  const transport=serverTransport(env),subject=await transport.subject(token);
+  const input=JSON.parse(new TextDecoder().decode(await boundedBody(request,1048576))) as Record<string,unknown>;
+  const worker=reviewedWorkerBinding(env),credential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);
+  if(!worker||!credential)return reply({code:'WORKER_UNAVAILABLE'},503);
+  const dispatch=async(path:string,payload:unknown)=>worker.fetch(new Request('https://essay-worker.internal'+path,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(90000)}));
+  if(input.action==='availability'&&uuid(input.examId)){
+   const ready=await dispatch('/exam-admission',{exam_id:input.examId});
+   return reply({ready:ready.ok&&(await ready.json() as {ready?:boolean}).ready===true});
+  }
+  if(input.action!=='submit'||!uuid(input.examId)||!uuid(input.key)||!Array.isArray(input.answers)||input.answers.length<1||input.answers.length>100||!(input.parentId==null||uuid(input.parentId)))return reply({code:'INVALID_REQUEST'},422);
+  if(input.answers.some(a=>!a||typeof a!=='object'||!uuid(a.questionId)||typeof a.body!=='string'||!a.body.trim()||a.body.length>30000||!Number.isSafeInteger(a.revision)||a.revision<0||Object.keys(a).some(k=>!['questionId','body','revision'].includes(k))))return reply({code:'INVALID_ANSWERS'},422);
+  const ready=await dispatch('/exam-admission',{exam_id:input.examId});
+  if(!ready.ok||(await ready.json() as {ready?:boolean}).ready!==true)return reply({code:'EVALUATION_UNAVAILABLE'},503);
+  const reserved=await transport.request('/rest/v1/rpc/essay_exam_submit',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_key:input.key,p_answers:input.answers,p_parent:input.parentId??null})});
+  const value=JSON.parse(new TextDecoder().decode(await boundedBody(reserved,16384)));
+  if(!reserved.ok){const reason=typeof value?.message==='string'?value.message:'';return reply({code:reason==='INSUFFICIENT_CREDIT'?'INSUFFICIENT_CREDIT':'SUBMISSION_REJECTED'},reason==='INSUFFICIENT_CREDIT'?402:422);}
+  if(!uuid(value))throw Error('INVALID_RESERVATION');run=value;
+  // Uncertain dispatch/finalization never refunds or creates another reservation.
+  await dispatch('/exam-evaluate',{run_id:run});
+  return reply({runId:run,code:'STATUS_CHECK_REQUIRED'},202);
+ }catch{return reply({code:run?'STATUS_CHECK_REQUIRED':'REQUEST_UNAVAILABLE',...(run?{runId:run}:{})},run?202:503);}
+}
