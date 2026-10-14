@@ -10,7 +10,7 @@ export function MaterialPdfViewer({load,positionKey,jumpPage=1}:{load:()=>Promis
  const canvas=useRef<HTMLCanvasElement>(null),viewport=useRef<HTMLDivElement>(null);
  useEffect(()=>{const el=viewport.current;if(!el)return;const observer=new ResizeObserver(()=>setWidth(el.clientWidth));observer.observe(el);return()=>observer.disconnect();},[]);
  useEffect(()=>{let active=true;let loaded:PDFDocumentProxy|undefined;
-  load().then(openPdf).then(d=>{loaded=d;if(!active){void d.destroy();return;}let p=previousJump.current;try{p=Number(sessionStorage.getItem(positionKey))||p;}catch{}setPage(Math.min(d.numPages,Math.max(1,p)));setDoc(d);setError(false);}).catch(()=>{if(active)setError(true);});
+  load().then(bytes=>openPdf(bytes,canvas.current?.ownerDocument)).then(d=>{loaded=d;if(!active){void d.destroy();return;}let p=previousJump.current;try{p=Number(sessionStorage.getItem(positionKey))||p;}catch{}setPage(Math.min(d.numPages,Math.max(1,p)));setDoc(d);setError(false);}).catch(()=>{if(active)setError(true);});
   return()=>{active=false;setDoc(null);void loaded?.destroy();};
  },[load,positionKey,attempt]); // position is deliberately independent of a question jump
  useEffect(()=>{if(doc&&previousJump.current!==jumpPage){previousJump.current=jumpPage;queueMicrotask(()=>setPage(Math.max(1,Math.min(doc.numPages,jumpPage))));}},[jumpPage,doc]);
