@@ -40,3 +40,5 @@
 .essay-result-identity h3{color:#1b2a4a;font-weight:700}.essay-result-identity small{color:#636363}
 .report-feedback blockquote{background:#f2f3f5;padding:14px;margin:12px 0;white-space:pre-wrap}
 .report-feedback .rewrite-direction{background:#eef2f8;padding:14px}
+
+.essay-exam-badges{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.essay-exam-badges>span{padding:4px 10px;border:1px solid #b6bfcc;border-radius:6px;color:#23364d;overflow-wrap:anywhere}

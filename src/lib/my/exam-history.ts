@@ -4,6 +4,7 @@ import {assertOwner} from './data';
 import {array,object,text,humanReport,type Report} from './evaluation-report';
 import type {RecordItem} from './essay-dashboard';
 function examLabel(run:Record<string,unknown>){const e=registry.exams.find(e=>e.dbExamId===run.exam_id);return e?`${e.year}학년도 ${e.kind==='admission'?'수시 논술':'모의논술'} · ${e.track}${e.session?' · '+e.session:''}`:text(run.title);}
+export function examIdentityBadges(id?:string){const e=registry.exams.find(e=>e.dbExamId===id);return e?[e.track,e.session].filter((v):v is string=>!!v):[];}
 export function examQuestionLabel(id:string){return registry.exams.flatMap(e=>e.questions.map(q=>({id:q.dbQuestionId as string|null,label:q.label}))).find(q=>q.id===id)?.label??'선택한 문항';}
 /** Same owner-scoped projection as Native. Only a not-yet-installed RPC is optional. */
 export async function readExamRuns(client:SupabaseClient,owner:string,id:string|null=null){
