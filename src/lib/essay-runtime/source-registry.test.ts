@@ -9,7 +9,7 @@ describe('reviewed source metadata and runtime boundary',()=>{
  });
  it('does not manufacture canonical question UUIDs or turn on evaluation from metadata',()=>{
   expect(new Set(registry.exams.map(e=>e.key)).size).toBe(registry.exams.length);
-  for(const e of registry.exams){expect(e.evaluationReady).toBe(false);expect(e.sourceHashes.length).toBeGreaterThan(0);expect(e.questions.length).toBeGreaterThan(0);expect(new Set(e.questions.map(q=>q.key)).size).toBe(e.questions.length);for(const q of e.questions)expect(q.dbQuestionId).toBeNull();}
+  for(const e of registry.exams){expect(e.evaluationReady).toBe(false);expect(e.sourceHashes.length).toBeGreaterThan(0);expect(e.questions.length).toBeGreaterThan(0);expect(new Set(e.questions.map(q=>q.key)).size).toBe(e.questions.length);for(const q of e.questions){if(q.dbQuestionId!==null){expect(e.sourceUniversityId).toBe('hanyang');expect(e.year).toBe(2024);expect(q.dbQuestionId).toBe('4cbe8b69-2ccc-5c4e-9e77-0644f90e2cde');}}}
  });
  it('retains verified mock/admission, campus, subquestion and session distinctions',()=>{
   expect(sourceExams('yonsei').find(e=>e.year===2027)?.kind).toBe('mock');

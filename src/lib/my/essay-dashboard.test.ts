@@ -20,3 +20,11 @@ it('propagates RPC failure rather than manufacturing empty history',async()=>{
  const c={auth:{getSession:async()=>({data:{session:{user:{id:'a'}}}})},rpc:async()=>({error:{code:'denied'},data:null})} as unknown as SupabaseClient;
  await expect(mathRead(c,'a','history',{})).rejects.toThrow('READ_FAILED');
 });
+it('groups by canonical exam and exact question set, never similar labels',async()=>{
+ const {historyGroups,answerVersion}=await import('./essay-dashboard');
+ const a={...row('a'),source:'exam' as const,examId:'exam1',questionIds:['q1','q2']};
+ const b={...row('b'),source:'exam' as const,examId:'exam1',questionIds:['q2','q1'],submissionIndex:3};
+ const c={...a,id:'c',examId:'exam2'};
+ expect(historyGroups([a,b,c],true).map(g=>g.length).sort()).toEqual([1,2]);
+ expect(answerVersion(b)).toBe('수정 제출 답안 2');
+});

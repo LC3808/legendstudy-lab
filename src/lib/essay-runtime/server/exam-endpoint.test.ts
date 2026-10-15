@@ -45,3 +45,19 @@ it('malformed parent scope fails closed before reservation',async()=>{
  expect((await send(body,{ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:id,parentId:'invalid'})})).status).toBe(403);
  expect(m.request).not.toHaveBeenCalled();
 });
+it('continuous cycle is OFF by default and cannot escape pinned E2E',async()=>{
+ expect((await send({...body,previousPaidRunId:id})).status).toBe(422);
+ expect((await send({...body,previousPaidRunId:id},{ESSAY_CONTINUOUS_CYCLES_ENABLED:'true',ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:id})})).status).toBe(422);
+ expect(m.request).not.toHaveBeenCalled();
+});
+it('additional cycle reuses the same gateway and routes only to the bounded cycle RPC',async()=>{
+ expect((await send({...body,previousPaidRunId:id},{ESSAY_CONTINUOUS_CYCLES_ENABLED:'true'})).status).toBe(202);
+ expect(m.request.mock.calls[0][0]).toBe('/rest/v1/rpc/essay_exam_submit_cycle');
+ expect(JSON.parse(m.request.mock.calls[0][2].body).p_previous).toBe(id);
+});
+it('quote reads server eligibility without reserving Credit or dispatching evaluation',async()=>{
+ m.request.mockResolvedValue(Response.json({version:'essay-exam-quote-v1',credits:0,kind:'included'}));
+ const response=await send({action:'quote',examId:id,questionIds:[id],parentId:id});
+ expect(await response.json()).toMatchObject({credits:0});
+ expect(m.request.mock.calls[0][0]).toBe('/rest/v1/rpc/essay_exam_quote');expect(m.dispatch).not.toHaveBeenCalled();
+});

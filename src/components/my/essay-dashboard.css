@@ -32,3 +32,11 @@
  .essay-personal .report-comparison { display: block; }
  .essay-personal details { display: none; }
 }
+
+.essay-history-group{border-bottom:1px solid #636363;padding-bottom:12px;margin-bottom:12px}
+.essay-history-card{display:flex;flex-direction:column;align-items:flex-start;gap:8px;width:100%;text-align:left;color:inherit;cursor:pointer;font:inherit}
+.essay-history-badge{display:inline-block;border-radius:6px;padding:4px 10px;background:var(--ink,#1b2a4a);color:white;font-size:.875rem}
+.essay-history-badge.included{background:#197d46}
+.essay-result-identity h3{color:#1b2a4a;font-weight:700}.essay-result-identity small{color:#636363}
+.report-feedback blockquote{background:#f2f3f5;padding:14px;margin:12px 0;white-space:pre-wrap}
+.report-feedback .rewrite-direction{background:#eef2f8;padding:14px}

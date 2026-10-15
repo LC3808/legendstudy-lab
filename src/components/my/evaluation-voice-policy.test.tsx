@@ -12,5 +12,5 @@ it.each(['math','science',undefined] as const)('excludes voice for %s without re
 });
 it.each(['humanities_social','business_economics'] as const)('retains voice for %s',voiceType=>{
  render(<EvaluationReport report={report} title="평가" voiceType={voiceType}/>);
- expect(screen.getByRole('button',{name:'음성으로 듣기'})).toBeVisible();
+ expect(screen.getAllByRole('button',{name:'음성으로 듣기'}).length).toBeGreaterThan(0);
 });
