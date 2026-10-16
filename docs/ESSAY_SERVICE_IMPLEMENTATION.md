@@ -243,3 +243,11 @@ additional-paid test. DB read-only quote returns1; accountbalance10/reserved0.
 No Provider/Credit/DB/config/deployment action. Rollback old gateway and flagsOFF,
 never delete runs/checkpoints/Ledger. Full contract/evidence and IAP conflict list:
 APP wiki/essay-lab-ui-ux-v1.md Oct16 launch preflight. Public HOLD.
+
+### Oct16 Owner-approved gateway-only promotion
+Pages3b99d254-692b-405d-bdf4-574e75178ab3 SUCCESS: actual live source8518db6 +
+functions/api/essay/exam.ts from14e7612 only. UI/Math/Payment unchanged.
+Gateway SHA256 d0640668a83904f966d98dd1da584734c09cad0fe4f12c7b72d3dba83a9020ab.
+Pages/Worker/continuous OFF; public503 held. Owner login helper pending; no new run,
+Provider or Credit. Approved one-run E2E resumes after actual account login.
+Rollback deployment45c3935b-c8c8-4fd4-94fc-5c1e31bb51a8; retain DB/history.
