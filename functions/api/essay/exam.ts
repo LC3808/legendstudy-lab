@@ -16,8 +16,8 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const transport=serverTransport(env),subject=await transport.subject(token);
   const input=JSON.parse(new TextDecoder().decode(await boundedBody(request,1048576))) as Record<string,unknown>;
   // Optional server-only single-submission scope for explicitly approved operating E2E.
-  const scope=env.ESSAY_E2E_SCOPE?JSON.parse(env.ESSAY_E2E_SCOPE) as {subject:string;exam:string;requestKey:string;parentId?:string}:null;
-  if(scope&&(!uuid(scope.subject)||!uuid(scope.exam)||!uuid(scope.requestKey)||subject!==scope.subject||input.examId!==scope.exam||(scope.parentId!==undefined&&!uuid(scope.parentId))||(input.action==='submit'&&(input.parentId??null)!==(scope.parentId??null))))return reply({code:'ACCESS_DENIED'},403);
+  const scope=env.ESSAY_E2E_SCOPE?JSON.parse(env.ESSAY_E2E_SCOPE) as {subject:string;exam:string;requestKey:string;parentId?:string;previousPaidRunId?:string}:null;
+  if(scope&&(!uuid(scope.subject)||!uuid(scope.exam)||!uuid(scope.requestKey)||subject!==scope.subject||input.examId!==scope.exam||(scope.parentId!==undefined&&!uuid(scope.parentId))||(scope.previousPaidRunId!==undefined&&!uuid(scope.previousPaidRunId))||(scope.parentId!==undefined&&scope.previousPaidRunId!==undefined)||(['submit','quote'].includes(String(input.action))&&((input.parentId??null)!==(scope.parentId??null)||(input.previousPaidRunId??null)!==(scope.previousPaidRunId??null)))))return reply({code:'ACCESS_DENIED'},403);
   const worker=reviewedWorkerBinding(env),credential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);
   if(!worker||!credential)return reply({code:'WORKER_UNAVAILABLE'},503);
   const dispatch=async(path:string,payload:unknown)=>worker.fetch(new Request('https://essay-worker.internal'+path,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(90000)}));
@@ -25,7 +25,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
    const ready=await dispatch('/exam-admission',{exam_id:input.examId});
    return reply({ready:ready.ok&&(await ready.json() as {ready?:boolean}).ready===true});
   }
-  if(input.previousPaidRunId!=null&&(env.ESSAY_CONTINUOUS_CYCLES_ENABLED!=='true'||scope||!uuid(input.previousPaidRunId)||input.parentId!=null))return reply({code:'ADDITIONAL_CYCLE_UNAVAILABLE'},422);
+  if(input.previousPaidRunId!=null&&(env.ESSAY_CONTINUOUS_CYCLES_ENABLED!=='true'||!uuid(input.previousPaidRunId)||input.parentId!=null))return reply({code:'ADDITIONAL_CYCLE_UNAVAILABLE'},422);
   if(input.action==='quote'&&uuid(input.examId)&&Array.isArray(input.questionIds)&&input.questionIds.length>0&&input.questionIds.every(uuid)&&!(input.parentId!=null&&!uuid(input.parentId))){
    const quoted=await transport.request('/rest/v1/rpc/essay_exam_quote',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_questions:input.questionIds,p_parent:input.parentId??null,p_previous:input.previousPaidRunId??null})});
    if(!quoted.ok)return reply({code:'QUOTE_UNAVAILABLE'},422);

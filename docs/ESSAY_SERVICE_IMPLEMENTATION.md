@@ -224,3 +224,22 @@ public activation or device QA. Current production questions remain0; this branc
 alone cannot activate actual Humanities evaluations. Existing Math E2E and QA
 contracts preserved. Next: reviewed private worker hosting + authorized question
 body/figure delivery + isolated Auth/PostgREST → specifically allowed live E2E.
+
+## Oct16 launch gateway preflight — LOCAL PASS / NOT DEPLOYED
+
+Production still reports8518db6 (rewrite-only gateway); quote and continuous-cycle
+RPCs now exist in DB but deployed gateway does not route them. Current Codex branch
+reuses the existing quote/cycle implementation and adds previousPaidRunId to bounded
+E2E scope. Both quote and submit reject mismatched predecessor/parent; fixed subject,
+exam and server idempotency key remain. Continuous execution defaultsOFF.
+
+Changed: functions/api/essay/exam.ts and server/exam-endpoint.test.ts.
+26 related test files/133 PASS; stored real-results adapter1 PASS; ESLint/TypeScript/
+Node22 production build135 pages PASS. No UI/Payment/Math changes.
+Pages flagfalse, continuousunset, Workerflagfalse verified via Cloudflare metadata.
+Do not deploy the full branch over newer unrelated live changes. Review only gateway
+delta against deployed8518db6, then obtain Owner approval for promotion and one scoped
+additional-paid test. DB read-only quote returns1; accountbalance10/reserved0.
+No Provider/Credit/DB/config/deployment action. Rollback old gateway and flagsOFF,
+never delete runs/checkpoints/Ledger. Full contract/evidence and IAP conflict list:
+APP wiki/essay-lab-ui-ux-v1.md Oct16 launch preflight. Public HOLD.

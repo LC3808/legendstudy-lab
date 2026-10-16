@@ -47,7 +47,7 @@ it('malformed parent scope fails closed before reservation',async()=>{
 });
 it('continuous cycle is OFF by default and cannot escape pinned E2E',async()=>{
  expect((await send({...body,previousPaidRunId:id})).status).toBe(422);
- expect((await send({...body,previousPaidRunId:id},{ESSAY_CONTINUOUS_CYCLES_ENABLED:'true',ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:id})})).status).toBe(422);
+ expect((await send({...body,previousPaidRunId:id},{ESSAY_CONTINUOUS_CYCLES_ENABLED:'true',ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:id})})).status).toBe(403);
  expect(m.request).not.toHaveBeenCalled();
 });
 it('additional cycle reuses the same gateway and routes only to the bounded cycle RPC',async()=>{
@@ -60,4 +60,24 @@ it('quote reads server eligibility without reserving Credit or dispatching evalu
  const response=await send({action:'quote',examId:id,questionIds:[id],parentId:id});
  expect(await response.json()).toMatchObject({credits:0});
  expect(m.request.mock.calls[0][0]).toBe('/rest/v1/rpc/essay_exam_quote');expect(m.dispatch).not.toHaveBeenCalled();
+});
+
+it('additional E2E pins predecessor and single request without opening other cycles',async()=>{
+ const previous='33333333-3333-4333-8333-333333333333';
+ const key='22222222-2222-4222-8222-222222222222';
+ const extra={ESSAY_CONTINUOUS_CYCLES_ENABLED:'true',ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:key,previousPaidRunId:previous})};
+ expect((await send({action:'availability',examId:id},extra)).status).toBe(200);
+ for(const action of ['submit','quote'])for(const previousPaidRunId of [undefined,id]){
+  expect((await send({...body,action,questionIds:[id],previousPaidRunId},extra)).status).toBe(403);
+ }
+ expect(m.request).not.toHaveBeenCalled();
+ expect((await send({...body,previousPaidRunId:previous},extra)).status).toBe(202);
+ expect(m.request.mock.calls[0][0]).toBe('/rest/v1/rpc/essay_exam_submit_cycle');
+ expect(JSON.parse(m.request.mock.calls[0][2].body)).toMatchObject({p_key:key,p_previous:previous,p_parent:null});
+});
+it('malformed or mixed paid/free E2E scope fails before credit calls',async()=>{
+ for(const detail of [{previousPaidRunId:'invalid'},{parentId:id,previousPaidRunId:id}]){
+  expect((await send(body,{ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:id,...detail})})).status).toBe(403);
+ }
+ expect(m.request).not.toHaveBeenCalled();
 });
