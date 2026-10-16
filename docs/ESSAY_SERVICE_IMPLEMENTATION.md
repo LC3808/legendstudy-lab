@@ -269,3 +269,54 @@ Readiness marker removed; request key unchanged. Owner terminal re-login is need
 because credentials were memory-only and the first script exited. Existing E2E
 approval remains valid; do not request approval again or create a second request.
 Public HOLD. This is a transport interruption, not a completed paid E2E.
+
+### Oct16 additional-paid operating E2E — completed, public HOLD
+
+Owner-approved review account/Hanyang2024 humanities afternoon2/question1/Package17,
+request a4d46895-ed93-4c67-a685-902b6d5368d7: run
+346083f3-1e9c-4cbb-8cf2-cdf7d25bfef9 completed 2026-10-16 14:48:27 KST.
+Previous paid run5b636cda-9915-42e1-b209-9934c7c0fcb1, submission_index3,
+parent_idNULL (new paid cycle), identical existing1174-character revised answer.
+Registry234 and both Oct14 completed runs preserved. No DB schema/RLS changes.
+
+- Actual Provider evaluation1 + independent review1; signed review checks all pass.
+  Evaluation12968 input/1734 output; reviewer12229 input/3823 output tokens.
+  Total30754 tokens. Cost/currency fieldsNULL: actual USD charge NOT_VERIFIED;
+  do not report estimate as measured cost. No extra Provider retry/free evaluation.
+- Billing settled1: reserve(+1 reserved), consume(-1 balance/-1 reserved), exactly
+  one consume. credit_summary spendable9/reserved0 (before10/0).
+- Owner-authenticated History RPC HTTP200 contains completed result, index3,
+  previous_paid_run_id and free_rewrite_available=true.
+- Next same-set free quote included0; window ends Oct30 14:48:27 KST.
+  Old paid predecessor quote rejects PAID_CYCLE_ALREADY_STARTED. These checks
+  are read-only; no fourth submission or duplicate paid submission was executed.
+- Live WEB History/result and balance9 verified. Summary starts
+  “논제의 세 요구를 모두 충실히 수행한 강한 답안이다.” Five criteria all4/5,
+  matching the prior revised answer levels; no invented sentence feedback/examples.
+- Operating WEB remains old8518db6 UI, so it labels this paid-cycle result as
+  “최초 평가” and lacks the approved additional-cycle controls. Gateway-only
+  deployment did not promote UI. This is an outstanding launch display GAP.
+  APP device readback of this new result requested; not yet confirmed.
+- The first/free-only QA harness cannot be reused as an additional-cycle comparison:
+  parent_id is intentionallyNULL. It rejected that mismatched fixture before
+  rendering. Separate stored additional-result QA now checks server index3,
+  paid predecessor/free entitlement and actual output without inventing lineage.
+  APP Native360px/200% test1 PASS; WEB stored-result render1 PASS. These are
+  actual-result local render checks, not APP device acceptance.
+
+Two pre-submit interruptions caused no Provider/Credit operation: urllib403/error1010
+corrected by curl stdin transport; INVALID_ANSWERS caused by stored rubric/evidence
+metadata corrected by projecting questionId/body/revision only. Body unchanged.
+The rejected local intent is preserved separately; the successful intent remains
+exclusive. No second run was created for the fixed key.
+
+Enabled deployment288f82e3; after completion WorkerOFF and Pages runtime/continuous
+OFF restored, deployment433141d6-b33b-4473-993c-7069697f3b75 SUCCESS. All other
+36 Pages bindings/10 Worker bindings preserved. Public endpoint503 hold checked.
+No Math/Payment/IAP/Claude branch change. Production UI promotion, APP device result
+acceptance, measured API cost and final quality/public-release approval remain open.
+
+Final checks: additional QA Flutter Analyze clean; WEB ESLint/Typecheck PASS;
+public503 verified; Registry234/prior completed2/fixed-key runs1 confirmed.
+No application runtime source changed this turn; QA and Wiki only. Prior iOS/WEB
+build evidence remains applicable; no redundant rebuild for documentation/tests.
