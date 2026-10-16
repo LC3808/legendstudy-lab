@@ -251,3 +251,21 @@ Gateway SHA256 d0640668a83904f966d98dd1da584734c09cad0fe4f12c7b72d3dba83a9020ab.
 Pages/Worker/continuous OFF; public503 held. Owner login helper pending; no new run,
 Provider or Credit. Approved one-run E2E resumes after actual account login.
 Rollback deployment45c3935b-c8c8-4fd4-94fc-5c1e31bb51a8; retain DB/history.
+
+### Oct16 authenticated transport stop before submission (14:36–14:39 KST)
+
+Owner login succeeded. Scoped activation deployment46122cd1 was verified for the
+approved subject/exam/predecessor/request key only. The terminal Python request
+stopped at quote with HTTP403; no submit intent was created and the fixed request
+key has no run in Production. Unauthenticated reproduction identified Cloudflare
+error1010 for urllib, while curl reaches the gateway normally. Terminal transport
+now uses curl with credentials supplied through stdin only (not argv/files/logs);
+syntax and expected OFF503 response verified. No application/auth policy changed.
+
+Worker OFF and Pages runtime/continuous OFF restored; deployment
+5869f421-93d0-460f-a341-2aa7f1796258 SUCCESS. All36 unrelated Pages bindings and10
+unrelated Worker bindings preserved. Provider calls0, Credit reservations/charges0.
+Readiness marker removed; request key unchanged. Owner terminal re-login is needed
+because credentials were memory-only and the first script exited. Existing E2E
+approval remains valid; do not request approval again or create a second request.
+Public HOLD. This is a transport interruption, not a completed paid E2E.
