@@ -320,3 +320,13 @@ Final checks: additional QA Flutter Analyze clean; WEB ESLint/Typecheck PASS;
 public503 verified; Registry234/prior completed2/fixed-key runs1 confirmed.
 No application runtime source changed this turn; QA and Wiki only. Prior iOS/WEB
 build evidence remains applicable; no redundant rebuild for documentation/tests.
+
+### Oct16 Owner device confirmation — additional paid result
+
+Owner confirmed the requested APP check: review@legendstudy.com, Hanyang result
+completed14:48, balance9, summary “논제의 세 요구를 모두 충실히 수행한 강한 답안이다.”
+match WEB. Additional paid result/History readback and Credit balance parity PASS
+by Owner device evidence. This supersedes the pending APP device check above.
+No new submission, Provider call, Credit transaction, deployment or DB change.
+Operating WEB additional-as-initial label GAP, measured USD cost and final release
+approval remain open. All execution flags remain OFF; general public HOLD.
