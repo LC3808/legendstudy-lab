@@ -1,8 +1,10 @@
 'use client';
 import Link from 'next/link';
+import {DbExamSubmit} from './db-exam-submit';
+import type {SubmissionDraft} from './essay-exam-submit';
 import {sourceExams} from '@/lib/essay-runtime/source-registry';
 import {SourceExamSelection} from './source-exam-selection';
-import {useCallback,useEffect,useState} from 'react';
+import {useCallback,useEffect,useState,useMemo} from 'react';
 import {useAuth} from './auth-context';
 import {EssayQuestionDraft} from './essay-service-workspace';
 import {loadExams,loadQuestions,officialUrl,type Exam,type Question} from '@/lib/essay-runtime/catalog';
@@ -18,6 +20,8 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
  const [rows,setRows]=useState<ReadyExam[]>([]),[status,setStatus]=useState<'loading'|'ready'|'error'>('loading');
  const [year,setYear]=useState(''),[campus,setCampus]=useState(''),[track,setTrack]=useState(''),[examId,setExamId]=useState(''),[questionId,setQuestionId]=useState('');
  const [visited,setVisited]=useState<string[]>([]),[included,setIncluded]=useState<string[]>([]),[dirty,setDirty]=useState<Record<string,boolean>>({});
+ const [drafts,setDrafts]=useState<Record<string,SubmissionDraft>>({});
+ const onSubmissionDraft=useCallback((id:string,draft:SubmissionDraft)=>setDrafts(old=>({...old,[id]:draft})),[]);
  const onDirty=useCallback((id:string,value:boolean)=>setDirty(old=>old[id]===value?old:{...old,[id]:value}),[]);
  useEffect(()=>{
   let active=true;
@@ -33,7 +37,7 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
  },[client,user,universityId]);
  function change(action:()=>void){
   if(Object.values(dirty).some(Boolean)&&!window.confirm('저장하지 않은 답안이 있습니다. 문항별 답안을 저장하지 않고 선택을 바꿀까요?'))return;
-  setVisited([]);setIncluded([]);setQuestionId('');setDirty({});action();
+  setDrafts({});setVisited([]);setIncluded([]);setQuestionId('');setDirty({});action();
  }
  const years=[...new Set(rows.map(e=>e.admission_year))].sort((a,b)=>b-a);
  const yearRows=rows.filter(e=>String(e.admission_year)===year);
@@ -42,6 +46,8 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
  const tracks=[...new Set(campusRows.map(e=>e.field_or_division??e.exam_name))];
  const exams=campusRows.filter(e=>(e.field_or_division??e.exam_name)===track);
  const exam=exams.find(e=>e.id===examId);
+ const questionIds=useMemo(()=>exam?.questions.map(q=>q.id)??[],[exam]);
+ useEffect(()=>{if(exam?.questions.length===1){const id=exam.questions[0].id;setQuestionId(id);setVisited([id]);setIncluded([id]);}},[exam]);
  const question=exam?.questions.find(q=>q.id===questionId);
  // A display-policy distinction only; never used to authorize a Provider or bill.
  const examUnit=!!exam&&/인문|언어|사회|경제|경영/.test(exam.field_or_division??'');
@@ -64,11 +70,10 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
      {question&&<label><input type="checkbox" checked={included.includes(question.id)} onChange={e=>setIncluded(old=>e.target.checked?[...old,question.id]:old.filter(id=>id!==question.id))}/>{question.label} 제출에 포함</label>}
      <p role="status">선택한 문항 {included.length} / {exam.questions.length}</p>
     </div>}
-    {exam.questions.filter(q=>visited.includes(q.id)).map(q=><div key={q.id} hidden={q.id!==questionId}><EssayQuestionDraft questionId={q.id} onDirtyChange={onDirty}/></div>)}
+    {exam.questions.filter(q=>visited.includes(q.id)).map(q=><div key={q.id} hidden={q.id!==questionId}><EssayQuestionDraft questionId={q.id} onDirtyChange={onDirty} onSubmissionDraft={onSubmissionDraft}/></div>)}
     {question&&<div className="essay-submit-gate">
      {examUnit&&<p>선택한 문항 묶음의 최초 첨삭은 1 Credit이며, 14일 이내 같은 문항 집합의 재첨삭 1회가 포함됩니다. 최초 제출 후에는 새 문항을 추가할 수 없습니다.</p>}
-     <button className="button button--primary" disabled aria-describedby="essay-submit-unavailable">답안 제출</button>
-     <p id="essay-submit-unavailable">첨삭 제출을 준비하고 있습니다. 지금은 문항별 답안을 저장할 수 있습니다.</p>
+     <DbExamSubmit key={exam.id} examId={exam.id} questionIds={questionIds} included={examUnit?included:[question.id]} drafts={drafts}/>
     </div>}
    </>}
   </>}

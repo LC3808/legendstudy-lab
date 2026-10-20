@@ -22,7 +22,7 @@ it('offers only registered nonempty years and keeps per-question answers while s
  expect(screen.getByLabelText('답안 q1')).not.toBeVisible();
  fireEvent.click(screen.getByText('전체 문항 선택'));expect(screen.getByText('선택한 문항 2 / 2')).toBeVisible();
  fireEvent.change(screen.getByLabelText('문항'),{target:{value:'q1'}});expect(screen.getByLabelText('답안 q1')).toHaveValue('내 최초 답안');
- expect(screen.getByRole('button',{name:'답안 제출'})).toBeDisabled();
+ expect(screen.getByText(/문항과 평가자료의 연결/)).toBeVisible();
  expect(screen.getByText(/같은 문항 집합/)).toBeVisible();
 });
 it('distinguishes guest access, load errors and empty catalog',async()=>{

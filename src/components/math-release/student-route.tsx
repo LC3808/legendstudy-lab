@@ -1,5 +1,5 @@
 "use client";
-import {AnswerImageInput} from "../answer-image-input";
+import {AnswerImagesInput} from "../answer-image-input";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -28,6 +28,7 @@ export function MathStudentRoute({ enabled, evaluationEnabled = enabled }: { ena
   if (!auth.user || !auth.client) return <main className="math-student"><h1>수리논술</h1><p>내 답안과 학습 기록을 보려면 로그인해 주세요.</p><Link href="/login/">로그인</Link></main>;
   return <Workspace key={auth.user.id} client={auth.client} evaluationEnabled={evaluationEnabled} />;
 }
+import {uploadOrderedPages,type UploadPage} from "@/lib/math-input/ordered-upload";
 function LocalPreview({ file }: { file: File }) {
   const image = useRef<HTMLImageElement>(null), link = useRef<HTMLAnchorElement>(null);
   useEffect(() => {
@@ -50,6 +51,8 @@ function Workspace({ client, evaluationEnabled }: { client: SupabaseClient; eval
   const [learning, setLearning] = useState<LearningState | null>(null), [history, setHistory] = useState<LearningHistoryResult | null>(null);
   const [hints, setHints] = useState<Partial<Record<HintLevel,string>>>({}), [solution, setSolution] = useState<RevealSolutionResult | null>(null);
   const [corrections, setCorrections] = useState<Record<string,string>>({});
+  const [images,setImages]=useState<File[]>([]);
+  const uploadPages=useRef<UploadPage[]|null>(null);
   const [frozen, setFrozen] = useState(false);
   const [busy, setBusy] = useState(false), [notice, setNotice] = useState("");
   const [result, setResult] = useState<{ overall?: { explanation?: string }; steps?: { id: string; representation: string; explanation: string }[] } | null>(null);
@@ -117,10 +120,19 @@ function Workspace({ client, evaluationEnabled }: { client: SupabaseClient; eval
     let id = attempt;
     if (!id) {
       const payload = { client_submission_id: key("attempt"), leaf_id: leaf, kind: "INITIAL" as const,
-        input_kind: file ? (answer.trim() ? "MIXED" as const : "EVIDENCE" as const) : "TYPED" as const,
+        input_kind: (file||images.length) ? (answer.trim() ? "MIXED" as const : "EVIDENCE" as const) : "TYPED" as const,
         ...(answer.trim() ? { typed_answer: answer } : {}) };
       const created = prior ? await learnClient.createResolveAttempt({ ...payload, kind: prior.response_format === "SHORT_ANSWER" ? "SHORT_ANSWER_RESOLVE" : "FULL_RESOLVE", predecessor_id: prior.attempt_id, prior_evaluation_id: prior.evaluation_id }) : await inputClient.createAttempt(payload);
       id = created.attempt_id; if (!alive.current) return; setAttempt(id);
+    }
+    if(images.length){
+      uploadPages.current??=images.map(file=>({file}));
+      await uploadOrderedPages(uploadPages.current,{
+        assertOwner:async()=>{await token();if(!alive.current)throw Error('ACCOUNT_CHANGED');},
+        register:async(position,file)=>(await inputClient.registerEvidence(id!,{position,media_type:file.type as EvidenceMetadata["media_type"],byte_size:file.size})).artifact_id,
+        upload:async(artifact,file)=>{const form=new FormData();form.set('artifact_id',artifact);form.set('file',file);await gateway('upload',form,true);}
+      });
+      await gateway('extract',{attempt_id:id});
     }
     if (file) {
       const artifact = await inputClient.registerEvidence(id, { position: 1, media_type: file.type as EvidenceMetadata["media_type"], byte_size: file.size });
@@ -157,23 +169,23 @@ function Workspace({ client, evaluationEnabled }: { client: SupabaseClient; eval
       {!catalog.length && <p>현재 준비된 문제가 없습니다.</p>}
       {chosen && <section aria-label="문제"><p>{chosen.problem_statement}</p><p>{chosen.statement}</p></section>}
       {!evaluationEnabled && <p>문항을 확인할 수 있습니다. 현재 첨삭은 이용할 수 없습니다.</p>}
-      <AnswerImageInput file={file?.type.startsWith("image/")?file:null} onChange={setFile} disabled={frozen}/>
+      <AnswerImagesInput files={images} onChange={next=>{setImages(next);setFile(null);uploadPages.current=null;}} disabled={frozen}/>
       <label htmlFor="math-answer">내 답안</label>
       <textarea id="math-answer" value={answer} maxLength={30000} disabled={frozen} onChange={e => setAnswer(e.target.value)} rows={8} />
       <label htmlFor="math-file">PDF 첨부 (선택, 20MB 이하)</label>
       <input id="math-file" type="file" accept="application/pdf" disabled={frozen} onChange={e => {
         const selected = e.target.files?.[0] ?? null;
         if (selected && (selected.size > 20971520 || !["image/png","image/jpeg","image/webp","application/pdf"].includes(selected.type))) { setFile(null); setNotice("지원하는 사진 또는 20MB 이하 PDF를 선택해 주세요."); return; }
-        setFile(selected);
+        setFile(selected);setImages([]);uploadPages.current=null;
       }} />
       {file?.type === "application/pdf" && <><p>선택한 파일: {file.name}</p><LocalPreview key={file.name + file.lastModified} file={file}/></>}
-      <button type="button" disabled={!evaluationEnabled || !leaf || (!answer.trim() && !file)} onClick={() => void run(submit)}>답안 제출 · 입력 확인</button>
+      <button type="button" disabled={!evaluationEnabled || !leaf || (!answer.trim() && !file && !images.length)} onClick={() => void run(submit)}>답안 제출 · 입력 확인</button>
       {input && <MathInputFlow readiness={readiness} onConfirm={intent => setCorrections(current => ({ ...current, [intent.regionId]: intent.confirmedRawText }))} />}
       {!!regions.length && !input?.can_request_evaluation && <button type="button" disabled={regions.some(row => corrections[row.region_id] === undefined)} onClick={() => void run(async () => {
         await inputClient.confirmExtraction(attempt!, String(input!.candidate?.run_id ?? input!.candidate?.id), regions.map(row => ({ region_id: row.region_id, raw_text: corrections[row.region_id], normalized_math: corrections[row.region_id] })));
         const state = await inputClient.readInput(attempt!); if (alive.current) setInput(state);
       })}>확인한 답안 저장</button>}
-      <button type="button" onClick={() => { setFrozen(false); setAttempt(null); setInput(null); setPrior(null); setLearning(null); setResult(null); setAnswer(""); setFile(null); setHints({}); setSolution(null); setCorrections({}); keys.current.clear(); }}>새 답안 작성</button>
+      <button type="button" onClick={() => { setFrozen(false); setAttempt(null); setInput(null); setPrior(null); setLearning(null); setResult(null); setAnswer(""); setFile(null);setImages([]);uploadPages.current=null; setHints({}); setSolution(null); setCorrections({}); keys.current.clear(); }}>새 답안 작성</button>
       {input?.can_request_evaluation && <button type="button" disabled={!evaluationEnabled} onClick={() => void run(evaluate)}>{prior ? "재첨삭" : "첨삭 진행"}</button>}
       {learning && <button type="button" onClick={() => void run(() => readEvaluation(learning.evaluation_id))}>결과 다시 확인</button>}
       {learning && ['REQUESTED','PROCESSING'].includes(learning.evaluation_state) && <button type="button" onClick={() => void run(async () => {
@@ -202,7 +214,7 @@ function Workspace({ client, evaluationEnabled }: { client: SupabaseClient; eval
             const result = await learnClient.revealSolution(learning.evaluation_id, selected.target, key("solution"), selected.solution_id);
             if (alive.current) setSolution(result);
           })}
-          onResolve={() => { setFrozen(false); setPrior(learning); setLeaf(learning.leaf_id); setAttempt(null); setInput(null); setAnswer(""); setFile(null); setCorrections({}); keys.current.clear(); }} solutionProvenance={solution?.provenance} />
+          onResolve={() => { setFrozen(false); setPrior(learning); setLeaf(learning.leaf_id); setAttempt(null); setInput(null); setAnswer(""); setFile(null);setImages([]);uploadPages.current=null; setCorrections({}); keys.current.clear(); }} solutionProvenance={solution?.provenance} />
         {solution && <section aria-label="해설"><h2>해설</h2><p>{solution.body}</p></section>}
         <LearningDelta view={summarizeReevaluationDelta(learning.reevaluation_delta as ReevaluationDelta | null)} />
       </>}

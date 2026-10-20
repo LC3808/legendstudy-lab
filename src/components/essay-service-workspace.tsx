@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import type {SubmissionDraft} from './essay-exam-submit';
 import './essay-service.css';
 import {RecordDetail} from './my/essay-dashboard';
 import {useEffect,useRef,useState} from 'react';
@@ -17,12 +18,12 @@ export function EssayServiceWorkspace(){
  return <Workspace key={`${auth.user.id}:${question}:${session??''}`} questionId={question} resume={session}/>;
 }
 /** Inline Phase 2 writer: existing per-question Draft only; no legacy submission/billing. */
-export function EssayQuestionDraft({questionId,onDirtyChange}:{questionId:string;onDirtyChange:(id:string,dirty:boolean)=>void}){
+export function EssayQuestionDraft({questionId,onDirtyChange,onSubmissionDraft}:{onSubmissionDraft?:(id:string,draft:SubmissionDraft)=>void;questionId:string;onDirtyChange:(id:string,dirty:boolean)=>void}){
  const auth=useAuth();
  if(!auth.user||!auth.client)return null;
- return <Workspace key={`${auth.user.id}:${questionId}`} questionId={questionId} draftOnly onDirtyChange={onDirtyChange}/>;
+ return <Workspace key={`${auth.user.id}:${questionId}`} questionId={questionId} draftOnly onDirtyChange={onDirtyChange} onSubmissionDraft={onSubmissionDraft}/>;
 }
-function Workspace({questionId,resume,draftOnly=false,onDirtyChange}:{questionId:string;resume?:string;draftOnly?:boolean;onDirtyChange?:(id:string,dirty:boolean)=>void}){
+function Workspace({questionId,resume,draftOnly=false,onDirtyChange,onSubmissionDraft}:{onSubmissionDraft?:(id:string,draft:SubmissionDraft)=>void;questionId:string;resume?:string;draftOnly?:boolean;onDirtyChange?:(id:string,dirty:boolean)=>void}){
  const auth=useAuth(),owner=auth.user!.id,client=auth.client!;
  const identity=useRef<string|null>(owner);
  const runtime=useRef<EssayRuntimeClient|null>(null),alive=useRef(true),lock=useRef(false);
@@ -52,6 +53,7 @@ function Workspace({questionId,resume,draftOnly=false,onDirtyChange}:{questionId
  useEffect(()=>{const before=(event:BeforeUnloadEvent)=>{if(body!==savedBody){event.preventDefault();event.returnValue='';}};window.addEventListener('beforeunload',before);return()=>window.removeEventListener('beforeunload',before);},[body,savedBody]);
  useEffect(()=>{onDirtyChange?.(questionId,body!==savedBody);},[body,savedBody,questionId,onDirtyChange]);
  useEffect(()=>()=>onDirtyChange?.(questionId,false),[questionId,onDirtyChange]);
+ useEffect(()=>{onSubmissionDraft?.(questionId,{body,revision:revision??0,images:false,saved:revision!==null&&!busy&&body===savedBody});},[questionId,body,revision,busy,savedBody,onSubmissionDraft]);
  async function run(submit=false){
   if(submit&&draftOnly)return;
   if(lock.current||revision===null||!runtime.current)return;lock.current=true;setBusy(true);
