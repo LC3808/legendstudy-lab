@@ -81,3 +81,18 @@ it('malformed or mixed paid/free E2E scope fails before credit calls',async()=>{
  }
  expect(m.request).not.toHaveBeenCalled();
 });
+
+it('image references and six-page drafts cannot bypass the text-only contract',async()=>{
+ for(const extra of [{artifactIds:[id]},{images:Array(6).fill(id)},{input_kind:'EVIDENCE'},{confirmed_run_id:id}]){
+  vi.clearAllMocks();
+  const response=await send({...body,answers:[{...body.answers[0],...extra}]});
+  expect(response.status).toBe(422);
+  expect(m.request).not.toHaveBeenCalled();
+  expect(m.dispatch).not.toHaveBeenCalled();
+ }
+});
+it('foreign Origin cannot reach authentication, Credit or worker admission',async()=>{
+ const response=await onRequestPost({env,request:new Request('https://lab.legendstudy.com/api/essay/exam',{method:'POST',headers:{Origin:'https://other.invalid',Authorization:'Bearer fixture-user','Content-Type':'application/json'},body:JSON.stringify(body)})});
+ expect(response.status).toBe(403);
+ expect(m.subject).not.toHaveBeenCalled();expect(m.request).not.toHaveBeenCalled();expect(m.dispatch).not.toHaveBeenCalled();
+});
