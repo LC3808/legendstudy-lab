@@ -25,3 +25,10 @@ it('does not fetch metadata using another account session',async()=>{
 it('rejects selected questions missing from the reviewed registry',async()=>{
  render(<DbExamSubmit {...props} included={['unreviewed']}/>);await waitFor(()=>expect(fetch).toHaveBeenCalled());expect(f.submit).not.toHaveBeenCalled();
 });
+it('hides previously reviewed submission immediately when exam identity changes',async()=>{
+ const view=render(<DbExamSubmit {...props}/>);await screen.findByText('existing submit');
+ vi.mocked(fetch).mockImplementation(()=>new Promise(()=>{}));
+ view.rerender(<DbExamSubmit {...props} examId="different-exam"/>);
+ expect(screen.queryByText('existing submit')).toBeNull();
+ expect(screen.getByRole('status')).toHaveTextContent('연결을 확인');
+});

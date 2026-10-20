@@ -42,3 +42,15 @@ it('does not merge campuses or independent exams in the same track',async()=>{
  expect(screen.getByLabelText('문항')).toBeDisabled();fireEvent.change(screen.getByLabelText('시험 회차'),{target:{value:'exam2'}});
  await waitFor(()=>expect(screen.getByLabelText('문항')).toBeEnabled());
 });
+it('selects a sole question without a second choice and permits explicit exclusion',async()=>{
+ f.questions.mockResolvedValue([{id:'q1',label:'문항 1'}]);
+ render(<UniversityEssayStart universityId="u" sourceId="skku"/>);
+ await screen.findByRole('option',{name:'2025학년도'});
+ fireEvent.change(screen.getByLabelText('학년도'),{target:{value:'2025'}});
+ fireEvent.change(screen.getByLabelText('계열'),{target:{value:'언어형'}});
+ expect(screen.getByLabelText('문항')).toHaveValue('q1');
+ expect(screen.getByLabelText('답안 q1')).toBeVisible();
+ expect(screen.getByLabelText('문항 1 제출에 포함')).toBeChecked();
+ fireEvent.click(screen.getByLabelText('문항 1 제출에 포함'));
+ expect(screen.getByText('선택한 문항 0 / 1')).toBeVisible();
+});
