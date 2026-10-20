@@ -8,6 +8,13 @@
       "universityId": "a9e38cdc-9593-4c60-b8a6-698133f48518",
       "canonicalSlug": "gachon",
       "name": "가천대학교",
+      "researchSources": [
+        {
+          "url": "https://admission.gachon.ac.kr/admission/html/rolling/susi_guide.asp",
+          "label": "공식 논술가이드 · 현재 2026학년도 기출 수록",
+          "verifiedAt": "2026-10-20"
+        }
+      ],
       "offerings": [
         {
           "id": "gachon-essay-2027-9376e81d",
