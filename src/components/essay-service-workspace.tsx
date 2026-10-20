@@ -85,7 +85,7 @@ function Workspace({questionId,resume,draftOnly=false,onDirtyChange,onSubmission
   }catch{if(alive.current)setNotice('요청 상태를 확인하지 못했습니다. 같은 요청을 다시 확인하거나 첨삭 기록을 확인해 주세요.');}
   finally{lock.current=false;if(alive.current)setBusy(false);}
  }
- return <section className={draftOnly?"essay-service essay-inline-draft":"content-wrap page-section essay-service"} aria-busy={busy} style={{maxWidth:'82rem',overflowWrap:'anywhere'}}>
+ return <section className={draftOnly?"essay-service essay-inline-draft essay-workspace":"content-wrap page-section essay-service essay-workspace"} aria-busy={busy}>
   {draftOnly?<h3>{question?.label??'답안 작성'}</h3>:<><Link href="/essay-lab/">← 기출문제 선택</Link><h1>{question?.label??'답안 작성'}</h1></>}
   <p role="status">{notice}</p>
   {question&&<>
@@ -96,8 +96,8 @@ function Workspace({questionId,resume,draftOnly=false,onDirtyChange,onSubmission
    <p>제시문·도표는 공식 원문에서 확인해 주세요. 확인되지 않은 자료는 표시하지 않습니다.</p></aside><div className="essay-answer-pane">
    <p>{Array.from(body).length.toLocaleString('ko-KR')}자 · 공백 포함 참고 수치{question.length_count_rule?` · 공식 분량 계산 기준: ${question.length_count_rule}`:' · 공식 분량 계산 기준 미확인'}</p>
    <label htmlFor={`service-essay-answer-${questionId}`}>내 답안</label>
-   <textarea id={`service-essay-answer-${questionId}`} rows={14} maxLength={30000} value={body} disabled={busy||!!attempt} onChange={e=>setBody(e.target.value)} style={{width:'100%',boxSizing:'border-box'}}/>
-   <div style={{display:'flex',flexWrap:'wrap',gap:'0.75rem',marginTop:'1rem'}}>
+   <textarea id={`service-essay-answer-${questionId}`} rows={14} maxLength={30000} value={body} disabled={busy||!!attempt} onChange={e=>setBody(e.target.value)}/>
+   <div className="essay-answer-actions">
     <button className="button button--outline" disabled={busy||!!attempt} onClick={()=>void run()}>답안 저장</button>
     {!draftOnly&&<button className="button button--primary" disabled={busy||!!attempt||!body.trim()} onClick={()=>void run(true)}>답안 제출</button>}
     {attempt&&<button className="button button--primary" disabled={busy} onClick={()=>{setPanel('answer');setAttempt(null);setEvaluation(null);setResult(null);setRetryable(false);setNotice('이전 제출을 보존하고 같은 답안을 직접 고쳐 쓸 수 있습니다.');}}>다시 써보기</button>}
@@ -111,7 +111,7 @@ function Workspace({questionId,resume,draftOnly=false,onDirtyChange,onSubmission
    {result&&attempt&&sessionId&&<section aria-label="첨삭 결과"><RecordDetail row={{id:attempt,source:'essay',question:question.label,university:exam?.universities.name??null,year:exam?.admission_year,at:'',rewrite:history.some(e=>e.attempt_id!==attempt),evaluations:[],sessionId}}/></section>}
 
   </>}
-  {!draftOnly&&<><h2>이 문항의 첨삭 기록</h2>{history.map(e=><p key={String(e.id)}><Link href={'/my/essays/'}>{e.status==='completed'?'완료된 첨삭 보기':'처리 상태 확인'}</Link></p>)}
-  <Link href="/my/essays/">나의 첨삭 기록 전체 보기</Link></>}
+  {!draftOnly&&history.length>0&&<section className="essay-history-note" aria-label="이 문항의 첨삭 기록"><h2>이 문항의 첨삭 기록</h2>{history.map(e=><p key={String(e.id)}><Link href={'/my/essays/'}>{e.status==='completed'?'완료된 첨삭 보기':'처리 상태 확인'}</Link></p>)}</section>}
+  {!draftOnly&&<Link className="essay-history-all" href="/my/essays/">나의 첨삭 기록 전체 보기</Link>}
  </section>;
 }

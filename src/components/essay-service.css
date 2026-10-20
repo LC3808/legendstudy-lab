@@ -208,3 +208,52 @@
 
 .essay-split-control{display:none}
 @media(min-width:900px){.essay-split-control{display:flex;gap:12px;align-items:center;margin:12px 0}}
+
+/* --- Web UX refinement (2026-10-20): answer input, 6-image grid, 360px, 200% zoom --- */
+/* 1. University selection (essay-first): tighter, aligned cards. */
+.university-discovery--essay-first .university-card { padding:1.1rem; gap:.85rem; }
+.university-discovery--essay-first .university-card h3 { font-size:1.2rem; }
+.university-discovery--essay-first .university-primary { margin-top:auto; }
+
+/* 3. Answer input: inline styles moved to classes; comfortable, 44px targets. */
+.essay-workspace { max-width:82rem; }
+.essay-answer-pane textarea { min-height:14rem; line-height:1.7; }
+.essay-answer-actions { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1rem; }
+.essay-answer-actions .button { min-height:44px; }
+.essay-submit-note { color:var(--ink-muted); font-size:var(--type-small); }
+
+/* 4. Ordered image pages: aligned responsive grid with clear order and status. */
+.answer-images { margin-block:1rem; }
+.answer-images__grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr)); gap:1rem; align-items:start; }
+.answer-image-card { min-width:0; margin:0; border:1px solid var(--line-strong,#d5d8dc); border-radius:.75rem; padding:1rem; background:var(--surface,#fff); display:flex; flex-direction:column; gap:.75rem; }
+.answer-image-card legend { font-weight:700; font-size:var(--type-small); padding-inline:.35rem; }
+.answer-image-card--add { border-style:dashed; justify-content:center; }
+.answer-image-card__move { display:flex; flex-wrap:wrap; gap:.5rem; }
+.answer-image-card__move .button { flex:1 1 auto; min-height:44px; }
+.answer-image-input { display:flex; flex-direction:column; gap:.6rem; min-width:0; }
+.answer-image-input__selected { display:flex; flex-direction:column; gap:.5rem; }
+.answer-image-input__preview { max-width:100%; max-height:14rem; object-fit:contain; border-radius:.5rem; background:#f2f4f7; }
+.answer-image-input__name { margin:0; font-size:var(--type-small); color:var(--ink-muted); overflow-wrap:anywhere; }
+.answer-image-input__sources { display:flex; flex-wrap:wrap; gap:.5rem; }
+.answer-image-input__source { flex:1 1 10rem; font-size:var(--type-small); }
+.answer-image-input__source input { min-height:44px; }
+.answer-image-input__error { color:#a92232; font-size:var(--type-small); }
+.answer-images__status { margin:.75rem 0 0; font-weight:700; font-size:var(--type-small); color:var(--ink); }
+
+/* 8. Lighter, non-redundant history affordance. */
+.essay-history-note { margin-top:2rem; border-top:1px solid var(--line); padding-top:1rem; }
+.essay-history-note h2 { font-size:1.1rem; }
+.essay-history-all { display:inline-flex; min-height:44px; align-items:center; font-weight:700; }
+
+/* 5. 360px: single column, full-width actions, no horizontal overflow. */
+@media (max-width:22.5em) {
+ .essay-selection-grid { grid-template-columns:minmax(0,1fr); }
+ .answer-images__grid { grid-template-columns:minmax(0,1fr); }
+ .essay-answer-actions .button { flex:1 1 100%; }
+ .essay-question-tabs .button { flex:1 1 auto; }
+}
+
+/* 6. 200% zoom / large text: rem-based, never clip or force horizontal scroll. */
+.essay-answer-pane textarea { max-width:100%; }
+.essay-submission-selection { overflow-wrap:anywhere; }
+.essay-submission-selection label { flex-wrap:wrap; }

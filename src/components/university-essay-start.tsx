@@ -52,6 +52,8 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
  const question=exam?.questions.find(q=>q.id===selectedQuestionId);
  // A display-policy distinction only; never used to authorize a Provider or bill.
  const examUnit=!!exam&&/인문|언어|사회|경제|경영/.test(exam.field_or_division??'');
+ // A sole question is auto-selected: drop the redundant "select all" and multi-question copy.
+ const single=!!exam&&exam.questions.length===1;
  function chooseQuestion(id:string){setQuestionId(id);if(id)setVisited(old=>old.includes(id)?old:[...old,id]);}
  if(sourceExams(sourceId).length&&(!universityId||(authStatus==='anonymous'||authStatus==='unconfigured')||status==='error'||(status==='ready'&&!rows.length)))return <SourceExamSelection sourceId={sourceId}/>;
  return <section className="university-section essay-start" aria-label="논술 첨삭 시작">
@@ -66,8 +68,8 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
    </div>
    {exam&&<>
     {officialUrl(exam.official_source_url)&&<p><a href={officialUrl(exam.official_source_url)!} target="_blank" rel="noopener noreferrer">선택한 시험의 공식 기출자료 확인 ↗</a></p>}
-    {examUnit&&<div className="essay-submission-selection"><p>이 시험에서 첨삭받을 문항을 선택하세요. 전체 또는 일부 문항을 함께 제출할 수 있습니다.</p>
-     <button className="button button--outline" onClick={()=>setIncluded(exam.questions.map(q=>q.id))}>전체 문항 선택</button>
+    {examUnit&&<div className="essay-submission-selection"><p>{single?'이 문항을 첨삭 제출에 포함할지 선택하세요.':'이 시험에서 첨삭받을 문항을 선택하세요. 전체 또는 일부 문항을 함께 제출할 수 있습니다.'}</p>
+     {!single&&<button className="button button--outline" onClick={()=>setIncluded(exam.questions.map(q=>q.id))}>전체 문항 선택</button>}
      {question&&<label><input type="checkbox" checked={selectedIds.includes(question.id)} onChange={e=>setIncluded(e.target.checked?[...selectedIds,question.id]:selectedIds.filter(id=>id!==question.id))}/>{question.label} 제출에 포함</label>}
      <p role="status">선택한 문항 {selectedIds.length} / {exam.questions.length}</p>
     </div>}
