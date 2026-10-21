@@ -32,7 +32,11 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
    return reply(await quoted.json());
   }
   if(input.action!=='submit'||!uuid(input.examId)||!uuid(input.key)||!Array.isArray(input.answers)||input.answers.length<1||input.answers.length>100||!(input.parentId==null||uuid(input.parentId)))return reply({code:'INVALID_REQUEST'},422);
-  if(input.answers.some(a=>!a||typeof a!=='object'||!uuid(a.questionId)||typeof a.body!=='string'||!a.body.trim()||a.body.length>30000||!Number.isSafeInteger(a.revision)||a.revision<0||Object.keys(a).some(k=>!['questionId','body','revision'].includes(k))))return reply({code:'INVALID_ANSWERS'},422);
+  if(input.answers.some(a=>{
+   if(!a||typeof a!=='object'||!uuid(a.questionId)||!Number.isSafeInteger(a.revision)||a.revision<0)return true;
+   if('mathInput' in a)return Object.keys(a).some(k=>!['questionId','revision','mathInput'].includes(k))||!a.mathInput||typeof a.mathInput!=='object'||!uuid(a.mathInput.attemptId)||!uuid(a.mathInput.confirmedRunId)||Object.keys(a.mathInput).some(k=>!['attemptId','confirmedRunId'].includes(k));
+   return typeof a.body!=='string'||!a.body.trim()||a.body.length>30000||Object.keys(a).some(k=>!['questionId','body','revision'].includes(k));
+  }))return reply({code:'INVALID_ANSWERS'},422);
   const ready=await dispatch('/exam-admission',{exam_id:input.examId});
   if(!ready.ok||(await ready.json() as {ready?:boolean}).ready!==true)return reply({code:'EVALUATION_UNAVAILABLE'},503);
   const reserved=await transport.request(input.previousPaidRunId?'/rest/v1/rpc/essay_exam_submit_cycle':'/rest/v1/rpc/essay_exam_submit',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_key:scope?.requestKey??input.key,p_answers:input.answers,p_parent:input.parentId??null,...(input.previousPaidRunId?{p_previous:input.previousPaidRunId}:{})})});

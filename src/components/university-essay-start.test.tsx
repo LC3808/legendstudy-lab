@@ -1,6 +1,8 @@
 // @vitest-environment jsdom
 import {render,screen,fireEvent,waitFor} from '@testing-library/react';
 import {beforeEach,it,expect,vi} from 'vitest';
+vi.mock('@/lib/essay-runtime/registered-material-catalog',()=>({loadRegisteredMaterials:vi.fn().mockResolvedValue([])}));
+import {loadRegisteredMaterials} from '@/lib/essay-runtime/registered-material-catalog';
 import {UniversityEssayStart} from './university-essay-start';
 vi.mock('@/lib/essay-runtime/source-registry',()=>({sourceExams:()=>[]}));
 const f=vi.hoisted(()=>({user:{id:'owner'} as {id:string}|null,client:{},exams:vi.fn(),questions:vi.fn()}));
@@ -53,4 +55,16 @@ it('selects a sole question without a second choice and permits explicit exclusi
  expect(screen.getByLabelText('문항 1 제출에 포함')).toBeChecked();
  fireEvent.click(screen.getByLabelText('문항 1 제출에 포함'));
  expect(screen.getByText('선택한 문항 0 / 1')).toBeVisible();
+});
+
+it('merges newly registered metadata beside published exams without authorizing submission',async()=>{
+ vi.mocked(loadRegisteredMaterials).mockResolvedValueOnce([{key:'registered:new',dbExamId:'new',universityId:'u',sourceUniversityId:'skku',year:2026,kind:'mock',track:'수리',session:'모의 수리',campus:null,verification:'REVIEW_REQUIRED',sourceHashes:[],evaluationReady:false,questions:[{key:'registered:newq',dbQuestionId:'newq',label:'신규 문항',sourceLocator:null,lengthLabel:null,accountDraftReady:false}]}]);
+ render(<UniversityEssayStart universityId="u" sourceId="skku"/>);
+ await screen.findByRole('option',{name:'2026학년도'});
+ expect(screen.getByRole('option',{name:'2025학년도'})).toBeInTheDocument();
+ fireEvent.change(screen.getByLabelText('학년도'),{target:{value:'2026'}});
+ fireEvent.change(screen.getByLabelText('계열'),{target:{value:'수리'}});
+ expect(screen.getByRole('option',{name:'신규 문항'})).toBeInTheDocument();
+ expect(screen.getByRole('button',{name:'첨삭 준비 중'})).toBeDisabled();
+ expect(screen.queryByRole('textbox')).toBeNull();
 });

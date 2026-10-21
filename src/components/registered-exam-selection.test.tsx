@@ -20,12 +20,13 @@ it('selects the registered mock exam, saves a local draft and blocks unreviewed 
  expect(screen.queryByRole('button',{name:'계정 답안 확인·저장'})).toBeNull();
  expect(fetch).not.toHaveBeenCalled();
 });
-it('clears private exam metadata immediately on logout',async()=>{
+it('clears old account view and reloads public metadata on logout',async()=>{
  const view=render(<SourceExamSelection sourceId="gachon" registeredOnly/>);
  await screen.findByLabelText('문제 1 답안');state.user=null;state.client.auth.getSession.mockResolvedValue({data:{session:null}});
  view.rerender(<SourceExamSelection sourceId="gachon" registeredOnly/>);
  expect(screen.queryByLabelText('문제 1 답안')).toBeNull();expect(screen.queryByRole('option',{name:'2027학년도'})).toBeNull();
- await waitFor(()=>expect(fetch).toHaveBeenCalled());
+ await waitFor(()=>expect(state.load).toHaveBeenCalledTimes(2));
+ expect(screen.getByRole('button',{name:'첨삭 준비 중'})).toBeDisabled();
 });
 it('does not invent years/questions for Kookmin without registered records',async()=>{
  state.load.mockResolvedValue([]);render(<SourceExamSelection sourceId="kookmin" registeredOnly/>);

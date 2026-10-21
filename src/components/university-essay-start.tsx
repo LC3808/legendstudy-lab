@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import {loadRegisteredMaterials} from '@/lib/essay-runtime/registered-material-catalog';
 import {catalogUniversity} from '@/lib/essay-runtime/public-discovery';
 import {DbExamSubmit} from './db-exam-submit';
 import type {SubmissionDraft} from './essay-exam-submit';
@@ -9,7 +10,7 @@ import {useAuth} from './auth-context';
 import {EssayQuestionDraft} from './essay-service-workspace';
 import {loadExams,loadQuestions,officialUrl,type Exam,type Question} from '@/lib/essay-runtime/catalog';
 
-type ReadyExam=Exam&{questions:Question[]};
+type ReadyExam=Exam&{questions:Question[];reviewRequired?:boolean};
 export function UniversityEssayStart({universityId,sourceId}:{universityId:string|null;sourceId:string}){
  const auth=useAuth();
  // Remount all private draft/selection state on account changes.
@@ -31,10 +32,18 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
    const ready:ReadyExam[]=[];
    // Bounded serial reads; empty exams must not create selectable years/tracks.
    for(const exam of exams){if(!active)return;const questions=await loadQuestions(client,exam.id);if(questions.length)ready.push({...exam,questions});}
+   const university=catalogUniversity(sourceId);
+   if(university){
+    const registered=await loadRegisteredMaterials(client,sourceId);
+    for(const row of registered){
+     if(ready.some(e=>e.id===row.dbExamId))continue;
+     ready.push({id:row.dbExamId!,university_id:row.universityId!,admission_year:row.year,exam_name:row.session||row.track,exam_kind:row.kind,campus:row.campus,field_or_division:row.track,admission_track:row.track,official_source_url:null,universities:{name:university.name,slug:sourceId},reviewRequired:true,questions:row.questions.map(q=>({id:q.dbQuestionId!,essay_exam_id:row.dbExamId!,question_key:q.key,label:q.label,metadata_version:'browse-only',length_min:null,length_max:null,length_count_rule:null,time_limit_seconds:null}))});
+    }
+   }
    if(active){setRows(ready);setStatus('ready');}
   }).catch(()=>{if(active)setStatus('error');});
   return()=>{active=false;};
- },[client,user,universityId]);
+ },[client,user,universityId,sourceId]);
  function change(action:()=>void){
   if(Object.values(dirty).some(Boolean)&&!window.confirm('저장하지 않은 답안이 있습니다. 문항별 답안을 저장하지 않고 선택을 바꿀까요?'))return;
   setDrafts({});setVisited([]);setIncluded(null);setQuestionId('');setDirty({});action();
@@ -51,7 +60,7 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
  const selectedIds=included??(exam?.questions.length===1?[exam.questions[0].id]:[]);
  const question=exam?.questions.find(q=>q.id===selectedQuestionId);
  // A display-policy distinction only; never used to authorize a Provider or bill.
- const examUnit=!!exam&&/인문|언어|사회|경제|경영/.test(exam.field_or_division??'');
+ const examUnit=!!exam&&!exam.reviewRequired&&/인문|언어|사회|경제|경영/.test(exam.field_or_division??'');
  // A sole question is auto-selected: drop the redundant "select all" and multi-question copy.
  const single=!!exam&&exam.questions.length===1;
  function chooseQuestion(id:string){setQuestionId(id);if(id)setVisited(old=>old.includes(id)?old:[...old,id]);}
@@ -73,10 +82,10 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
      {question&&<label><input type="checkbox" checked={selectedIds.includes(question.id)} onChange={e=>setIncluded(e.target.checked?[...selectedIds,question.id]:selectedIds.filter(id=>id!==question.id))}/>{question.label} 제출에 포함</label>}
      <p role="status">선택한 문항 {selectedIds.length} / {exam.questions.length}</p>
     </div>}
-    {exam.questions.filter(q=>(visited.includes(q.id)||q.id===selectedQuestionId)).map(q=><div key={q.id} hidden={q.id!==selectedQuestionId}><EssayQuestionDraft questionId={q.id} onDirtyChange={onDirty} onSubmissionDraft={onSubmissionDraft}/></div>)}
+    {!exam.reviewRequired&&exam.questions.filter(q=>(visited.includes(q.id)||q.id===selectedQuestionId)).map(q=><div key={q.id} hidden={q.id!==selectedQuestionId}><EssayQuestionDraft questionId={q.id} onDirtyChange={onDirty} onSubmissionDraft={onSubmissionDraft}/></div>)}
     {question&&<div className="essay-submit-gate">
      {examUnit&&<p>선택한 문항 묶음의 최초 첨삭은 1 Credit이며, 14일 이내 같은 문항 집합의 재첨삭 1회가 포함됩니다. 최초 제출 후에는 새 문항을 추가할 수 없습니다.</p>}
-     <DbExamSubmit key={exam.id} examId={exam.id} questionIds={questionIds} included={examUnit?selectedIds:[question.id]} drafts={drafts}/>
+     {exam.reviewRequired?<><p role="status">자료 검수 중입니다. 문항 목록은 확인할 수 있으며, 첨삭은 아직 준비 중입니다.</p><button className="button button--primary" disabled>첨삭 준비 중</button></>:<DbExamSubmit key={exam.id} examId={exam.id} questionIds={questionIds} included={examUnit?selectedIds:[question.id]} drafts={drafts}/>}
     </div>}
    </>}
   </>}

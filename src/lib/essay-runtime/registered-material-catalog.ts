@@ -8,6 +8,16 @@ const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{
 export async function loadRegisteredMaterials(client:SupabaseClient,sourceId:string):Promise<SourceExam[]>{
  const university=catalogUniversity(sourceId);
  if(!university)return [];
+ const browse=await client.rpc('essay_browse_catalog',{p_university:sourceId});
+ if(!browse.error){
+  if(!Array.isArray(browse.data))throw Error('REGISTERED_CATALOG_INVALID');
+  return browse.data.map((row:ExamRow & {questions:Detail['questions']})=>{
+   if(university.universityId && row.universityId!==university.universityId)throw Error('REGISTERED_CATALOG_INVALID');
+   return projectRegisteredExam(sourceId,row,{examId:row.examId,questions:row.questions} as Detail);
+  });
+ }
+ // During staged rollout, only a missing RPC permits the existing reviewer path.
+ if(!['PGRST202','42883'].includes(browse.error.code))throw Error('REGISTERED_CATALOG_UNAVAILABLE');
  const permission=await client.rpc('is_quality_operator');
  if(permission.error||permission.data!==true)return [];
  const list=await client.rpc('essay_material_list');

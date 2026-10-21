@@ -96,3 +96,16 @@ it('foreign Origin cannot reach authentication, Credit or worker admission',asyn
  expect(response.status).toBe(403);
  expect(m.subject).not.toHaveBeenCalled();expect(m.request).not.toHaveBeenCalled();expect(m.dispatch).not.toHaveBeenCalled();
 });
+
+it('passes only confirmed Math references to DB ownership and mapping checks',async()=>{
+ const answers=[{questionId:id,revision:1,mathInput:{attemptId:id,confirmedRunId:id}}];
+ expect((await send({...body,answers})).status).toBe(202);
+ expect(JSON.parse(m.request.mock.calls[0][2].body).p_answers).toEqual(answers);
+});
+it('rejects client text and storage fields alongside Math confirmation',async()=>{
+ for(const extra of [{body:'override'},{input:{body:'override'}},{images:[id]}]){
+  vi.clearAllMocks();
+  expect((await send({...body,answers:[{questionId:id,revision:1,mathInput:{attemptId:id,confirmedRunId:id},...extra}]})).status).toBe(422);
+  expect(m.request).not.toHaveBeenCalled();
+ }
+});

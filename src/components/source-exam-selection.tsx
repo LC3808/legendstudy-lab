@@ -20,7 +20,7 @@ export function SourceExamSelection({sourceId,registeredOnly=false}:{sourceId:st
    let response:Response;
    const session=auth.client?(await auth.client.auth.getSession()).data.session:null;
    if(!active)return;
-   if(registeredOnly&&session&&session.user.id===auth.user?.id&&auth.client){
+   if(registeredOnly&&auth.client){
     const registered=await loadRegisteredMaterials(auth.client,sourceId);
     if(registered.length){if(active){setRows(registered);setLoadedFor(identity);setLoadError(false);}return;}
    }
@@ -41,7 +41,7 @@ export function SourceExamSelection({sourceId,registeredOnly=false}:{sourceId:st
   })().catch(()=>{if(active){if(registeredOnly){setLoadError(true);setLoadedFor(identity);setRows([]);}}});
   return()=>{active=false;};
  },[sourceId,auth.client,auth.user?.id,registeredOnly,identity]);
- return <>{registeredOnly&&auth.user==null&&<p><Link href={`/login/?next=${encodeURIComponent(`/essay-lab/universities/${sourceId}/`)}`}>로그인</Link>하면 권한에 따라 등록 자료를 확인할 수 있습니다.</p>}{loadError&&<p role="alert">등록 문항을 불러오지 못했습니다. 연결을 확인하고 새로고침해 주세요.</p>}<Selection key={`${sourceId}:${auth.user?.id??'guest'}`} rows={registeredOnly&&loadedFor!==identity?[]:rows.filter(e=>e.sourceUniversityId===sourceId)} owner={auth.user?.id??'guest'}/></>;
+ return <>{registeredOnly&&auth.user==null&&<p><Link href={`/login/?next=${encodeURIComponent(`/essay-lab/universities/${sourceId}/`)}`}>로그인</Link>하면 답안과 첨삭 기록을 보관할 수 있습니다.</p>}{loadError&&<p role="alert">등록 문항을 불러오지 못했습니다. 연결을 확인하고 새로고침해 주세요.</p>}<Selection key={`${sourceId}:${auth.user?.id??'guest'}`} rows={registeredOnly&&loadedFor!==identity?[]:rows.filter(e=>e.sourceUniversityId===sourceId)} owner={auth.user?.id??'guest'}/></>;
 }
 function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
  const [year,setYear]=useState(''),[kind,setKind]=useState(''),[track,setTrack]=useState(''),[examKey,setExamKey]=useState(''),[questionKey,setQuestionKey]=useState('');
