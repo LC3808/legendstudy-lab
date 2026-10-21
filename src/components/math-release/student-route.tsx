@@ -21,12 +21,12 @@ import type { CoreView, HintLevel } from "@/lib/math-learning/types";
 import "./student-route.css";
 type Catalog = { leaf_id: string; statement: string; problem_statement: string; label: string; response_format: string };
 const unavailable = "지금은 요청을 처리할 수 없습니다. 로그인 상태와 연결을 확인한 뒤 다시 시도해 주세요.";
-export function MathStudentRoute({ enabled, evaluationEnabled = enabled }: { enabled: boolean; evaluationEnabled?: boolean }) {
+export function MathStudentRoute({ enabled, evaluationEnabled = enabled, requestedLeafId }: { enabled: boolean; evaluationEnabled?: boolean; requestedLeafId?: string }) {
   const auth = useAuth();
   if (!enabled) return <main className="math-student"><h1>수리논술</h1><p>서비스를 준비하고 있습니다.</p><Link href="/">LAB 홈으로</Link></main>;
   if (auth.status === "loading") return <main className="math-student"><h1>수리논술</h1><p>로그인을 확인하고 있습니다.</p></main>;
   if (!auth.user || !auth.client) return <main className="math-student"><h1>수리논술</h1><p>내 답안과 학습 기록을 보려면 로그인해 주세요.</p><Link href="/login/">로그인</Link></main>;
-  return <Workspace key={auth.user.id} client={auth.client} evaluationEnabled={evaluationEnabled} />;
+  return <Workspace key={`${auth.user.id}/${requestedLeafId ?? ""}`} client={auth.client} evaluationEnabled={evaluationEnabled} requestedLeafId={requestedLeafId} />;
 }
 import {uploadOrderedPages,type UploadPage} from "@/lib/math-input/ordered-upload";
 function LocalPreview({ file }: { file: File }) {
@@ -43,7 +43,7 @@ function LocalPreview({ file }: { file: File }) {
     // eslint-disable-next-line @next/next/no-img-element
     <img ref={image} alt="선택한 답안 미리보기" style={{ maxHeight: "24rem", objectFit: "contain" }} />;
 }
-function Workspace({ client, evaluationEnabled }: { client: SupabaseClient; evaluationEnabled: boolean }) {
+function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: SupabaseClient; evaluationEnabled: boolean; requestedLeafId?: string }) {
   const alive = useRef(true), keys = useRef(new Map<string, string>());
   const [catalog, setCatalog] = useState<Catalog[]>([]), [leaf, setLeaf] = useState("");
   const [answer, setAnswer] = useState(""), [file, setFile] = useState<File | null>(null);
@@ -91,12 +91,15 @@ function Workspace({ client, evaluationEnabled }: { client: SupabaseClient; eval
     ]).then(([result, wire]) => {
       if (!alive.current) return;
       if (result.error) throw result.error;
-      setCatalog(result.data ?? []); setLeaf(result.data?.[0]?.leaf_id ?? "");
+      const available: Catalog[] = result.data ?? [];
+      setCatalog(available);
+      setLeaf(requestedLeafId === undefined ? available[0]?.leaf_id ?? "" : available.some(row => row.leaf_id === requestedLeafId) ? requestedLeafId : "");
+      if (requestedLeafId !== undefined && !available.some(row => row.leaf_id === requestedLeafId)) setNotice("선택한 문항은 아직 수리논술 첨삭이 준비되지 않았습니다.");
       const rows = (wire as { result: { attempts: { evaluations?: { evaluation_id?: string; id?: string }[] }[] } }).result.attempts;
       setEvaluations(rows.flatMap((row, index) => (row.evaluations ?? []).flatMap(e => e.evaluation_id || e.id ? [{ id: (e.evaluation_id ?? e.id)!, label: `학습 기록 ${index + 1}` }] : [])));
     }).catch(() => { if (alive.current) setNotice(unavailable); });
     return () => { alive.current = false; };
-  }, [client, rpc]);
+  }, [client, rpc, requestedLeafId]);
   async function reloadHistory() {
     const wire = await rpc.rpc("math_input", { dto_version: "math-input-v1", action: "history", payload: { limit: 20 } }) as { result: { attempts: { evaluations?: { evaluation_id?: string; id?: string }[] }[] } };
     if (alive.current) setEvaluations(wire.result.attempts.flatMap((row, index) => (row.evaluations ?? []).flatMap(e => e.evaluation_id || e.id ? [{ id: (e.evaluation_id ?? e.id)!, label: `학습 기록 ${index + 1}` }] : [])));
@@ -163,7 +166,8 @@ function Workspace({ client, evaluationEnabled }: { client: SupabaseClient; eval
     {notice && <p role="alert">{notice}</p>}
     <fieldset disabled={busy}>
       <label htmlFor="math-question">문제 선택</label>
-      <select id="math-question" value={leaf} disabled={frozen || !!prior} onChange={e => setLeaf(e.target.value)}>
+      <select id="math-question" value={leaf} disabled={frozen || !!prior || requestedLeafId !== undefined} onChange={e => setLeaf(e.target.value)}>
+        {!leaf && <option value="">문항 연결 준비 중</option>}
         {catalog.map(row => <option key={row.leaf_id} value={row.leaf_id}>{row.label} · {row.statement.slice(0,80)}</option>)}
       </select>
       {!catalog.length && <p>현재 준비된 문제가 없습니다.</p>}

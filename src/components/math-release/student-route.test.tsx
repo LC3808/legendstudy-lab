@@ -5,16 +5,16 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { AuthContext, type AuthContextValue } from "../auth-context";
 import { MathStudentRoute } from "./student-route";
 const uuid="00000000-0000-4000-8000-000000000001";
-function fixture() {
+function fixture(target = {leafId:uuid, label:"연습 문제", statement:"식을 계산하세요"}) {
  const actions:{action:string;payload:Record<string,unknown>}[]=[];
  let evidence=false,confirmed=false,serial=0;
  const included={status:"AVAILABLE",eligible:true,included_count:1,initial_evaluation_id:uuid,expires_at:null,as_of:"2026-10-04",request_route:"math_learning.request_reevaluation"};
- const state={evaluation_id:uuid,attempt_id:uuid,leaf_id:uuid,lineage_id:uuid,response_format:"FULL_SOLUTION",evaluation_state:"COMPLETED",valid_evaluation_available:true,
+ const state={evaluation_id:uuid,attempt_id:uuid,leaf_id:target.leafId,lineage_id:uuid,response_format:"FULL_SOLUTION",evaluation_state:"COMPLETED",valid_evaluation_available:true,
  core:[{core_id:uuid,error_id:uuid,step_id:uuid,title:"부호를 확인하세요",diagnosis:"부호",why:"식의 부호가 달라집니다",next_action:"다시 계산하세요"}],
  hints:[{hint_id:uuid,core_id:uuid,level:1,available:true,can_reveal:true}],solutions:[{solution_id:uuid,target:"REFERENCE",provenance:"OFFICIAL_SOLUTION"}],included_reevaluation:included,reevaluation_delta:null};
  const rpc=vi.fn((name:string,args:{p_request?:{action:string;payload:Record<string,unknown>;dto_version:string}})=>{
   const p=args?.p_request;let result:unknown;
-  if(name==="math_catalog")result=[{leaf_id:uuid,label:"연습 문제",statement:"식을 계산하세요",problem_statement:"긴 수식 x² + y²",response_format:"FULL_SOLUTION"}];
+  if(name==="math_catalog")result=[{leaf_id:target.leafId,label:target.label,statement:target.statement,problem_statement:"긴 수식 x² + y²",response_format:"FULL_SOLUTION"}];
   else {
    actions.push({action:p!.action,payload:p!.payload});
    switch(p!.action){
@@ -88,4 +88,56 @@ describe("student route integration",()=>{
   view.rerender(<AuthContext.Provider value={{...f.auth,user:{id:"other"}}}><MathStudentRoute enabled/></AuthContext.Provider>);
   expect((screen.getByLabelText("내 답안") as HTMLTextAreaElement).value).toBe("");
  });
+});
+
+it("pinned unavailable leaf cannot fall back to the first catalog question", async () => {
+ const f=fixture(); const fetchMock=vi.fn(); vi.stubGlobal("fetch",fetchMock);
+ render(<AuthContext.Provider value={f.auth}><MathStudentRoute enabled requestedLeafId="not-in-authorized-catalog"/></AuthContext.Provider>);
+ await screen.findByText("선택한 문항은 아직 수리논술 첨삭이 준비되지 않았습니다.");
+ fireEvent.change(screen.getByLabelText("내 답안"),{target:{value:"synthetic"}});
+ expect((screen.getByRole("button",{name:"답안 제출 · 입력 확인"}) as HTMLButtonElement).disabled).toBe(true);
+ expect((screen.getByLabelText("문제 선택") as HTMLSelectElement).disabled).toBe(true);
+ expect(f.actions.some(x=>x.action==="create_attempt")).toBe(false); expect(fetchMock).not.toHaveBeenCalled();
+});
+it("pinned authorized leaf uses existing Math attempt contract and retains evaluation HOLD",async()=>{
+ const f=fixture(); render(<AuthContext.Provider value={f.auth}><MathStudentRoute enabled evaluationEnabled={false} requestedLeafId={uuid}/></AuthContext.Provider>);
+ await screen.findByText("긴 수식 x² + y²");
+ fireEvent.change(screen.getByLabelText("내 답안"),{target:{value:"synthetic"}});
+ expect((screen.getByLabelText("문제 선택") as HTMLSelectElement).value).toBe(uuid);
+ expect((screen.getByRole("button",{name:"답안 제출 · 입력 확인"}) as HTMLButtonElement).disabled).toBe(true);
+ expect(f.actions.some(x=>x.action==="create_attempt")).toBe(false);
+});
+
+it("Konkuk representative: six ordered mock uploads → confirmation → evaluation → rewrite → History",async()=>{
+ const target={leafId:"3bab07d3-c047-53c2-89ad-9fa20ec7b3f3",label:"건국대 2026 수시 자연 1번 · 로컬 연결 검증",statement:"합성 입력 — 공식 원문 및 평가 품질 검증과 별도"};
+ const f=fixture(target); const uploads:string[]=[];
+ const fetchMock=vi.fn(async(url:string,init?:RequestInit)=>{
+  if(url.endsWith('/upload')) uploads.push((init!.body as FormData).get('file') instanceof File ? ((init!.body as FormData).get('file') as File).name : 'missing');
+  return Response.json({status:"COMPLETED"});
+ });vi.stubGlobal("fetch",fetchMock);
+ render(<AuthContext.Provider value={f.auth}><MathStudentRoute enabled requestedLeafId={target.leafId}/></AuthContext.Provider>);
+ await screen.findByText(target.statement);
+ for(let i=1;i<=6;i++){
+  const inputs=screen.getAllByLabelText("답안 이미지 첨부");
+  fireEvent.change(inputs[inputs.length-1],{target:{files:[new File(["synthetic"],`page${i}.png`,{type:"image/png"})]}});
+ }
+ await screen.findByText("사진 6/6장 · 첨부한 순서로 저장됩니다.");
+ fireEvent.click(screen.getByRole('button',{name:'사진 2 앞으로'}));
+ fireEvent.click(screen.getByRole('button',{name:'답안 제출 · 입력 확인'}));
+ const correction=await screen.findByLabelText('수정할 내용');
+ fireEvent.change(correction,{target:{value:'합성 판독 확인: A=(1,e)'}});
+ fireEvent.click(screen.getByRole('button',{name:'수정'}));
+ fireEvent.click(screen.getByRole('button',{name:'확인한 답안 저장'}));
+ fireEvent.click(await screen.findByRole('button',{name:'첨삭 진행'}));
+ await screen.findByText('풀이를 확인했습니다');
+ expect(uploads).toEqual(['page2.png','page1.png','page3.png','page4.png','page5.png','page6.png']);
+ expect(f.actions.find(x=>x.action==='create_attempt')?.payload.leaf_id).toBe(target.leafId);
+ expect(f.actions.filter(x=>x.action==='register_evidence').map(x=>(x.payload.metadata as {position:number}).position)).toEqual([1,2,3,4,5,6]);
+ fireEvent.click(screen.getByRole('button',{name:'답안을 다시 작성해 보세요'}));
+ fireEvent.change(screen.getByLabelText('내 답안'),{target:{value:'합성 재작성 풀이'}});
+ fireEvent.click(screen.getByRole('button',{name:'답안 제출 · 입력 확인'}));
+ fireEvent.click(await screen.findByRole('button',{name:'재첨삭'}));
+ await waitFor(()=>expect(f.actions.some(x=>x.action==='request_reevaluation')).toBe(true));
+ expect(f.actions.find(x=>x.action==='create_resolve_attempt')?.payload.leaf_id).toBe(target.leafId);
+ expect(screen.getByRole('region',{name:'학습 기록'})).toBeTruthy();
 });
