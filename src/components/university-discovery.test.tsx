@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
 import {render,screen,fireEvent,waitFor} from '@testing-library/react';
-import {it,expect,vi} from 'vitest';
+import {beforeEach,it,expect,vi} from 'vitest';
 import {UniversityDiscovery} from './university-discovery';
 vi.mock('./auth-context',()=>({useAuth:()=>({client:null})}));
+beforeEach(()=>{try{sessionStorage.clear();}catch{/* ignore */}});
 it('paginates all source universities and resets page after search',async()=>{render(<UniversityDiscovery/>);expect(screen.getByText('42개 대학 · 전형 정보 기준')).toBeVisible();expect(screen.getByText('1 / 4')).toBeVisible();fireEvent.click(screen.getByRole('button',{name:'다음'}));expect(screen.getByText('2 / 4')).toBeVisible();fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:'성균관'}});expect(screen.getByText('1개 대학 · 전형 정보 기준')).toBeVisible();expect(screen.getByText('1 / 1')).toBeVisible();await waitFor(()=>expect(screen.getByRole('link',{name:'성균관대학교'}).getAttribute('href')).toMatch(/^\/essay-lab\/universities\/skku\/?$/));expect(screen.queryByRole('button',{name:'첨삭 가능'})).toBeNull();});
 
 it('keeps all42 browsable and offers preferred22 plus Seoul without exposing development groups',()=>{
@@ -57,4 +58,42 @@ it('keeps essay-first selection compact without changing all42 routes or priorit
  expect(screen.getByRole('status')).toHaveTextContent('32개 대학');
  fireEvent.change(screen.getByRole('combobox',{name:'대학 정렬'}),{target:{value:'name'}});
  expect(screen.getByText('1 / 3')).toBeVisible();
+});
+
+it('shows every university with 전체보기 and returns to the paged view',()=>{
+ render(<UniversityDiscovery essayFirst/>);
+ expect(screen.getByText('1 / 4')).toBeVisible();
+ expect(screen.getAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(12);
+ const viewAll=screen.getByRole('button',{name:'전체보기'});expect(viewAll).toHaveAttribute('aria-pressed','false');
+ fireEvent.click(viewAll);
+ expect(screen.getAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(42);
+ expect(screen.queryByText('1 / 4')).toBeNull();
+ expect(screen.getByText('42개 대학 전체 표시')).toBeVisible();
+ const back=screen.getByRole('button',{name:'페이지 보기'});expect(back).toHaveAttribute('aria-pressed','true');
+ fireEvent.click(back);
+ expect(screen.getByText('1 / 4')).toBeVisible();
+ expect(screen.getAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(12);
+ expect(screen.getByRole('button',{name:'전체보기'})).toHaveAttribute('aria-pressed','false');
+});
+
+const DISCOVERY_KEY='legendstudy:essay-discovery:v1:essay';
+it('restores the list page after returning from a detail page (remount)',async()=>{
+ const view=render(<UniversityDiscovery essayFirst/>);
+ await waitFor(()=>expect(sessionStorage.getItem(DISCOVERY_KEY)).not.toBeNull());
+ fireEvent.click(screen.getByRole('button',{name:'다음'}));
+ expect(screen.getByText('2 / 4')).toBeVisible();
+ view.unmount();
+ render(<UniversityDiscovery essayFirst/>);
+ await waitFor(()=>expect(screen.getByText('2 / 4')).toBeVisible());
+});
+
+it('restores 전체보기 view and search text after returning',async()=>{
+ const view=render(<UniversityDiscovery essayFirst/>);
+ await waitFor(()=>expect(sessionStorage.getItem(DISCOVERY_KEY)).not.toBeNull());
+ fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:'성균관'}});
+ fireEvent.click(screen.getByRole('button',{name:'전체보기'}));
+ view.unmount();
+ render(<UniversityDiscovery essayFirst/>);
+ await waitFor(()=>expect(screen.getByRole('button',{name:'페이지 보기'})).toBeVisible());
+ expect(screen.getByLabelText('대학 검색')).toHaveValue('성균관');
 });
