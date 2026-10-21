@@ -1,4 +1,6 @@
 'use client';
+import {isUniversityServicePreparing} from '@/lib/essay-runtime/catalog-policy';
+
 import Link from 'next/link';
 import type {SubmissionDraft} from './essay-exam-submit';
 import './essay-service.css';
@@ -54,7 +56,9 @@ function Workspace({questionId,resume,draftOnly=false,onDirtyChange,onSubmission
  useEffect(()=>{onDirtyChange?.(questionId,body!==savedBody);},[body,savedBody,questionId,onDirtyChange]);
  useEffect(()=>()=>onDirtyChange?.(questionId,false),[questionId,onDirtyChange]);
  useEffect(()=>{onSubmissionDraft?.(questionId,{body,revision:revision??0,images:false,saved:revision!==null&&!busy&&body===savedBody});},[questionId,body,revision,busy,savedBody,onSubmissionDraft]);
+ const preparing=isUniversityServicePreparing(exam?.universities.slug);
  async function run(submit=false){
+  if(preparing)return;
   if(submit&&draftOnly)return;
   if(lock.current||revision===null||!runtime.current)return;lock.current=true;setBusy(true);
   try{
@@ -76,6 +80,7 @@ function Workspace({questionId,resume,draftOnly=false,onDirtyChange,onSubmission
   window.dispatchEvent(new Event('legendstudy:credit-refresh'));
  }
  async function evaluate(retry=false){
+  if(preparing)return;
   if(!attempt||!admitted||lock.current||(retry&&(!evaluation||!retryable)))return;lock.current=true;setBusy(true);
   try{
    const token=(await client.auth.getSession()).data.session?.access_token;if(!token)throw Error('LOGIN_REQUIRED');
@@ -85,6 +90,7 @@ function Workspace({questionId,resume,draftOnly=false,onDirtyChange,onSubmission
   }catch{if(alive.current)setNotice('요청 상태를 확인하지 못했습니다. 같은 요청을 다시 확인하거나 첨삭 기록을 확인해 주세요.');}
   finally{lock.current=false;if(alive.current)setBusy(false);}
  }
+ if(preparing)return <section><h1>{exam?.universities.name}</h1><button className="button button--primary service-preparing" disabled>서비스 준비중</button><Link href="/essay-lab/">대학 목록</Link>{exam&&officialUrl(exam.official_source_url)&&<a href={officialUrl(exam.official_source_url)!}>공식 자료 확인</a>}</section>;
  return <section className={draftOnly?"essay-service essay-inline-draft essay-workspace":"content-wrap page-section essay-service essay-workspace"} aria-busy={busy}>
   {draftOnly?<h3>{question?.label??'답안 작성'}</h3>:<><Link href="/essay-lab/">← 기출문제 선택</Link><h1>{question?.label??'답안 작성'}</h1></>}
   <p role="status">{notice}</p>

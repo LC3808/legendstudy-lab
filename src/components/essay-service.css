@@ -257,3 +257,5 @@
 .essay-answer-pane textarea { max-width:100%; }
 .essay-submission-selection { overflow-wrap:anywhere; }
 .essay-submission-selection label { flex-wrap:wrap; }
+
+.service-preparing:disabled { background: #e5e7eb; color: #4b5563; border-color: #d1d5db; cursor: not-allowed; }

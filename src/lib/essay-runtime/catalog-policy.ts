@@ -4,3 +4,7 @@ export const priorityUniversityIds = ['gachon','cau','skku','kyunghee','hanyang'
 export const groupAUniversityIds = ['gachon','syu','knu','pnu'] as const;
 export const preparationUniversityIds = ['gachon','catholic','konkuk','kyonggi','knu','kyunghee','kwangwoon','dankook','dongguk','pnu','sangmyung','sogang','seokyeong','seoultech','uos','swu','skku','sungshin','sejong','sookmyung','soongsil','ajou','yonsei','ewha','inha','cau','hufs','kau','hanyang','hongik'] as const;
 export function isPriorityUniversity(id:string){return (priorityUniversityIds as readonly string[]).includes(id);}
+
+/** Owner launch hold; browsing/order/readiness records remain unchanged. */
+export const servicePreparingUniversityIds = ["yonsei", "hongik", "uos", "sungshin", "eulji", "dankook", "syu", "duksung", "dongduk", "seokyeong", "suwon", "shinhan", "tukorea", "koreatech", "hanshin", "kangnam"] as const;
+export function isUniversityServicePreparing(id:string|undefined|null){return !!id&&(servicePreparingUniversityIds as readonly string[]).includes(id);}

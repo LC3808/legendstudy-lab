@@ -43,8 +43,8 @@ it('keeps essay-first selection compact without changing all42 routes or priorit
  expect(container.querySelector('.university-card-meta,.university-card-status,.university-regions,.university-badges')).toBeNull();
  const names:string[]=[];
  for(let page=0;page<4;page++){
-  const links=screen.getAllByRole('link',{name:/첨삭 시작하기$/});
-  for(const link of links){expect(link.getAttribute('href')).toMatch(/^\/essay-lab\/universities\/[^/]+\/?$/);names.push(link.getAttribute('aria-label')!.replace(' 첨삭 시작하기',''));}
+  const links=Array.from(document.querySelectorAll<HTMLAnchorElement>('.university-card-heading a'));
+  for(const link of links){expect(link.getAttribute('href')).toMatch(/^\/essay-lab\/universities\/[^/]+\/?$/);names.push(link.textContent!);}
   if(page<3)fireEvent.click(screen.getByRole('button',{name:'다음'}));
  }
  expect(new Set(names).size).toBe(42);
@@ -66,7 +66,9 @@ it('shows every university with 전체보기 and returns to the paged view',()=>
  expect(screen.getAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(12);
  const viewAll=screen.getByRole('button',{name:'전체보기'});expect(viewAll).toHaveAttribute('aria-pressed','false');
  fireEvent.click(viewAll);
- expect(screen.getAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(42);
+ expect(screen.getAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(26);
+ expect(screen.getAllByRole('button',{name:'서비스 준비중'})).toHaveLength(16);
+ for(const button of screen.getAllByRole('button',{name:'서비스 준비중'}))expect(button).toBeDisabled();
  expect(screen.queryByText('1 / 4')).toBeNull();
  expect(screen.getByText('42개 대학 전체 표시')).toBeVisible();
  const back=screen.getByRole('button',{name:'페이지 보기'});expect(back).toHaveAttribute('aria-pressed','true');

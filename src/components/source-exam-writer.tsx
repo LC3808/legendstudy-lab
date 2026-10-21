@@ -1,4 +1,5 @@
 'use client';
+import {isUniversityServicePreparing} from '@/lib/essay-runtime/catalog-policy';
 import {useEffect,useState,useRef,type CSSProperties} from 'react';
 import {StudentQuestionPdf} from './materials/student-pdf';
 import {studentPdf} from '@/lib/materials/student-asset';
@@ -48,6 +49,7 @@ export function SourceExamWriter({exam,question,owner,onDirty,onDraft,rewrite}:{
  async function changePhoto(value:File[]){setPhoto(value);setPhotoBusy(true);setPhotoDirty(true);onDirty(key+':image',true);try{await sourceImageDraft(key,value);setPhotoDirty(false);onDirty(key+':image',false);setPhotoNotice('사진을 이 브라우저에 저장했습니다. 다른 기기와 동기화되지 않습니다.');}catch{setPhotoNotice('사진을 저장하지 못했어요. 원본 사진을 보관해 주세요.');}finally{setPhotoBusy(false);}}
  function edit(value:string){setBody(value);onDirty(key,true);try{if(temporaryDraftStore.read(key)!==stored){setNotice('다른 창에서 답안이 변경되었습니다. 작성 내용을 복사한 뒤 새로고침해 주세요.');return;}temporaryDraftStore.write(key,value);setStored(value);onDirty(key,false);setNotice('이 브라우저에 저장했습니다.');}catch{setNotice('저장하지 못했습니다. 답안을 복사해 보관해 주세요.');}}
  useEffect(()=>{const before=(event:BeforeUnloadEvent)=>{if(body!==stored||photoDirty){event.preventDefault();event.returnValue='';}};window.addEventListener('beforeunload',before);return()=>window.removeEventListener('beforeunload',before);},[body,stored,photoDirty]);
+ if(isUniversityServicePreparing(exam.sourceUniversityId))return <section><h3>{question.label}</h3>{asset?<StudentQuestionPdf asset={asset} owner={owner}/>:<p>상단 공식 자료 링크에서 문제와 제시문을 확인하세요.</p>}{question.sourceLocator&&<p>{question.sourceLocator}</p>}</section>;
  return <section className="essay-service essay-inline-draft" aria-label={`${question.label} 답안 작성`}>
   {!asset&&<div className="essay-writing-tabs" role="tablist" aria-label="문제와 답안"><button role="tab" aria-selected={panel==='question'} onClick={()=>setPanel('question')}>문제 보기</button><button role="tab" aria-selected={panel==='answer'} onClick={()=>setPanel('answer')}>답안 작성</button></div>}
   {!asset&&<label className="essay-split-control">문제 영역 너비 <input type="range" min="30" max="65" value={split} onChange={e=>setSplit(Number(e.target.value))}/></label>}<div className="essay-writing-grid" data-panel={panel} style={{...(asset?{display:'block'}:{}),'--essay-split':`${split}fr`,'--essay-answer':`${100-split}fr`} as CSSProperties}><aside className="essay-reading-pane" style={asset?{display:'block'}:undefined}><h3>{question.label}</h3><p>{exam.year}학년도 · {exam.kind==='mock'?'모의논술':'수시 논술'} · {exam.track}{exam.session?` · ${exam.session}`:''}</p>{asset?<StudentQuestionPdf asset={asset} owner={owner}/>:<p>상단 공식 자료 링크에서 문제와 제시문을 확인하세요.</p>}{question.sourceLocator&&<p>{question.sourceLocator}</p>}{question.lengthLabel&&<p>답안 분량: {question.lengthLabel}</p>}</aside>

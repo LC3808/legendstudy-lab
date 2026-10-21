@@ -1,4 +1,6 @@
 'use client';
+import {isUniversityServicePreparing} from '@/lib/essay-runtime/catalog-policy';
+
 import Link from 'next/link';
 import {loadRegisteredMaterials} from '@/lib/essay-runtime/registered-material-catalog';
 import {catalogUniversity} from '@/lib/essay-runtime/public-discovery';
@@ -63,13 +65,14 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
  const selectedIds=included??(exam?.questions.length===1?[exam.questions[0].id]:[]);
  const question=exam?.questions.find(q=>q.id===selectedQuestionId);
  // A display-policy distinction only; never used to authorize a Provider or bill.
- const examUnit=!!exam&&!exam.reviewRequired&&/인문|언어|사회|경제|경영/.test(exam.field_or_division??'');
+ const preparing=isUniversityServicePreparing(sourceId);
+ const examUnit=!preparing&&!!exam&&!exam.reviewRequired&&/인문|언어|사회|경제|경영/.test(exam.field_or_division??'');
  // A sole question is auto-selected: drop the redundant "select all" and multi-question copy.
  const single=!!exam&&exam.questions.length===1;
  function chooseQuestion(id:string){setQuestionId(id);if(id)setVisited(old=>old.includes(id)?old:[...old,id]);}
  if(catalogUniversity(sourceId)&&(!universityId||(authStatus==='anonymous'||authStatus==='unconfigured')||(status==='ready'&&!rows.length)))return <SourceExamSelection sourceId={sourceId} registeredOnly/>;
  return <section className="university-section essay-start" aria-label="논술 첨삭 시작">
-  <div className="discovery-topline"><h2>논술 첨삭 시작</h2><Link href="/my/essays/">나의 첨삭 기록 →</Link></div>
+  <div className="discovery-topline"><h2>{preparing?'기출문항 조회':'논술 첨삭 시작'}</h2><Link href="/my/essays/">나의 첨삭 기록 →</Link></div>
   {!universityId?<p className="university-empty">기출문제를 준비하고 있어요.</p>:authStatus==='loading'?<p role="status">로그인을 확인하고 있습니다.</p>:!user||!client?<p><Link href={`/login/?next=${encodeURIComponent(`/essay-lab/universities/${sourceId}/`)}`}>로그인</Link>하면 이용 가능한 기출문항을 확인하고 답안을 이어 쓸 수 있습니다.</p>:status==='loading'?<p role="status">기출문항을 불러오고 있습니다.</p>:status==='error'?<p role="alert">기출문항을 불러오지 못했습니다. 연결을 확인하고 새로고침해 주세요.</p>:!rows.length?<p className="university-empty">기출문제를 준비하고 있어요.</p>:<>
    <div className="essay-selection-grid">
     <label>학년도<select value={year} onChange={e=>change(()=>{setYear(e.target.value);setKind('');setCampus('');setTrack('');setExamId('');})}><option value="">학년도 선택</option>{years.map(y=><option key={y} value={y}>{y}학년도</option>)}</select></label>
@@ -86,10 +89,10 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
      {question&&<label><input type="checkbox" checked={selectedIds.includes(question.id)} onChange={e=>setIncluded(e.target.checked?[...selectedIds,question.id]:selectedIds.filter(id=>id!==question.id))}/>{question.label} 제출에 포함</label>}
      <p role="status">선택한 문항 {selectedIds.length} / {exam.questions.length}</p>
     </div>}
-    {!exam.reviewRequired&&exam.questions.filter(q=>(visited.includes(q.id)||q.id===selectedQuestionId)).map(q=><div key={q.id} hidden={q.id!==selectedQuestionId}><EssayQuestionDraft questionId={q.id} onDirtyChange={onDirty} onSubmissionDraft={onSubmissionDraft}/></div>)}
+    {!preparing&&!exam.reviewRequired&&exam.questions.filter(q=>(visited.includes(q.id)||q.id===selectedQuestionId)).map(q=><div key={q.id} hidden={q.id!==selectedQuestionId}><EssayQuestionDraft questionId={q.id} onDirtyChange={onDirty} onSubmissionDraft={onSubmissionDraft}/></div>)}
     {question&&<div className="essay-submit-gate">
      {examUnit&&<p>선택한 문항 묶음의 최초 첨삭은 1 Credit이며, 14일 이내 같은 문항 집합의 재첨삭 1회가 포함됩니다. 최초 제출 후에는 새 문항을 추가할 수 없습니다.</p>}
-     {exam.reviewRequired?<><p role="status">자료 검수 중입니다. 문항 목록은 확인할 수 있으며, 첨삭은 아직 준비 중입니다.</p><button className="button button--primary" disabled>첨삭 준비 중</button></>:<DbExamSubmit key={exam.id} examId={exam.id} questionIds={questionIds} included={examUnit?selectedIds:[question.id]} drafts={drafts}/>}
+     {preparing?<button className="button button--primary service-preparing" disabled>서비스 준비중</button>:exam.reviewRequired?<><p role="status">자료 검수 중입니다. 문항 목록은 확인할 수 있으며, 첨삭은 아직 준비 중입니다.</p><button className="button button--primary" disabled>첨삭 준비 중</button></>:<DbExamSubmit key={exam.id} examId={exam.id} questionIds={questionIds} included={examUnit?selectedIds:[question.id]} drafts={drafts}/>}
     </div>}
    </>}
   </>}

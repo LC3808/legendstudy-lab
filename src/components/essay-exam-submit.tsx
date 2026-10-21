@@ -1,4 +1,6 @@
 'use client';
+import {isUniversityServicePreparing} from '@/lib/essay-runtime/catalog-policy';
+
 import {useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
 import {useAuth} from './auth-context';
@@ -23,7 +25,7 @@ export function EssayExamSubmit({exam,included,drafts,cycle}:{cycle?:{parentId?:
   if(active&&response.ok)setReady((await response.json()).ready===true);
   const history=await readExamRuns(auth.client,owner);if(active)setRewrites(history.filter(r=>r.exam_id===exam.dbExamId&&r.free_rewrite_available===true));
  })().catch(()=>{});return()=>{active=false;};},[auth.client,owner,exam.dbExamId]);
- async function submit(){if(busy||!ready)return;setBusy(true);setNotice('답안을 제출하고 있어요.');
+ async function submit(){if(isUniversityServicePreparing(exam.sourceUniversityId)||busy||!ready)return;setBusy(true);setNotice('답안을 제출하고 있어요.');
   try{const selected=exam.questions.filter(q=>included.includes(q.key));
    if(!selected.length||selected.some(q=>drafts[q.key]?.saved===false||!q.dbQuestionId||(!drafts[q.key]?.confirmedMathInput&&(!drafts[q.key]?.body.trim()||drafts[q.key]?.images||q.inputMode==='image'))))throw Error('ANSWER_REQUIRED');
    const answers:SubmittedAnswer[]=selected.map(q=>({questionId:q.dbQuestionId!,revision:drafts[q.key].revision,...(drafts[q.key].confirmedMathInput?{mathInput:drafts[q.key].confirmedMathInput!}:{body:drafts[q.key].body})}));
@@ -48,5 +50,6 @@ export function EssayExamSubmit({exam,included,drafts,cycle}:{cycle?:{parentId?:
   }catch(error){const code=error instanceof Error?error.message:'';setNotice(code==='INSUFFICIENT_CREDIT'?'첨삭권이 부족합니다.':code==='ANSWER_REQUIRED'?'선택한 문항의 답안을 확인해 주세요. 사진 답안은 업로드와 판독 결과 확인을 먼저 완료해야 합니다.':code==='PENDING_CHANGED'?'이전 제출의 처리 상태를 첨삭 기록에서 먼저 확인해 주세요.':'처리 상태를 확인하지 못했습니다. 답안은 유지됩니다. 같은 답안으로 다시 확인해 주세요.');}
   finally{setBusy(false);}
  }
+ if(isUniversityServicePreparing(exam.sourceUniversityId))return <button className="button button--primary service-preparing" disabled>서비스 준비중</button>;
  return <div className="essay-submit-gate">{!cycle&&rewrites.length>0&&<label>제출 방식<select disabled={busy} value={parentId} onChange={e=>{setParentId(e.target.value);pending.current=null;setRecord(null);setNotice('');}}><option value="">새 첨삭 · 1 Credit</option>{rewrites.map(r=><option key={String(r.id)} value={String(r.id)}>무료 재첨삭 · {String(r.created_at).slice(0,10)}</option>)}</select></label>}{parentId&&<p>최초 제출과 동일한 문항을 선택하고 답안을 수정해 주세요. 재첨삭 가능 여부는 서버에서 확인합니다.</p>}<button className="button button--primary" disabled={!ready||busy||!included.length||included.some(key=>drafts[key]?.saved===false)} onClick={()=>void submit()}>{busy?'처리 중…':ready?(parentId?(rewrites.some(r=>r.id===parentId)?'무료 재첨삭 요청':'재첨삭 자격 확인'):cycle?.previousPaidRunId?'추가 첨삭 · 1 Credit':'첨삭 요청 · 1 Credit'):'첨삭 준비 중'}</button><p role="status">{notice||'작성 중인 답안은 그대로 보존됩니다.'}</p>{record&&<RecordDetail row={record}/>}<Link href="/my/essays/">나의 첨삭 기록 →</Link></div>;
 }

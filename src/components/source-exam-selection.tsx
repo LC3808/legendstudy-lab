@@ -1,4 +1,6 @@
 'use client';
+import {isUniversityServicePreparing} from '@/lib/essay-runtime/catalog-policy';
+
 import Link from 'next/link';
 import {EssayExamSubmit,type SubmissionDraft} from './essay-exam-submit';
 import {useCallback,useState,useEffect} from 'react';
@@ -75,7 +77,7 @@ function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
    {humanities&&!single&&<fieldset className="essay-submission-selection"><legend>첨삭받을 문항</legend><button className="button button--outline" onClick={()=>setIncluded(exam.questions.map(q=>q.key))}>전체 문항 선택</button>{exam.questions.map(q=><label key={q.key}><input type="checkbox" checked={included.includes(q.key)} onChange={e=>setIncluded(old=>e.target.checked?[...old,q.key]:old.filter(key=>key!==q.key))}/>{q.label}</label>)}<p>전체 또는 일부 문항을 선택할 수 있습니다. 최초 첨삭은 문항 묶음당 1 Credit, 14일 이내 같은 문항 집합의 재첨삭 1회가 포함됩니다. 최초 제출 후 새 문항은 추가할 수 없습니다.</p></fieldset>}
    {humanities&&single&&<p className="essay-submit-note">최초 첨삭은 1 Credit이며, 14일 이내 같은 답안의 첫 재첨삭 1회가 포함됩니다. 적용 여부는 서버에서 확인합니다.</p>}
    {exam.questions.map(q=><div key={q.key} hidden={question?.key!==q.key}><SourceExamWriter key={`${owner}:${q.key}`} exam={exam} question={q} owner={owner} onDirty={onDirty} onDraft={onDraft}/></div>)}
-   {exam.verification==='VERIFIED'?<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={submitIncluded} drafts={drafts}/>:<button className="button button--primary" disabled>첨삭 준비 중</button>}
+   {isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>서비스 준비중</button>:exam.verification==='VERIFIED'?<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={submitIncluded} drafts={drafts}/>:<button className="button button--primary" disabled>첨삭 준비 중</button>}
   </>}
  </section>;
 }

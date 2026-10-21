@@ -20,7 +20,8 @@ it('puts collapsed schedule before writing entry and hides admission details wit
 it('keeps an unmapped university honest without fake question choices',()=>{
  render(<UniversityCatalogDetail university={catalogUniversity('eulji')!}/>);
  expect(screen.getByText('기출문제를 준비하고 있어요.')).toBeVisible();
- expect(screen.queryByRole('combobox')).toBeNull();
+ expect(screen.getByRole('combobox',{name:'학년도'})).toHaveValue('');
+ expect(screen.getByRole('combobox',{name:'시험 유형'})).toBeDisabled();
  expect(screen.queryByText(/NOT PUBLISHED/)).toBeNull();
 });
 it('uses verified schedule facts and distinguishes duration from unknown start time',()=>{
