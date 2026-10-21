@@ -19,7 +19,7 @@ export function UniversityEssayStart({universityId,sourceId}:{universityId:strin
 function Selection({universityId,sourceId}:{universityId:string|null;sourceId:string}){
  const {client,user,status:authStatus}=useAuth();
  const [rows,setRows]=useState<ReadyExam[]>([]),[status,setStatus]=useState<'loading'|'ready'|'error'>('loading');
- const [year,setYear]=useState(''),[campus,setCampus]=useState(''),[track,setTrack]=useState(''),[examId,setExamId]=useState(''),[questionId,setQuestionId]=useState('');
+ const [year,setYear]=useState(''),[kind,setKind]=useState(''),[campus,setCampus]=useState(''),[track,setTrack]=useState(''),[examId,setExamId]=useState(''),[questionId,setQuestionId]=useState('');
  const [visited,setVisited]=useState<string[]>([]),[included,setIncluded]=useState<string[]|null>(null),[dirty,setDirty]=useState<Record<string,boolean>>({});
  const [drafts,setDrafts]=useState<Record<string,SubmissionDraft>>({});
  const onSubmissionDraft=useCallback((id:string,draft:SubmissionDraft)=>setDrafts(old=>({...old,[id]:draft})),[]);
@@ -50,8 +50,11 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
  }
  const years=[...new Set(rows.map(e=>e.admission_year))].sort((a,b)=>b-a);
  const yearRows=rows.filter(e=>String(e.admission_year)===year);
- const campuses=[...new Set(yearRows.map(e=>e.campus??'__unspecified'))];
- const campusRows=yearRows.filter(e=>campuses.length<=1||(e.campus??'__unspecified')===campus);
+ const kinds=[...new Set(yearRows.map(e=>e.exam_kind??'unknown'))];
+ const selectedKind=kinds.length===1?kinds[0]:kind;
+ const kindRows=yearRows.filter(e=>(e.exam_kind??'unknown')===selectedKind);
+ const campuses=[...new Set(kindRows.map(e=>e.campus??'__unspecified'))];
+ const campusRows=kindRows.filter(e=>campuses.length<=1||(e.campus??'__unspecified')===campus);
  const tracks=[...new Set(campusRows.map(e=>e.field_or_division??e.exam_name))];
  const exams=campusRows.filter(e=>(e.field_or_division??e.exam_name)===track);
  const exam=exams.find(e=>e.id===examId);
@@ -69,9 +72,10 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
   <div className="discovery-topline"><h2>논술 첨삭 시작</h2><Link href="/my/essays/">나의 첨삭 기록 →</Link></div>
   {!universityId?<p className="university-empty">기출문제를 준비하고 있어요.</p>:authStatus==='loading'?<p role="status">로그인을 확인하고 있습니다.</p>:!user||!client?<p><Link href={`/login/?next=${encodeURIComponent(`/essay-lab/universities/${sourceId}/`)}`}>로그인</Link>하면 이용 가능한 기출문항을 확인하고 답안을 이어 쓸 수 있습니다.</p>:status==='loading'?<p role="status">기출문항을 불러오고 있습니다.</p>:status==='error'?<p role="alert">기출문항을 불러오지 못했습니다. 연결을 확인하고 새로고침해 주세요.</p>:!rows.length?<p className="university-empty">기출문제를 준비하고 있어요.</p>:<>
    <div className="essay-selection-grid">
-    <label>학년도<select value={year} onChange={e=>change(()=>{setYear(e.target.value);setCampus('');setTrack('');setExamId('');})}><option value="">학년도 선택</option>{years.map(y=><option key={y} value={y}>{y}학년도</option>)}</select></label>
+    <label>학년도<select value={year} onChange={e=>change(()=>{setYear(e.target.value);setKind('');setCampus('');setTrack('');setExamId('');})}><option value="">학년도 선택</option>{years.map(y=><option key={y} value={y}>{y}학년도</option>)}</select></label>
+    {kinds.length>1&&<label>시험 유형<select value={kind} onChange={e=>change(()=>{setKind(e.target.value);setCampus('');setTrack('');setExamId('');})}><option value="">시험 유형 선택</option>{kinds.map(k=><option key={k} value={k}>{k==='admission'?'수시논술':k==='mock'?'모의논술':'기타 시험'}</option>)}</select></label>}
     {campuses.length>1&&<label>캠퍼스<select value={campus} onChange={e=>change(()=>{setCampus(e.target.value);setTrack('');setExamId('');})}><option value="">캠퍼스 선택</option>{campuses.map(c=><option key={c} value={c}>{c==='__unspecified'?'캠퍼스 정보 미등록':c}</option>)}</select></label>}
-    <label>계열<select disabled={!year} value={track} onChange={e=>change(()=>{setTrack(e.target.value);const matches=campusRows.filter(x=>(x.field_or_division??x.exam_name)===e.target.value);setExamId(matches.length===1?matches[0].id:'');})}><option value="">계열 선택</option>{tracks.map(t=><option key={t}>{t}</option>)}</select></label>
+    <label>계열<select disabled={!year||!selectedKind} value={track} onChange={e=>change(()=>{setTrack(e.target.value);const matches=campusRows.filter(x=>(x.field_or_division??x.exam_name)===e.target.value);setExamId(matches.length===1?matches[0].id:'');})}><option value="">계열 선택</option>{tracks.map(t=><option key={t}>{t}</option>)}</select></label>
     {exams.length>1&&<label>시험 회차<select value={examId} onChange={e=>change(()=>setExamId(e.target.value))}><option value="">시험 선택</option>{exams.map(e=><option key={e.id} value={e.id}>{e.exam_name}</option>)}</select></label>}
     <label>문항<select disabled={!exam} value={selectedQuestionId} onChange={e=>chooseQuestion(e.target.value)}><option value="">문항 선택</option>{exam?.questions.map(q=><option key={q.id} value={q.id}>{q.label}</option>)}</select></label>
    </div>

@@ -68,3 +68,22 @@ it('merges newly registered metadata beside published exams without authorizing 
  expect(screen.getByRole('button',{name:'첨삭 준비 중'})).toBeDisabled();
  expect(screen.queryByRole('textbox')).toBeNull();
 });
+
+
+it('separates admission and mock in the same year and clears the prior question on type change',async()=>{
+ f.exams.mockResolvedValue([{...base,exam_kind:'admission'},{...base,id:'mock',exam_kind:'mock',exam_name:'모의 언어형'}]);
+ f.questions.mockImplementation(async(_client:unknown,id:string)=>[{id:id==='mock'?'mockq':'admissionq',label:'문항 1'}]);
+ render(<UniversityEssayStart universityId="u" sourceId="skku"/>);
+ await screen.findByRole('option',{name:'2025학년도'});
+ fireEvent.change(screen.getByLabelText('학년도'),{target:{value:'2025'}});
+ expect(screen.getByLabelText('계열')).toBeDisabled();
+ fireEvent.change(screen.getByLabelText('시험 유형'),{target:{value:'admission'}});
+ fireEvent.change(screen.getByLabelText('계열'),{target:{value:'언어형'}});
+ expect(screen.getByLabelText('문항')).toHaveValue('admissionq');
+ fireEvent.change(screen.getByLabelText('시험 유형'),{target:{value:'mock'}});
+ expect(screen.queryByLabelText('답안 admissionq')).toBeNull();
+ expect(screen.getByLabelText('문항')).toBeDisabled();
+ fireEvent.change(screen.getByLabelText('계열'),{target:{value:'언어형'}});
+ expect(screen.getByLabelText('문항')).toHaveValue('mockq');
+ expect(screen.queryByLabelText('시험 회차')).toBeNull();
+});
