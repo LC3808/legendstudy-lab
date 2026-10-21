@@ -1,8 +1,8 @@
 'use client';
 import Link from 'next/link';
+import {catalogUniversity} from '@/lib/essay-runtime/public-discovery';
 import {DbExamSubmit} from './db-exam-submit';
 import type {SubmissionDraft} from './essay-exam-submit';
-import {sourceExams} from '@/lib/essay-runtime/source-registry';
 import {SourceExamSelection} from './source-exam-selection';
 import {useCallback,useEffect,useState} from 'react';
 import {useAuth} from './auth-context';
@@ -55,7 +55,7 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
  // A sole question is auto-selected: drop the redundant "select all" and multi-question copy.
  const single=!!exam&&exam.questions.length===1;
  function chooseQuestion(id:string){setQuestionId(id);if(id)setVisited(old=>old.includes(id)?old:[...old,id]);}
- if(sourceExams(sourceId).length&&(!universityId||(authStatus==='anonymous'||authStatus==='unconfigured')||status==='error'||(status==='ready'&&!rows.length)))return <SourceExamSelection sourceId={sourceId}/>;
+ if(catalogUniversity(sourceId)&&(!universityId||(authStatus==='anonymous'||authStatus==='unconfigured')||(status==='ready'&&!rows.length)))return <SourceExamSelection sourceId={sourceId} registeredOnly/>;
  return <section className="university-section essay-start" aria-label="논술 첨삭 시작">
   <div className="discovery-topline"><h2>논술 첨삭 시작</h2><Link href="/my/essays/">나의 첨삭 기록 →</Link></div>
   {!universityId?<p className="university-empty">기출문제를 준비하고 있어요.</p>:authStatus==='loading'?<p role="status">로그인을 확인하고 있습니다.</p>:!user||!client?<p><Link href={`/login/?next=${encodeURIComponent(`/essay-lab/universities/${sourceId}/`)}`}>로그인</Link>하면 이용 가능한 기출문항을 확인하고 답안을 이어 쓸 수 있습니다.</p>:status==='loading'?<p role="status">기출문항을 불러오고 있습니다.</p>:status==='error'?<p role="alert">기출문항을 불러오지 못했습니다. 연결을 확인하고 새로고침해 주세요.</p>:!rows.length?<p className="university-empty">기출문제를 준비하고 있어요.</p>:<>
