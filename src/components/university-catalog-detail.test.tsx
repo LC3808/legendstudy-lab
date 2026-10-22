@@ -32,10 +32,9 @@ it('uses verified schedule facts and distinguishes duration from unknown start t
  expect(screen.queryByText('모집인원')).toBeNull();
 });
 
-it('does not present an unverified PDF fallback as an official materials page',()=>{
+it('uses the verified Sogang materials page instead of a PDF fallback',()=>{
  render(<UniversityCatalogDetail university={catalogUniversity('sogang')!}/>);
- expect(screen.queryByRole('link',{name:/공식.*자료 확인/})).toBeNull();
- expect(screen.getByText(/공식 논술 자료실 링크를 확인 중/)).toBeVisible();
+ expect(screen.getByRole('link',{name:/공식 논술 자료 확인/})).toHaveAttribute('href','https://admission.sogang.ac.kr/enter/html/rolling/data.asp');
 });
 it('uses the official multi-year KAU archive without exposing the source PDF',()=>{
  render(<UniversityCatalogDetail university={catalogUniversity('kau')!}/>);

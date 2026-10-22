@@ -82,8 +82,7 @@ it('separates admission and mock in the same year and clears the prior question 
  expect(screen.getByLabelText('문항')).toHaveValue('admissionq');
  fireEvent.change(screen.getByLabelText('시험 유형'),{target:{value:'mock'}});
  expect(screen.queryByLabelText('답안 admissionq')).toBeNull();
- expect(screen.getByLabelText('문항')).toBeDisabled();
- fireEvent.change(screen.getByLabelText('계열'),{target:{value:'언어형'}});
+ expect(screen.getByLabelText('계열')).toHaveValue('언어형');
  expect(screen.getByLabelText('문항')).toHaveValue('mockq');
  expect(screen.queryByLabelText('시험 회차')).toBeNull();
 });

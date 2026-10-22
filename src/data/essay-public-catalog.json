@@ -1141,6 +1141,18 @@
             }
           ]
         }
+      ],
+      "researchSources": [
+        {
+          "url": "https://admission.sogang.ac.kr/enter/html/rolling/data.asp",
+          "label": "공식 모의논술 자료실",
+          "verifiedAt": "2026-10-22"
+        },
+        {
+          "url": "https://admission.sogang.ac.kr/enter/html/counsel/book.asp",
+          "label": "공식 논술가이드북·입시책자",
+          "verifiedAt": "2026-10-22"
+        }
       ]
     },
     {
@@ -1340,6 +1352,13 @@
               "competitionRatio": null
             }
           ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://admission.swu.ac.kr/bbs/board.php?bo_table=dataroom&wr_9=gichul&sca=%EC%88%98%EC%8B%9C",
+          "label": "공식 수시 기출문제 자료실",
+          "verifiedAt": "2026-10-22"
         }
       ]
     },
