@@ -569,6 +569,13 @@
             }
           ]
         }
+      ],
+      "researchSources": [
+        {
+          "url": "https://oku.korea.ac.kr/oku/cms/FR_CON/index.do?CONTENTS_NO=4&MENU_ID=720",
+          "label": "공식 논술 기출자료실",
+          "verifiedAt": "2026-10-22"
+        }
       ]
     },
     {
@@ -1702,6 +1709,13 @@
             }
           ]
         }
+      ],
+      "researchSources": [
+        {
+          "url": "https://iphak.ssu.ac.kr/board/exam_list.asp?flag2=1&keyword=&page=1&page_no=1_2_7&srchoption=",
+          "label": "공식 논술 기출자료실",
+          "verifiedAt": "2026-10-22"
+        }
       ]
     },
     {
@@ -2456,6 +2470,13 @@
               "competitionRatio": null
             }
           ]
+        }
+      ],
+      "researchSources": [
+        {
+          "url": "https://ibhak.kau.ac.kr/admission/html/rolling/previous_in_exam.asp",
+          "label": "공식 논술 기출자료실",
+          "verifiedAt": "2026-10-22"
         }
       ]
     },

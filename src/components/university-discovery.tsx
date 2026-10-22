@@ -1,4 +1,6 @@
 'use client';
+import {isUniversityServicePreparing} from '@/lib/essay-runtime/catalog-policy';
+
 import Link from 'next/link';
 import {useEffect,useState} from 'react';
 import {filterCatalog,publicCatalog,campusLabel,isFeaturedUniversity} from '@/lib/essay-runtime/public-discovery';
@@ -34,7 +36,7 @@ export function UniversityDiscovery({essayFirst=false}:{essayFirst?:boolean}){
  {!essayFirst&&<><div className="university-card-meta">{u.offerings.map(o=><p key={o.id}>{campusLabel(o.campus)} · {o.admissionYear}학년도</p>)}</div>
  <EssayTypeBadges types={u.offerings.flatMap(o=>o.types)}/>
  <div className="university-card-status"><UniversityAvailability id={u.universityId} later={!isPriorityUniversity(u.sourceUniversityId)} detailed typesKnown={u.offerings.some(o=>o.types.length>0)}/></div></>}
- <Link className="university-primary" aria-label={`${u.name} ${essayFirst?'첨삭 시작하기':'자료 보기'}`} href={`/essay-lab/universities/${u.sourceUniversityId}/`}>{essayFirst?'첨삭 시작하기':'자료 보기'} <span aria-hidden="true">→</span></Link></article>)}</div>
+ {essayFirst&&isUniversityServicePreparing(u.sourceUniversityId)?<button className="university-primary service-preparing" disabled>서비스 준비중</button>:<Link className="university-primary" aria-label={`${u.name} ${essayFirst?'첨삭 시작하기':'자료 보기'}`} href={`/essay-lab/universities/${u.sourceUniversityId}/`}>{essayFirst?'첨삭 시작하기':'자료 보기'} <span aria-hidden="true">→</span></Link>}</article>)}</div>
  {!rows.length&&<p>검색 조건에 맞는 대학이 없습니다.</p>}
  <nav className="discovery-pagination" aria-label="대학 목록 페이지">{all?<span>{rows.length}개 대학 전체 표시</span>:<><button className="button button--outline" disabled={current===0} onClick={()=>setPage(current-1)}>이전</button><span>{current+1} / {pages}</span><button className="button button--outline" disabled={current+1>=pages} onClick={()=>setPage(current+1)}>다음</button></>}<button type="button" className="button button--outline discovery-viewall" aria-pressed={all} onClick={()=>setAll(v=>!v)}>{all?'페이지 보기':'전체보기'}</button></nav>
  </section>;

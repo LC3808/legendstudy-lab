@@ -20,7 +20,8 @@ it('puts collapsed schedule before writing entry and hides admission details wit
 it('keeps an unmapped university honest without fake question choices',()=>{
  render(<UniversityCatalogDetail university={catalogUniversity('eulji')!}/>);
  expect(screen.getByText('기출문제를 준비하고 있어요.')).toBeVisible();
- expect(screen.queryByRole('combobox')).toBeNull();
+ expect(screen.getByRole('combobox',{name:'학년도'})).toHaveValue('');
+ expect(screen.getByRole('combobox',{name:'시험 유형'})).toBeDisabled();
  expect(screen.queryByText(/NOT PUBLISHED/)).toBeNull();
 });
 it('uses verified schedule facts and distinguishes duration from unknown start time',()=>{
@@ -29,4 +30,14 @@ it('uses verified schedule facts and distinguishes duration from unknown start t
  expect(screen.getByText('100분')).toBeInTheDocument();
  expect(screen.queryByText('시작 시간')).toBeNull();
  expect(screen.queryByText('모집인원')).toBeNull();
+});
+
+it('does not present an unverified PDF fallback as an official materials page',()=>{
+ render(<UniversityCatalogDetail university={catalogUniversity('sogang')!}/>);
+ expect(screen.queryByRole('link',{name:/공식.*자료 확인/})).toBeNull();
+ expect(screen.getByText(/공식 논술 자료실 링크를 확인 중/)).toBeVisible();
+});
+it('uses the official multi-year KAU archive without exposing the source PDF',()=>{
+ render(<UniversityCatalogDetail university={catalogUniversity('kau')!}/>);
+ expect(screen.getByRole('link',{name:/공식 논술 자료 확인/})).toHaveAttribute('href','https://ibhak.kau.ac.kr/admission/html/rolling/previous_in_exam.asp');
 });
