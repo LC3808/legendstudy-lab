@@ -4,6 +4,8 @@ import {useAuth} from '../auth-context';
 import {SourceExamWriter} from '../source-exam-writer';
 import {EssayExamSubmit,type SubmissionDraft} from '../essay-exam-submit';
 import {readExamRuns} from '@/lib/my/exam-history';
+import {loadRegisteredMaterials,mergeRegisteredCatalog} from '@/lib/essay-runtime/registered-material-catalog';
+import {publicCatalog} from '@/lib/essay-runtime/public-discovery';
 import type {SourceExam} from '@/lib/essay-runtime/source-registry';
 /** Reuse the source writer and submit gateway. No copied History or Provider path. */
 export function ExamRewrite({runId,additional}:{runId:string;additional:boolean}){
@@ -16,7 +18,13 @@ export function ExamRewrite({runId,additional}:{runId:string;additional:boolean}
   const runs=await readExamRuns(auth.client,owner,runId);if(runs.length!==1)throw Error();
   const session=(await auth.client.auth.getSession()).data.session;if(!session||session.user.id!==owner)throw Error();
   const response=await fetch('/api/essay/catalog',{method:'POST',headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store'});if(!response.ok)throw Error();
-  const data=await response.json();const exam=(data.exams as SourceExam[]).find(e=>e.dbExamId===runs[0].exam_id);if(!exam || !(runs[0].question_ids as string[]).every(id=>exam.questions.some(q=>q.dbQuestionId===id)))throw Error();
+  const data=await response.json();let exams=data.exams as SourceExam[];
+  const universities=publicCatalog.universities.filter(u=>u.name===runs[0].university);
+  if(universities.length===1){
+   const registered=await loadRegisteredMaterials(auth.client,universities[0].sourceUniversityId);
+   if(registered.some(e=>e.dbExamId===runs[0].exam_id))exams=mergeRegisteredCatalog(exams,registered);
+  }
+  const exam=exams.find(e=>e.dbExamId===runs[0].exam_id);if(!exam || !(runs[0].question_ids as string[]).every(id=>exam.questions.some(q=>q.dbQuestionId===id)))throw Error();
   if(live)setState({exam,run:runs[0]});
  })().catch(()=>{if(live)setError(true);});return()=>{live=false;};},[auth.client,auth.user,runId]);
  if(error)return <p>기존 시험과 답안을 불러오지 못했어요. 다시 열어 주세요.</p>;
