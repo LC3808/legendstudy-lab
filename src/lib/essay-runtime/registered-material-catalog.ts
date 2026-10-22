@@ -36,3 +36,12 @@ export function projectRegisteredExam(sourceId:string,row:ExamRow,detail:Detail)
  if(!uuid(row.examId)||!uuid(row.universityId)||detail?.examId!==row.examId||!Number.isInteger(row.year)||!['admission','mock'].includes(row.kind)||!Array.isArray(detail.questions)||detail.questions.length!==row.questionCount||!detail.questions.length||detail.questions.some(q=>!uuid(q.id)||typeof q.label!=='string')||new Set(detail.questions.map(q=>q.id)).size!==detail.questions.length)throw Error('REGISTERED_CATALOG_INVALID');
  return {key:`registered:${row.examId}`,dbExamId:row.examId,universityId:row.universityId,sourceUniversityId:sourceId,year:row.year,kind:row.kind,track:row.track||row.title,session:row.title,campus:null,verification:'REVIEW_REQUIRED',sourceHashes:[],evaluationReady:false,questions:detail.questions.map(q=>({key:`registered:${q.id}`,dbQuestionId:q.id,label:q.label,sourceLocator:null,lengthLabel:null,accountDraftReady:false}))};
 }
+
+/** Preserve approved content only when the exact canonical question set agrees. */
+export function mergeRegisteredCatalog(existing:SourceExam[], registered:SourceExam[]):SourceExam[]{
+ return registered.map(row=>{
+  const old=existing.find(e=>e.dbExamId===row.dbExamId&&e.sourceUniversityId===row.sourceUniversityId);
+  const ids=new Set(row.questions.map(q=>q.dbQuestionId));
+  return old&&old.questions.length===row.questions.length&&old.questions.every(q=>q.dbQuestionId&&ids.has(q.dbQuestionId))?old:row;
+ });
+}

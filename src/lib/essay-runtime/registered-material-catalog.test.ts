@@ -1,6 +1,6 @@
 import {it,expect,vi} from 'vitest';
 import type {SupabaseClient} from '@supabase/supabase-js';
-import {loadRegisteredMaterials,projectRegisteredExam} from './registered-material-catalog';
+import {loadRegisteredMaterials,projectRegisteredExam,mergeRegisteredCatalog} from './registered-material-catalog';
 import {catalogUniversity} from './public-discovery';
 import type {ExamRow,Detail} from '../materials/contract';
 const id='00000000-0000-4000-8000-000000000001';
@@ -38,4 +38,12 @@ it('does not fall back to private RPC on metadata permission failure',async()=>{
  const rpc=vi.fn().mockResolvedValue({error:{code:'42501'}});
  await expect(loadRegisteredMaterials({rpc} as unknown as SupabaseClient,'gachon')).rejects.toThrow();
  expect(rpc).toHaveBeenCalledTimes(1);
+});
+
+it('keeps approved content only on exact DB identity match without duplicate exams',()=>{
+ const registered=projectRegisteredExam('gachon',row,detail);
+ const reviewed={...registered,verification:'VERIFIED' as const,questions:registered.questions.map(q=>({...q,sourceLocator:'approved location'}))};
+ expect(mergeRegisteredCatalog([reviewed],[registered])).toEqual([reviewed]);
+ expect(mergeRegisteredCatalog([{...reviewed,dbExamId:'different'}],[registered])).toEqual([registered]);
+ expect(mergeRegisteredCatalog([{...reviewed,questions:[]}],[registered])).toEqual([registered]);
 });

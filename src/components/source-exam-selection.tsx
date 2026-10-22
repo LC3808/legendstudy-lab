@@ -6,7 +6,7 @@ import {EssayExamSubmit,type SubmissionDraft} from './essay-exam-submit';
 import {useCallback,useState,useEffect} from 'react';
 import {useAuth} from './auth-context';
 import {sourceExams,type SourceExam} from '@/lib/essay-runtime/source-registry';
-import {loadRegisteredMaterials} from '@/lib/essay-runtime/registered-material-catalog';
+import {loadRegisteredMaterials,mergeRegisteredCatalog} from '@/lib/essay-runtime/registered-material-catalog';
 import {SourceExamWriter} from './source-exam-writer';
 export function SourceExamSelection({sourceId,registeredOnly=false}:{sourceId:string;registeredOnly?:boolean}){
  const auth=useAuth();
@@ -24,7 +24,7 @@ export function SourceExamSelection({sourceId,registeredOnly=false}:{sourceId:st
    if(!active)return;
    if(registeredOnly&&auth.client){
     const registered=await loadRegisteredMaterials(auth.client,sourceId);
-    if(registered.length){if(active){setRows(registered);setLoadedFor(identity);setLoadError(false);}return;}
+    if(registered.length){if(active){setRows(mergeRegisteredCatalog(sourceExams(sourceId),registered));setLoadedFor(identity);setLoadError(false);}return;}
    }
    if(session&&session.user.id===auth.user?.id){
     response=await fetch('/api/essay/catalog',{method:'POST',headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store'});
