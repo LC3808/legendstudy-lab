@@ -16,7 +16,7 @@ it('keeps all42 browsable and offers preferred22 plus Seoul without exposing dev
 it('shows the reference search affordance and separates type, materials and AI readiness',()=>{
  render(<UniversityDiscovery/>);
  expect(screen.getByPlaceholderText('대학명을 검색해 보세요.')).toHaveAttribute('type','search');
- expect(screen.getByRole('img',{name:'가천대학교 로고'})).toBeVisible();
+ expect(screen.getByRole('img',{name:'건국대학교 로고'})).toBeVisible();
  expect(screen.getAllByText('AI 첨삭 준비 중').length).toBeGreaterThan(0);
  expect(screen.queryByText('첨삭 가능')).toBeNull();
 });
@@ -34,12 +34,12 @@ it('defaults to service priority, supports explicit alphabetical order, and rese
  expect(screen.getByRole('link',{name:'을지대학교'})).toBeVisible();
 });
 
-it('keeps essay-first selection compact without changing all42 routes or priority order',()=>{
+it('keeps essay-first selection compact without changing all42 routes and applies the Owner location order',()=>{
  const {container}=render(<UniversityDiscovery essayFirst/>);
  expect(screen.getByText('UNIVERSITY SEARCH')).toBeVisible();
  expect(screen.getByRole('heading',{name:'대학 찾기'})).toBeVisible();
  for(const name of ['지역','논술 유형','전형 학년도'])expect(screen.queryByRole('combobox',{name})).toBeNull();
- expect(screen.getByRole('img',{name:'가천대학교 로고'})).toBeVisible();
+ expect(screen.getByRole('img',{name:'건국대학교 로고'})).toBeVisible();
  expect(container.querySelector('.university-card-meta,.university-card-status,.university-regions,.university-badges')).toBeNull();
  const names:string[]=[];
  for(let page=0;page<4;page++){
@@ -48,8 +48,8 @@ it('keeps essay-first selection compact without changing all42 routes or priorit
   if(page<3)fireEvent.click(screen.getByRole('button',{name:'다음'}));
  }
  expect(new Set(names).size).toBe(42);
- expect(names.slice(0,3)).toEqual(['가천대학교','중앙대학교','성균관대학교']);
- expect(names.slice(-2)).toEqual(['강남대학교','을지대학교']);
+ expect(names.slice(0,3)).toEqual(['건국대학교','경희대학교','고려대학교']);
+ expect(names.slice(-1)).toEqual(['홍익대학교']);
  fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:'성균관'}});
  expect(screen.getByRole('status')).toHaveTextContent('1개 대학');
  expect(screen.getByRole('link',{name:'성균관대학교 첨삭 시작하기'}).getAttribute('href')).toMatch(/^\/essay-lab\/universities\/skku\/?$/);

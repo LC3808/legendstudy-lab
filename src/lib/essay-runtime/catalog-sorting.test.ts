@@ -1,25 +1,24 @@
 import {describe,it,expect} from 'vitest';
 import {sortCatalog,servicePriority,type CatalogSortingEvidence,type CatalogSort} from './catalog-sorting';
 import {publicCatalog,filterCatalog,type CatalogUniversity} from './public-discovery';
-import {priorityUniversityIds} from './catalog-policy';
+import {priorityUniversityIds,servicePreparingUniversityIds} from './catalog-policy';
 const ids=(rows:CatalogUniversity[])=>rows.map(u=>u.sourceUniversityId);
 const stats=(applicants:number|null,competitionRatio:number|null)=>({verificationStatus:'verified' as const,admissionYear:2027 as const,sourceUrl:'https://example.edu/admission',verifiedAt:'2026-09-18',applicants,competitionRatio});
 describe('public catalog sorting',()=>{
- it('retains42 universities/49offerings; prioritizes exactly Owner22, keeps Busan/Kyungpook and defers Kangnam/Eulji',()=>{
+ it('retains all42 universities/49offerings and puts the16 preparation universities last',()=>{
   const result=sortCatalog(publicCatalog.universities);
-  expect(new Set(ids(result.slice(0,22)))).toEqual(new Set(priorityUniversityIds));
   expect(result).toHaveLength(42);expect(result.flatMap(u=>u.offerings)).toHaveLength(49);
-  expect(ids(result.slice(-2))).toEqual(['kangnam','eulji']);
-  expect(ids(result)).toContain('knu');expect(ids(result)).toContain('pnu');
+  expect(new Set(ids(result.slice(-16)))).toEqual(new Set(servicePreparingUniversityIds));
  });
- it('keeps original data immutable and uses Owner order for unknown priority statistics and alphabetical names for the remaining cohorts',()=>{
+ it('uses Seoul then Korean alphabetical order and does not mutate the catalog',()=>{
   const before=JSON.stringify(publicCatalog);
   const sorted=sortCatalog(publicCatalog.universities);
-  expect(ids(sorted.slice(0,22))).toEqual([...priorityUniversityIds]);
-  for(const group of [2,3,4]){
-   const rows=sorted.filter(u=>servicePriority(u)===group);
+  const active=sorted.filter(u=>servicePriority(u)===1);
+  const seoul=active.filter(u=>u.offerings.some(o=>o.region==='서울'));
+  const other=active.filter(u=>!u.offerings.some(o=>o.region==='서울'));
+  expect(active).toEqual([...seoul,...other]);
+  for(const rows of [seoul,other,sorted.filter(u=>servicePriority(u)===2)])
    expect(rows).toEqual([...rows].sort((a,b)=>a.name.localeCompare(b.name,'ko-KR')));
-  }
   expect(JSON.stringify(publicCatalog)).toBe(before);
  });
  it('applies every sort after search, region/type/year filters without losing matching records',()=>{
@@ -32,7 +31,7 @@ describe('public catalog sorting',()=>{
  it('uses verified totals descending, nulls last; competition/name choices are independent of service groups',()=>{
   const rows=publicCatalog.universities.filter(u=>['gachon','cau','skku','kangnam'].includes(u.sourceUniversityId));
   const evidence:CatalogSortingEvidence={statistics:{gachon:stats(30000,20),cau:stats(20000,40),skku:stats(null,null),kangnam:stats(40000,30)}};
-  expect(ids(sortCatalog(rows,'service',evidence))).toEqual(['gachon','cau','skku','kangnam']);
+  expect(ids(sortCatalog(rows,'service',evidence))).toEqual(['skku','cau','gachon','kangnam']);
   expect(ids(sortCatalog(rows,'applicants',evidence))).toEqual(['kangnam','gachon','cau','skku']);
   expect(ids(sortCatalog(rows,'competition',evidence))).toEqual(['cau','kangnam','gachon','skku']);
   expect(ids(sortCatalog(rows,'name',evidence))).toEqual(['gachon','kangnam','skku','cau']);
@@ -53,9 +52,9 @@ describe('public catalog sorting',()=>{
  });
 });
 
-it('uses verified totals before Owner fallback without mistaking development priority for service availability',()=>{
+it('does not use applicant totals for the default order or override explicit HOLD',()=>{
  const rows=publicCatalog.universities;
- const evidence:CatalogSortingEvidence={statistics:{skku:stats(10000,30),cau:stats(null,null)}};
- expect(ids(sortCatalog(rows,'service',evidence)).slice(0,3)).toEqual(['skku','gachon','cau']);
- expect(ids(sortCatalog(rows,'service')).slice(0,3)).toEqual(['gachon','cau','skku']);
+ const evidence:CatalogSortingEvidence={statistics:{skku:stats(10000,30),gachon:stats(999999,90)}};
+ expect(sortCatalog(rows,'service',evidence)).toEqual(sortCatalog(rows,'service'));
+ expect(servicePriority(rows.find(u=>u.sourceUniversityId==='yonsei')!,{evaluationReadyIds:new Set(['yonsei'])})).toBe(2);
 });
