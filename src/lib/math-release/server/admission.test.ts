@@ -36,3 +36,10 @@ describe('synthetic-only hosted admission',()=>{
   expect(await response.text()).not.toContain(foreign);
  });
 });
+it('released essay admission still requires actual Auth and does not open Math routes',async()=>{
+ vi.stubGlobal('fetch',vi.fn(async()=>Response.json({id:foreign})));
+ expect(await serverTransport(env).subject('opaque-session',true)).toBe(foreign);
+ await expect(serverTransport(env).subject('opaque-session')).rejects.toThrow('ACCESS_DENIED');
+ vi.stubGlobal('fetch',vi.fn(async()=>new Response(null,{status:401})));
+ await expect(serverTransport(env).subject('expired-session',true)).rejects.toThrow('LOGIN_REQUIRED');
+});

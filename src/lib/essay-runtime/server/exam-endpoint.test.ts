@@ -104,3 +104,18 @@ it('availability exposes only admitted UUIDs without any Credit reservation',asy
  m.dispatch.mockResolvedValue(Response.json({ready:false,question_ids:[id]}));
  expect(await (await send({action:'availability',examId:id})).json()).toEqual({ready:false,questionIds:[]});
 });
+
+it('public admission requires an exact server-owned exam scope, never a client flag',async()=>{
+ await send(body,{ESSAY_PUBLIC_EXAMS:id});
+ expect(m.subject).toHaveBeenLastCalledWith('fixture-user',true);
+ for(const list of [undefined,'','*',id+',','22222222-2222-4222-8222-222222222222']){
+  await send({...body,publicRelease:true},{ESSAY_PUBLIC_EXAMS:list});
+  expect(m.subject).toHaveBeenLastCalledWith('fixture-user',false);
+ }
+});
+it('public scope does not bypass E2E limits or DB/Worker readiness',async()=>{
+ m.dispatch.mockResolvedValue(Response.json({ready:false}));
+ expect((await send(body,{ESSAY_PUBLIC_EXAMS:id})).status).toBe(503);
+ expect(m.request).not.toHaveBeenCalled();
+ expect((await send(body,{ESSAY_PUBLIC_EXAMS:id,ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:id,parentId:id})})).status).toBe(403);
+});

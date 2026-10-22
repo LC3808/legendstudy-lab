@@ -126,3 +126,7 @@ claim full suite PASS. New DB API/policy candidate and private host are not depl
 No real Provider/Credit E2E, production release or public activation in this step.
 Canonical status and SQL impact/rollback are in APP wiki/essay-runtime-completion.md
 and supabase/candidates/essay_exam_unit/README.md, mirrored in Unified Wiki.
+
+## 2026-10-23 reviewed exam public admission
+Owner authorizes activation only after operating E2E. `ESSAY_PUBLIC_EXAMS` is a server-only CSV of approved exam UUIDs; only an exact valid match opts the essay route into real Auth without the operator allowlist. Worker/DB reviewed-package readiness and account/ownership/Credit contracts still apply. E2E scope, when configured, remains a hard bound. Math and worker-auth diagnostics keep their allowlist. Public deployment must remove the stale fixed-key E2E scope explicitly. Initial approved target: Konkuk humanities question2; no implicit release of other questions or universities.
+45 focused regressions, Typecheck/Lint/Boundary PASS. Existing UI/build assets unchanged; runtime deployment and user-screen verification reported separately.

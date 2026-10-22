@@ -2,7 +2,7 @@ import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/re
 import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import {boundedBody} from '../../../src/lib/math-release/server/request';
-type Env=MathEnvironment&WorkerEnvironment&{ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_CONTINUOUS_CYCLES_ENABLED?:string;ESSAY_E2E_SCOPE?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
+type Env=MathEnvironment&WorkerEnvironment&{ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_CONTINUOUS_CYCLES_ENABLED?:string;ESSAY_E2E_SCOPE?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(v);
 /** Shared Native/Web gateway. Disabled until DB/host/content/E2E authorization. */
 export async function onRequestPost({request,env}:{request:Request;env:Env}){
@@ -13,8 +13,10 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
  const token=request.headers.get('authorization')?.match(/^Bearer ([^\s]+)$/)?.[1];if(!token)return reply({code:'LOGIN_REQUIRED'},401);
  let run:string|undefined;
  try{
-  const transport=serverTransport(env),subject=await transport.subject(token);
   const input=JSON.parse(new TextDecoder().decode(await boundedBody(request,1048576))) as Record<string,unknown>;
+  const publicExams=(env.ESSAY_PUBLIC_EXAMS??'').split(',').map(id=>id.trim());
+  const publicRelease=publicExams.length<=42&&publicExams.every(uuid)&&uuid(input.examId)&&publicExams.includes(input.examId);
+  const transport=serverTransport(env),subject=await transport.subject(token,publicRelease);
   // Optional server-only single-submission scope for explicitly approved operating E2E.
   const scope=env.ESSAY_E2E_SCOPE?JSON.parse(env.ESSAY_E2E_SCOPE) as {subject:string;exam:string;requestKey:string;parentId?:string;previousPaidRunId?:string}:null;
   if(scope&&(!uuid(scope.subject)||!uuid(scope.exam)||!uuid(scope.requestKey)||subject!==scope.subject||input.examId!==scope.exam||(scope.parentId!==undefined&&!uuid(scope.parentId))||(scope.previousPaidRunId!==undefined&&!uuid(scope.previousPaidRunId))||(scope.parentId!==undefined&&scope.previousPaidRunId!==undefined)||(['submit','quote'].includes(String(input.action))&&((input.parentId??null)!==(scope.parentId??null)||(input.previousPaidRunId??null)!==(scope.previousPaidRunId??null)))))return reply({code:'ACCESS_DENIED'},403);

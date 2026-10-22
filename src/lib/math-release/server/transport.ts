@@ -21,7 +21,7 @@ export function serverTransport(env: MathEnvironment) {
     const body = new TextDecoder().decode(await boundedBody(res,2097152));return JSON.parse(body);
   }
   const rpc = (token: string): MathRpcTransport => ({ rpc: (fn, p_request) => rpcRaw(fn, { p_request }, token) });
-  async function subject(token: string) {
+  async function subject(token: string, reviewedEssayRelease = false) {
     let response: Response;
     try { response = await request("/auth/v1/user", token); }
     catch (error) {
@@ -30,13 +30,14 @@ export function serverTransport(env: MathEnvironment) {
       console.warn("MATH_AUTH_FAILURE", { stage: "transport", reason, type: error instanceof TypeError ? "TypeError" : "Error" }); throw Error("LOGIN_REQUIRED");
     }
     if (!response.ok) { console.warn("MATH_AUTH_FAILURE", { stage: "response", status: response.status }); throw Error("LOGIN_REQUIRED"); } const body = await response.json() as { id?: string };
-    if (!body.id || !/^[0-9a-f-]{36}$/i.test(body.id)) { console.warn("MATH_AUTH_FAILURE", { stage: "identity" }); throw Error("LOGIN_REQUIRED"); }
-    // Hosted activation is synthetic-only until a separately approved public release.
+    if (!body.id || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.id)) { console.warn("MATH_AUTH_FAILURE", { stage: "identity" }); throw Error("LOGIN_REQUIRED"); }
+    // Math/operator routes retain the allowlist. Only the essay gateway may opt in
+    // after matching a server-configured, E2E-approved exam; DB admission still applies.
     // Match the identity verified by Auth, never a client-supplied/decoded JWT subject.
     const allowed = (env.MATH_ALLOWED_SUBJECTS ?? "").split(",").map(value => value.trim());
     const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    if (!allowed.length || allowed.length > 10 || allowed.some(value => !uuid.test(value)) ||
-      !allowed.some(value => value.toLowerCase() === body.id!.toLowerCase())) { console.warn("MATH_AUTH_FAILURE", { stage: "allowlist" }); throw Error("ACCESS_DENIED"); }
+    if (!reviewedEssayRelease && (!allowed.length || allowed.length > 10 || allowed.some(value => !uuid.test(value)) ||
+      !allowed.some(value => value.toLowerCase() === body.id!.toLowerCase()))) { console.warn("MATH_AUTH_FAILURE", { stage: "allowlist" }); throw Error("ACCESS_DENIED"); }
     return body.id;
   }
   return { request, rpcRaw, rpc, subject };
