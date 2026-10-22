@@ -32,6 +32,10 @@ export async function candidateJson(config: CandidateConfig, instructions: strin
   }
   const raw = new TextDecoder().decode(await boundedBody(response, 1500000));
   const data = JSON.parse(raw);
+  // Token counts only: no answer, private package, key or generated text in logs.
+  const inputTokens=data.usage?.input_tokens, outputTokens=data.usage?.output_tokens;
+  if(Number.isSafeInteger(inputTokens)&&inputTokens>=0&&Number.isSafeInteger(outputTokens)&&outputTokens>=0)
+    console.info("MATH_PROVIDER_USAGE",{model:config.model,input_tokens:inputTokens,output_tokens:outputTokens});
   if (data.status !== "completed" || !Array.isArray(data.output)) throw Error("INVALID_OUTPUT");
   const texts = data.output.flatMap((item: { content?: { type: string; text?: string }[] }) => item.content ?? [])
     .filter((item: { type: string }) => item.type === "output_text").map((item: { text: string }) => item.text);
