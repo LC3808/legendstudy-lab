@@ -21,6 +21,8 @@ export async function onRequestGet({request,env}:{request:Request;env:MathEnviro
         ['math_evaluation_worker',env.MATH_EVALUATION_WORKER_JWT,'math_evaluation','math_extraction'],
       ] as const) {
         const current=currentRole(credential,role);
+        let expired=false;
+        try {const payload=JSON.parse(atob(credential!.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));expired=Number.isFinite(payload.exp)&&payload.exp<=Date.now()/1000;}catch{}
         const results=[];
         if(credential) for(const rpc of [own,other]) {
           const response=await transport.request(`/rest/v1/rpc/${rpc}`,credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_request:null})});
@@ -28,7 +30,7 @@ export async function onRequestGet({request,env}:{request:Request;env:MathEnviro
           try {const data=await response.json() as {code?:string};if(typeof data.code==='string'&&/^[A-Z0-9]{5,12}$/.test(data.code))code=data.code;}catch{}
           results.push({rpc,status:response.status,code});
         }
-        checks.push({role,credentialPresent:!!credential,current,results});
+        checks.push({role,credentialPresent:!!credential,current,expired,results});
       }
       return Response.json({version:'math-worker-auth-probe-v1',checks},{headers:{'Cache-Control':'private, no-store','Vary':'Authorization'}});
     }
