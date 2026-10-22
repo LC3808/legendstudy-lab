@@ -1,15 +1,17 @@
-import { serverTransport, type MathEnvironment } from "../../../src/lib/math-release/server/transport";
+import { serverTransport, publicMathLeaves, type MathEnvironment } from "../../../src/lib/math-release/server/transport";
 import { boundedBody, requestToken, storagePath } from "../../../src/lib/math-release/server/request";
 import { candidateJson } from "../../../src/lib/math-release/server/provider";
 export async function onRequestPost({ request, env }: { request: Request; env: MathEnvironment }) {
   let phase = "admission";
   let fail: (() => Promise<void>) | undefined;
   try {
-    const token = requestToken(request, env), t = serverTransport(env); await t.subject(token);
+    const token = requestToken(request, env), t = serverTransport(env); await t.subject(token, publicMathLeaves(env).length>0);
     if (!env.MATH_EXTRACTION_WORKER_JWT || env.MATH_PROVIDER_CALLS_ENABLED !== "true" || env.MATH_PROVIDER !== "OPENAI" || !env.MATH_PRIMARY_MODEL || !env.MATH_PROVIDER_API_KEY) throw Error("CONFIGURATION_REQUIRED");
     const payload = JSON.parse(new TextDecoder().decode(await boundedBody(request,200)));
     if (!payload || Object.keys(payload).join() !== "attempt_id" || !/^[0-9a-f-]{36}$/i.test(payload.attempt_id)) throw Error("INVALID_REQUEST");
-    await t.rpc(token).rpc("math_input", { dto_version: "math-input-v1", action: "read_input", payload });
+    const owned = await t.rpc(token).rpc("math_input", { dto_version: "math-input-v1", action: "read_input", payload }) as {result?:{attempt?:{leaf_id?:string}}};
+    const released=publicMathLeaves(env);
+    if(released.length&&!released.includes(owned.result?.attempt?.leaf_id??''))throw Error("QUESTION_UNAVAILABLE");
     const worker = t.rpc(env.MATH_EXTRACTION_WORKER_JWT);
     const call = async (action: string, data: Record<string, unknown>) => {
       const raw = await worker.rpc("math_extraction", { dto_version: "math-extraction-v1", action, payload: data });

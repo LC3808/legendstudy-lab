@@ -6,6 +6,7 @@ import type { MathEvaluatorAdapter } from "../../math-eval/types";
 import type { MathRpcTransport } from "../../math-input/runtime/transport";
 export interface MathGatewayPorts {
   enabled: boolean;
+  releasedLeaves?: string[];
   origin: string;
   authenticate(token: string): Promise<boolean>;
   student(token: string): MathRpcTransport;
@@ -30,8 +31,9 @@ export function evaluationGateway(ports: MathGatewayPorts) {
       const owned = await ports.student(bearer).rpc("math_learning", {
         dto_version: "math-learning-v1", action: "read_learning_state", payload,
       });
-      const state = (owned as { result?: { evaluation_id?: string; evaluation_state?: string; valid_evaluation_available?: boolean } })?.result;
+      const state = (owned as { result?: { leaf_id?: string; evaluation_id?: string; evaluation_state?: string; valid_evaluation_available?: boolean } })?.result;
       if (!state || state.evaluation_id !== payload.evaluation_id) return reply(403, "ACCESS_DENIED");
+      if (ports.releasedLeaves?.length&&!ports.releasedLeaves.includes(state.leaf_id??"")) return reply(403,"QUESTION_UNAVAILABLE");
       if (state.evaluation_state === "INVALIDATED") return reply(409, "EVALUATION_INVALIDATED");
       if (state.evaluation_state === "COMPLETED") return state.valid_evaluation_available === true ? reply(200, "COMPLETED") : reply(409, "RETRY_STATUS_CHECK");
       if (state.evaluation_state !== "REQUESTED") return reply(409, "RETRY_STATUS_CHECK");

@@ -61,3 +61,9 @@ it.each(['INVALIDATED','COMPLETED'])('does not report unusable %s as completion 
  const handler=evaluationGateway({enabled:true,origin:'https://test.example',authenticate:async()=>true,student:()=>({rpc:async()=>({result:{evaluation_id:id,evaluation_state:state,valid_evaluation_available:false}})}),worker:new MathEvaluationWorkerClient({rpc:privileged}),adapter:{providerId:'fixture',modelId:'fixture',evaluate}});
  const response=await handler(request());expect(response.status).toBe(409);expect(await response.json()).not.toEqual({code:'COMPLETED'});expect(privileged).not.toHaveBeenCalled();expect(evaluate).not.toHaveBeenCalled();
 });
+
+it.each([undefined,'00000000-0000-4000-8000-000000000002'])('unreleased or missing owned leaf %s cannot invoke Provider',async leaf=>{
+ const privileged=vi.fn(),adapter=vi.fn();
+ const response=await evaluationGateway({enabled:true,releasedLeaves:[id],origin:'https://test.example',authenticate:async()=>true,student:()=>({rpc:async()=>({result:{evaluation_id:id,leaf_id:leaf,evaluation_state:'REQUESTED'}})}),worker:new MathEvaluationWorkerClient({rpc:privileged}),adapter:{providerId:'fixture',modelId:'fixture',evaluate:adapter}})(request());
+ expect(response.status).toBe(403);expect(privileged).not.toHaveBeenCalled();expect(adapter).not.toHaveBeenCalled();
+});

@@ -1,7 +1,7 @@
 import { boundedBody } from "./request";
 import type { MathRpcTransport } from "../../math-input/runtime/transport";
 export interface MathEnvironment {
-  MATH_RECOVERY_ENABLED?: string; MATH_ALLOWED_SUBJECTS?: string; MATH_ENABLED?: string; MATH_PROVIDER_CALLS_ENABLED?: string; MATH_PROVIDER?: string; MATH_PRIMARY_MODEL?: string;
+  MATH_PUBLIC_LEAVES?: string; MATH_RECOVERY_ENABLED?: string; MATH_ALLOWED_SUBJECTS?: string; MATH_ENABLED?: string; MATH_PROVIDER_CALLS_ENABLED?: string; MATH_PROVIDER?: string; MATH_PRIMARY_MODEL?: string;
   MATH_PROVIDER_API_KEY?: string; MATH_ORIGIN?: string; MATH_SUPABASE_URL?: string; MATH_PROJECT_REF?: string;
   MATH_SUPABASE_PUBLISHABLE_KEY?: string; MATH_EXTRACTION_WORKER_JWT?: string; MATH_EVALUATION_WORKER_JWT?: string;
 }
@@ -21,7 +21,7 @@ export function serverTransport(env: MathEnvironment) {
     const body = new TextDecoder().decode(await boundedBody(res,2097152));return JSON.parse(body);
   }
   const rpc = (token: string): MathRpcTransport => ({ rpc: (fn, p_request) => rpcRaw(fn, { p_request }, token) });
-  async function subject(token: string, reviewedEssayRelease = false) {
+  async function subject(token: string, releasedRoute = false) {
     let response: Response;
     try { response = await request("/auth/v1/user", token); }
     catch (error) {
@@ -36,9 +36,15 @@ export function serverTransport(env: MathEnvironment) {
     // Match the identity verified by Auth, never a client-supplied/decoded JWT subject.
     const allowed = (env.MATH_ALLOWED_SUBJECTS ?? "").split(",").map(value => value.trim());
     const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    if (!reviewedEssayRelease && (!allowed.length || allowed.length > 10 || allowed.some(value => !uuid.test(value)) ||
+    if (!releasedRoute && (!allowed.length || allowed.length > 10 || allowed.some(value => !uuid.test(value)) ||
       !allowed.some(value => value.toLowerCase() === body.id!.toLowerCase()))) { console.warn("MATH_AUTH_FAILURE", { stage: "allowlist" }); throw Error("ACCESS_DENIED"); }
     return body.id;
   }
   return { request, rpcRaw, rpc, subject };
+}
+
+/** Server-owned reviewed leaf scope. Invalid/broad configuration fails closed. */
+export function publicMathLeaves(env: MathEnvironment): string[] {
+  const ids=(env.MATH_PUBLIC_LEAVES??'').split(',').map(value=>value.trim());
+  return ids.length<=512&&ids.every(id=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id))?ids:[];
 }

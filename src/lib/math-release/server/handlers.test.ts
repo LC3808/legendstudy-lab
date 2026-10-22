@@ -43,3 +43,16 @@ describe('deployable Math handlers with bounded synthetic HTTP transport',()=>{
   expect(response.status).toBe(409);expect(calls).toHaveLength(2);expect(calls[1]).toContain('/math_input');
  });
 });
+
+it('public extraction refuses an owned but unreleased leaf before claim or Provider',async()=>{
+ const calls:string[]=[];
+ vi.stubGlobal('fetch',vi.fn(async(url:string)=>{
+  calls.push(url);
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'00000000-0000-4000-8000-000000000002'});
+  if(url.endsWith('/math_input'))return Response.json({result:{attempt:{leaf_id:'00000000-0000-4000-8000-000000000003'}}});
+  throw Error('Unexpected privileged call');
+ }));
+ const req=new Request('https://math.example.invalid/api/math/extract',{method:'POST',headers:{origin:env.MATH_ORIGIN!,authorization:'Bearer fixture'},body:JSON.stringify({attempt_id:id})});
+ expect((await extract({request:req,env:{...env,MATH_PUBLIC_LEAVES:id,MATH_PROVIDER:'OPENAI',MATH_PRIMARY_MODEL:'fixture',MATH_PROVIDER_API_KEY:'fixture',MATH_PROVIDER_CALLS_ENABLED:'true'}})).status).toBe(409);
+ expect(calls).toHaveLength(2);
+});

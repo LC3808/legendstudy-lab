@@ -64,3 +64,11 @@ describe('allowlisted worker authentication probe',()=>{
   const body=await (await onRequestGet({request:req,env})).json();expect(body.checks).toBeUndefined();expect(network).toHaveBeenCalledTimes(1);
  });
 });
+
+it('public Math cannot expose operator JWT diagnostics',async()=>{
+ const calls:string[]=[];
+ vi.stubGlobal('fetch',vi.fn(async(url:string)=>{calls.push(url);return Response.json({id:'00000000-0000-4000-8000-000000000002'});}));
+ const req=new Request('https://lab.legendstudy.com/api/essay/availability?probe=worker-auth',{headers:{authorization:'Bearer fixture'}});
+ const response=await onRequestGet({request:req,env:{...env,MATH_PUBLIC_LEAVES:id}});
+ expect(await response.text()).not.toContain('checks');expect(calls).toHaveLength(1);
+});

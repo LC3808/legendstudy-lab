@@ -1,4 +1,4 @@
-import { serverTransport, type MathEnvironment } from '../../../src/lib/math-release/server/transport';
+import { serverTransport, publicMathLeaves, type MathEnvironment } from '../../../src/lib/math-release/server/transport';
 export type Availability = { version:'essay-web-v1'; catalog?: {math:boolean}; types: {humanities_social:boolean;business_economics:boolean;math:boolean;science:boolean} };
 const disabled = ():Availability=>({version:'essay-web-v1',catalog:{math:false},types:{humanities_social:false,business_economics:false,math:false,science:false}});
 function currentRole(token:string|undefined,role:string):boolean {
@@ -12,7 +12,7 @@ export async function onRequestGet({request,env}:{request:Request;env:MathEnviro
   if(!token)return reply();
   if(env.MATH_ORIGIN!==new URL(request.url).origin)return reply();
   try {
-    const transport=serverTransport(env);await transport.subject(token);
+    const transport=serverTransport(env);await transport.subject(token,new URL(request.url).searchParams.get('probe')!=='worker-auth'&&publicMathLeaves(env).length>0);
     // Existing allowlisted operator only. Null DTOs cannot claim work or charge Credit.
     if(new URL(request.url).searchParams.get('probe')==='worker-auth') {
       const checks=[];

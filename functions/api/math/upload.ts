@@ -1,4 +1,4 @@
-import { serverTransport, type MathEnvironment } from "../../../src/lib/math-release/server/transport";
+import { serverTransport, publicMathLeaves, type MathEnvironment } from "../../../src/lib/math-release/server/transport";
 import { boundedBody, mediaSignature, requestToken, sha256, storagePath } from "../../../src/lib/math-release/server/request";
 export async function onRequestPost({ request, env }: { request: Request; env: MathEnvironment }) {
   let phase = "request_admission";
@@ -7,7 +7,7 @@ export async function onRequestPost({ request, env }: { request: Request; env: M
     phase = "transport_configuration";
     const t = serverTransport(env);
     phase = "user_authentication";
-    const subject = await t.subject(token);
+    const subject = await t.subject(token, publicMathLeaves(env).length>0);
     phase = "worker_configuration";
     if (!env.MATH_EXTRACTION_WORKER_JWT) throw Error("CONFIGURATION_REQUIRED");
     phase = "multipart";
@@ -18,6 +18,11 @@ export async function onRequestPost({ request, env }: { request: Request; env: M
     const args = { p_subject: subject, p_artifact: artifact };
     phase = "describe_rpc";
     const row = await t.rpcRaw("math_artifact_storage", { ...args, p_action: "describe" }, env.MATH_EXTRACTION_WORKER_JWT);
+    const released=publicMathLeaves(env);
+    if(released.length){
+      const owned=await t.rpc(token).rpc("math_input",{dto_version:"math-input-v1",action:"read_input",payload:{attempt_id:row.attempt_id}}) as {result?:{attempt?:{leaf_id?:string}}};
+      if(!released.includes(owned.result?.attempt?.leaf_id??''))throw Error("QUESTION_UNAVAILABLE");
+    }
     phase = "file_digest";
     const content = new Uint8Array(await file.arrayBuffer()), digest = await sha256(content);
     phase = "file_validation";
