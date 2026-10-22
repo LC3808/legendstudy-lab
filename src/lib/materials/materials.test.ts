@@ -18,12 +18,12 @@ it('connects only the reviewed Hanyang question-only original without enabling e
  expect(studentPdf({...pdf,sha256:'ced37494c6b65531cca30649093846dde665bf401e630e8751f0bc8a3be90060'},q.dbQuestionId!)).toBeNull();
 });
 
-it('serves only the Owner-approved 441 question mappings and keeps 27 rights-held questions closed',async()=>{
+it('serves only the Owner-approved 473 question mappings and keeps 27 rights-held questions closed',async()=>{
  const {default:catalog}=await import('@/data/essay-student-pdf-candidates.json');
  const {studentPdfForExam}=await import('./student-asset');
- expect(new Set(catalog.questions.map(q=>q.questionId)).size).toBe(468);
+ expect(new Set(catalog.questions.map(q=>q.questionId)).size).toBe(500);
  const approved=catalog.questions.filter(q=>q.storageRead==='APPROVED');
- expect(approved).toHaveLength(441);expect(new Set(approved.map(q=>q.assetId)).size).toBe(124);
+ expect(approved).toHaveLength(473);expect(new Set(approved.map(q=>q.assetId)).size).toBe(147);
  for(const q of catalog.questions){
   const pdf=studentPdfForExam(q.examId,q.questionId);
   if(q.storageRead==='APPROVED'){expect(q.verification).toBe('VERIFIED');expect(q.studentDisplay).toBe('APPROVED');expect(pdf?.startPage).toBe(q.startPage);expect(pdf?.assetId).toBe(q.assetId);}
