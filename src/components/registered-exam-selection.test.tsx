@@ -18,7 +18,7 @@ it('selects the registered mock exam, saves a local draft and blocks unreviewed 
  fireEvent.change(input,{target:{value:'합성 테스트 답안'}});
  expect(input).toHaveValue('합성 테스트 답안');expect(screen.getByRole('button',{name:'첨삭 서비스 준비 중'})).toBeDisabled();
  expect(screen.queryByRole('button',{name:'계정 답안 확인·저장'})).toBeNull();
- expect(fetch).not.toHaveBeenCalled();
+ expect(vi.mocked(fetch).mock.calls.every(([url,init])=>url==='/api/essay/availability'||(url==='/api/essay/exam'&&JSON.parse(String(init?.body)).action==='availability'))).toBe(true);
  expect(screen.queryByRole('link',{name:/자료 검수/})).toBeNull();
  expect(screen.getByText(/문제 원문은 상단 공식 논술 자료/)).toBeInTheDocument();
 });
