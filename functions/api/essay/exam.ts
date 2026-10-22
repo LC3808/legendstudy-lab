@@ -23,7 +23,8 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const dispatch=async(path:string,payload:unknown)=>worker.fetch(new Request('https://essay-worker.internal'+path,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(90000)}));
   if(input.action==='availability'&&uuid(input.examId)){
    const ready=await dispatch('/exam-admission',{exam_id:input.examId});
-   return reply({ready:ready.ok&&(await ready.json() as {ready?:boolean}).ready===true});
+   const admission=ready.ok?await ready.json() as {ready?:boolean;question_ids?:unknown}:null;
+   return reply({ready:admission?.ready===true,questionIds:admission?.ready===true&&Array.isArray(admission.question_ids)?admission.question_ids.filter(uuid):[]});
   }
   if(input.previousPaidRunId!=null&&(env.ESSAY_CONTINUOUS_CYCLES_ENABLED!=='true'||!uuid(input.previousPaidRunId)||input.parentId!=null))return reply({code:'ADDITIONAL_CYCLE_UNAVAILABLE'},422);
   if(input.action==='quote'&&uuid(input.examId)&&Array.isArray(input.questionIds)&&input.questionIds.length>0&&input.questionIds.every(uuid)&&!(input.parentId!=null&&!uuid(input.parentId))){

@@ -7,6 +7,7 @@ import {useCallback,useState,useEffect} from 'react';
 import {useAuth} from './auth-context';
 import {sourceExams,type SourceExam} from '@/lib/essay-runtime/source-registry';
 import {loadRegisteredMaterials,mergeRegisteredCatalog} from '@/lib/essay-runtime/registered-material-catalog';
+import {ScopedExamSubmit} from './scoped-exam-submit';
 import {SourceExamWriter} from './source-exam-writer';
 export function SourceExamSelection({sourceId,registeredOnly=false}:{sourceId:string;registeredOnly?:boolean}){
  const auth=useAuth();
@@ -77,7 +78,7 @@ function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
    {exam.evaluationReady&&humanities&&!single&&<fieldset className="essay-submission-selection"><legend>첨삭받을 문항</legend><button className="button button--outline" onClick={()=>setIncluded(exam.questions.map(q=>q.key))}>전체 문항 선택</button>{exam.questions.map(q=><label key={q.key}><input type="checkbox" checked={included.includes(q.key)} onChange={e=>setIncluded(old=>e.target.checked?[...old,q.key]:old.filter(key=>key!==q.key))}/>{q.label}</label>)}<p>전체 또는 일부 문항을 선택할 수 있습니다. 최초 첨삭은 문항 묶음당 1 Credit, 14일 이내 같은 문항 집합의 재첨삭 1회가 포함됩니다. 최초 제출 후 새 문항은 추가할 수 없습니다.</p></fieldset>}
    {exam.evaluationReady&&humanities&&single&&<p className="essay-submit-note">최초 첨삭은 1 Credit이며, 14일 이내 같은 답안의 첫 재첨삭 1회가 포함됩니다. 적용 여부는 서버에서 확인합니다.</p>}
    {exam.questions.map(q=><div key={q.key} hidden={question?.key!==q.key}><SourceExamWriter key={`${owner}:${q.key}`} exam={exam} question={q} owner={owner} onDirty={onDirty} onDraft={onDraft}/></div>)}
-   {isUniversityServicePreparing(exam.sourceUniversityId)||!exam.evaluationReady||exam.verification!=='VERIFIED'?<button className="button button--primary service-preparing" disabled>첨삭 서비스 준비 중</button>:<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={submitIncluded} drafts={drafts}/>}
+   {isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>첨삭 서비스 준비 중</button>:!exam.evaluationReady||exam.verification!=='VERIFIED'?<ScopedExamSubmit exam={exam} questionKey={question?.key} drafts={drafts}/>:<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={submitIncluded} drafts={drafts}/>}
 
   </>}
  </section>;

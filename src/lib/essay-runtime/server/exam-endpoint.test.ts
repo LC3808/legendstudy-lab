@@ -96,3 +96,11 @@ it('foreign Origin cannot reach authentication, Credit or worker admission',asyn
  expect(response.status).toBe(403);
  expect(m.subject).not.toHaveBeenCalled();expect(m.request).not.toHaveBeenCalled();expect(m.dispatch).not.toHaveBeenCalled();
 });
+
+it('availability exposes only admitted UUIDs without any Credit reservation',async()=>{
+ m.dispatch.mockResolvedValue(Response.json({ready:true,question_ids:[id,'invalid',null]}));
+ expect(await (await send({action:'availability',examId:id})).json()).toEqual({ready:true,questionIds:[id]});
+ expect(m.request).not.toHaveBeenCalled();
+ m.dispatch.mockResolvedValue(Response.json({ready:false,question_ids:[id]}));
+ expect(await (await send({action:'availability',examId:id})).json()).toEqual({ready:false,questionIds:[]});
+});
