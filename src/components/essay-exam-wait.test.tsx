@@ -1,0 +1,42 @@
+// @vitest-environment jsdom
+import {act,cleanup,fireEvent,render,screen} from '@testing-library/react';
+import {afterEach,expect,it,vi} from 'vitest';
+import {EssayExamSubmit} from './essay-exam-submit';
+import type {SourceExam} from '@/lib/essay-runtime/source-registry';
+const mocks=vi.hoisted(()=>({history:vi.fn()}));
+const client={auth:{getSession:async()=>({data:{session:{user:{id:'owner'},access_token:'synthetic'}}})}};
+vi.mock('./auth-context',()=>({useAuth:()=>({user:{id:'owner'},client})}));
+vi.mock('@/lib/my/exam-history',()=>({readExamRuns:async()=>[],readExamDashboard:mocks.history}));
+vi.mock('./my/essay-dashboard',()=>({RecordDetail:()=>null}));
+const exam={key:'test',dbExamId:'exam',questions:[{key:'q',dbQuestionId:'question',inputMode:'text'}]} as SourceExam;
+afterEach(()=>{cleanup();vi.useRealTimers();vi.restoreAllMocks();vi.unstubAllGlobals();localStorage.clear();sessionStorage.clear();});
+it('202 polls existing History to 100 seconds without another submit or Credit quote',async()=>{
+ vi.useFakeTimers();mocks.history.mockResolvedValue([{id:'run',evaluations:[{status:'processing'}]}]);
+ const actions:string[]=[];vi.spyOn(window,'confirm').mockReturnValue(true);
+ vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{const body=JSON.parse(init.body);actions.push(body.action);
+  return Response.json(body.action==='availability'?{ready:true}:body.action==='quote'?{version:'essay-exam-quote-v1',credits:1}:{runId:'run'},{status:body.action==='submit'?202:200});
+ }));
+ render(<EssayExamSubmit exam={exam} included={['q']} drafts={{q:{body:'Synthetic answer',revision:1,images:false}}}/>);
+ await act(async()=>{});
+ await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ expect(mocks.history).toHaveBeenCalledTimes(1);
+ expect(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'})).toBeDisabled();
+ await act(async()=>{await vi.advanceTimersByTimeAsync(102000);});
+ expect(screen.getByRole('status')).toHaveTextContent('다시 제출하지 말고');
+ const calls=mocks.history.mock.calls.length;
+ await act(async()=>{await vi.advanceTimersByTimeAsync(200000);});
+ expect(mocks.history).toHaveBeenCalledTimes(calls);
+ expect(actions).toEqual(['availability','quote','submit']);
+});
+it('a completed History row stops polling and a read failure never repeats submission',async()=>{
+ vi.useFakeTimers();mocks.history.mockReset().mockRejectedValueOnce(Error('offline')).mockResolvedValue([{id:'run',evaluations:[{status:'completed'}]}]);
+ const actions:string[]=[];vi.spyOn(window,'confirm').mockReturnValue(true);
+ vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{const body=JSON.parse(init.body);actions.push(body.action);return Response.json(body.action==='availability'?{ready:true}:body.action==='quote'?{version:'essay-exam-quote-v1',credits:1}:{runId:'run'});}));
+ render(<EssayExamSubmit exam={exam} included={['q']} drafts={{q:{body:'Synthetic answer',revision:1,images:false}}}/>);
+ await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ expect(screen.getByRole('status')).toHaveTextContent('제출 기록은 보존');
+ await act(async()=>{await vi.advanceTimersByTimeAsync(3000);});
+ expect(screen.getByRole('status')).toHaveTextContent('첨삭이 완료');
+ await act(async()=>{await vi.advanceTimersByTimeAsync(120000);});
+ expect(mocks.history).toHaveBeenCalledTimes(2);expect(actions).toEqual(['availability','quote','submit']);
+});

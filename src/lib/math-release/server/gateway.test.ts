@@ -22,6 +22,15 @@ describe("gateway privilege and provider boundary",()=>{
   const response=await evaluationGateway({enabled:true,origin:"https://test.example",authenticate:async()=>true,student:()=>({rpc:student}),worker:new MathEvaluationWorkerClient({rpc:privileged}),adapter:{providerId:"synthetic",modelId:"synthetic",evaluate:adapter}})(request());
   expect(response.status).toBe(200);expect(privileged).not.toHaveBeenCalled();expect(adapter).not.toHaveBeenCalled();
  });
+ it("bounds provider work below the five-minute lease without retries",async()=>{
+  const timeout=vi.spyOn(AbortSignal,"timeout");
+  const fetcher=vi.fn(async()=>{throw new DOMException("timeout","TimeoutError");});
+  try {
+   await expect(candidateJson({enabled:true,model:"synthetic",key:"synthetic",fetcher},"JSON",{})).rejects.toThrow("timeout");
+   expect(timeout).toHaveBeenCalledWith(75000);
+   expect(fetcher).toHaveBeenCalledTimes(1);
+  } finally {timeout.mockRestore();}
+ });
  it("candidate requires explicit enable/model/key and performs no implicit call",async()=>{
   const fetcher=vi.fn();await expect(candidateJson({enabled:false,model:"",key:"",fetcher},"JSON",{})).rejects.toThrow();expect(fetcher).not.toHaveBeenCalled();
  });

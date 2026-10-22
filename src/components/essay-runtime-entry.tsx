@@ -5,6 +5,7 @@ import { useAuth } from '@/components/auth-context';
 import { MathStudentRoute } from '@/components/math-release/student-route';
 function Availability({workspace=false}:{workspace?:boolean}) {
  const auth=useAuth();
+ const [requestedLeafId] = useState(() => typeof window === "undefined" ? undefined : new URLSearchParams(window.location.search).get("leaf") ?? undefined);
  const [state,setState]=useState<'loading'|'ready'|'browse'|'closed'|'error'>('loading');
  useEffect(()=>{
   let active=true;const abort=new AbortController();
@@ -24,7 +25,7 @@ function Availability({workspace=false}:{workspace?:boolean}) {
  if(state==='loading')return <p role="status">이용 가능한 문항을 확인하고 있습니다.</p>;
  if(state==='error')return <p role="alert">문항을 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.</p>;
  if(state==='closed')return <p>현재 이용 가능한 첨삭 문항이 없습니다.</p>;
- return workspace?<MathStudentRoute enabled evaluationEnabled={state==='ready'}/>:<Link className="button button--primary" href="/math/">수리논술 문항 보기</Link>;
+ return workspace?<MathStudentRoute enabled evaluationEnabled={state==='ready'} requestedLeafId={requestedLeafId}/>:<Link className="button button--primary" href="/math/">수리논술 문항 보기</Link>;
 }
 export function EssayRuntimeEntry({workspace=false}:{workspace?:boolean}) {
  const auth=useAuth();

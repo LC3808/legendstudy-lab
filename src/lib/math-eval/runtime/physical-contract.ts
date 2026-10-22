@@ -57,9 +57,15 @@ export function physicalFinalize(output: MathEvalOutput, input: MathEvaluationIn
   if (output.steps.some(step => step.position < 1)) throw Error("INVALID_OUTPUT");
   // MATH-2C does not store numeric awarded points. Reject instead of silently discarding.
   if (output.criteria.some(criterion => criterion.awarded_points != null)) throw Error("INVALID_OUTPUT");
+  // Preserve the domain's established calculation label at the unchanged SQL boundary.
+  const steps = output.steps.map(step => {
+    const kind = step.kind === "CALCULATION" ? "COMPUTATION" : step.kind;
+    if (!["INTERPRETATION", "CONCEPT", "TRANSFORMATION", "COMPUTATION", "JUSTIFICATION", "CASE", "CONCLUSION"].includes(kind)) throw Error("INVALID_OUTPUT");
+    return { ...step, kind };
+  });
   return {
     contract_version: "math-eval-v1", extraction_id: input.selectedExtractionId,
-    steps: output.steps, edges: output.edges,
+    steps, edges: output.edges,
     errors: output.errors.map(error => ({ ...error, materiality: materiality[error.materiality] })),
     causes: output.causes, core: output.core,
     hints: output.hints.map(hint => ({ ...hint, leakage_class: hint.level === 0 ? "CORE_ONLY" : hint.leakage_class })),

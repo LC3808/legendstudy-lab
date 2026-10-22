@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { physicalClaimToInput } from "./physical-contract";
+import { physicalClaimToInput, physicalFinalize } from "./physical-contract";
 const claim = () => ({ evaluation_id: "evaluation", selected_extraction_id: null, context: {
   attempt: { attempt_id: "attempt", typed_answer: "2", prior_evaluation_id: null },
   leaf: { id: "leaf", response_format: "SHORT_ANSWER" }, problem: { statement: "1+1" },
@@ -21,4 +21,14 @@ describe("APP physical claim boundary", () => {
     const wire = claim(); wire.context.solutions[0].origin = "invented";
     expect(() => physicalClaimToInput(wire)).toThrow("INVALID_CLAIM");
   });
+});
+
+import {baseOutput,step} from "../fixtures";
+it("maps calculation steps to existing SQL kinds, rejecting unrecognized output",()=>{
+ const wire={...claim(),context:{...claim().context,profile:{reasoning_required:true,required_dimensions:["final_conclusion"],optional_dimensions:[]}}};
+ const input=physicalClaimToInput(wire);
+ const out=baseOutput({selected_extraction:null as unknown as string,steps:[step({position:1,regions:[]})]});
+ expect(physicalFinalize(out,input)).toMatchObject({steps:[{kind:"COMPUTATION"}]});
+ expect(out.steps[0].kind).toBe("CALCULATION");
+ expect(()=>physicalFinalize({...out,steps:[{...out.steps[0],kind:"invented"}]},input)).toThrow("INVALID_OUTPUT");
 });
