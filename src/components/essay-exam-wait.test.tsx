@@ -40,3 +40,16 @@ it('a completed History row stops polling and a read failure never repeats submi
  await act(async()=>{await vi.advanceTimersByTimeAsync(120000);});
  expect(mocks.history).toHaveBeenCalledTimes(2);expect(actions).toEqual(['availability','quote','submit']);
 });
+it('only terminal failure offers explicit retry preparation and requotes with a fresh request',async()=>{
+ mocks.history.mockResolvedValue([{id:'run',evaluations:[{status:'failed'}]}]);
+ const requests:Record<string,unknown>[]=[];vi.spyOn(window,'confirm').mockReturnValue(true);
+ vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{const b=JSON.parse(init.body);requests.push(b);return Response.json(b.action==='availability'?{ready:true}:b.action==='quote'?{version:'essay-exam-quote-v1',credits:1}:{runId:'run'});}));
+ render(<EssayExamSubmit exam={exam} included={['q']} drafts={{q:{body:'Synthetic answer',revision:1,images:false}}}/>);
+ await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ expect(requests.filter(x=>x.action==='submit')).toHaveLength(1);
+ fireEvent.click(screen.getByRole('button',{name:'실패한 제출 다시 준비'}));
+ expect(requests.filter(x=>x.action==='submit')).toHaveLength(1);
+ await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ expect(requests.filter(x=>x.action==='quote')).toHaveLength(2);
+ const submissions=requests.filter(x=>x.action==='submit');expect(submissions[0].key).not.toBe(submissions[1].key);
+});
