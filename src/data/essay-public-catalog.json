@@ -1313,7 +1313,7 @@
     },
     {
       "sourceUniversityId": "swu",
-      "universityId": null,
+      "universityId": "eba1d65c-5bb6-5454-afd4-82a18c57262a",
       "canonicalSlug": null,
       "name": "서울여자대학교",
       "offerings": [
@@ -2441,7 +2441,7 @@
     },
     {
       "sourceUniversityId": "kau",
-      "universityId": null,
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
       "canonicalSlug": null,
       "name": "한국항공대학교",
       "offerings": [
@@ -2591,6 +2591,11 @@
         }
       ],
       "researchSources": [
+        {
+          "url": "https://go.hanyang.ac.kr/web/pds/pds_list.do?m_type=SUSI&ct02=ns01",
+          "label": "공식 연도별 논술 기출자료실",
+          "verifiedAt": "2026-10-22"
+        },
         {
           "url": "https://go.hanyang.ac.kr/web/pds/pds_view.do?bn=14860&m_type=SUSI",
           "label": "입학처 논술 참고 자료",

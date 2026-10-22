@@ -13,25 +13,25 @@ afterEach(()=>vi.unstubAllGlobals());
 it('selects the registered mock exam, saves a local draft and blocks unreviewed submission',async()=>{
  render(<SourceExamSelection sourceId="gachon" registeredOnly/>);
  const input=await screen.findByLabelText('문제 1 답안');await waitFor(()=>expect(input).toBeEnabled());
- expect(screen.getByLabelText('학년도')).toHaveValue('2027');expect(screen.getByLabelText('시험 유형')).toHaveValue('mock');
+ expect(screen.getByLabelText('학년도·시험')).toHaveValue('2027:mock');
  expect(screen.queryByRole('tablist',{name:'문항 선택'})).toBeNull();
  fireEvent.change(input,{target:{value:'합성 테스트 답안'}});
- expect(input).toHaveValue('합성 테스트 답안');expect(screen.getByRole('button',{name:'첨삭 준비 중'})).toBeDisabled();
+ expect(input).toHaveValue('합성 테스트 답안');expect(screen.getByRole('button',{name:'첨삭 서비스 준비 중'})).toBeDisabled();
  expect(screen.queryByRole('button',{name:'계정 답안 확인·저장'})).toBeNull();
  expect(fetch).not.toHaveBeenCalled();
  expect(screen.queryByRole('link',{name:/자료 검수/})).toBeNull();
- expect(screen.getByText(/문제 원문이 아직 연결되지/)).toBeInTheDocument();
+ expect(screen.getByText(/문제 원문은 상단 공식 논술 자료/)).toBeInTheDocument();
 });
 it('clears old account view and reloads public metadata on logout',async()=>{
  const view=render(<SourceExamSelection sourceId="gachon" registeredOnly/>);
  await screen.findByLabelText('문제 1 답안');state.user=null;state.client.auth.getSession.mockResolvedValue({data:{session:null}});
  view.rerender(<SourceExamSelection sourceId="gachon" registeredOnly/>);
- expect(screen.queryByLabelText('문제 1 답안')).toBeNull();expect(screen.queryByRole('option',{name:'2027학년도'})).toBeNull();
+ expect(screen.queryByLabelText('문제 1 답안')).toBeNull();expect(screen.queryByRole('option',{name:'2027학년도 모의논술'})).toBeNull();
  await waitFor(()=>expect(state.load).toHaveBeenCalledTimes(2));
- expect(screen.getByRole('button',{name:'첨삭 준비 중'})).toBeDisabled();
+ expect(screen.getByRole('button',{name:'첨삭 서비스 준비 중'})).toBeDisabled();
 });
 it('does not invent years/questions for Kookmin without registered records',async()=>{
  state.load.mockResolvedValue([]);render(<SourceExamSelection sourceId="kookmin" registeredOnly/>);
- await waitFor(()=>expect(fetch).toHaveBeenCalled());expect(screen.getAllByRole('option')).toHaveLength(3);
+ await waitFor(()=>expect(fetch).toHaveBeenCalled());expect(screen.getAllByRole('option')).toHaveLength(2);
  expect(screen.queryByRole('textbox')).toBeNull();
 });
