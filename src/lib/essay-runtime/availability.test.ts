@@ -40,3 +40,27 @@ describe('four-type release boundary',()=>{
   }
  });
 });
+
+describe('allowlisted worker authentication probe',()=>{
+ it('checks installed credentials using null DTOs even while evaluation is OFF; returns no credential',async()=>{
+  const calls:string[]=[];
+  vi.stubGlobal('fetch',vi.fn(async(input:string,init?:RequestInit)=>{
+   calls.push(input);
+   if(input.endsWith('/auth/v1/user')) return Response.json({id});
+   expect(JSON.parse(String(init?.body))).toEqual({p_request:null});
+   const worker=new Headers(init?.headers).get('authorization');
+   const own=(worker===`Bearer ${env.MATH_EXTRACTION_WORKER_JWT}`)===input.endsWith('/math_extraction');
+   return Response.json({code:own?'22023':'42501',message:'private details'},{status:own?400:403});
+  }));
+  const req=new Request('https://lab.legendstudy.com/api/essay/availability?probe=worker-auth',{headers:{authorization:'Bearer user-fixture'}});
+  const res=await onRequestGet({request:req,env:{...env,MATH_ENABLED:'false',MATH_PROVIDER_CALLS_ENABLED:'false'}});
+  const body=await res.json();expect(body.version).toBe('math-worker-auth-probe-v1');
+  expect(body.checks.map((c:{results:{code:string}[]})=>c.results.map(x=>x.code))).toEqual([['22023','42501'],['22023','42501']]);
+  expect(JSON.stringify(body)).not.toMatch(/fixture|private details/);expect(calls).toHaveLength(5);
+ });
+ it('does not probe credentials for a non-allowlisted user',async()=>{
+  const network=vi.fn(async()=>Response.json({id:'00000000-0000-4000-8000-000000000002'}));vi.stubGlobal('fetch',network);
+  const req=new Request('https://lab.legendstudy.com/api/essay/availability?probe=worker-auth',{headers:{authorization:'Bearer user-fixture'}});
+  const body=await (await onRequestGet({request:req,env})).json();expect(body.checks).toBeUndefined();expect(network).toHaveBeenCalledTimes(1);
+ });
+});

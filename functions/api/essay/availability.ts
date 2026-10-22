@@ -13,6 +13,25 @@ export async function onRequestGet({request,env}:{request:Request;env:MathEnviro
   if(env.MATH_ORIGIN!==new URL(request.url).origin)return reply();
   try {
     const transport=serverTransport(env);await transport.subject(token);
+    // Existing allowlisted operator only. Null DTOs cannot claim work or charge Credit.
+    if(new URL(request.url).searchParams.get('probe')==='worker-auth') {
+      const checks=[];
+      for(const [role,credential,own,other] of [
+        ['math_extraction_worker',env.MATH_EXTRACTION_WORKER_JWT,'math_extraction','math_evaluation'],
+        ['math_evaluation_worker',env.MATH_EVALUATION_WORKER_JWT,'math_evaluation','math_extraction'],
+      ] as const) {
+        const current=currentRole(credential,role);
+        const results=[];
+        if(credential) for(const rpc of [own,other]) {
+          const response=await transport.request(`/rest/v1/rpc/${rpc}`,credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_request:null})});
+          let code='unknown';
+          try {const data=await response.json() as {code?:string};if(typeof data.code==='string'&&/^[A-Z0-9]{5,12}$/.test(data.code))code=data.code;}catch{}
+          results.push({rpc,status:response.status,code});
+        }
+        checks.push({role,credentialPresent:!!credential,current,results});
+      }
+      return Response.json({version:'math-worker-auth-probe-v1',checks},{headers:{'Cache-Control':'private, no-store','Vary':'Authorization'}});
+    }
     const catalog=await transport.rpcRaw('math_catalog',{p_limit:1},token);
     state.catalog={math:Array.isArray(catalog)&&catalog.length>0};
     if(env.MATH_ENABLED!=='true'||env.MATH_PROVIDER_CALLS_ENABLED!=='true'||env.MATH_PROVIDER!=='OPENAI'||!env.MATH_PRIMARY_MODEL||!env.MATH_PROVIDER_API_KEY||
