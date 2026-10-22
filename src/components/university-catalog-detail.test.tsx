@@ -31,3 +31,13 @@ it('uses verified schedule facts and distinguishes duration from unknown start t
  expect(screen.queryByText('시작 시간')).toBeNull();
  expect(screen.queryByText('모집인원')).toBeNull();
 });
+
+it('does not present an unverified PDF fallback as an official materials page',()=>{
+ render(<UniversityCatalogDetail university={catalogUniversity('sogang')!}/>);
+ expect(screen.queryByRole('link',{name:/공식.*자료 확인/})).toBeNull();
+ expect(screen.getByText(/공식 논술 자료실 링크를 확인 중/)).toBeVisible();
+});
+it('uses the official multi-year KAU archive without exposing the source PDF',()=>{
+ render(<UniversityCatalogDetail university={catalogUniversity('kau')!}/>);
+ expect(screen.getByRole('link',{name:/공식 논술 자료 확인/})).toHaveAttribute('href','https://ibhak.kau.ac.kr/admission/html/rolling/previous_in_exam.asp');
+});

@@ -92,7 +92,7 @@ function Selection({universityId,sourceId}:{universityId:string|null;sourceId:st
     {!preparing&&!exam.reviewRequired&&exam.questions.filter(q=>(visited.includes(q.id)||q.id===selectedQuestionId)).map(q=><div key={q.id} hidden={q.id!==selectedQuestionId}><EssayQuestionDraft questionId={q.id} onDirtyChange={onDirty} onSubmissionDraft={onSubmissionDraft}/></div>)}
     {question&&<div className="essay-submit-gate">
      {examUnit&&<p>선택한 문항 묶음의 최초 첨삭은 1 Credit이며, 14일 이내 같은 문항 집합의 재첨삭 1회가 포함됩니다. 최초 제출 후에는 새 문항을 추가할 수 없습니다.</p>}
-     {preparing?<button className="button button--primary service-preparing" disabled>서비스 준비중</button>:exam.reviewRequired?<><p role="status">자료 검수 중입니다. 문항 목록은 확인할 수 있으며, 첨삭은 아직 준비 중입니다.</p><button className="button button--primary" disabled>첨삭 준비 중</button></>:<DbExamSubmit key={exam.id} examId={exam.id} questionIds={questionIds} included={examUnit?selectedIds:[question.id]} drafts={drafts}/>}
+     {preparing?<button className="button button--primary service-preparing" disabled>서비스 준비중</button>:exam.reviewRequired?<><p role="status">자료 검수 중입니다. 시험·문항 목록은 조회할 수 있지만, 공개 승인된 문제 본문은 아직 연결되지 않았습니다. 상단 공식 자료 링크가 있다면 해당 학년도·시험을 확인해 주세요. AI 첨삭은 준비 중입니다.</p><button className="button button--primary" disabled>첨삭 준비 중</button></>:<DbExamSubmit key={exam.id} examId={exam.id} questionIds={questionIds} included={examUnit?selectedIds:[question.id]} drafts={drafts}/>}
     </div>}
    </>}
   </>}

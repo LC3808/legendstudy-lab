@@ -5,7 +5,7 @@ import {SourceExamSelection} from './source-exam-selection';
 vi.mock('client-only',()=>({}));
 const state=vi.hoisted(()=>({user:{id:'operator'} as {id:string}|null,load:vi.fn(),client:{auth:{getSession:vi.fn()}}}));
 vi.mock('./auth-context',()=>({useAuth:()=>state}));
-vi.mock('@/lib/essay-runtime/registered-material-catalog',()=>({loadRegisteredMaterials:state.load}));
+vi.mock('@/lib/essay-runtime/registered-material-catalog',async importOriginal=>({...await importOriginal<typeof import('@/lib/essay-runtime/registered-material-catalog')>(),loadRegisteredMaterials:state.load}));
 const id='00000000-0000-4000-8000-000000000001';
 const exam={key:`registered:${id}`,dbExamId:id,universityId:id,sourceUniversityId:'gachon',year:2027,kind:'mock',track:'의예',session:'모의 의예',campus:null,verification:'REVIEW_REQUIRED',sourceHashes:[],evaluationReady:false,questions:[{key:`registered:${id}`,dbQuestionId:id,label:'문제 1',sourceLocator:null,lengthLabel:null,accountDraftReady:false}]};
 beforeEach(()=>{state.user={id:'operator'};state.client.auth.getSession.mockResolvedValue({data:{session:{user:{id:'operator'},access_token:'fixture'}}});state.load.mockReset().mockResolvedValue([exam]);vi.stubGlobal('fetch',vi.fn().mockResolvedValue(Response.json({version:'essay-source-registry-v1',exams:[]})));});
@@ -19,6 +19,8 @@ it('selects the registered mock exam, saves a local draft and blocks unreviewed 
  expect(input).toHaveValue('합성 테스트 답안');expect(screen.getByRole('button',{name:'첨삭 준비 중'})).toBeDisabled();
  expect(screen.queryByRole('button',{name:'계정 답안 확인·저장'})).toBeNull();
  expect(fetch).not.toHaveBeenCalled();
+ expect(screen.queryByRole('link',{name:/자료 검수/})).toBeNull();
+ expect(screen.getByText(/문제 원문이 아직 연결되지/)).toBeInTheDocument();
 });
 it('clears old account view and reloads public metadata on logout',async()=>{
  const view=render(<SourceExamSelection sourceId="gachon" registeredOnly/>);
