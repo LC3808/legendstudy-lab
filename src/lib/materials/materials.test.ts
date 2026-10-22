@@ -17,3 +17,10 @@ it('connects only the reviewed Hanyang question-only original without enabling e
  const pdf=studentPdf(q.studentPdf,q.dbQuestionId!);expect(pdf).not.toBeNull();
  expect(studentPdf({...pdf,sha256:'ced37494c6b65531cca30649093846dde665bf401e630e8751f0bc8a3be90060'},q.dbQuestionId!)).toBeNull();
 });
+
+it('keeps every new PDF candidate unavailable pending content, rights and Storage approval',async()=>{
+ const {default:pending}=await import('@/data/essay-student-pdf-candidates.json');
+ const {studentPdfForExam}=await import('./student-asset');
+ expect(new Set(pending.questions.map(q=>q.questionId)).size).toBe(pending.questions.length);
+ for(const q of pending.questions){expect(q.studentDisplay).toBe('PENDING');expect(q.storageRead).toBe('PENDING');expect(studentPdfForExam(q.examId,q.questionId)).toBeNull();}
+});
