@@ -1937,9 +1937,9 @@
       "assetId": "4a525178f8d229b4c652bd714658adae06567788ea449eb199096db799dfaf5c",
       "pageCount": 7,
       "startPage": 2,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "d420ef29-218a-57fd-8524-842a0e551714",
