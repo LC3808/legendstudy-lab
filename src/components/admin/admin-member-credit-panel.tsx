@@ -11,7 +11,7 @@ import {
 } from "@/lib/admin/format";
 import type { AdminCredit } from "@/lib/admin/contract";
 
-import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
+import { AdminEmpty, AdminErrorPanel, AdminLoading, AdminPanel, useAdminQuery } from "./admin-surface";
 
 import {AdminCreditGrantForm} from "./admin-credit-grant-form";
 
@@ -39,10 +39,28 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
       </div>
 
       {summary === null ? (
-        <AdminEmpty
-          title="Credit 계정이 없습니다"
-          body="이 회원은 아직 Credit 계정이 만들어지지 않았습니다."
-        />
+        // Owner directive §6: distinguish "this member genuinely has no Credit
+        // account" from "the admin read could not resolve the account". The
+        // summary can be null in both cases, but the ledger page totals are read
+        // independently — so grants or transactions existing while the summary is
+        // null means rows exist that this read did not resolve, which is a lookup
+        // problem to escalate, not an empty account.
+        data.page.grantsTotal > 0 || data.page.transactionsTotal > 0 ? (
+          <AdminPanel tone="warning" title="Credit 요약을 불러오지 못했습니다">
+            <p>
+              지급 {formatNumber(data.page.grantsTotal)}건 · 거래{" "}
+              {formatNumber(data.page.transactionsTotal)}건이 조회되었지만 요약 값을 가져오지
+              못했습니다. 실제 잔액이 없는 것이 아니라 조회 계약이 이 계정을 해석하지 못한
+              상태일 수 있습니다.
+            </p>
+            <p className="admin-panel__code">조회 계정 ID: {accountId}</p>
+          </AdminPanel>
+        ) : (
+          <AdminEmpty
+            title="Credit 계정이 없습니다"
+            body={`이 회원은 지급·거래 내역이 없어 Credit 계정이 확인되지 않습니다. (조회 계정 ID: ${accountId})`}
+          />
+        )
       ) : (
         <>
           <div className="admin-metrics">

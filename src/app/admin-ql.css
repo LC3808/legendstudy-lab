@@ -624,3 +624,95 @@
   overflow-wrap: anywhere;
   min-width: 0;
 }
+
+/* ==========================================================================
+   ADMIN CONSOLE REDESIGN (2026-10-23) — shared usability/design pass.
+   Owner directive §3: card layout, subtle elevation, clear borders, rounded
+   corners, generous spacing, emphasised filter/selection states, unified
+   typography, mobile responsive, visual hierarchy between tables and cards.
+   Tokens only; no new palette. Animations stay minimal (no motion added here).
+   ========================================================================== */
+
+/* Elevation + hierarchy — give the existing cards an 은은한 그림자 and keep the
+   border, so a card reads as raised rather than flat. */
+.admin-metric,
+.admin-order,
+.admin-inquiry,
+.admin-reply-form,
+.admin-grant,
+.admin-panel { box-shadow: var(--shadow); }
+.admin-nav { box-shadow: var(--shadow); }
+.admin-metric { transition: border-color 150ms ease, box-shadow 150ms ease; }
+
+/* A neutral, clearly-bordered button, distinct from the filled primary — used
+   for 필터 초기화 so apply vs reset never read as the same control (§5A). */
+.button--ghost { border-color: var(--line-strong); background: var(--surface-muted); color: var(--ink-body); }
+.button--ghost:hover { background: var(--surface); border-color: var(--ink-soft); }
+
+/* Filters — bordered selects with a clear focus/active state (§5A). */
+.admin-filters { gap: 0.75rem; }
+.admin-filters__row { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; }
+.admin-field { display: grid; gap: 0.3rem; min-width: 0; font-size: 0.74rem; font-weight: 800; color: var(--ink-muted); }
+.admin-field--grow { flex: 1 1 14rem; }
+.admin-select { min-width: 0; padding: 0.5rem 0.6rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--ink); font-size: var(--type-small); font-weight: 600; }
+.admin-select:hover { border-color: var(--ink-soft); }
+/* A select whose value is not "전체" is an applied filter; mark it so an operator
+   can see at a glance which filters are narrowing the list. */
+.admin-select:not([data-empty="true"]):valid { }
+.admin-fieldset { margin: 0.25rem 0 0; border: 1px solid var(--line); border-radius: var(--radius-md); padding: 0.85rem 0.9rem; min-width: 0; background: var(--surface); }
+.admin-fieldset legend { padding: 0 0.4rem; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em; color: var(--ink-muted); }
+.admin-filters__school { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.6rem; margin-top: 0.4rem; }
+.admin-school-options { list-style: none; margin: 0.6rem 0 0; padding: 0; display: grid; gap: 0.25rem; }
+.admin-checkbox { display: inline-flex; align-items: center; gap: 0.4rem; font-size: var(--type-small); font-weight: 700; color: var(--ink-body); }
+.admin-filters__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.25rem; }
+
+/* Period filter — a shared segmented control for 기간 선택 (§4, §8, §9). */
+.admin-period { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.9rem 0 0; }
+.admin-period__button { padding: 0.4rem 0.75rem; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--surface); color: var(--ink-body); font-size: 0.78rem; font-weight: 700; }
+.admin-period__button:hover { background: var(--surface-muted); }
+.admin-period__button--active { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+/* 조치 필요 (action-required) band on the dashboard (§4). */
+.admin-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr)); gap: 0.7rem; margin-top: 0.9rem; }
+.admin-action { min-width: 0; border: 1px solid var(--line); border-left-width: 4px; border-radius: var(--radius-md); background: var(--surface); padding: 0.85rem 0.9rem; box-shadow: var(--shadow); }
+.admin-action--ok { border-left-color: var(--green); }
+.admin-action--attn { border-left-color: var(--gold); }
+.admin-action--danger { border-left-color: var(--danger); }
+.admin-action--muted { border-left-color: var(--line-strong); }
+.admin-action__label { margin: 0; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; color: var(--ink-muted); overflow-wrap: anywhere; }
+.admin-action__value { margin: 0.3rem 0 0; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; color: var(--ink-strong); }
+.admin-action__note { margin: 0.3rem 0 0; font-size: 0.72rem; color: var(--ink-muted); line-height: 1.55; overflow-wrap: anywhere; }
+
+/* Pager with numbered pages (§5B). */
+.admin-pager { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 1rem; }
+.admin-pager__pages { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; margin: 0; padding: 0; }
+.admin-pager__pages li { display: flex; align-items: center; gap: 0.3rem; }
+.admin-pager__page { min-width: 2.25rem; min-height: 2.25rem; padding: 0.3rem 0.5rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--ink-body); font-size: 0.8rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.admin-pager__page:hover { background: var(--surface-muted); }
+.admin-pager__page--active { background: var(--ink); border-color: var(--ink); color: #fff; }
+.admin-pager__gap { color: var(--ink-soft); padding: 0 0.1rem; }
+
+/* Member directory + inline detail (§5C/§5E). The detail opens as a full-width
+   row directly beneath its member, and only one is open at a time. */
+.admin-table--members tbody .admin-member-row--open > td { background: var(--surface-muted); box-shadow: inset 3px 0 0 var(--accent); }
+.admin-member-detail-row > td { white-space: normal; padding: 0; background: var(--paper-deep); }
+.admin-member-detail-row .admin-detail { padding: 1.1rem 1rem 1.25rem; }
+.admin-detail__title { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
+.admin-detail__id { margin: 0; font-size: 0.72rem; color: var(--ink-muted); }
+.admin-detail__id code { font-family: var(--font-mono, ui-monospace, monospace); overflow-wrap: anywhere; }
+/* 영역별 구분선과 여백 (§5E): each block is separated by a divider. */
+.admin-detail__block { border-top: 1px solid var(--line); margin-top: 1.1rem; padding-top: 1rem; }
+.admin-detail__block:first-of-type { border-top: 0; margin-top: 0.75rem; padding-top: 0; }
+.admin-detail__block .admin-subhead:first-child { margin-top: 0; }
+/* The credit panel already draws its own top divider; inside a detail block it
+   should not double it. */
+.admin-detail__block .admin-credit { margin-top: 0; border-top: 0; padding-top: 0; }
+
+@media (max-width: 480px) {
+  .admin-actions { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* 1:1 문의 board — clearer separation between the title row and the body (§11). */
+.admin-inquiry__head { padding-bottom: 0.5rem; border-bottom: 1px solid var(--line); margin-bottom: 0.1rem; }
+.admin-inquiry { transition: border-color 150ms ease, box-shadow 150ms ease; }
+.admin-inquiry:hover { border-color: var(--line-strong); }
