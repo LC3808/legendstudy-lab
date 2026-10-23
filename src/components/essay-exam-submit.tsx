@@ -29,6 +29,7 @@ export function EssayExamSubmit({exam,included,drafts,cycle}:{cycle?:{parentId?:
     const row=rows.find(r=>r.id===accepted!.id);setRecord(row??null);
     const status=row?.evaluations[0]?.status;
     if(status==='completed'||status==='failed'){setWatching(false);
+     window.dispatchEvent(new CustomEvent('essay-history-changed',{detail:{owner:accepted!.owner}}));
      setNotice(status==='completed'?'첨삭이 완료됐어요. 저장된 결과를 확인하세요.':'첨삭을 완료하지 못했어요. 기록에서 처리 상태를 확인해 주세요.');return;
     }
     setNotice(row?'첨삭 중입니다. 화면을 닫아도 제출 기록은 유지됩니다.':'제출 기록을 확인하고 있어요. 평가를 다시 요청하지 않습니다.');

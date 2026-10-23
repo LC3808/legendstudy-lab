@@ -32,7 +32,13 @@ export function examReports(run:Record<string,unknown>):Report[]{
    essay_improvement_progress:array(out.improvements).map(object).map(i=>({...i,next_action:i.action,scaffolding_observation:{...object(i.scaffolding_observation),core_focus:array(out.core_improvement_keys).includes(i.issue_key)}})),
    essay_evaluation_dimensions:array(out.dimensions).map(object).map((d,index)=>({criterion_id:d.criterion_id,display_order:index+1,level_1_to_5:d.level,explanation:d.explanation,essay_evaluation_criteria:{label:criteria.find(c=>object(c.binding).id===d.criterion_id)?.label,definition_version:q.rubricVersion}}))
   },text(answer.body),text(run.title));
-  return {...report,sentences:array(out.sentence_feedback).map(object).filter(s=>Number.isInteger(s.start)&&Number.isInteger(s.end)&&(s.start as number)>=0&&(s.end as number)>(s.start as number)&&(s.end as number)<=Array.from(text(answer.body)).length&&Array.from(text(answer.body)).slice(s.start as number,s.end as number).join('')===s.quote&&text(s.quote)&&text(s.diagnosis)&&text(s.direction)).map(s=>({quote:text(s.quote),diagnosis:text(s.diagnosis),direction:text(s.direction),example:text(s.example)||undefined})),priorId:run.parent_id?text(run.parent_id)+'/'+text(q.questionId):null,pins:[text(q.questionId),text(q.rubricVersion),text(q.evidenceVersion),'1.3']};
+  const evidenceLabels=array(out.dimensions).map(object).flatMap(d=>{
+   const criterion=criteria.find(c=>object(c.binding).id===d.criterion_id);
+   const refs=[...new Set(array(d.evidence_ids).map(text).filter(Boolean))];
+   return criterion&&text(criterion.label)&&text(d.explanation)&&refs.length
+    ?[`${text(criterion.label)} — ${text(d.explanation)} (저장된 근거 참조 ${refs.length}개)`]:[];
+  });
+  return {...report,evidenceLabels,sentences:array(out.sentence_feedback).map(object).filter(s=>Number.isInteger(s.start)&&Number.isInteger(s.end)&&(s.start as number)>=0&&(s.end as number)>(s.start as number)&&(s.end as number)<=Array.from(text(answer.body)).length&&Array.from(text(answer.body)).slice(s.start as number,s.end as number).join('')===s.quote&&text(s.quote)&&text(s.diagnosis)&&text(s.direction)).map(s=>({quote:text(s.quote),diagnosis:text(s.diagnosis),direction:text(s.direction),example:text(s.example)||undefined})),priorId:run.parent_id?text(run.parent_id)+'/'+text(q.questionId):null,pins:[text(q.questionId),text(q.rubricVersion),text(q.evidenceVersion),'1.3']};
  });
 }
 export async function readExamReports(client:SupabaseClient,owner:string,id:string){
