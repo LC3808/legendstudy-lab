@@ -10,7 +10,7 @@ const OWNER = { id: 'owner-1', email: 'review@legendstudy.com' };
 vi.mock('@/components/auth-context', () => ({
   useAuth: () => ({ client: { auth: { getSession: async () => ({ data: { session: { user: OWNER } } }) } }, user: OWNER, status: 'authenticated' }),
 }));
-vi.mock('@/lib/my/foundation', async importOriginal => ({...await importOriginal<typeof import('@/lib/my/foundation')>(),readApplicationPage:async()=>({items:[],has_more:false,offset:0}),readStudy:async()=>({today_ms:0,week_ms:0,last30_ms:0,daily7:[]})}));
+vi.mock('@/lib/my/foundation', async importOriginal => ({...await importOriginal<typeof import('@/lib/my/foundation')>(),readApplicationPage:async()=>({items:[],has_more:false,offset:0}),readStudy:async()=>({today_ms:0,week_ms:0,last30_ms:0,daily7:[]}),readEssaySummary:async()=>({sessions:[],points:[],hasMoreSessions:false,hasMoreEvaluations:false})}));
 vi.mock('@/components/credit-balance', () => ({
   useCreditSummary: () => ({ state: { status: 'ready', value: { spendable: 3, free: 3, paid: 0, other: 0, next_expiry: '2026-11-01' } }, reload: () => {} }),
 }));
@@ -39,20 +39,21 @@ it('presents the MY dashboard sections in the agreed order', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
   const headings = [...container.querySelectorAll('.my-section > h2')].map((h) => h.textContent);
-  expect(headings).toEqual(['내 이용 현황', '나의 학교·학년', '나의 목표', '나의 지원 현황', 'LAB', '나의 학습시간', '계정 및 지원']);
+  expect(headings).toEqual(['나의 프로필', '내 이용 현황', '나의 논술 성장', '나의 학교·학년', '나의 목표', '나의 지원 현황', 'LAB', '나의 학습시간', '계정 및 지원']);
 });
 
-it('shows the signed-in email as the identity line and nothing invented beside it', async () => {
+it('leads with the email as the profile name when no nickname is set, and never prints it twice', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
-  const identity = container.querySelector('.my-identity');
-  expect(identity?.textContent).toBe('review@legendstudy.com');
+  const name = container.querySelector('.my-profile-card__name');
+  expect(name?.textContent).toBe('review@legendstudy.com');
+  expect(container.querySelector('.my-profile-card__identity .my-identity__email')).toBeNull();
 });
 
 it('shows usage as a metric row with a ranked pair of actions', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
-  const usage = container.querySelector('.my-section') as HTMLElement;
+  const usage = [...container.querySelectorAll('.my-section')].find((s) => s.querySelector('h2')?.textContent === '내 이용 현황') as HTMLElement;
   expect(within(usage).getByText('첨삭권')).toBeTruthy();
   expect(usage.querySelector('.my-metric__value')?.textContent).toBe('3개');
   expect(within(usage).getByText('무료 3 · 구매 0')).toBeTruthy();
@@ -64,7 +65,7 @@ it('shows usage as a metric row with a ranked pair of actions', async () => {
 
 it('keeps school and grade as facts and drops raw profile columns', async () => {
   const { container } = render(<MyDashboard />);
-  await screen.findByText('재학생');
+  await screen.findAllByText('재학생');
   const facts = container.querySelector('.my-facts') as HTMLElement;
   expect(within(facts).getByText('현재 상태')).toBeTruthy();
   expect(within(facts).getByText('재학생')).toBeTruthy();

@@ -1526,3 +1526,58 @@ h1, h2, h3 { text-wrap: pretty; }
  .user-credit-history td { padding: .35rem 0; border: 0; }
  .user-credit-history td::before { content: attr(data-label); display: block; font-size: .8em; font-weight: 600; color: var(--ink-muted); margin-bottom: .15rem; }
 }
+
+/* ===== MY 마이페이지 redesign (Claude 2026-10-24) — profile, growth, credit, forms ===== */
+
+/* 나의 프로필 — identity glance. Nickname leads; email never printed twice. */
+.my-profile-card { display: grid; gap: 1rem; }
+.my-profile-card__name { margin: 0; font-size: 1.15rem; font-weight: 700; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.my-profile-card__identity .my-identity__email { display: block; margin-top: .2rem; }
+.my-profile-card__facts { display: flex; flex-wrap: wrap; gap: .7rem 1.75rem; margin: 0; }
+.my-profile-card__facts > div { display: grid; gap: .15rem; }
+.my-profile-card__facts dt { color: var(--ink-muted); font-size: .76rem; font-weight: 600; }
+.my-profile-card__facts dd { margin: 0; font-weight: 600; }
+
+/* 나의 논술 성장 — honest summary + same-context level comparison. */
+.my-growth { display: grid; gap: 1.1rem; }
+.my-growth__headline { margin: 0; font-size: 1.05rem; font-weight: 700; line-height: 1.55; overflow-wrap: anywhere; }
+.my-growth__sub { color: var(--ink-muted); font-weight: 500; font-size: .92rem; }
+.my-growth__stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); gap: .6rem; margin: 0; }
+.my-growth__stats > div { padding: .7rem .85rem; border: 1px solid var(--product-border); border-radius: var(--radius-md); background: var(--surface); }
+.my-growth__stats dt { color: var(--ink-muted); font-size: .76rem; font-weight: 700; }
+.my-growth__stats dd { margin: .3rem 0 0; font-size: 1.25rem; font-weight: 800; letter-spacing: -.01em; }
+.my-growth__compare { display: grid; gap: .5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.my-growth__compare h3 { margin: 0; font-size: .95rem; font-weight: 700; }
+.my-growth__change { margin: 0; font-weight: 600; }
+.my-growth__up { color: #176257; }
+.my-growth__down { color: #9a2f2f; }
+
+/* 첨삭권 내역 — balance header + per-page navigation. */
+.my-credit-summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.1rem; }
+.my-credit-summary__balance { display: grid; gap: .1rem; }
+.my-pagination { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.1rem; }
+.my-pagination__status { color: var(--ink-muted); font-size: .85rem; font-weight: 600; }
+
+/* School·status facts read with a hairline divider between rows. */
+.my-facts > div + div { padding-top: .7rem; border-top: 1px solid var(--line); }
+
+/* 모집 구분 수시/정시 radios reuse the MY form language. */
+.my-radio-group { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.25rem; min-width: 0; flex: 1 1 14rem; margin: 0; padding: 0; border: 0; }
+.my-radio-group legend { padding: 0; margin-bottom: .45rem; color: var(--ink-muted); font-size: .86rem; }
+.my-radio { display: inline-flex; align-items: center; gap: .4rem; font-weight: 600; }
+.my-goal-form .my-radio input[type="radio"] { width: auto; min-width: 0; margin: 0; padding: 0; }
+
+/* Goal/application search results read as one selectable area. */
+.my-add-panel .my-search-results li { padding-inline: .4rem; border-radius: var(--radius-sm); }
+.my-add-panel .my-search-results li:hover { background: color-mix(in srgb, var(--brand) 12%, transparent); }
+
+/* LAB entries: 논술 active, the not-yet-available tracks read as calmly disabled. */
+.my-nav-card--disabled { opacity: .72; background: var(--surface-muted); cursor: default; }
+.my-nav-card--disabled:hover { border-color: var(--product-border); }
+.my-nav-card--disabled strong { color: var(--ink-muted); }
+.my-nav-card__tag { justify-self: start; width: fit-content; padding: .05rem .45rem; border: 1px solid var(--line-strong); border-radius: 99px; color: var(--ink-muted); font-size: .66rem; font-weight: 700; }
+
+@media (max-width: 620px) {
+  .my-credit-summary { align-items: stretch; }
+  .my-credit-summary .button { width: 100%; }
+}
