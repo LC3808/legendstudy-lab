@@ -37,15 +37,25 @@ const STATE_FILTERS = [
  * every figure renders as 미설치 rather than 0, because "0건" would tell an
  * operator that nothing had ever been sold.
  */
+// Owner directive §9: one page shows five orders.
+const PAYMENT_PAGE_LIMIT = 5;
+
 export function AdminPaymentView() {
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
   const [state, setState] = useState("");
+  const [offset, setOffset] = useState(0);
   const [hint, setHint] = useState<string | null>(null);
 
   const result = useAdminQuery<AdminPaymentPage>(
-    (client) => client.paymentOrders({ query: query || undefined, state: state || undefined }),
-    `payment:${query}:${state}`,
+    (client) =>
+      client.paymentOrders({
+        query: query || undefined,
+        state: state || undefined,
+        limit: PAYMENT_PAGE_LIMIT,
+        offset,
+      }),
+    `payment:${query}:${state}:${offset}`,
   );
 
   function submit(event: React.FormEvent) {
@@ -56,7 +66,13 @@ export function AdminPaymentView() {
       return;
     }
     setHint(null);
+    setOffset(0);
     setQuery(trimmed);
+  }
+
+  function changeState(next: string) {
+    setOffset(0);
+    setState(next);
   }
 
   return (
@@ -94,7 +110,7 @@ export function AdminPaymentView() {
               id="admin-payment-state"
               className="admin-search__input"
               value={state}
-              onChange={(event) => setState(event.target.value)}
+              onChange={(event) => changeState(event.target.value)}
             >
               {STATE_FILTERS.map((option) => (
                 <option key={option.value || "all"} value={option.value}>
@@ -210,6 +226,56 @@ export function AdminPaymentView() {
                 })}
               </ul>
             )}
+            {result.state.data.total !== null && result.state.data.total > PAYMENT_PAGE_LIMIT ? (
+              <nav className="admin-pager" aria-label="주문 목록 페이지">
+                <button
+                  className="button button--outline button--small"
+                  type="button"
+                  disabled={offset === 0}
+                  onClick={() => setOffset(Math.max(0, offset - PAYMENT_PAGE_LIMIT))}
+                >
+                  이전
+                </button>
+                <span className="admin-muted">
+                  {formatNumber(Math.floor(offset / PAYMENT_PAGE_LIMIT) + 1)} /{" "}
+                  {formatNumber(Math.max(1, Math.ceil(result.state.data.total / PAYMENT_PAGE_LIMIT)))}페이지
+                </span>
+                <button
+                  className="button button--outline button--small"
+                  type="button"
+                  disabled={offset + PAYMENT_PAGE_LIMIT >= result.state.data.total}
+                  onClick={() => setOffset(offset + PAYMENT_PAGE_LIMIT)}
+                >
+                  다음
+                </button>
+              </nav>
+            ) : null}
+          </section>
+
+          <section className="admin-section">
+            <h2>상품·매출 통계</h2>
+            <p className="admin-section__note">
+              상품(1·3·5·10회권)별 필터와 판매량·매출·환불·순매출 집계, 일·주·월 매출 추이
+              그래프는 주문 목록을 넘어선 집계가 필요합니다. 현재 조회 계약은 주문 목록과 총
+              건수만 제공하므로, 페이지 단위 합계를 전체 통계처럼 표시하지 않습니다.
+            </p>
+            <div className="admin-metrics">
+              <div className="admin-metric">
+                <p className="admin-metric__label">상품별 판매량·매출</p>
+                <p className="admin-metric__value admin-metric__value--sm">집계 불가</p>
+                <p className="admin-metric__note">결제 집계 RPC 필요 (GAP)</p>
+              </div>
+              <div className="admin-metric">
+                <p className="admin-metric__label">결제 성공·실패·환불</p>
+                <p className="admin-metric__value admin-metric__value--sm">집계 불가</p>
+                <p className="admin-metric__note">결제 집계 RPC 필요 (GAP)</p>
+              </div>
+              <div className="admin-metric">
+                <p className="admin-metric__label">순매출 / 매출 추이</p>
+                <p className="admin-metric__value admin-metric__value--sm">집계 불가</p>
+                <p className="admin-metric__note">기간별 집계 RPC 필요 (GAP)</p>
+              </div>
+            </div>
           </section>
         </>
       )}
