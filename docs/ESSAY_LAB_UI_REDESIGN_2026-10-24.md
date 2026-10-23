@@ -127,7 +127,8 @@ APP·WEB 공통 결과 UI, 대학별 내부 평가체계가 달라도 학생에�
 
 ## 13~15. Commit / PR / Production
 
-- Commit: (커밋 후 기입) — 메시지 끝 `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`
-- Push / Remote SHA 일치: (기입)
-- PR: (번호 기입) — **별도 PR(ready), main 미병합**
+- UI Commit: `674e11f` — 메시지 끝 `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`
+  (본 보고서 §13~15 보강 커밋이 그 위에 올라감)
+- 브랜치: `claude/web-essay-ui-redesign-20261024-81e3c9` → origin push 완료, Remote SHA 일치 확인.
+- PR: **[#4](https://github.com/LC3808/legendstudy-lab/pull/4)** — 별도 PR(ready), **main 미병합**.
 - **Production 미배포** (Owner 검수 후 결정). admin PR#2 / MY PR#3와 독립 브랜치로 보존.
