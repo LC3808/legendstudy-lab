@@ -28,7 +28,7 @@ export default async function UniversityDetailPage({ params }: { params: Promise
   const link = university.sourceLinks[0];
 
   return (
-    <div className="page-section content-wrap content-wrap--detail">
+    <div className="page-section content-wrap content-wrap--detail essay-flow">
       <UniversityStructuredData university={university} />
       <Link className="back-link" href="/essay-lab">← 대학 목록</Link>
       <section className="detail-hero">

@@ -1424,6 +1424,27 @@ h1, h2, h3 { text-wrap: pretty; }
 /* The 논술 LAB 첨삭권 bar is the first thing under the hero, so it takes the same
    radius as the surface above it. */
 .essay-lab-page .essay-credit { border-radius: var(--radius-xl); }
+
+/* ── Essay LAB preview polish (§3/§7/§15/§16) ───────────────────────────────
+   Presentation only for the public practice preview. The mock / 연습 예시 labels,
+   the owner-approved copy and the browser-local Draft behavior are unchanged.
+   These rules unify card depth, spacing, buttons, focus states and small-width
+   layout with the rest of the product surface, and give the detail/workspace
+   pages the same warm canvas as the 논술 LAB landing. */
+.site-shell:has(.essay-flow) main, .site-shell:has(.essay-workspace) main { background: var(--product-canvas); }
+.essay-flow .surface-card, .essay-flow .review-card, .essay-flow .question-prompt,
+.essay-flow .next-actions, .essay-flow .criteria-grid article { box-shadow: var(--product-shadow); }
+.essay-flow .detail-actions > div { gap: .75rem; }
+.essay-flow .button:not(.button--small) { min-height: 2.75rem; }
+.essay-flow a:focus-visible, .essay-flow .button:focus-visible, .essay-flow summary:focus-visible {
+  outline: 2px solid var(--brand); outline-offset: 2px; border-radius: var(--radius-sm); }
+.essay-workspace .reading-pane, .essay-workspace .editor-pane { box-shadow: var(--product-shadow); }
+.essay-workspace .editor-pane textarea:focus-visible { outline: 2px solid var(--brand); outline-offset: -3px; }
+.essay-workspace .editor-pane__footer .button { min-height: 2.75rem; }
+@media (max-width: 720px) {
+  .essay-flow .detail-actions .button, .essay-workspace .editor-pane__footer .button { width: 100%; justify-content: center; }
+}
+
 @media (max-width: 760px) {
   .score-lab { min-height: max(28rem, calc(100svh - 8rem)); }
 }
