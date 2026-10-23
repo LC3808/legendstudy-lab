@@ -53,3 +53,21 @@ it('only terminal failure offers explicit retry preparation and requotes with a 
  expect(requests.filter(x=>x.action==='quote')).toHaveLength(2);
  const submissions=requests.filter(x=>x.action==='submit');expect(submissions[0].key).not.toBe(submissions[1].key);
 });
+it('Q2 submits separately while the saved Q1 request and History remain intact',async()=>{
+ const legacy='legendstudy:essay-exam-request:v1:owner:test:initial';
+ const original=JSON.stringify({fingerprint:'first-question',key:'existing-q1',answers:[{questionId:'question',body:'first',revision:1}]});
+ localStorage.setItem(legacy,original);mocks.history.mockResolvedValue([{id:'q2-run',evaluations:[{status:'completed'}]}]);
+ const submissions:Record<string,unknown>[]=[];vi.spyOn(window,'confirm').mockReturnValue(true);
+ vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{const b=JSON.parse(init.body);if(b.action==='submit')submissions.push(b);return Response.json(b.action==='availability'?{ready:true}:b.action==='quote'?{version:'essay-exam-quote-v1',credits:1}:{runId:'q2-run'});}));
+ const two={...exam,questions:[...exam.questions,{key:'q2',dbQuestionId:'question2',inputMode:'text'}]} as SourceExam;
+ render(<EssayExamSubmit exam={two} included={['q2']} drafts={{q2:{body:'Second answer',revision:1,images:false}}}/>);
+ await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ expect(submissions).toHaveLength(1);expect(submissions[0].key).not.toBe('existing-q1');expect(submissions[0].answers).toEqual([{questionId:'question2',body:'Second answer',revision:1}]);expect(localStorage.getItem(legacy)).toBe(original);
+});
+it('changed same-question legacy answer never quotes or submits again',async()=>{
+ localStorage.setItem('legendstudy:essay-exam-request:v1:owner:test:initial',JSON.stringify({fingerprint:'old-body',key:'existing',answers:[{questionId:'question',body:'old',revision:1}]}));
+ const actions:string[]=[];vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{actions.push(JSON.parse(init.body).action);return Response.json({ready:true});}));
+ render(<EssayExamSubmit exam={exam} included={['q']} drafts={{q:{body:'Changed answer',revision:2,images:false}}}/>);
+ await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ expect(actions).toEqual(['availability']);expect(screen.getByRole('status')).toHaveTextContent('이전 제출의 처리 상태');
+});

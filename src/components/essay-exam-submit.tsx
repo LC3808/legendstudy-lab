@@ -1,6 +1,7 @@
 'use client';
-import {useEffect,useRef,useState} from 'react';
+import {useEffect,useState} from 'react';
 import Link from 'next/link';
+import {pendingStorageKey,restorePending,savePending,type PendingRequest} from '@/lib/essay-runtime/pending-request';
 import {useAuth} from './auth-context';
 import {temporaryDraftStore} from '@/lib/temporary-draft-store';
 import type {SourceExam} from '@/lib/essay-runtime/source-registry';
@@ -11,10 +12,11 @@ export type SubmissionDraft={body:string;revision:number;images:boolean;saved?:b
 export function EssayExamSubmit({exam,included,drafts,cycle}:{cycle?:{parentId?:string;previousPaidRunId?:string};exam:SourceExam;included:string[];drafts:Record<string,SubmissionDraft>}){
  const auth=useAuth();const [ready,setReady]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[record,setRecord]=useState<RecordItem|null>(null);
  const [parentId,setParentId]=useState(cycle?.parentId??''),[rewrites,setRewrites]=useState<Record<string,unknown>[]>([]);
- const pending=useRef<{fingerprint:string;key:string;answers:{questionId:string;body:string;revision:number}[]}|null>(null);
  const owner=auth.user?.id;
- const [accepted,setAccepted]=useState<{id:string;owner:string;examId:string;started:number}|null>(null);
- const acceptedHere=!!accepted&&accepted.owner===owner&&accepted.examId===exam.dbExamId;
+ const legacyStorage=`legendstudy:essay-exam-request:v1:${owner??'guest'}:${exam.key}:${cycle?.previousPaidRunId?`additional:${cycle.previousPaidRunId}`:parentId||'initial'}`;
+ const requestStorage=pendingStorageKey(legacyStorage,exam.questions.filter(q=>included.includes(q.key)).map(q=>q.dbQuestionId??q.key));
+ const [accepted,setAccepted]=useState<{id:string;owner:string;examId:string;scope:string;started:number}|null>(null);
+ const acceptedHere=!!accepted&&accepted.owner===owner&&accepted.examId===exam.dbExamId&&accepted.scope===requestStorage;
  const [waitMessage,setWaitMessage]=useState('');
  const [watching,setWatching]=useState(false);
  useEffect(()=>{if(!busy&&!watching)return;const messages=['오늘도 수고했어요.','잠깐 어깨를 펴고 쉬어가세요.','물 한 모금 마시고 오셔도 좋아요.'];let index=0;
@@ -39,7 +41,7 @@ export function EssayExamSubmit({exam,included,drafts,cycle}:{cycle?:{parentId?:
   }
   void poll();return()=>{active=false;if(timer)clearTimeout(timer);};
  },[accepted,acceptedHere,auth.client]);
- const requestStorage=`legendstudy:essay-exam-request:v1:${owner??'guest'}:${exam.key}:${cycle?.previousPaidRunId?`additional:${cycle.previousPaidRunId}`:parentId||'initial'}`;
+
  async function credential(){const s=(await auth.client?.auth.getSession())?.data.session;if(!s||s.user.id!==owner)throw Error('LOGIN_REQUIRED');return s.access_token;}
  useEffect(()=>{let active=true;void(async()=>{setReady(false);setRecord(null);if(!auth.client||!owner||!exam.dbExamId)return;
   const s=(await auth.client.auth.getSession()).data.session;if(!s||s.user.id!==owner)return;
@@ -53,25 +55,25 @@ export function EssayExamSubmit({exam,included,drafts,cycle}:{cycle?:{parentId?:
    const answers=selected.map(q=>({questionId:q.dbQuestionId!,body:drafts[q.key].body,revision:drafts[q.key].revision}));
    const fingerprint=JSON.stringify({owner,examId:exam.dbExamId,parentId,previousPaidRunId:cycle?.previousPaidRunId,answers:answers.map(({questionId,body})=>({questionId,body}))});
    // Keep the same key after ambiguous transport; changing answers requires resolution first.
-   if(!pending.current){const saved=temporaryDraftStore.read(requestStorage);if(saved)pending.current=JSON.parse(saved);}
-   if(pending.current&&pending.current.fingerprint!==fingerprint)throw Error('PENDING_CHANGED');
-   if(!pending.current){
+   let pending:PendingRequest|null=restorePending(temporaryDraftStore,legacyStorage,answers.map(a=>a.questionId));
+   if(pending&&pending.fingerprint!==fingerprint)throw Error('PENDING_CHANGED');
+   if(!pending){
    const quoteResponse=await fetch('/api/essay/exam',{method:'POST',headers:{Authorization:`Bearer ${await credential()}`,'Content-Type':'application/json'},body:JSON.stringify({action:'quote',examId:exam.dbExamId,questionIds:answers.map(a=>a.questionId),parentId:parentId||null,previousPaidRunId:cycle?.previousPaidRunId}),cache:'no-store'});
    if(!quoteResponse.ok)throw Error('QUOTE_UNAVAILABLE');
    const quote=await quoteResponse.json();if(quote.version!=='essay-exam-quote-v1'||quote.credits!==(parentId?0:1))throw Error('QUOTE_UNAVAILABLE');
    if(!window.confirm(`제출 문항 ${answers.length}개 · 사용 Credit ${quote.credits}개${parentId?' · 무료 재첨삭':''}\n첨삭을 요청할까요?`))return;
    }
-   pending.current??={fingerprint,key:crypto.randomUUID(),answers};
-   temporaryDraftStore.write(requestStorage,JSON.stringify(pending.current));
+   pending??={fingerprint,key:crypto.randomUUID(),answers};
+   savePending(temporaryDraftStore,legacyStorage,pending);
    const started=Date.now();
-   const response=await fetch('/api/essay/exam',{method:'POST',headers:{Authorization:`Bearer ${await credential()}`,'Content-Type':'application/json'},signal:AbortSignal.timeout(100000),body:JSON.stringify({action:'submit',examId:exam.dbExamId,key:pending.current.key,answers:pending.current.answers,parentId:parentId||null,previousPaidRunId:cycle?.previousPaidRunId}),cache:'no-store'});
+   const response=await fetch('/api/essay/exam',{method:'POST',headers:{Authorization:`Bearer ${await credential()}`,'Content-Type':'application/json'},signal:AbortSignal.timeout(100000),body:JSON.stringify({action:'submit',examId:exam.dbExamId,key:pending.key,answers:pending.answers,parentId:parentId||null,previousPaidRunId:cycle?.previousPaidRunId}),cache:'no-store'});
    const data=await response.json();
-   if(!response.ok){if(response.status===402||response.status===422){pending.current=null;temporaryDraftStore.write(requestStorage,'');}throw Error(data.code);}
+   if(!response.ok){if(response.status===402||response.status===422){temporaryDraftStore.write(requestStorage,'null');}throw Error(data.code);}
    if(typeof data.runId!=='string'||!data.runId)throw Error('STATUS_UNKNOWN');
-   setWatching(true);setAccepted({id:data.runId,owner:owner!,examId:exam.dbExamId!,started});
+   setWatching(true);setAccepted({id:data.runId,owner:owner!,examId:exam.dbExamId!,scope:requestStorage,started});
    setNotice('평가 상태를 확인하고 있어요.');
   }catch(error){const code=error instanceof Error?error.message:'';setNotice(code==='INSUFFICIENT_CREDIT'?'첨삭권이 부족합니다.':code==='ANSWER_REQUIRED'?'선택한 문항의 텍스트 답안을 확인해 주세요. 사진 포함 답안은 아직 이 시험에서 제출할 수 없습니다.':code==='PENDING_CHANGED'?'이전 제출의 처리 상태를 첨삭 기록에서 먼저 확인해 주세요.':'처리 상태를 확인하지 못했습니다. 답안은 유지됩니다. 같은 답안으로 다시 확인해 주세요.');}
   finally{setBusy(false);}
  }
- return <div className="essay-submit-gate">{!cycle&&rewrites.length>0&&<label>제출 방식<select disabled={busy||acceptedHere} value={parentId} onChange={e=>{setParentId(e.target.value);pending.current=null;setRecord(null);setNotice('');}}><option value="">새 첨삭 · 1 Credit</option>{rewrites.map(r=><option key={String(r.id)} value={String(r.id)}>무료 재첨삭 · {String(r.created_at).slice(0,10)}</option>)}</select></label>}{parentId&&<p>최초 제출과 동일한 문항을 선택하고 답안을 수정해 주세요. 재첨삭 가능 여부는 서버에서 확인합니다.</p>}<button className="button button--primary" disabled={!ready||busy||acceptedHere||!included.length||included.some(key=>drafts[key]?.saved===false)} onClick={()=>void submit()}>{busy?'처리 중…':ready?(parentId?(rewrites.some(r=>r.id===parentId)?'무료 재첨삭 요청':'재첨삭 자격 확인'):cycle?.previousPaidRunId?'추가 첨삭 · 1 Credit':'첨삭 요청 · 1 Credit'):'첨삭 준비 중'}</button>{acceptedHere&&record?.evaluations[0]?.status==='failed'&&<button className="button button--secondary" onClick={()=>{pending.current=null;temporaryDraftStore.write(requestStorage,'');setAccepted(null);setRecord(null);setNotice('답안을 확인한 뒤 새 요청을 제출할 수 있습니다.');}}>실패한 제출 다시 준비</button>}<p role="status">{notice||'작성 중인 답안은 그대로 보존됩니다.'}</p>{(busy||watching&&acceptedHere)&&<p>{waitMessage}</p>}{record&&<RecordDetail row={record}/>}<Link href="/my/essays/">나의 첨삭 기록 →</Link></div>;
+ return <div className="essay-submit-gate">{!cycle&&rewrites.length>0&&<label>제출 방식<select disabled={busy||acceptedHere} value={parentId} onChange={e=>{setParentId(e.target.value);setRecord(null);setNotice('');}}><option value="">새 첨삭 · 1 Credit</option>{rewrites.map(r=><option key={String(r.id)} value={String(r.id)}>무료 재첨삭 · {String(r.created_at).slice(0,10)}</option>)}</select></label>}{parentId&&<p>최초 제출과 동일한 문항을 선택하고 답안을 수정해 주세요. 재첨삭 가능 여부는 서버에서 확인합니다.</p>}<button className="button button--primary" disabled={!ready||busy||acceptedHere||!included.length||included.some(key=>drafts[key]?.saved===false)} onClick={()=>void submit()}>{busy?'처리 중…':ready?(parentId?(rewrites.some(r=>r.id===parentId)?'무료 재첨삭 요청':'재첨삭 자격 확인'):cycle?.previousPaidRunId?'추가 첨삭 · 1 Credit':'첨삭 요청 · 1 Credit'):'첨삭 준비 중'}</button>{acceptedHere&&record?.evaluations[0]?.status==='failed'&&<button className="button button--secondary" onClick={()=>{temporaryDraftStore.write(requestStorage,'null');setAccepted(null);setRecord(null);setNotice('답안을 확인한 뒤 새 요청을 제출할 수 있습니다.');}}>실패한 제출 다시 준비</button>}<p role="status">{notice||'작성 중인 답안은 그대로 보존됩니다.'}</p>{(busy||watching&&acceptedHere)&&<p>{waitMessage}</p>}{record&&<RecordDetail row={record}/>}<Link href="/my/essays/">나의 첨삭 기록 →</Link></div>;
 }
