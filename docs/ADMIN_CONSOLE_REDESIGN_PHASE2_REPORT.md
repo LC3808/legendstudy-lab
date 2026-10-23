@@ -148,7 +148,11 @@
 
 ## 6. Commit·Push·Remote SHA
 
-(커밋/푸시 후 기입) — Branch `claude/admin-console-redesign-1a594d`.
+- Branch: `claude/admin-console-redesign-1a594d`
+- Commit / Remote SHA: `27a33f6cdda659b58d6ad3d1922faeaa935260ec`
+- Push: `origin/claude/admin-console-redesign-1a594d` (local == remote). Production 미배포.
+
+(이 SHA 기입은 §4 변경 파일을 담은 커밋 이후의 문서 갱신으로, 보고서 본문에만 반영됨.)
 
 ## 7. Unified Wiki (LC3808/legendstudy-docs)
 본 보고서를 Wiki에 기록 필요. 현재 세션에서 외부 Wiki 저장소 접근이 설정되어 있지 않아 저장소 쓰기는
