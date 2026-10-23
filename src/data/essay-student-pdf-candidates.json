@@ -1906,10 +1906,10 @@
       "questionId": "601d62cc-a067-542d-b053-71609074da20",
       "assetId": "582f370e73f3d4b96e374f0596e4ae204e6f79e750ca07ff2c752244826fd7eb",
       "pageCount": 6,
-      "startPage": 6,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "startPage": 2,
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "035e5d8d-e91f-5acd-a3a3-4d321bc9f067",
