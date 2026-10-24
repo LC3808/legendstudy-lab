@@ -50,5 +50,5 @@ export async function readEssayDetail(client:SupabaseClient,owner:string,row:Rec
 export function historyType(r:RecordItem){return r.source==='exam'?(r.parentId?'무료 재첨삭':r.previousPaidRunId?'추가 첨삭':'최초 첨삭'):r.rewrite?'재첨삭':'최초 첨삭';}
 export function answerVersion(r:RecordItem){return r.submissionIndex&&r.submissionIndex>0?(r.submissionIndex===1?'최초 제출 답안':`수정 제출 답안 ${r.submissionIndex-1}`):r.rewrite?'수정 제출 답안':'최초 제출 답안';}
 export function completedAt(r:RecordItem){return r.evaluations.filter(e=>e.valid&&e.completedAt).map(e=>e.completedAt!).sort().at(-1)??r.at;}
-export function examGroupKey(r:RecordItem){return r.examId&&r.questionIds?.length?`${r.examId}:${[...r.questionIds].sort().join(',')}`:`${r.source}:${r.id}`;}
+export function examGroupKey(r:RecordItem){return r.examId?`${r.examId}`:`${r.source}:${r.id}`;}
 export function historyGroups(rows:RecordItem[],byExam:boolean){const sorted=[...rows].sort((a,b)=>completedAt(b).localeCompare(completedAt(a))||b.id.localeCompare(a.id));if(!byExam)return sorted.map(r=>[r]);const groups=new Map<string,RecordItem[]>();for(const r of sorted){const k=examGroupKey(r);groups.set(k,[...(groups.get(k)??[]),r]);}return [...groups.values()];}

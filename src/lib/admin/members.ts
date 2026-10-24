@@ -23,4 +23,4 @@ export function parseMemberDirectory(value:unknown):MemberDirectory{
  if(items.length>filteredTotal||new Set(items.map(m=>m.accountId)).size!==items.length)fail();
  return {total,filteredTotal,limit,offset,items};
 }
-export const directorySchoolLabel=(m:DirectoryMember)=>m.schoolState==='unset'?'학교 미설정':m.schoolName??'학교명 확인 필요';
+export const directorySchoolLabel=(m:DirectoryMember)=>m.schoolState==='unset'?'':m.schoolName??'학교명 확인 필요';

@@ -15,7 +15,7 @@ it('shows only saved criterion judgments with evidence references, without inven
  const run=structuredClone(fixture.before) as typeof fixture.before & {result:{questions:{evaluation:{dimensions:{evidence_ids?:string[]}[]}}[]}};
  const d=run.result.questions[0].evaluation.dimensions[0];
  d.evidence_ids=['e1','e1','e2'];
- expect(examReports(run)[0].evidenceLabels).toEqual(['Reasoning — Needs connection (저장된 근거 참조 2개)']);
+ expect(examReports(run)[0].evidenceLabels).toEqual(['Reasoning — Needs connection']);
  d.criterion_id='unknown';expect(examReports(run)[0].evidenceLabels).toEqual([]);
  d.criterion_id='criterion';d.evidence_ids=[];expect(examReports(run)[0].evidenceLabels).toEqual([]);
 });

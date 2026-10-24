@@ -19,5 +19,5 @@ it('plays only stored text using a local Korean voice, pauses/resumes/restarts a
 });
 it('does not offer cloud voices or autoplay when no local Korean voice exists',()=>{
  vi.stubGlobal('speechSynthesis',{getVoices:()=>[{localService:false,lang:'ko-KR'}],addEventListener:vi.fn(),removeEventListener:vi.fn(),cancel:vi.fn()});
- render(<VoiceFeedback text="평가"/>);expect(screen.queryByRole('button',{name:'음성으로 듣기'})).toBeNull();expect(screen.getByText(/오프라인 음성이 없어/)).toBeVisible();
+ render(<VoiceFeedback text="평가"/>);expect(screen.queryByRole('button',{name:'음성으로 듣기'})).toBeNull();expect(screen.getByText(/음성 재생을 사용할 수 없는 기기/)).toBeVisible();
 });

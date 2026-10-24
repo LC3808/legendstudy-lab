@@ -150,7 +150,6 @@ function ActionBand({
   support: AdminSupportMetrics | null;
 }) {
   const failed = dashboard.essay.evaluationFailed;
-  const expiring = dashboard.credit.expiring30d;
   const open = support?.open ?? null;
   return (
     <section className="admin-section">
@@ -168,12 +167,6 @@ function ActionBand({
           value={formatNumber(failed)}
           note="관리자 요약 조회 기준 · 시험별 첨삭 History 통합 집계는 미검증"
           tone={failed > 0 ? "danger" : "ok"}
-        />
-        <ActionCard
-          label="30일 내 만료 Credit"
-          value={formatCredit(expiring)}
-          note="만료 임박 · 지급/회수 이상 탐지는 별도 집계 필요"
-          tone={expiring > 0 ? "attn" : "ok"}
         />
         <ActionCard
           label="Worker 장애"
@@ -216,6 +209,7 @@ function SupportSection() {
 
 export function AdminDashboardView() {
   const [period, setPeriod] = useState<PeriodKey>("d30");
+  const [from,setFrom]=useState(""),[to,setTo]=useState("");
   const dashboard = useAdminQuery<AdminDashboard>((client) => client.dashboard(), "dashboard");
   const support = useAdminQuery<AdminSupportMetrics>((client) => client.supportMetrics(), "dashboard-support");
 
@@ -231,12 +225,24 @@ export function AdminDashboardView() {
 
   return (
     <div className="admin-stack">
-      <ActionBand dashboard={data} support={supportData} />
+
 
       <Section title="기간 선택" note="신규가입은 선택한 기간으로 집계합니다. 그 외 지표는 아래에 누적/기간 구분을 표시합니다.">
-        <PeriodFilter value={period} onChange={setPeriod} />
+        <PeriodFilter value={period} onChange={setPeriod} />{period==='custom'&&<div className="admin-period"><label>시작일<input type="date" value={from} onChange={e=>setFrom(e.target.value)}/></label><label>종료일<input type="date" value={to} min={from} onChange={e=>setTo(e.target.value)}/></label><p>선택 기간 집계는 데이터 연결이 필요합니다.</p></div>}
       </Section>
 
+      <Section title="핵심 운영 지표" note="누적 지표와 선택 기간의 신규 회원을 구분합니다. 기간 집계가 없는 지표는 데이터 연결이 필요합니다.">
+        <div className="admin-metrics">
+          <Metric label={`신규 회원 · ${periodLabel}`} value={signup===null?'데이터 연결 필요':formatNumber(signup)}/>
+          <Metric label="결제 건수·금액" value="데이터 연결 필요" note="주문 건수를 결제 완료 건수로 대신 표시하지 않습니다"/>
+          <Metric label="Credit 지급 · 누적" value={formatCredit(data.credit.grantedTotal)}/>
+          <Metric label="Credit 사용 · 누적" value={formatCredit(data.credit.consumedTotal)}/>
+          <Metric label="논술 첨삭 진행·완료" value="데이터 연결 필요" note="시험 회차 History 통합 조회 필요"/>
+          <Metric label="운영 장애" value="데이터 연결 필요" note="장애 상태 조회 계약 연결 필요"/>
+        </div>
+      </Section>
+      <ActionBand dashboard={data} support={supportData}/>
+      <Section title="학습시간"><Metric label="누적 학습시간" value="데이터 연결 필요" note="회원별 학습시간 데이터는 존재하며, 전체 합계 조회 계약이 필요합니다"/></Section>
       <Section title="회원">
         <div className="admin-metrics">
           <Metric

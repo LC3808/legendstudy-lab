@@ -48,9 +48,8 @@ export function SourceExamSelection({sourceId,registeredOnly=false}:{sourceId:st
 }
 function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
  const [period,setPeriod]=useState(''),[track,setTrack]=useState(''),[examKey,setExamKey]=useState(''),[questionKey,setQuestionKey]=useState('');
- const [included,setIncluded]=useState<string[]>([]);
  const [drafts,setDrafts]=useState<Record<string,SubmissionDraft>>({});
- const onDraft=useCallback((key:string,body:string,images:boolean)=>setDrafts(old=>({...old,[key]:{body,images,revision:old[key]?.body===body?old[key].revision:(old[key]?.revision??0)+1}})),[]);
+ const onDraft=useCallback((key:string,body:string,images:boolean,saved:boolean)=>setDrafts(old=>({...old,[key]:{body,images,saved,revision:old[key]?.body===body?old[key].revision:(old[key]?.revision??0)+1}})),[]);
  const [dirty,setDirty]=useState<Record<string,boolean>>({});
  const onDirty=useCallback((key:string,value:boolean)=>setDirty(old=>({...old,[key]:value})),[]);
  const periods=[...new Set(rows.map(e=>`${e.year}:${e.kind}`))].sort((a,b)=>{
@@ -63,9 +62,9 @@ function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
  const exams=kindRows.filter(e=>e.track===selectedTrack),exam=exams.find(e=>e.key===examKey)??(exams.length===1?exams[0]:undefined);
  const question=exam?.questions.find(q=>q.key===questionKey)??exam?.questions[0];
  // A sole question needs no second pick: auto-include it and drop the redundant tab/checklist.
- const single=!!exam&&exam.questions.length===1,humanities=!!exam&&/인문|언어|사회|경제|경영|상경/.test(exam.track);
- const submitIncluded=exam&&single?[exam.questions[0].key]:included;
- function reset(action:()=>void){if(Object.values(dirty).some(Boolean)&&!window.confirm('저장하지 못한 답안이 있습니다. 선택을 바꿀까요?'))return;action();setDirty({});setIncluded([]);setQuestionKey('');}
+ const single=!!exam&&exam.questions.length===1;
+ const submitIncluded=exam?.questions.filter(q=>drafts[q.key]?.body.trim()||drafts[q.key]?.images).map(q=>q.key)??[];
+ function reset(action:()=>void){if(Object.values(dirty).some(Boolean)&&!window.confirm('저장하지 못한 답안이 있습니다. 선택을 바꿀까요?'))return;action();setDirty({});setQuestionKey('');}
  return <section className="university-section essay-start" aria-label="논술 첨삭 시작">
   <div className="discovery-topline"><h2>기출문제 선택</h2><Link href="/my/essays/">나의 첨삭 기록 →</Link></div>
   {!rows.length&&<p role="status">기출문제를 준비하고 있어요.</p>}
@@ -75,8 +74,7 @@ function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
    {exams.length>1&&<label>캠퍼스·시험 회차<select aria-label="캠퍼스·시험 회차" value={exam?.key??''} onChange={e=>reset(()=>setExamKey(e.target.value))}><option value="">시험 회차 선택</option>{exams.map(e=><option key={e.key} value={e.key}>{[e.campus,e.session].filter(Boolean).join(' · ')||'회차 구분 없음'}</option>)}</select></label>}
   </div>
   {exam&&<>{!single&&<div className="essay-question-tabs" role="tablist" aria-label="문항 선택">{exam.questions.map(q=><button className="button button--outline" key={q.key} role="tab" aria-selected={question?.key===q.key} onClick={()=>setQuestionKey(q.key)}>{q.label}</button>)}</div>}
-   {exam.evaluationReady&&humanities&&!single&&<fieldset className="essay-submission-selection"><legend>첨삭받을 문항</legend><button className="button button--outline" onClick={()=>setIncluded(exam.questions.map(q=>q.key))}>전체 문항 선택</button>{exam.questions.map(q=><label key={q.key}><input type="checkbox" checked={included.includes(q.key)} onChange={e=>setIncluded(old=>e.target.checked?[...old,q.key]:old.filter(key=>key!==q.key))}/>{q.label}</label>)}<p>전체 또는 일부 문항을 선택할 수 있습니다. 최초 첨삭은 문항 묶음당 1 Credit, 14일 이내 같은 문항 집합의 재첨삭 1회가 포함됩니다. 최초 제출 후 새 문항은 추가할 수 없습니다.</p></fieldset>}
-   {exam.evaluationReady&&humanities&&single&&<p className="essay-submit-note">최초 첨삭은 1 Credit이며, 14일 이내 같은 답안의 첫 재첨삭 1회가 포함됩니다. 적용 여부는 서버에서 확인합니다.</p>}
+   <p className="essay-submit-note">답안 저장은 무료입니다. 작성한 답안을 시험 회차 단위로 함께 첨삭하며, 최초 첨삭에는 문항 수와 관계없이 1 Credit이 사용됩니다.</p>
    {exam.questions.map(q=><div key={q.key} hidden={question?.key!==q.key}><SourceExamWriter key={`${owner}:${q.key}`} exam={exam} question={q} owner={owner} onDirty={onDirty} onDraft={onDraft}/></div>)}
    {isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>첨삭 서비스 준비 중</button>:!exam.evaluationReady||exam.verification!=='VERIFIED'?<ScopedExamSubmit exam={exam} questionKey={question?.key} drafts={drafts}/>:<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={submitIncluded} drafts={drafts}/>}
 

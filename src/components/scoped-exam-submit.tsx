@@ -27,8 +27,11 @@ export function ScopedExamSubmit({exam,questionKey,drafts}:{exam:SourceExam;ques
   })().catch(()=>{});return()=>{active=false;};
  },[auth.client,owner,exam.dbExamId]);
  const q=exam.questions.find(q=>q.key===questionKey);
- const ready=admitted?.owner===owner&&admitted?.exam===exam.dbExamId&&q?.dbQuestionId&&admitted?.questions.includes(q.dbQuestionId);
+ const included=exam.questions.filter(q=>drafts[q.key]?.body.trim()||drafts[q.key]?.images);
+ const ready=admitted?.owner===owner&&admitted?.exam===exam.dbExamId&&admitted.questions.length>0;
+ const unavailable=ready&&included.some(q=>!q.dbQuestionId||!admitted.questions.includes(q.dbQuestionId));
  const mathLeaf=admitted?.owner===owner&&admitted?.exam===exam.dbExamId&&q?.dbQuestionId?admitted.math[q.dbQuestionId]:null;
  if(mathLeaf)return <Link className="button button--primary" href={`/math/?leaf=${encodeURIComponent(mathLeaf)}`}>수리논술 첨삭하기</Link>;
- return ready&&q?<EssayExamSubmit key={`${owner}:${exam.key}:${q.key}`} exam={exam} included={[q.key]} drafts={drafts}/>:<button className="button button--primary service-preparing" disabled>첨삭 서비스 준비 중</button>;
+ if(unavailable)return <p role="status">작성한 답안 중 아직 첨삭 준비 중인 문항이 있습니다. 답안은 저장되며, 해당 문항을 포함한 회차 첨삭은 준비가 완료되면 이용할 수 있습니다.</p>;
+ return ready?<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={included.map(q=>q.key)} drafts={drafts}/>:<button className="button button--primary service-preparing" disabled>첨삭 서비스 준비 중</button>;
 }

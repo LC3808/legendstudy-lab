@@ -11,7 +11,7 @@ import {sourceExams,type SourceExam} from '@/lib/essay-runtime/source-registry';
 export function ExamRewrite({runId,additional}:{runId:string;additional:boolean}){
  const auth=useAuth();const [state,setState]=useState<{exam:SourceExam;run:Record<string,unknown>}|null>(null),[error,setError]=useState(false),[active,setActive]=useState('');
  const [drafts,setDrafts]=useState<Record<string,SubmissionDraft>>({});
- const onDraft=useCallback((key:string,body:string,images:boolean)=>setDrafts(old=>({...old,[key]:{body,images,revision:old[key]?.body===body?old[key].revision:(old[key]?.revision??0)+1}})),[]);
+ const onDraft=useCallback((key:string,body:string,images:boolean,saved:boolean)=>setDrafts(old=>({...old,[key]:{body,images,saved,revision:old[key]?.body===body?old[key].revision:(old[key]?.revision??0)+1}})),[]);
  const onDirty=useCallback(()=>{},[]);
  useEffect(()=>{let live=true;void(async()=>{
   if(!auth.client||!auth.user)return;const owner=auth.user.id;

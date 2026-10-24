@@ -1,6 +1,6 @@
 'use client';
 import {ExamRewrite} from './exam-rewrite';
-import {readExamReports,examQuestionLabel,examIdentityBadges} from '@/lib/my/exam-history';
+import {readExamReports,examQuestionLabel,examAnswerCoverage} from '@/lib/my/exam-history';
 import Link from 'next/link';
 import {useCallback,useState} from 'react';
 import {OwnerArea,useOwnerData,DataStatus,dateLabel} from './owner-data';
@@ -66,5 +66,5 @@ function ExamDetail({row}:{row:RecordItem}){
  if(!data.data)return <DataStatus error={data.error} reload={data.reload}/>;
  if(!data.data.current.length)return <p>평가가 완료되면 결과를 확인할 수 있습니다.</p>;
  if(writing)return <><button onClick={()=>setWriting(null)}>결과로 돌아가기</button><ExamRewrite runId={row.id} additional={writing==='paid'}/></>;
- return <><button className="button button--outline" onClick={()=>setWriting('free')}>다시 써보기</button>{data.data.run.continuous_cycles_supported===true&&<button className="button button--outline" onClick={()=>setWriting('paid')}>추가 첨삭 · 1 Credit</button>}<header className="essay-result-identity"><h2>{row.university}</h2><h3>{row.question.split(' · ')[0]}</h3><div className="essay-exam-badges">{examIdentityBadges(row.examId).map((label,i)=><span key={i}>{label}</span>)}</div><span className={`essay-history-badge ${row.parentId?'included':''}`}>{historyType(row)}</span> <small>{dateLabel(completedAt(row))}</small></header>{data.data.current.map(report=><div key={report.id}><span className="essay-history-badge">{examQuestionLabel(report.id.split('/').at(-1)??'')}</span><EvaluationReport voiceType="humanities_social" title={historyType(row)} answerLabel={answerVersion(row)} before={data.data!.previous.find(p=>p.id===report.priorId)} report={report}/><EvaluationComparison before={data.data!.previous.find(p=>p.id===report.priorId)} after={row.rewrite?report:undefined}/></div>)}</>;
+ return <><button className="button button--outline" onClick={()=>setWriting('free')}>다시 써보기</button>{data.data.run.continuous_cycles_supported===true&&<button className="button button--outline" onClick={()=>setWriting('paid')}>추가 첨삭 · 1 Credit</button>}<header className="essay-result-identity"><h2>{row.university}</h2><p>{row.question}</p><span className={`essay-history-badge ${row.parentId?'included':''}`}>{historyType(row)}</span> <small>{dateLabel(completedAt(row))}</small></header><ul className="exam-answer-coverage">{examAnswerCoverage(row.examId,row.questionIds).map(q=><li key={q.id}>{q.label} · {q.written?'제출 답안':'미작성'}</li>)}</ul>{data.data.current.map(report=><div key={report.id}><span className="essay-history-badge">{examQuestionLabel(report.id.split('/').at(-1)??'')}</span><EvaluationReport voiceType="humanities_social" title={historyType(row)} answerLabel={answerVersion(row)} before={data.data!.previous.find(p=>p.id===report.priorId)} report={report}/><EvaluationComparison before={data.data!.previous.find(p=>p.id===report.priorId)} after={row.rewrite?report:undefined}/></div>)}</>;
 }

@@ -103,3 +103,15 @@
 .essay-personal .status-chip--processing, .essay-personal .status-chip--reconciling { background: #fdf0db; color: #8a5a16; }
 .essay-personal .status-chip--pending, .essay-personal .status-chip--requested, .essay-personal .status-chip--queued { background: #eaeef5; color: #3c5173; }
 @media print { .essay-personal .status-chip { border: 1px solid #999; background: white !important; color: black !important; } }
+
+/* Owner review: clear comparison hierarchy and accessible real-data bars. */
+.evaluation-growth>summary{font-size:1.2rem;font-weight:750;color:#142d50;cursor:pointer;padding:.5rem 0}
+.criterion-label,.human-criterion summary{font-weight:700;color:#142d50}
+.criterion-feedback{color:#40546e;border-left:3px solid #d6e3f2;padding-left:1rem;white-space:pre-wrap;line-height:1.85}
+.growth-chart__row{padding:1rem 0;border-bottom:1px solid #dfe5ed}
+.growth-chart__row label{display:flex;gap:.75rem;align-items:center;margin-top:.5rem}
+.growth-chart meter{flex:1;max-width:24rem;height:1.2rem}
+.essay-confirm-backdrop{position:fixed;inset:0;background:#10243d88;z-index:1000;display:grid;place-items:center;padding:1rem}
+.essay-confirm-dialog{max-width:32rem;width:100%;background:white;box-shadow:0 12px 48px #10243d33}
+.report-feedback+.report-feedback{border-top:1px solid #e1e7ef;margin-top:1rem;padding-top:1rem}
+.essay-result-identity{padding:1.5rem;border:1px solid #dfe5ed;border-radius:1rem;box-shadow:0 3px 12px #10243d08;margin:1rem 0}

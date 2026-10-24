@@ -5,7 +5,11 @@ import {array,object,text,humanReport,type Report} from './evaluation-report';
 import type {RecordItem} from './essay-dashboard';
 function examLabel(run:Record<string,unknown>){const e=registry.exams.find(e=>e.dbExamId===run.exam_id);return e?`${e.year}학년도 ${e.kind==='admission'?'수시 논술':'모의논술'} · ${e.track}${e.session?' · '+e.session:''}`:text(run.title);}
 export function examIdentityBadges(id?:string){const e=registry.exams.find(e=>e.dbExamId===id);return e?[e.track,e.session].filter((v):v is string=>!!v):[];}
-export function examQuestionLabel(id:string){return registry.exams.flatMap(e=>e.questions.map(q=>({id:q.dbQuestionId as string|null,label:q.label}))).find(q=>q.id===id)?.label??'선택한 문항';}
+export function examQuestionLabel(id:string){return registry.exams.flatMap(e=>e.questions.map(q=>({id:q.dbQuestionId as string|null,label:q.label}))).find(q=>q.id===id)?.label??'문항별 첨삭';}
+export function examAnswerCoverage(examId:string|undefined,submitted:string[]=[]){
+ const exam=registry.exams.find(e=>e.dbExamId===examId);
+ return exam?.questions.map(q=>({id:q.dbQuestionId??q.key,label:q.label,written:!!q.dbQuestionId&&submitted.includes(q.dbQuestionId)}))??[];
+}
 /** Same owner-scoped projection as Native. Only a not-yet-installed RPC is optional. */
 export async function readExamRuns(client:SupabaseClient,owner:string,id:string|null=null){
  await assertOwner(client,owner);
@@ -36,7 +40,7 @@ export function examReports(run:Record<string,unknown>):Report[]{
    const criterion=criteria.find(c=>object(c.binding).id===d.criterion_id);
    const refs=[...new Set(array(d.evidence_ids).map(text).filter(Boolean))];
    return criterion&&text(criterion.label)&&text(d.explanation)&&refs.length
-    ?[`${text(criterion.label)} — ${text(d.explanation)} (저장된 근거 참조 ${refs.length}개)`]:[];
+    ?[`${text(criterion.label)} — ${text(d.explanation)}`]:[];
   });
   return {...report,evidenceLabels,sentences:array(out.sentence_feedback).map(object).filter(s=>Number.isInteger(s.start)&&Number.isInteger(s.end)&&(s.start as number)>=0&&(s.end as number)>(s.start as number)&&(s.end as number)<=Array.from(text(answer.body)).length&&Array.from(text(answer.body)).slice(s.start as number,s.end as number).join('')===s.quote&&text(s.quote)&&text(s.diagnosis)&&text(s.direction)).map(s=>({quote:text(s.quote),diagnosis:text(s.diagnosis),direction:text(s.direction),example:text(s.example)||undefined})),priorId:run.parent_id?text(run.parent_id)+'/'+text(q.questionId):null,pins:[text(q.questionId),text(q.rubricVersion),text(q.evidenceVersion),'1.3']};
  });

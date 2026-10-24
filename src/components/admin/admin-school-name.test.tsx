@@ -18,7 +18,7 @@ it("resolves the exact office/school pair without sending a session", async () =
 it("does not query an unset school", () => {
   const fetcher = vi.fn(); vi.stubGlobal("fetch", fetcher);
   render(<AdminSchoolName office={null} school={null} />);
-  expect(screen.getByText("미설정")).toBeInTheDocument(); expect(fetcher).not.toHaveBeenCalled();
+  expect(screen.queryByText("미설정")).toBeNull(); expect(fetcher).not.toHaveBeenCalled();
 });
 it("reports lookup failure without displaying a numeric school name", async () => {
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false }));

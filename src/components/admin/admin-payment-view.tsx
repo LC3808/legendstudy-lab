@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import {AdminPeriodFilter} from './admin-period-filter';
+import {periodBounds,type AdminPeriod} from '@/lib/admin/period';
 
 import { ADMIN_MIN_QUERY } from "@/lib/admin/client";
 import type { AdminPaymentPage } from "@/lib/admin/contract";
@@ -18,12 +20,7 @@ import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admi
 const STATE_FILTERS = [
   { value: "", label: "전체" },
   { value: "PAID", label: "결제 완료" },
-  { value: "AUTHORIZATION_PENDING", label: "승인 대기" },
-  { value: "CANCEL_PENDING", label: "취소 처리 중" },
-  { value: "PARTIALLY_CANCELLED", label: "부분 취소" },
-  { value: "CANCELLED", label: "취소 완료" },
-  { value: "FAILED", label: "결제 실패" },
-  { value: "EXPIRED", label: "만료" },
+  { value: "CANCELLED", label: "결제 취소" },
 ] as const;
 
 /**
@@ -44,6 +41,8 @@ export function AdminPaymentView() {
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
   const [state, setState] = useState("");
+  const [quantity,setQuantity]=useState('');
+  const [period,setPeriod]=useState<AdminPeriod>('all'),[from,setFrom]=useState(''),[to,setTo]=useState('');
   const [offset, setOffset] = useState(0);
   const [hint, setHint] = useState<string | null>(null);
 
@@ -51,12 +50,23 @@ export function AdminPaymentView() {
     (client) =>
       client.paymentOrders({
         query: query || undefined,
-        state: state || undefined,
-        limit: PAYMENT_PAGE_LIMIT,
-        offset,
+        limit: 50,
+        offset: 0,
       }),
-    `payment:${query}:${state}:${offset}`,
+    `payment:${query}`,
   );
+
+  const bounds=periodBounds(period,from,to);
+  const data=result.state.status==='ready'?result.state.data:null;
+  // One RPC snapshot is a complete dataset only when total equals the returned rows.
+  // Never calculate global statistics from a truncated page.
+  const complete=!!data&&data.orders!==null&&data.total===data.orders.length;
+  const filtered=complete&&bounds?data.orders!.filter(order=>(!quantity||order.quantity===Number(quantity))&&(!state||(state==='CANCELLED'?['CANCELLED','PARTIALLY_CANCELLED'].includes(order.state):order.state===state))&&Date.parse(order.createdAt)>=bounds.from&&Date.parse(order.createdAt)<bounds.to):[];
+  const paid=filtered.filter(order=>order.state==='PAID');
+  const currencies=[...new Set(paid.map(order=>order.currency))];
+  const fallback=useAdminQuery<AdminPaymentPage>(data&&!complete?(client)=>client.paymentOrders({query:query||undefined,state:state||undefined,limit:PAYMENT_PAGE_LIMIT,offset}):null,`payment-page:${query}:${state}:${offset}:${complete}`);
+  const orders=complete?filtered.slice(offset,offset+PAYMENT_PAGE_LIMIT):fallback.state.status==='ready'?fallback.state.data.orders??[]:[];
+  const total=complete?filtered.length:fallback.state.status==='ready'?fallback.state.data.total:null;
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -119,6 +129,9 @@ export function AdminPaymentView() {
               ))}
             </select>
           </div>
+          <label>상품<select disabled={!!data&&!complete} value={quantity} onChange={e=>{setQuantity(e.target.value);setOffset(0);}}><option value="">전체</option>{[1,3,5,10].map(n=><option key={n} value={n}>{n}회권</option>)}</select></label>
+          <fieldset disabled={!!data&&!complete}><AdminPeriodFilter period={period} from={from} to={to} onChange={(p,f,t)=>{setPeriod(p);setFrom(f);setTo(t);setOffset(0);}}/></fieldset>
+          {!bounds&&<p role="status">조회할 시작일과 종료일을 선택해 주세요.</p>}
           {hint ? (
             <p className="admin-search__hint" role="status">
               {hint}
@@ -150,26 +163,26 @@ export function AdminPaymentView() {
               <div className="admin-metric">
                 <p className="admin-metric__label">조회된 주문</p>
                 <p className="admin-metric__value">
-                  {result.state.data.total === null
+                  {total === null
                     ? "미설치"
-                    : formatNumber(result.state.data.total)}
+                    : formatNumber(total)}
                 </p>
               </div>
             </div>
           </section>
 
           <section className="admin-section">
-            <h2>주문 목록</h2>
+            <h2>주문 목록</h2>{!complete&&<p role="status">전체 주문이 조회 한도를 초과해 기존 페이지 조회를 표시합니다. 상품·기간 집계는 서버 연결이 필요합니다.</p>}
             {result.state.data.orders === null ? (
               <AdminEmpty
                 title="결제 모듈이 설치되어 있지 않습니다"
                 body="결제 마이그레이션이 적용된 환경에서만 주문 내역을 조회할 수 있습니다."
               />
-            ) : result.state.data.orders.length === 0 ? (
+            ) : !complete&&fallback.state.status==='loading' ? (<AdminLoading/>) : !complete&&fallback.state.status==='error' ? (<AdminErrorPanel kind={fallback.state.kind} onRetry={fallback.reload}/>) : orders.length === 0 ? (
               <AdminEmpty title="조회된 주문이 없습니다" body="검색 조건을 바꾸어 다시 조회해 주세요." />
             ) : (
               <ul className="admin-orders">
-                {result.state.data.orders.map((order) => {
+                {orders.map((order) => {
                   const payment = orderStateLabel(order.state);
                   const grant = grantStateLabel(order.grantState);
                   return (
@@ -226,7 +239,7 @@ export function AdminPaymentView() {
                 })}
               </ul>
             )}
-            {result.state.data.total !== null && result.state.data.total > PAYMENT_PAGE_LIMIT ? (
+            {total !== null && total > PAYMENT_PAGE_LIMIT ? (
               <nav className="admin-pager" aria-label="주문 목록 페이지">
                 <button
                   className="button button--outline button--small"
@@ -238,12 +251,12 @@ export function AdminPaymentView() {
                 </button>
                 <span className="admin-muted">
                   {formatNumber(Math.floor(offset / PAYMENT_PAGE_LIMIT) + 1)} /{" "}
-                  {formatNumber(Math.max(1, Math.ceil(result.state.data.total / PAYMENT_PAGE_LIMIT)))}페이지
+                  {formatNumber(Math.max(1, Math.ceil(total / PAYMENT_PAGE_LIMIT)))}페이지
                 </span>
                 <button
                   className="button button--outline button--small"
                   type="button"
-                  disabled={offset + PAYMENT_PAGE_LIMIT >= result.state.data.total}
+                  disabled={offset + PAYMENT_PAGE_LIMIT >= total}
                   onClick={() => setOffset(offset + PAYMENT_PAGE_LIMIT)}
                 >
                   다음
@@ -252,31 +265,7 @@ export function AdminPaymentView() {
             ) : null}
           </section>
 
-          <section className="admin-section">
-            <h2>상품·매출 통계</h2>
-            <p className="admin-section__note">
-              상품(1·3·5·10회권)별 필터와 판매량·매출·환불·순매출 집계, 일·주·월 매출 추이
-              그래프는 주문 목록을 넘어선 집계가 필요합니다. 현재 조회 계약은 주문 목록과 총
-              건수만 제공하므로, 페이지 단위 합계를 전체 통계처럼 표시하지 않습니다.
-            </p>
-            <div className="admin-metrics">
-              <div className="admin-metric">
-                <p className="admin-metric__label">상품별 판매량·매출</p>
-                <p className="admin-metric__value admin-metric__value--sm">집계 불가</p>
-                <p className="admin-metric__note">결제 집계 RPC 필요 (GAP)</p>
-              </div>
-              <div className="admin-metric">
-                <p className="admin-metric__label">결제 성공·실패·환불</p>
-                <p className="admin-metric__value admin-metric__value--sm">집계 불가</p>
-                <p className="admin-metric__note">결제 집계 RPC 필요 (GAP)</p>
-              </div>
-              <div className="admin-metric">
-                <p className="admin-metric__label">순매출 / 매출 추이</p>
-                <p className="admin-metric__value admin-metric__value--sm">집계 불가</p>
-                <p className="admin-metric__note">기간별 집계 RPC 필요 (GAP)</p>
-              </div>
-            </div>
-          </section>
+          <section className="admin-section"><h2>선택 조건의 결제 통계</h2>{complete&&bounds?<><p>주문 생성일 기준 · 전체 조회 {data!.orders!.length}건 중 {filtered.length}건</p><p>결제 완료 {paid.length}건</p>{currencies.map(currency=><p key={currency}>결제 완료 금액 {formatNumber(paid.filter(o=>o.currency===currency).reduce((sum,o)=>sum+o.amount,0))} {currency}</p>)}{!paid.length&&<p>결제 완료 금액 0</p>}<p className="admin-muted">취소·부분 취소 주문은 완료 금액에서 제외합니다. 환불액을 추정한 순매출이 아닙니다.</p></>:<p role="status">{bounds?'전체 주문이 한 번의 조회 범위를 초과해 집계 연결이 필요합니다. 기존 계약의 최대 50건을 전체 통계로 표시하지 않습니다.':'기간을 선택해 주세요.'}</p>}</section>
         </>
       )}
     </div>

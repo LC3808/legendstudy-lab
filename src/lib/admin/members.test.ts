@@ -4,7 +4,7 @@ const row={account_id:'a',email:'a@example.test',display_name:null,created_at:'2
 const page={version:'admin-members-v1',as_of:'2026-10-08T00:00:00Z',total:32,filtered_total:1,offset:0,limit:25,items:[row]};
 describe('Admin directory contract',()=>{
  it('distinguishes resolved, unset and unresolved names without school codes',()=>{
-  expect(directorySchoolLabel(parseMemberDirectory(page).items[0])).toBe('학교 미설정');
+  expect(directorySchoolLabel(parseMemberDirectory(page).items[0])).toBe('');
   expect(directorySchoolLabel(parseMemberDirectory({...page,items:[{...row,school_state:'unresolved'}]}).items[0])).toBe('학교명 확인 필요');
   expect(directorySchoolLabel(parseMemberDirectory({...page,items:[{...row,school_state:'resolved',school_name:'진접고등학교'}]}).items[0])).toBe('진접고등학교');
  });

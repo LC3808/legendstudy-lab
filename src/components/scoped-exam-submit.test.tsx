@@ -8,13 +8,19 @@ vi.mock('./essay-exam-submit',()=>({EssayExamSubmit:({included}:{included:string
 import {ScopedExamSubmit} from './scoped-exam-submit';
 const exam={key:'exam',dbExamId:'exam-id',questions:[{key:'q1',dbQuestionId:'id1'},{key:'q2',dbQuestionId:'id2'}]} as SourceExam;
 beforeEach(()=>{cleanup();vi.restoreAllMocks();auth.user={id:'owner-a'};auth.client.auth.getSession.mockResolvedValue({data:{session:{user:{id:'owner-a'},access_token:'fixture'}}});vi.stubGlobal('fetch',vi.fn().mockResolvedValue(Response.json({ready:true,questionIds:['id2']})));});
-it('admits only server approved question and closes on question or account change',async()=>{
- const v=render(<ScopedExamSubmit exam={exam} questionKey="q2" drafts={{}}/>);
+it('collects written answers independently of the active tab and never silently drops unsupported answers',async()=>{
+ const drafts={q2:{body:'작성한 답안',revision:1,images:false}};
+ const v=render(<ScopedExamSubmit exam={exam} questionKey="q1" drafts={drafts}/>);
  await screen.findByText('approved:q2');
- v.rerender(<ScopedExamSubmit exam={exam} questionKey="q1" drafts={{}}/>);
+ v.rerender(<ScopedExamSubmit exam={exam} questionKey="q2" drafts={{...drafts,q1:{body:'다른 답안',revision:1,images:false}}}/>);
+ expect(screen.getByRole('status')).toHaveTextContent('아직 첨삭 준비 중');
+ auth.user={id:'owner-b'};v.rerender(<ScopedExamSubmit exam={exam} questionKey="q2" drafts={drafts}/>);
  expect(screen.getByRole('button')).toBeDisabled();
- auth.user={id:'owner-b'};v.rerender(<ScopedExamSubmit exam={exam} questionKey="q2" drafts={{}}/>);
- expect(screen.getByRole('button')).toBeDisabled();
+});
+it('includes every written admitted question in one submission',async()=>{
+ vi.mocked(fetch).mockResolvedValue(Response.json({ready:true,questionIds:['id1','id2']}));
+ render(<ScopedExamSubmit exam={exam} questionKey="q1" drafts={{q1:{body:'답안1',revision:1,images:false},q2:{body:'답안2',revision:1,images:false}}}/>);
+ await screen.findByText('approved:q1,q2');
 });
 it('ready without question scope does not activate a reviewed question',async()=>{
  vi.mocked(fetch).mockResolvedValue(Response.json({ready:true}));

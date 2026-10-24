@@ -1,5 +1,5 @@
 'use client';
-import {useEffect,useState} from 'react';
+import {useEffect,useState,useRef} from 'react';
 import Link from 'next/link';
 import {pendingStorageKey,restorePending,savePending,type PendingRequest} from '@/lib/essay-runtime/pending-request';
 import {useAuth} from './auth-context';
@@ -10,6 +10,12 @@ import {readExamRuns,readExamDashboard} from '@/lib/my/exam-history';
 import type {RecordItem} from '@/lib/my/essay-dashboard';
 export type SubmissionDraft={body:string;revision:number;images:boolean;saved?:boolean};
 export function EssayExamSubmit({exam,included,drafts,cycle}:{cycle?:{parentId?:string;previousPaidRunId?:string};exam:SourceExam;included:string[];drafts:Record<string,SubmissionDraft>}){
+ const confirmation=useRef<((accepted:boolean)=>void)|null>(null);
+ const [confirmCost,setConfirmCost]=useState<number|null>(null);
+ const missing=exam.questions.filter(q=>!included.includes(q.key));
+ function confirmSubmission(cost:number){setConfirmCost(cost);return new Promise<boolean>(resolve=>{confirmation.current=resolve;});}
+ function resolveConfirmation(value:boolean){confirmation.current?.(value);confirmation.current=null;setConfirmCost(null);}
+ useEffect(()=>()=>{confirmation.current?.(false);},[]);
  const auth=useAuth();const [ready,setReady]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[record,setRecord]=useState<RecordItem|null>(null);
  const [parentId,setParentId]=useState(cycle?.parentId??''),[rewrites,setRewrites]=useState<Record<string,unknown>[]>([]);
  const owner=auth.user?.id;
@@ -59,9 +65,9 @@ export function EssayExamSubmit({exam,included,drafts,cycle}:{cycle?:{parentId?:
    if(pending&&pending.fingerprint!==fingerprint)throw Error('PENDING_CHANGED');
    if(!pending){
    const quoteResponse=await fetch('/api/essay/exam',{method:'POST',headers:{Authorization:`Bearer ${await credential()}`,'Content-Type':'application/json'},body:JSON.stringify({action:'quote',examId:exam.dbExamId,questionIds:answers.map(a=>a.questionId),parentId:parentId||null,previousPaidRunId:cycle?.previousPaidRunId}),cache:'no-store'});
-   if(!quoteResponse.ok)throw Error('QUOTE_UNAVAILABLE');
+   if(!quoteResponse.ok){const failure=await quoteResponse.json().catch(()=>null);throw Error(failure?.code??'QUOTE_UNAVAILABLE');}
    const quote=await quoteResponse.json();if(quote.version!=='essay-exam-quote-v1'||quote.credits!==(parentId?0:1))throw Error('QUOTE_UNAVAILABLE');
-   if(!window.confirm(`제출 문항 ${answers.length}개 · 사용 Credit ${quote.credits}개${parentId?' · 무료 재첨삭':''}\n첨삭을 요청할까요?`))return;
+   if(!await confirmSubmission(quote.credits)){setNotice('답안을 계속 작성할 수 있습니다.');return;}
    }
    pending??={fingerprint,key:crypto.randomUUID(),answers};
    savePending(temporaryDraftStore,legacyStorage,pending);
@@ -72,8 +78,8 @@ export function EssayExamSubmit({exam,included,drafts,cycle}:{cycle?:{parentId?:
    if(typeof data.runId!=='string'||!data.runId)throw Error('STATUS_UNKNOWN');
    setWatching(true);setAccepted({id:data.runId,owner:owner!,examId:exam.dbExamId!,scope:requestStorage,started});
    setNotice('평가 상태를 확인하고 있어요.');
-  }catch(error){const code=error instanceof Error?error.message:'';setNotice(code==='INSUFFICIENT_CREDIT'?'첨삭권이 부족합니다.':code==='ANSWER_REQUIRED'?'선택한 문항의 텍스트 답안을 확인해 주세요. 사진 포함 답안은 아직 이 시험에서 제출할 수 없습니다.':code==='PENDING_CHANGED'?'이전 제출의 처리 상태를 첨삭 기록에서 먼저 확인해 주세요.':'처리 상태를 확인하지 못했습니다. 답안은 유지됩니다. 같은 답안으로 다시 확인해 주세요.');}
+  }catch(error){const code=error instanceof Error?error.message:'';setNotice(code==='EXAM_SESSION_CONTRACT_PENDING'?'여러 문항을 함께 첨삭하는 기능을 준비하고 있어요. 답안은 보존되며 Credit은 사용되지 않았습니다.':code==='INSUFFICIENT_CREDIT'?'첨삭권이 부족합니다.':code==='ANSWER_REQUIRED'?'선택한 문항의 텍스트 답안을 확인해 주세요. 사진 포함 답안은 아직 이 시험에서 제출할 수 없습니다.':code==='PENDING_CHANGED'?'이전 제출의 처리 상태를 첨삭 기록에서 먼저 확인해 주세요.':'처리 상태를 확인하지 못했습니다. 답안은 유지됩니다. 같은 답안으로 다시 확인해 주세요.');}
   finally{setBusy(false);}
  }
- return <div className="essay-submit-gate">{!cycle&&rewrites.length>0&&<label>제출 방식<select disabled={busy||acceptedHere} value={parentId} onChange={e=>{setParentId(e.target.value);setRecord(null);setNotice('');}}><option value="">새 첨삭 · 1 Credit</option>{rewrites.map(r=><option key={String(r.id)} value={String(r.id)}>무료 재첨삭 · {String(r.created_at).slice(0,10)}</option>)}</select></label>}{parentId&&<p>최초 제출과 동일한 문항을 선택하고 답안을 수정해 주세요. 재첨삭 가능 여부는 서버에서 확인합니다.</p>}<button className="button button--primary" disabled={!ready||busy||acceptedHere||!included.length||included.some(key=>drafts[key]?.saved===false)} onClick={()=>void submit()}>{busy?'처리 중…':ready?(parentId?(rewrites.some(r=>r.id===parentId)?'무료 재첨삭 요청':'재첨삭 자격 확인'):cycle?.previousPaidRunId?'추가 첨삭 · 1 Credit':'첨삭 요청 · 1 Credit'):'첨삭 준비 중'}</button>{acceptedHere&&record?.evaluations[0]?.status==='failed'&&<button className="button button--secondary" onClick={()=>{temporaryDraftStore.write(requestStorage,'null');setAccepted(null);setRecord(null);setNotice('답안을 확인한 뒤 새 요청을 제출할 수 있습니다.');}}>실패한 제출 다시 준비</button>}<p role="status">{notice||'작성 중인 답안은 그대로 보존됩니다.'}</p>{(busy||watching&&acceptedHere)&&<p>{waitMessage}</p>}{record&&<RecordDetail row={record}/>}<Link href="/my/essays/">나의 첨삭 기록 →</Link></div>;
+ return <div className="essay-submit-gate">{confirmCost!==null&&<div className="essay-confirm-backdrop"><section role="dialog" aria-modal="true" aria-labelledby="exam-submit-title" className="my-panel essay-confirm-dialog"><h2 id="exam-submit-title">{missing.length?'작성하지 않은 답안이 있습니다':'시험 회차 첨삭 요청'}</h2>{missing.length>0&&<p>{missing.map(q=>q.label).join(', ')}의 답안을 작성하지 않았습니다.</p>}<p>{missing.length?'작성한 답안만 첨삭을 진행할까요?':'작성한 답안을 함께 첨삭할까요?'}</p><p>이번 첨삭에는 {confirmCost} Credit이 사용됩니다.</p><div className="my-actions"><button autoFocus className="button button--outline" onClick={()=>resolveConfirmation(false)}>계속 작성하기</button><button className="button button--primary" onClick={()=>resolveConfirmation(true)}>첨삭 진행하기</button></div></section></div>}{!cycle&&rewrites.length>0&&<label>제출 방식<select disabled={busy||acceptedHere} value={parentId} onChange={e=>{setParentId(e.target.value);setRecord(null);setNotice('');}}><option value="">새 첨삭 · 1 Credit</option>{rewrites.map(r=><option key={String(r.id)} value={String(r.id)}>무료 재첨삭 · {String(r.created_at).slice(0,10)}</option>)}</select></label>}{parentId&&<p>최초 제출과 동일한 문항을 선택하고 답안을 수정해 주세요. 재첨삭 가능 여부는 서버에서 확인합니다.</p>}<button className="button button--primary" disabled={!ready||busy||acceptedHere||!included.length||included.some(key=>drafts[key]?.saved===false)} onClick={()=>void submit()}>{busy?'처리 중…':ready?(parentId?(rewrites.some(r=>r.id===parentId)?'무료 재첨삭 요청':'재첨삭 자격 확인'):cycle?.previousPaidRunId?'추가 첨삭 · 1 Credit':'첨삭 요청 · 1 Credit'):'첨삭 준비 중'}</button><p role="status">{notice||'작성 중인 답안은 그대로 보존됩니다.'}</p>{(busy||watching&&acceptedHere)&&<p>{waitMessage}</p>}{record&&<RecordDetail row={record}/>}<Link href="/my/essays/">나의 첨삭 기록 →</Link></div>;
 }

@@ -119,3 +119,11 @@ it('public scope does not bypass E2E limits or DB/Worker readiness',async()=>{
  expect(m.request).not.toHaveBeenCalled();
  expect((await send(body,{ESSAY_PUBLIC_EXAMS:id,ESSAY_E2E_SCOPE:JSON.stringify({subject:id,exam:id,requestKey:id,parentId:id})})).status).toBe(403);
 });
+
+it('blocks unsupported multi-question runtime before any quote, reservation or dispatch',async()=>{
+ const other='22222222-2222-4222-8222-222222222222';
+ for(const payload of [{action:'quote',examId:id,questionIds:[id,other]},{...body,answers:[...body.answers,{questionId:other,body:'Second',revision:1}]}]){
+  const response=await send(payload);expect(response.status).toBe(409);expect(await response.json()).toEqual({code:'EXAM_SESSION_CONTRACT_PENDING'});
+ }
+ expect(m.request).not.toHaveBeenCalled();expect(m.dispatch).not.toHaveBeenCalled();
+});

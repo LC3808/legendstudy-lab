@@ -28,6 +28,9 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
    const admission=ready.ok?await ready.json() as {ready?:boolean;question_ids?:unknown}:null;
    return reply({ready:admission?.ready===true,questionIds:admission?.ready===true&&Array.isArray(admission.question_ids)?admission.question_ids.filter(uuid):[]});
   }
+  // Current deployed Worker rejects multi-question execution before its journal loop.
+  // Until the reviewed session/retry contract is installed, reject BEFORE reservation.
+  if((input.action==='quote'&&Array.isArray(input.questionIds)&&input.questionIds.length>1)||(input.action==='submit'&&Array.isArray(input.answers)&&input.answers.length>1))return reply({code:'EXAM_SESSION_CONTRACT_PENDING'},409);
   if(input.previousPaidRunId!=null&&(env.ESSAY_CONTINUOUS_CYCLES_ENABLED!=='true'||!uuid(input.previousPaidRunId)||input.parentId!=null))return reply({code:'ADDITIONAL_CYCLE_UNAVAILABLE'},422);
   if(input.action==='quote'&&uuid(input.examId)&&Array.isArray(input.questionIds)&&input.questionIds.length>0&&input.questionIds.every(uuid)&&!(input.parentId!=null&&!uuid(input.parentId))){
    const quoted=await transport.request('/rest/v1/rpc/essay_exam_quote',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_questions:input.questionIds,p_parent:input.parentId??null,p_previous:input.previousPaidRunId??null})});
