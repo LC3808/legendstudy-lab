@@ -10,3 +10,9 @@ it('does not convert non numeric judgments into a growth scale',()=>{
  const c={id:'c',name:'풀이',value:'ADEQUATE',stars:null,feedback:''};
  expect(growthImageData([],0,[{title:'수리',changes:[{id:'c',name:'풀이',before:c,after:c,direction:'UNCHANGED'}]}]).series).toEqual([]);
 });
+
+it('does not expose stored marking guidance through a criterion name',()=>{
+ const c={id:'c',name:'소문항 공식 요구: 비공개 채점 근거와 예시 답안',value:'',stars:4,feedback:''};
+ const data=growthImageData([],1,[{title:'시험',changes:[{id:'c',name:c.name,before:c,after:c,direction:'UNCHANGED'}]}]);
+ expect(data.series[0].bars[0].name).toBe('평가 항목 1');expect(JSON.stringify(data)).not.toContain('비공개');
+});

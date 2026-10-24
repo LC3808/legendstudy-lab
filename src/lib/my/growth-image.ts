@@ -1,9 +1,10 @@
+import {growthLabel} from './growth-label';
 import type {Change} from './evaluation-report';
 export type GrowthImageData={titles:string[];completed:number;series:{title:string;bars:{name:string;before:number;after:number}[]}[]};
 /** Explicit field projection. Never spread a report: answers, feedback and IDs stay private. */
 export function growthImageData(records:{university:string|null;exam:string}[],completed:number,series:{title:string;changes:Change[]}[]):GrowthImageData{
  return {titles:[...new Set(records.map(r=>[r.university,r.exam].filter(Boolean).join(' · ')))].slice(0,6),completed,
- series:series.map(s=>({title:s.title,bars:s.changes.flatMap(c=>c.before.stars!==null&&c.after.stars!==null?[{name:c.name,before:c.before.stars,after:c.after.stars}]:[])})).filter(s=>s.bars.length).slice(-6)};
+ series:series.map(s=>({title:s.title,bars:s.changes.flatMap((c,i)=>c.before.stars!==null&&c.after.stars!==null?[{name:growthLabel(c.name,i),before:c.before.stars,after:c.after.stars}]:[])})).filter(s=>s.bars.length).slice(-6)};
 }
 export async function saveGrowthImage(data:GrowthImageData){
  await document.fonts.ready;
