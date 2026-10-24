@@ -5,7 +5,7 @@ import {useAuth} from './auth-context';
 import {EssayExamSubmit,type SubmissionDraft} from './essay-exam-submit';
 import type {SourceExam} from '@/lib/essay-runtime/source-registry';
 /** Existing server admission is authority; metadata review state never activates evaluation. */
-export function ScopedExamSubmit({exam,questionKey,drafts}:{exam:SourceExam;questionKey?:string;drafts:Record<string,SubmissionDraft>}){
+export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys}:{exam:SourceExam;questionKey?:string;includedKeys?:string[];drafts:Record<string,SubmissionDraft>}){
  const auth=useAuth(),owner=auth.user?.id;
  const [admitted,setAdmitted]=useState<{owner:string;exam:string;questions:string[];math:Record<string,string>}|null>(null);
  useEffect(()=>{let active=true;
@@ -27,7 +27,7 @@ export function ScopedExamSubmit({exam,questionKey,drafts}:{exam:SourceExam;ques
   })().catch(()=>{});return()=>{active=false;};
  },[auth.client,owner,exam.dbExamId]);
  const q=exam.questions.find(q=>q.key===questionKey);
- const included=exam.questions.filter(q=>drafts[q.key]?.body.trim()||drafts[q.key]?.images);
+ const included=exam.questions.filter(q=>(drafts[q.key]?.body.trim()||drafts[q.key]?.images)&&(includedKeys===undefined||includedKeys.includes(q.key)));
  const ready=admitted?.owner===owner&&admitted?.exam===exam.dbExamId&&admitted.questions.length>0;
  const unavailable=ready&&included.some(q=>!q.dbQuestionId||!admitted.questions.includes(q.dbQuestionId));
  const mathLeaf=admitted?.owner===owner&&admitted?.exam===exam.dbExamId&&q?.dbQuestionId?admitted.math[q.dbQuestionId]:null;

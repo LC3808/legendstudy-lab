@@ -32,7 +32,7 @@ export async function readMathDashboard(client:SupabaseClient,owner:string):Prom
 export function summarizeRecords(rows:RecordItem[]){
  const done=(r:RecordItem)=>r.evaluations.filter(e=>e.valid&&e.status.toLowerCase()==='completed');
  const dates=rows.flatMap(r=>done(r).flatMap(e=>e.completedAt?[e.completedAt]:[])).sort();
- return {evaluated:rows.filter(r=>done(r).length).length,rewritten:rows.filter(r=>r.rewrite).length,reevaluated:rows.filter(r=>r.rewrite&&done(r).length).length,latest:dates.at(-1)??null};
+ return {evaluatedExams:new Set(rows.filter(r=>r.source==='exam'&&done(r).length).map(r=>r.examId)).size,evaluatedCycles:new Set(rows.filter(r=>r.source==='exam'&&done(r).length).map(r=>r.parentId||r.id)).size,evaluated:rows.filter(r=>done(r).length).length,rewritten:rows.filter(r=>r.rewrite).length,reevaluated:rows.filter(r=>r.rewrite&&done(r).length).length,latest:dates.at(-1)??null};
 }
 export type EssayDetail={attempts:{id:string;attempt_no:number;body:string;mode?:string;conditions_snapshot?:unknown;question_metadata_version?:string}[];evaluations:{id:string;attempt_id:string;session_id?:string;question_id?:string;regime_key?:string;contract_version?:string;evidence_completeness?:string;input_snapshot?:unknown;overall_summary:string|null;strengths:string[];rewrite_checklist:string[];essay_improvement_progress?:{title:string;explanation:string;next_action:string;status:string}[];essay_evaluation_dimensions:{criterion_id?:string;essay_evaluation_criteria?:{label:string;definition_version:string};display_order:number;level_1_to_5:number|null;explanation:string}[]}[]};
 export async function readEssayDetail(client:SupabaseClient,owner:string,row:RecordItem):Promise<EssayDetail>{

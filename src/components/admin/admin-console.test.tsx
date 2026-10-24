@@ -243,7 +243,7 @@ describe("AdminDashboardView", () => {
     expect(screen.getByText("12")).toBeInTheDocument();
     expect(screen.getAllByText("미설치").length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText(/RUNTIME_OFF/)).toBeInTheDocument();
-    expect(screen.getByText(/LIVE_OFF/)).toBeInTheDocument();
+    expect(screen.getByRole("heading",{name:"핵심 운영 지표"})).toBeInTheDocument();
   });
 
   it("shows an error state with a retry when the read fails", async () => {

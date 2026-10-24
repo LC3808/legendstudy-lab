@@ -19,7 +19,6 @@ it('canonical humanities draft uses existing submit, result, free rewrite and ow
   return {data:{version:'essay-exam-history-v1',runs:args.p_run?state.runs.filter(r=>r.id===args.p_run):state.runs},error:null};
  });
  const quotes:number[]=[],submissions:Record<string,unknown>[]=[];
- vi.spyOn(window,'confirm').mockReturnValue(true);
  vi.stubGlobal('fetch',vi.fn(async(url: string,init?:RequestInit)=>{
   expect(url).toBe('/api/essay/exam');
   const body=JSON.parse(String(init?.body));
@@ -36,11 +35,13 @@ it('canonical humanities draft uses existing submit, result, free rewrite and ow
  const u=userEvent.setup();
  const first=render(<EssayExamSubmit exam={exam} included={['q2']} drafts={{q2:{body:'First synthetic answer',revision:1,images:false,saved:true}}}/>);
  await u.click(await screen.findByRole('button',{name:'첨삭 요청 · 1 Credit'}));
+ await u.click(await screen.findByRole('button',{name:'첨삭 진행하기'}));
  await screen.findByText('First summary');
  expect(screen.getByRole('link',{name:'나의 첨삭 기록 →'})).toHaveAttribute('href','/my/essays');
  first.unmount();
  render(<EssayExamSubmit exam={exam} included={['q2']} cycle={{parentId:'first'}} drafts={{q2:{body:'Rewritten synthetic answer',revision:2,images:false,saved:true}}}/>);
  await u.click(await screen.findByRole('button',{name:'무료 재첨삭 요청'}));
+ await u.click(await screen.findByRole('button',{name:'첨삭 진행하기'}));
  await waitFor(()=>expect(state.runs).toHaveLength(2));
  await screen.findByText('Rewritten synthetic answer');
  expect(quotes).toEqual([1,0]);expect(submissions[1].parentId).toBe('first');

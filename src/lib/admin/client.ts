@@ -1,3 +1,4 @@
+import {parseReleaseReport,type ReleaseReport,type ReportFilter} from './release-report';
 import {parseMemberDirectory,type MemberDirectory,type MemberFilters} from "./members";
 import {parseStudent360,type Student360} from "./student360";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -41,6 +42,7 @@ import { AdminError, mapRpcError } from "./errors";
  * credential is introduced and finance-only functions remain inaccessible.
  */
 export interface AdminClient {
+  releaseReport(filters:ReportFilter):Promise<ReleaseReport>;
   isOperator(): Promise<boolean>;
   dashboard(): Promise<AdminDashboard>;
   searchMembers(query: string, options?: AdminPageOptions): Promise<AdminSearchPage>;
@@ -172,6 +174,10 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
   }
 
   return {
+    async releaseReport(filters:ReportFilter):Promise<ReleaseReport>{
+      await requireSession();
+      return parseReleaseReport(await callRpc('admin_release_report',{p:{version:'admin-release-v1',...filters}}),filters.kind);
+    },
     async isOperator(): Promise<boolean> {
       await requireSession();
       // Granted to authenticated callers: a non-operator receives `false`, not an

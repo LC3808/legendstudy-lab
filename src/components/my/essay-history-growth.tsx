@@ -1,6 +1,6 @@
 'use client';
 import {useEffect} from 'react';
-import {readExamRuns,examReports,examQuestionLabel} from '@/lib/my/exam-history';
+import {readExamRuns,readExamReports,examQuestionLabel} from '@/lib/my/exam-history';
 import {compareReports} from '@/lib/my/evaluation-report';
 import type {SupabaseClient} from '@supabase/supabase-js';
 import {useOwnerData,DataStatus} from './owner-data';
@@ -11,15 +11,17 @@ export async function readEssayGrowth(client:SupabaseClient,owner:string){
  const completed=runs.filter(r=>r.state==='completed').sort((a,b)=>String(a.created_at).localeCompare(String(b.created_at)));
  const latest=new Map<string,typeof completed[number]>();
  for(const r of completed)if(typeof r.parent_id==='string')latest.set(r.parent_id,r);
- return [...latest.entries()].flatMap(([parentId,run])=>{
-  const parent=completed.find(r=>r.id===parentId);if(!parent)return [];
-  const before=examReports(parent);
-  return examReports(run).flatMap(after=>{
+ const series=[];
+ for(const run of latest.values()){
+  const detail=await readExamReports(client,owner,String(run.id));
+  const before=detail.previous;
+  series.push(...detail.current.flatMap(after=>{
    const initial=before.find(r=>r.id===after.priorId);if(!initial)return [];
    const changes=compareReports(initial,after);if(!changes)return [];
    return [{id:after.id,title:[String(run.university??''),String(run.title??''),examQuestionLabel(after.id.split('/').at(-1)??'')].filter(Boolean).join(' · '),changes}];
-  });
- });
+  }));
+ }
+ return series;
 }
 export function EssayGrowth(){
  const result=useOwnerData(readEssayGrowth,true);

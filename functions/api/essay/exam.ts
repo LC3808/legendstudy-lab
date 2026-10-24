@@ -28,9 +28,22 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
    const admission=ready.ok?await ready.json() as {ready?:boolean;question_ids?:unknown}:null;
    return reply({ready:admission?.ready===true,questionIds:admission?.ready===true&&Array.isArray(admission.question_ids)?admission.question_ids.filter(uuid):[]});
   }
-  // Current deployed Worker rejects multi-question execution before its journal loop.
-  // Until the reviewed session/retry contract is installed, reject BEFORE reservation.
-  if((input.action==='quote'&&Array.isArray(input.questionIds)&&input.questionIds.length>1)||(input.action==='submit'&&Array.isArray(input.answers)&&input.answers.length>1))return reply({code:'EXAM_SESSION_CONTRACT_PENDING'},409);
+  // Verify both deployed Worker and additive DB session contract before reserving.
+  async function sessionReady(){
+   const response=await dispatch('/exam-admission',{exam_id:input.examId});
+   if(!response.ok)return false;
+   const admission=await response.json() as {ready?:boolean;session_version?:string};
+   return admission.ready===true&&admission.session_version==='exam-session-v1';
+  }
+  if(input.action==='retry'&&uuid(input.examId)&&uuid(input.runId)&&uuid(input.key)){
+   if(scope||!await sessionReady())return reply({code:'EXAM_SESSION_CONTRACT_PENDING'},409);
+   const retried=await transport.request('/rest/v1/rpc/essay_exam_retry',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_run:input.runId,p_key:input.key,p_exam:input.examId})});
+   if(!retried.ok)return reply({code:'RETRY_NOT_AVAILABLE'},409);
+   run=input.runId;
+   await dispatch('/exam-evaluate',{run_id:run});
+   return reply({runId:run,code:'STATUS_CHECK_REQUIRED'},202);
+  }
+  if(input.action==='quote'&&Array.isArray(input.questionIds)&&input.questionIds.length>1&&!await sessionReady())return reply({code:'EXAM_SESSION_CONTRACT_PENDING'},409);
   if(input.previousPaidRunId!=null&&(env.ESSAY_CONTINUOUS_CYCLES_ENABLED!=='true'||!uuid(input.previousPaidRunId)||input.parentId!=null))return reply({code:'ADDITIONAL_CYCLE_UNAVAILABLE'},422);
   if(input.action==='quote'&&uuid(input.examId)&&Array.isArray(input.questionIds)&&input.questionIds.length>0&&input.questionIds.every(uuid)&&!(input.parentId!=null&&!uuid(input.parentId))){
    const quoted=await transport.request('/rest/v1/rpc/essay_exam_quote',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_questions:input.questionIds,p_parent:input.parentId??null,p_previous:input.previousPaidRunId??null})});
@@ -39,8 +52,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   }
   if(input.action!=='submit'||!uuid(input.examId)||!uuid(input.key)||!Array.isArray(input.answers)||input.answers.length<1||input.answers.length>100||!(input.parentId==null||uuid(input.parentId)))return reply({code:'INVALID_REQUEST'},422);
   if(input.answers.some(a=>!a||typeof a!=='object'||!uuid(a.questionId)||typeof a.body!=='string'||!a.body.trim()||a.body.length>30000||!Number.isSafeInteger(a.revision)||a.revision<0||Object.keys(a).some(k=>!['questionId','body','revision'].includes(k))))return reply({code:'INVALID_ANSWERS'},422);
-  const ready=await dispatch('/exam-admission',{exam_id:input.examId});
-  if(!ready.ok||(await ready.json() as {ready?:boolean}).ready!==true)return reply({code:'EVALUATION_UNAVAILABLE'},503);
+  if(!await sessionReady())return reply({code:'EXAM_SESSION_CONTRACT_PENDING'},409);
   const reserved=await transport.request(input.previousPaidRunId?'/rest/v1/rpc/essay_exam_submit_cycle':'/rest/v1/rpc/essay_exam_submit',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_key:scope?.requestKey??input.key,p_answers:input.answers,p_parent:input.parentId??null,...(input.previousPaidRunId?{p_previous:input.previousPaidRunId}:{})})});
   const value=JSON.parse(new TextDecoder().decode(await boundedBody(reserved,16384)));
   if(!reserved.ok){const reason=typeof value?.message==='string'?value.message:'';return reply({code:reason==='INSUFFICIENT_CREDIT'?'INSUFFICIENT_CREDIT':'SUBMISSION_REJECTED'},reason==='INSUFFICIENT_CREDIT'?402:422);}

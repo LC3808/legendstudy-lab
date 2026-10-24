@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import {AdminReleaseReport} from './admin-release-report';
 
 import { SchoolDistribution } from "./school-distribution";
 
@@ -14,67 +14,6 @@ import type { AdminDashboard, AdminSupportMetrics } from "@/lib/admin/contract";
 import { formatDateTime, formatDuration } from "@/lib/admin/format";
 
 import { AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
-
-/**
- * Operations dashboard.
- *
- * Owner directive §4. The dashboard separates 누적 지표 (lifetime totals the
- * read already carries) from 기간 발생 지표 (counts within a chosen window), adds
- * a 조치 필요 band at the top, and shows a 기간 filter.
- *
- * The deployed `admin-v1` read exposes member counts for a few fixed windows
- * (오늘 / 최근 7일 / 최근 30일) and lifetime totals for everything else. It does
- * not accept an arbitrary period, and it carries no revenue, refund, active
- * 대학/시험/문항, or average-processing figure. Rather than invent those, the
- * dashboard shows them as 집계 불가 with the reason — a new aggregation RPC is
- * the recorded GAP, not a fabricated number.
- */
-
-type PeriodKey = "today" | "d7" | "d30" | "month" | "all" | "custom";
-
-const PERIODS: { key: PeriodKey; label: string }[] = [
-  { key: "today", label: "오늘" },
-  { key: "d7", label: "최근 7일" },
-  { key: "d30", label: "최근 30일" },
-  { key: "month", label: "이번 달" },
-  { key: "all", label: "전체" },
-  { key: "custom", label: "직접 선택" },
-];
-
-/** Member sign-ups the read can answer for a window, else null (GAP). */
-function signupForPeriod(members: AdminDashboard["members"], period: PeriodKey): number | null {
-  switch (period) {
-    case "today":
-      return members.newToday;
-    case "d7":
-      return members.new7d;
-    case "d30":
-      return members.new30d;
-    case "all":
-      return members.total;
-    default:
-      // 이번 달 / 직접 선택 need a period-aware RPC the read does not provide.
-      return null;
-  }
-}
-
-function PeriodFilter({ value, onChange }: { value: PeriodKey; onChange: (next: PeriodKey) => void }) {
-  return (
-    <div className="admin-period" role="group" aria-label="기간 선택">
-      {PERIODS.map((period) => (
-        <button
-          key={period.key}
-          type="button"
-          className={`admin-period__button${period.key === value ? " admin-period__button--active" : ""}`}
-          aria-pressed={period.key === value}
-          onClick={() => onChange(period.key)}
-        >
-          {period.label}
-        </button>
-      ))}
-    </div>
-  );
-}
 
 function Metric({ label, value, note }: { label: string; value: string; note?: string }) {
   return (
@@ -208,8 +147,6 @@ function SupportSection() {
 }
 
 export function AdminDashboardView() {
-  const [period, setPeriod] = useState<PeriodKey>("d30");
-  const [from,setFrom]=useState(""),[to,setTo]=useState("");
   const dashboard = useAdminQuery<AdminDashboard>((client) => client.dashboard(), "dashboard");
   const support = useAdminQuery<AdminSupportMetrics>((client) => client.supportMetrics(), "dashboard-support");
 
@@ -219,37 +156,17 @@ export function AdminDashboardView() {
   const data = dashboard.state.data;
   const supportData = support.state.status === "ready" ? support.state.data : null;
   const origins = Object.entries(data.credit.availableByOrigin);
-  const signup = signupForPeriod(data.members, period);
-  const periodLabel = PERIODS.find((p) => p.key === period)?.label ?? "";
   const evalTotal = data.essay.evaluationCompleted + data.essay.evaluationFailed;
 
   return (
     <div className="admin-stack">
 
 
-      <Section title="기간 선택" note="신규가입은 선택한 기간으로 집계합니다. 그 외 지표는 아래에 누적/기간 구분을 표시합니다.">
-        <PeriodFilter value={period} onChange={setPeriod} />{period==='custom'&&<div className="admin-period"><label>시작일<input type="date" value={from} onChange={e=>setFrom(e.target.value)}/></label><label>종료일<input type="date" value={to} min={from} onChange={e=>setTo(e.target.value)}/></label><p>선택 기간 집계는 데이터 연결이 필요합니다.</p></div>}
-      </Section>
-
-      <Section title="핵심 운영 지표" note="누적 지표와 선택 기간의 신규 회원을 구분합니다. 기간 집계가 없는 지표는 데이터 연결이 필요합니다.">
-        <div className="admin-metrics">
-          <Metric label={`신규 회원 · ${periodLabel}`} value={signup===null?'데이터 연결 필요':formatNumber(signup)}/>
-          <Metric label="결제 건수·금액" value="데이터 연결 필요" note="주문 건수를 결제 완료 건수로 대신 표시하지 않습니다"/>
-          <Metric label="Credit 지급 · 누적" value={formatCredit(data.credit.grantedTotal)}/>
-          <Metric label="Credit 사용 · 누적" value={formatCredit(data.credit.consumedTotal)}/>
-          <Metric label="논술 첨삭 진행·완료" value="데이터 연결 필요" note="시험 회차 History 통합 조회 필요"/>
-          <Metric label="운영 장애" value="데이터 연결 필요" note="장애 상태 조회 계약 연결 필요"/>
-        </div>
-      </Section>
+      <AdminReleaseReport kind="dashboard"/>
       <ActionBand dashboard={data} support={supportData}/>
-      <Section title="학습시간"><Metric label="누적 학습시간" value="데이터 연결 필요" note="회원별 학습시간 데이터는 존재하며, 전체 합계 조회 계약이 필요합니다"/></Section>
+
       <Section title="회원">
         <div className="admin-metrics">
-          <Metric
-            label={`신규가입 · ${periodLabel}`}
-            value={signup === null ? "집계 불가" : formatNumber(signup)}
-            note={signup === null ? "이번 달·직접 선택은 기간 집계 RPC가 필요합니다 (GAP)" : "선택한 기간 신규 가입"}
-          />
           <Metric label="활성 회원" value={formatNumber(data.members.active30d)} note="최근 30일 학습 기록 기준" />
           <Metric label="누적 회원" value={formatNumber(data.members.total)} note="전체 가입 (누적)" />
         </div>
@@ -306,8 +223,6 @@ export function AdminDashboardView() {
       <Section title="Credit" note="누적 · 잔액은 현재 시점 기준">
         <div className="admin-metrics">
           <Metric label="잔액 (사용 가능)" value={formatCredit(data.credit.spendable)} />
-          <Metric label="누적 지급" value={formatCredit(data.credit.grantedTotal)} />
-          <Metric label="누적 사용" value={formatCredit(data.credit.consumedTotal)} />
           <Metric label="30일 내 만료 예정" value={formatCredit(data.credit.expiring30d)} />
         </div>
         {origins.length > 0 ? (
@@ -320,30 +235,6 @@ export function AdminDashboardView() {
             ))}
           </ul>
         ) : null}
-      </Section>
-
-      <Section title="결제" note={`WEB 결제 조회 설정: ${data.payment.runtimeState} · ${data.payment.runtimeLabel}`}>
-        <div className="admin-metrics">
-          <Metric
-            label="주문"
-            value={formatCount(data.payment.orders)}
-            note={data.payment.installed ? "누적 주문 건수" : "결제 모듈이 설치되지 않았습니다."}
-          />
-          <Metric label="총 결제금액" value="집계 불가" note="매출 집계 RPC 필요 (GAP)" />
-          <Metric label="환불금액" value="집계 불가" note="환불 집계 RPC 필요 (GAP)" />
-          <Metric label="순매출" value="집계 불가" note="매출−환불 집계 RPC 필요 (GAP)" />
-        </div>
-        <p className="admin-muted">
-          결제가 열리기 전에는 매출 지표를 표시하지 않습니다. 주문 건수만 실제 값입니다.
-        </p>
-      </Section>
-
-      <Section title="서비스" note="활성 대학·시험·문항 수는 운영 레지스트리 집계가 필요합니다 (GAP)">
-        <div className="admin-metrics">
-          <Metric label="활성 대학" value="집계 불가" note="Registry 집계 RPC 필요" />
-          <Metric label="활성 시험" value="집계 불가" note="Registry 집계 RPC 필요" />
-          <Metric label="활성 문항" value="집계 불가" note="Registry 집계 RPC 필요" />
-        </div>
       </Section>
 
       <SupportSection />

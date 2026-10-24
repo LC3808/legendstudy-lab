@@ -48,6 +48,7 @@ export function SourceExamSelection({sourceId,registeredOnly=false}:{sourceId:st
 }
 function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
  const [period,setPeriod]=useState(''),[track,setTrack]=useState(''),[examKey,setExamKey]=useState(''),[questionKey,setQuestionKey]=useState('');
+ const [excluded,setExcluded]=useState<string[]>([]);
  const [drafts,setDrafts]=useState<Record<string,SubmissionDraft>>({});
  const onDraft=useCallback((key:string,body:string,images:boolean,saved:boolean)=>setDrafts(old=>({...old,[key]:{body,images,saved,revision:old[key]?.body===body?old[key].revision:(old[key]?.revision??0)+1}})),[]);
  const [dirty,setDirty]=useState<Record<string,boolean>>({});
@@ -63,8 +64,9 @@ function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
  const question=exam?.questions.find(q=>q.key===questionKey)??exam?.questions[0];
  // A sole question needs no second pick: auto-include it and drop the redundant tab/checklist.
  const single=!!exam&&exam.questions.length===1;
- const submitIncluded=exam?.questions.filter(q=>drafts[q.key]?.body.trim()||drafts[q.key]?.images).map(q=>q.key)??[];
- function reset(action:()=>void){if(Object.values(dirty).some(Boolean)&&!window.confirm('저장하지 못한 답안이 있습니다. 선택을 바꿀까요?'))return;action();setDirty({});setQuestionKey('');}
+ const written=exam?.questions.filter(q=>drafts[q.key]?.body.trim()||drafts[q.key]?.images)??[];
+ const submitIncluded=written.filter(q=>!excluded.includes(q.key)).map(q=>q.key);
+ function reset(action:()=>void){if(Object.values(dirty).some(Boolean)&&!window.confirm('저장하지 못한 답안이 있습니다. 선택을 바꿀까요?'))return;action();setDirty({});setExcluded([]);setQuestionKey('');}
  return <section className="university-section essay-start" aria-label="논술 첨삭 시작">
   <div className="discovery-topline"><h2>기출문제 선택</h2><Link href="/my/essays/">나의 첨삭 기록 →</Link></div>
   {!rows.length&&<p role="status">기출문제를 준비하고 있어요.</p>}
@@ -74,9 +76,10 @@ function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
    {exams.length>1&&<label>캠퍼스·시험 회차<select aria-label="캠퍼스·시험 회차" value={exam?.key??''} onChange={e=>reset(()=>setExamKey(e.target.value))}><option value="">시험 회차 선택</option>{exams.map(e=><option key={e.key} value={e.key}>{[e.campus,e.session].filter(Boolean).join(' · ')||'회차 구분 없음'}</option>)}</select></label>}
   </div>
   {exam&&<>{!single&&<div className="essay-question-tabs" role="tablist" aria-label="문항 선택">{exam.questions.map(q=><button className="button button--outline" key={q.key} role="tab" aria-selected={question?.key===q.key} onClick={()=>setQuestionKey(q.key)}>{q.label}</button>)}</div>}
-   <p className="essay-submit-note">답안 저장은 무료입니다. 작성한 답안을 시험 회차 단위로 함께 첨삭하며, 최초 첨삭에는 문항 수와 관계없이 1 Credit이 사용됩니다.</p>
+   <p className="essay-submit-note">답안 저장은 무료입니다. 작성한 답안을 시험 회차 단위로 함께 첨삭하며, 새 첨삭 회차에는 문항 수와 관계없이 1 Credit이 사용됩니다. 이전에 제출하지 않은 문항을 나중에 첨삭받으면 새 회차로 1 Credit이 사용됩니다.</p>
+   {written.length>1&&<fieldset className="essay-submission-selection"><legend>이번 첨삭 회차에 제출할 답안</legend>{written.map(q=><label key={q.key}><input type="checkbox" checked={!excluded.includes(q.key)} onChange={e=>setExcluded(old=>e.target.checked?old.filter(key=>key!==q.key):[...old,q.key])}/>{q.label}</label>)}<p>선택하지 않은 답안과 기존 첨삭 기록은 그대로 보존됩니다. 무료 재첨삭은 기존 회차의 문항으로만 요청할 수 있습니다.</p></fieldset>}
    {exam.questions.map(q=><div key={q.key} hidden={question?.key!==q.key}><SourceExamWriter key={`${owner}:${q.key}`} exam={exam} question={q} owner={owner} onDirty={onDirty} onDraft={onDraft}/></div>)}
-   {isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>첨삭 서비스 준비 중</button>:!exam.evaluationReady||exam.verification!=='VERIFIED'?<ScopedExamSubmit exam={exam} questionKey={question?.key} drafts={drafts}/>:<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={submitIncluded} drafts={drafts}/>}
+   {isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>첨삭 서비스 준비 중</button>:!exam.evaluationReady||exam.verification!=='VERIFIED'?<ScopedExamSubmit exam={exam} questionKey={question?.key} drafts={drafts} includedKeys={submitIncluded}/>:<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={submitIncluded} drafts={drafts}/>}
 
   </>}
  </section>;

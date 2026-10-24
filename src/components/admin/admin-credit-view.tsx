@@ -1,5 +1,6 @@
 "use client";
 
+import {AdminReleaseReport} from './admin-release-report';
 import { useState } from "react";
 
 import type { AdminDashboard, AdminSearchPage } from "@/lib/admin/contract";
@@ -50,18 +51,6 @@ export function AdminCreditView() {
                   {formatCredit(summary.state.data.credit.expiring30d)}
                 </p>
               </div>
-              <div className="admin-metric">
-                <p className="admin-metric__label">누적 지급</p>
-                <p className="admin-metric__value">
-                  {formatCredit(summary.state.data.credit.grantedTotal)}
-                </p>
-              </div>
-              <div className="admin-metric">
-                <p className="admin-metric__label">누적 사용</p>
-                <p className="admin-metric__value">
-                  {formatCredit(summary.state.data.credit.consumedTotal)}
-                </p>
-              </div>
             </div>
             <ul className="admin-origin">
               {Object.entries(summary.state.data.credit.availableByOrigin).map(([origin, value]) => (
@@ -78,37 +67,7 @@ export function AdminCreditView() {
         </p>
       </section>
 
-      <section className="admin-section">
-        <h2>Credit 통계</h2>
-        <p className="admin-section__note">
-          출처별 지급 구분, 첨삭·재첨삭 사용과 재첨삭률, 만료·환불·조정, 대학별 사용과 회원별
-          평균은 기간·출처별 집계가 필요합니다. 현재 조회 계약은 현시점 잔액과 누적 지급·사용
-          합계, 그리고 출처별 <strong>사용 가능</strong> 잔액만 제공합니다. 아래 세부 통계는
-          집계 RPC가 필요한 항목(GAP)으로 표시합니다.
-        </p>
-        <div className="admin-metrics">
-          {[
-            "무료가입 지급",
-            "구매 지급",
-            "관리자 지급",
-            "최초 첨삭 사용",
-            "무료 재첨삭 횟수",
-            "유료 재첨삭 사용",
-            "만료 Credit",
-            "환불·조정",
-            "대학별 Credit 사용",
-            "회원별 평균 사용량",
-            "재첨삭률",
-            "유료 재첨삭 비율",
-          ].map((label) => (
-            <div className="admin-metric" key={label}>
-              <p className="admin-metric__label">{label}</p>
-              <p className="admin-metric__value admin-metric__value--sm">집계 불가</p>
-              <p className="admin-metric__note">기간·출처별 집계 RPC 필요 (GAP)</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <AdminReleaseReport kind="credit"/>
 
       <section className="admin-section">
         <h2>회원별 Credit 조회</h2>

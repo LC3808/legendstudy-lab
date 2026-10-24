@@ -1,20 +1,31 @@
 {
   "status": "IN_PROGRESS_NOT_DEPLOYED",
-  "webTestsPassed": 259,
+  "webTestsPassed": 261,
   "webTestsSkipped": 2,
-  "localPostgresLedgerChecksPassed": 14,
+  "localPostgresLedgerChecksPassed": 18,
   "productionWrites": 0,
   "providerCalls": 0,
   "secretChanges": 0,
-  "workerChanges": 0,
-  "multiQuestionRuntime": "BLOCKED_BEFORE_RESERVATION",
+  "workerChanges": "AUTHORIZED_SESSION_EXECUTION_RETRY_LOCAL_ONLY",
+  "multiQuestionRuntime": "LOCAL_PASS_PENDING_WORKER_DEPLOYMENT",
   "productionDeployment": "6b69acb3-f497-48e4-8f79-559fc82a7b95",
   "productionSource": "a21642cf384adc69fa5c6ec6180c3ea7c4987cd2",
   "pending": [
-    "Owner operating RPC definitions from read-only-preflight.sql",
-    "Worker session execution/retry scope clarification",
-    "Admin Credit/period/registry aggregate contract",
-    "Image/Math session contract",
-    "Authenticated visual and real session acceptance"
-  ]
+    "Math/image current Production contract from read-only-math-session.sql",
+    "Image/Math session integration",
+    "Authenticated visual and real session acceptance",
+    "Coordinated Worker/WEB deployment"
+  ],
+  "ownerAppliedSql": [
+    "admin_release_report",
+    "essay_session_retry"
+  ],
+  "workerTestsPassed": 40,
+  "fullSuiteObserved": {
+    "passed": 1232,
+    "failed": 7,
+    "skipped": 4,
+    "emptyTestSuite": 1,
+    "followUp": "New consent-modal journey fixture corrected and targeted recheck PASS; 6 pre-existing catalog tests plus empty suite remain."
+  }
 }
