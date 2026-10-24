@@ -1,0 +1,21 @@
+{
+  "id": "7f9defb7-9e6e-4e50-ae52-fd256ba1d43c",
+  "url": "https://7f9defb7.legendstudy-lab.pages.dev",
+  "environment": "production",
+  "created_on": "2026-10-24T17:43:16.776083Z",
+  "latest_stage": {
+    "name": "deploy",
+    "started_on": null,
+    "ended_on": "2026-10-24T17:43:18.766859Z",
+    "status": "success"
+  },
+  "deployment_trigger": {
+    "type": "ad_hoc",
+    "metadata": {
+      "branch": "main",
+      "commit_hash": "79040d6497d5a756ff76f9121cf90cf94c156f01",
+      "commit_message": "fix(web): keep growth labels public and comparisons compact",
+      "commit_dirty": false
+    }
+  }
+}
