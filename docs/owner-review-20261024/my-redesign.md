@@ -37,3 +37,11 @@
 ## 보존 및 후속
 
 이번 MY 변경에서 DB/SQL/Worker/Secret/Ledger/APP 코드는 변경하지 않았다. 기존 회차/관리자 SQL Owner 검증과 Worker17b3bd65는 유지한다. 실제 다기기 저장 동기화, 넓은 PC 화면 재검수, 기존 catalog 실패 및 관리자 총회원 차이는 후속 검증 대상이다. Owner가 아직 제공하지 않은 추가 첨삭 화면 요구는 구현하지 않았다.
+
+## 2026-10-25 후속 — 세로 막대와 정확한 평가명
+
+Owner 후속 지시에 따라 MY/분석 성장 비교와 PNG를 최초·최근 세로 막대로 통일했다. 기존 제한된 명칭 allowlist가 실제 평가명을 번호로 바꾸던 동작을 제거했다. 짧은 원래 제목은 유지하고, 확인한 긴 공식 평가 질문은 의미를 보존한 표시 별칭(입장 요약의 정확성, 논리적 구성과 전개, 통계 해석의 타당성 검토 등)으로 표현한다. 미등록 기준은 임의의 역량명으로 만들지 않는다.
+
+보존7: 새 사실 발생/수집 없음; 원본 평가와 시각/pins 보존; UPDATE 없음; 동일 owner 조회 유지; Learning 표시만 변경; 기존 개인정보/공유 필드 제한 유지; 파생 명칭/그래프는 표시 전용이며 DB에 저장하지 않음.
+
+Source651479b, Productioneba32637-25f3-4d36-bec9-c3acaf4fd99e canonical API success/clean source 확인([증거](growth-deployment.json)). Typecheck/Lint/build PASS, 관련90PASS/2skip. 실계정19개 비교 기준명 확인,1752px PC scrollWidth1752 및 세로막대 시각 확인, PNG1080×3820 다운로드·렌더 PASS. 기존 점수/ID/원본답안·DB·Worker·APP코드 변경 없음. 이전 전체suite/다기기 검증 한계는 그대로다.

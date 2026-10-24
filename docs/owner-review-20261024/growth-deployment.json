@@ -1,0 +1,19 @@
+{
+  "id": "eba32637-25f3-4d36-bec9-c3acaf4fd99e",
+  "environment": "production",
+  "latest_stage": {
+    "name": "deploy",
+    "started_on": null,
+    "ended_on": "2026-10-24T17:57:36.828313Z",
+    "status": "success"
+  },
+  "deployment_trigger": {
+    "type": "ad_hoc",
+    "metadata": {
+      "branch": "main",
+      "commit_hash": "651479b85d485bd0852538df64aaddcad859f0ff",
+      "commit_message": "fix(web): show vertical growth bars with meaningful criterion names",
+      "commit_dirty": false
+    }
+  }
+}
