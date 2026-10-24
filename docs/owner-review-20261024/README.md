@@ -79,3 +79,11 @@ Owner session-retry-verify 결과 확인: table_installed=true. retry/session_cl
 2026-10-25 회귀 확장: 전체 실행1232 PASS/7 FAIL/4 skip 및 빈 suite1. 새 동의 모달을 반영하지 않은 기존 건국 UI 테스트1건 수정 후 재검사 PASS. 남은 catalog-demand/projection/public-discovery6건과 phase1-browse-snapshot 빈 suite는 이전 실행에서도 확인한 기존 실패다. 관련 범위261 PASS/2skip, 추가 source-selection5 및 round-count/UI journey7 PASS, Worker40 PASS.
 
 2026-10-25 Preview: https://8e9b0f07.legendstudy-lab.pages.dev (WEB b9fd103fdaf743ee4ee1e939a21b1fe6dedc1129). Functions compile/upload PASS, 공개 LAB 브라우저 렌더 확인. 기존 Preview Worker/인증 연결 한계 유지; 운영 첨삭·관리자 화면 검증 완료 아님. Production6b69acb3와 Worker c3fb54be 그대로. APP d258d30d149239f568a453e682a473f3b625eeaf, Unified357e87eb2940a6f9c05649250d10f192683a59fc 원격 확인. Math 현행 계약은 read-only-math-session.sql Owner 결과 대기.
+
+## 2026-10-25 Math 회차 운영 설치 확인
+
+Owner가 현행 정산 함수·canonical 문항 매핑·admission·이미지 저장·소유권 계약을 제공한 뒤 정확한 Math 회차 패키지를 직접 실행했다. [검증 결과와 패키지 SHA256](math-session-owner-verification.json): 공개4RPC 권한/고정 search_path, RLS/테이블, 임시 CREATE 제거, 기존 binding UNIQUE, 설치 정의 일치, 기존 owner/ACL 보존 모두 PASS. [영향·복구·로컬 검증](math-session-candidate/README.md). 기존 성공SQL 재실행 불필요.
+
+WEB 저장 답안→입력 확인→회차 제출 및 기존 Math 단일문항 화면의 회차 연결 구현 중. History는 새 회차에 포함된 attempt의 중복 표시를 제외하고 기존 독립 기록을 유지하며 전체 완료 전 회차 완료 수를 올리지 않는다. 관련 제출/기존화면/집계20검사 PASS. WEB 새 배포·PC/모바일·로그인 검증은 아직 미완료. 운영 학생/Provider 평가를 추가 실행한 결과가 아니다.
+
+보존 검토7: 발생/완료 시점은 서버 사실 사용; 원본 attempt/result 불변; 현재 projection만 추가하고 과거 overwrite/backfill 없음; 동일 auth subject/계정 권한; 학습 결과와 과금 decision/ledger 분리; 자기 계정 조회와 기존 삭제 경계 유지; 회차 완료 수는 저장 상태에서 계산하고 임의 점수/성장 사실 생성 금지.

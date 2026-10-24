@@ -14,7 +14,9 @@ function fixture(target = {leafId:uuid, label:"연습 문제", statement:"식을
  hints:[{hint_id:uuid,core_id:uuid,level:1,available:true,can_reveal:true}],solutions:[{solution_id:uuid,target:"REFERENCE",provenance:"OFFICIAL_SOLUTION"}],included_reevaluation:included,reevaluation_delta:null};
  const rpc=vi.fn((name:string,args:{p_request?:{action:string;payload:Record<string,unknown>;dto_version:string}})=>{
   const p=args?.p_request;let result:unknown;
-  if(name==="math_catalog")result=[{leaf_id:target.leafId,label:target.label,statement:target.statement,problem_statement:"긴 수식 x² + y²",response_format:"FULL_SOLUTION"}];
+  if(name==="math_catalog")result=[{essay_exam_id:uuid,leaf_id:target.leafId,label:target.label,statement:target.statement,problem_statement:"긴 수식 x² + y²",response_format:"FULL_SOLUTION"}];
+  else if(name==="math_session_submit")result=uuid;
+  else if(name==="math_session_read")result={version:"math-session-v1",questions:[{attempt_id:uuid,evaluation_id:uuid}]};
   else {
    actions.push({action:p!.action,payload:p!.payload});
    switch(p!.action){

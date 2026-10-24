@@ -19,7 +19,7 @@ import { buildLearningTimeline } from "@/lib/math-learning/history";
 import { summarizeReevaluationDelta } from "@/lib/math-learning/delta";
 import type { CoreView, HintLevel } from "@/lib/math-learning/types";
 import "./student-route.css";
-type Catalog = { leaf_id: string; statement: string; problem_statement: string; label: string; response_format: string };
+type Catalog = { essay_exam_id: string; leaf_id: string; statement: string; problem_statement: string; label: string; response_format: string };
 const unavailable = "지금은 요청을 처리할 수 없습니다. 로그인 상태와 연결을 확인한 뒤 다시 시도해 주세요.";
 export function MathStudentRoute({ enabled, evaluationEnabled = enabled, requestedLeafId }: { enabled: boolean; evaluationEnabled?: boolean; requestedLeafId?: string }) {
   const auth = useAuth();
@@ -146,8 +146,18 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
   }
   async function evaluate() {
     if (!attempt) return;
-    const response = prior ? await learnClient.requestReevaluation(attempt, key("evaluation")) :
-      ((await rpc.rpc("math_input", { dto_version: "math-input-v1", action: "request_evaluation", payload: { attempt_id: attempt, client_submission_id: key("evaluation") } })) as { result: { evaluation_id: string } }).result;
+    let response: {evaluation_id:string};
+    if(prior) response=await learnClient.requestReevaluation(attempt,key("evaluation"));
+    else {
+      const examId=catalog.find(row=>row.leaf_id===leaf)?.essay_exam_id;
+      if(!examId)throw Error("EXAM_REQUIRED");
+      const submitted=await client.rpc("math_session_submit",{p_exam:examId,p_key:key("evaluation"),p_attempts:[attempt],p_parent:null}).abortSignal(AbortSignal.timeout(20000));
+      if(submitted.error||typeof submitted.data!=="string")throw Error("SESSION_UNAVAILABLE");
+      const read=await client.rpc("math_session_read",{p_run:submitted.data}).abortSignal(AbortSignal.timeout(20000));
+      const q=read.data?.questions?.find((row:{attempt_id:string})=>row.attempt_id===attempt);
+      if(read.error||read.data?.version!=="math-session-v1"||!q?.evaluation_id)throw Error("SESSION_UNAVAILABLE");
+      response={evaluation_id:q.evaluation_id};
+    }
     try { await gateway("evaluate", { evaluation_id: response.evaluation_id }); }
     finally {
       window.dispatchEvent(new Event("legendstudy:credit-refresh"));

@@ -1,4 +1,5 @@
 'use client';
+import {MathSessionProgress} from '../math-release/session-progress';
 import {EssaySessionProgress} from './essay-session-progress';
 import {ExamRewrite} from './exam-rewrite';
 import {readExamReports,examQuestionLabel,examAnswerCoverage} from '@/lib/my/exam-history';
@@ -8,7 +9,7 @@ import {OwnerArea,useOwnerData,DataStatus,dateLabel} from './owner-data';
 import {ReturnNavigation} from './return-navigation';
 import {EvaluationReport,EvaluationComparison} from './evaluation-report';
 import {humanReport,mathReport} from '@/lib/my/evaluation-report';
-import {readEssayDashboard,readMathDashboard,readEssayDetail,mathRead,historyType,answerVersion,completedAt,type RecordItem} from '@/lib/my/essay-dashboard';
+import {readEssayDashboard,readMathDashboard,readEssayDetail,mathRead,readMathSession,historyType,answerVersion,completedAt,type RecordItem} from '@/lib/my/essay-dashboard';
 import type {SupabaseClient} from '@supabase/supabase-js';
 import './essay-dashboard.css';
 export function EssayDashboard(){
@@ -35,7 +36,7 @@ function PersonalContent(){
  </>;
 }
 export function RecordDetail({row}:{row:RecordItem}){
- return row.source==='exam'?<ExamDetail row={row}/>:row.source==='essay'?<HumanDetail row={row}/>:<MathDetail row={row}/>;
+ return row.source==='exam'?<ExamDetail row={row}/>:row.source==='essay'?<HumanDetail row={row}/>:row.mathSession?<MathRoundDetail row={row}/>:<MathDetail row={row}/>;
 }
 function HumanDetail({row}:{row:RecordItem}){
  const load=useCallback((c:SupabaseClient,o:string)=>readEssayDetail(c,o,row),[row]);const result=useOwnerData(load);
@@ -45,6 +46,13 @@ function HumanDetail({row}:{row:RecordItem}){
  const initial=reports.find(r=>r.report.id===revised?.priorId)?.report;
  return <>{result.data.attempts.filter(a=>!reports.some(r=>r.attempt.id===a.id)).map(a=><article className="my-panel" key={a.id}><h3>{a.attempt_no===1?"최초 답안":"재작성 답안"}</h3><p className="essay-answer">{a.body}</p><p>완료된 평가가 없습니다.</p></article>)}{reports.map(({report,attempt})=><EvaluationReport voiceType="humanities_social" key={report.id} title={attempt.attempt_no===1?'최초 평가':'재첨삭 평가'} report={report}/>)}<EvaluationComparison before={initial} after={revised}/></>;
 
+}
+function MathRoundDetail({row}:{row:RecordItem}){
+ const load=useCallback((c:SupabaseClient,o:string)=>readMathSession(c,o,row.id),[row.id]);
+ const result=useOwnerData(load);
+ if(!result.data)return <DataStatus error={result.error} reload={result.reload}/>;
+ const run=result.data;
+ return <><header className="essay-result-identity"><h2>{row.university??'수리논술'}</h2><p>{row.question} · {run.state==='completed'?'첨삭 완료':run.state==='cancelled'?'취소된 회차':'첨삭 진행 중'}</p><MathSessionProgress run={run} onChange={result.reload}/></header>{run.questions.map(q=><section key={q.attempt_id}><h3>{examQuestionLabel(q.question_id)}</h3><MathDetail row={{...row,id:q.attempt_id,mathSession:undefined,evaluations:[{id:q.evaluation_id,status:q.state,at:run.created_at,completedAt:run.state==='completed'?run.completed_at:null,valid:true}]}}/></section>)}</>;
 }
 function MathDetail({row}:{row:RecordItem}){
  const load=useCallback(async(c:SupabaseClient,o:string)=>{

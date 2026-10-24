@@ -1,0 +1,54 @@
+{
+  "reported_by": "Owner",
+  "reported_date": "2026-10-25",
+  "scope": "Production installation metadata; no live student evaluation claimed",
+  "functions": [
+    {
+      "name": "math_session_history",
+      "anon_denied": true,
+      "fixed_search_path": [
+        "search_path=\"\""
+      ],
+      "service_role_denied": true,
+      "authenticated_execute": true
+    },
+    {
+      "name": "math_session_read",
+      "anon_denied": true,
+      "fixed_search_path": [
+        "search_path=\"\""
+      ],
+      "service_role_denied": true,
+      "authenticated_execute": true
+    },
+    {
+      "name": "math_session_retry",
+      "anon_denied": true,
+      "fixed_search_path": [
+        "search_path=\"\""
+      ],
+      "service_role_denied": true,
+      "authenticated_execute": true
+    },
+    {
+      "name": "math_session_submit",
+      "anon_denied": true,
+      "fixed_search_path": [
+        "search_path=\"\""
+      ],
+      "service_role_denied": true,
+      "authenticated_execute": true
+    }
+  ],
+  "rls_enabled": true,
+  "tables_installed": true,
+  "temporary_create_removed": true,
+  "existing_binding_uniqueness": true,
+  "installed_definitions_match": true,
+  "existing_owners_acls_preserved": true,
+  "package_sha256": {
+    "math-session-install.sql": "d651a7054e0e6776b2b704476ca2ec6ef6ee3467d4f23773e5c49fa2c092e387",
+    "math-session-verify.sql": "af87159641e4e2d2c517cea837df768b1d5a86f7ac88c812eaee6f9d348dc6d7",
+    "math-session-rollback.sql": "b34e41b5f574074e94e89d3d611e5ba6839e26f26f0b444e0b8967713dc27974"
+  }
+}

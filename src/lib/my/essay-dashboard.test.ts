@@ -34,3 +34,19 @@ it('groups by canonical exam and exact question set, never similar labels',async
  expect(historyGroups([a,b,c],true).map(g=>g.length).sort()).toEqual([1,2]);
  expect(answerVersion(b)).toBe('수정 제출 답안 2');
 });
+
+it('counts Math rounds only when all questions have completed and keeps free rewrites in the paid cycle',()=>{
+ const initial:RecordItem={...row('round'),source:'math',examId:'exam',mathSession:{run_id:'round',exam_id:'exam',parent_id:null,state:'reserved',created_at:'2026-10-25',completed_at:null,questions:[]}};
+ expect(summarizeRecords([initial])).toMatchObject({evaluated:0,evaluatedCycles:0,latest:null});
+ initial.mathSession!.state='completed';
+ const free={...initial,id:'free',parentId:'round',rewrite:true};
+ expect(summarizeRecords([initial,free])).toMatchObject({evaluated:2,evaluatedExams:1,evaluatedCycles:1,reevaluated:1});
+});
+it('merges Math rounds without duplicating their legacy attempt projection',async()=>{
+ const {readMathDashboard}=await import('./essay-dashboard');
+ const rpc=vi.fn(async(name:string)=>({data:name==='math_input'?{dto_version:'math-input-v1',action:'history',result:{attempts:[{attempt_id:'a',created_at:'2026-10-25',evaluations:[]},{attempt_id:'old',created_at:'2026-10-24',evaluations:[]}]}}:{version:'math-session-history-v1',runs:[{run_id:'round',exam_id:'exam',parent_id:null,state:'reserved',created_at:'2026-10-25',completed_at:null,questions:[{attempt_id:'a',question_id:'q',leaf_id:'l',evaluation_id:'e',state:'COMPLETED'}]}]},error:null}));
+ const c={auth:{getSession:async()=>({data:{session:{user:{id:'owner'}}}})},rpc} as unknown as SupabaseClient;
+ const records=await readMathDashboard(c,'owner');
+ expect(records.map(r=>r.id)).toEqual(['round','old']);
+ expect(summarizeRecords(records).evaluated).toBe(0);
+});
