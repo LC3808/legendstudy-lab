@@ -1,6 +1,6 @@
 import {onRequestPost as examAvailability} from './exam';
 import {onRequestGet as mathAvailability} from './availability';
-import {serverTransport, type MathEnvironment} from '../../../src/lib/math-release/server/transport';
+import {type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import type {WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
 import {legendStudySupabaseUrl} from '../../../src/lib/auth-config';
 type Env=MathEnvironment & WorkerEnvironment & {ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
@@ -29,11 +29,6 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
    if(uuid(q.examId)&&uuid(q.questionId)){const found=admitted.find(e=>e.examId===q.examId);if(found)found.questionIds=[...new Set([...found.questionIds,q.questionId])];else admitted.push({examId:q.examId,questionIds:[q.questionId]});}
   }
   if(!admitted.length)return empty(true);
-  const transport=serverTransport(env);
-  const response=await transport.request(`/rest/v1/essay_exams?select=id,university_id&id=in.(${admitted.map(e=>e.examId).join(',')})`,token);
-  if(!response.ok)return empty();
-  const rows=await response.json() as {id:string;university_id:string}[];
-  if(!Array.isArray(rows))return empty();
-  return Response.json({version:'essay-service-status-v1',checked:true,exams:admitted.flatMap(e=>{const row=rows.find(r=>r.id===e.examId&&uuid(r.university_id));return row?[{...e,universityId:row.university_id}]:[];})},{headers});
+  return Response.json({version:'essay-service-status-v1',checked:true,exams:admitted},{headers});
  }catch{return empty();}
 }

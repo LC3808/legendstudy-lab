@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useState} from 'react';
 import {useAuth} from './auth-context';
+import {resolveReadyUniversities} from '../lib/essay-runtime/service-status';
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
 export function useEssayServiceStatus(){
  const {client,user}=useAuth();
@@ -14,8 +15,8 @@ export function useEssayServiceStatus(){
    try{
     const response=await fetch('/api/essay/service-status',{headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store',signal:abort.signal});
     const data=response.ok?await response.json():null;
-    const ids=new Set<string>();
-    if(data?.version==='essay-service-status-v1'&&data.checked===true&&Array.isArray(data.exams))for(const e of data.exams){if(uuid(e.universityId)&&uuid(e.examId)&&Array.isArray(e.questionIds)&&e.questionIds.length&&e.questionIds.every(uuid))ids.add(e.universityId);}
+    const admitted=data?.version==='essay-service-status-v1'&&data.checked===true&&Array.isArray(data.exams)?data.exams.filter((e:{examId?:unknown;questionIds?:unknown})=>uuid(e.examId)&&Array.isArray(e.questionIds)&&e.questionIds.length&&e.questionIds.every(uuid)):[];
+    const ids=await resolveReadyUniversities(client,admitted,()=>active);
     if(active)setResult({owner,universities:ids});
    }catch{if(active)setResult({owner,universities:new Set()});}
   };
