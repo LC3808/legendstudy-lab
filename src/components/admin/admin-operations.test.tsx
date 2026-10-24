@@ -145,7 +145,7 @@ describe("AdminOperationsView", () => {
   it("links to the existing quality console instead of reimplementing it", async () => {
     setSession(payloads);
     render(<AdminOperationsView />);
-    const link = await screen.findByRole("link", { name: "AI 품질 콘솔 열기" });
+    const link = await screen.findByRole("link", { name: "첨삭 품질 콘솔 열기" });
     expect(link).toHaveAttribute("href", "/ql/");
   });
 

@@ -5,6 +5,8 @@ import userEvent from '@testing-library/user-event';
 import {addTarget,searchUniversities,readHistory} from '@/lib/my/data';
 import { MyDashboard, CreditHistory } from './dashboard';
 
+vi.mock('@/lib/my/essay-dashboard',async original=>({...await original<typeof import('@/lib/my/essay-dashboard')>(),readEssayDashboard:async()=>[],readMathDashboard:async()=>[]}));
+
 const OWNER = { id: 'owner-1', email: 'review@legendstudy.com' };
 
 vi.mock('@/components/auth-context', () => ({

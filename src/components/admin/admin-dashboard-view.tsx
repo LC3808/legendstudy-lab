@@ -166,7 +166,7 @@ function ActionBand({
         <ActionCard
           label="첨삭 평가 실패"
           value={formatNumber(failed)}
-          note="인문논술 누적 실패 건수 · 지연은 논술·수리 운영에서 확인"
+          note="관리자 요약 조회 기준 · 시험별 첨삭 History 통합 집계는 미검증"
           tone={failed > 0 ? "danger" : "ok"}
         />
         <ActionCard
@@ -271,7 +271,7 @@ export function AdminDashboardView() {
         </div>
       </Section>
 
-      <Section title="첨삭 (논술)" note="누적 · 무료/유료 재첨삭 구분은 조회 계약에 없습니다 (GAP)">
+      <Section title="첨삭 (논술)" note="관리자 요약 조회 기준 · 시험별 첨삭 History 통합 및 무료/유료 재첨삭 구분은 미검증입니다 (GAP)">
         <div className="admin-metrics">
           <Metric label="답안 제출" value={formatNumber(data.essay.submissions)} />
           <Metric label="평가 요청" value={formatNumber(data.essay.evaluationRequests)} />
@@ -282,7 +282,7 @@ export function AdminDashboardView() {
         </div>
       </Section>
 
-      <Section title="AI 평가 품질" note={`누적 · 완료+실패 ${formatNumber(evalTotal)}건 기준`}>
+      <Section title="첨삭 평가 품질" note={`관리자 요약 조회 기준 · 완료+실패 ${formatNumber(evalTotal)}건 기준`}>
         <div className="admin-metrics">
           <Metric label="평가 성공률" value={ratio(data.essay.evaluationCompleted, evalTotal)} note="평가 완료 / (완료+실패)" />
           <Metric label="평가 실패율" value={ratio(data.essay.evaluationFailed, evalTotal)} note="평가 실패 / (완료+실패)" />
@@ -290,7 +290,7 @@ export function AdminDashboardView() {
         </div>
       </Section>
 
-      <Section title="수리논술" note={`현재 상태: ${data.math.runtimeState} · ${data.math.runtimeLabel}`}>
+      <Section title="수리논술" note={`관리자 조회 설정: ${data.math.runtimeState} · ${data.math.runtimeLabel}`}>
         <div className="admin-metrics">
           <Metric label="답안" value={formatCount(data.math.attempts)} />
           <Metric label="평가" value={formatCount(data.math.evaluations)} />
@@ -316,7 +316,7 @@ export function AdminDashboardView() {
         ) : null}
       </Section>
 
-      <Section title="결제" note={`현재 상태: ${data.payment.runtimeState} · ${data.payment.runtimeLabel}`}>
+      <Section title="결제" note={`WEB 결제 조회 설정: ${data.payment.runtimeState} · ${data.payment.runtimeLabel}`}>
         <div className="admin-metrics">
           <Metric
             label="주문"

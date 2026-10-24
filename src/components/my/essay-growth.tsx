@@ -1,11 +1,12 @@
 'use client';
 import Link from 'next/link';
+import {readEssayDashboard,readMathDashboard,summarizeRecords} from '@/lib/my/essay-dashboard';
 import {readEssaySummary} from '@/lib/my/foundation';
 import {summarizeGrowth, type GrowthSummary} from '@/lib/my/essay-growth';
 import {DataStatus, useOwnerData} from './owner-data';
 
 /**
- * 나의 논술 성장 — presentation only, folded from the deployed `my_essay_summary`.
+ * 나의 논술 성장 — current History first; legacy summary retains its comparison gate.
  *
  * Every line is a real completed student evaluation. The level comparison is the
  * strict same-context gate (`comparableDimensionDelta`); when a first and a rewrite
@@ -17,6 +18,26 @@ import {DataStatus, useOwnerData} from './owner-data';
  */
 export function EssayGrowthCard() {
  const result = useOwnerData(readEssaySummary);
+ const essay=useOwnerData(readEssayDashboard),math=useOwnerData(readMathDashboard);
+ if(!essay.data)return <DataStatus error={essay.error} reload={essay.reload}/>;
+ if(!math.data)return <DataStatus error={math.error} reload={math.reload}/>;
+ const rows=[...essay.data,...math.data];
+ // The legacy summary does not include current exam runs or math attempts.
+ // Reuse History's owner-scoped data and counting rules; never call them empty
+ // just because the older summary RPC has no sessions.
+ if(rows.some(row=>row.source==='exam'||row.source==='math')){
+  const counts=summarizeRecords(rows);
+  return <div className="my-panel my-growth">
+   <p className="my-growth__headline">나의 논술 첨삭과 재작성 기록이 있어요.</p>
+   <dl className="my-growth__stats">
+    <div><dt>첨삭한 답안</dt><dd>{counts.evaluated}개</dd></div>
+    <div><dt>재작성한 답안</dt><dd>{counts.rewritten}개</dd></div>
+    <div><dt>재첨삭 완료</dt><dd>{counts.reevaluated}개</dd></div>
+   </dl>
+   <p className="my-note">나의 첨삭 기록과 같은 조회 범위이며, 전체 누적 통계가 아닙니다. 같은 문제·평가 기준의 성장 비교는 저장된 결과에서 확인할 수 있어요.</p>
+   <div className="my-actions"><Link className="button button--outline button--small" href="/account/essay/">평가 결과 분석</Link><Link className="button button--outline button--small" href="/my/essays/">나의 첨삭 기록</Link></div>
+  </div>;
+ }
  if (!result.data) return <DataStatus error={result.error} reload={result.reload} />;
  const g = summarizeGrowth(result.data);
  if (g.status === 'none') {

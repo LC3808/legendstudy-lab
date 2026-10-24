@@ -263,14 +263,14 @@ export function AdminOperationsView() {
       </section>
 
       <section className="admin-section">
-        <h2>AI 품질 검토</h2>
+        <h2>첨삭 품질 검토</h2>
         <p className="admin-section__note">
-          사람 품질 판정의 제출·이력은 별도 권한이 필요한 AI 품질 콘솔에서 처리합니다. 이 화면은
+          사람 품질 판정의 제출·이력은 별도 권한이 필요한 첨삭 품질 콘솔에서 처리합니다. 이 화면은
           검토 여부와 판정 결과만 표시하며, 품질 검토 권한을 대신하지 않습니다.
         </p>
         <div className="admin-order__actions">
           <a className="button button--outline button--small" href="/ql/">
-            AI 품질 콘솔 열기
+            첨삭 품질 콘솔 열기
           </a>
         </div>
       </section>
