@@ -44,7 +44,7 @@ export function EssayEditor({ question }: { question: EssayQuestionPublic }) {
         <button className="button button--outline button--small" type="button" onClick={saveDraft}>임시 저장</button>
       </div>
       <div className="content-wrap content-wrap--wide workspace-notice"><MockNotice compact /></div>
-      <section className="workspace content-wrap content-wrap--wide" aria-label="논술 연습 공간">
+      <section className="workspace essay-workspace content-wrap content-wrap--wide" aria-label="논술 연습 공간">
         <aside className="reading-pane">
           <div className="eyebrow">연습 문제</div>
           <h1>{question.title}</h1>

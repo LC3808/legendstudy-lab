@@ -215,7 +215,7 @@ export const mockEvaluation: EssayEvaluation = {
   ],
   strengths: ["비교 기준을 먼저 설정함", "결론의 입장이 분명함"],
   improvements: ["사례의 사실을 지문 핵심어와 직접 연결하기", "반대 관점의 장점과 한계를 함께 검토하기"],
-  evidence: ["합성 예시 문장에 연결된 설명", "실제 대학 공식 근거 또는 AI 출력이 아님"],
+  evidence: ["합성 예시 문장에 연결된 설명", "실제 대학 공식 근거나 첨삭 결과가 아님"],
   nextActions: ["한 문단에 비교 기준 하나만 두기", "사례 문장을 [가]와 [나]의 기준에 각각 연결하기", "결론에서 선택하지 않은 관점의 한계를 다시 짚기"],
   patternSignalIds: ["pattern-passage", "pattern-structure"],
   origin: "SYNTHETIC_CONTENT",
