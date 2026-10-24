@@ -27,5 +27,8 @@
     "skipped": 4,
     "emptyTestSuite": 1,
     "followUp": "New consent-modal journey fixture corrected and targeted recheck PASS; 6 pre-existing catalog tests plus empty suite remain."
-  }
+  },
+  "preview": "https://8e9b0f07.legendstudy-lab.pages.dev",
+  "previewSource": "b9fd103fdaf743ee4ee1e939a21b1fe6dedc1129",
+  "previewVisual": "Public LAB renders; Worker/authenticated acceptance not verified"
 }

@@ -77,3 +77,5 @@ Owner session-retry-verify 결과 확인: table_installed=true. retry/session_cl
 현재 Production Worker 소스를 내려받아 비교: 평가 엔진·프롬프트 등 유지 모듈은 현재 APP 소스와 byte 일치. 변경 대상은 async_exam.py/cloudflare_runtime.py/db_checkpoint.py와 entry.py의 session capability 확인뿐. 실제 Registry asset은 배포 시 동일 bytes 보존 대상. 로컬 빌드 브라우저의 공개 LAB/대학 탐색 확인; API 없는 static server에서 등록 문항 조회가 안 되므로 인증/작성 화면 PASS로 기록하지 않음.
 
 2026-10-25 회귀 확장: 전체 실행1232 PASS/7 FAIL/4 skip 및 빈 suite1. 새 동의 모달을 반영하지 않은 기존 건국 UI 테스트1건 수정 후 재검사 PASS. 남은 catalog-demand/projection/public-discovery6건과 phase1-browse-snapshot 빈 suite는 이전 실행에서도 확인한 기존 실패다. 관련 범위261 PASS/2skip, 추가 source-selection5 및 round-count/UI journey7 PASS, Worker40 PASS.
+
+2026-10-25 Preview: https://8e9b0f07.legendstudy-lab.pages.dev (WEB b9fd103fdaf743ee4ee1e939a21b1fe6dedc1129). Functions compile/upload PASS, 공개 LAB 브라우저 렌더 확인. 기존 Preview Worker/인증 연결 한계 유지; 운영 첨삭·관리자 화면 검증 완료 아님. Production6b69acb3와 Worker c3fb54be 그대로. APP d258d30d149239f568a453e682a473f3b625eeaf, Unified357e87eb2940a6f9c05649250d10f192683a59fc 원격 확인. Math 현행 계약은 read-only-math-session.sql Owner 결과 대기.
