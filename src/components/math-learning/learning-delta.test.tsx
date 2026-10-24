@@ -50,7 +50,7 @@ describe("LearningHistory", () => {
     const items = screen.getAllByRole("listitem");
     expect(items).toHaveLength(2);
     expect(items[0].textContent).toContain("최초 답안");
-    expect(screen.getByText(/Credit이 추가로 차감되지 않습니다/)).toBeInTheDocument();
+    expect(screen.getByText(/크레딧이 추가로 차감되지 않습니다/)).toBeInTheDocument();
   });
 
   it("does not show the free-reeval note when not AVAILABLE", () => {

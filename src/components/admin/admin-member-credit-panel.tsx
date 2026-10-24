@@ -25,7 +25,7 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
     `credit:${accountId}`,
   );
 
-  if (state.status === "loading") return <AdminLoading label="Credit 정보를 불러오는 중입니다" />;
+  if (state.status === "loading") return <AdminLoading label="크레딧 정보를 불러오는 중입니다" />;
   if (state.status === "error") return <AdminErrorPanel kind={state.kind} onRetry={reload} />;
 
   const data = state.data;
@@ -34,7 +34,7 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
   return (
     <div className="admin-credit">
       <div className="admin-credit__head">
-        <h3>Credit</h3>
+        <h3>크레딧</h3>
         <AdminCreditGrantForm accountId={accountId} email={email} onGranted={reload} />
       </div>
 
@@ -46,7 +46,7 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
         // null means rows exist that this read did not resolve, which is a lookup
         // problem to escalate, not an empty account.
         data.page.grantsTotal > 0 || data.page.transactionsTotal > 0 ? (
-          <AdminPanel tone="warning" title="Credit 요약을 불러오지 못했습니다">
+          <AdminPanel tone="warning" title="크레딧 요약을 불러오지 못했습니다">
             <p>
               지급 {formatNumber(data.page.grantsTotal)}건 · 거래{" "}
               {formatNumber(data.page.transactionsTotal)}건이 조회되었지만 요약 값을 가져오지
@@ -57,8 +57,8 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
           </AdminPanel>
         ) : (
           <AdminEmpty
-            title="Credit 계정이 없습니다"
-            body={`이 회원은 지급·거래 내역이 없어 Credit 계정이 확인되지 않습니다. (조회 계정 ID: ${accountId})`}
+            title="크레딧 계정이 없습니다"
+            body={`이 회원은 지급·거래 내역이 없어 크레딧 계정이 확인되지 않습니다. (조회 계정 ID: ${accountId})`}
           />
         )
       ) : (
@@ -98,7 +98,7 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
           {data.grants.length === 0 ? (
             <p className="admin-muted">지급 내역이 없습니다.</p>
           ) : (
-            <div className="admin-table-scroll" tabIndex={0} role="region" aria-label="Credit 지급 내역">
+            <div className="admin-table-scroll" tabIndex={0} role="region" aria-label="크레딧 지급 내역">
               <table className="admin-table">
                 <thead>
                   <tr>
@@ -140,7 +140,7 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
           {data.transactions.length === 0 ? (
             <p className="admin-muted">거래 내역이 없습니다.</p>
           ) : (
-            <div className="admin-table-scroll" tabIndex={0} role="region" aria-label="Credit 거래 내역">
+            <div className="admin-table-scroll" tabIndex={0} role="region" aria-label="크레딧 거래 내역">
               <table className="admin-table">
                 <thead>
                   <tr>

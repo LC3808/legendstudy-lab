@@ -36,7 +36,7 @@ function ApplicationForm({application,done,cancel}:{application?:Application;don
  // New applications default to the upcoming admission year (e.g. 2027 in late 2026),
  // never the 1900 input floor; an existing record keeps its own saved year.
  const [year,setYear]=useState(application?application.admission_year.toString():String(new Date().getFullYear()+1));const [division,setDivision]=useState(application?.intended_division??'');
- const [type,setType]=useState(application?.admission_type??'');const [name,setName]=useState(application?.admission_name??'');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
+ const [type,setType]=useState(application?.admission_type??'수시');const [name,setName]=useState(application?.admission_name??'');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
  // 수시/정시 is the common choice; a legacy or other saved value is kept as its own
  // option so editing never silently rewrites it.
  const typeOptions=['수시','정시',...(type&&!['수시','정시'].includes(type)?[type]:[])];
@@ -46,11 +46,11 @@ function ApplicationForm({application,done,cancel}:{application?:Application;don
   try{await saveApplication(client,user.id,input,requestKey(input));done();}catch(e){setError(e instanceof Error&&e.message==='APPLICATION_CHANGED'?'다른 화면에서 변경되었습니다. 새로고침 후 다시 확인해 주세요.':'저장하지 못했습니다. 입력 내용을 확인하고 다시 시도해 주세요.');}finally{setBusy(false);}
  }
  return <div className="my-add-panel">
-  <form className="my-goal-form" onSubmit={search}><label>지원 대학 검색<input value={query} maxLength={60} onChange={e=>setQuery(e.target.value)} disabled={busy}/></label><button disabled={busy||!query.trim()} className="button button--outline button--small">검색</button></form>
+  <form className="my-goal-form my-search-line" onSubmit={search}><label>지원 대학 검색<input value={query} maxLength={60} onChange={e=>setQuery(e.target.value)} disabled={busy}/></label><button disabled={busy||!query.trim()} className="button button--outline button--small">검색</button></form>
   {results.length>0&&<ul className="my-search-results">{results.map(u=><li key={u.id}>{u.name} <button type="button" disabled={busy} className="text-link" onClick={()=>{setUniversity(u);setResults([]);}}>선택</button></li>)}</ul>}
-  <form className="my-goal-form" onSubmit={save}>
+  <form className="my-application-form" onSubmit={save}>
    <p>{university?.name??'지원 대학을 선택해 주세요.'}</p>
-   <label>입학 연도<input type="number" min={1900} max={2200} required value={year} onChange={e=>setYear(e.target.value)} disabled={busy}/></label>
+   <label>입학학년도<input type="number" min={1900} max={2200} required value={year} onChange={e=>setYear(e.target.value)} disabled={busy}/></label>
    <label>지원 학과·모집단위<input maxLength={120} required value={division} onChange={e=>setDivision(e.target.value)} disabled={busy}/></label>
    <fieldset className="my-radio-group"><legend>모집 구분</legend>{typeOptions.map(v=><label key={v} className="my-radio"><input type="radio" name="admission-type" value={v} required checked={type===v} disabled={busy} onChange={()=>setType(v)}/>{v}</label>)}</fieldset>
    <label>전형 이름<input maxLength={120} required value={name} onChange={e=>setName(e.target.value)} disabled={busy}/></label>

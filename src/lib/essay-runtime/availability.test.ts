@@ -8,7 +8,7 @@ const env:MathEnvironment={MATH_ORIGIN:'https://lab.legendstudy.com',MATH_ENABLE
 function request(auth=true){return new Request('https://lab.legendstudy.com/api/essay/availability',{headers:auth?{authorization:'Bearer user-fixture'}:{}});}
 afterEach(()=>vi.unstubAllGlobals());
 describe('four-type release boundary',()=>{
- it('keeps all types closed to anonymous and missing/expired server worker config without network or Credit calls',async()=>{
+ it('keeps all types closed to anonymous and missing/expired server worker config without network or 크레딧 calls',async()=>{
   const network=vi.fn();vi.stubGlobal('fetch',network);
   for(const [req,bindings] of [[request(false),env],[request(),{}]] as const){
    const res=await onRequestGet({request:req,env:bindings});expect(Object.values((await res.json()).types)).toEqual([false,false,false,false]);expect(res.headers.get('cache-control')).toContain('no-store');

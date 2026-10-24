@@ -66,7 +66,7 @@ export function effectiveDateLabel(): string {
   return `${year}년 ${Number(month)}월 ${Number(day)}일`;
 }
 
-const priceLine = pricingPlans.map((plan) => `${plan.credits} Credits ${plan.priceLabel}`).join(", ");
+const priceLine = pricingPlans.map((plan) => `${plan.credits} 크레딧 ${plan.priceLabel}`).join(", ");
 const creditOptions = pricingPlans.map((plan) => plan.credits).join(", ");
 const fullPrice = `${pricingPolicy.refundDeductionPerCreditKrw.toLocaleString("ko-KR")}원`;
 
@@ -135,36 +135,36 @@ export const termsDocument: LegalDocument = {
       ],
     },
 
-    { kind: "heading", text: "제4조 Credit의 정의와 성격" },
+    { kind: "heading", text: "제4조 크레딧의 정의와 성격" },
     {
       kind: "items",
       items: [
-        `Credit은 ${productNaming.essayProduct}에서 논술 첨삭을 이용하기 위한 이용 단위입니다.`,
-        "Credit은 현금, 전자화폐, 범용 포인트가 아니고 환금성 포인트가 아니며, 현금으로 교환할 수 없습니다.",
-        "Credit은 다른 이용자에게 양도할 수 없고 LegendStudy LAB의 다른 학습 영역이나 회사의 다른 서비스에서는 사용할 수 없습니다.",
-        "사용한 Credit은 환불되지 않습니다.",
+        `크레딧은 ${productNaming.essayProduct}에서 논술 첨삭을 이용하기 위한 이용 단위입니다.`,
+        "크레딧은 현금, 전자화폐, 범용 포인트가 아니고 환금성 포인트가 아니며, 현금으로 교환할 수 없습니다.",
+        "크레딧은 다른 이용자에게 양도할 수 없고 LegendStudy LAB의 다른 학습 영역이나 회사의 다른 서비스에서는 사용할 수 없습니다.",
+        "사용한 크레딧은 환불되지 않습니다.",
       ],
     },
 
-    { kind: "heading", text: "제5조 유료 Credit의 이용기간과 재첨삭" },
+    { kind: "heading", text: "제5조 유료 크레딧의 이용기간과 재첨삭" },
     {
       kind: "items",
       items: [
-        `구매한 Credit은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있습니다.`,
-        "1 Credit으로 최초 첨삭과 답안 수정 후 재첨삭 1회까지 이용할 수 있습니다.",
-        `재첨삭은 최초 첨삭 결과 제공일로부터 ${pricingPolicy.reevaluationWindowDays}일 이내에 1회 제공되며, 추가로 Credit이 차감되지 않습니다.`,
-        "재첨삭 이용 기간은 Credit 유효기간과 별개로 계산합니다.",
-        "유효기간이 지난 Credit은 사용할 수 없습니다.",
+        `구매한 크레딧은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있습니다.`,
+        "1 크레딧으로 최초 첨삭과 답안 수정 후 재첨삭 1회까지 이용할 수 있습니다.",
+        `재첨삭은 최초 첨삭 결과 제공일로부터 ${pricingPolicy.reevaluationWindowDays}일 이내에 1회 제공되며, 추가로 크레딧이 차감되지 않습니다.`,
+        "재첨삭 이용 기간은 크레딧 유효기간과 별개로 계산합니다.",
+        "유효기간이 지난 크레딧은 사용할 수 없습니다.",
       ],
     },
 
-    { kind: "heading", text: "제6조 신규 가입 무료 Credit" },
+    { kind: "heading", text: "제6조 신규 가입 무료 크레딧" },
     {
       kind: "items",
       items: [
-        `신규 가입 시 ${pricingPolicy.freeSignupCredits} Credits를 무료로 제공하며, 지급 기능의 공개 시점은 요금 안내 페이지에서 안내합니다.`,
-        "무료로 지급된 Credit은 유효기간이 없고 현금으로 환불되지 않습니다.",
-        `무료 Credit으로 받은 최초 첨삭의 재첨삭도 최초 첨삭 결과 제공일로부터 ${pricingPolicy.reevaluationWindowDays}일 이내에 이용할 수 있습니다.`,
+        `신규 가입 시 ${pricingPolicy.freeSignupCredits} 크레딧을 무료로 제공하며, 지급 기능의 공개 시점은 요금 안내 페이지에서 안내합니다.`,
+        "무료로 지급된 크레딧은 유효기간이 없고 현금으로 환불되지 않습니다.",
+        `무료 크레딧으로 받은 최초 첨삭의 재첨삭도 최초 첨삭 결과 제공일로부터 ${pricingPolicy.reevaluationWindowDays}일 이내에 이용할 수 있습니다.`,
       ],
     },
 
@@ -172,7 +172,7 @@ export const termsDocument: LegalDocument = {
     {
       kind: "items",
       items: [
-        `유료 상품은 ${creditOptions} Credits로 판매하며, 가격은 ${priceLine}입니다.`,
+        `유료 상품은 ${creditOptions} 크레딧으로 판매하며, 가격은 ${priceLine}입니다.`,
         "결제는 일회성 구매이며 정기 결제나 자동 갱신 결제가 없습니다.",
         "결제 기능은 아직 제공되지 않습니다. 결제가 시작되면 결제수단, 결제 확인 절차와 영수증 안내를 이 약관과 요금 안내 페이지에 반영합니다.",
         "회사는 카드번호 등 결제수단 정보를 직접 저장하지 않습니다.",
@@ -184,10 +184,10 @@ export const termsDocument: LegalDocument = {
     {
       kind: "items",
       items: [
-        "환불 신청 기간, 미사용·일부 사용 환불 산식, 사용한 Credit 판정 기준과 환불 처리 기간은 환불정책에서 정합니다.",
-        "미사용 Credit은 실제 결제금액을 전액 환불합니다.",
-        `일부 사용한 경우 사용한 Credit을 1 Credit 정상가 ${fullPrice} 기준으로 공제한 뒤 남은 결제금액을 환불합니다.`,
-        "무료로 지급된 Credit은 현금으로 환불되지 않습니다.",
+        "환불 신청 기간, 미사용·일부 사용 환불 산식, 사용한 크레딧 판정 기준과 환불 처리 기간은 환불정책에서 정합니다.",
+        "미사용 크레딧은 실제 결제금액을 전액 환불합니다.",
+        `일부 사용한 경우 사용한 크레딧을 1 크레딧 정상가 ${fullPrice} 기준으로 공제한 뒤 남은 결제금액을 환불합니다.`,
+        "무료로 지급된 크레딧은 현금으로 환불되지 않습니다.",
         `환불 요청은 ${customerCenter.displayName}(${customerCenter.primary.display})로 접수합니다.`,
       ],
     },
@@ -207,7 +207,7 @@ export const termsDocument: LegalDocument = {
       kind: "items",
       items: [
         "회사는 서비스의 내용을 변경하거나 제공을 중단할 수 있으며, 이용자에게 중요한 영향을 주는 경우 미리 안내합니다.",
-        "유료 상품을 판매한 뒤 서비스를 종료하는 경우 남은 유료 Credit은 관련 법령과 환불정책에 따라 처리합니다.",
+        "유료 상품을 판매한 뒤 서비스를 종료하는 경우 남은 유료 크레딧은 관련 법령과 환불정책에 따라 처리합니다.",
       ],
     },
 
@@ -215,7 +215,7 @@ export const termsDocument: LegalDocument = {
     {
       kind: "items",
       items: [
-        "제공자 장애, 처리 오류, 유효하지 않은 결과 등으로 정상적인 첨삭 결과가 제공되지 않은 경우에는 그 Credit을 사용한 것으로 보지 않습니다.",
+        "제공자 장애, 처리 오류, 유효하지 않은 결과 등으로 정상적인 첨삭 결과가 제공되지 않은 경우에는 그 크레딧을 사용한 것으로 보지 않습니다.",
         `이용자는 ${customerCenter.displayName}를 통해 오류를 신고할 수 있고, 회사는 확인 후 재처리 또는 환불 등 필요한 조치를 안내합니다.`,
       ],
     },
@@ -361,8 +361,8 @@ export const privacyDocument: LegalDocument = {
       entries: [
         { term: "계정 정보", description: "회원 탈퇴 시까지 보유합니다." },
         {
-          term: "Credit",
-          description: `무료로 지급된 Credit은 유효기간이 없고, 유료 Credit은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있습니다.`,
+          term: "크레딧",
+          description: `무료로 지급된 크레딧은 유효기간이 없고, 유료 크레딧은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있습니다.`,
         },
         {
           term: "고객 문의 기록",

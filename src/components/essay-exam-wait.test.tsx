@@ -10,7 +10,7 @@ vi.mock('@/lib/my/exam-history',()=>({readExamRuns:async()=>[],readExamDashboard
 vi.mock('./my/essay-dashboard',()=>({RecordDetail:()=>null}));
 const exam={key:'test',dbExamId:'exam',questions:[{key:'q',dbQuestionId:'question',inputMode:'text'}]} as SourceExam;
 afterEach(()=>{cleanup();vi.useRealTimers();vi.restoreAllMocks();vi.unstubAllGlobals();localStorage.clear();sessionStorage.clear();});
-it('202 polls existing History to 100 seconds without another submit or Credit quote',async()=>{
+it('202 polls existing History to 100 seconds without another submit or 크레딧 quote',async()=>{
  vi.useFakeTimers();mocks.history.mockResolvedValue([{id:'run',evaluations:[{status:'processing'}]}]);
  const actions:string[]=[];vi.spyOn(window,'confirm').mockReturnValue(true);
  vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{const body=JSON.parse(init.body);actions.push(body.action);
@@ -18,10 +18,10 @@ it('202 polls existing History to 100 seconds without another submit or Credit q
  }));
  render(<EssayExamSubmit exam={exam} included={['q']} drafts={{q:{body:'Synthetic answer',revision:1,images:false}}}/>);
  await act(async()=>{});
- await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 크레딧'}));});
  if(screen.queryByRole('button',{name:'첨삭 진행하기'}))await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));});
  expect(mocks.history).toHaveBeenCalledTimes(1);
- expect(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'})).toBeDisabled();
+ expect(screen.getByRole('button',{name:'첨삭 요청 · 1 크레딧'})).toBeDisabled();
  await act(async()=>{await vi.advanceTimersByTimeAsync(102000);});
  expect(screen.getByRole('status')).toHaveTextContent('다시 제출하지 말고');
  const calls=mocks.history.mock.calls.length;
@@ -34,7 +34,7 @@ it('a completed History row stops polling and a read failure never repeats submi
  const actions:string[]=[];vi.spyOn(window,'confirm').mockReturnValue(true);
  vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{const body=JSON.parse(init.body);actions.push(body.action);return Response.json(body.action==='availability'?{ready:true}:body.action==='quote'?{version:'essay-exam-quote-v1',credits:1}:{runId:'run'});}));
  render(<EssayExamSubmit exam={exam} included={['q']} drafts={{q:{body:'Synthetic answer',revision:1,images:false}}}/>);
- await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 크레딧'}));});
  if(screen.queryByRole('button',{name:'첨삭 진행하기'}))await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));});
  expect(screen.getByRole('status')).toHaveTextContent('제출 기록은 보존');
  await act(async()=>{await vi.advanceTimersByTimeAsync(3000);});
@@ -47,11 +47,11 @@ it('terminal failure preserves the request and never creates a fresh paid retry'
  const requests:Record<string,unknown>[]=[];
  vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{const b=JSON.parse(init.body);requests.push(b);return Response.json(b.action==='availability'?{ready:true}:b.action==='quote'?{version:'essay-exam-quote-v1',credits:1}:{runId:'run'});}));
  render(<EssayExamSubmit exam={exam} included={['q']} drafts={{q:{body:'Synthetic answer',revision:1,images:false}}}/>);
- await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 크레딧'}));});
  await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));});
  expect(requests.filter(x=>x.action==='submit')).toHaveLength(1);
  expect(screen.queryByRole('button',{name:'실패한 제출 다시 준비'})).toBeNull();
- expect(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'})).toBeDisabled();
+ expect(screen.getByRole('button',{name:'첨삭 요청 · 1 크레딧'})).toBeDisabled();
 });
 it('Q2 submits separately while the saved Q1 request and History remain intact',async()=>{
  const legacy='legendstudy:essay-exam-request:v1:owner:test:initial';
@@ -61,7 +61,7 @@ it('Q2 submits separately while the saved Q1 request and History remain intact',
  vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{const b=JSON.parse(init.body);if(b.action==='submit')submissions.push(b);return Response.json(b.action==='availability'?{ready:true}:b.action==='quote'?{version:'essay-exam-quote-v1',credits:1}:{runId:'q2-run'});}));
  const two={...exam,questions:[...exam.questions,{key:'q2',dbQuestionId:'question2',inputMode:'text'}]} as SourceExam;
  render(<EssayExamSubmit exam={two} included={['q2']} drafts={{q2:{body:'Second answer',revision:1,images:false}}}/>);
- await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 크레딧'}));});
  if(screen.queryByRole('button',{name:'첨삭 진행하기'}))await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));});
  expect(submissions).toHaveLength(1);expect(submissions[0].key).not.toBe('existing-q1');expect(submissions[0].answers).toEqual([{questionId:'question2',body:'Second answer',revision:1}]);expect(localStorage.getItem(legacy)).toBe(original);
 });
@@ -69,7 +69,7 @@ it('changed same-question legacy answer never quotes or submits again',async()=>
  localStorage.setItem('legendstudy:essay-exam-request:v1:owner:test:initial',JSON.stringify({fingerprint:'old-body',key:'existing',answers:[{questionId:'question',body:'old',revision:1}]}));
  const actions:string[]=[];vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{actions.push(JSON.parse(init.body).action);return Response.json({ready:true});}));
  render(<EssayExamSubmit exam={exam} included={['q']} drafts={{q:{body:'Changed answer',revision:2,images:false}}}/>);
- await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 크레딧'}));});
  if(screen.queryByRole('button',{name:'첨삭 진행하기'}))await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));});
  expect(actions).toEqual(['availability']);expect(screen.getByRole('status')).toHaveTextContent('이전 제출의 처리 상태');
 });
@@ -81,24 +81,24 @@ it.each([1,2,4])('%i answers request one session quote and one submission after 
  const included=questions.slice(0,count).map(q=>q.key);
  const drafts=Object.fromEntries(included.map(key=>[key,{body:'Synthetic answer '+key,revision:1,images:false}]));
  render(<EssayExamSubmit exam={{...exam,questions} as SourceExam} included={included} drafts={drafts}/>);
- await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ await act(async()=>{});await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 크레딧'}));});
  expect(requests.filter(r=>r.action==='submit')).toHaveLength(0);
- expect(screen.getByRole('dialog')).toHaveTextContent('이번 첨삭에는 1 Credit');
+ expect(screen.getByRole('dialog')).toHaveTextContent('이번 첨삭에는 1 크레딧');
  if(count<4)expect(screen.getByRole('dialog')).toHaveTextContent('작성하지 않은 답안이 있습니다');
  await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));});
  const submissions=requests.filter(r=>r.action==='submit');expect(submissions).toHaveLength(1);
  expect(submissions[0].answers).toHaveLength(count);expect(requests.filter(r=>r.action==='quote')).toHaveLength(1);
- fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));expect(requests.filter(r=>r.action==='submit')).toHaveLength(1);
+ fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 크레딧'}));expect(requests.filter(r=>r.action==='submit')).toHaveLength(1);
 });
 it('empty session cannot request a quote or submit',async()=>{
  const requests:string[]=[];vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{requests.push(JSON.parse(init.body).action);return Response.json({ready:true});}));
  render(<EssayExamSubmit exam={exam} included={[]} drafts={{}}/>);await act(async()=>{});
- expect(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'})).toBeDisabled();expect(requests).toEqual(['availability']);
+ expect(screen.getByRole('button',{name:'첨삭 요청 · 1 크레딧'})).toBeDisabled();expect(requests).toEqual(['availability']);
 });
 it('continue writing dismisses confirmation without submitting',async()=>{
  const requests:string[]=[];vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{const b=JSON.parse(init.body);requests.push(b.action);return Response.json(b.action==='availability'?{ready:true}:{version:'essay-exam-quote-v1',credits:1});}));
  render(<EssayExamSubmit exam={exam} included={['q']} drafts={{q:{body:'Synthetic answer',revision:1,images:false}}}/>);await act(async()=>{});
- await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 Credit'}));});
+ await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 요청 · 1 크레딧'}));});
  await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'계속 작성하기'}));});
  expect(screen.queryByRole('dialog')).toBeNull();expect(requests).toEqual(['availability','quote']);
 });
@@ -108,7 +108,7 @@ it('free rewrite quotes zero credits and preserves its parent contract',async()=
  vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{const b=JSON.parse(init.body);requests.push(b);return Response.json(b.action==='availability'?{ready:true}:b.action==='quote'?{version:'essay-exam-quote-v1',credits:0}:{runId:'rewrite-run'});}));
  render(<EssayExamSubmit exam={exam} cycle={{parentId:'initial-run'}} included={['q']} drafts={{q:{body:'Rewritten answer',revision:2,images:false}}}/>);await act(async()=>{});
  await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'재첨삭 자격 확인'}));});
- expect(screen.getByRole('dialog')).toHaveTextContent('이번 첨삭에는 0 Credit');
+ expect(screen.getByRole('dialog')).toHaveTextContent('이번 첨삭에는 0 크레딧');
  await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));});
  expect(requests.find(r=>r.action==='submit')).toMatchObject({parentId:'initial-run'});
 });

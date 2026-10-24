@@ -14,7 +14,7 @@ it('adds an explicit application and retries an ambiguous save with the same key
  const user=userEvent.setup();vi.mocked(saveApplication).mockRejectedValueOnce(new Error('network'));
  render(<ApplicationsPanel/>);await screen.findByText('등록된 지원 내역이 없습니다.');await user.click(screen.getByRole('button',{name:'지원 내역 추가'}));
  await user.type(screen.getByLabelText('지원 대학 검색'),'테스트');await user.click(screen.getByRole('button',{name:'검색'}));await user.click(await screen.findByRole('button',{name:'선택'}));
- const yearField=screen.getByLabelText('입학 연도');await user.clear(yearField);await user.type(yearField,'2027');await user.type(screen.getByLabelText('지원 학과·모집단위'),'경영학과');await user.click(screen.getByRole('radio',{name:'수시'}));await user.type(screen.getByLabelText('전형 이름'),'논술전형');await user.click(screen.getByRole('button',{name:'저장'}));
+ const yearField=screen.getByLabelText('입학학년도');await user.clear(yearField);await user.type(yearField,'2027');await user.type(screen.getByLabelText('지원 학과·모집단위'),'경영학과');await user.click(screen.getByRole('radio',{name:'수시'}));await user.type(screen.getByLabelText('전형 이름'),'논술전형');await user.click(screen.getByRole('button',{name:'저장'}));
  await screen.findByRole('alert');await user.click(screen.getByRole('button',{name:'저장'}));await waitFor(()=>expect(saveApplication).toHaveBeenCalledTimes(2));
  const [first,second]=vi.mocked(saveApplication).mock.calls;expect(first[2]).toMatchObject({university:'u1',division:'경영학과',year:2027});expect(first[3]).toBe(second[3]);
 });

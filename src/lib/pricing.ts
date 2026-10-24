@@ -22,7 +22,7 @@ export type CreditPlan = {
   readonly perCreditKrw: number;
   readonly perCreditLabel: string;
   /**
-   * What the pack contains, in consumer terms: one Credit buys one 첨삭권.
+   * What the pack contains, in consumer terms: one Credit buys one 크레딧.
    * Cards stay quantity-and-price only; the reevaluation rule is stated once in
    * the 1 Credit section instead.
    */
@@ -45,7 +45,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(4900),
     perCreditKrw: 4900,
     perCreditLabel: won(4900),
-    valueLine: "첨삭권 1개",
+    valueLine: "크레딧 1개",
     recommended: false,
   },
   {
@@ -56,7 +56,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(11900),
     perCreditKrw: Math.round(11900 / 3),
     perCreditLabel: `약 ${won(Math.round(11900 / 3))}`,
-    valueLine: "첨삭권 3개",
+    valueLine: "크레딧 3개",
     recommended: false,
   },
   {
@@ -67,7 +67,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(17900),
     perCreditKrw: 3580,
     perCreditLabel: won(3580),
-    valueLine: "첨삭권 5개",
+    valueLine: "크레딧 5개",
     recommended: true,
   },
   {
@@ -78,7 +78,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(29900),
     perCreditKrw: 2990,
     perCreditLabel: won(2990),
-    valueLine: "첨삭권 10개",
+    valueLine: "크레딧 10개",
     recommended: false,
   },
 ] as const;
@@ -101,7 +101,7 @@ export const pricingPolicy = {
   /** Statutory basis used to deduct consumed Credits from a partial refund. */
   refundDeductionPerCreditKrw: 4900,
   refundProcessingBusinessDays: 3,
-  refundRequestWindow: "유료 Credit 유효기간 내",
+  refundRequestWindow: "유료 크레딧 유효기간 내",
 } as const;
 
 /**
@@ -140,14 +140,14 @@ export const heroCopy = {
 
 export const creditCopy = {
   /** Scope of one Credit. Stated once here, not repeated on the product cards. */
-  primary: "1 Credit으로 최초 첨삭과 답안 수정 후 재첨삭까지 이용할 수 있습니다.",
-  reevaluation: `첨삭 결과를 확인한 뒤 답안을 다시 작성해 제출하면, 추가 Credit 차감 없이 재첨삭을 받을 수 있습니다. 최초 첨삭 결과 제공일로부터 ${pricingPolicy.reevaluationWindowDays}일 이내에 재첨삭을 1회 받을 수 있으며, 그 이후 다시 첨삭을 요청하면 새로운 첨삭권이 사용됩니다.`,
-  validity: `구매한 Credit은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있습니다.`,
+  primary: "1 크레딧으로 최초 첨삭과 답안 수정 후 재첨삭까지 이용할 수 있습니다.",
+  reevaluation: `첨삭 결과를 확인한 뒤 답안을 다시 작성해 제출하면, 추가 크레딧 차감 없이 재첨삭을 받을 수 있습니다. 최초 첨삭 결과 제공일로부터 ${pricingPolicy.reevaluationWindowDays}일 이내에 재첨삭을 1회 받을 수 있으며, 그 이후 다시 첨삭을 요청하면 새로운 크레딧이 사용됩니다.`,
+  validity: `구매한 크레딧은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있습니다.`,
   /** Factual purchase-model statement. Not used as hero marketing copy. */
-  oneOffPurchase: "일회성 Credit 구매이며 자동 갱신 결제가 없습니다.",
-  freeSignup: `신규 가입 시 ${pricingPolicy.freeSignupCredits} Credits를 무료로 제공할 예정입니다.`,
+  oneOffPurchase: "일회성 크레딧 구매이며 자동 갱신 결제가 없습니다.",
+  freeSignup: `신규 가입 시 ${pricingPolicy.freeSignupCredits} 크레딧을 무료로 제공할 예정입니다.`,
   freeCreditTerms:
-    "무료로 지급된 Credit은 유효기간이 없고 현금으로 환불되지 않습니다. 무료 Credit으로 받은 최초 첨삭의 재첨삭도 동일하게 14일 이내에 이용할 수 있습니다.",
+    "무료로 지급된 크레딧은 유효기간이 없고 현금으로 환불되지 않습니다. 무료 크레딧으로 받은 최초 첨삭의 재첨삭도 동일하게 14일 이내에 이용할 수 있습니다.",
   statutoryRights:
     "관련 법령에 따른 청약철회, 계약해제·해지 및 환급에 관한 소비자의 권리는 본 환불정책과 별도로 보장됩니다.",
 } as const;
@@ -162,11 +162,11 @@ export const creditCopy = {
 export const purchaseGuide = {
   title: "구매 안내",
   items: [
-    "결제가 완료되면 구매한 Credit이 계정에 지급됩니다.",
-    `Credit은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있으며, 서비스 최대 제공기간도 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월입니다.`,
-    "1 Credit으로 최초 첨삭 1회와 동일 답안 재첨삭 1회를 이용합니다.",
+    "결제가 완료되면 구매한 크레딧이 계정에 지급됩니다.",
+    `크레딧은 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월 동안 사용할 수 있으며, 서비스 최대 제공기간도 결제일로부터 ${pricingPolicy.paidCreditValidityMonths}개월입니다.`,
+    "1 크레딧으로 최초 첨삭 1회와 동일 답안 재첨삭 1회를 이용합니다.",
     "일회성 구매이며 자동 갱신 결제가 없습니다.",
-    "미사용 Credit은 유효기간 내에 전액 환불되며, 자세한 조건은 환불정책에서 확인할 수 있습니다.",
+    "미사용 크레딧은 유효기간 내에 전액 환불되며, 자세한 조건은 환불정책에서 확인할 수 있습니다.",
   ],
 } as const;
 
@@ -191,27 +191,27 @@ export const promotionCopy = {
  * full on /refund/. Do not change the arithmetic without Owner approval.
  */
 export const refundPolicy = {
-  requestWindow: "유료 Credit 유효기간 내",
+  requestWindow: "유료 크레딧 유효기간 내",
   unused: "실제 결제금액 전액 환불",
   partialFormula:
-    "실제 결제금액 - (사용한 Credit 수 × 1 Credit 정상가 4,900원)",
+    "실제 결제금액 - (사용한 크레딧 수 × 1 크레딧 정상가 4,900원)",
   partiallyUsed:
-    "일부 사용한 경우 사용한 Credit을 1 Credit 정상가(4,900원) 기준으로 공제한 뒤 남은 결제금액을 환불합니다.",
+    "일부 사용한 경우 사용한 크레딧을 1 크레딧 정상가(4,900원) 기준으로 공제한 뒤 남은 결제금액을 환불합니다.",
   zeroOrNegative: "공제액이 결제금액과 같거나 크면 추가 환불금이 없습니다.",
   processing:
     `환불 승인 후 ${pricingPolicy.refundProcessingBusinessDays}영업일 이내 환불 처리를 진행합니다.`,
   processingCaveat:
     "카드사·결제수단의 사정에 따라 실제 환불 반영 시점은 달라질 수 있습니다.",
   freeCredit:
-    "무료로 지급된 Credit은 현금으로 환불되지 않습니다.",
+    "무료로 지급된 크레딧은 현금으로 환불되지 않습니다.",
   usedCreditRule:
-    "최초 첨삭이 정상 제공된 Credit은 환불 계산에서 사용한 Credit으로 봅니다. 포함된 재첨삭을 사용했는지 여부는 사용한 Credit 수를 늘리지 않습니다. 처리 오류 등으로 유효한 첨삭 결과가 제공되지 않은 경우에는 사용한 것으로 보지 않습니다.",
+    "최초 첨삭이 정상 제공된 크레딧은 환불 계산에서 사용한 크레딧으로 봅니다. 포함된 재첨삭을 사용했는지 여부는 사용한 크레딧 수를 늘리지 않습니다. 처리 오류 등으로 유효한 첨삭 결과가 제공되지 않은 경우에는 사용한 것으로 보지 않습니다.",
 } as const;
 
 /** Worked example shown on the refund page so the formula is unambiguous. */
 export const refundExamples = [
   {
-    description: "10 Credits를 29,900원에 구매하고 5 Credits를 사용한 경우",
+    description: "10 크레딧을 29,900원에 구매하고 5 크레딧을 사용한 경우",
     paidKrw: 29900,
     usedCredits: 5,
     refundKrw: 29900 - 5 * pricingPolicy.refundDeductionPerCreditKrw,
@@ -319,5 +319,5 @@ export const policyDocumentState = {
  */
 export const evaluationResultCtaPolicy = {
   ctaLabel: "답안을 다시 작성해 보세요.",
-  creditNote: "14일 이내 재첨삭에는 Credit이 추가로 차감되지 않습니다.",
+  creditNote: "14일 이내 재첨삭에는 크레딧이 추가로 차감되지 않습니다.",
 } as const;

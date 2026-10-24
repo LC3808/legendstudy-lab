@@ -34,7 +34,7 @@ it('canonical humanities draft uses existing submit, result, free rewrite and ow
  }));
  const u=userEvent.setup();
  const first=render(<EssayExamSubmit exam={exam} included={['q2']} drafts={{q2:{body:'First synthetic answer',revision:1,images:false,saved:true}}}/>);
- await u.click(await screen.findByRole('button',{name:'첨삭 요청 · 1 Credit'}));
+ await u.click(await screen.findByRole('button',{name:'첨삭 요청 · 1 크레딧'}));
  await u.click(await screen.findByRole('button',{name:'첨삭 진행하기'}));
  await screen.findByText('First summary');
  expect(screen.getByRole('link',{name:'나의 첨삭 기록 →'})).toHaveAttribute('href','/my/essays');

@@ -14,7 +14,7 @@ describe('TEST checkout UI',()=>{
  it('callback waits for canonical PAID, never trusts redirect alone',async()=>{let resolve!:(r:Response)=>void;vi.stubGlobal('fetch',vi.fn(()=>new Promise<Response>(r=>{resolve=r;})));render(<PaymentTest callback/>);await waitFor(()=>expect(fetch).toHaveBeenCalled());expect(screen.queryByText(/테스트 결제가 정상적으로 확인되었습니다/)).toBeNull();resolve(Response.json({order}));await screen.findByText(/테스트 결제가 정상적으로 확인되었습니다/);expect(location.search).not.toContain('paymentKey');});
  it('success callback confirms server-created order',async()=>{const f=vi.fn().mockResolvedValueOnce(Response.json({order:{...order,state:'ORDER_CREATED'}})).mockResolvedValueOnce(Response.json({order}));vi.stubGlobal('fetch',f);render(<PaymentTest callback/>);await screen.findByText(/테스트 결제가 정상적으로 확인되었습니다/);expect(f.mock.calls[1][0]).toBe('/api/payments/confirm');expect(JSON.parse(f.mock.calls[1][1].body)).toEqual({id,request_key:id,payment_key:'synthetic',amount:4900});});
  it('pending refresh uses reconcile without callback payment key',async()=>{window.history.replaceState(null,'',`?orderId=${orderId}`);const f=vi.fn().mockResolvedValueOnce(Response.json({order:{...order,state:'AUTHORIZATION_PENDING'}})).mockResolvedValueOnce(Response.json({order}));vi.stubGlobal('fetch',f);render(<PaymentTest callback/>);await screen.findByText(/테스트 결제가 정상적으로 확인되었습니다/);expect(f.mock.calls[1][0]).toBe('/api/payments/reconcile');});
- it('failure route has no provider or grant calls',()=>{const f=vi.fn();vi.stubGlobal('fetch',f);render(<FailPage/>);expect(screen.getByText(/Credit은 지급되지 않습니다/)).toBeTruthy();expect(f).not.toHaveBeenCalled();});
+ it('failure route has no provider or grant calls',()=>{const f=vi.fn();vi.stubGlobal('fetch',f);render(<FailPage/>);expect(screen.getByText(/크레딧은 지급되지 않습니다/)).toBeTruthy();expect(f).not.toHaveBeenCalled();});
  it('checkout uses server payload and sends no price authority',async()=>{const checkout={clientKey:'synthetic-public',customerKey:id,orderId,orderName:'TEST',amount:{currency:'KRW',value:4900},successUrl:'https://example.test/payments/success/',failUrl:'https://example.test/payments/fail/'};const f=vi.fn().mockResolvedValueOnce(Response.json({state:'TEST'})).mockResolvedValue(Response.json({order,checkout}));vi.stubGlobal('fetch',f);const requestPayment=vi.fn().mockResolvedValue(undefined);window.TossPayments=vi.fn(()=>({payment:()=>({requestPayment})}));render(<PaymentTest/>);await waitFor(()=>expect(screen.getAllByText('테스트 결제')[0]).not.toBeDisabled());fireEvent.click(screen.getAllByText('테스트 결제')[0]);await waitFor(()=>expect(requestPayment).toHaveBeenCalled());const body=JSON.parse(f.mock.calls[1][1].body);expect(Object.keys(body).sort()).toEqual(['request_key','sku']);expect(requestPayment.mock.calls[0][0].amount).toEqual(checkout.amount);});
 });
 
@@ -34,8 +34,8 @@ it('distinguishes a server confirm 401 from a missing local session',async()=>{
 
 it('LIVE completion requires canonical POSTED',async()=>{
  vi.stubGlobal('fetch',vi.fn().mockResolvedValue(Response.json({order:{...order,mode:'LIVE',grant_state:'POSTED'}})));
- render(<PaymentTest callback/>);await screen.findByText('1 Credits가 지급되었습니다.');
- expect(screen.getByText('4,900원')).toBeTruthy();expect(screen.getByText('첨삭권 1개')).toBeTruthy();
+ render(<PaymentTest callback/>);await screen.findByText('1 크레딧이 지급되었습니다.');
+ expect(screen.getByText('4,900원')).toBeTruthy();expect(screen.getByText('크레딧 1개')).toBeTruthy();
  expect(screen.getByRole('link',{name:'논술 LAB 시작하기'})).toHaveAttribute('href','/essay-lab');
  expect(screen.getByRole('link',{name:'마이페이지'})).toHaveAttribute('href','/account');
 });

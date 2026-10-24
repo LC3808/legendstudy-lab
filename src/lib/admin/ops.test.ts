@@ -129,7 +129,7 @@ describe("operations contract", () => {
     expect(page.summary?.total).toBe(5);
   });
 
-  it("preserves a missing Credits value as null instead of zero", () => {
+  it("preserves a missing 크레딧 value as null instead of zero", () => {
     const page = parseOpsPage(pagePayload({ items: [item({ credits_charged: null, billing_status: null })] }));
     expect(page.items[0].creditsCharged).toBeNull();
     expect(page.items[0].billingStatus).toBeNull();
@@ -241,13 +241,13 @@ describe("operations labels", () => {
       .toBe("-");
   });
 
-  it("says 차감 없음 rather than 0 Credit when nothing was charged", () => {
+  it("says 차감 없음 rather than 0 크레딧 when nothing was charged", () => {
     expect(opsBillingLabel({ creditsCharged: null, billingStatus: null, billingReason: null })).toBe(
       "차감 없음",
     );
     expect(
       opsBillingLabel({ creditsCharged: 1, billingStatus: "settled", billingReason: "paid_cycle" }),
-    ).toBe("1 Credit · 차감 완료");
+    ).toBe("1 크레딧 · 차감 완료");
   });
 
   it("states the Math release position exactly", () => {

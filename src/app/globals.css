@@ -1609,3 +1609,38 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
   .my-credit-summary { align-items: stretch; }
   .my-credit-summary .button { width: 100%; }
 }
+
+/* Owner MY 2026-10-24: shared native brand, one hierarchy, compact mobile forms. */
+.my-dashboard .my-panel,.my-dashboard .my-metric { border-color:#dce1e8; border-radius:20px; box-shadow:0 6px 22px rgba(26,43,66,.07); }
+.my-dashboard .my-section { margin-block:2rem; }
+.my-dashboard .my-section > h2 { font-size:1.35rem; border-left:4px solid var(--brand); padding-left:.7rem; }
+.my-profile-card { display:flex; flex-wrap:wrap; align-items:center; gap:1.25rem; }
+.my-profile-card__identity { flex:1 1 16rem; min-width:0; }
+.my-profile-card__name { min-height:1.5em; }
+.my-identity__email { overflow-wrap:anywhere; }
+.my-profile-card__facts { flex:1 1 18rem; }
+.my-profile-card__facts dd { min-height:1.4em; }
+.my-profile-edit { width:100%; border-top:1px solid var(--line); padding-top:1rem; }
+.my-profile-edit input,.my-profile-edit select { max-width:100%; }
+.my-growth-tabs { display:flex; gap:.4rem; margin-bottom:1rem; }
+.my-growth-tabs button { flex:1; border:1px solid var(--line); border-radius:12px; padding:.7rem; color:var(--ink-muted); background:#f0f2f5; }
+.my-growth-tabs [aria-selected=true] { background:var(--ink); color:white; }
+.my-coming,.my-nav-card--disabled { background:#f0f2f5; color:#697586; }
+.my-search-line { display:flex; flex-wrap:nowrap; width:100%; gap:.6rem; align-items:end; }
+.my-search-line label { flex:1; min-width:0; }
+.my-search-line button { flex-shrink:0; }
+.my-add-panel > form { width:100%; }
+.my-application-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.25rem; border-top:1px solid var(--line); padding-top:1rem; }
+.my-application-form > p,.my-application-form .button-row { grid-column:1/-1; }
+.my-application-form label { display:grid; gap:.45rem; min-width:0; }
+.my-application-form .my-radio,.my-goal-form .my-radio { display:inline-flex; flex:0 0 auto; align-items:center; gap:.4rem; }
+.my-radio input[type=radio] { width:auto; margin:0; }
+.my-target-card { border:1px solid var(--line); border-radius:14px; padding:1rem; margin-bottom:1rem; }
+.my-target-card .button-row { gap:1rem; flex-wrap:wrap; }
+.my-add-panel input,.my-add-panel select { width:100%; min-width:0; box-sizing:border-box; }
+.my-growth-tabs + [role=tabpanel] > * + * { margin-top:1rem; }
+@media(max-width:560px){.my-application-form { grid-template-columns:1fr; }.my-profile-card__facts{width:100%;}.my-dashboard .my-section{margin-block:1.5rem;}.my-add-panel{padding:.85rem;}.my-growth-tabs button{font-size:.85rem;}}
+
+.my-growth-tabs + [role=tabpanel] .growth-chart__row {padding:1rem 0;border-bottom:1px solid var(--line);}
+.my-growth-tabs + [role=tabpanel] .growth-chart__row label {display:flex;gap:.75rem;align-items:center;margin-top:.5rem;}
+.my-growth-tabs + [role=tabpanel] .growth-chart meter {flex:1;max-width:24rem;height:1.2rem;min-width:0;}

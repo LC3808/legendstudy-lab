@@ -51,5 +51,5 @@ it('shows current exam History counts even when the legacy summary has no sessio
 });
 it('does not claim empty history when current records cannot be read',async()=>{
  vi.mocked(readEssaySummary).mockResolvedValue(summary());vi.mocked(readEssayDashboard).mockRejectedValue(Error('unavailable'));
- render(<EssayGrowthCard/>);await screen.findByRole('alert');expect(screen.queryByText(/아직 논술 기록이 없어요/)).toBeNull();
+ render(<EssayGrowthCard/>);await screen.findAllByRole('alert');expect(screen.queryByText(/아직 논술 기록이 없어요/)).toBeNull();
 });

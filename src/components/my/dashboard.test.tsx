@@ -41,25 +41,25 @@ it('presents the MY dashboard sections in the agreed order', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
   const headings = [...container.querySelectorAll('.my-section > h2')].map((h) => h.textContent);
-  expect(headings).toEqual(['나의 프로필', '내 이용 현황', '나의 논술 성장', '나의 학교·학년', '나의 목표', '나의 지원 현황', 'LAB', '나의 학습시간', '계정 및 지원']);
+  expect(headings).toEqual(['나의 프로필', '내 이용 현황', 'LAB', '나의 성장', '나의 학습 시간', '나의 목표', '나의 대학 지원 현황', '계정 및 지원']);
 });
 
 it('leads with the email as the profile name when no nickname is set, and never prints it twice', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
   const name = container.querySelector('.my-profile-card__name');
-  expect(name?.textContent).toBe('review@legendstudy.com');
-  expect(container.querySelector('.my-profile-card__identity .my-identity__email')).toBeNull();
+  expect(name?.textContent).toBe('');
+  expect(container.querySelector('.my-profile-card__identity .my-identity__email')?.textContent).toBe('review@legendstudy.com');
 });
 
 it('shows usage as a metric row with a ranked pair of actions', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
   const usage = [...container.querySelectorAll('.my-section')].find((s) => s.querySelector('h2')?.textContent === '내 이용 현황') as HTMLElement;
-  expect(within(usage).getByText('첨삭권')).toBeTruthy();
+  expect(within(usage).getByText('크레딧')).toBeTruthy();
   expect(usage.querySelector('.my-metric__value')?.textContent).toBe('3개');
-  expect(within(usage).getByText('무료 3 · 구매 0')).toBeTruthy();
-  const buy = within(usage).getByRole('link', { name: '첨삭권 구매' });
+  expect(within(usage).getByText('무료 3 · 구매 0 · 기타 지급 0')).toBeTruthy();
+  const buy = within(usage).getByRole('link', { name: '크레딧 구매' });
   const history = within(usage).getByRole('link', { name: '구매·사용 내역' });
   expect(buy.className).toContain('button--primary');
   expect(history.className).toContain('button--outline');
@@ -68,7 +68,7 @@ it('shows usage as a metric row with a ranked pair of actions', async () => {
 it('keeps school and grade as facts and drops raw profile columns', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findAllByText('재학생');
-  const facts = container.querySelector('.my-facts') as HTMLElement;
+  const facts = container.querySelector('.my-profile-card__facts') as HTMLElement;
   expect(within(facts).getByText('현재 상태')).toBeTruthy();
   expect(within(facts).getByText('재학생')).toBeTruthy();
   expect(within(facts).getByText('2학년')).toBeTruthy();
@@ -96,7 +96,7 @@ it('keeps same-university add disabled while the target constraint rollout is he
  render(<MyDashboard/>);await screen.findByText('사회·상경');
  await user.click(screen.getByRole('button',{name:'+ 대학·학과 추가'}));
  await user.type(screen.getByLabelText('대학 찾기'),'연세');await user.click(screen.getByRole('button',{name:'검색'}));
- expect(await screen.findByRole('button',{name:'추가'})).toBeDisabled();
+ expect(await screen.findByRole('button',{name:'선택'})).toBeDisabled();
  expect(addTarget).not.toHaveBeenCalled();
 });
 
@@ -110,3 +110,10 @@ it('renders only date, signed quantity and user reason in purchase history',asyn
 });
 
 vi.mock('next/navigation',()=>({useRouter:()=>({back:vi.fn(),replace:vi.fn()})}));
+it('saves the selected university and intended division together',async()=>{
+ const u=userEvent.setup();vi.mocked(searchUniversities).mockResolvedValueOnce([{id:'new',name:'새대학교'}]);
+ render(<MyDashboard/>);await screen.findByText('사회·상경');await u.click(screen.getByRole('button',{name:'+ 대학·학과 추가'}));
+ await u.type(screen.getByLabelText('대학 찾기'),'새대');await u.click(screen.getByRole('button',{name:'검색'}));
+ await u.click(await screen.findByRole('button',{name:'선택'}));await u.type(screen.getByLabelText('희망 학과·모집단위'),'경제학과');await u.click(screen.getByRole('button',{name:'저장'}));
+ expect(addTarget).toHaveBeenCalledWith(expect.anything(),'owner-1','new','경제학과');
+});

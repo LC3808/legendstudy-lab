@@ -220,9 +220,9 @@ function CheckoutContent({ embedded, initialCredits }: { embedded: boolean; init
     <div className="policy-page content-wrap content-wrap--detail checkout-page">
       <p className="eyebrow eyebrow--accent">LEGENDSTUDY LAB / CHECKOUT</p>
       <div className="policy-page__heading">
-        <h1>Credit 구매</h1>
+        <h1>크레딧 구매</h1>
       </div>
-      <p className="policy-page__lead">논술 첨삭에 사용할 Credit을 선택하고 결제합니다.</p>
+      <p className="policy-page__lead">논술 첨삭에 사용할 크레딧을 선택하고 결제합니다.</p>
 
       <section className="policy-section" aria-labelledby="checkout-plans-title">
         <h2 id="checkout-plans-title">상품 선택</h2>
@@ -256,7 +256,7 @@ function CheckoutContent({ embedded, initialCredits }: { embedded: boolean; init
           </div>
           <div>
             <dt>수량</dt>
-            <dd>{plan.credits} Credit</dd>
+            <dd>{plan.credits} 크레딧</dd>
           </div>
           <div>
             <dt>결제금액</dt>
@@ -267,7 +267,7 @@ function CheckoutContent({ embedded, initialCredits }: { embedded: boolean; init
             <dd>결제일로부터 {pricingPolicy.paidCreditValidityMonths}개월</dd>
           </div>
           <div>
-            <dt>1 Credit 이용 범위</dt>
+            <dt>1 크레딧 이용 범위</dt>
             <dd>최초 첨삭 1회 + 동일 답안 재첨삭 1회</dd>
           </div>
           <div>

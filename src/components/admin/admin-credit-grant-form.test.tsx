@@ -9,7 +9,7 @@ const actor='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';const target='bbbbbbbb-bbbb-4
 const rpc=vi.fn();const granted=vi.fn();
 function mount(){const auth:AuthContextValue={status:'authenticated',client:{rpc} as unknown as SupabaseClient,user:{id:actor,email:'admin@example.test'},signOut:vi.fn(),recoveryActive:false,completeRecovery:vi.fn()};return render(<AuthContext.Provider value={auth}><AdminCreditGrantForm accountId={target} email="recipient@example.test" onGranted={granted}/></AuthContext.Provider>);}
 beforeEach(()=>{vi.clearAllMocks();sessionStorage.clear();HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','');};HTMLDialogElement.prototype.close=function(){this.removeAttribute('open');this.dispatchEvent(new Event('close'));};});
-async function open(){await userEvent.click(screen.getByRole('button',{name:'Credit 지급'}));}
+async function open(){await userEvent.click(screen.getByRole('button',{name:'크레딧 지급'}));}
 describe('operator manual grant confirmation',()=>{
  it('confirms email/UID and bounded reason/quantity before sending canonical RPC',async()=>{
   rpc.mockResolvedValue({data:'cccccccc-cccc-4ccc-8ccc-cccccccccccc',error:null});mount();await open();

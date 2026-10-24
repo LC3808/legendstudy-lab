@@ -257,7 +257,7 @@ describe("MATH-3B Vision/input pipeline — V01–V30 acceptance matrix", () => 
     expect(VISION_CREDIT_IMPACT).toBe("NONE");
   });
 
-  it("V25 extraction failure yields no READY input (no evaluation Credit consumed)", async () => {
+  it("V25 extraction failure yields no READY input (no evaluation 크레딧 consumed)", async () => {
     const result = await run({ responseFormat: "FULL_SOLUTION", artifacts: [imageArtifact(0)], regions: [region()], primaryStatus: "UNAVAILABLE" });
     expect(result.readiness.readyInput).toBeNull();
     expect(VISION_CREDIT_IMPACT).toBe("NONE");

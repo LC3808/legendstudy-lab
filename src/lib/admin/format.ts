@@ -17,7 +17,7 @@ export function formatCount(value: AdminCount): string {
 
 export function formatCredit(value: number | null | undefined): string {
   if (value === null || value === undefined) return "-";
-  return `${value.toLocaleString("ko-KR")} Credit`;
+  return `${value.toLocaleString("ko-KR")} 크레딧`;
 }
 
 export function formatNumber(value: number | null | undefined): string {
@@ -139,7 +139,7 @@ export function inquiryCategoryLabel(category: string): string {
     material: "학습자료",
     essay_humanities: "인문논술 첨삭",
     essay_math: "수리논술 첨삭",
-    credit: "Credit",
+    credit: "크레딧",
     payment: "결제·환불",
     deletion: "회원 탈퇴·계정 삭제",
     technical: "오류·기술 문제",

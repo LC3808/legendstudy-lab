@@ -42,9 +42,10 @@ export async function searchUniversities(client: SupabaseClient, owner: string, 
   if (!clean) return [];
   return checked(await client.from('universities').select('id,name').eq('is_active',true).ilike('name',`%${clean}%`).order('name').limit(20)) as {id:string;name:string}[];
 }
-export async function addTarget(client: SupabaseClient, owner: string, university: string) {
+export async function addTarget(client: SupabaseClient, owner: string, university: string, division = '') {
+  if(division.trim().length>120)throw new Error('INVALID_DIVISION');
   await ensureOwnerProfile(client,owner);
-  checked(await client.from('student_target_universities').insert({user_id:owner,university_id:university,status:'interested',source:'my'}));
+  checked(await client.from('student_target_universities').insert({user_id:owner,university_id:university,status:'interested',source:'my',intended_division:division.trim()||null}));
   await assertOwner(client,owner);
 }
 export async function editTarget(client: SupabaseClient, owner: string, id: string, division: string | null) {
@@ -107,6 +108,8 @@ export async function readMyProfile(client: SupabaseClient, owner: string): Prom
 }
 
 export async function saveMyProfile(client: SupabaseClient, owner: string, profile: MyProfile) {
+  const nickname=profile.display_name?.trim()||null;
+  if(nickname&&([...nickname].length>80||/[\u0000-\u001f\u007f]/.test(nickname)))throw new Error('INVALID_NICKNAME');
   const {neis_office_code:office,neis_school_code:school,academic_status:status,grade_level:grade}=profile;
   if ((office===null)!==(school===null) || [office,school].some(v=>v!==null&&(!v.trim()||v!==v.trim()||v.length>32))) throw new Error('INVALID_SCHOOL');
   if (status!==null&&!['student','retaker','other'].includes(status)) throw new Error('INVALID_STATUS');
@@ -114,6 +117,6 @@ export async function saveMyProfile(client: SupabaseClient, owner: string, profi
   await assertOwner(client,owner);
   if (office && school && !await lookupSchoolName(office,school,AbortSignal.timeout(15000))) throw new Error('INVALID_SCHOOL');
   await ensureOwnerProfile(client,owner);
-  checked(await client.from('profiles').update({neis_office_code:office,neis_school_code:school,academic_status:school?'student':status==='student'?null:status,grade_level:school?grade:null}).eq('id',owner).select('id').single());
+  checked(await client.from('profiles').update({...(profile.display_name!==undefined?{display_name:nickname}:{}),neis_office_code:office,neis_school_code:school,academic_status:school?'student':status==='student'?null:status,grade_level:school?grade:null}).eq('id',owner).select('id').single());
   await assertOwner(client,owner);
 }

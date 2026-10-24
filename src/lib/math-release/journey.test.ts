@@ -152,7 +152,7 @@ describe("MATH-RELEASE journey — end-user Math flow across modules", () => {
     expect(evalServer.state.evaluations.get("eval-1")!.state).toBe("FAILED");
   });
 
-  it("J3 learning journey: hint → solution → re-solve → INCLUDED reevaluation charges no extra Credit", async () => {
+  it("J3 learning journey: hint → solution → re-solve → INCLUDED reevaluation charges no extra 크레딧", async () => {
     const learnServer = createMockLearningServer();
     learnServer.seedLearning({
       owner: STUDENT,

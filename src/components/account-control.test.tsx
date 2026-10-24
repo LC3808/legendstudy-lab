@@ -64,10 +64,10 @@ describe("header action cluster", () => {
 it.each(["loading", "error"] as const)("does not invent a zero balance for %s", (status) => {
   credit.state = { status };
   renderWithStatus("authenticated");
-  expect(screen.queryByText(/첨삭권 \d/)).not.toBeInTheDocument();
+  expect(screen.queryByText(/크레딧 \d/)).not.toBeInTheDocument();
 });
 it("reads the header balance from the canonical DTO", () => {
   credit.state = { status: "ready", value: { dto_version: "credit-v1", spendable: 7, paid: 4, free: 3, other: 0, next_expiry: null } };
   renderWithStatus("authenticated");
-  expect(screen.getByText("첨삭권 7")).toBeInTheDocument();
+  expect(screen.getByText("크레딧 7")).toBeInTheDocument();
 });

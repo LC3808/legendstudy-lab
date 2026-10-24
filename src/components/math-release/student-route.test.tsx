@@ -59,9 +59,8 @@ describe("student route integration",()=>{
   fireEvent.click(await screen.findByRole("button",{name:"첨삭 진행"}));
   await screen.findByText("풀이를 확인했습니다");
   fireEvent.click(screen.getByRole("button",{name:"힌트 보기"}));await screen.findByText("양변의 부호를 확인하세요");
-  fireEvent.click(screen.getByRole("button",{name:/해설/}));
-  fireEvent.click(screen.getByRole("button",{name:/해설/}));
-  await screen.findByText("공식 해설입니다");
+  expect(screen.queryByRole("button",{name:/해설/})).toBeNull();
+  expect(f.actions.some(x=>x.action==="reveal_solution")).toBe(false);
   fireEvent.click(screen.getByRole("button",{name:"답안을 다시 작성해 보세요"}));
   fireEvent.change(screen.getByLabelText("내 답안"),{target:{value:"x = 3"}});
   fireEvent.click(screen.getByRole("button",{name:"답안 제출 · 입력 확인"}));

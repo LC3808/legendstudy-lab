@@ -128,11 +128,11 @@ describe("MATH-5B-R learning runtime binding (LR01–LR20)", () => {
     expect(handoff.priorCore?.coreId).toBe("core-1");
   });
 
-  it("LR14 eligible reevaluation shows the no-extra-Credit copy", async () => {
+  it("LR14 eligible reevaluation shows the no-extra-크레딧 copy", async () => {
     const { client } = setup();
     const handoff = buildMath6HandoffFromState(await client.readLearningState("eval-1"));
     expect(handoff.includedStatus).toBe("AVAILABLE");
-    expect(resolveCtaNote(handoff.includedStatus)).toContain("Credit");
+    expect(resolveCtaNote(handoff.includedStatus)).toContain("크레딧");
   });
 
   it("LR15 expired reevaluation does not show free copy", async () => {
@@ -160,13 +160,13 @@ describe("MATH-5B-R learning runtime binding (LR01–LR20)", () => {
     await expect(client.revealHint("eval-1", "h-l1", 1, "k1")).rejects.toMatchObject({ code: "UNAUTHORIZED" });
   });
 
-  it("LR19 hint reveal causes no Credit charge", async () => {
+  it("LR19 hint reveal causes no 크레딧 charge", async () => {
     const { client } = setup();
     const res = await client.revealHint("eval-1", "h-l1", 1, "k1");
     expect(JSON.stringify(res).toLowerCase()).not.toContain("credit");
   });
 
-  it("LR20 solution reveal causes no Credit charge", async () => {
+  it("LR20 solution reveal causes no 크레딧 charge", async () => {
     const { client } = setup();
     const res = await client.revealSolution("eval-1", "REFERENCE", "ks", "sol-official");
     expect(JSON.stringify(res).toLowerCase()).not.toContain("credit");

@@ -46,7 +46,7 @@ export function AccountControl() {
 function HeaderCredit() {
   const { state } = useCreditSummary();
   if (state.status === "signed-out") return null;
-  return <span className="header-credit" aria-live="polite">{state.status === "ready" ? `첨삭권 ${state.value.spendable}` : state.status === "loading" ? "첨삭권 확인 중" : "첨삭권 확인 불가"}</span>;
+  return <span className="header-credit" aria-live="polite">{state.status === "ready" ? `크레딧 ${state.value.spendable}` : state.status === "loading" ? "크레딧 확인 중" : "크레딧 확인 불가"}</span>;
 }
 
 export function AccountPanel() {
@@ -60,7 +60,7 @@ export function AccountPanel() {
       <div className="auth-card">
         <p className="eyebrow eyebrow--accent">MY ACCOUNT</p>
         <h1>로그인이 필요합니다.</h1>
-        <p className="auth-card__lead">로그인하고 내 계정과 첨삭권을 확인하세요.</p>
+        <p className="auth-card__lead">로그인하고 내 계정과 크레딧을 확인하세요.</p>
         <Link className="button button--primary" href="/login/?next=%2Faccount%2F">로그인 <span aria-hidden="true">→</span></Link>
       </div>
     );

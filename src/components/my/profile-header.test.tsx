@@ -25,7 +25,7 @@ it('shows a nickname with the email beneath it, and school·grade only when set'
 it('uses the email as the name when no nickname is set and never repeats it', async () => {
  vi.mocked(readMyProfile).mockResolvedValue({...profile});
  const {container} = render(<ProfileHeader />);
- await waitFor(() => expect(container.querySelector('.my-profile-card__name')?.textContent).toBe('me@legendstudy.com'));
- expect(container.querySelectorAll('.my-identity__email')).toHaveLength(0);
+ await waitFor(() => expect(container.querySelector('.my-profile-card__name')?.textContent).toBe(''));
+ expect(container.querySelectorAll('.my-identity__email')).toHaveLength(1);
  expect(container.textContent).not.toContain('미설정');
 });

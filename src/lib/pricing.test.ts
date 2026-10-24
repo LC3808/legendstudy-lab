@@ -20,7 +20,7 @@ import {
 } from "./pricing";
 
 describe("owner-final pricing", () => {
-  it("keeps the approved payment amount for every Credit pack", () => {
+  it("keeps the approved payment amount for every 크레딧 pack", () => {
     expect(pricingPlans.map((plan) => [plan.credits, plan.priceKrw])).toEqual([
       [1, 4900],
       [3, 11900],
@@ -30,16 +30,16 @@ describe("owner-final pricing", () => {
     expect(pricingPlans.map((plan) => plan.priceLabel)).toEqual(["4,900원", "11,900원", "17,900원", "29,900원"]);
   });
 
-  it("displays the per-Credit price for each pack", () => {
+  it("displays the per-크레딧 price for each pack", () => {
     expect(pricingPlans.map((plan) => plan.perCreditKrw)).toEqual([4900, 3967, 3580, 2990]);
     expect(pricingPlans.map((plan) => plan.perCreditLabel)).toEqual(["4,900원", "약 3,967원", "3,580원", "2,990원"]);
   });
 
-  it("recommends exactly one pack and it is 5 Credits", () => {
+  it("recommends exactly one pack and it is 5 크레딧", () => {
     expect(pricingPlans.filter((plan) => plan.recommended).map((plan) => plan.id)).toEqual(["5c"]);
   });
 
-  it("does not sell the 20 Credit pack in the first release", () => {
+  it("does not sell the 20 크레딧 pack in the first release", () => {
     expect(excludedCreditPackSizes).toContain(20);
     expect(pricingPlans.every((plan) => plan.credits !== 20)).toBe(true);
   });
@@ -64,7 +64,7 @@ describe("hero copy", () => {
     expect(heroCopy.bannedPhrases).toContain("첨삭부터 재첨삭까지");
   });
 
-  it("does not carry the reevaluation rule or the Credit scope into the hero", () => {
+  it("does not carry the reevaluation rule or the 크레딧 scope into the hero", () => {
     const hero = `${heroCopy.titleLine1} ${heroCopy.titleLine2} ${heroCopy.description}`;
     expect(hero).not.toContain(creditCopy.primary);
     expect(hero).not.toContain("14일");
@@ -72,15 +72,15 @@ describe("hero copy", () => {
 });
 
 describe("product card copy", () => {
-  it("states what each pack contains in consumer terms, one Credit per 첨삭권", () => {
+  it("states what each pack contains in consumer terms, one 크레딧 per 크레딧", () => {
     expect(pricingPlans.map((plan) => plan.valueLine)).toEqual([
-      "첨삭권 1개",
-      "첨삭권 3개",
-      "첨삭권 5개",
-      "첨삭권 10개",
+      "크레딧 1개",
+      "크레딧 3개",
+      "크레딧 5개",
+      "크레딧 10개",
     ]);
     for (const plan of pricingPlans) {
-      expect(plan.valueLine).toBe(`첨삭권 ${plan.credits}개`);
+      expect(plan.valueLine).toBe(`크레딧 ${plan.credits}개`);
     }
   });
 
@@ -96,17 +96,17 @@ describe("product card copy", () => {
 });
 
 describe("credit scope and reevaluation copy", () => {
-  it("states the Owner-approved 1 Credit scope", () => {
-    expect(creditCopy.primary).toBe("1 Credit으로 최초 첨삭과 답안 수정 후 재첨삭까지 이용할 수 있습니다.");
+  it("states the Owner-approved 1 크레딧 scope", () => {
+    expect(creditCopy.primary).toBe("1 크레딧으로 최초 첨삭과 답안 수정 후 재첨삭까지 이용할 수 있습니다.");
   });
 
   it("states the Owner-approved reevaluation rule", () => {
     expect(creditCopy.reevaluation).toBe(
-      "첨삭 결과를 확인한 뒤 답안을 다시 작성해 제출하면, 추가 Credit 차감 없이 재첨삭을 받을 수 있습니다. 최초 첨삭 결과 제공일로부터 14일 이내에 재첨삭을 1회 받을 수 있으며, 그 이후 다시 첨삭을 요청하면 새로운 첨삭권이 사용됩니다.",
+      "첨삭 결과를 확인한 뒤 답안을 다시 작성해 제출하면, 추가 크레딧 차감 없이 재첨삭을 받을 수 있습니다. 최초 첨삭 결과 제공일로부터 14일 이내에 재첨삭을 1회 받을 수 있으며, 그 이후 다시 첨삭을 요청하면 새로운 크레딧이 사용됩니다.",
     );
   });
 
-  it("keeps Credit validity separate from the reevaluation window", () => {
+  it("keeps 크레딧 validity separate from the reevaluation window", () => {
     expect(creditCopy.validity).toContain("결제일로부터 3개월");
     expect(creditCopy.validity).not.toContain("14일");
     expect(creditCopy.reevaluation).not.toContain("3개월");
@@ -123,10 +123,10 @@ describe("credit scope and reevaluation copy", () => {
 });
 
 describe("purchase model", () => {
-  it("sells a one-off Credit purchase with no subscription or automatic renewal", () => {
+  it("sells a one-off 크레딧 purchase with no subscription or automatic renewal", () => {
     expect(pricingPolicy.subscription).toBe(false);
     expect(pricingPolicy.autoRenewal).toBe(false);
-    expect(creditCopy.oneOffPurchase).toBe("일회성 Credit 구매이며 자동 갱신 결제가 없습니다.");
+    expect(creditCopy.oneOffPurchase).toBe("일회성 크레딧 구매이며 자동 갱신 결제가 없습니다.");
   });
 
   it("does not use the removed subscription marketing line", () => {
@@ -192,7 +192,7 @@ describe("free signup benefit", () => {
 });
 
 describe("refund policy", () => {
-  it("deducts consumed Credits at the full 1 Credit price", () => {
+  it("deducts consumed 크레딧 at the full 1 크레딧 price", () => {
     expect(pricingPolicy.refundDeductionPerCreditKrw).toBe(4900);
     expect(calculatePartialRefundKrw(29900, 5)).toBe(5400);
   });
@@ -217,7 +217,7 @@ describe("refund policy", () => {
     expect(creditCopy.statutoryRights).toContain("별도로 보장됩니다");
     expect(refundPolicy.processing).toContain(`${pricingPolicy.refundProcessingBusinessDays}영업일`);
     expect(refundPolicy.processingCaveat).toContain("카드사");
-    expect(refundPolicy.requestWindow).toBe("유료 Credit 유효기간 내");
+    expect(refundPolicy.requestWindow).toBe("유료 크레딧 유효기간 내");
   });
 });
 
@@ -251,13 +251,13 @@ describe("purchase guide", () => {
   it("states the facts a consumer must read before paying", () => {
     const joined = purchaseGuide.items.join(" ");
     expect(joined).not.toContain("구매는 레전드스터디 랩 계정");
-    expect(joined).toContain("Credit이 계정에 지급");
+    expect(joined).toContain("크레딧이 계정에 지급");
     expect(joined).toContain("3개월");
     expect(joined).toContain("자동 갱신 결제가 없습니다");
     expect(joined).toContain("전액 환불");
   });
 
-  it("keeps the maximum service period at the paid Credit validity window", () => {
+  it("keeps the maximum service period at the paid 크레딧 validity window", () => {
     const servicePeriod = purchaseGuide.items.find((item) => item.includes("서비스 최대 제공기간"));
     expect(servicePeriod).toContain(`${pricingPolicy.paidCreditValidityMonths}개월`);
     expect(pricingPolicy.paidCreditValidityMonths).toBeLessThanOrEqual(3);

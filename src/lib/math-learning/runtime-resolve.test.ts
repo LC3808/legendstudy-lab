@@ -111,7 +111,7 @@ describe("MATH-6B re-solve / reevaluation / history (RSL01–RSL40)", () => {
   });
 
   it("RSL18 AVAILABLE shows copy; RSL19 EXPIRED; RSL20 CONSUMED; RSL21 UNAVAILABLE do not", () => {
-    expect(resolveCtaNote("AVAILABLE")).toContain("Credit");
+    expect(resolveCtaNote("AVAILABLE")).toContain("크레딧");
     expect(resolveCtaNote("EXPIRED")).toBeNull();
     expect(resolveCtaNote("CONSUMED")).toBeNull();
     expect(resolveCtaNote("UNAVAILABLE")).toBeNull();

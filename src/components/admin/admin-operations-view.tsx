@@ -313,7 +313,7 @@ function EvaluationRow({ item, type }: { item: OpsItem; type: string }) {
           <dd>{opsModelLabel(item)}</dd>
         </div>
         <div>
-          <dt>Credit</dt>
+          <dt>크레딧</dt>
           <dd>{opsBillingLabel(item)}</dd>
         </div>
         <div>

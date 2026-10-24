@@ -30,7 +30,7 @@ export function PlanCard({
         {plan.recommended ? <span className="plan-card__badge">추천</span> : null}
       </h3>
       <p className="plan-card__price">{plan.priceLabel}</p>
-      <p className="plan-card__unit">Credit당 {plan.perCreditLabel}</p>
+      <p className="plan-card__unit">크레딧당 {plan.perCreditLabel}</p>
       <p className="plan-card__value">{plan.valueLine}</p>
       <div className="plan-card__cta">{children}</div>
     </article>

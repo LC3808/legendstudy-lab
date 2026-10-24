@@ -285,7 +285,7 @@ function AdminInquiryDetailPanel({
           <dd>{gradeLabel(data.member.gradeLevel)}</dd>
         </div>
         <div>
-          <dt>보유 Credit</dt>
+          <dt>보유 크레딧</dt>
           <dd>{formatCredit(data.member.spendable)}</dd>
         </div>
         <div>

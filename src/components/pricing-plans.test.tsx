@@ -87,7 +87,7 @@ describe("pricing product grid", () => {
     expect(screen.getAllByText("선택하기").length).toBe(pricingPlans.length - 1);
   });
 
-  it.each(pricingPlans)("opens Toss directly for $credits Credits with only the SKU and request key", async (plan) => {
+  it.each(pricingPlans)("opens Toss directly for $credits 크레딧 with only the SKU and request key", async (plan) => {
     const checkout = {
       clientKey: "test_ck_fixture", customerKey: "server-buyer", orderId: "server-order",
       orderName: "Server pack", amount: { currency: "KRW", value: 12345 },

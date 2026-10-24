@@ -29,3 +29,9 @@ it('shows a legacy school even when status was not set, and explicitly clearing 
  await u.click(screen.getByRole('button',{name:'현재 상태 저장'}));
  await waitFor(()=>expect(saveMyProfile).toHaveBeenCalledWith({},'owner',{...empty,academic_status:'retaker'}));
 });
+it('edits the nickname through the same shared profile save',async()=>{
+ const u=userEvent.setup();const reload=vi.fn();render(<ProfileEditor compact profile={empty} reload={reload}/>);
+ await u.click(screen.getByRole('button',{name:'프로필 편집'}));await u.type(screen.getByLabelText('닉네임'),'나의 별명');
+ await u.click(screen.getByRole('button',{name:'프로필 저장'}));
+ await waitFor(()=>expect(saveMyProfile).toHaveBeenCalledWith({},'owner',{...empty,display_name:'나의 별명'}));expect(reload).toHaveBeenCalledOnce();
+});

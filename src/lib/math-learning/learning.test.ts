@@ -181,7 +181,7 @@ describe("MATH-5B learning guidance — H01–H35", () => {
     await expect(client.revealHint("eval-1", "h-l2", 2, "csid-1")).rejects.toMatchObject({ code: "CONFLICT" });
   });
 
-  it("H27 solution reveal carries no Credit", async () => {
+  it("H27 solution reveal carries no 크레딧", async () => {
     const server = seededLearningServer();
     const client = new LearningRuntimeClient(server.studentTransport("student-A"));
     const res = await client.revealSolution("eval-1", "REFERENCE", "csid-sol", "sol-official");
@@ -227,7 +227,7 @@ describe("MATH-5B learning guidance — H01–H35", () => {
   it("H33 eligibility unavailable does not promise free reevaluation", () => {
     expect(resolveCtaNote("UNAVAILABLE")).toBeNull();
     expect(resolveCtaNote("UNKNOWN")).toBeNull();
-    expect(resolveCtaNote("AVAILABLE")).toContain("Credit");
+    expect(resolveCtaNote("AVAILABLE")).toContain("크레딧");
   });
 
   it("H34 Human Quality hint evidence is preserved (CORE/hints/leakage/provenance)", () => {

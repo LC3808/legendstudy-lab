@@ -45,13 +45,9 @@ describe("LearningGuidance", () => {
         solutionProvenance="AI_GENERATED_REFERENCE"
       />,
     );
-    const button = screen.getByRole("button", { name: "해설 보기" });
-    fireEvent.click(button); // shows notice first (no hard lock, but a nudge)
+    expect(screen.queryByRole("button",{name:"해설 보기"})).toBeNull();
     expect(onRevealSolution).not.toHaveBeenCalled();
-    expect(screen.getByText(/학습 효과/)).toBeInTheDocument();
-    fireEvent.click(button);
-    expect(onRevealSolution).toHaveBeenCalled();
-    expect(screen.getByText("참고 풀이")).toBeInTheDocument();
+    expect(screen.queryByText("참고 풀이")).toBeNull();
   });
 
   it("renders a completion state when CORE is empty", () => {
@@ -65,6 +61,6 @@ describe("LearningGuidance", () => {
         onResolve={() => {}}
       />,
     );
-    expect(screen.getByText("잘 해결했습니다")).toBeInTheDocument();
+    expect(screen.getByText("풀이 다시 살펴보기")).toBeInTheDocument();
   });
 });

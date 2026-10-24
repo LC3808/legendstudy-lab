@@ -31,9 +31,9 @@ export function AdminCreditView() {
   return (
     <div className="admin-stack">
       <section className="admin-section">
-        <h2>Credit 현황</h2>
+        <h2>크레딧 현황</h2>
         {summary.state.status === "loading" ? (
-          <AdminLoading label="Credit 현황을 불러오는 중입니다" />
+          <AdminLoading label="크레딧 현황을 불러오는 중입니다" />
         ) : summary.state.status === "error" ? (
           <AdminErrorPanel kind={summary.state.kind} onRetry={summary.reload} />
         ) : (
@@ -63,14 +63,14 @@ export function AdminCreditView() {
           </>
         )}
         <p className="admin-muted">
-          회원 조회 후 운영 Credit을 지급할 수 있습니다.
+          회원 조회 후 운영 크레딧을 지급할 수 있습니다.
         </p>
       </section>
 
       <AdminReleaseReport kind="credit"/>
 
       <section className="admin-section">
-        <h2>회원별 Credit 조회</h2>
+        <h2>회원별 크레딧 조회</h2>
         <form
           className="admin-search"
           onSubmit={(event) => {

@@ -64,7 +64,7 @@ function Workspace({questionId,resume,draftOnly=false,onDirtyChange,onSubmission
   try{
    let next=revision;
    if(body!==savedBody){const saved=await runtime.current.save(body,revision);next=saved.revision;if(!alive.current)return;setRevision(next);setSavedBody(body);}
-   if(submit){const id=await runtime.current.submit(body,next);if(alive.current){setAttempt(id);setNotice('답안을 제출했습니다. 아직 첨삭을 요청하거나 Credit을 사용하지 않았습니다.');}}
+   if(submit){const id=await runtime.current.submit(body,next);if(alive.current){setAttempt(id);setNotice('답안을 제출했습니다. 아직 첨삭을 요청하거나 크레딧을 사용하지 않았습니다.');}}
    else if(alive.current)setNotice('계정에 저장했습니다. 다른 기기에서도 같은 답안을 이어 쓸 수 있습니다.');
   }catch(error){if(alive.current)setNotice(error&&typeof error==='object'&&'code' in error&&error.code==='PT409'?'다른 기기에서 답안이 변경되었습니다. 작성 내용을 복사한 뒤 저장된 답안을 다시 확인해 주세요.':'저장 또는 제출을 완료하지 못했습니다. 작성 내용은 화면에 유지됩니다. 다시 시도해 주세요.');}
   finally{lock.current=false;if(alive.current)setBusy(false);}
@@ -74,7 +74,7 @@ function Workspace({questionId,resume,draftOnly=false,onDirtyChange,onSubmission
   if(!alive.current)return;
   setRetryable(status.state==='failed'&&status.no_credit_consumed);
   if(status.state==='completed'){const value=await r.result(id);if(alive.current){setResult(value);setNotice('첨삭을 완료했습니다. 결과를 확인하고 직접 고쳐 써보세요.');}}
-  else if(status.state==='failed')setNotice(status.no_credit_consumed?'첨삭을 완료하지 못했습니다. Credit은 사용되지 않았습니다.':'첨삭을 완료하지 못했습니다. Credit 처리 상태를 확인하고 있습니다.');
+  else if(status.state==='failed')setNotice(status.no_credit_consumed?'첨삭을 완료하지 못했습니다. 크레딧은 사용되지 않았습니다.':'첨삭을 완료하지 못했습니다. 크레딧 처리 상태를 확인하고 있습니다.');
   else setNotice('처리 상태를 확인하고 있습니다. 새로 요청하지 않아도 됩니다.');
   const h=await r.history();if(alive.current)setHistory(h.evaluations);
   window.dispatchEvent(new Event('legendstudy:credit-refresh'));
@@ -108,7 +108,7 @@ function Workspace({questionId,resume,draftOnly=false,onDirtyChange,onSubmission
     {!draftOnly&&<button className="button button--primary" disabled={busy||!!attempt||!body.trim()} onClick={()=>void run(true)}>답안 제출</button>}
     {attempt&&<button className="button button--primary" disabled={busy} onClick={()=>{setPanel('answer');setAttempt(null);setEvaluation(null);setResult(null);setRetryable(false);setNotice('이전 제출을 보존하고 같은 답안을 직접 고쳐 쓸 수 있습니다.');}}>다시 써보기</button>}
    </div>
-   {!draftOnly&&<><p>저장·제출에는 Credit이 사용되지 않습니다. 최초 첨삭 성공 시 1 Credit을 사용하며, 14일 이내 같은 답안의 첫 재첨삭 1회가 포함됩니다. 적용 여부는 서버에서 확인합니다.</p>
+   {!draftOnly&&<><p>저장·제출에는 크레딧이 사용되지 않습니다. 최초 첨삭 성공 시 1 크레딧을 사용하며, 14일 이내 같은 답안의 첫 재첨삭 1회가 포함됩니다. 적용 여부는 서버에서 확인합니다.</p>
    <button className="button button--primary" disabled={!admitted||!attempt||busy||!!evaluation} onClick={()=>void evaluate()}>{admitted?'첨삭 진행':'첨삭 준비 중'}</button>
    {!admitted&&<p>이 문항의 실제 첨삭 연결을 확인한 뒤 이용할 수 있습니다.</p>}
    {retryable&&<button className="button button--outline" disabled={busy||!admitted} onClick={()=>void evaluate(true)}>실패한 첨삭 다시 시도</button>}

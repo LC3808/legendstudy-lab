@@ -121,7 +121,7 @@ describe("AdminOperationsView", () => {
     // Processing time now appears in the summary header and again on the row.
     expect(screen.getAllByText("40.0초").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("openai gpt-5 · essay-prompt-v3")).toBeInTheDocument();
-    expect(screen.getByText("1 Credit · 차감 완료")).toBeInTheDocument();
+    expect(screen.getByText("1 크레딧 · 차감 완료")).toBeInTheDocument();
     expect(screen.getByText(/검토 완료/)).toBeInTheDocument();
     expect(screen.queryByText(/답안 원문을 열람할 수 있습니다/)).not.toBeInTheDocument();
   });

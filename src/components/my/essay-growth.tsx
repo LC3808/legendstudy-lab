@@ -1,5 +1,7 @@
 'use client';
 import Link from 'next/link';
+import {useState} from 'react';
+import {EssayGrowth} from './essay-history-growth';
 import {readEssayDashboard,readMathDashboard,summarizeRecords} from '@/lib/my/essay-dashboard';
 import {readEssaySummary} from '@/lib/my/foundation';
 import {summarizeGrowth, type GrowthSummary} from '@/lib/my/essay-growth';
@@ -16,7 +18,11 @@ import {DataStatus, useOwnerData} from './owner-data';
  * growth block reports how many elements moved and links to the detail view for the
  * named breakdown rather than inventing a label.
  */
-export function EssayGrowthCard() {
+export function EssayGrowthCard(){
+ const [tab,setTab]=useState('논술 LAB');
+ return <><div className="my-growth-tabs" role="tablist" aria-label="성장 서비스">{['논술 LAB','내신 LAB','수능 LAB'].map(t=><button key={t} role="tab" aria-selected={tab===t} onClick={()=>setTab(t)}>{t}</button>)}</div><div role="tabpanel">{tab==='논술 LAB'?<><EssayGrowthSummary/><EssayGrowth/></>:<p className="my-panel my-coming">서비스 준비 중입니다.</p>}</div></>;
+}
+function EssayGrowthSummary() {
  const result = useOwnerData(readEssaySummary);
  const essay=useOwnerData(readEssayDashboard),math=useOwnerData(readMathDashboard);
  if(!essay.data)return <DataStatus error={essay.error} reload={essay.reload}/>;
@@ -30,10 +36,12 @@ export function EssayGrowthCard() {
   return <div className="my-panel my-growth">
    <p className="my-growth__headline">나의 논술 첨삭과 재작성 기록이 있어요.</p>
    <dl className="my-growth__stats">
-    <div><dt>첨삭한 답안</dt><dd>{counts.evaluated}개</dd></div>
-    <div><dt>재작성한 답안</dt><dd>{counts.rewritten}개</dd></div>
+    <div><dt>첨삭 완료 회차</dt><dd>{counts.evaluated}개</dd></div>
+    <div><dt>재작성 횟수</dt><dd>{counts.rewritten}개</dd></div>
     <div><dt>재첨삭 완료</dt><dd>{counts.reevaluated}개</dd></div>
    </dl>
+   <p>최근 첨삭 대학 · {[...rows].filter(r=>r.evaluations.some(e=>e.status.toLowerCase()==='completed')).sort((a,b)=>b.at.localeCompare(a.at))[0]?.university??'대학 정보 미제공'}</p>
+   <p>최근 평가 단계 · {[...rows].filter(r=>r.evaluations.some(e=>e.valid&&e.status.toLowerCase()==='completed')).sort((a,b)=>b.at.localeCompare(a.at))[0]?.rewrite?'재첨삭':'최초 첨삭'}</p>
    <p className="my-note">나의 첨삭 기록과 같은 조회 범위이며, 전체 누적 통계가 아닙니다. 같은 문제·평가 기준의 성장 비교는 저장된 결과에서 확인할 수 있어요.</p>
    <div className="my-actions"><Link className="button button--outline button--small" href="/account/essay/">평가 결과 분석</Link><Link className="button button--outline button--small" href="/my/essays/">나의 첨삭 기록</Link></div>
   </div>;

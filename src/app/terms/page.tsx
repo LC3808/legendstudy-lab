@@ -6,7 +6,7 @@ import { termsDocument } from "@/lib/legal-documents";
 
 export const metadata = buildPublicMetadata(
   "LegendStudy 이용약관",
-  "LegendStudy LAB 논술 첨삭 상품의 이용 조건, Credit 이용기간과 재첨삭, 결제와 환불, 미성년자 이용과 이용자의 의무를 안내합니다.",
+  "LegendStudy LAB 논술 첨삭 상품의 이용 조건, 크레딧 이용기간과 재첨삭, 결제와 환불, 미성년자 이용과 이용자의 의무를 안내합니다.",
   "/terms",
 );
 

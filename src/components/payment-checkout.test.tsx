@@ -18,7 +18,7 @@ const checkout = {
   clientKey: 'test_ck_synthetic',
   customerKey: id,
   orderId,
-  orderName: 'LegendStudy 논술 첨부 3 Credits',
+  orderName: 'LegendStudy 논술 첨부 3 크레딧',
   amount: { currency: 'KRW', value: 11900 },
   successUrl: 'https://example.test/payments/success/',
   failUrl: 'https://example.test/payments/fail/',
@@ -61,7 +61,7 @@ describe('checkout surface', () => {
     const plan = pricingPlans.find((p) => p.credits === 3);
     expect(plan).toBeTruthy();
     const summary = screen.getByRole('region', { name: '주문 확인' });
-    expect(within(summary).getByText('3 Credit')).toBeTruthy();
+    expect(within(summary).getByText('3 크레딧')).toBeTruthy();
     expect(within(summary).getByText(plan!.priceLabel)).toBeTruthy();
     expect(within(summary).getByText(/결제일로부터 3개월/)).toBeTruthy();
     expect(within(summary).getByText(/최초 첨삭 1회/)).toBeTruthy();
@@ -107,7 +107,7 @@ describe('checkout surface', () => {
     render(<PaymentCheckout />);
     await waitFor(() => expect(screen.getByText('결제하기')).not.toBeDisabled());
     const summary = screen.getByRole('region', { name: '주문 확인' });
-    expect(within(summary).getByText('5 Credit')).toBeTruthy();
+    expect(within(summary).getByText('5 크레딧')).toBeTruthy();
     expect(screen.getByText('상품 선택')).toBeTruthy();
   });
 });

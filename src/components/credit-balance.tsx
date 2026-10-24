@@ -73,5 +73,5 @@ export function useCreditSummary(): { state: CreditState; reload: () => void } {
 
 export function CreditBalance() {
   const { state, reload } = useCreditSummary();
-  return <section><h2>내 Credit</h2>{state.status === 'ready' && <p>사용 가능 {state.value.spendable} Credits · 구매 {state.value.paid} · 가입 무료 {state.value.free} · 기타 {state.value.other}{state.value.next_expiry && <> · 가장 가까운 만료: {new Date(state.value.next_expiry).toLocaleString('ko-KR')}</>}</p>}{state.status === 'error' && <p>Credit을 확인하지 못했습니다.</p>}<button onClick={reload}>잔액 새로고침</button></section>;
+  return <section><h2>내 크레딧</h2>{state.status === 'ready' && <p>사용 가능 {state.value.spendable} 크레딧 · 구매 {state.value.paid} · 가입 무료 {state.value.free} · 기타 {state.value.other}{state.value.next_expiry && <> · 가장 가까운 만료: {new Date(state.value.next_expiry).toLocaleString('ko-KR')}</>}</p>}{state.status === 'error' && <p>크레딧을 확인하지 못했습니다.</p>}<button onClick={reload}>잔액 새로고침</button></section>;
 }

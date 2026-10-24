@@ -7,9 +7,9 @@
  * no provider payloads. Presentation copy is not a canonical evaluation fact.
  */
 
-import { useState } from "react";
 
-import { solutionProvenanceLabel } from "@/lib/math-learning/core";
+
+
 import type { CoreView, HintLevel } from "@/lib/math-learning/types";
 import type { SolutionProvenance } from "@/lib/math-learning/runtime/contract";
 
@@ -30,18 +30,13 @@ export function LearningGuidance({
   l0Body,
   revealedHints,
   onRevealHint,
-  onRevealSolution,
   onResolve,
-  solutionProvenance,
 }: LearningGuidanceProps) {
-  const [noticeShown, setNoticeShown] = useState(false);
-  const label: string | null = solutionProvenance ? solutionProvenanceLabel(solutionProvenance) : null;
-
   if (!coreView.primary) {
     return (
       <section className="math-learning" aria-label="학습 안내">
-        <h2>잘 해결했습니다</h2>
-        <p>이 문항에서 더 고칠 핵심 오류는 없습니다.</p>
+        <h2>풀이 다시 살펴보기</h2>
+        <p>저장된 평가 결과를 확인하고 답안을 다시 작성해 보세요.</p>
         <button type="button" onClick={onResolve}>답안을 다시 작성해 보세요</button>
       </section>
     );
@@ -68,25 +63,6 @@ export function LearningGuidance({
             <button type="button" onClick={() => onRevealHint(2)}>개념 힌트 더 보기</button>
           )
         ) : null}
-      </div>
-
-      <div className="math-learning__solution">
-        {noticeShown ? (
-          <p className="math-learning__notice">직접 다시 풀어본 뒤 해설을 확인하면 학습 효과가 큽니다.</p>
-        ) : null}
-        <button
-          type="button"
-          onClick={() => {
-            if (!noticeShown) {
-              setNoticeShown(true);
-              return;
-            }
-            onRevealSolution();
-          }}
-        >
-          해설 보기
-        </button>
-        {label ? <span className="math-learning__provenance">{label}</span> : null}
       </div>
 
       <button type="button" className="math-learning__resolve" onClick={onResolve}>

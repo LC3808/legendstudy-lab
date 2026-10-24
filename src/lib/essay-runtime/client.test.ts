@@ -45,7 +45,7 @@ describe('APP-compatible Humanities Web binding',()=>{
   f.store.rpc=async(n,args)=>{if(n==='essay_component_result'){f.switchUser();return {version:'essay-composition-v1',evaluationId:evaluation,attemptId:attempt,sections:[{}]};}return base(n,args);};
   await expect(c.componentResult(evaluation)).rejects.toThrow();
  });
- it('does not reserve Credit when server runtime admission fails',async()=>{
+ it('does not reserve 크레딧 when server runtime admission fails',async()=>{
   const f=fixture(),c=new EssayRuntimeClient(f.store,question,true);await c.open();
   await expect(c.requestEvaluation(attempt,async()=>{throw Error('WORKER_UNAVAILABLE');})).rejects.toThrow();
   expect(f.calls.some(x=>x.name==='essay_request_evaluation')).toBe(false);

@@ -36,13 +36,13 @@ beforeEach(() => {
   pathname = "/essay-lab/";
 });
 
-describe("one Credit authority for MY and 논술 LAB", () => {
+describe("one 크레딧 authority for MY and 논술 LAB", () => {
   it("shows MY and the 논술 LAB header the same number from one RPC", async () => {
     mockClient.rpc.mockResolvedValue({ data: ready, error: null });
     render(<><CreditBalance /><EssayCreditStatus /></>);
 
     await waitFor(() => expect(screen.getByText("5개")).toBeInTheDocument());
-    expect(screen.getByText(/사용 가능 5 Credits/)).toBeInTheDocument();
+    expect(screen.getByText(/사용 가능 5 크레딧/)).toBeInTheDocument();
     expect(screen.getByText("무료 3 · 구매 2")).toBeInTheDocument();
     expect(screen.getByText("가장 가까운 만료일 2027.01.07")).toBeInTheDocument();
     // One read serves both screens: the header does not open its own query.
@@ -54,7 +54,7 @@ describe("one Credit authority for MY and 논술 LAB", () => {
     mockClient.rpc.mockResolvedValue({ data: { ...ready, spendable: 99 }, error: null });
     render(<EssayCreditStatus />);
 
-    await waitFor(() => expect(screen.getByText(/첨삭권을 확인하지 못했습니다/)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText(/크레딧을 확인하지 못했습니다/)).toBeInTheDocument());
     expect(screen.queryByText("99개")).not.toBeInTheDocument();
     expect(screen.queryByText("5개")).not.toBeInTheDocument();
   });
@@ -62,14 +62,14 @@ describe("one Credit authority for MY and 논술 LAB", () => {
   it("refuses an unknown DTO version", async () => {
     mockClient.rpc.mockResolvedValue({ data: { ...ready, dto_version: "credit-v2" }, error: null });
     render(<EssayCreditStatus />);
-    await waitFor(() => expect(screen.getByText(/첨삭권을 확인하지 못했습니다/)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText(/크레딧을 확인하지 못했습니다/)).toBeInTheDocument());
   });
 
   it("does not claim a balance when the RPC fails", async () => {
     mockClient.rpc.mockResolvedValue({ data: null, error: { message: "boom" } });
     render(<EssayCreditStatus />);
-    await waitFor(() => expect(screen.getByText(/첨삭권을 확인하지 못했습니다/)).toBeInTheDocument());
-    expect(screen.queryByText(/내 첨삭권/)).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/크레딧을 확인하지 못했습니다/)).toBeInTheDocument());
+    expect(screen.queryByText(/내 크레딧/)).not.toBeInTheDocument();
   });
 
   it("refreshes every mounted balance after an evaluation settles", async () => {
@@ -79,10 +79,10 @@ describe("one Credit authority for MY and 논술 LAB", () => {
     mockClient.rpc.mockResolvedValue({ data: { ...ready, spendable: 4, free: 2 }, error: null });
     act(() => window.dispatchEvent(new Event("legendstudy:credit-refresh")));
     await screen.findByText("4개");
-    expect(screen.getByText(/사용 가능 4 Credits/)).toBeInTheDocument();
+    expect(screen.getByText(/사용 가능 4 크레딧/)).toBeInTheDocument();
   });
 
-  it("reloads the persistent header after another device spends Credit and the route changes", async () => {
+  it("reloads the persistent header after another device spends 크레딧 and the route changes", async () => {
     mockClient.rpc.mockResolvedValue({ data: ready, error: null });
     const view = render(<EssayCreditStatus />);
     await screen.findByText("5개");
@@ -99,13 +99,13 @@ describe("one Credit authority for MY and 논술 LAB", () => {
     mockClient.rpc.mockResolvedValue({ data: { ...ready, spendable: 4, free: 2 }, error: null });
     act(() => (event === "focus" ? window : document).dispatchEvent(new Event(event)));
     await screen.findByText("4개");
-    expect(screen.getByText(/사용 가능 4 Credits/)).toBeInTheDocument();
+    expect(screen.getByText(/사용 가능 4 크레딧/)).toBeInTheDocument();
   });
 
   it("renders no balance for an anonymous session", async () => {
     mockClient.auth.getSession.mockResolvedValue({ data: { session: null } });
     render(<EssayCreditStatus />);
-    await waitFor(() => expect(screen.getByRole("link", { name: "로그인하고 첨삭권 확인" })).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole("link", { name: "로그인하고 크레딧 확인" })).toBeInTheDocument());
     expect(mockClient.rpc).not.toHaveBeenCalled();
   });
 });

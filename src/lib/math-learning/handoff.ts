@@ -82,7 +82,7 @@ export function buildMath6Handoff(params: {
  */
 export function resolveCtaNote(includedStatus: IncludedReevaluationStatus | "UNKNOWN"): string | null {
   return includedStatus === "AVAILABLE"
-    ? "14일 이내 재첨삭에는 Credit이 추가로 차감되지 않습니다."
+    ? "14일 이내 재첨삭에는 크레딧이 추가로 차감되지 않습니다."
     : null;
 }
 

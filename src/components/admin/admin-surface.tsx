@@ -36,7 +36,7 @@ type NavEntry = { key: AdminNavKey; label: string; href: string | null };
 export const ADMIN_NAV: readonly NavEntry[] = [
   { key: "dashboard", label: "대시보드", href: "/admin/" },
   { key: "members", label: "회원", href: "/admin/members/" },
-  { key: "credit", label: "Credit", href: "/admin/credit/" },
+  { key: "credit", label: "크레딧", href: "/admin/credit/" },
   { key: "payment", label: "결제", href: "/admin/payment/" },
   { key: "essay", label: "논술·수리 운영", href: "/admin/operations/" },
   { key: "inquiries", label: "1:1 문의", href: "/admin/inquiries/" },

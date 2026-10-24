@@ -309,7 +309,7 @@ describe("AdminMembersView", () => {
     expect(await screen.findByText("지급 단위")).toBeInTheDocument();
     // The origin label and the transaction-type label share the same Korean copy.
     expect(screen.getAllByText("신규가입 무료").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByRole("button", { name: /Credit 지급/ })).toBeEnabled();
+    expect(screen.getByRole("button", { name: /크레딧 지급/ })).toBeEnabled();
   });
 });
 
@@ -317,10 +317,10 @@ describe("AdminCreditView", () => {
   it("shows the aggregate and grant guidance", async () => {
     setSession("authenticated", okOperator);
     render(<AdminCreditView />);
-    expect(await screen.findByText("Credit 현황")).toBeInTheDocument();
+    expect(await screen.findByText("크레딧 현황")).toBeInTheDocument();
     expect(screen.getByText("현재 사용 가능")).toBeInTheDocument();
     expect(
-      screen.getByText(/회원 조회 후 운영 Credit을 지급할 수 있습니다/),
+      screen.getByText(/회원 조회 후 운영 크레딧을 지급할 수 있습니다/),
     ).toBeInTheDocument();
   });
 

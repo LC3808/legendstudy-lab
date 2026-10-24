@@ -11,7 +11,7 @@ const send=(payload:unknown=body,extra={})=>onRequestPost({env:{...env,...extra}
 beforeEach(()=>{vi.clearAllMocks();m.subject.mockResolvedValue(id);m.request.mockResolvedValue(Response.json(id));m.dispatch.mockImplementation(async(r:Request)=>r.url.endsWith('/exam-admission')?Response.json({ready:true,session_version:'exam-session-v1'}):Response.json({state:'completed'}));});
 it('default HOLD performs no auth, reservation or Provider dispatch',async()=>{expect((await send(body,{ESSAY_EXAM_RUNTIME_ENABLED:undefined})).status).toBe(503);expect(m.subject).not.toHaveBeenCalled();expect(m.request).not.toHaveBeenCalled();});
 it('online Auth/allowlist failure performs no reservation or worker call',async()=>{m.subject.mockRejectedValue(Error('ACCESS_DENIED'));await send();expect(m.request).not.toHaveBeenCalled();expect(m.dispatch).not.toHaveBeenCalled();});
-it('runtime readiness is checked before any Credit request',async()=>{m.dispatch.mockResolvedValue(Response.json({ready:false}));expect((await send()).status).toBe(409);expect(m.request).not.toHaveBeenCalled();});
+it('runtime readiness is checked before any 크레딧 request',async()=>{m.dispatch.mockResolvedValue(Response.json({ready:false}));expect((await send()).status).toBe(409);expect(m.request).not.toHaveBeenCalled();});
 it('passes verified subject and same request key to one reservation then runs existing host',async()=>{expect((await send()).status).toBe(202);const [path,credential,init]=m.request.mock.calls[0];expect(path).toBe('/rest/v1/rpc/essay_exam_submit');expect(credential).toBe('fixture-worker-only');expect(JSON.parse(init.body)).toMatchObject({p_subject:id,p_key:id,p_answers:body.answers,p_parent:null});expect(m.dispatch.mock.calls[1][0].url.endsWith('/exam-evaluate')).toBe(true);});
 it('ambiguous dispatch preserves reserved identity and never refunds or reserves again',async()=>{m.dispatch.mockImplementation(async(r:Request)=>{if(r.url.endsWith('/exam-admission'))return Response.json({ready:true,session_version:'exam-session-v1'});throw Error('network');});const r=await send();expect(r.status).toBe(202);expect(await r.json()).toEqual({runId:id,code:'STATUS_CHECK_REQUIRED'});expect(m.request).toHaveBeenCalledTimes(1);});
 it('rejects image/unknown fields rather than silently dropping them',async()=>{const r=await send({...body,answers:[{...body.answers[0],images:['x']}] });expect(r.status).toBe(422);expect(m.request).not.toHaveBeenCalled();});
@@ -55,7 +55,7 @@ it('additional cycle reuses the same gateway and routes only to the bounded cycl
  expect(m.request.mock.calls[0][0]).toBe('/rest/v1/rpc/essay_exam_submit_cycle');
  expect(JSON.parse(m.request.mock.calls[0][2].body).p_previous).toBe(id);
 });
-it('quote reads server eligibility without reserving Credit or dispatching evaluation',async()=>{
+it('quote reads server eligibility without reserving 크레딧 or dispatching evaluation',async()=>{
  m.request.mockResolvedValue(Response.json({version:'essay-exam-quote-v1',credits:0,kind:'included'}));
  const response=await send({action:'quote',examId:id,questionIds:[id],parentId:id});
  expect(await response.json()).toMatchObject({credits:0});
@@ -91,13 +91,13 @@ it('image references and six-page drafts cannot bypass the text-only contract',a
   expect(m.dispatch).not.toHaveBeenCalled();
  }
 });
-it('foreign Origin cannot reach authentication, Credit or worker admission',async()=>{
+it('foreign Origin cannot reach authentication, 크레딧 or worker admission',async()=>{
  const response=await onRequestPost({env,request:new Request('https://lab.legendstudy.com/api/essay/exam',{method:'POST',headers:{Origin:'https://other.invalid',Authorization:'Bearer fixture-user','Content-Type':'application/json'},body:JSON.stringify(body)})});
  expect(response.status).toBe(403);
  expect(m.subject).not.toHaveBeenCalled();expect(m.request).not.toHaveBeenCalled();expect(m.dispatch).not.toHaveBeenCalled();
 });
 
-it('availability exposes only admitted UUIDs without any Credit reservation',async()=>{
+it('availability exposes only admitted UUIDs without any 크레딧 reservation',async()=>{
  m.dispatch.mockResolvedValue(Response.json({ready:true,question_ids:[id,'invalid',null]}));
  expect(await (await send({action:'availability',examId:id})).json()).toEqual({ready:true,questionIds:[id]});
  expect(m.request).not.toHaveBeenCalled();
