@@ -2,7 +2,7 @@
 import {act,cleanup,fireEvent,render,screen,waitFor} from '@testing-library/react';
 import {afterEach,expect,it,vi} from 'vitest';
 import {EssayHistory} from './essay-history';
-const f=vi.hoisted(()=>({client:{auth:{getSession:async()=>({data:{session:{user:{id:'owner'}}}})}},rows:[] as any[],read:vi.fn()}));
+const f=vi.hoisted(()=>({client:{auth:{getSession:async()=>({data:{session:{user:{id:'owner'}}}})}},rows:[] as ReturnType<typeof row>[],read:vi.fn()}));
 vi.mock('next/navigation',()=>({useRouter:()=>({back:vi.fn()})}));
 vi.mock('@/components/auth-context',()=>({useAuth:()=>({status:'authenticated',user:{id:'owner'},client:f.client})}));
 vi.mock('@/components/credit-balance',()=>({useCreditSummary:()=>({state:{status:'ready',value:{spendable:0}}})}));

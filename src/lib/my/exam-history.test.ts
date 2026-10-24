@@ -12,7 +12,7 @@ describe('stored exam results use existing approved report',()=>{
 });
 
 it('shows only saved criterion judgments with evidence references, without inventing source text',()=>{
- const run=structuredClone(fixture.before) as any;
+ const run=structuredClone(fixture.before) as typeof fixture.before & {result:{questions:{evaluation:{dimensions:{evidence_ids?:string[]}[]}}[]}};
  const d=run.result.questions[0].evaluation.dimensions[0];
  d.evidence_ids=['e1','e1','e2'];
  expect(examReports(run)[0].evidenceLabels).toEqual(['Reasoning — Needs connection (저장된 근거 참조 2개)']);
