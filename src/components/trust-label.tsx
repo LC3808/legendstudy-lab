@@ -3,7 +3,7 @@ import type { OriginType, PublicSourceStatus } from "@/types/domain";
 const originLabels: Record<OriginType, string> = {
   OFFICIAL_SOURCE: "공식 확인",
   LSLAB_DERIVED: "LS LAB 분석",
-  MODEL_DERIVED: "AI 평가",
+  MODEL_DERIVED: "첨삭 결과",
   HUMAN_REVIEWED: "사람 검수",
   SYNTHETIC_CONTENT: "연습 예시",
 };

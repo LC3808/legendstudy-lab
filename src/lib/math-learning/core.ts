@@ -53,7 +53,7 @@ export function groupPropagated(output: MathEvalOutput): PropagatedGroup[] {
 const PROVENANCE_LABEL: Record<ReferenceProvenance, string> = {
   OFFICIAL: "대학 공식 해설",
   VERIFIED_INTERNAL: "레전드스터디 검증 풀이",
-  AI_GENERATED_REFERENCE: "AI 참고 풀이",
+  AI_GENERATED_REFERENCE: "참고 풀이",
 };
 
 /** Canonical provenance drives the label; AI content is never labeled official (MATH-5A §26). */
@@ -64,7 +64,7 @@ export function referenceLabel(provenance: ReferenceProvenance): ReferenceProven
 const SOLUTION_PROVENANCE_LABEL: Record<SolutionProvenance, string> = {
   OFFICIAL_SOLUTION: "대학 공식 해설",
   VERIFIED_INTERNAL_SOLUTION: "레전드스터디 검증 풀이",
-  AI_GENERATED_REFERENCE: "AI 참고 풀이",
+  AI_GENERATED_REFERENCE: "참고 풀이",
 };
 
 /** Label for a server-authored reveal_solution provenance; AI reference never shown as official. */

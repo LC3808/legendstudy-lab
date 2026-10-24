@@ -5,6 +5,8 @@ import {LabCards} from './lab-cards';
 import {ApplicationsPanel} from './applications';
 import {StudySummaryPanel} from './study-summary';
 import { ProfileEditor } from './profile-editor';
+import { ProfileHeader } from './profile-header';
+import { EssayGrowthCard } from './essay-growth';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { useCreditSummary } from '@/components/credit-balance';
 import { useAuth } from '@/components/auth-context';
@@ -28,10 +30,11 @@ export function MyDashboard(){
  return <div className="my-dashboard content-wrap content-wrap--detail">
   <header className="my-head">
    <h1>마이페이지</h1>
-   <Identity />
   </header>
   <OwnerArea>
+   <section className="my-section" aria-labelledby="my-profile-title"><h2 id="my-profile-title">나의 프로필</h2><ProfileHeader /></section>
    <section className="my-section" aria-labelledby="my-usage-title"><h2 id="my-usage-title">내 이용 현황</h2><Usage /></section>
+   <section className="my-section" aria-labelledby="my-growth-title"><h2 id="my-growth-title">나의 논술 성장</h2><EssayGrowthCard /></section>
    <section className="my-section" aria-labelledby="my-school-title"><h2 id="my-school-title">나의 학교·학년</h2><div className="my-panel"><CurrentProfile /></div></section>
    <section className="my-section" aria-labelledby="my-goals-title"><h2 id="my-goals-title">나의 목표</h2><div className="my-panel"><GoalsPanel /></div></section>
    <section className="my-section" aria-labelledby="my-application-title"><h2 id="my-application-title">나의 지원 현황</h2><ApplicationsPanel /></section>
@@ -42,13 +45,6 @@ export function MyDashboard(){
    </section>
   </OwnerArea>
  </div>;
-}
-
-/** Email from Auth; canonical optional profiles.display_name is reserved for the visual handoff. */
-function Identity(){
- const {user}=useAuth();
- if(!user?.email)return null;
- return <p className="my-identity"><span className="my-identity__email">{user.email}</span></p>;
 }
 
 function CurrentProfile(){
@@ -132,9 +128,60 @@ export function TargetEditor({target,busy,save}:{target:Target;busy:boolean;save
  return <article className="my-target"><p className="my-target__name">{target.universities?.name??'관심 대학'}</p>{editing ? <form onSubmit={async(e:FormEvent)=>{e.preventDefault();if(await save(division))setEditing(false);}}><label>희망 학과·모집단위<input value={division} maxLength={120} disabled={busy} onChange={e=>setDivision(e.target.value)}/></label><div className="button-row"><button className="button button--outline button--small" disabled={busy}>학과 저장</button><button className="text-link" type="button" disabled={busy} onClick={()=>{setDivision(target.intended_division??'');setEditing(false);}}>취소</button></div></form> : <><p className="my-target__division">{target.intended_division||'희망 학과 미설정'}</p><div className="button-row"><button className="button button--outline button--small" type="button" disabled={busy} onClick={()=>setEditing(true)}>변경</button><button className="text-link" type="button" disabled={busy} onClick={()=>void save(null)}>삭제</button></div></>}</article>;
 }
 
+/**
+ * 첨삭권 내역 — the spendable balance a returning writer checks first, then the
+ * canonical Ledger rows one page at a time. The balance, breakdown and soonest
+ * expiry are the `credit_summary()` values exactly; nothing here attributes a
+ * purchase expiry to a free grant, and the rows remain date / signed quantity /
+ * user reason only.
+ */
+const CREDIT_PAGE_SIZE=10;
 export function CreditHistory(){
  const result=useOwnerData(readHistory);
- return <div className="my-dashboard content-wrap content-wrap--detail"><header className="my-head"><h1>구매·사용 내역</h1></header><OwnerArea path="/account/credits/"><ReturnNavigation href="/account/" label="마이페이지"/><section className="my-panel">{!result.data?<DataStatus error={result.error} reload={result.reload}/>:result.data.length===0?<p className="my-empty">아직 첨삭권 내역이 없습니다.</p>:<><p className="my-note">최근 내역 · 최대 100개</p><table className="user-credit-history"><caption className="sr-only">첨삭권 구매·사용 내역</caption><thead><tr><th scope="col">날짜</th><th scope="col">개수</th><th scope="col">사유</th></tr></thead><tbody>{result.data.map(r=><tr key={r.id}><td data-label="날짜">{dateLabel(r.at)}</td><td data-label="개수">{r.delta>0?'+':''}{r.delta}개</td><td data-label="사유">{r.label}</td></tr>)}</tbody></table></>}<Link className="text-link" href="/account/">마이페이지 →</Link></section></OwnerArea></div>;
+ const [page,setPage]=useState(0);
+ const rows=result.data??[];
+ const pageCount=Math.max(1,Math.ceil(rows.length/CREDIT_PAGE_SIZE));
+ const current=Math.min(page,pageCount-1);
+ const shown=rows.slice(current*CREDIT_PAGE_SIZE,current*CREDIT_PAGE_SIZE+CREDIT_PAGE_SIZE);
+ return <div className="my-dashboard content-wrap content-wrap--detail">
+  <header className="my-head"><h1>첨삭권 내역</h1></header>
+  <OwnerArea path="/account/credits/">
+   <ReturnNavigation href="/account/" label="마이페이지"/>
+   <CreditHistoryBalance/>
+   <section className="my-panel">
+    {!result.data
+     ?<DataStatus error={result.error} reload={result.reload}/>
+     :rows.length===0
+      ?<p className="my-empty">아직 첨삭권 내역이 없습니다.</p>
+      :<>
+        <p className="my-note">최근 내역 · 총 {rows.length}건{rows.length===100?' (최대 100건)':''}</p>
+        <table className="user-credit-history"><caption className="sr-only">첨삭권 구매·사용 내역</caption>
+         <thead><tr><th scope="col">날짜</th><th scope="col">개수</th><th scope="col">사유</th></tr></thead>
+         <tbody>{shown.map(r=><tr key={r.id}><td data-label="날짜">{dateLabel(r.at)}</td><td data-label="개수">{r.delta>0?'+':''}{r.delta}개</td><td data-label="사유">{r.label}</td></tr>)}</tbody>
+        </table>
+        {pageCount>1&&<nav className="my-pagination" aria-label="첨삭권 내역 페이지">
+         <button type="button" className="button button--outline button--small" disabled={current===0} onClick={()=>setPage(current-1)}>이전</button>
+         <span className="my-pagination__status" aria-live="polite">{current+1} / {pageCount} 페이지</span>
+         <button type="button" className="button button--outline button--small" disabled={current>=pageCount-1} onClick={()=>setPage(current+1)}>다음</button>
+        </nav>}
+       </>}
+   </section>
+  </OwnerArea>
+ </div>;
+}
+
+function CreditHistoryBalance(){
+ const {state,reload}=useCreditSummary();
+ if(state.status!=='ready')return <div className="my-panel"><DataStatus error={state.status==='error'} reload={reload}/></div>;
+ const v=state.value;
+ return <div className="my-panel my-credit-summary">
+  <div className="my-credit-summary__balance">
+   <p className="my-metric__label">사용 가능한 첨삭권</p>
+   <p className="my-metric__value">{v.spendable}<span className="my-metric__unit">개</span></p>
+   <p className="my-metric__meta">무료 {v.free} · 구매 {v.paid}{v.other>0?` · 기타 ${v.other}`:''}{v.next_expiry?` · 가장 가까운 만료 ${dateLabel(v.next_expiry)}`:''}</p>
+  </div>
+  <Link className="button button--primary" href="/pricing/">첨삭권 구매</Link>
+ </div>;
 }
 
 export function EssayRecords({compact=false,emptyAction=null}:{compact?:boolean;emptyAction?:ReactNode}){

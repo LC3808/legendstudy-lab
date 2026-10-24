@@ -118,7 +118,8 @@ describe("AdminOperationsView", () => {
     render(<AdminOperationsView />);
 
     expect(await screen.findByText("인문논술 평가")).toBeInTheDocument();
-    expect(screen.getByText("40.0초")).toBeInTheDocument();
+    // Processing time now appears in the summary header and again on the row.
+    expect(screen.getAllByText("40.0초").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("openai gpt-5 · essay-prompt-v3")).toBeInTheDocument();
     expect(screen.getByText("1 Credit · 차감 완료")).toBeInTheDocument();
     expect(screen.getByText(/검토 완료/)).toBeInTheDocument();
@@ -144,7 +145,7 @@ describe("AdminOperationsView", () => {
   it("links to the existing quality console instead of reimplementing it", async () => {
     setSession(payloads);
     render(<AdminOperationsView />);
-    const link = await screen.findByRole("link", { name: "AI 품질 콘솔 열기" });
+    const link = await screen.findByRole("link", { name: "첨삭 품질 콘솔 열기" });
     expect(link).toHaveAttribute("href", "/ql/");
   });
 

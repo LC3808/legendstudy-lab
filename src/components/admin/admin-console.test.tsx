@@ -239,7 +239,7 @@ describe("AdminDashboardView", () => {
   it("renders observed metrics and marks an uninstalled subsystem", async () => {
     setSession("authenticated", okOperator);
     render(<AdminDashboardView />);
-    expect(await screen.findByText("전체 회원")).toBeInTheDocument();
+    expect(await screen.findByText("누적 회원")).toBeInTheDocument();
     expect(screen.getByText("12")).toBeInTheDocument();
     expect(screen.getAllByText("미설치").length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText(/RUNTIME_OFF/)).toBeInTheDocument();
@@ -271,14 +271,14 @@ describe("AdminMembersView", () => {
     const requests:Record<string,unknown>[]=[];
     setSession('authenticated',(fn,p)=>{if(fn==='admin_member_list'){requests.push(p!);return {data:directoryPayload(undefined,30,p?.p_offset as number),error:null};}return okOperator(fn,p);});
     render(<AdminMembersView/>);await screen.findByText('전체 30명 · 조회 30명');
-    await userEvent.click(screen.getByRole('button',{name:'다음'}));await waitFor(()=>expect(requests.at(-1)?.p_offset).toBe(25));
-    expect(await screen.findByRole('cell',{name:'26'})).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button',{name:'다음'}));await waitFor(()=>expect(requests.at(-1)?.p_offset).toBe(10));
+    expect(await screen.findByRole('cell',{name:'11'})).toBeInTheDocument();
     await userEvent.type(screen.getByLabelText('이메일·이름·계정 ID 검색'),'회원');
     await userEvent.selectOptions(screen.getByLabelText('현재 상태'),'student');
     await userEvent.selectOptions(screen.getByLabelText('학년'),'3');
     await userEvent.selectOptions(screen.getByLabelText('정렬'),'oldest');
     await userEvent.click(screen.getByRole('button',{name:'검색·필터 적용'}));
-    await waitFor(()=>expect(requests.at(-1)).toMatchObject({p_query:'회원',p_offset:0,p_academic_status:'student',p_grade:3,p_sort:'oldest',p_limit:25}));
+    await waitFor(()=>expect(requests.at(-1)).toMatchObject({p_query:'회원',p_offset:0,p_academic_status:'student',p_grade:3,p_sort:'oldest',p_limit:10}));
   });
   it("distinguishes empty database, no results and RPC failure",async()=>{
     setSession('authenticated',()=>({data:directoryPayload([]),error:null}));const view=render(<AdminMembersView/>);
@@ -301,7 +301,7 @@ describe("AdminMembersView", () => {
     expect(screen.getByText("email, google")).toBeInTheDocument();
     expect(screen.getByText("검증대학교 · 컴퓨터공학과")).toBeInTheDocument();
     expect(screen.getAllByText("공학").length).toBeGreaterThan(0);
-    await waitFor(() => expect(screen.getByText("서비스 이용")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("학습 정보")).toBeInTheDocument());
     expect(screen.getByText("답안 본문은 이 화면에 표시하지 않습니다.")).toBeInTheDocument();
     expect(screen.getAllByText("미설치").length).toBeGreaterThanOrEqual(1);
 

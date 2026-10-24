@@ -51,7 +51,7 @@ describe("LearningGuidance", () => {
     expect(screen.getByText(/학습 효과/)).toBeInTheDocument();
     fireEvent.click(button);
     expect(onRevealSolution).toHaveBeenCalled();
-    expect(screen.getByText("AI 참고 풀이")).toBeInTheDocument();
+    expect(screen.getByText("참고 풀이")).toBeInTheDocument();
   });
 
   it("renders a completion state when CORE is empty", () => {

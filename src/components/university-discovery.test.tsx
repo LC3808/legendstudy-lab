@@ -2,6 +2,8 @@
 import {render,screen,fireEvent,waitFor} from '@testing-library/react';
 import {beforeEach,it,expect,vi} from 'vitest';
 import {UniversityDiscovery} from './university-discovery';
+const availability=vi.hoisted(()=>({ids:new Set<string>()}));
+vi.mock('./use-essay-service-status',()=>({useEssayServiceStatus:()=>availability.ids}));
 vi.mock('./auth-context',()=>({useAuth:()=>({client:null})}));
 beforeEach(()=>{try{sessionStorage.clear();}catch{/* ignore */}});
 it('paginates all source universities and resets page after search',async()=>{render(<UniversityDiscovery/>);expect(screen.getByText('42개 대학 · 전형 정보 기준')).toBeVisible();expect(screen.getByText('1 / 4')).toBeVisible();fireEvent.click(screen.getByRole('button',{name:'다음'}));expect(screen.getByText('2 / 4')).toBeVisible();fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:'성균관'}});expect(screen.getByText('1개 대학 · 전형 정보 기준')).toBeVisible();expect(screen.getByText('1 / 1')).toBeVisible();await waitFor(()=>expect(screen.getByRole('link',{name:'성균관대학교'}).getAttribute('href')).toMatch(/^\/essay-lab\/universities\/skku\/?$/));expect(screen.queryByRole('button',{name:'첨삭 가능'})).toBeNull();});
@@ -17,7 +19,7 @@ it('shows the reference search affordance and separates type, materials and AI r
  render(<UniversityDiscovery/>);
  expect(screen.getByPlaceholderText('대학명을 검색해 보세요.')).toHaveAttribute('type','search');
  expect(screen.getByRole('img',{name:'건국대학교 로고'})).toBeVisible();
- expect(screen.getAllByText('AI 첨삭 준비 중').length).toBeGreaterThan(0);
+ expect(screen.getAllByText('논술 첨삭 준비 중').length).toBeGreaterThan(0);
  expect(screen.queryByText('첨삭 가능')).toBeNull();
 });
 it('defaults to service priority, supports explicit alphabetical order, and resets pagination on sort changes',()=>{
@@ -52,7 +54,7 @@ it('keeps essay-first selection compact without changing all42 routes and applie
  expect(names.slice(-1)).toEqual(['홍익대학교']);
  fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:'성균관'}});
  expect(screen.getByRole('status')).toHaveTextContent('1개 대학');
- expect(screen.getByRole('link',{name:'성균관대학교 첨삭 시작하기'}).getAttribute('href')).toMatch(/^\/essay-lab\/universities\/skku\/?$/);
+ expect(screen.getByRole('link',{name:'성균관대학교'}).getAttribute('href')).toMatch(/^\/essay-lab\/universities\/skku\/?$/);
  fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:''}});
  fireEvent.click(screen.getByRole('button',{name:'주요 대학'}));
  expect(screen.getByRole('status')).toHaveTextContent('32개 대학');
@@ -63,18 +65,18 @@ it('keeps essay-first selection compact without changing all42 routes and applie
 it('shows every university with 전체보기 and returns to the paged view',()=>{
  render(<UniversityDiscovery essayFirst/>);
  expect(screen.getByText('1 / 4')).toBeVisible();
- expect(screen.getAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(12);
+ expect(screen.queryAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(0);
  const viewAll=screen.getByRole('button',{name:'전체보기'});expect(viewAll).toHaveAttribute('aria-pressed','false');
  fireEvent.click(viewAll);
- expect(screen.getAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(26);
- expect(screen.getAllByRole('button',{name:'서비스 준비중'})).toHaveLength(16);
- for(const button of screen.getAllByRole('button',{name:'서비스 준비중'}))expect(button).toBeDisabled();
+ expect(screen.queryAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(0);
+ expect(screen.getAllByRole('button',{name:'첨삭 서비스 준비 중'})).toHaveLength(42);
+ for(const button of screen.getAllByRole('button',{name:'첨삭 서비스 준비 중'}))expect(button).toBeDisabled();
  expect(screen.queryByText('1 / 4')).toBeNull();
  expect(screen.getByText('42개 대학 전체 표시')).toBeVisible();
  const back=screen.getByRole('button',{name:'페이지 보기'});expect(back).toHaveAttribute('aria-pressed','true');
  fireEvent.click(back);
  expect(screen.getByText('1 / 4')).toBeVisible();
- expect(screen.getAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(12);
+ expect(screen.queryAllByRole('link',{name:/첨삭 시작하기$/})).toHaveLength(0);
  expect(screen.getByRole('button',{name:'전체보기'})).toHaveAttribute('aria-pressed','false');
 });
 

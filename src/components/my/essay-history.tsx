@@ -12,7 +12,8 @@ export function recordStatus(row:RecordItem){return [...row.evaluations].filter(
 export function EssayHistory(){return <div className="my-dashboard essay-personal content-wrap content-wrap--detail"><header className="my-head"><h1>나의 첨삭 기록</h1></header><OwnerArea path="/my/essays/"><HistoryContent/></OwnerArea></div>;}
 function HistoryContent(){
  const essay=useOwnerData(readEssayDashboard,true),math=useOwnerData(readMathDashboard,true);const credit=useCreditSummary();
- const refresh=useCallback(()=>{essay.reload();math.reload();},[essay.reload,math.reload]);
+ const reloadEssay=essay.reload,reloadMath=math.reload;
+ const refresh=useCallback(()=>{reloadEssay();reloadMath();},[reloadEssay,reloadMath]);
  useEffect(()=>{
   const visible=()=>{if(document.visibilityState==='visible')refresh();};
   const changed=(event:Event)=>{if((event as CustomEvent).detail?.owner===essay.owner)refresh();};

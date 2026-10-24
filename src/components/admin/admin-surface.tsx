@@ -43,7 +43,7 @@ export const ADMIN_NAV: readonly NavEntry[] = [
   // The quality console is the existing /ql surface, imported unchanged. Its
   // own authorization (quality_operators) is what guards it; this link grants
   // nothing and the two roles are deliberately not merged.
-  { key: "quality", label: "AI 품질", href: "/ql/" },
+  { key: "quality", label: "첨삭 품질", href: "/ql/" },
   { key: "materials", label: "논술 자료 검수", href: "/admin/materials/" },
 ] as const;
 

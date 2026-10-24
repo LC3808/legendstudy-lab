@@ -107,7 +107,7 @@ describe("MATH-5B-R learning runtime binding (LR01–LR20)", () => {
     const { client } = setup();
     const res = await client.revealSolution("eval-1", "REFERENCE", "ks", "sol-ai");
     expect(res.provenance).toBe("AI_GENERATED_REFERENCE");
-    expect(solutionProvenanceLabel(res.provenance)).toBe("AI 참고 풀이");
+    expect(solutionProvenanceLabel(res.provenance)).toBe("참고 풀이");
     expect(solutionProvenanceLabel(res.provenance)).not.toBe("대학 공식 해설");
   });
 

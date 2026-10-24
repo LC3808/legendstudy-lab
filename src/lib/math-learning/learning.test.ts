@@ -123,7 +123,7 @@ describe("MATH-5B learning guidance — H01–H35", () => {
   it("H14/H15/H16 reference provenance labels", () => {
     expect(referenceLabel("OFFICIAL").label).toBe("대학 공식 해설");
     expect(referenceLabel("VERIFIED_INTERNAL").label).toBe("레전드스터디 검증 풀이");
-    expect(referenceLabel("AI_GENERATED_REFERENCE").label).toBe("AI 참고 풀이");
+    expect(referenceLabel("AI_GENERATED_REFERENCE").label).toBe("참고 풀이");
   });
 
   it("H17 AI reference cannot masquerade as official", () => {
@@ -238,7 +238,7 @@ describe("MATH-5B learning guidance — H01–H35", () => {
     expect(out.core.length).toBeGreaterThan(0);
     expect(l2.leakage_class).toBe("CONCEPT_REVEAL");
     expect(v.leakage).toBe("POTENTIAL_LEAK");
-    expect(referenceLabel("AI_GENERATED_REFERENCE").label).toBe("AI 참고 풀이");
+    expect(referenceLabel("AI_GENERATED_REFERENCE").label).toBe("참고 풀이");
   });
 
   it("H35 response-format-aware across all four formats", () => {
