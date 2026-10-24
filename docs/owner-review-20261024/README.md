@@ -87,3 +87,13 @@ Owner가 현행 정산 함수·canonical 문항 매핑·admission·이미지 저
 WEB 저장 답안→입력 확인→회차 제출 및 기존 Math 단일문항 화면의 회차 연결 구현 중. History는 새 회차에 포함된 attempt의 중복 표시를 제외하고 기존 독립 기록을 유지하며 전체 완료 전 회차 완료 수를 올리지 않는다. 관련 제출/기존화면/집계20검사 PASS. WEB 새 배포·PC/모바일·로그인 검증은 아직 미완료. 운영 학생/Provider 평가를 추가 실행한 결과가 아니다.
 
 보존 검토7: 발생/완료 시점은 서버 사실 사용; 원본 attempt/result 불변; 현재 projection만 추가하고 과거 overwrite/backfill 없음; 동일 auth subject/계정 권한; 학습 결과와 과금 decision/ledger 분리; 자기 계정 조회와 기존 삭제 경계 유지; 회차 완료 수는 저장 상태에서 계산하고 임의 점수/성장 사실 생성 금지.
+
+## 2026-10-25 운영 배포·읽기 검증
+
+WEB source8e3d3c8 → Preview8b267e46 → Production73145355-2b95-481e-b63d-a1ec50d8d304, canonical API 확인. Production public build 설정6개를 그대로 사용했고 Secret 변경 없음. 새 빌드 Typecheck/Lint/Build/Boundary/GitHub audit PASS. 회차 입력/재처리/기존 수리 화면22검사 PASS, MY123PASS/2skip(일부 중복, 합산 금지).
+
+Worker17b3bd65-8d90-4e8e-8ff6-a696e9575588, deployment88c26908-a27b-461e-ba00-dc4175bf3b8c 100%. [파일/배포 근거](session-worker-deployment.json). 기존 실행 파일5개만 변경하고 나머지65파일·Registry·SDK1.9.5·평가 엔진·바인딩 보존. 첫 후보4f9ba4cd는 transport의 새 RPC 허용 누락을 발견해 기존c3fb54be로 복구했다. session ready/claim/checkpoint 3개만 허용하는 회귀를 추가하고42검사 PASS 후 수정 버전을 배포했다. 배포 API 수락과 이후 실제 배포 조회를 구분했으며 최종70파일 해시 일치 확인.
+
+실제 로그인 브라우저: 건국2026자연 문제1의 ‘수리논술 회차 첨삭/저장한 답안 입력 확인0’ 표시, 기존 전체 이력·성장 그래프·기존 수리 결과 상세 정상 조회. 새 제출/Provider/운영 크레딧 거래 실행 없음. 관리자 페이지는 현재 계정 UNAUTHORIZED로 기존 관리자 로그인 요청 중. Mac 잠금으로 기기 도구의 모바일 반응형 검증 불가. 이 두 검증과 전체 잔여 항목을 완료로 보고하지 않는다. 새 MY 재설계 착수 조건은 아직 충족되지 않았다.
+
+운영 복구 기준: WEB 이전a21642c/6b69acb3는 보관. 새 회차 사용 후 Worker를 단일문항 버전으로 되돌리지 않으며 성공 checkpoint/회차/Ledger를 유지하는 forward fix를 우선한다. Math SQL 사용 후 제거는 차단된다.
