@@ -125,10 +125,20 @@ APP·WEB 공통 결과 UI, 대학별 내부 평가체계가 달라도 학생에�
 | §14 대학별 라이브 상태 | 기존 API 미제공 | 대학별 essay 활성 상태 조회 API | Codex | 운영 DB 기준 상태 표시, 하드코딩 없이 |
 | §19 APP 세부 UI 조정(버튼 간격 등) | APP 수정 범위 아님 | Unified Wiki P1 후속 기록 | Owner | — |
 
+## 12a. 사용자 화면 용어 (§3 정책, Owner 추가 지시)
+
+사용자 화면에서 'AI' 표현 금지 정책 반영:
+- `trust-label.tsx` OriginLabel `MODEL_DERIVED` 배지 **"AI 평가" → "첨삭 평가"**.
+- 합성 평가 fixture 면책 문구 **"AI 출력이 아님" → "첨삭 결과가 아님"**(`public-metadata.ts`).
+- 사용자 화면에 **'예시답안'/'대학 공식 예시답안' 문구는 애초에 없음**(grep 0건) — 변경 불필요.
+- 제외: 운영자 전용 `/ql` 품질 콘솔 문구("AI 평가와 별개의 운영자 검토…")와 `business-info`의
+  제공자 법적 고지("Production AI 평가 provider")는 본 정책(사용자 첨삭 화면) 범위 밖이라 불변.
+- 검증: tsc/eslint/vitest 938/boundaries/build 재통과.
+
 ## 13~15. Commit / PR / Production
 
-- UI Commit: `674e11f` — 메시지 끝 `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`
-  (본 보고서 §13~15 보강 커밋이 그 위에 올라감)
+- UI Commit: `674e11f`, §3 용어 Commit: `5b31633` — 메시지 끝 `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`
+  (본 보고서 보강 커밋이 그 위에 올라감)
 - 브랜치: `claude/web-essay-ui-redesign-20261024-81e3c9` → origin push 완료, Remote SHA 일치 확인.
 - PR: **[#4](https://github.com/LC3808/legendstudy-lab/pull/4)** — 별도 PR(ready), **main 미병합**.
 - **Production 미배포** (Owner 검수 후 결정). admin PR#2 / MY PR#3와 독립 브랜치로 보존.
