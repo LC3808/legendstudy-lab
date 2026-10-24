@@ -20,6 +20,27 @@ import { mathRuntimeLabel } from "@/lib/admin/ops-runtime";
 
 import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
 
+/** Percentage of a part over a whole, or 집계 불가 when the whole is zero. */
+function opsRate(part: number, whole: number): string {
+  if (whole <= 0) return "집계 불가";
+  return `${((part / whole) * 100).toFixed(1)}%`;
+}
+
+// Owner directive §10 asks for registry-level counts (대학/시험/문항, 평가 프로필
+// 연결, 공식 근거 연결, 일반 공개) and per-university usage. The deployed
+// admin-ops-v1 read carries pipeline activity only, so these are shown as
+// 집계 불가 with the reason rather than fabricated — recorded as a GAP.
+const OPS_REGISTRY_GAPS = [
+  "서비스 대학 수",
+  "등록 시험 수",
+  "등록 문항 수",
+  "평가 프로필 연결 문항",
+  "공식 근거 연결 문항",
+  "일반 공개 문항",
+  "대학별 이용량",
+  "최초/무료재/유료재 구분",
+] as const;
+
 const ESSAY_STATUS_FILTERS = [
   { value: "", label: "전체" },
   { value: "requested", label: "요청됨" },
@@ -115,6 +136,45 @@ export function AdminOperationsView() {
               </p>
             </div>
           </div>
+
+          {overview.state.data.essay.available && overview.state.data.essay.summary ? (
+            <>
+              <p className="admin-subhead">운영 지표 (인문논술)</p>
+              <div className="admin-metrics">
+                <div className="admin-metric">
+                  <p className="admin-metric__label">실제 평가 실행</p>
+                  <p className="admin-metric__value">{formatNumber(overview.state.data.essay.summary.total)}</p>
+                  <p className="admin-metric__note">최근 24시간 {formatNumber(overview.state.data.essay.summary.last24h)}건</p>
+                </div>
+                <div className="admin-metric">
+                  <p className="admin-metric__label">평가 성공률</p>
+                  <p className="admin-metric__value">{opsRate(overview.state.data.essay.summary.succeeded, overview.state.data.essay.summary.total)}</p>
+                  <p className="admin-metric__note">성공 {formatNumber(overview.state.data.essay.summary.succeeded)}건</p>
+                </div>
+                <div className="admin-metric">
+                  <p className="admin-metric__label">평가 실패율</p>
+                  <p className="admin-metric__value">{opsRate(overview.state.data.essay.summary.failed, overview.state.data.essay.summary.total)}</p>
+                  <p className="admin-metric__note">실패 {formatNumber(overview.state.data.essay.summary.failed)}건</p>
+                </div>
+                <div className="admin-metric">
+                  <p className="admin-metric__label">처리시간 중앙값</p>
+                  <p className="admin-metric__value admin-metric__value--sm">{formatProcessing(overview.state.data.essay.summary.medianProcessingMs)}</p>
+                  <p className="admin-metric__note">인문 {formatNumber(overview.state.data.essay.summary.total)}건 · 수리 {overview.state.data.math.available && overview.state.data.math.summary ? `${formatNumber(overview.state.data.math.summary.total)}건` : "집계 불가"}</p>
+                </div>
+              </div>
+            </>
+          ) : null}
+
+          <p className="admin-subhead">집계 불가 (운영 레지스트리 집계 RPC 필요)</p>
+          <div className="admin-metrics">
+            {OPS_REGISTRY_GAPS.map((label) => (
+              <div className="admin-metric" key={label}>
+                <p className="admin-metric__label">{label}</p>
+                <p className="admin-metric__value admin-metric__value--sm">집계 불가</p>
+              </div>
+            ))}
+          </div>
+
           <p className="admin-section__note">
             기준 시각 {formatDateTime(overview.state.data.asOf)}
           </p>

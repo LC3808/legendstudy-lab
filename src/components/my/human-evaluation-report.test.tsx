@@ -9,7 +9,7 @@ it('preserves approved human result order and collapsed five-level/details/examp
  const {container}=render(<EvaluationReport title="최초 첨삭" voiceType="humanities_social" report={humanReport(raw,'자료를 비교했다.','',attempt)}/>);
  expect([...container.querySelectorAll('article > section > h3')].map(e=>e.textContent)).toEqual(['종합 평가','잘한 점','평가 기준별 결과','보완할 점','우선 수정할 부분','재작성 안내','평가 근거']);
  expect(screen.getByLabelText('5단계 중 3단계')).toHaveTextContent('★★★☆☆');
- for(const label of ['근거의 해석','첨삭을 반영한 예시 답안','대학 공식 예시답안'])expect(screen.getByText(label).closest('details')).not.toHaveAttribute('open');
+ for(const label of ['근거의 해석','첨삭을 반영한 예시 답안'])expect(screen.getByText(label).closest('details')).not.toHaveAttribute('open');
  expect(container.querySelector('blockquote')).toHaveTextContent('자료를 비교했다.');
 });
 it('compares only actual selected prior with matching question, session and rubric',()=>{

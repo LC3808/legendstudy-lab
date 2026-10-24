@@ -33,8 +33,13 @@ function ApplicationForm({application,done,cancel}:{application?:Application;don
  const {client,user}=useAuth();const requestKey=useRequestKey();
  const [university,setUniversity]=useState(application?{id:application.university_id,name:application.university_name_snapshot}:null);
  const [query,setQuery]=useState('');const [results,setResults]=useState<{id:string;name:string}[]>([]);
- const [year,setYear]=useState(application?.admission_year.toString()??'');const [division,setDivision]=useState(application?.intended_division??'');
+ // New applications default to the upcoming admission year (e.g. 2027 in late 2026),
+ // never the 1900 input floor; an existing record keeps its own saved year.
+ const [year,setYear]=useState(application?application.admission_year.toString():String(new Date().getFullYear()+1));const [division,setDivision]=useState(application?.intended_division??'');
  const [type,setType]=useState(application?.admission_type??'');const [name,setName]=useState(application?.admission_name??'');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
+ // 수시/정시 is the common choice; a legacy or other saved value is kept as its own
+ // option so editing never silently rewrites it.
+ const typeOptions=['수시','정시',...(type&&!['수시','정시'].includes(type)?[type]:[])];
  async function search(e:FormEvent){e.preventDefault();if(!client||!user||busy)return;setBusy(true);setError('');try{const rows=await searchUniversities(client,user.id,query);await assertOwner(client,user.id);setResults(rows);if(!rows.length)setError('검색 결과가 없습니다.');}catch{setError('대학을 검색하지 못했습니다. 다시 시도해 주세요.');}finally{setBusy(false);}}
  async function save(e:FormEvent){e.preventDefault();if(!client||!user||!university||busy)return;setBusy(true);setError('');
   const input:ApplicationInput={id:application?.id??null,revision:application?.revision??0,year:Number(year),university:university.id,division,admissionType:type,admissionName:name};
@@ -47,7 +52,7 @@ function ApplicationForm({application,done,cancel}:{application?:Application;don
    <p>{university?.name??'지원 대학을 선택해 주세요.'}</p>
    <label>입학 연도<input type="number" min={1900} max={2200} required value={year} onChange={e=>setYear(e.target.value)} disabled={busy}/></label>
    <label>지원 학과·모집단위<input maxLength={120} required value={division} onChange={e=>setDivision(e.target.value)} disabled={busy}/></label>
-   <label>모집 구분<input maxLength={80} required placeholder="예: 수시, 정시" value={type} onChange={e=>setType(e.target.value)} disabled={busy}/></label>
+   <fieldset className="my-radio-group"><legend>모집 구분</legend>{typeOptions.map(v=><label key={v} className="my-radio"><input type="radio" name="admission-type" value={v} required checked={type===v} disabled={busy} onChange={()=>setType(v)}/>{v}</label>)}</fieldset>
    <label>전형 이름<input maxLength={120} required value={name} onChange={e=>setName(e.target.value)} disabled={busy}/></label>
    <div className="button-row"><button disabled={busy||!university} className="button button--outline button--small">저장</button><button type="button" disabled={busy} className="text-link" onClick={cancel}>취소</button></div>
   </form>

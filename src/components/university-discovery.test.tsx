@@ -17,7 +17,7 @@ it('shows the reference search affordance and separates type, materials and AI r
  render(<UniversityDiscovery/>);
  expect(screen.getByPlaceholderText('대학명을 검색해 보세요.')).toHaveAttribute('type','search');
  expect(screen.getByRole('img',{name:'건국대학교 로고'})).toBeVisible();
- expect(screen.getAllByText('AI 첨삭 준비 중').length).toBeGreaterThan(0);
+ expect(screen.getAllByText('논술 첨삭 준비 중').length).toBeGreaterThan(0);
  expect(screen.queryByText('첨삭 가능')).toBeNull();
 });
 it('defaults to service priority, supports explicit alphabetical order, and resets pagination on sort changes',()=>{
