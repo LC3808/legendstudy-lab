@@ -59,3 +59,29 @@ MY growth card still used only the older summary RPC and falsely showed empty de
 Admin dashboard renders actual metrics. Its existing aggregate RPC reports zero essay evaluations despite current exam History; complete unified aggregate coverage is unresolved, so UI now labels the scope as the admin summary and explicitly marks current exam History integration unverified. Math and WEB payment flags are labeled as admin-query settings, not proof of actual Worker or Native payment availability. No new SQL/RPC/permission was introduced. Administrator quality labels also use 첨삭 instead of AI.
 
 Browser session changed accounts during manual verification: earlier student showed Credit107 / History7 evaluated,5 rewritten,3 reevaluated; later administrator showed Credit95 / History10 evaluated,8 rewritten,5 reevaluated. These are separate accounts, not a balance delta. No purchase, new evaluation or credit mutation was performed.
+
+## Final release — Owner WEB acceptance pending
+
+Production canonical deployment verified successful: `6b69acb3-f497-48e4-8f79-559fc82a7b95`, source `a21642cf384adc69fa5c6ec6180c3ea7c4987cd2`. Final Preview: https://4a11baa7.legendstudy-lab.pages.dev . The later documentation-only commit does not change the deployed code.
+
+Final signed-in checks: administrator dashboard and updated scope labels render; MY current-record counters match History (10 evaluated / 8 rewritten / 5 reevaluated for the administrator); Credit95 and 11 existing credit-history entries remain. Earlier student Credit107 and stored draft were separately verified. Existing stored report, evidence, unchanged-growth comparison, rewrite entry/previous-answer controls and PDF viewer render. No submission, Provider invocation, purchase, Ledger/DB write, Secret change or Worker deployment occurred.
+
+### Public-scope question matrix (live UI; 2026-10-24)
+
+Configuration contains 9 public exams, while their browse metadata contains 20 questions. Each question tab was checked against the existing live admission-driven CTA, without submitting. The configured scope must never be equated to all metadata questions being active.
+
+| University / exam | Active question labels | Preparing question labels |
+| --- | --- | --- |
+| Konkuk 2026 admission humanities | 2 | 1 |
+| Konkuk 2026 mock humanities | 1, 2 | — |
+| Konkuk 2025 admission humanities I | 2 | 1 |
+| Seoul Women's 2026 admission humanities/social | 1, 2 | — |
+| Sungkyunkwan 2026 language session 1 | 1 | 2, 3 |
+| Sungkyunkwan 2026 language session 2 | 1 | 2, 3 |
+| Soongsil 2027 mock humanities | 1 | 2 |
+| Soongsil 2026 admission humanities | 1 | 2 |
+| Soongsil 2024 admission humanities | 1 | 2 |
+
+Total observed active: 11 questions across 4 universities / 9 exams. Historical handoff said 12. This discrepancy is recorded as a runtime-policy GAP, not silently corrected by hardcoding or expanding admission. The UI follows the current per-question gate. No new quality/profile/Worker investigation or activation was performed.
+
+APP edits, Android/iOS builds, device checks and Store updates remain NOT_STARTED in this release task, per the explicit Owner WEB acceptance prerequisite. Prior successful Android/iOS purchases remain Owner-reported PASS. Rollback remains exact deployment `e67a0d37-0d1f-4042-b480-7ffd7ba18b5b` (source f1a9e27). Admin aggregate coverage and the historical 12/current11 difference remain explicit limitations for Owner review.
