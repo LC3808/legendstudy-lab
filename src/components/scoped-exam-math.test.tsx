@@ -8,11 +8,12 @@ vi.mock('./auth-context',()=>({useAuth:()=>auth}));
 vi.mock('./essay-exam-submit',()=>({EssayExamSubmit:()=> <div>human submission</div>}));
 const exam={key:'exam',dbExamId:'exam',questions:[{key:'q1',dbQuestionId:'question'},{key:'q2',dbQuestionId:'other'}]} as SourceExam;
 afterEach(()=>vi.unstubAllGlobals());
-it('opens existing Math workspace only for the currently selected server-mapped question',async()=>{
+it('shows one round submission surface for the selected server-mapped Math question',async()=>{
  const leaf='3bab07d3-c047-53c2-89ad-9fa20ec7b3f3';
  vi.stubGlobal('fetch',vi.fn(async(url:string)=>Response.json(url.endsWith('/exam')?{ready:false}:{types:{math:true},mathQuestions:[{examId:'exam',questionId:'question',leafId:leaf}]})));
  const view=render(<ScopedExamSubmit exam={exam} questionKey="q1" drafts={{}}/>);
- expect(await screen.findByRole('link',{name:'수리논술 첨삭하기'})).toHaveAttribute('href',`/math?leaf=${leaf}`);
+ expect(await screen.findByRole('region',{name:'수리논술 회차 첨삭'})).toBeInTheDocument();
+ expect(screen.queryByRole('link',{name:'수리논술 첨삭하기'})).toBeNull();
  view.rerender(<ScopedExamSubmit exam={exam} questionKey="q2" drafts={{}}/>);
  expect(screen.queryByRole('link')).toBeNull();
  expect(screen.getByRole('button',{name:'첨삭 서비스 준비 중'})).toBeDisabled();

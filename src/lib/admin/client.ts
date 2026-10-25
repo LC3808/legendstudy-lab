@@ -1,3 +1,4 @@
+import {parseLearningSummary,type LearningSummary} from './learning-summary';
 import {parseReleaseReport,type ReleaseReport,type ReportFilter} from './release-report';
 import {parseMemberDirectory,type MemberDirectory,type MemberFilters} from "./members";
 import {parseStudent360,type Student360} from "./student360";
@@ -42,6 +43,7 @@ import { AdminError, mapRpcError } from "./errors";
  * credential is introduced and finance-only functions remain inaccessible.
  */
 export interface AdminClient {
+  learningSummary(subject?:string):Promise<LearningSummary>;
   releaseReport(filters:ReportFilter):Promise<ReleaseReport>;
   isOperator(): Promise<boolean>;
   dashboard(): Promise<AdminDashboard>;
@@ -174,6 +176,7 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
   }
 
   return {
+    async learningSummary(subject?:string){await requireSession();return parseLearningSummary(await callRpc('admin_learning_summary',{p_subject:subject??null}));},
     async releaseReport(filters:ReportFilter):Promise<ReleaseReport>{
       await requireSession();
       return parseReleaseReport(await callRpc('admin_release_report',{p:{version:'admin-release-v1',...filters}}),filters.kind);

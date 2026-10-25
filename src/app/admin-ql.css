@@ -721,3 +721,15 @@
 .admin-inquiry__head { padding-bottom: 0.5rem; border-bottom: 1px solid var(--line); margin-bottom: 0.1rem; }
 .admin-inquiry { transition: border-color 150ms ease, box-shadow 150ms ease; }
 .admin-inquiry:hover { border-color: var(--line-strong); }
+
+/* One hierarchy for all operations surfaces. */
+.admin-section,.admin-detail__block{border:1px solid var(--line);border-radius:16px;padding:1.25rem;background:var(--surface,#fff);box-shadow:0 6px 20px #1c2c4208}
+.admin-section h2{font-size:1.35rem;font-weight:800;color:var(--ink-strong);border-left:4px solid var(--accent);padding-left:.75rem;margin:0 0 1rem}
+.admin-section h3,.admin-subhead{font-size:1.1rem;font-weight:750;margin:1.5rem 0 .8rem;color:var(--ink-strong)}
+.admin-section select,.admin-search select,.admin-period select{border:1.5px solid #aebaca;background:#f7f9fc;border-radius:9px;min-height:44px;padding:.5rem .8rem;color:#1c2c42;font-weight:650}
+.admin-section select:focus-visible,.admin-search select:focus-visible{outline:3px solid #f5a30066;outline-offset:2px;border-color:#a86b00}
+.admin-metrics{gap:1rem}.admin-metric{padding:1rem;border:1px solid #e0e5ec;box-shadow:0 3px 10px #1c2c4205}
+.admin-metric__label{font-size:.85rem;font-weight:650}.admin-metric__value{font-size:1.8rem;font-weight:800;margin-top:.4rem}
+.admin-section--primary{border-top:4px solid var(--accent)}
+.admin-payment-summary{border:1px solid var(--line);border-radius:12px;padding:1rem;margin:1rem 0;background:#f7f9fc}
+.admin-payment-summary p{margin:.5rem 0}.admin-payment-summary strong{font-size:1.2rem}

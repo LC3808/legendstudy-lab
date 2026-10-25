@@ -20,12 +20,11 @@ export function MyDashboard(){
    <h1>마이페이지</h1>
   </header>
   <OwnerArea>
-   <section className="my-section" aria-labelledby="my-profile-title"><h2 id="my-profile-title">나의 프로필</h2><ProfileHeader /></section>
+   <section className="my-section" aria-labelledby="my-profile-title"><h2 id="my-profile-title">나의 프로필</h2><ProfileHeader><GoalsPanel /></ProfileHeader></section>
    <section className="my-section" aria-labelledby="my-usage-title"><h2 id="my-usage-title">내 이용 현황</h2><Usage /></section>
    <section className="my-section" aria-labelledby="my-labs-title"><h2 id="my-labs-title">LAB</h2><LabCards /></section>
    <section className="my-section" aria-labelledby="my-growth-title"><h2 id="my-growth-title">나의 성장</h2><EssayGrowthCard /></section>
    <section className="my-section" aria-labelledby="my-study-title"><h2 id="my-study-title">나의 학습 시간</h2><StudySummaryPanel /></section>
-   <section className="my-section" aria-labelledby="my-goals-title"><h2 id="my-goals-title">나의 목표</h2><div className="my-panel"><GoalsPanel /></div></section>
    <section className="my-section" aria-labelledby="my-application-title"><h2 id="my-application-title">나의 대학 지원 현황</h2><ApplicationsPanel /></section>
    <section className="my-section my-section--last" aria-labelledby="my-account-title"><h2 id="my-account-title">계정 및 지원</h2>
     <div className="my-links"><Link className="button button--outline button--small" href="/account/settings/">계정 설정</Link><Link className="button button--outline button--small" href="/support/">고객센터</Link></div>
@@ -91,7 +90,7 @@ export function GoalsEditor({data,reload}:{data:Goals;reload:()=>void}){
   <div className="my-goal-block">
    <h3>관심 대학</h3>
    {data.targets.length===0&&<p className="my-empty">관심 대학을 추가해보세요.</p>}
-   {data.targets.length>0&&<div className="my-target-grid">{data.targets.map(t=><TargetEditor key={t.id} target={t} busy={busy} save={value=>run(()=>editTarget(client!,user!.id,t.id,value))}/>)}</div>}
+   {data.targets.length>0&&<ol className="my-target-list">{data.targets.map(t=><li key={t.id}><TargetEditor target={t} busy={busy} save={value=>run(()=>editTarget(client!,user!.id,t.id,value))}/></li>)}</ol>}
    {!adding
     ?<button type="button" className="button button--outline button--small" disabled={busy||data.targets.length>=5} onClick={()=>setAdding(true)}>+ 대학·학과 추가</button>
     :<div className="my-add-panel">

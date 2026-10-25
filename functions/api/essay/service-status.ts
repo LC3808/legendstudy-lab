@@ -20,11 +20,13 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
    await Promise.all(ids.slice(offset,offset+3).map(async examId=>{
     const result=await examAvailability({env,request:new Request(new URL('/api/essay/exam',request.url),{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({action:'availability',examId})})});
     const data=await result.json() as {ready?:boolean;questionIds?:unknown};
-    if(result.ok&&data.ready===true&&Array.isArray(data.questionIds)&&data.questionIds.length&&data.questionIds.every(uuid))admitted.push({examId,questionIds:data.questionIds});
+    if(!result.ok||typeof data.ready!=='boolean')throw Error('ADMISSION_UNVERIFIED');
+    if(data.ready===true&&Array.isArray(data.questionIds)&&data.questionIds.length&&data.questionIds.every(uuid))admitted.push({examId,questionIds:data.questionIds});
    }));
   }
   const mathResponse=await mathAvailability({request,env});
-  const math=await mathResponse.json() as {types?:{math?:boolean};mathQuestions?:{examId:string;questionId:string}[]};
+  const math=await mathResponse.json() as {checked?:boolean;types?:{math?:boolean};mathQuestions?:{examId:string;questionId:string}[]};
+  if(!mathResponse.ok||math.checked===false)throw Error('MATH_UNVERIFIED');
   if(math.types?.math===true&&Array.isArray(math.mathQuestions))for(const q of math.mathQuestions){
    if(uuid(q.examId)&&uuid(q.questionId)){const found=admitted.find(e=>e.examId===q.examId);if(found)found.questionIds=[...new Set([...found.questionIds,q.questionId])];else admitted.push({examId:q.examId,questionIds:[q.questionId]});}
   }

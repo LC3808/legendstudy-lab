@@ -18,3 +18,6 @@ it('fails closed for missing identity, cross-origin host, and lookup failures',a
  expect(f.admission).not.toHaveBeenCalled();f.admission.mockRejectedValue(Error('offline'));expect((await (await onRequestGet({request:request(),env})).json()).checked).toBe(false);
 });
 it('merges existing math admission without inventing university metadata',async()=>{f.admission.mockResolvedValue(Response.json({ready:false}));f.math.mockResolvedValue(Response.json({types:{math:true},mathQuestions:[{examId:exam,questionId:question}]}));expect((await (await onRequestGet({request:request(),env})).json()).exams).toEqual([{examId:exam,questionIds:[question]}]);});
+
+it('does not report zero when admission lookup fails',async()=>{f.admission.mockResolvedValue(Response.json({ready:false},{status:503}));expect((await (await onRequestGet({request:request(),env})).json()).checked).toBe(false);});
+it('does not report a partial total when math lookup is unverified',async()=>{f.math.mockResolvedValue(Response.json({checked:false,types:{math:false}}));expect((await (await onRequestGet({request:request(),env})).json()).checked).toBe(false);});

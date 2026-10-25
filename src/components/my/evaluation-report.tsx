@@ -24,6 +24,6 @@ function HumanEvaluationReport({report,title,answerLabel}:{before?:Report;report
  <FeedbackSection title="보완할 점" items={report.weaknesses} answer={report.answer} separateActions={report.actions}/>
  {report.actions.length>0&&<section className="report-block"><h3>우선 수정할 부분</h3>{report.actions.length?<ul>{report.actions.map((a,i)=><li key={i}>{a}</li>)}</ul>:<p>별도로 지정된 우선 수정 과제가 없습니다.</p>}</section>}
  {report.nextSteps.some(step=>!report.actions.includes(step))&&<section className="report-block"><h3>재작성 안내</h3><ul>{report.nextSteps.filter(step=>!report.actions.includes(step)).map((a,i)=><li key={i}>{a}</li>)}</ul><p>잘 표현한 부분은 살리고, 조언을 참고해 직접 다시 써보세요.</p></section>}
- <section className="report-block"><h3>평가 근거</h3>{report.evidenceLabels?.length?<ul>{report.evidenceLabels.map(s=><li key={s}><strong className="criterion-label">{s.split(" — ")[0]}</strong><p className="criterion-feedback">{s.split(" — ").slice(1).join(" — ")}</p></li>)}</ul>:<p>연결된 근거 표시가 없습니다.</p>}</section>
+ <section className="report-block"><h3>평가 근거</h3>{report.evidenceLabels?.length?<ul>{report.evidenceLabels.map(s=><li key={s}><strong className="criterion-label">{criterionTitle(s.split(" — ")[0])}</strong><p className="criterion-feedback">{s.split(" — ").slice(1).join(" — ")}</p></li>)}</ul>:<p>연결된 근거 표시가 없습니다.</p>}</section>
  </article>;
 }

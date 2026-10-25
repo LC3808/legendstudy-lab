@@ -1,6 +1,6 @@
 import { serverTransport, publicMathLeaves, type MathEnvironment } from '../../../src/lib/math-release/server/transport';
-export type Availability = { version:'essay-web-v1'; catalog?: {math:boolean}; mathQuestions?: {examId:string;questionId:string;leafId:string}[]; types: {humanities_social:boolean;business_economics:boolean;math:boolean;science:boolean} };
-const disabled = ():Availability=>({version:'essay-web-v1',catalog:{math:false},types:{humanities_social:false,business_economics:false,math:false,science:false}});
+export type Availability = { version:'essay-web-v1'; checked?:boolean; catalog?: {math:boolean}; mathQuestions?: {examId:string;questionId:string;leafId:string}[]; types: {humanities_social:boolean;business_economics:boolean;math:boolean;science:boolean} };
+const disabled = ():Availability=>({version:'essay-web-v1',checked:false,catalog:{math:false},types:{humanities_social:false,business_economics:false,math:false,science:false}});
 function currentRole(token:string|undefined,role:string):boolean {
   try { const payload=JSON.parse(atob(token!.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));return payload.role===role&&Number.isFinite(payload.exp)&&payload.exp>Date.now()/1000+60; } catch {return false;}
 }
@@ -35,16 +35,19 @@ export async function onRequestGet({request,env}:{request:Request;env:MathEnviro
       return Response.json({version:'math-worker-auth-probe-v1',checks},{headers:{'Cache-Control':'private, no-store','Vary':'Authorization'}});
     }
     const catalog=await transport.rpcRaw('math_catalog',{p_limit:50},token);
-    state.catalog={math:Array.isArray(catalog)&&catalog.length>0};
+    if(!Array.isArray(catalog))throw Error('INVALID_CATALOG');
+    state.checked=true;
+    state.catalog={math:catalog.length>0};
     if(env.MATH_ENABLED!=='true'||env.MATH_PROVIDER_CALLS_ENABLED!=='true'||env.MATH_PROVIDER!=='OPENAI'||!env.MATH_PRIMARY_MODEL||!env.MATH_PROVIDER_API_KEY||
       !currentRole(env.MATH_EXTRACTION_WORKER_JWT,'math_extraction_worker')||!currentRole(env.MATH_EVALUATION_WORKER_JWT,'math_evaluation_worker'))return reply();
     const status=await transport.rpcRaw('essay_web_runtime_status',{},token);
-    if(status?.version!=='essay-web-runtime-v1'||status.math_evaluations_enabled!==true)return reply();
+    if(status?.version!=='essay-web-runtime-v1')throw Error('INVALID_RUNTIME_STATUS');
+    if(status.math_evaluations_enabled!==true)return reply();
     state.types.math=state.catalog.math;
     const released=publicMathLeaves(env);
     const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
     state.mathQuestions=Array.isArray(catalog)?catalog.filter(row=>uuid(row.essay_exam_id)&&uuid(row.essay_question_id)&&uuid(row.leaf_id)&&released.includes(row.leaf_id)).map(row=>({examId:row.essay_exam_id,questionId:row.essay_question_id,leafId:row.leaf_id})):[];
-  } catch { /* Missing migration, closed lifecycle, network and configuration all remain unavailable. */ }
+  } catch { state.checked=false; /* Missing migration, closed lifecycle, network and configuration all remain unavailable. */ }
   // Humanities worker/review binding, economics mixed atomic orchestration and science engine
   // have no verified Production integration. Never infer these from an exam's label.
   return reply();

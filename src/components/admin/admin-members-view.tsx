@@ -1,5 +1,6 @@
 "use client";
 
+import {AdminLearningSummary} from './admin-learning-summary';
 import { Fragment, useState, type ReactNode } from "react";
 
 import type { AdminMemberDetail } from "@/lib/admin/contract";
@@ -119,6 +120,7 @@ function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
 
       <section className="admin-detail__block">
         <h4 className="admin-subhead">학습 정보</h4>
+        <AdminLearningSummary subject={accountId}/>
         <div className="admin-metrics">
           <div className="admin-metric">
             <p className="admin-metric__label">최근 학습</p>
@@ -131,7 +133,7 @@ function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
             </p>
           </div>
           <div className="admin-metric">
-            <p className="admin-metric__label">인문 논술</p>
+            <p className="admin-metric__label">이전 단일 문항 인문 기록</p>
             <p className="admin-metric__value admin-metric__value--sm">
               제출 {formatNumber(data.usage.essay.submitted)}건
             </p>
@@ -146,7 +148,7 @@ function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
               {data.usage.math.installed ? formatNumber(data.usage.math.attempts) : "미설치"}
             </p>
             <p className="admin-metric__note">
-              {data.usage.math.runtimeState} · 평가 기능 비활성
+              기존 수리 문항 기록 · 회차 현황은 위 집계 참조
             </p>
           </div>
           <div className="admin-metric">

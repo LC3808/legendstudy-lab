@@ -41,7 +41,7 @@ it('presents the MY dashboard sections in the agreed order', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
   const headings = [...container.querySelectorAll('.my-section > h2')].map((h) => h.textContent);
-  expect(headings).toEqual(['나의 프로필', '내 이용 현황', 'LAB', '나의 성장', '나의 학습 시간', '나의 목표', '나의 대학 지원 현황', '계정 및 지원']);
+  expect(headings).toEqual(['나의 프로필', '내 이용 현황', 'LAB', '나의 성장', '나의 학습 시간', '나의 대학 지원 현황', '계정 및 지원']);
 });
 
 it('leads with the email as the profile name when no nickname is set, and never prints it twice', async () => {

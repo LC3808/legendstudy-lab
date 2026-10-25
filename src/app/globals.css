@@ -1644,3 +1644,19 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 .my-growth-tabs + [role=tabpanel] .growth-chart__row {padding:1rem 0;border-bottom:1px solid var(--line);}
 .my-growth-tabs + [role=tabpanel] .growth-chart__row label {display:flex;gap:.75rem;align-items:center;margin-top:.5rem;}
 .my-growth-tabs + [role=tabpanel] .growth-chart meter {flex:1;max-width:24rem;height:1.2rem;min-width:0;}
+
+/* Owner integrated release: compact shared profile and goals, floating share. */
+.my-profile-card__facts>div{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem}
+.my-profile-card__facts dd{margin:0;text-align:center}
+.my-profile-goals{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--line)}
+.my-profile-goals .my-goal-row{padding:.5rem 0}
+.my-target-list{padding-left:1.5rem;margin:.5rem 0 1rem}
+.my-target-list li{padding:.55rem 0;border-bottom:1px solid var(--line)}
+.my-target-list .my-target{display:flex;align-items:center;flex-wrap:wrap;gap:.65rem;border:0;box-shadow:none;padding:0;background:transparent}
+.my-target-list .my-target p{margin:0}.my-target-list .my-target__division{flex:1}
+.my-target-list .my-target__name{min-width:7rem}
+.my-dashboard .my-section{margin-top:1.6rem;padding-top:1.3rem}
+.growth-share-anchor{position:relative;display:inline-block}
+.growth-share{position:absolute;z-index:50;right:0;top:calc(100% + .5rem);width:260px;display:grid;gap:.6rem;padding:1rem;box-shadow:0 12px 36px #17293c30}
+.growth-share p{margin:0;font-size:.85rem}
+@media(max-width:600px){.growth-share{position:fixed;left:1rem;right:1rem;bottom:1rem;top:auto;width:auto}.my-target-list .my-target__name{min-width:0}.my-target-list .my-target__division{flex-basis:45%}}

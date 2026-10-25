@@ -239,7 +239,7 @@ describe("AdminDashboardView", () => {
   it("renders observed metrics and marks an uninstalled subsystem", async () => {
     setSession("authenticated", okOperator);
     render(<AdminDashboardView />);
-    expect(await screen.findByText("누적 회원")).toBeInTheDocument();
+    expect(await screen.findByText("프로필 보유 회원")).toBeInTheDocument();
     expect(screen.getByText("12")).toBeInTheDocument();
     expect(screen.getAllByText("미설치").length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText(/RUNTIME_OFF/)).toBeInTheDocument();

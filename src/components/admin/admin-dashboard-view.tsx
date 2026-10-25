@@ -1,4 +1,5 @@
 "use client";
+import {AdminLearningSummary,AdminPublicAvailability} from './admin-learning-summary';
 import {AdminReleaseReport} from './admin-release-report';
 
 import { SchoolDistribution } from "./school-distribution";
@@ -163,12 +164,13 @@ export function AdminDashboardView() {
 
 
       <AdminReleaseReport kind="dashboard"/>
+      <AdminLearningSummary/><AdminPublicAvailability/>
       <ActionBand dashboard={data} support={supportData}/>
 
       <Section title="회원">
         <div className="admin-metrics">
           <Metric label="활성 회원" value={formatNumber(data.members.active30d)} note="최근 30일 학습 기록 기준" />
-          <Metric label="누적 회원" value={formatNumber(data.members.total)} note="전체 가입 (누적)" />
+          <Metric label="프로필 보유 회원" value={formatNumber(data.members.total)} note="profiles 기준 · 전체 가입 계정은 위 집계 참조" />
         </div>
       </Section>
 

@@ -1,13 +1,14 @@
 'use client';
 import {AdminSchoolName as SchoolName} from '@/components/admin/admin-school-name';
 import {useAuth} from '@/components/auth-context';
+import type {ReactNode} from 'react';
 import {ProfileEditor} from './profile-editor';
 import {myIdentity} from '@/lib/my/contract';
 import {readMyProfile} from '@/lib/my/data';
 import {DataStatus, useOwnerData} from './owner-data';
 
 /** Canonical APP profile fields; unset values remain blank. */
-export function ProfileHeader() {
+export function ProfileHeader({children}:{children?:ReactNode}={}) {
  const {user} = useAuth();
  const result = useOwnerData(readMyProfile);
  if (!user) return null;
@@ -30,6 +31,7 @@ export function ProfileHeader() {
     </>
    </dl>
    <ProfileEditor compact key={JSON.stringify(result.data)} profile={result.data} reload={result.reload}/>
+   {children&&<div className="my-profile-goals">{children}</div>}
   </div>
  );
 }
