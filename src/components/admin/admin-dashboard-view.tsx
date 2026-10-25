@@ -105,7 +105,7 @@ function ActionBand({
         <ActionCard
           label="첨삭 평가 실패"
           value={formatNumber(failed)}
-          note="관리자 요약 조회 기준 · 시험별 첨삭 History 통합 집계는 미검증"
+          note="이전 단일 문항 기록 기준 · 회차 실패는 핵심 운영 지표 참조"
           tone={failed > 0 ? "danger" : "ok"}
         />
         <ActionCard
@@ -196,7 +196,7 @@ export function AdminDashboardView() {
         </div>
       </Section>
 
-      <Section title="첨삭 (논술)" note="관리자 요약 조회 기준 · 시험별 첨삭 History 통합 및 무료/유료 재첨삭 구분은 미검증입니다 (GAP)">
+      <Section title="이전 단일 문항 인문 기록" note="기존 단일 문항 API의 누적 기록입니다. 회차 제출 기록은 위 회원·첨삭 회차 통계에서 확인합니다.">
         <div className="admin-metrics">
           <Metric label="답안 제출" value={formatNumber(data.essay.submissions)} />
           <Metric label="평가 요청" value={formatNumber(data.essay.evaluationRequests)} />
@@ -207,7 +207,7 @@ export function AdminDashboardView() {
         </div>
       </Section>
 
-      <Section title="첨삭 평가 품질" note={`관리자 요약 조회 기준 · 완료+실패 ${formatNumber(evalTotal)}건 기준`}>
+      <Section title="이전 단일 문항 평가 품질" note={`기존 단일 문항 기록 기준 · 완료+실패 ${formatNumber(evalTotal)}건 기준`}>
         <div className="admin-metrics">
           <Metric label="평가 성공률" value={ratio(data.essay.evaluationCompleted, evalTotal)} note="평가 완료 / (완료+실패)" />
           <Metric label="평가 실패율" value={ratio(data.essay.evaluationFailed, evalTotal)} note="평가 실패 / (완료+실패)" />
@@ -215,7 +215,7 @@ export function AdminDashboardView() {
         </div>
       </Section>
 
-      <Section title="수리논술" note={`관리자 조회 설정: ${data.math.runtimeState} · ${data.math.runtimeLabel}`}>
+      <Section title="수리논술 문항 기록" note="기존 문항별 답안·평가 기록입니다. 현재 공개 실행 범위는 위 실행 승인 통계를 확인하세요.">
         <div className="admin-metrics">
           <Metric label="답안" value={formatCount(data.math.attempts)} />
           <Metric label="평가" value={formatCount(data.math.evaluations)} />

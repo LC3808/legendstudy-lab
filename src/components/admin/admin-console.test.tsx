@@ -242,7 +242,8 @@ describe("AdminDashboardView", () => {
     expect(await screen.findByText("프로필 보유 회원")).toBeInTheDocument();
     expect(screen.getByText("12")).toBeInTheDocument();
     expect(screen.getAllByText("미설치").length).toBeGreaterThanOrEqual(2);
-    expect(screen.getByText(/RUNTIME_OFF/)).toBeInTheDocument();
+    expect(screen.queryByText(/RUNTIME_OFF/)).not.toBeInTheDocument();
+    expect(screen.getByRole("heading",{name:"수리논술 문항 기록"})).toBeInTheDocument();
     expect(screen.getByRole("heading",{name:"핵심 운영 지표"})).toBeInTheDocument();
   });
 
