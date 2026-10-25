@@ -1,0 +1,19 @@
+{
+  "id": "f73a03d0-6fa7-4969-9e93-d099fb513a1c",
+  "environment": "production",
+  "latest_stage": {
+    "name": "deploy",
+    "started_on": null,
+    "ended_on": "2026-10-25T06:46:41.563304Z",
+    "status": "success"
+  },
+  "deployment_trigger": {
+    "type": "ad_hoc",
+    "metadata": {
+      "branch": "main",
+      "commit_hash": "e5106e3ea9418190dd63f8c1441e2ced08e8ef82",
+      "commit_message": "fix(admin): share one payment status filter across order views",
+      "commit_dirty": true
+    }
+  }
+}

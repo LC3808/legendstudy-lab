@@ -48,3 +48,35 @@ Existing APP single-question endpoints/financial contracts retained. Existing ro
 WEB baseline: Cloudflare Pages deployment `eba32637-25f3-4d36-bec9-c3acaf4fd99e`. New read-only RPC may remain during WEB rollback; Owner can run provided drop-only rollback if required. Do not roll Essay Worker back to old single-question c3fb54be with active round submissions; keep17b3bd65/forward fix. No Secret/payment/registry/engine changes.
 
 Validation and final Production proof are recorded below after deployment. Previously known full-suite catalog6 failures + empty phase1 suite remain distinct from changed-scope regressions.
+
+## Final Production evidence
+
+- Source `e5106e3ea9418190dd63f8c1441e2ced08e8ef82`, Production `f73a03d0-6fa7-4969-9e93-d099fb513a1c`, canonical Cloudflare API success/main verified (dirty flag reflects only uncommitted documentation; product files committed) in [deployment evidence](production-deployment.json). Product commits e3c3364,8c5ce61,d2808b4,e5106e3; remote source SHA matched. Intermediate c0bb6324 is superseded; 549d3259 was preview, not Production.
+- Operator actual UI: global accounts13/profiles12/missing1, Essay30(initial15/rewrite15/completed22/failed8), Math sessions0, registered700, admitted10 exams/12 questions (Essay11 + Math1). Member's own detailed summary13(initial5/rewrite8/completed10/failed3) now visible; do not add old single-question zero to round counts.
+- TEST3-ticket paid filter:1 order/11,900KRW, explicit not LIVE revenue. Dashboard date selector and Credit use-category selector exercised. Previous full filter query proof18 transactions/-18 reused. No money mutation.
+- MY actual mobile CSS viewport444px/scrollWidth444 (requested device400 with browser zoom), required section order intact, goals inside profile, no duplicate section, existing university add form opens. Existing edit/delete persistence tests reused; no personal preferences altered to test presentation.
+- Share: desktop absolute popover and mobile fixed panel, root URL copied and exact confirmation shown; Escape and outside close verified. Existing canvas produced `legendstudy-growth (6).png` at15:42KST,1080x3820; file inspected:vertical bars/criterion names, no email/account ID/answer text. Browser download-event listener timed out, but actual file and UI save completion independently confirmed.
+- Runtime login/Credit/history/growth and saved results reused; no additional Provider/reservation/charge/real payment. App source and original financial/history contracts unchanged.
+
+## Validation scope and remaining limits
+
+Typecheck PASS; changed-file ESLint PASS; boundary PASS(86 client/2 server); GitHub readiness PASS; Production build PASS(Node22, existing production public build configuration, no package/lock changes). Related244 PASS/3 skipped; final dashboard14 PASS after legacy-caption correction. Full suite1255 PASS/7 FAIL/4 skipped +empty suite: the one new Math-link expectation was corrected and retested; six pre-existing catalog assertions and empty phase1 suite remain, so **full suite is not green**. Native binary/device validation was not repeated. Reproducible additive SQL fixture: `test_admin_learning.py`.
+
+| Scenario | Evidence and scope |
+|---|---|
+| 1 question initial1 | Existing live1/0 cycle + isolated session contract reused |
+| 4 questions initial1 | Existing isolated PostgreSQL1/2/4 + Worker synthetic multi contract; not live4 |
+| Partial submission | UI acceptance/confirmation tests reused; no submit before consent |
+| All empty | UI guard/quote0 tests reused |
+| Per-question save0 | Existing Draft contract/UI tests; no billing route |
+| Included rewrite0 | Existing live cycle + isolated exact-set/window/count tests |
+| New omitted question1 | Isolated separate paid root; free addition denied |
+| Partial failure retry0 | Existing worker checkpoint + SQL same decision/success preservation proof |
+| Duplicate0 | Existing eight concurrent requests/one reservation and idempotent finish proof |
+| Math image | Existing live EVIDENCE completion + isolated confirmed-image round; no new live image round |
+| Text+image mixed | Existing Math MIXED prepare/upload/confirm + round adapter tests; cross-engine mixed orchestration not newly enabled |
+| Released APP compatibility | Existing single APIs retained, shared backend and prior native history proof; no new device test/native round composer |
+
+No newly designated universities enabled. No Secret/JWT/payment changes. APP feature work and new university connections await the next Owner instruction. New live multi-question Math and native round UI are not claimed as delivered; the public Math admission remains its existing single leaf. Server-wide Worker outage telemetry remains unconnected and is explicitly unavailable, not zero.
+
+Final payment follow-up: one shared transaction-state selector controls report and order detail; duplicate dropdown removed. Admin42 tests and filter synchronization2 tests PASS, Typecheck/Lint/build PASS. Actual PC goals1039px inside1088px profile; mobile payment viewport/scrollWidth444px, filters and TEST distinction visually verified.
