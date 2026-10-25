@@ -107,6 +107,6 @@ it('distinguishes loading and failure from an unpublished university',()=>{
  expect(screen.getAllByRole('button',{name:'서비스 확인 중'})).toHaveLength(12);
  expect(screen.queryByText('첨삭 서비스 준비 중')).toBeNull();
  availability.status='error';view.rerender(<UniversityDiscovery essayFirst/>);
- fireEvent.click(screen.getAllByRole('button',{name:'일시적인 오류 · 다시 시도'})[0]);expect(availability.retry).toHaveBeenCalled();
+ fireEvent.click(screen.getAllByRole('button',{name:'일시적으로 확인할 수 없습니다 · 다시 시도'})[0]);expect(availability.retry).toHaveBeenCalled();
  expect(screen.queryByText('첨삭 서비스 준비 중')).toBeNull();
 });

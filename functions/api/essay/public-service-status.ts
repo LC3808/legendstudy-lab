@@ -1,11 +1,13 @@
-import {serverTransport, type MathEnvironment} from '../../../src/lib/math-release/server/transport';
-import {onRequestGet as mathAvailability} from './availability';
+import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
+import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {publicCatalog} from '../../../src/lib/essay-runtime/public-discovery';
+import {studentPdfForExam} from '../../../src/lib/materials/student-asset';
+import evidence from '../../../src/data/essay-whole-exam-release-evidence.json';
 import {legendStudySupabaseUrl} from '../../../src/lib/auth-config';
-type Env=MathEnvironment & {ESSAY_PUBLIC_EXAMS?:string;ESSAY_EXAM_RUNTIME_ENABLED?:string};
+type Env=MathEnvironment & {ESSAY_PUBLIC_EXAMS?:string;ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
-/** Discovery only: server release policy + existing public metadata. Never call
- * Python admission/evaluation. Submission retains its independent authorization. */
+/** Shared discovery only. Whole-exam evidence is pinned, then checked against live
+ * public policy, Registry and DB preflight. No Python initialization or Provider. */
 export async function onRequestGet({request,env}:{request:Request;env:Env}){
  const reply=(body:unknown,status=200)=>Response.json(body,{status,headers:{'Cache-Control':'private, no-store','Vary':'Authorization'}});
  const fail=(status=503)=>reply({version:'essay-public-service-v1',checked:false,code:'PUBLIC_STATUS_UNAVAILABLE'},status);
@@ -13,31 +15,30 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
  if(!token)return fail(401);
  if(env.MATH_ORIGIN!==new URL(request.url).origin||env.MATH_SUPABASE_URL!==legendStudySupabaseUrl)return fail();
  try{
-  const scope=(env.ESSAY_PUBLIC_EXAMS??'').trim();
-  const ids=scope?scope.split(',').map(v=>v.trim()):[];
-  if(ids.length>42||!ids.every(uuid)||new Set(ids).size!==ids.length)throw Error('INVALID_PUBLIC_SCOPE');
-  const transport=serverTransport(env);await transport.subject(token,true);
-  const released=new Set(env.ESSAY_EXAM_RUNTIME_ENABLED==='true'?ids:[]);
-  // Existing math catalog/status RPCs; this does not initialize a Python Worker.
-  const mathResponse=await mathAvailability({request,env});
-  const math=await mathResponse.json() as {checked?:boolean;mathQuestions?:{examId:string;questionId:string}[]};
-  if(!mathResponse.ok||math.checked!==true)throw Error('MATH_STATUS_UNAVAILABLE');
-  const mathIds=new Map<string,Set<string>>();
-  for(const q of math.mathQuestions??[]){if(!uuid(q.examId)||!uuid(q.questionId))throw Error('INVALID_MATH_ID');const set=mathIds.get(q.examId)??new Set<string>();set.add(q.questionId);mathIds.set(q.examId,set);}
-  const universities=new Set<string>(),found=new Set<string>();
-  if(released.size||mathIds.size)for(let offset=0;offset<publicCatalog.universities.length;offset+=6){
-   await Promise.all(publicCatalog.universities.slice(offset,offset+6).map(async university=>{
+  const raw=(env.ESSAY_PUBLIC_EXAMS??'').trim(),scope=raw?raw.split(',').map(v=>v.trim()):[];
+  if(scope.length>42||!scope.every(uuid)||new Set(scope).size!==scope.length)throw Error('INVALID_PUBLIC_SCOPE');
+  const transport=serverTransport(env),subject=await transport.subject(token,true);
+  const candidates=env.ESSAY_EXAM_RUNTIME_ENABLED==='true'?evidence.exams.filter(e=>scope.includes(e.examId)&&e.questionIds.length&&e.questionIds.every(q=>studentPdfForExam(e.examId,q))):[];
+  const universities=new Set<string>(),exams:{examId:string;universityId:string;questionIds:string[]}[]=[];
+  if(candidates.length){
+   const credential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);
+   if(!credential)throw Error('REGISTRY_CREDENTIAL_REQUIRED');
+   const session=await transport.rpcRaw('essay_exam_session_ready',{},credential);
+   if(session!=='exam-session-v1')throw Error('SESSION_CONTRACT_REQUIRED');
+   for(const universityId of new Set(candidates.map(e=>e.universityId))){
+    const university=publicCatalog.universities.find(u=>u.universityId===universityId);
+    if(!university)throw Error('UNIVERSITY_ID_MISSING');
     const rows=await transport.rpcRaw('essay_browse_catalog',{p_university:university.sourceUniversityId},token);
     if(!Array.isArray(rows))throw Error('INVALID_CATALOG');
-    for(const row of rows){
-     if(!released.has(row.examId)&&!mathIds.has(row.examId))continue;
-     if(!uuid(row.examId)||!uuid(row.universityId)||(university.universityId&&row.universityId!==university.universityId)||!Array.isArray(row.questions)||!row.questions.length||row.questions.some((q:{id:unknown})=>!uuid(q.id)))throw Error('INVALID_RELEASE_METADATA');
-     if(mathIds.has(row.examId)&&![...mathIds.get(row.examId)!].every(id=>row.questions.some((q:{id:string})=>q.id===id)))throw Error('INVALID_MATH_METADATA');
-     found.add(row.examId);universities.add(row.universityId);
+    for(const candidate of candidates.filter(e=>e.universityId===universityId)){
+     const row=rows.find(r=>r.examId===candidate.examId);
+     if(!row||row.universityId!==universityId||!Array.isArray(row.questions)||row.questions.length!==candidate.questionIds.length||new Set(row.questions.map((q:{id:string})=>q.id)).size!==candidate.questionIds.length||!row.questions.every((q:{id:string})=>candidate.questionIds.includes(q.id)))throw Error('WHOLE_EXAM_CHANGED');
+     const policy=await transport.rpcRaw('essay_exam_preflight',{p_subject:subject,p_exam:candidate.examId},credential);
+     if(policy?.package_digest!==candidate.packageDigest)throw Error('RELEASE_EVIDENCE_CHANGED');
+     universities.add(universityId);exams.push({examId:candidate.examId,universityId,questionIds:candidate.questionIds});
     }
-   }));
+   }
   }
-  if([...released,...mathIds.keys()].some(id=>!found.has(id)))throw Error('RELEASE_METADATA_MISSING');
-  return reply({version:'essay-public-service-v1',checked:true,basis:'server-public-policy',universityIds:[...universities].sort()});
+  return reply({version:'essay-public-service-v1',checked:true,basis:'whole-exam-public-policy',universityIds:[...universities].sort(),exams});
  }catch{return fail();}
 }
