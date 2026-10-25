@@ -28,7 +28,7 @@ describe('shared 크레딧 presentation',()=>{
 });
 
 describe('user-only 크레딧 reasons',()=>{
- it.each([['signup_bonus','신규가입 무료'],['purchase','크레딧 구매'],['consume','논술 첨삭 이용'],['promotion','프로모션 지급'],['refund','환불']])('maps canonical %s without internal details',(raw,label)=>expect(userReason(raw,'internal/v1/private-id')).toBe(label));
+ it.each([['signup_bonus','신규가입 무료'],['purchase','크레딧 구매'],['consume','논술 첨삭'],['promotion','프로모션 지급'],['refund','환불']])('maps canonical %s without internal details',(raw,label)=>expect(userReason(raw,'internal/v1/private-id')).toBe(label));
  it('preserves a real manual reason and leaves the admin formatter unchanged',()=>{
   expect(userReason('admin_grant','manual_support: 오류')).toBe('관리자 지급 · 오류');
   expect(userReason('admin_grant','manual_support: 재시도: 결과 확인')).toBe('관리자 지급 · 재시도: 결과 확인');

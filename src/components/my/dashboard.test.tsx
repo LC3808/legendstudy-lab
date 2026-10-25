@@ -105,7 +105,7 @@ it('renders only date, signed quantity and user reason in purchase history',asyn
  render(<CreditHistory/>);
  const table=await screen.findByRole('table');
  expect(within(table).getAllByRole('columnheader').map(el=>el.textContent)).toEqual(['날짜','개수','사유']);
- expect(within(table).getAllByRole('cell').map(el=>el.textContent)).toEqual(['2026. 10. 9.','+2개','관리자 지급 · 테스트']);
+ expect(within(table).getAllByRole('cell').map(el=>el.textContent)).toEqual(['2026. 10. 9.','+2 크레딧','관리자 지급 · 테스트']);
  expect(table).not.toHaveTextContent('private-id');
 });
 

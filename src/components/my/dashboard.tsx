@@ -138,7 +138,7 @@ export function CreditHistory(){
         <p className="my-note">최근 내역 · 총 {rows.length}건{rows.length===100?' (최대 100건)':''}</p>
         <table className="user-credit-history"><caption className="sr-only">크레딧 구매·사용 내역</caption>
          <thead><tr><th scope="col">날짜</th><th scope="col">개수</th><th scope="col">사유</th></tr></thead>
-         <tbody>{shown.map(r=><tr key={r.id}><td data-label="날짜">{dateLabel(r.at)}</td><td data-label="개수">{r.delta>0?'+':''}{r.delta}개</td><td data-label="사유">{r.label}</td></tr>)}</tbody>
+         <tbody>{shown.map(r=><tr key={r.id}><td data-label="날짜">{dateLabel(r.at)}</td><td data-label="개수">{r.delta>0?'+':''}{r.delta} 크레딧</td><td data-label="사유">{r.label}</td></tr>)}</tbody>
         </table>
         {pageCount>1&&<nav className="my-pagination" aria-label="크레딧 내역 페이지">
          <button type="button" className="button button--outline button--small" disabled={current===0} onClick={()=>setPage(current-1)}>이전</button>

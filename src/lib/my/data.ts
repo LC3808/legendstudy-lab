@@ -64,7 +64,7 @@ export function historyRows(transactions:Transaction[],decisions:Decision[]):His
   for(const t of transactions){
     if(t.transaction_type==='reserve'||t.transaction_type==='release')continue;
     if(t.transaction_type==='consume'&&t.decision_id){
-      const row=consumes.get(t.decision_id)??{id:t.decision_id,label:'논술 첨삭 이용',delta:0,at:t.created_at};
+      const row=consumes.get(t.decision_id)??{id:t.decision_id,label:'논술 첨삭',delta:0,at:t.created_at};
       row.delta+=t.balance_delta;consumes.set(t.decision_id,row);continue;
     }
     rows.push({id:t.id,label:formatUserCreditReason(t.transaction_type,t.reason_code),delta:t.balance_delta,at:t.created_at});
@@ -86,7 +86,7 @@ export async function readHistory(client:SupabaseClient,owner:string):Promise<Hi
   const ids=[...new Set(transactions.filter(t=>t.transaction_type==='consume'&&t.decision_id).map(t=>t.decision_id!))];
   const complete=ids.length ? checked(await client.from('credit_transactions').select('id,decision_id,transaction_type,balance_delta,created_at').eq('account_id',account.id).eq('transaction_type','consume').in('decision_id',ids).limit(1000)) as Transaction[] : [];
   if(complete.length===1000)throw new Error('HISTORY_LIMIT');
-  return historyRows([...transactions.filter(t=>t.transaction_type!=='consume'),...complete],checked(decisions) as Decision[]).slice(0,100);
+  return historyRows([...transactions.filter(t=>t.transaction_type!=='consume'||!t.decision_id),...complete],checked(decisions) as Decision[]).slice(0,100);
 }
 export type Evaluation={id:string;attempt_id?:string;session_id:string;status:string;requested_at:string;completed_at:string|null;invalidated_at:string|null;regime_key:string;essay_evaluation_dimensions:{level_1_to_5:number|null;explanation:string;display_order:number}[]};
 export type EssayRecord={id:string;created_at:string;essay_questions:{label:string;essay_exams:{admission_year:number;universities:{name:string}|null}|null}|null;evaluations:Evaluation[]};

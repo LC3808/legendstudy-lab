@@ -8,7 +8,7 @@ describe('canonical credit history',()=>{
  it('counts multi-grant consumption once, excludes reserve/release and shows included evaluation as zero',()=>{
   const tx=[{id:'r',decision_id:'d',transaction_type:'reserve',balance_delta:0,created_at:at},{id:'c1',decision_id:'d',transaction_type:'consume',balance_delta:-1,created_at:at},{id:'c2',decision_id:'d',transaction_type:'consume',balance_delta:-2,created_at:at},{id:'release',decision_id:'f',transaction_type:'release',balance_delta:0,created_at:at}];
   const rows=historyRows(tx,[{id:'included',credits_required:0,status:'settled',created_at:at},{id:'unsettled',credits_required:0,status:'reserved',created_at:at}]);
-  expect(rows).toHaveLength(2);expect(rows.find(r=>r.id==='d')?.delta).toBe(-3);expect(rows.find(r=>r.id==='included')?.delta).toBe(0);
+  expect(rows.find(r=>r.id==='d')?.label).toBe('논술 첨삭');expect(rows).toHaveLength(2);expect(rows.find(r=>r.id==='d')?.delta).toBe(-3);expect(rows.find(r=>r.id==='included')?.delta).toBe(0);
  });
  it('preserves positive refunds and grants as separate ledger facts',()=>{
   expect(historyRows([{id:'g',decision_id:null,transaction_type:'signup_bonus',balance_delta:3,created_at:at},{id:'f',decision_id:'d',transaction_type:'refund',balance_delta:1,created_at:at}],[]).map(r=>r.delta)).toEqual([3,1]);

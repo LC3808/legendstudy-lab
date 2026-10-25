@@ -44,7 +44,7 @@ export function formatUserCreditReason(type:string,raw?:string|null):string {
  const labels:Readonly<Record<string,string>>={
   signup_bonus:'신규가입 무료',signup_bonus_v1:'신규가입 무료',
   admin_grant:'관리자 지급',manual_support:'관리자 지급',purchase:'크레딧 구매',
-  consume:'논술 첨삭 이용',promotion:'프로모션 지급',refund:'환불',
+  consume:'논술 첨삭',promotion:'프로모션 지급',refund:'환불',
   compensation:'이용 보상',b2b_program:'학교 단체 지급',expiration:'만료',adjustment:'정정',
  };
  const reason=raw?.trim()??'';

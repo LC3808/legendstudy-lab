@@ -33,3 +33,6 @@ Owner가 precheck → apply → postcheck 실행. secdef/stable/고정 search_pa
 Production source `8261d17d1d379feff16e247267583ea4a165f86b`, 배포 `7ff387f2-4625-40e2-b557-61b71c1dbd64`. canonical API environment=production/status=success 확인. 실제 관리자 결제 화면에서 App Store2건/4 + Google1건/1, 합계3건/5 표시. 결제 통계/개별 주문/크레딧 통계 각5행, 통계 다음 페이지2 전환 및5행 확인. 기존 구매 잔액4와 새 설명 확인. 원격 코드 SHA 일치.
 
 스토어 후속: 기존 IAP 작업 디렉터리의 ignored production config로 양 플랫폼 `tool/store-release --check` PASS. APP 구매/크레딧 관련12테스트 PASS. 현재 체크아웃 Android signing config 존재, iOS Auth.local.xcconfig 부재(기존 안전한 설정 재사용 여부 확인 필요). 스토어 버전 확인은 Apple 로그인/Play 기존 개발자 계정 전환 대기. 업로드/심사 제출/결제 설정 변경은 하지 않았다.
+
+## 후속 Owner 사용자 내역 정책 — 로컬 수정, 미배포
+APP/WEB 사용자 내역은 reserve/release를 숨기고 같은 decision의 consume을 합산하여 `논술 첨삭` 및 부호 있는 크레딧 수량으로 표시한다. WEB은 기존 필터/합산을 재사용하고 decision 없는 legacy consume도 보존한다. 원장/잔액계산/관리자표시는불변. APP15테스트/analyze, WEB80테스트(2skip)/typecheck/lint/boundary PASS. 대학·시험명은현재크레딧조회에없어추정하지않음. 앱수정전빌드를지적한Owner지시에따라이번변경빌드·배포/push 보류. 기존Production8261d17은그대로다.
