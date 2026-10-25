@@ -1,0 +1,1 @@
+export function creditTransactionLabel(type:string){return ({reserve:'첨삭 사용 대기',consume:'첨삭 사용 확정',release:'사용 대기 해제',purchase:'구매 크레딧 지급',signup_bonus:'가입 크레딧 지급',admin_grant:'관리자 크레딧 지급',promotion:'이벤트 지급',compensation:'보상 지급',b2b_program:'학교 단체 지급',expiration:'크레딧 만료',refund:'크레딧 환불·회수',adjustment:'크레딧 조정'} as Record<string,string>)[type]??'기타 크레딧 변동';}

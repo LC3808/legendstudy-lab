@@ -52,7 +52,7 @@ export function AdminCreditView() {
                 </p>
               </div>
             </div>
-            <ul className="admin-origin">
+            <p className="admin-muted">아래는 출처별 현재 사용 가능한 잔액입니다. 누적 구매·지급 수량이 아닙니다.</p><ul className="admin-origin">
               {Object.entries(summary.state.data.credit.availableByOrigin).map(([origin, value]) => (
                 <li key={origin}>
                   <span>{creditOriginLabel(origin)}</span>

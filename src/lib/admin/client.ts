@@ -1,3 +1,4 @@
+import {parseMobilePurchases,type MobilePurchases} from './mobile-purchases';
 import {parseLearningSummary,type LearningSummary} from './learning-summary';
 import {parseReleaseReport,type ReleaseReport,type ReportFilter} from './release-report';
 import {parseMemberDirectory,type MemberDirectory,type MemberFilters} from "./members";
@@ -43,6 +44,7 @@ import { AdminError, mapRpcError } from "./errors";
  * credential is introduced and finance-only functions remain inaccessible.
  */
 export interface AdminClient {
+  mobilePurchases(from:string|null,to:string|null,quantity:number|null):Promise<MobilePurchases>;
   learningSummary(subject?:string):Promise<LearningSummary>;
   releaseReport(filters:ReportFilter):Promise<ReleaseReport>;
   isOperator(): Promise<boolean>;
@@ -176,6 +178,7 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
   }
 
   return {
+    async mobilePurchases(from,to,quantity){await requireSession();return parseMobilePurchases(await callRpc('admin_mobile_purchase_report',{p_from:from,p_to:to,p_quantity:quantity}));},
     async learningSummary(subject?:string){await requireSession();return parseLearningSummary(await callRpc('admin_learning_summary',{p_subject:subject??null}));},
     async releaseReport(filters:ReportFilter):Promise<ReleaseReport>{
       await requireSession();
