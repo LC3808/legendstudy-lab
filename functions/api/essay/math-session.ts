@@ -5,7 +5,7 @@
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import {boundedBody} from '../../../src/lib/math-release/server/request';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
-import {evaluateExamMath} from '../../../src/lib/math-release/server/exam-bridge';
+import {evaluateExamMath,InvalidMathChildOutput} from '../../../src/lib/math-release/server/exam-bridge';
 import {openAiCandidate} from '../../../src/lib/math-release/server/provider';
 type Env=MathEnvironment&{ESSAY_WORKER_SERVICE_TOKEN?:string;ESSAY_REGISTRY_WORKER_JWT?:string;ESSAY_MIXED_SESSION_ENABLED?:string};
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(v);
@@ -49,8 +49,13 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   context.extraction=[];
   let usage:Record<string,number>|undefined;
   const started=Date.now();
-  const evaluation=await evaluateExamMath({evaluation_id:input.evaluationId,selected_extraction_id:null,context},openAiCandidate({
-   enabled:true,model:env.MATH_PRIMARY_MODEL,key:env.MATH_PROVIDER_API_KEY,onUsage:value=>{usage=value;}}));
+  let evaluation;
+  try{evaluation=await evaluateExamMath({evaluation_id:input.evaluationId,selected_extraction_id:null,context},openAiCandidate({
+   enabled:true,model:env.MATH_PRIMARY_MODEL,key:env.MATH_PROVIDER_API_KEY,onUsage:value=>{usage=value;}}));}
+  catch(error){
+   if(error instanceof InvalidMathChildOutput&&usage)return reply({state:'failed',code:'INVALID_MATH_OUTPUT',usage:{...usage,latency_ms:Date.now()-started,cost_amount:null,currency:'USD'}});
+   throw error;
+  }
   if(!usage)throw Error('USAGE_REQUIRED');
   return reply({evaluation,usage:{...usage,latency_ms:Date.now()-started,cost_amount:null,currency:'USD'}});
  }catch{return reply({code:'MATH_CHILD_UNAVAILABLE'},503);}
