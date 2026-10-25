@@ -1,27 +1,30 @@
 'use client';
-import {useEffect,useState} from 'react';
+import {useCallback,useEffect,useState} from 'react';
 import {useAuth} from './auth-context';
-import {resolveReadyUniversities} from '../lib/essay-runtime/service-status';
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
 export function useEssayServiceStatus(){
- const {client,user}=useAuth();
- const owner=user?.id;
- const [result,setResult]=useState<{owner:string;universities:Set<string>}|null>(null);
- useEffect(()=>{let active=true;const abort=new AbortController();
-  const load=async()=>{
+ const {client,user,status:authStatus}=useAuth(),owner=user?.id;
+ const [attempt,setAttempt]=useState(0);
+ const [result,setResult]=useState<{owner:string;status:'ready'|'error';universities:Set<string>}|null>(null);
+ const retry=useCallback(()=>setAttempt(n=>n+1),[]);
+ useEffect(()=>{
+  let active=true;const abort=new AbortController();
+  const timeout=setTimeout(()=>abort.abort(),20000);
+  void(async()=>{
    if(!client||!owner)return;
-   const session=(await client.auth.getSession()).data.session;
-   if(!active||session?.user.id!==owner)return;
    try{
-    const response=await fetch('/api/essay/service-status',{headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store',signal:abort.signal});
+    const session=(await client.auth.getSession()).data.session;
+    if(session?.user.id!==owner)throw Error('SESSION_CHANGED');
+    const response=await fetch('/api/essay/public-service-status',{headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store',signal:abort.signal});
     const data=response.ok?await response.json():null;
-    const admitted=data?.version==='essay-service-status-v1'&&data.checked===true&&Array.isArray(data.exams)?data.exams.filter((e:{examId?:unknown;questionIds?:unknown})=>uuid(e.examId)&&Array.isArray(e.questionIds)&&e.questionIds.length&&e.questionIds.every(uuid)):[];
-    const ids=await resolveReadyUniversities(client,admitted,()=>active);
-    if(active)setResult({owner,universities:ids});
-   }catch{if(active)setResult({owner,universities:new Set()});}
-  };
-  void load();const refresh=()=>{if(document.visibilityState==='visible')void load();};window.addEventListener('focus',refresh);
-  return()=>{active=false;abort.abort();window.removeEventListener('focus',refresh);};
- },[client,owner]);
- return result&&result.owner===owner?result.universities:new Set<string>();
+    if(data?.version!=='essay-public-service-v1'||data.checked!==true||!Array.isArray(data.universityIds)||!data.universityIds.every(uuid))throw Error('STATUS_UNVERIFIED');
+    if(active)setResult({owner,status:'ready',universities:new Set(data.universityIds)});
+   }catch{if(active)setResult({owner,status:'error',universities:new Set()});}
+   finally{clearTimeout(timeout);}
+  })();
+  return()=>{active=false;clearTimeout(timeout);abort.abort();};
+ },[client,owner,attempt]);
+ // No focus-triggered overlap. Each retry cancels the preceding generation.
+ const status=!owner?(authStatus==='loading'?'loading':'error'):result&&result.owner===owner?result.status:'loading';
+ return {status,universities:result&&result.owner===owner?result.universities:new Set<string>(),retry:()=>{setResult(null);retry();}};
 }

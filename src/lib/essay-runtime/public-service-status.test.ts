@@ -1,0 +1,16 @@
+import {beforeEach,it,expect,vi} from 'vitest';
+const m=vi.hoisted(()=>({subject:vi.fn(),rpcRaw:vi.fn(),math:vi.fn(),worker:vi.fn()}));
+vi.mock('../math-release/server/transport',()=>({serverTransport:()=>m}));
+vi.mock('../../../functions/api/essay/availability',()=>({onRequestGet:m.math}));
+vi.mock('./public-discovery',()=>({publicCatalog:{universities:[{sourceUniversityId:'cau',universityId:'33333333-3333-4333-8333-333333333333'}]}}));
+import {onRequestGet} from '../../../functions/api/essay/public-service-status';
+import {legendStudySupabaseUrl} from '../auth-config';
+const exam='11111111-1111-4111-8111-111111111111',q='22222222-2222-4222-8222-222222222222',uni='33333333-3333-4333-8333-333333333333';
+const env={MATH_ORIGIN:'https://lab.legendstudy.com',MATH_SUPABASE_URL:legendStudySupabaseUrl,ESSAY_EXAM_RUNTIME_ENABLED:'true',ESSAY_PUBLIC_EXAMS:exam,ESSAY_REVIEWED_WORKER:{fetch:m.worker}};
+const send=(extra={})=>onRequestGet({env:{...env,...extra},request:new Request(env.MATH_ORIGIN+'/api/essay/public-service-status',{headers:{Authorization:'Bearer fixture'}})});
+beforeEach(()=>{vi.resetAllMocks();m.subject.mockResolvedValue(uni);m.math.mockResolvedValue(Response.json({checked:true,mathQuestions:[]}));m.rpcRaw.mockResolvedValue([{examId:exam,universityId:uni,questions:[{id:q}]}]);});
+it('uses exact server scope and metadata without initializing Worker or reserving credit',async()=>{const r=await send();expect(r.status).toBe(200);expect(await r.json()).toMatchObject({checked:true,universityIds:[uni]});expect(m.rpcRaw).toHaveBeenCalledExactlyOnceWith('essay_browse_catalog',{p_university:'cau'},'fixture');expect(m.worker).not.toHaveBeenCalled();});
+it('empty valid policy is a verified absence',async()=>{expect(await(await send({ESSAY_PUBLIC_EXAMS:''})).json()).toMatchObject({checked:true,universityIds:[]});expect(m.rpcRaw).not.toHaveBeenCalled();});
+it.each(['*',exam+','])('invalid policy %s is an error, never false absence',async scope=>{expect((await send({ESSAY_PUBLIC_EXAMS:scope})).status).toBe(503);});
+it('RPC timeout or missing released exam is an error',async()=>{m.rpcRaw.mockRejectedValueOnce(Error('timeout'));expect((await send()).status).toBe(503);m.math.mockResolvedValue(Response.json({checked:true}));m.rpcRaw.mockResolvedValue([]);expect((await send()).status).toBe(503);});
+it('auth failure cannot expose a configured release',async()=>{m.subject.mockRejectedValue(Error('unauthorized'));expect((await send()).status).toBe(503);expect(m.rpcRaw).not.toHaveBeenCalled();});
