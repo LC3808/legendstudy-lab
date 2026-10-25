@@ -4304,32 +4304,32 @@
     {
       "examId": "e15a43a8-5a50-501a-8a60-a632316240e8",
       "questionId": "69057251-f2a5-550a-a5f9-0e9daf11e204",
-      "assetId": "b099a7099cfcc5dc218fedbf55c169967737a1807da452eaa53f32d2b70ebe75",
+      "assetId": "787f34552b9582b565f8c40f2f006e99be73ff65dc7a23656836223915ff7194",
       "pageCount": 7,
       "startPage": 1,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "e15a43a8-5a50-501a-8a60-a632316240e8",
       "questionId": "8513f154-49ee-550f-8e42-3cc5cd600c27",
-      "assetId": "b099a7099cfcc5dc218fedbf55c169967737a1807da452eaa53f32d2b70ebe75",
+      "assetId": "787f34552b9582b565f8c40f2f006e99be73ff65dc7a23656836223915ff7194",
       "pageCount": 7,
       "startPage": 5,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "e15a43a8-5a50-501a-8a60-a632316240e8",
       "questionId": "60675867-2eb6-56ca-94cd-69700254473d",
-      "assetId": "b099a7099cfcc5dc218fedbf55c169967737a1807da452eaa53f32d2b70ebe75",
+      "assetId": "787f34552b9582b565f8c40f2f006e99be73ff65dc7a23656836223915ff7194",
       "pageCount": 7,
-      "startPage": 1,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "startPage": 7,
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "a6667288-75ad-50d4-b237-d2a08e2bff8b",
