@@ -1648,7 +1648,7 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 /* Owner integrated release: compact shared profile and goals, floating share. */
 .my-profile-card__facts>div{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem}
 .my-profile-card__facts dd{margin:0;text-align:center}
-.my-profile-goals{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--line)}
+.my-profile-goals{grid-column:1/-1;width:100%;min-width:0;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--line)}
 .my-profile-goals .my-goal-row{padding:.5rem 0}
 .my-target-list{padding-left:1.5rem;margin:.5rem 0 1rem}
 .my-target-list li{padding:.55rem 0;border-bottom:1px solid var(--line)}
