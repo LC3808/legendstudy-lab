@@ -25,6 +25,8 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const dispatch=async(path:string,payload:unknown)=>worker.fetch(new Request('https://essay-worker.internal'+path,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(90000)}));
   if(input.action==='availability'&&uuid(input.examId)){
    const ready=await dispatch('/exam-admission',{exam_id:input.examId});
+   if(ready.status>=500||ready.status===429)return reply({code:'ADMISSION_UNAVAILABLE'},503);
+   if(ready.status===401)return reply({code:'LOGIN_REQUIRED'},401);
    const admission=ready.ok?await ready.json() as {ready?:boolean;question_ids?:unknown}:null;
    return reply({ready:admission?.ready===true,questionIds:admission?.ready===true&&Array.isArray(admission.question_ids)?admission.question_ids.filter(uuid):[]});
   }
