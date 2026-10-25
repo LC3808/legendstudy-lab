@@ -21,3 +21,17 @@ it('merges existing math admission without inventing university metadata',async(
 
 it('does not report zero when admission lookup fails',async()=>{f.admission.mockResolvedValue(Response.json({ready:false},{status:503}));expect((await (await onRequestGet({request:request(),env})).json()).checked).toBe(false);});
 it('does not report a partial total when math lookup is unverified',async()=>{f.math.mockResolvedValue(Response.json({checked:false,types:{math:false}}));expect((await (await onRequestGet({request:request(),env})).json()).checked).toBe(false);});
+
+ it('checks catalog admission sequentially without retrying or skipping exams',async()=>{
+ const ids=[exam,question,'33333333-3333-4333-8333-333333333333'];
+ let active=0,peak=0;const seen:string[]=[];
+ f.admission.mockImplementation(async({request}:{request:Request})=>{
+  active++;peak=Math.max(peak,active);
+  const body=await request.json();seen.push(body.examId);
+  expect(body.action).toBe('availability');
+  await new Promise(resolve=>setTimeout(resolve,1));active--;
+  return Response.json({ready:true,questionIds:[question]});
+ });
+ const result=await (await onRequestGet({request:request(),env:{...env,ESSAY_PUBLIC_EXAMS:ids.join(',')}})).json();
+ expect(peak).toBe(1);expect(seen).toEqual(ids);expect(result.exams).toHaveLength(3);
+ });

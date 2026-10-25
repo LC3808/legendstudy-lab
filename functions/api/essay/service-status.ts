@@ -15,14 +15,13 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
  const ids=scope.length<=42&&scope.every(uuid)?scope:[];
  try{
   const admitted:{examId:string;questionIds:string[]}[]=[];
-  // Bound parallelism and reuse the exact existing per-exam policy/authentication.
-  for(let offset=0;offset<ids.length;offset+=3){
-   await Promise.all(ids.slice(offset,offset+3).map(async examId=>{
+  // Avoid overlapping Python Worker initialization within this catalog request.
+  // Each exam still uses the existing authentication and admission policy.
+  for(const examId of ids){
     const result=await examAvailability({env,request:new Request(new URL('/api/essay/exam',request.url),{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({action:'availability',examId})})});
     const data=await result.json() as {ready?:boolean;questionIds?:unknown};
     if(!result.ok||typeof data.ready!=='boolean')throw Error('ADMISSION_UNVERIFIED');
     if(data.ready===true&&Array.isArray(data.questionIds)&&data.questionIds.length&&data.questionIds.every(uuid))admitted.push({examId,questionIds:data.questionIds});
-   }));
   }
   const mathResponse=await mathAvailability({request,env});
   const math=await mathResponse.json() as {checked?:boolean;types?:{math?:boolean};mathQuestions?:{examId:string;questionId:string}[]};
