@@ -1,5 +1,5 @@
 /** Local idempotency state only; never changes server billing or existing runs. */
-export type PendingRequest={fingerprint:string;key:string;answers:{questionId:string;body:string;revision:number}[]};
+export type PendingRequest={fingerprint:string;key:string;answers:{questionId:string;body?:string;revision:number;mathInput?:{attemptId:string;confirmedRunId:string}}[]};
 type Store={read(key:string):string;write(key:string,value:string):void};
 export function questionScope(ids:string[]){return JSON.stringify([...new Set(ids)].sort());}
 export function pendingStorageKey(legacy:string,ids:string[]){return `${legacy}:questions:${questionScope(ids)}`;}
@@ -25,7 +25,7 @@ export function restorePending(store:Store,legacy:string,ids:string[]):PendingRe
 }
 function parse(raw:string):PendingRequest|null{
  const p=JSON.parse(raw);if(p===null)return null;
- if(!p||typeof p.key!=='string'||!p.key||typeof p.fingerprint!=='string'||!Array.isArray(p.answers)||!p.answers.length||p.answers.some((a:PendingRequest['answers'][number])=>!a||typeof a.questionId!=='string'||typeof a.body!=='string'||!Number.isInteger(a.revision)))throw Error('PENDING_CHANGED');
+ if(!p||typeof p.key!=='string'||!p.key||typeof p.fingerprint!=='string'||!Array.isArray(p.answers)||!p.answers.length||p.answers.some((a:PendingRequest['answers'][number])=>!a||typeof a.questionId!=='string'||!Number.isInteger(a.revision)||(a.mathInput?(a.body!==undefined||typeof a.mathInput.attemptId!=='string'||typeof a.mathInput.confirmedRunId!=='string'):typeof a.body!=='string')))throw Error('PENDING_CHANGED');
  return p;
 }
 

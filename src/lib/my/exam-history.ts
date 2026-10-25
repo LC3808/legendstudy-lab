@@ -1,7 +1,7 @@
 import registry from '@/data/essay-source-registry.json';
 import type {SupabaseClient} from '@supabase/supabase-js';
 import {assertOwner} from './data';
-import {array,object,text,humanReport,type Report} from './evaluation-report';
+import {array,object,text,humanReport,mathReport,type Report} from './evaluation-report';
 import type {RecordItem} from './essay-dashboard';
 function examLabel(run:Record<string,unknown>){const e=registry.exams.find(e=>e.dbExamId===run.exam_id);return e?`${e.year}학년도 ${e.kind==='admission'?'수시 논술':'모의논술'} · ${e.track}${e.session?' · '+e.session:''}`:text(run.title);}
 export function examIdentityBadges(id?:string){const e=registry.exams.find(e=>e.dbExamId===id);return e?[e.track,e.session].filter((v):v is string=>!!v):[];}
@@ -29,8 +29,18 @@ export function examReports(run:Record<string,unknown>):Report[]{
  const answers=array(run.answers).map(object);
  return array(object(run.result).questions).map(object).map(q=>{
   const out=object(q.evaluation),answer=answers.find(a=>a.questionId===q.questionId),criteria=array(q.criteria).map(object);
-  if(out.contract_version!=='1.3'||!answer)throw Error('INVALID_EXAM_RESULT');
+  if(!answer)throw Error('INVALID_EXAM_RESULT');
   const id=text(run.id)+'/'+text(q.questionId);
+  if(out.contract_version==='math-eval-v1'){
+   const metadata=object(out.exam_math);
+   if(!text(metadata.leafId)||!Array.isArray(metadata.criteria)||!object(metadata.profile).rubric_version)throw Error('INVALID_MATH_EXAM_RESULT');
+   const report=mathReport({evaluation_id:id,output:out,typed_answer:answer.body,problem:metadata.problem,
+    profile:metadata.profile,criteria:array(metadata.criteria).map(c=>({criterion:c})),leaf_id:metadata.leafId});
+   return {...report,priorId:run.parent_id?text(run.parent_id)+'/'+text(q.questionId):null,
+    pins:[text(q.questionId),text(q.rubricVersion),text(q.evidenceVersion),'math-eval-v1'],
+    evidenceLabels:criteria.map(c=>text(c.label)).filter(Boolean)};
+  }
+  if(out.contract_version!=='1.3')throw Error('INVALID_EXAM_RESULT');
   const report=humanReport({id,contract_version:out.contract_version,question_id:q.questionId,
    input_snapshot:{criteria:criteria.map(c=>object(c.binding))},overall_summary:out.summary,strengths:out.strengths,rewrite_checklist:out.checklist,
    essay_improvement_progress:array(out.improvements).map(object).map(i=>({...i,next_action:i.action,scaffolding_observation:{...object(i.scaffolding_observation),core_focus:array(out.core_improvement_keys).includes(i.issue_key)}})),

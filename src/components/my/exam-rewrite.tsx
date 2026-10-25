@@ -2,7 +2,8 @@
 import {useCallback,useEffect,useState} from 'react';
 import {useAuth} from '../auth-context';
 import {SourceExamWriter} from '../source-exam-writer';
-import {EssayExamSubmit,type SubmissionDraft} from '../essay-exam-submit';
+import {type SubmissionDraft} from '../essay-exam-submit';
+import {ScopedExamSubmit} from '../scoped-exam-submit';
 import {readExamRuns} from '@/lib/my/exam-history';
 import {loadRegisteredMaterials,mergeRegisteredCatalog} from '@/lib/essay-runtime/registered-material-catalog';
 import {publicCatalog} from '@/lib/essay-runtime/public-discovery';
@@ -35,5 +36,5 @@ export function ExamRewrite({runId,additional}:{runId:string;additional:boolean}
  if(!state||!auth.user)return <p>시험과 작성 중인 답안을 확인하고 있어요.</p>;
  const {exam,run}=state;const questions=exam.questions.filter(q=>(run.question_ids as string[]).includes(q.dbQuestionId??''));
  const current=questions.find(q=>q.key===active)??questions[0];const root=String(run.parent_id??run.id);
- return <section><h3>다시 써보기</h3><div role="group" aria-label="작성할 문항">{questions.map(q=><button key={q.key} onClick={()=>setActive(q.key)}>{q.label}</button>)}</div>{questions.map(q=><div key={q.key} hidden={current?.key!==q.key}><SourceExamWriter exam={exam} question={q} owner={auth.user!.id} onDirty={onDirty} onDraft={onDraft} rewrite={{id:runId,additional,previousAnswer:String((run.answers as {questionId:string;body:string}[]).find(a=>a.questionId===q.dbQuestionId)?.body??'')}}/></div>)}<EssayExamSubmit exam={exam} included={questions.map(q=>q.key)} drafts={drafts} cycle={additional?{previousPaidRunId:root}:{parentId:root}}/></section>;
+ return <section><h3>다시 써보기</h3><div role="group" aria-label="작성할 문항">{questions.map(q=><button key={q.key} onClick={()=>setActive(q.key)}>{q.label}</button>)}</div>{questions.map(q=><div key={q.key} hidden={current?.key!==q.key}><SourceExamWriter exam={exam} question={q} owner={auth.user!.id} onDirty={onDirty} onDraft={onDraft} rewrite={{id:runId,additional,previousAnswer:String((run.answers as {questionId:string;body:string}[]).find(a=>a.questionId===q.dbQuestionId)?.body??'')}}/></div>)}<ScopedExamSubmit exam={exam} includedKeys={questions.map(q=>q.key)} drafts={drafts} cycle={additional?{previousPaidRunId:root}:{parentId:root}}/></section>;
 }

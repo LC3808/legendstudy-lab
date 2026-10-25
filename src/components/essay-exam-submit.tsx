@@ -8,8 +8,8 @@ import type {SourceExam} from '@/lib/essay-runtime/source-registry';
 import {RecordDetail} from './my/essay-dashboard';
 import {readExamRuns,readExamDashboard} from '@/lib/my/exam-history';
 import type {RecordItem} from '@/lib/my/essay-dashboard';
-export type SubmissionDraft={body:string;revision:number;images:boolean;saved?:boolean};
-export function EssayExamSubmit({exam,included,drafts,cycle}:{cycle?:{parentId?:string;previousPaidRunId?:string};exam:SourceExam;included:string[];drafts:Record<string,SubmissionDraft>}){
+export type SubmissionDraft={body:string;revision:number;images:boolean;saved?:boolean;mathInput?:{attemptId:string;confirmedRunId:string}};
+export function EssayExamSubmit({exam,included,drafts,cycle,mathQuestions=[]}:{mathQuestions?:string[];cycle?:{parentId?:string;previousPaidRunId?:string};exam:SourceExam;included:string[];drafts:Record<string,SubmissionDraft>}){
  const confirmation=useRef<((accepted:boolean)=>void)|null>(null);
  const [confirmCost,setConfirmCost]=useState<number|null>(null);
  const missing=exam.questions.filter(q=>!included.includes(q.key));
@@ -61,9 +61,11 @@ export function EssayExamSubmit({exam,included,drafts,cycle}:{cycle?:{parentId?:
  })().catch(()=>{if(active)setAdmissionError(true);});return()=>{active=false;};},[auth.client,owner,exam.dbExamId,admissionRetry]);
  async function submit(){if(busy||!ready||acceptedHere)return;setWaitMessage('오늘도 수고했어요.');setBusy(true);setNotice('답안을 제출하고 있어요.');
   try{const selected=exam.questions.filter(q=>included.includes(q.key));
-   if(!selected.length||selected.some(q=>drafts[q.key]?.saved===false||!q.dbQuestionId||!drafts[q.key]?.body.trim()||drafts[q.key]?.images||q.inputMode==='image'))throw Error('ANSWER_REQUIRED');
-   const answers=selected.map(q=>({questionId:q.dbQuestionId!,body:drafts[q.key].body,revision:drafts[q.key].revision}));
-   const fingerprint=JSON.stringify({owner,examId:exam.dbExamId,parentId,previousPaidRunId:cycle?.previousPaidRunId,answers:answers.map(({questionId,body})=>({questionId,body}))});
+   if(!selected.length||selected.some(q=>drafts[q.key]?.saved===false||!q.dbQuestionId||
+    (drafts[q.key]?.mathInput?!mathQuestions.includes(q.dbQuestionId):(!drafts[q.key]?.body.trim()||drafts[q.key]?.images||q.inputMode==='image'&&!mathQuestions.includes(q.dbQuestionId)))))throw Error('ANSWER_REQUIRED');
+   const answers:PendingRequest['answers']=selected.map(q=>({questionId:q.dbQuestionId!,revision:drafts[q.key].revision,
+    ...(drafts[q.key].mathInput?{mathInput:drafts[q.key].mathInput}:{body:drafts[q.key].body})}));
+   const fingerprint=JSON.stringify({owner,examId:exam.dbExamId,parentId,previousPaidRunId:cycle?.previousPaidRunId,answers:answers.map(({questionId,body,mathInput})=>({questionId,...(mathInput?{mathInput}:{body})}))});
    // Keep the same key after ambiguous transport; changing answers requires resolution first.
    let pending:PendingRequest|null=restorePending(temporaryDraftStore,legacyStorage,answers.map(a=>a.questionId));
    if(pending&&pending.fingerprint!==fingerprint)throw Error('PENDING_CHANGED');

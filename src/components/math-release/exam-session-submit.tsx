@@ -19,7 +19,7 @@ function round(value:unknown):Round{
  return v;
 }
 /** Existing saved text/photos and Math input/confirmation contracts; one financial submit. */
-export function MathExamSessionSubmit({exam,drafts,included,leaves}:{exam:SourceExam;drafts:Record<string,SubmissionDraft>;included:string[];leaves:Record<string,string>}){
+export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady}:{exam:SourceExam;drafts:Record<string,SubmissionDraft>;included:string[];leaves:Record<string,string>;onInputsReady?:(refs:Record<string,{attemptId:string;confirmedRunId:string}>)=>void}){
  const auth=useAuth(),owner=auth.user?.id;
  const alive=useRef(true),running=useRef(false);
  const [ready,setReady]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState('');
@@ -41,11 +41,12 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves}:{exam:Source
  useEffect(()=>{let active=true;void(async()=>{
   if(!auth.client||!owner)return;
   const s=(await auth.client.auth.getSession()).data.session;if(!s||s.user.id!==owner)return;
+  if(onInputsReady){if(active)setReady(true);return;}
   const response=await auth.client.rpc('math_session_history',{}).abortSignal(AbortSignal.timeout(20000));
   if(response.error||response.data?.version!=='math-session-history-v1'||!Array.isArray(response.data.runs))return;
   const rows=response.data.runs.map(round) as Round[];
   if(active){setReady(true);setParents(rows.filter(r=>r.exam_id===exam.dbExamId&&r.free_rewrite_available));}
- })().catch(()=>{});return()=>{active=false;};},[auth.client,owner,exam.dbExamId]);
+ })().catch(()=>{});return()=>{active=false;};},[auth.client,owner,exam.dbExamId,onInputsReady]);
  useEffect(()=>{let active=true;queueMicrotask(()=>{if(!active)return;setInputs({});setCorrections({});setAccepted(null);setPending(null);setConfirm(false);
   try{const value=temporaryDraftStore.read(scope);if(value){const p=JSON.parse(value) as Pending;if(!uuid(p.key)||typeof p.fingerprint!=='string'||!p.attemptKeys||!p.attempts)throw Error('INVALID_PENDING');setPending(p);}}
   catch{setNotice('저장된 요청을 확인할 수 없습니다. 나의 첨삭 기록에서 먼저 처리 상태를 확인해 주세요.');}
@@ -96,18 +97,24 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves}:{exam:Source
   const p={...pending,submitted:true,runId:id};persist(p);await dispatch(round(await call('math_session_read',{p_run:id})));
  }
  const allReady=!!pending&&selected.length>0&&selected.every(q=>inputs[q.key]?.can_request_evaluation);
+ useEffect(()=>{
+  if(!onInputsReady||!allReady||!pending)return;
+  const refs:Record<string,{attemptId:string;confirmedRunId:string}>={};
+  for(const q of selected){const run=inputs[q.key]?.selected_extraction_id;if(!uuid(run))return;refs[q.key]={attemptId:pending.attempts[q.key],confirmedRunId:run};}
+  onInputsReady(refs);
+ },[onInputsReady,allReady,pending,inputs]);
  const retryable=accepted?.state==='reserved'&&accepted.questions.some(q=>q.state==='FAILED')&&accepted.questions.every(q=>['FAILED','COMPLETED'].includes(q.state));
  return <section className="essay-submit-gate" aria-label="수리논술 회차 첨삭" aria-busy={busy}>
-  {parents.length>0&&!pending&&<label>제출 방식<select value={parentId} disabled={busy} onChange={e=>setParentId(e.target.value)}><option value="">새 첨삭 · 1 크레딧</option>{parents.map(r=><option key={r.run_id} value={r.run_id}>무료 재첨삭 · {r.created_at.slice(0,10)}</option>)}</select></label>}
+  {!onInputsReady&&parents.length>0&&!pending&&<label>제출 방식<select value={parentId} disabled={busy} onChange={e=>setParentId(e.target.value)}><option value="">새 첨삭 · 1 크레딧</option>{parents.map(r=><option key={r.run_id} value={r.run_id}>무료 재첨삭 · {r.created_at.slice(0,10)}</option>)}</select></label>}
   {!accepted&&<button className="button button--outline" disabled={!ready||busy||blocked} onClick={()=>void work(prepare)}>저장한 답안 입력 확인 · 0 크레딧</button>}
   {selected.map(q=>{const input=inputs[q.key];if(!input)return null;return <article key={q.key}><h3>{q.label}</h3>{input.can_request_evaluation?<p>첨삭 요청 준비 완료</p>:<>
    <p>사진에서 읽은 답안을 확인해 주세요.</p>{input.candidate_regions.map(region=><label key={region.region_id}>확인할 내용<textarea value={corrections[region.region_id]??region.normalized_math??region.raw_text} onChange={e=>setCorrections(old=>({...old,[region.region_id]:e.target.value}))}/></label>)}
    {input.input_state==='CONFIRMATION_REQUIRED'&&<button className="button button--outline" disabled={busy} onClick={()=>void work(async()=>{await inputClient().confirmExtraction(pending!.attempts[q.key],String(input.candidate?.run_id??input.candidate?.id),input.candidate_regions.map(region=>({region_id:region.region_id,raw_text:corrections[region.region_id]??region.normalized_math??region.raw_text,normalized_math:corrections[region.region_id]??region.normalized_math??region.raw_text})));const next=await inputClient().readInput(pending!.attempts[q.key]);setInputs(old=>({...old,[q.key]:next}));})}>이 내용으로 확인</button>}
   </>}</article>;})}
-  {allReady&&!pending?.submitted&&!accepted&&<button className="button button--primary" disabled={busy||blocked} onClick={()=>setConfirm(true)}>회차 첨삭 요청 · {parentId?0:1} 크레딧</button>}
-  {pending?.submitted&&!accepted&&<button className="button button--primary" disabled={busy} onClick={()=>void work(submit)}>같은 회차 처리 확인</button>}
-  {pending&&!pending.submitted&&!accepted&&<button className="button button--outline" disabled={busy} onClick={()=>{temporaryDraftStore.remove(scope);setPending(null);setInputs({});setCorrections({});}}>입력 다시 준비</button>}
-  {confirm&&<div className="essay-confirm-backdrop"><section role="dialog" aria-modal="true" aria-labelledby="math-session-confirm-title" className="my-panel essay-confirm-dialog"><h2 id="math-session-confirm-title">{missing.length?'작성하지 않았거나 제외한 답안이 있습니다':'시험 회차 첨삭 요청'}</h2>{missing.length>0&&<p>{missing.map(q=>q.label).join(', ')}은 이번 첨삭에 포함하지 않습니다.</p>}<p>이번 첨삭에는 {parentId?0:1} 크레딧이 사용됩니다.</p>{missing.length>0&&<p>미제출 문항을 나중에 새로 첨삭받으면 별도 회차로 1 크레딧이 사용됩니다.</p>}<button className="button button--outline" onClick={()=>setConfirm(false)}>계속 작성하기</button><button className="button button--primary" onClick={()=>void work(submit)}>첨삭 진행하기</button></section></div>}
+  {!onInputsReady&&allReady&&!pending?.submitted&&!accepted&&<button className="button button--primary" disabled={busy||blocked} onClick={()=>setConfirm(true)}>회차 첨삭 요청 · {parentId?0:1} 크레딧</button>}
+  {!onInputsReady&&pending?.submitted&&!accepted&&<button className="button button--primary" disabled={busy} onClick={()=>void work(submit)}>같은 회차 처리 확인</button>}
+  {pending&&!pending.submitted&&!accepted&&<button className="button button--outline" disabled={busy} onClick={()=>{temporaryDraftStore.remove(scope);setPending(null);setInputs({});setCorrections({});onInputsReady?.({});}}>입력 다시 준비</button>}
+  {!onInputsReady&&confirm&&<div className="essay-confirm-backdrop"><section role="dialog" aria-modal="true" aria-labelledby="math-session-confirm-title" className="my-panel essay-confirm-dialog"><h2 id="math-session-confirm-title">{missing.length?'작성하지 않았거나 제외한 답안이 있습니다':'시험 회차 첨삭 요청'}</h2>{missing.length>0&&<p>{missing.map(q=>q.label).join(', ')}은 이번 첨삭에 포함하지 않습니다.</p>}<p>이번 첨삭에는 {parentId?0:1} 크레딧이 사용됩니다.</p>{missing.length>0&&<p>미제출 문항을 나중에 새로 첨삭받으면 별도 회차로 1 크레딧이 사용됩니다.</p>}<button className="button button--outline" onClick={()=>setConfirm(false)}>계속 작성하기</button><button className="button button--primary" onClick={()=>void work(submit)}>첨삭 진행하기</button></section></div>}
   {accepted&&<><p>{accepted.state==='completed'?'회차 첨삭이 완료됐습니다.':'제출한 회차의 처리 상태를 확인하고 있습니다.'}</p>{accepted.questions.map(q=><p key={q.question_id}>{exam.questions.find(item=>item.dbQuestionId===q.question_id)?.label} · {q.state==='COMPLETED'?'완료':q.state==='FAILED'?'재처리 필요':'진행 중'}</p>)}<button className="button button--outline" disabled={busy} onClick={()=>void work(()=>dispatch(accepted))}>같은 회차 상태 확인</button>
    {retryable&&<button className="button button--outline" disabled={busy} onClick={()=>void work(async()=>{const p:Pending={...pending!,retryKey:pending?.retryKey??crypto.randomUUID()};persist(p);await call('math_session_retry',{p_run:accepted.run_id,p_key:p.retryKey});delete p.retryKey;persist(p);const next=round(await call('math_session_read',{p_run:accepted.run_id}));await dispatch(next);})}>실패 문항만 재처리 · 0 크레딧</button>}
    {accepted.state==='completed'&&<button className="button button--outline" disabled={busy} onClick={()=>{temporaryDraftStore.remove(scope);setPending(null);setAccepted(null);setInputs({});setCorrections({});}}>새 회차 작성</button>}

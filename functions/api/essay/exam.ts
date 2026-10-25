@@ -27,8 +27,10 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
    const ready=await dispatch('/exam-admission',{exam_id:input.examId});
    if(ready.status>=500||ready.status===429)return reply({code:'ADMISSION_UNAVAILABLE'},503);
    if(ready.status===401)return reply({code:'LOGIN_REQUIRED'},401);
-   const admission=ready.ok?await ready.json() as {ready?:boolean;question_ids?:unknown}:null;
-   return reply({ready:admission?.ready===true,questionIds:admission?.ready===true&&Array.isArray(admission.question_ids)?admission.question_ids.filter(uuid):[]});
+   const admission=ready.ok?await ready.json() as {ready?:boolean;question_ids?:unknown;math_questions?:Record<string,string>}:null;
+   const questionIds=admission?.ready===true&&Array.isArray(admission.question_ids)?admission.question_ids.filter(uuid):[];
+   const mathQuestions=Object.fromEntries(Object.entries(admission?.math_questions??{}).filter(([q,leaf])=>questionIds.includes(q)&&uuid(leaf)));
+   return reply({ready:admission?.ready===true,questionIds,mathQuestions});
   }
   // Verify both deployed Worker and additive DB session contract before reserving.
   async function sessionReady(){
@@ -53,7 +55,9 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
    return reply(await quoted.json());
   }
   if(input.action!=='submit'||!uuid(input.examId)||!uuid(input.key)||!Array.isArray(input.answers)||input.answers.length<1||input.answers.length>100||!(input.parentId==null||uuid(input.parentId)))return reply({code:'INVALID_REQUEST'},422);
-  if(input.answers.some(a=>!a||typeof a!=='object'||!uuid(a.questionId)||typeof a.body!=='string'||!a.body.trim()||a.body.length>30000||!Number.isSafeInteger(a.revision)||a.revision<0||Object.keys(a).some(k=>!['questionId','body','revision'].includes(k))))return reply({code:'INVALID_ANSWERS'},422);
+  if(input.answers.some(a=>!a||typeof a!=='object'||!uuid(a.questionId)||!Number.isSafeInteger(a.revision)||a.revision<0||
+   (a.mathInput?(Object.keys(a).some(k=>!['questionId','revision','mathInput'].includes(k))||typeof a.mathInput!=='object'||!uuid(a.mathInput.attemptId)||!uuid(a.mathInput.confirmedRunId)||Object.keys(a.mathInput).some(k=>!['attemptId','confirmedRunId'].includes(k))):
+    (typeof a.body!=='string'||!a.body.trim()||a.body.length>30000||Object.keys(a).some(k=>!['questionId','body','revision'].includes(k))))))return reply({code:'INVALID_ANSWERS'},422);
   if(!await sessionReady())return reply({code:'EXAM_SESSION_CONTRACT_PENDING'},409);
   const reserved=await transport.request(input.previousPaidRunId?'/rest/v1/rpc/essay_exam_submit_cycle':'/rest/v1/rpc/essay_exam_submit',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_key:scope?.requestKey??input.key,p_answers:input.answers,p_parent:input.parentId??null,...(input.previousPaidRunId?{p_previous:input.previousPaidRunId}:{})})});
   const value=JSON.parse(new TextDecoder().decode(await boundedBody(reserved,16384)));

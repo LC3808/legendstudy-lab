@@ -2,7 +2,7 @@
 import {isUniversityServicePreparing} from '@/lib/essay-runtime/catalog-policy';
 
 import Link from 'next/link';
-import {EssayExamSubmit,type SubmissionDraft} from './essay-exam-submit';
+import {type SubmissionDraft} from './essay-exam-submit';
 import {useCallback,useState,useEffect} from 'react';
 import {useAuth} from './auth-context';
 import {sourceExams,type SourceExam} from '@/lib/essay-runtime/source-registry';
@@ -79,7 +79,7 @@ function Selection({rows,owner}:{rows:SourceExam[];owner:string}){
    <p className="essay-submit-note">답안 저장은 무료입니다. 작성한 답안을 시험 회차 단위로 함께 첨삭하며, 새 첨삭 회차에는 문항 수와 관계없이 1 크레딧이 사용됩니다. 이전에 제출하지 않은 문항을 나중에 첨삭받으면 새 회차로 1 크레딧이 사용됩니다.</p>
    {written.length>1&&<fieldset className="essay-submission-selection"><legend>이번 첨삭 회차에 제출할 답안</legend>{written.map(q=><label key={q.key}><input type="checkbox" checked={!excluded.includes(q.key)} onChange={e=>setExcluded(old=>e.target.checked?old.filter(key=>key!==q.key):[...old,q.key])}/>{q.label}</label>)}<p>선택하지 않은 답안과 기존 첨삭 기록은 그대로 보존됩니다. 무료 재첨삭은 기존 회차의 문항으로만 요청할 수 있습니다.</p></fieldset>}
    {exam.questions.map(q=><div key={q.key} hidden={question?.key!==q.key}><SourceExamWriter key={`${owner}:${q.key}`} exam={exam} question={q} owner={owner} onDirty={onDirty} onDraft={onDraft}/></div>)}
-   {isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>첨삭 서비스 준비 중</button>:!exam.evaluationReady||exam.verification!=='VERIFIED'?<ScopedExamSubmit exam={exam} questionKey={question?.key} drafts={drafts} includedKeys={submitIncluded}/>:<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={submitIncluded} drafts={drafts}/>}
+   {isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>첨삭 서비스 준비 중</button>:<ScopedExamSubmit exam={exam} questionKey={question?.key} drafts={drafts} includedKeys={submitIncluded}/>}
 
   </>}
  </section>;
