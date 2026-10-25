@@ -16,12 +16,6 @@ import {
 
 import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
 
-const STATE_FILTERS = [
-  { value: "", label: "전체" },
-  { value: "PAID", label: "결제 완료" },
-  { value: "CANCELLED", label: "결제 취소" },
-] as const;
-
 /**
  * Payment operations read.
  *
@@ -76,9 +70,9 @@ export function AdminPaymentView() {
 
   return (
     <div className="admin-stack">
-      <AdminReleaseReport kind="payment"/>
+      <AdminReleaseReport kind="payment" onPaymentState={changeState}/>
       <section className="admin-section">
-        <h2>결제 조회</h2>
+        <h2>주문 상세 조회</h2>
         <p className="admin-section__note">
           주문번호 또는 회원 식별자로 조회합니다. 조회 전용이며, 취소·환불은 결제 운영
           절차로만 처리됩니다.
@@ -101,23 +95,6 @@ export function AdminPaymentView() {
             <button className="button button--accent" type="submit">
               조회
             </button>
-          </div>
-          <div className="admin-search__filters">
-            <label className="admin-search__label" htmlFor="admin-payment-state">
-              결제 상태
-            </label>
-            <select
-              id="admin-payment-state"
-              className="admin-search__input"
-              value={state}
-              onChange={(event) => changeState(event.target.value)}
-            >
-              {STATE_FILTERS.map((option) => (
-                <option key={option.value || "all"} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
           </div>
           {hint ? (
             <p className="admin-search__hint" role="status">

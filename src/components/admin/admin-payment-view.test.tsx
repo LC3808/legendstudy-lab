@@ -7,11 +7,12 @@ vi.mock('../auth-context',()=>({useAuth:()=>({client:{rpc:fixture.rpc,auth:{getS
 afterEach(()=>{cleanup();fixture.rpc.mockReset();});
 it('combines server filters and whole-result totals beyond one page',async()=>{
  fixture.rpc.mockResolvedValue({data:{version:'admin-release-v1',kind:'payment',as_of:'2026-10-24T00:00:00Z',total:61,rows:[{id:'one',sku:'sku-one',quantity:3,amount:3000,currency:'KRW',mode:'LIVE',state:'PAID',created_at:'2026-10-24T00:00:00Z'}],paid:[{mode:'LIVE',currency:'KRW',count:60,amount:180000},{mode:'TEST',currency:'KRW',count:1,amount:3000}]},error:null});
- render(<AdminReleaseReport kind="payment"/>);
+ const onState=vi.fn();render(<AdminReleaseReport kind="payment" onPaymentState={onState}/>);
  expect(await screen.findByText('전체 61건')).toBeVisible();
  expect(screen.getByText(/60건 · 180,000 KRW/)).toBeVisible();expect(screen.getByText(/1건 · 3,000 KRW/)).toBeVisible();
  fireEvent.change(screen.getByLabelText('상품'),{target:{value:'3'}});
  fireEvent.change(screen.getByLabelText('거래 상태'),{target:{value:'cancelled'}});
+ expect(onState).toHaveBeenLastCalledWith('CANCELLED');
  fireEvent.change(screen.getByLabelText('기간'),{target:{value:'custom'}});
  fireEvent.change(screen.getByLabelText('시작일'),{target:{value:'2026-10-23'}});
  fireEvent.change(screen.getByLabelText('종료일'),{target:{value:'2026-10-23'}});

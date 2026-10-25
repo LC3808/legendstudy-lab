@@ -6,7 +6,7 @@ import {formatNumber,formatDateTime,creditOriginLabel,orderStateLabel,paymentMod
 import {AdminPeriodFilter} from './admin-period-filter';
 import {useAdminQuery,AdminLoading,AdminErrorPanel} from './admin-surface';
 
-export function AdminReleaseReport({kind}:{kind:ReportKind}){
+export function AdminReleaseReport({kind,onPaymentState}:{kind:ReportKind;onPaymentState?:(state:string)=>void}){
  const [period,setPeriod]=useState<AdminPeriod>('d30'),[from,setFrom]=useState(''),[to,setTo]=useState('');
  const [category,setCategory]=useState('all'),[state,setState]=useState('all'),[quantity,setQuantity]=useState(''),[offset,setOffset]=useState(0);
  const bounds=periodBounds(period,from,to);
@@ -17,7 +17,7 @@ export function AdminReleaseReport({kind}:{kind:ReportKind}){
  return <section className={`admin-section ${kind==='dashboard'?'admin-section--primary':''}`}><h2>{kind==='dashboard'?'핵심 운영 지표':kind==='credit'?'크레딧 종류·기간 통계':'상품·기간별 주문 및 결제'}</h2>
   <AdminPeriodFilter period={period} from={from} to={to} onChange={(p,f,t)=>{setPeriod(p);setFrom(f);setTo(t);setOffset(0);}}/>
   {kind==='credit'&&<label>크레딧 종류 <select value={category} onChange={e=>{setCategory(e.target.value);setOffset(0);}}>{[['all','전체'],['purchase','구매'],['free','무료 지급'],['admin','관리자 지급'],['consume','사용'],['expiration','만료'],['reversal','환불·회수']].map(([key,label])=><option key={key} value={key}>{label}</option>)}</select></label>}
-  {kind==='payment'&&<div className="admin-search__filters"><label>상품 <select value={quantity} onChange={e=>{setQuantity(e.target.value);setOffset(0);}}><option value="">전체</option>{[1,3,5,10].map(n=><option key={n} value={n}>{n}회권</option>)}</select></label><label>거래 상태 <select value={state} onChange={e=>{setState(e.target.value);setOffset(0);}}><option value="all">전체</option><option value="paid">결제 완료</option><option value="cancelled">결제 취소</option></select></label></div>}
+  {kind==='payment'&&<div className="admin-search__filters"><label>상품 <select value={quantity} onChange={e=>{setQuantity(e.target.value);setOffset(0);}}><option value="">전체</option>{[1,3,5,10].map(n=><option key={n} value={n}>{n}회권</option>)}</select></label><label>거래 상태 <select value={state} onChange={e=>{setState(e.target.value);onPaymentState?.(e.target.value==='all'?'':e.target.value.toUpperCase());setOffset(0);}}><option value="all">전체</option><option value="paid">결제 완료</option><option value="cancelled">결제 취소</option></select></label></div>}
   {!bounds?<p role="status">시작일과 종료일을 선택해 주세요.</p>:result.state.status==='loading'?<AdminLoading/>:result.state.status==='error'?<AdminErrorPanel kind={result.state.kind} onRetry={result.reload}/>:data&&<>
    <p className="admin-muted">한국 날짜 기준 · {formatDateTime(data.as_of)} 조회</p>
    {kind==='dashboard'&&<><div className="admin-metrics">{metric('신규 회원',data.new_members!)}{metric('크레딧 지급',data.credit_granted!)}{metric('크레딧 사용',data.credit_used!)}{metric('첨삭 진행',data.essay!.pending)}{metric('첨삭 완료',data.essay!.completed)}{metric('첨삭 실패',data.essay!.failed)}</div><p className="admin-muted">첨삭은 선택 기간에 시작된 시험 회차의 현재 상태입니다. 서버 전체 장애 모니터링은 데이터 연결이 필요합니다.</p><div className="admin-metrics">{metric('학습시간',Math.round(data.study_seconds!/60),'분')}</div><p className="admin-muted">선택 기간에 시작하고 종료된 기록 중 학습시간 합산 대상만 포함합니다.</p></>}
