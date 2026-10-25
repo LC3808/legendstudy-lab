@@ -28,3 +28,8 @@ Owner가 precheck → apply → postcheck 실행. secdef/stable/고정 search_pa
 
 ## DB·스토어 후속 준비
 운영 verify-iap-purchase v23 ACTIVE 확인. 10월23일 v17 실패 인수인계는 현재 지급 성공 상태와 다르므로 재복구/재구매하지 않는다. 기존 실제 지급 3건이 존재한다. 현재 스토어 콘솔의 배포/심사 버전은 별도 확인해야 하며 과거 build19/Android18 기록을 최신으로 단정하지 않는다. 신규 대학 공개나 결제 설정 변경 없음.
+
+## 운영 검증 완료
+Production source `8261d17d1d379feff16e247267583ea4a165f86b`, 배포 `7ff387f2-4625-40e2-b557-61b71c1dbd64`. canonical API environment=production/status=success 확인. 실제 관리자 결제 화면에서 App Store2건/4 + Google1건/1, 합계3건/5 표시. 결제 통계/개별 주문/크레딧 통계 각5행, 통계 다음 페이지2 전환 및5행 확인. 기존 구매 잔액4와 새 설명 확인. 원격 코드 SHA 일치.
+
+스토어 후속: 기존 IAP 작업 디렉터리의 ignored production config로 양 플랫폼 `tool/store-release --check` PASS. APP 구매/크레딧 관련12테스트 PASS. 현재 체크아웃 Android signing config 존재, iOS Auth.local.xcconfig 부재(기존 안전한 설정 재사용 여부 확인 필요). 스토어 버전 확인은 Apple 로그인/Play 기존 개발자 계정 전환 대기. 업로드/심사 제출/결제 설정 변경은 하지 않았다.
