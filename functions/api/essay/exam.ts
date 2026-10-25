@@ -15,7 +15,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
  try{
   const input=JSON.parse(new TextDecoder().decode(await boundedBody(request,1048576))) as Record<string,unknown>;
   const publicExams=(env.ESSAY_PUBLIC_EXAMS??'').split(',').map(id=>id.trim());
-  const publicRelease=publicExams.length<=64&&publicExams.every(uuid)&&uuid(input.examId)&&publicExams.includes(input.examId);
+  const publicRelease=publicExams.length<=128&&publicExams.every(uuid)&&uuid(input.examId)&&publicExams.includes(input.examId);
   const transport=serverTransport(env),subject=await transport.subject(token,publicRelease);
   // Optional server-only single-submission scope for explicitly approved operating E2E.
   const scope=env.ESSAY_E2E_SCOPE?JSON.parse(env.ESSAY_E2E_SCOPE) as {subject:string;exam:string;requestKey:string;parentId?:string;previousPaidRunId?:string}:null;

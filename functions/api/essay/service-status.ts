@@ -12,7 +12,7 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
  const token=request.headers.get('authorization')?.match(/^Bearer ([^\s]+)$/)?.[1];
  if(!token||env.MATH_ORIGIN!==new URL(request.url).origin||env.MATH_SUPABASE_URL!==legendStudySupabaseUrl)return empty();
  const scope=(env.ESSAY_PUBLIC_EXAMS??'').split(',').map(v=>v.trim());
- const ids=scope.length<=64&&scope.every(uuid)?scope:[];
+ const ids=scope.length<=128&&scope.every(uuid)?scope:[];
  try{
   const admitted:{examId:string;questionIds:string[]}[]=[];
   // Avoid overlapping Python Worker initialization within this catalog request.
