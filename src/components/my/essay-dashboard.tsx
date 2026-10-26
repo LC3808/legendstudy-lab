@@ -1,16 +1,17 @@
 'use client';
+import {ExamResultLayout} from './exam-result-layout';
 import {GrowthShare} from './growth-share';
 import {MathSessionProgress} from '../math-release/session-progress';
 import {EssaySessionProgress} from './essay-session-progress';
 import {ExamRewrite} from './exam-rewrite';
-import {readExamReports,examQuestionLabel,examAnswerCoverage} from '@/lib/my/exam-history';
+import {readExamReports,examQuestionLabel} from '@/lib/my/exam-history';
 import Link from 'next/link';
 import {useCallback,useState} from 'react';
 import {OwnerArea,useOwnerData,DataStatus,dateLabel} from './owner-data';
 import {ReturnNavigation} from './return-navigation';
 import {EvaluationReport,EvaluationComparison} from './evaluation-report';
 import {humanReport,mathReport} from '@/lib/my/evaluation-report';
-import {readEssayDashboard,readMathDashboard,readEssayDetail,mathRead,readMathSession,historyType,answerVersion,completedAt,type RecordItem} from '@/lib/my/essay-dashboard';
+import {readEssayDashboard,readMathDashboard,readEssayDetail,mathRead,readMathSession,type RecordItem} from '@/lib/my/essay-dashboard';
 import type {SupabaseClient} from '@supabase/supabase-js';
 import './essay-dashboard.css';
 export function EssayDashboard(){
@@ -75,5 +76,5 @@ function ExamDetail({row}:{row:RecordItem}){
  if(!data.data)return <DataStatus error={data.error} reload={data.reload}/>;
  if(!data.data.current.length)return <EssaySessionProgress key={row.id} runId={row.id} onComplete={data.reload}/>;
  if(writing)return <><button onClick={()=>setWriting(null)}>결과로 돌아가기</button><ExamRewrite runId={row.id} additional={writing==='paid'}/></>;
- return <><button className="button button--primary" onClick={()=>setWriting('free')}>재작성하기</button>{data.data.run.continuous_cycles_supported===true&&<details><summary>추가 첨삭 선택</summary><button className="button button--outline" onClick={()=>setWriting('paid')}>추가 첨삭 · 1 크레딧</button></details>}<header className="essay-result-identity"><h2>{row.university}</h2><p>{row.question}</p><span className={`essay-history-badge ${row.parentId?'included':''}`}>{historyType(row)}</span> <small>{dateLabel(completedAt(row))}</small></header><ul className="exam-answer-coverage">{examAnswerCoverage(row.examId,row.questionIds).map(q=><li key={q.id}>{q.label} · {q.written?'제출 답안':'미작성'}</li>)}</ul>{data.data.current.map(report=><div key={report.id}><span className="essay-history-badge">{examQuestionLabel(report.id.split('/').at(-1)??'')}</span><EvaluationReport voiceType="humanities_social" title={historyType(row)} answerLabel={answerVersion(row)} before={data.data!.previous.find(p=>p.id===report.priorId)} report={report}/><EvaluationComparison before={data.data!.previous.find(p=>p.id===report.priorId)} after={row.rewrite?report:undefined}/></div>)}</>;
+ return <ExamResultLayout row={row} run={data.data.run} reports={data.data.current} previous={data.data.previous} onRewrite={()=>setWriting('free')} onAdditional={()=>setWriting('paid')}/>;
 }
