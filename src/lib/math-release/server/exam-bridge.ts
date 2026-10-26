@@ -11,10 +11,17 @@ export class InvalidMathChildOutput extends Error {}
 export async function evaluateExamMath(raw: unknown, adapter: MathEvaluatorAdapter) {
   const input=physicalClaimToInput(raw);
   const candidate=await adapter.evaluate(input);
-  if(!validateMathEval(candidate.output,input).ok) throw new InvalidMathChildOutput('INVALID_MATH_OUTPUT');
+  // Record bounded validator codes only: never candidate text, IDs, answers or package data.
+  let validation;
+  try { validation=validateMathEval(candidate.output,input); }
+  catch { console.warn('MATH_CHILD_VALIDATION_FAILURE',{stage:'structure',codes:['MALFORMED_OUTPUT']}); throw new InvalidMathChildOutput('INVALID_MATH_OUTPUT'); }
+  if(!validation.ok) {
+    console.warn('MATH_CHILD_VALIDATION_FAILURE',{stage:'domain',codes:[...new Set(validation.issues.map(issue=>issue.code))]});
+    throw new InvalidMathChildOutput('INVALID_MATH_OUTPUT');
+  }
   // Preserve the Math result schema and diagnostic scale; never invent Essay stars.
   let output:Record<string,unknown>;
-  try{output=physicalFinalize(candidate.output,input);}catch{throw new InvalidMathChildOutput('INVALID_MATH_OUTPUT');}
+  try{output=physicalFinalize(candidate.output,input);}catch{console.warn('MATH_CHILD_VALIDATION_FAILURE',{stage:'physical',codes:['PHYSICAL_CONTRACT_REJECTED']});throw new InvalidMathChildOutput('INVALID_MATH_OUTPUT');}
   const context=input.canonicalPackage!;
   const report=mathReport({output,profile:context.profile});
   return {...output,summary:report.summary,exam_math:{profile:context.profile,
