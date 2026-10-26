@@ -1098,6 +1098,42 @@
         "0dc56c03-45ed-519e-a309-b4f6c9acee13"
       ],
       "packageDigest": "f18a98662b9ecb0d33828e2dc57a5ed655b5877a7edb96e1edd84f544c21b6bf"
+    },
+    {
+      "examId": "d24ded54-a16b-5ffb-a829-ce45c43601bb",
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "questionIds": [
+        "a5e10781-8da1-59be-b0ef-3b5b5c9d0470",
+        "e2d14817-db7a-56bc-8e7b-11d8a03d80f1"
+      ],
+      "packageDigest": "23ac5ab7a6b827742cbcd5e6cb21195627a39ec6346bac3d31400560d9712c6d"
+    },
+    {
+      "examId": "ee17a477-2a60-5e8f-8526-1c636081a117",
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "questionIds": [
+        "9dc646a1-bb11-5e02-813d-6fe6e6d1ddd6",
+        "0fbf1d7b-bba1-51e1-99bf-a9fa9345c27a"
+      ],
+      "packageDigest": "e607c511c2930621e47bfa255866873407a8edafc6938405f4c96070ed5d5446"
+    },
+    {
+      "examId": "b11a6420-b99e-5d97-867b-dff56fa3b35c",
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "questionIds": [
+        "8765b193-9943-52c1-9033-f8e298636cb9",
+        "8a04b06b-248c-5df4-b8f3-7bed0db567a5"
+      ],
+      "packageDigest": "2a84b0e21eccca73b363aa50a84d9b6ef3a66d482528cdf306e0a9989ccd2ac8"
+    },
+    {
+      "examId": "63a36589-6a7f-519e-a599-881b3c2ce5d6",
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "questionIds": [
+        "e416e4fb-93b1-54c3-bbc2-c3ac39a96b75",
+        "806b4181-b60c-5924-9570-1c6456ad080b"
+      ],
+      "packageDigest": "45f4f97d24812c8fc778a7df937f7ef2b1ae4be8a183396bd85c10d77c211ec4"
     }
   ]
 }
