@@ -16,7 +16,7 @@ export async function readEssayDashboard(client:SupabaseClient,owner:string):Pro
  await assertOwner(client,owner);
  return [...exams,...attempts.map(a=>{
   const s=sessions.find(s=>s.id===a.session_id)!;
-  return {id:a.id,sessionId:s.id,source:'essay' as const,question:s.essay_questions?.label??'논술 문제',university:s.essay_questions?.essay_exams?.universities?.name??null,year:s.essay_questions?.essay_exams?.admission_year??null,at:a.submitted_at,rewrite:a.attempt_no>1,
+  return {id:a.id,examId:s.essay_questions?.essay_exams?.id,sessionId:s.id,source:'essay' as const,question:s.essay_questions?.label??'논술 문제',university:s.essay_questions?.essay_exams?.universities?.name??null,year:s.essay_questions?.essay_exams?.admission_year??null,at:a.submitted_at,rewrite:a.attempt_no>1,
    evaluations:s.evaluations.filter(e=>e.attempt_id===a.id).map(e=>({id:e.id,status:e.status,at:e.requested_at,completedAt:e.completed_at,valid:!e.invalidated_at}))};
  })];
 }

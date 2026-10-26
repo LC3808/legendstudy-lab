@@ -27,3 +27,4 @@
 .essay-brand-hero.essay-studio-hero .essay-schedule summary{background:var(--university-tint);border-color:#dce4ec;min-height:44px;padding:.5rem .8rem}
 .essay-brand-hero.essay-studio-hero a:focus-visible{outline-color:var(--university-brand)}
 @media(max-width:40rem){.essay-brand-hero.essay-studio-hero.university-detail-hero{padding:1rem!important}.essay-brand-hero .essay-studio-logo{max-width:95px}.essay-brand-hero .essay-studio-identity{gap:.7rem}.essay-brand-hero .essay-studio-identity>div:last-child{min-width:0}}
+.essay-reentry-dialog .button--primary{background:#19314e;border-color:#19314e;color:#fff}

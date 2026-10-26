@@ -1,4 +1,5 @@
 'use client';
+import {useEssayDraftSession,scopedDraftKey} from '../essay-draft-session';
 import {EssayProgressDialog} from '../essay-progress-dialog';
 import {useCallback,useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
@@ -22,6 +23,8 @@ function round(value:unknown):Round{
 }
 /** Existing saved text/photos and Math input/confirmation contracts; one financial submit. */
 export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady,restoreExistingInputs=false}:{restoreExistingInputs?:boolean;exam:SourceExam;drafts:Record<string,SubmissionDraft>;included:string[];leaves:Record<string,string>;onInputsReady?:(refs:Record<string,{attemptId:string;confirmedRunId:string}>)=>void}){
+ const autoOpen=useRef(false);
+ const draftSession=useEssayDraftSession();
  const auth=useAuth(),owner=auth.user?.id;
  const alive=useRef(true),running=useRef(false);
  const [showProgress,setShowProgress]=useState(false);
@@ -32,7 +35,7 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
  const selected=exam.questions.filter(q=>included.includes(q.key));
  const missing=exam.questions.filter(q=>!included.includes(q.key));
  const parent=parents.find(r=>r.run_id===parentId);
- const scope=`legendstudy:essay-source-draft:v1:${owner}:math-session:${exam.dbExamId}:${parentId||'initial'}:${selected.map(q=>q.dbQuestionId).sort().join(',')}`;
+ const scope=scopedDraftKey(`legendstudy:essay-source-draft:v1:${owner}:math-session:${exam.dbExamId}:${parentId||'initial'}:${selected.map(q=>q.dbQuestionId).sort().join(',')}`,draftSession);
  const blocked=!selected.length||selected.some(q=>!q.dbQuestionId||!leaves[q.dbQuestionId]||drafts[q.key]?.saved===false||!drafts[q.key]?.body.trim()&&!drafts[q.key]?.images);
  const credential=useCallback(async()=>{const s=(await auth.client?.auth.getSession())?.data.session;if(!alive.current||!s||s.user.id!==owner)throw Error('ACCOUNT_CHANGED');return s.access_token;},[auth.client,owner]);
  const call=useCallback(async function call(name:string,args:Record<string,unknown>){await credential();const response=await auth.client!.rpc(name,args).abortSignal(AbortSignal.timeout(20000));if(response.error)throw response.error;await credential();return response.data;},[auth.client,credential]);
@@ -57,7 +60,7 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
  async function snapshot(){
   const rows=[];
   for(const q of selected){
-   const saved=drafts[q.key];const value=saved.images?await sourceImageDraft(`legendstudy:essay-source-draft:v1:${owner}:${q.key}`):null;
+   const saved=drafts[q.key];const value=saved.images?await sourceImageDraft(scopedDraftKey(`legendstudy:essay-source-draft:v1:${owner}:${q.key}`,draftSession)):null;
    const files=Array.isArray(value)?value:value?[value]:[];if(saved.images&&!files.length)throw Error('IMAGE_MISSING');
    const hashes=[];for(const f of files){const digest=await crypto.subtle.digest('SHA-256',await f.arrayBuffer());hashes.push(Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join(''));}
    rows.push({q,body:saved.body,files,hashes});
@@ -110,7 +113,7 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
   window.dispatchEvent(new Event('legendstudy:credit-refresh'));
   window.dispatchEvent(new CustomEvent('essay-history-changed',{detail:{owner}}));
  }
- async function submit(){setConfirm(false);if(!pending||!pending.submitted&&blocked)return;
+ async function submit(){autoOpen.current=true;setConfirm(false);if(!pending||!pending.submitted&&blocked)return;
   if(!pending.submitted&&(await snapshot()).fingerprint!==pending.fingerprint)throw Error('ANSWER_CHANGED');
   if(pending.runId){await dispatch(round(await call('math_session_read',{p_run:pending.runId})));return;}
   persist({...pending,submitted:true});
@@ -132,10 +135,10 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
   const timer=setInterval(()=>{void call('math_session_read',{p_run:acceptedRunId}).then(value=>{if(active)setAccepted(round(value));}).catch(()=>{});},10000);
   return()=>{active=false;clearInterval(timer);};
  },[acceptedRunId,acceptedState,onInputsReady,call]);
- useEffect(()=>{if(!onInputsReady&&accepted&&allQuestionsCompleted(accepted.state,accepted.questions))openEssayResult('math',accepted.run_id);},[accepted,onInputsReady]);
+ useEffect(()=>{if(autoOpen.current&&!onInputsReady&&accepted&&allQuestionsCompleted(accepted.state,accepted.questions))openEssayResult('math',accepted.run_id);},[accepted,onInputsReady]);
  const retryable=accepted?.state==='reserved'&&accepted.questions.some(q=>q.state==='FAILED')&&accepted.questions.every(q=>['FAILED','COMPLETED'].includes(q.state));
  return <section className="essay-submit-gate" aria-label={restoreExistingInputs?"사진 답안 확인":"수리논술 회차 첨삭"} aria-busy={busy}>
-  {!onInputsReady&&parents.length>0&&!pending&&<label>제출 방식<select value={parentId} disabled={busy} onChange={e=>setParentId(e.target.value)}><option value="">새 첨삭 · 1 크레딧</option>{parents.map(r=><option key={r.run_id} value={r.run_id}>무료 재첨삭 · {r.created_at.slice(0,10)}</option>)}</select></label>}
+  {!draftSession&&!onInputsReady&&parents.length>0&&!pending&&<label>제출 방식<select value={parentId} disabled={busy} onChange={e=>setParentId(e.target.value)}><option value="">새 첨삭 · 1 크레딧</option>{parents.map(r=><option key={r.run_id} value={r.run_id}>무료 재첨삭 · {r.created_at.slice(0,10)}</option>)}</select></label>}
   {!accepted&&<button className="button button--outline" disabled={!ready||busy||blocked} onClick={()=>void work(()=>prepare())}>저장한 답안 입력 확인 · 0 크레딧</button>}
   {selected.map(q=>{const input=inputs[q.key];if(!input)return null;return <article className="essay-extraction-card" key={q.key}><h3>{q.label} · 사진에서 추출한 내용 확인</h3>{input.can_request_evaluation?<p>첨삭 요청 준비 완료</p>:<>
    <p>사진에서 읽은 답안을 확인해 주세요.</p>{input.candidate_regions.map(region=><label key={region.region_id}>확인할 내용<textarea value={corrections[region.region_id]??region.normalized_math??region.raw_text} onChange={e=>setCorrections(old=>({...old,[region.region_id]:e.target.value}))}/></label>)}
