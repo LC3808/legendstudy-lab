@@ -2,6 +2,7 @@
 import {isUniversityServicePreparing} from '@/lib/essay-runtime/catalog-policy';
 
 import Link from 'next/link';
+import {essayExamLabel} from './essay-exam-label';
 import {type SubmissionDraft} from './essay-exam-submit';
 import {useCallback,useState,useEffect} from 'react';
 import {useAuth} from './auth-context';
@@ -61,7 +62,7 @@ function Selection({rows,owner,onSelectionChange}:{rows:SourceExam[];owner:strin
  const kindRows=rows.filter(e=>`${e.year}:${e.kind}`===selectedPeriod);
  const tracks=[...new Set(kindRows.map(e=>e.track))],selectedTrack=track||(tracks.length===1?tracks[0]:'');
  const exams=kindRows.filter(e=>e.track===selectedTrack),exam=exams.find(e=>e.key===examKey)??(exams.length===1?exams[0]:undefined);
- const title=exam?`${exam.year}학년도 ${exam.kind==='mock'?'모의논술':'수시논술'} · ${exam.track}${exam.session?' · '+exam.session:''}`:'학년도와 시험을 선택해 주세요.';
+ const title=exam?essayExamLabel(exam):'학년도와 시험을 선택해 주세요.';
  useEffect(()=>{onSelectionChange?.(title);},[onSelectionChange,title]);
  const question=exam?.questions.find(q=>q.key===questionKey)??exam?.questions[0];
  // A sole question needs no second pick: auto-include it and drop the redundant tab/checklist.
