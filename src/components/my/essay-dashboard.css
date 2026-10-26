@@ -150,3 +150,12 @@
 .history-university .university-logo-frame{width:40px;height:32px;display:flex;align-items:center;flex-shrink:0;background:white}.history-detail .report-strengths{background:#f1faf5}.history-detail .report-weaknesses{background:#fff5f1}.history-detail .report-feedback p{line-height:1.85}
 
 .learning-growth h2{font-size:1.35rem;font-weight:800;color:#162f4e}.learning-growth h3,.learning-next h2,.history-empty h2{font-weight:750}.essay-personal .history-detail{scroll-margin-top:1rem}
+
+/* Full-width reading with a bounded, collapsible record selector. */
+.essay-history-workspace{display:block}
+.essay-history-workspace .my-essay-records{max-height:none;overflow:visible}
+.history-list-panel{margin-bottom:1.25rem}
+.history-result-toolbar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.history-result-tools{display:flex;gap:.5rem;margin-left:auto;align-items:center}
+@media(max-width:800px){.essay-history-workspace.has-selection .my-essay-records{display:grid}.history-result-tools{margin-left:0}.history-detail .exam-result-sidebar{grid-template-columns:1fr}}
+@media print{.history-list-panel,.history-result-toolbar{display:none!important}.history-detail{display:block!important;padding:0}}

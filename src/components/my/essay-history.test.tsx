@@ -38,3 +38,11 @@ it('opens the exact record alongside the list and retains its bookmark URL',asyn
 it('selects the exact bookmarked result without creating an evaluation',async()=>{
  render(<EssayHistory initialSource="essay" initialId="2"/>);expect(await screen.findByText('저장된 결과 2')).toBeVisible();expect(screen.queryByText('저장된 결과 1')).toBeNull();
 });
+
+it('collapses records without hiding the selected result and exposes export controls',async()=>{
+ render(<EssayHistory initialSource="essay" initialId="2"/>);const u=userEvent.setup();await screen.findByText('저장된 결과 2');
+ await u.click(screen.getByRole('button',{name:'시험 목록 접기'}));
+ expect(screen.queryByRole('link',{name:/대학0.*문제0/})).toBeNull();expect(screen.getByText('저장된 결과 2')).toBeVisible();
+ expect(screen.getByRole('button',{name:'인쇄 / PDF 저장'})).toBeVisible();expect(screen.getByRole('button',{name:'공유'})).toBeVisible();
+ await u.click(screen.getByRole('button',{name:'시험 목록 펼치기'}));expect(screen.getByRole('link',{name:/대학0.*문제0/})).toBeVisible();
+});
