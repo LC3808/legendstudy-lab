@@ -33,7 +33,7 @@ it('opens the exact record alongside the list and retains its bookmark URL',asyn
  render(<EssayHistory/>);const u=userEvent.setup();await u.click(await screen.findByRole('link',{name:/대학1.*문제1/}));
  expect(await screen.findByText('저장된 결과 1')).toBeVisible();expect(window.location.search).toBe('?source=essay&id=1');
  await u.click(screen.getByRole('button',{name:'목록으로 돌아가기'}));expect(screen.queryByText('저장된 결과 1')).toBeNull();
- await u.type(screen.getByRole('searchbox'),'대학2');expect(screen.queryByRole('link',{name:/대학0.*문제0/})).toBeNull();expect(screen.getByRole('link',{name:/대학2.*문제2/})).toBeVisible();
+ expect(screen.queryByRole('searchbox')).toBeNull();
 });
 it('selects the exact bookmarked result without creating an evaluation',async()=>{
  render(<EssayHistory initialSource="essay" initialId="2"/>);expect(await screen.findByText('저장된 결과 2')).toBeVisible();expect(screen.queryByText('저장된 결과 1')).toBeNull();
