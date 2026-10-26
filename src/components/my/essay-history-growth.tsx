@@ -16,10 +16,10 @@ export async function readEssayGrowth(client:SupabaseClient,owner:string){
  for(const run of latest.values()){
   const detail=await readExamReports(client,owner,String(run.id));
   const before=detail.previous;
-  series.push(...detail.current.flatMap(after=>{
+  series.push(...detail.current.flatMap((after,index)=>{
    const initial=before.find(r=>r.id===after.priorId);if(!initial)return [];
    const changes=compareReports(initial,after);if(!changes)return [];
-   return [{id:after.id,at:String(run.created_at),strengths:after.strengths,weaknesses:after.weaknesses,title:[String(run.university??''),String(run.title??''),examQuestionLabel(after.id.split('/').at(-1)??'')].filter(Boolean).join(' · '),changes}];
+   return [{id:after.id,at:String(run.created_at),strengths:after.strengths,weaknesses:after.weaknesses,title:[String(run.university??''),String(run.title??'').replaceAll(String(run.university??''),'').replace(/\badmission\b/g,'수시논술').replace(/\bmock\b/g,'모의논술').trim(),examQuestionLabel(after.id.split('/').at(-1)??'')==='문항별 첨삭'?`제출 문항 ${index+1}`:examQuestionLabel(after.id.split('/').at(-1)??'')].filter(Boolean).join(' · '),changes}];
   }));
  }
  return series;

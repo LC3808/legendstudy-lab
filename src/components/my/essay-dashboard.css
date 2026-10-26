@@ -148,3 +148,5 @@
 .history-university{display:flex;align-items:center;gap:.6rem}.history-university .university-logo{width:36px;height:36px;flex:0 0 36px;object-fit:contain}.history-university img{max-width:36px;max-height:36px;object-fit:contain}
 
 .history-university .university-logo-frame{width:40px;height:32px;display:flex;align-items:center;flex-shrink:0;background:white}.history-detail .report-strengths{background:#f1faf5}.history-detail .report-weaknesses{background:#fff5f1}.history-detail .report-feedback p{line-height:1.85}
+
+.learning-growth h2{font-size:1.35rem;font-weight:800;color:#162f4e}.learning-growth h3,.learning-next h2,.history-empty h2{font-weight:750}.essay-personal .history-detail{scroll-margin-top:1rem}
