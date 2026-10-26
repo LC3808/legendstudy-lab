@@ -79,7 +79,7 @@ function Selection({rows,owner,onSelectionChange}:{rows:SourceExam[];owner:strin
   <div className="essay-selection-grid">
    <label>학년도·시험<select aria-label="학년도·시험" value={selectedPeriod} onChange={e=>reset(()=>{setPeriod(e.target.value);setTrack('');setExamKey('');})}><option value="">학년도·시험 선택</option>{periods.map(p=>{const [year,kind]=p.split(':');return <option key={p} value={p}>{year}학년도 {kind==='mock'?'모의논술':kind==='admission'?'수시논술':'시험 유형 확인 중'}</option>;})}</select></label>
    <label>계열<select aria-label="계열" disabled={!selectedPeriod} value={selectedTrack} onChange={e=>reset(()=>{setTrack(e.target.value);setExamKey('');})}><option value="">계열 선택</option>{tracks.map(t=><option key={t}>{t}</option>)}</select></label>
-   {exams.length>1&&<label>캠퍼스·시험 회차<select aria-label="캠퍼스·시험 회차" value={exam?.key??''} onChange={e=>reset(()=>setExamKey(e.target.value))}><option value="">시험 회차 선택</option>{exams.map(e=><option key={e.key} value={e.key}>{[e.campus,e.session].filter(Boolean).join(' · ')||'회차 구분 없음'}</option>)}</select></label>}
+   {exams.length>1&&<label>캠퍼스·시험 회차<select aria-label="캠퍼스·시험 회차" value={exam?.key??''} onChange={e=>reset(()=>setExamKey(e.target.value))}><option value="">시험 회차 선택</option>{exams.map(e=><option key={e.key} value={e.key}>{essayExamLabel(e)}</option>)}</select></label>}
   </div>
   {exam&&<>{exam.dbExamId==='942c1c43-914f-5b99-9a30-e6474c363f6f'&&<p role="note">이 시험은 승인된 문제 2만 첨삭할 수 있습니다. 나머지 문항은 첨삭 준비 중이며 전체 회차 공개 완료가 아닙니다.</p>}
    <p className="essay-submit-note">답안 저장은 무료입니다. 작성한 답안을 시험 회차 단위로 함께 첨삭하며, 새 첨삭 회차에는 문항 수와 관계없이 1 크레딧이 사용됩니다. 이전에 제출하지 않은 문항을 나중에 첨삭받으면 새 회차로 1 크레딧이 사용됩니다.</p>
