@@ -15,3 +15,5 @@
 .exam-result[data-view="feedback"] .evaluation-report>section:not(.report-strengths):not(.report-weaknesses):not(.report-sentences){display:none}
 .exam-result[data-view="rewrite"] .evaluation-report>section:not(.report-priorities):not(.report-next){display:none}
 @media(max-width:760px){.exam-result-columns{grid-template-columns:1fr}.exam-result-hero{padding:18px}.exam-result-identity{gap:12px;align-items:flex-start}.exam-result-identity .university-logo{max-width:96px;height:48px}.exam-result-identity h1{font-size:1.3rem}.exam-result-identity h2{font-size:1rem}.exam-result .evaluation-report{padding:12px}.exam-result .report-block{padding:12px}.exam-result-nav button{padding:10px 12px}.exam-result-question-head{padding:12px}.exam-result-sidebar{display:grid;gap:12px}.exam-result-sidebar section{margin:0}}
+
+.exam-result-meta .essay-history-badge{color:var(--result-accent);border-color:var(--result-accent);background:#fff;font-weight:700}

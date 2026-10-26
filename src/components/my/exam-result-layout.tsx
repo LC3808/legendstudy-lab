@@ -18,7 +18,8 @@ type Section=typeof sections[number][0];
 /** A presentation of the same owner-scoped reports used immediately after completion and in History. */
 export function ExamResultLayout({row,run,reports,previous,onRewrite,onAdditional}:{row:RecordItem;run:Record<string,unknown>;reports:Report[];previous:Report[];onRewrite:()=>void;onAdditional:()=>void}){
  const [section,setSection]=useState<Section>('summary');
- const [open,setOpen]=useState<Record<string,boolean>>({[reports[0]?.id??'']:true});
+ const [open,setOpen]=useState<Record<string,boolean>>({});
+ const [order,setOrder]=useState<string[]>([]);
  const [labels,setLabels]=useState<Record<string,string>>({});
  const auth=useAuth();
  const university=publicCatalog.universities.find(u=>u.name===row.university);
@@ -26,12 +27,13 @@ export function ExamResultLayout({row,run,reports,previous,onRewrite,onAdditiona
  useEffect(()=>{let live=true;if(!auth.client||!sourceId)return;
   void loadRegisteredMaterials(auth.client,sourceId).then(materials=>{
    const exam=mergeRegisteredCatalog(sourceExams(sourceId),materials).find(e=>e.dbExamId===row.examId);
-   if(live&&exam)setLabels(Object.fromEntries(exam.questions.filter(q=>q.dbQuestionId).map(q=>[q.dbQuestionId!,q.label])));
+   if(live&&exam){setLabels(Object.fromEntries(exam.questions.filter(q=>q.dbQuestionId).map(q=>[q.dbQuestionId!,q.label])));setOrder(exam.questions.flatMap(q=>q.dbQuestionId?[q.dbQuestionId]:[]));}
   }).catch(()=>{/* Stored results remain available if optional catalog labels cannot be read. */});return()=>{live=false;};
  },[auth.client,sourceId,row.examId]);
  const theme=universityEssayTheme(sourceId??'');
  const title=row.question.replaceAll(row.university??'','').replace(/\bmock\b/gi,'모의논술').replace(/\badmission\b/gi,'수시논술').trim();
  const label=(report:Report,index:number)=>{const id=report.id.split('/').at(-1)??'';const stored=labels[id]??examQuestionLabel(id);return stored==='문항별 첨삭'?`제출 문항 ${index+1}`:stored;};
+ const orderedReports=[...reports].sort((a,b)=>{const ai=order.indexOf(a.id.split('/').at(-1)??''),bi=order.indexOf(b.id.split('/').at(-1)??'');return ai<0||bi<0?0:ai-bi;});
  const canRewrite=run.free_rewrite_available===true;
  return <div className="exam-result" data-view={section} style={{'--result-accent':theme.accent,'--result-border':theme.border_color} as CSSProperties}>
   <header className="exam-result-hero">
@@ -43,11 +45,11 @@ export function ExamResultLayout({row,run,reports,previous,onRewrite,onAdditiona
   <div className="exam-result-columns"><main className="exam-result-main" aria-label="저장된 평가 결과">
    <h2 className="exam-result-section-title">{sections.find(([key])=>key===section)?.[1]}</h2>
    {section==='summary'&&<p className="my-note">문항별로 저장된 평가입니다. 별도의 종합 점수는 산출하지 않습니다.</p>}
-   {reports.map((report,index)=>{
+   {orderedReports.map((report,index)=>{
     const before=previous.find(p=>p.id===report.priorId);
-    const expanded=section!=='questions'||!!open[report.id];
+    const expanded=section!=='questions'||(open[report.id]??index===0);
     return <section className="exam-result-question" key={report.id}>
-     <header className="exam-result-question-head"><h3>{label(report,index)}</h3>{section==='questions'&&<button aria-expanded={expanded} aria-controls={`report-${index}`} onClick={()=>setOpen(old=>({...old,[report.id]:!old[report.id]}))}>{expanded?'접기':'펼치기'} <span aria-hidden="true">{expanded?'−':'+'}</span></button>}</header>
+     <header className="exam-result-question-head"><h3>{label(report,index)}</h3>{section==='questions'&&<button aria-expanded={expanded} aria-controls={`report-${index}`} onClick={()=>setOpen(old=>({...old,[report.id]:!expanded}))}>{expanded?'접기':'펼치기'} <span aria-hidden="true">{expanded?'−':'+'}</span></button>}</header>
      <div id={`report-${index}`} hidden={!expanded}>
       {section==='answers'?<div className="exam-result-answer"><p className="essay-answer">{report.answer||'이 기록에는 표시할 텍스트 답안이 없습니다.'}</p>{report.pins.includes('math-eval-v1')&&<p className="my-note">저장된 수식·텍스트 답안입니다. 원본 사진 미리보기는 이 결과 조회 경로에서 제공되지 않습니다.</p>}</div>:<EvaluationReport voiceType="humanities_social" title={historyType(row)} answerLabel={answerVersion(row)} before={before} report={report}/>}
       {(section==='rewrite'||section==='questions')&&<EvaluationComparison before={before} after={row.rewrite?report:undefined}/>}
