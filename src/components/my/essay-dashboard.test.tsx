@@ -5,6 +5,7 @@ import {expect,it,vi,beforeEach} from 'vitest';
 import {EssayDashboard} from './essay-dashboard';
 const state=vi.hoisted(()=>({owner:'a',fail:false,history:vi.fn().mockResolvedValue([])}));
 vi.mock('@/components/auth-context',()=>({useAuth:()=>({status:'authenticated',user:{id:state.owner},client:{auth:{getSession:async()=>({data:{session:{user:{id:state.owner}}}})}}})}));
+vi.mock('./essay-history-growth',()=>({EssayGrowth:()=> <section>나의 논술 성장</section>,readEssayGrowth:async()=>[]}));
 vi.mock('./dashboard',()=>({Usage:()=> <p>無料 크레딧 3</p>}));
 vi.mock('@/lib/my/data',()=>({assertOwner:async()=>{},readHistory:state.history}));
 vi.mock('@/lib/my/essay-dashboard',async original=>({...await original<typeof import('@/lib/my/essay-dashboard')>(),readEssayDashboard:async()=>{if(state.fail)throw Error('READ_FAILED');return [];},readMathDashboard:async()=>[]}));

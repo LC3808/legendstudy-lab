@@ -3,6 +3,7 @@ import {cleanup,render,screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {afterEach,it,expect,vi} from 'vitest';
 import {EssayHistory} from './essay-history';
+vi.mock('./essay-dashboard',()=>({RecordDetail:({row}:{row:{id:string}})=><p>저장된 결과 {row.id}</p>}));
 vi.mock('next/navigation',()=>({useSearchParams:()=>new URLSearchParams(window.location.search),useRouter:()=>({back:vi.fn(),replace:vi.fn()})}));
 vi.mock('@/components/auth-context',()=>({useAuth:()=>({status:'authenticated',user:{id:'owner'},client:{auth:{getSession:async()=>({data:{session:{user:{id:'owner'}}}})}}})}));
 vi.mock('@/components/credit-balance',()=>({useCreditSummary:()=>({state:{status:'ready',value:{spendable:4}}})}));
@@ -16,7 +17,7 @@ it('filters university, year, separate essay types and state; reset restores rec
  await u.selectOptions(screen.getByLabelText('논술 유형',{exact:true}),'경제·경영');expect(screen.getByRole('link',{name:/대학1.*문제1/})).toBeVisible();
  await u.selectOptions(screen.getByLabelText('평가 상태',{exact:true}),'completed');expect(screen.getByText('선택한 조건의 첨삭 기록이 없습니다.')).toBeVisible();
  for(const label of ['대학','학년도','논술 유형','평가 상태'])await u.selectOptions(screen.getByLabelText(label,{exact:true}),'');expect(screen.getAllByRole('link',{name:/결과 보기 →/})).toHaveLength(3);
- expect(screen.getByText('남은 크레딧 4개 ·')).toBeVisible();expect(screen.queryByRole('table')).toBeNull();
+ expect(screen.queryByText('나의 논술 성장')).not.toBeNull();expect(screen.queryByRole('table')).toBeNull();
 });
 
 afterEach(()=>{cleanup();window.history.replaceState({},'', '/');});
@@ -26,4 +27,14 @@ it('exam query scopes all records and hides other exams growth',async()=>{
  expect(screen.queryByRole('link',{name:/대학0.*문제0/})).toBeNull();
  expect(screen.queryByRole('link',{name:/대학2.*문제2/})).toBeNull();
  expect(screen.queryByText('평가요소별 성장 변화')).toBeNull();
+});
+
+it('opens the exact record alongside the list and retains its bookmark URL',async()=>{
+ render(<EssayHistory/>);const u=userEvent.setup();await u.click(await screen.findByRole('link',{name:/대학1.*문제1/}));
+ expect(await screen.findByText('저장된 결과 1')).toBeVisible();expect(window.location.search).toBe('?source=essay&id=1');
+ await u.click(screen.getByRole('button',{name:'목록으로 돌아가기'}));expect(screen.queryByText('저장된 결과 1')).toBeNull();
+ await u.type(screen.getByRole('searchbox'),'대학2');expect(screen.queryByRole('link',{name:/대학0.*문제0/})).toBeNull();expect(screen.getByRole('link',{name:/대학2.*문제2/})).toBeVisible();
+});
+it('selects the exact bookmarked result without creating an evaluation',async()=>{
+ render(<EssayHistory initialSource="essay" initialId="2"/>);expect(await screen.findByText('저장된 결과 2')).toBeVisible();expect(screen.queryByText('저장된 결과 1')).toBeNull();
 });

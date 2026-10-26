@@ -2,16 +2,15 @@
 import Link from 'next/link';
 import {useSearchParams} from 'next/navigation';
 import {useCallback} from 'react';
-import {OwnerArea,useOwnerData,DataStatus} from './owner-data';
+import {useOwnerData,DataStatus} from './owner-data';
 import {RecordDetail} from './essay-dashboard';
 import {readEssayDashboard,readMathDashboard} from '@/lib/my/essay-dashboard';
-import {essayResultHref} from '@/lib/my/essay-result-route';
+import {EssayHistory} from './essay-history';
 import type {SupabaseClient} from '@supabase/supabase-js';
 import './essay-dashboard.css';
 export function EssayResultPage(){
- const params=useSearchParams(),source=params.get('source')??'',id=params.get('id')??'';
- const path=['exam','essay','math'].includes(source)?essayResultHref(source as 'exam'|'essay'|'math',id):'/my/essays/';
- return <div className="my-dashboard essay-personal content-wrap content-wrap--detail">{source!=='exam'&&<header className="my-head"><h1>논술 첨삭 결과</h1></header>}<OwnerArea path={path}><ResultContent source={source} id={id}/></OwnerArea></div>;
+ const params=useSearchParams();
+ return <EssayHistory initialSource={params.get('source')??''} initialId={params.get('id')??''}/>;
 }
 export function ResultContent({source,id}:{source:string;id:string}){
  const load=useCallback(async(c:SupabaseClient,o:string)=>{

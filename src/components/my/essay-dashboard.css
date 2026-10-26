@@ -119,3 +119,32 @@
 /* Owner Oct26: history-list affordances only; result detail is unchanged. */
 .essay-history-card .essay-history-badge,.essay-history-card .essay-history-badge.included{background:transparent;color:#244b7c;border:1px solid #8fa9ca;border-radius:6px;padding:.3rem .6rem;font-weight:700}
 .essay-history-card .essay-history-result-action{display:inline-flex;align-items:center;justify-content:center;min-height:44px;background:#183553;color:#fff;border:1px solid #183553;border-radius:9px;padding:.6rem 1rem;margin-top:.5rem;justify-self:start;font-weight:700}
+
+/* Shared learning workspace: display-only projections of existing owner records. */
+.essay-personal.content-wrap--detail{max-width:1440px}
+.learning-section-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.learning-section-head h2{margin:.25rem 0}.learning-eyebrow{font-size:.75rem;letter-spacing:.08em;color:#8a620e;font-weight:700}
+.learning-section-head label{display:flex;gap:.5rem;align-items:center;font-size:.85rem}.learning-section-head select{width:auto}
+.learning-growth{border-top:3px solid #e5a226!important;margin-top:1.5rem!important}
+.growth-select{display:block;margin-top:1rem}.growth-select select{margin-top:.5rem}
+.growth-empty,.history-empty{padding:2rem 1rem;color:#526780;background:#f5f8fc;border-radius:12px}
+.growth-feedback{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.growth-feedback section{background:#edf8f3;border-radius:12px;padding:1.1rem}.growth-feedback section+section{background:#fff3ef}.growth-feedback h3{font-size:1rem;margin:0 0 .75rem}.growth-feedback ul{padding-left:1.2rem;line-height:1.8}.growth-feedback li+li{margin-top:.6rem}
+.learning-next{margin-top:1.25rem!important;background:#f3f7ff!important}.learning-next h2{font-size:1.1rem}
+.learning-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}.learning-stats>div{padding:1rem;border:1px solid #e0e7ef;border-radius:12px;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:.5rem}.learning-stats strong{font-size:1.5rem;color:#173555}.learning-stats span{font-size:.85rem}
+.dashboard-recent{display:grid;gap:.7rem}.dashboard-recent>a{display:grid;grid-template-columns:8rem 1fr auto auto;align-items:center;gap:1rem;padding:1rem!important;margin:0!important;color:inherit}.dashboard-recent small{color:#62738b}.dashboard-recent b{color:#183553}
+.history-search{display:block;margin:1.25rem 0}.history-search input{display:block;width:100%;padding:.8rem 1rem;border:1px solid #ced9e6;border-radius:10px;margin-top:.4rem}
+.essay-history-workspace{display:grid;grid-template-columns:minmax(280px, .8fr) minmax(0,1.5fr);gap:1.25rem;align-items:start;margin-top:1rem}
+.essay-history-workspace .essay-history-group{border:0;padding:0;margin:0;display:grid;gap:.6rem}
+.essay-history-workspace .my-essay-records{display:grid;gap:.6rem;max-height:85vh;overflow:auto;padding:2px}
+.essay-history-workspace .essay-history-card{margin:0;padding:1rem;gap:.45rem;border-radius:12px;box-shadow:0 3px 14px #19334e05;position:relative}
+.essay-history-card[aria-current=true]{border-color:#dba13d;background:#fffbf1}
+.essay-history-workspace .essay-history-result-action{position:absolute;right:1rem;top:.8rem;min-height:32px;padding:.3rem .6rem;margin:0;font-size:.75rem}
+.essay-history-workspace .essay-history-card>strong{padding-right:6.5rem;font-size:.95rem}
+.history-exam-name{font-size:.85rem;color:#526780;line-height:1.5}.essay-history-workspace .essay-history-badge{padding:.1rem .35rem;font-size:.7rem}.essay-history-workspace small{font-size:.75rem}
+.history-detail{min-width:0;background:white;border:1px solid #dce4ef;border-radius:16px;padding:1rem}.history-detail .exam-result-columns{grid-template-columns:1fr}.history-detail .exam-result-sidebar{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.history-detail .exam-result-hero{padding:1rem}.history-detail .exam-result-identity h1{font-size:1.3rem}.history-detail .exam-result-identity h2{font-size:1rem}.history-detail .exam-result-nav{overflow:auto;display:flex}.history-detail .exam-result-nav button{flex:0 0 auto}.history-detail .report-block--strength{background:#f0f9f4}.history-detail .report-block--improve{background:#fff5ef}
+@media(max-width:800px){.essay-history-workspace{grid-template-columns:1fr}.essay-history-workspace.has-selection>.my-essay-records{display:none}.essay-history-workspace:not(.has-selection)>.history-detail{display:none}.essay-history-workspace .my-essay-records{max-height:none}.history-detail{padding:.7rem}.history-detail .exam-result-sidebar{grid-template-columns:1fr}.growth-feedback{grid-template-columns:1fr}.learning-stats{grid-template-columns:1fr 1fr}.dashboard-recent>a{grid-template-columns:1fr auto}.dashboard-recent>a>span{grid-column:1/-1;grid-row:2}.history-filters{grid-template-columns:1fr 1fr!important}}
+@media print{.essay-history-workspace{display:block}.essay-history-workspace>.my-essay-records{display:none}.history-detail{border:0}.learning-stats{break-inside:avoid}}
+
+.history-university{display:flex;align-items:center;gap:.6rem}.history-university .university-logo{width:36px;height:36px;flex:0 0 36px;object-fit:contain}.history-university img{max-width:36px;max-height:36px;object-fit:contain}
+
+.history-university .university-logo-frame{width:40px;height:32px;display:flex;align-items:center;flex-shrink:0;background:white}.history-detail .report-strengths{background:#f1faf5}.history-detail .report-weaknesses{background:#fff5f1}.history-detail .report-feedback p{line-height:1.85}

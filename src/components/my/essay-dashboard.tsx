@@ -1,5 +1,8 @@
 'use client';
 import {ExamResultLayout} from './exam-result-layout';
+import {EssayGrowth} from './essay-history-growth';
+import {essayResultHref} from '@/lib/my/essay-result-route';
+import {summarizeRecords,historyType} from '@/lib/my/essay-dashboard';
 import {GrowthShare} from './growth-share';
 import {MathSessionProgress} from '../math-release/session-progress';
 import {EssaySessionProgress} from './essay-session-progress';
@@ -8,7 +11,6 @@ import {readExamReports,examQuestionLabel} from '@/lib/my/exam-history';
 import Link from 'next/link';
 import {useCallback,useState} from 'react';
 import {OwnerArea,useOwnerData,DataStatus,dateLabel} from './owner-data';
-import {ReturnNavigation} from './return-navigation';
 import {EvaluationReport,EvaluationComparison} from './evaluation-report';
 import {humanReport,mathReport} from '@/lib/my/evaluation-report';
 import {readEssayDashboard,readMathDashboard,readEssayDetail,mathRead,readMathSession,type RecordItem} from '@/lib/my/essay-dashboard';
@@ -19,23 +21,19 @@ export function EssayDashboard(){
 }
 function PersonalContent(){
  const essay=useOwnerData(readEssayDashboard),math=useOwnerData(readMathDashboard);
- const [selected,setSelected]=useState<RecordItem|null>(null);
  const rows=[...(essay.data??[]),...(math.data??[])].sort((a,b)=>b.at.localeCompare(a.at));
- const ready=!!essay.data&&!!math.data;
+ const ready=!!essay.data&&!!math.data,summary=summarizeRecords(rows);
  return <>
-  <ReturnNavigation/>
-  <div className="my-actions report-controls"><button className="button button--outline" onClick={()=>window.print()}>인쇄 / PDF 저장</button><GrowthShare rows={rows} selected={selected}/></div>
-  <section className="my-section report-controls"><h2>확인할 답안 선택</h2><Link href="/my/essays/" className="essay-history-button">나의 첨삭 기록 확인 →</Link>
-   {!essay.data&&<div><h3>논술 기록</h3><DataStatus error={essay.error} reload={essay.reload}/></div>}
-   {!math.data&&<div><h3>수리논술 기록</h3><DataStatus error={math.error} reload={math.reload}/></div>}
-   {ready&&!rows.length&&<div className="my-panel"><p>아직 첨삭 기록이 없습니다.</p><p>첫 답안을 작성하고 나의 논술 기록을 시작해보세요.</p><Link className="button button--primary" href="/essay-lab/">논술 LAB 시작하기 →</Link></div>}
-   {rows.length>0&&<label>대학 · 답안 · 제출일<select aria-label="확인할 답안" value={selected?`${selected.source}:${selected.id}`:''} onChange={e=>setSelected(rows.find(r=>`${r.source}:${r.id}`===e.target.value)??null)}><option value="">답안을 선택해 주세요</option>{rows.map(row=><option key={`${row.source}:${row.id}`} value={`${row.source}:${row.id}`}>{row.university??'대학 정보 미제공'} · {row.question} · {dateLabel(row.at)} · {row.rewrite?'재작성':'최초'}</option>)}</select></label>}
-
-  </section>
-  <section className="my-section" aria-live="polite"><h2>평가 결과·재작성 비교</h2>{selected?<RecordDetail key={`${selected.source}:${selected.id}`} row={selected}/>:<p>기록을 선택하면 저장된 답안과 평가를 확인할 수 있습니다.</p>}</section>
-
+ <nav className="my-actions report-controls"><Link className="button button--primary" href="/my/essays/">나의 첨삭 기록 확인 →</Link><Link className="button button--outline" href="/essay-lab/">새 논술 풀기</Link><button className="button button--outline" onClick={()=>window.print()}>인쇄 / PDF 저장</button><GrowthShare rows={rows} selected={null}/></nav>
+ <EssayGrowth/>
+ <section className="my-panel learning-next"><h2>피드백을 다음 답안에 적용해 보세요</h2><p>완료한 첨삭 기록에서 재작성하면 같은 문항의 최초 답안과 개선된 답안을 비교할 수 있어요.</p><Link href="/my/essays/" className="button button--primary">결과와 재작성 안내 확인 →</Link></section>
+ <section className="my-section"><h2>학습 현황</h2><div className="learning-stats">{[['첨삭한 시험',summary.evaluatedExams],['첨삭 회차',summary.evaluatedCycles],['재작성한 답안',summary.rewritten],['재첨삭 완료',summary.reevaluated]].map(([label,n])=><div key={label}><span>{label}</span><strong>{ready?n:'—'}</strong></div>)}</div><p className="my-note">조회된 시험 기록과 최근 논술 연습·수리 답안 기준입니다. 시험 정보가 없는 과거 답안은 시험·회차 수에서 제외합니다.</p></section>
+ {!essay.data&&<DataStatus error={essay.error} reload={essay.reload}/>}{!math.data&&<DataStatus error={math.error} reload={math.reload}/>}
+ {ready&&!rows.length&&<section className="my-panel"><p>아직 첨삭 기록이 없습니다.</p><Link className="button button--primary" href="/essay-lab/">논술 LAB 시작하기 →</Link></section>}
+ <section className="my-section"><h2>최근 첨삭 기록</h2><div className="dashboard-recent">{rows.slice(0,5).map(row=><Link className="my-panel" key={`${row.source}:${row.id}`} href={essayResultHref(row.source,row.id)}><strong>{row.university??'대학 정보 미제공'}</strong><span>{row.question}</span><small>{dateLabel(row.at)} · {historyType(row)}</small><b>결과 보기 →</b></Link>)}</div></section>
  </>;
 }
+
 export function RecordDetail({row}:{row:RecordItem}){
  return row.source==='exam'?<ExamDetail row={row}/>:row.source==='essay'?<HumanDetail row={row}/>:row.mathSession?<MathRoundDetail row={row}/>:<MathDetail row={row}/>;
 }
