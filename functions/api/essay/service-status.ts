@@ -1,3 +1,4 @@
+import {publicExamScope} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {onRequestPost as examAvailability} from './exam';
 import {onRequestGet as mathAvailability} from './availability';
 import {type MathEnvironment} from '../../../src/lib/math-release/server/transport';
@@ -11,7 +12,7 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
  const empty=(checked=false)=>Response.json({version:'essay-service-status-v1',checked,exams:[]},{headers});
  const token=request.headers.get('authorization')?.match(/^Bearer ([^\s]+)$/)?.[1];
  if(!token||env.MATH_ORIGIN!==new URL(request.url).origin||env.MATH_SUPABASE_URL!==legendStudySupabaseUrl)return empty();
- const scope=(env.ESSAY_PUBLIC_EXAMS??'').split(',').map(v=>v.trim());
+ const scope=publicExamScope(env.ESSAY_PUBLIC_EXAMS);
  const ids=scope.length<=256&&scope.every(uuid)?scope:[];
  try{
   const admitted:{examId:string;questionIds:string[]}[]=[];

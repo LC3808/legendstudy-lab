@@ -1,3 +1,4 @@
+import {publicExamScope} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
@@ -14,7 +15,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
  let run:string|undefined;
  try{
   const input=JSON.parse(new TextDecoder().decode(await boundedBody(request,1048576))) as Record<string,unknown>;
-  const publicExams=(env.ESSAY_PUBLIC_EXAMS??'').split(',').map(id=>id.trim());
+  const publicExams=publicExamScope(env.ESSAY_PUBLIC_EXAMS);
   const publicRelease=publicExams.length<=256&&publicExams.every(uuid)&&uuid(input.examId)&&publicExams.includes(input.examId);
   const transport=serverTransport(env),subject=await transport.subject(token,publicRelease);
   // Optional server-only single-submission scope for explicitly approved operating E2E.

@@ -1,3 +1,4 @@
+import {publicExamScope} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {publicCatalog} from '../../../src/lib/essay-runtime/public-discovery';
@@ -15,7 +16,8 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
  if(!token)return fail(401);
  if(env.MATH_ORIGIN!==new URL(request.url).origin||env.MATH_SUPABASE_URL!==legendStudySupabaseUrl)return fail();
  try{
-  const raw=(env.ESSAY_PUBLIC_EXAMS??'').trim(),scope=raw?raw.split(',').map(v=>v.trim()):[];
+  const raw=(env.ESSAY_PUBLIC_EXAMS??'').trim(),scope=raw?publicExamScope(raw):[];
+  if(raw&&!scope.length)throw Error('INVALID_PUBLIC_SCOPE');
   if(scope.length>256||!scope.every(uuid)||new Set(scope).size!==scope.length)throw Error('INVALID_PUBLIC_SCOPE');
   const transport=serverTransport(env),subject=await transport.subject(token,true);
   const candidates=env.ESSAY_EXAM_RUNTIME_ENABLED==='true'?evidence.exams.filter(e=>scope.includes(e.examId)&&e.questionIds.length&&e.questionIds.every(q=>studentPdfForExam(e.examId,q))):[];
