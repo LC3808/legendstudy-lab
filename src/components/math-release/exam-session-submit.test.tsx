@@ -81,3 +81,18 @@ it('passes already-confirmed input to the Essay parent without a Math paid submi
  await waitFor(()=>expect(onReady).toHaveBeenCalledWith({q1:{attemptId:id(101),confirmedRunId:id(51)}}));
  expect(f.create).not.toHaveBeenCalled();expect(fetch).not.toHaveBeenCalled();expect(f.rpc).not.toHaveBeenCalled();
 });
+
+it('explicit re-extraction clears the old confirmation and never reserves evaluation credit',async()=>{
+ const fingerprint=JSON.stringify({owner:f.owner,examId:exam.dbExamId,parentId:'',answers:[{questionId:id(11),body:drafts.q1.body,images:[]}]});
+ const scope=`legendstudy:essay-source-draft:v1:${f.owner}:math-session:${exam.dbExamId}:initial:${id(11)}`;
+ f.saved.set(scope,JSON.stringify({fingerprint,key:id(90),attemptKeys:{q1:id(91)},attempts:{q1:id(101)}}));
+ f.read.mockResolvedValue({attempt:{leaf_id:id(21)},can_request_evaluation:true,input_state:'READY_FOR_EVALUATION',selected_extraction_id:id(51),candidate_regions:[]});
+ const onReady=vi.fn();render(<MathExamSessionSubmit exam={exam} drafts={drafts} included={['q1']} leaves={leaves} onInputsReady={onReady} restoreExistingInputs/>);
+ await waitFor(()=>expect(onReady).toHaveBeenCalledWith({q1:{attemptId:id(101),confirmedRunId:id(51)}}));
+ f.read.mockResolvedValue({attempt:{leaf_id:id(21)},can_request_evaluation:false,input_state:'CONFIRMATION_REQUIRED',candidate:{run_id:id(52)},candidate_regions:[]});
+ fireEvent.click(screen.getByRole('button',{name:'다시 추출하기'}));
+ await screen.findByRole('button',{name:'이 내용으로 확인'});
+ expect(onReady).toHaveBeenLastCalledWith({});
+ expect(f.saved.has(scope+':previous-input:'+id(90))).toBe(true);
+ expect(f.create).toHaveBeenCalledOnce();expect(f.rpc).not.toHaveBeenCalled();expect(fetch).not.toHaveBeenCalled();
+});
