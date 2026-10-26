@@ -1,4 +1,5 @@
 'use client';
+import {allQuestionsCompleted} from '@/lib/my/essay-result-route';
 import {EssayProgressDialog} from '../essay-progress-dialog';
 import {useCallback,useEffect,useRef,useState} from 'react';
 import type {SupabaseClient} from '@supabase/supabase-js';
@@ -8,9 +9,9 @@ import {useAuth} from '../auth-context';
 import {examQuestionLabel} from '@/lib/my/exam-history';
 
 type Progress={version:string;run_id:string;exam_id:string;state:string;retry_allowed:boolean;questions:{question_id:string;state:string}[]};
-export function EssaySessionProgress({runId,onComplete,presentation}:{runId:string;onComplete:()=>void;presentation?:{onClose:()=>void;onResult:()=>void}}){
+export function EssaySessionProgress({runId,onComplete,presentation,hidden=false}:{runId:string;onComplete:()=>void;hidden?:boolean;presentation?:{onClose:()=>void;onResult:()=>void}}){
  const auth=useAuth(),[busy,setBusy]=useState(false),[notice,setNotice]=useState('');
- const key=useRef<string|null>(null);
+ const key=useRef<string|null>(null),completedRun=useRef<string|null>(null);
  const load=useCallback(async(client:SupabaseClient,owner:string)=>{
   await assertOwner(client,owner);
   const {data,error}=await client.rpc('essay_exam_session_status',{p_run:runId});
@@ -19,7 +20,7 @@ export function EssaySessionProgress({runId,onComplete,presentation}:{runId:stri
   return data as Progress;
  },[runId]);
  const result=useOwnerData(load),reload=result.reload;
- useEffect(()=>{if(result.data?.state==='completed'){onComplete();return;}const timer=setInterval(reload,10000);return()=>clearInterval(timer);},[result.data?.state,onComplete,reload]);
+ useEffect(()=>{if(result.data&&allQuestionsCompleted(result.data.state,result.data.questions)){if(completedRun.current!==runId){completedRun.current=runId;onComplete();}return;}const timer=setInterval(reload,10000);return()=>clearInterval(timer);},[result.data,onComplete,reload,runId]);
  async function retry(){
   if(!auth.client||!auth.user||!result.data?.retry_allowed||busy)return;
   setBusy(true);key.current??=crypto.randomUUID();
@@ -31,6 +32,7 @@ export function EssaySessionProgress({runId,onComplete,presentation}:{runId:stri
   }catch{setNotice('처리 상태를 확인하지 못했습니다. 기록을 새로 확인한 뒤 같은 요청을 다시 확인해 주세요.');}
   finally{setBusy(false);}
  }
+ if(hidden)return null;
  if(presentation)return <EssayProgressDialog state={result.data?.state??'processing'} error={!!result.error} questions={result.data?.questions.map(q=>({id:q.question_id,label:examQuestionLabel(q.question_id),state:q.state}))} onClose={presentation.onClose} onResult={presentation.onResult}>{result.data?.retry_allowed&&<button type="button" className="button button--primary" disabled={busy} onClick={()=>void retry()}>{busy?'요청 중…':'실패 문항 다시 처리 · 0 크레딧'}</button>}<button type="button" className="button button--outline" onClick={reload}>상태 새로 확인</button>{notice&&<p role="status">{notice}</p>}</EssayProgressDialog>;
  if(!result.data)return <DataStatus error={result.error} reload={reload}/>;
  const labels:Record<string,string>={completed:'첨삭 완료',failed:'재처리 필요',processing:'첨삭 중',waiting:'대기 중',reconciling:'처리 상태 확인 중'};

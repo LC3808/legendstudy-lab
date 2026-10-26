@@ -12,15 +12,15 @@ const row=(id:string)=>({id,source:'exam',question:'시험'+id,university:'대�
 afterEach(()=>{cleanup();vi.clearAllMocks();});
 it('refreshes on return, matching completion and focus; unrelated owner cannot trigger reload',async()=>{
  f.rows=[row('1')];render(<EssayHistory/>);
- fireEvent.click(await screen.findByRole('button',{name:/시험1.*결과 보기/}));
- f.rows.push(row('2'));fireEvent.click(screen.getByRole('button',{name:'나의 첨삭 기록'}));
- await screen.findByRole('button',{name:/시험2.*결과 보기/});
+ expect(await screen.findByRole('link',{name:/시험1.*결과 보기/})).toHaveAttribute('href','/my/essays/result?source=exam&id=1');
+ f.rows.push(row('2'));fireEvent.focus(window);
+ await screen.findByRole('link',{name:/시험2.*결과 보기/});
  const n=f.read.mock.calls.length;
  act(()=>window.dispatchEvent(new CustomEvent('essay-history-changed',{detail:{owner:'other'}})));
  expect(f.read).toHaveBeenCalledTimes(n);
  f.rows.push(row('3'));act(()=>window.dispatchEvent(new CustomEvent('essay-history-changed',{detail:{owner:'owner'}})));
- await screen.findByRole('button',{name:/시험3.*결과 보기/});
+ await screen.findByRole('link',{name:/시험3.*결과 보기/});
  f.rows.push(row('4'));fireEvent.focus(window);
- await screen.findByRole('button',{name:/시험4.*결과 보기/});
- await waitFor(()=>expect(screen.getAllByRole('button',{name:/결과 보기/})).toHaveLength(4));
+ await screen.findByRole('link',{name:/시험4.*결과 보기/});
+ await waitFor(()=>expect(screen.getAllByRole('link',{name:/결과 보기/})).toHaveLength(4));
 });

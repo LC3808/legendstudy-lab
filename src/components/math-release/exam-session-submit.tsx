@@ -2,6 +2,7 @@
 import {EssayProgressDialog} from '../essay-progress-dialog';
 import {useCallback,useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
+import {allQuestionsCompleted,openEssayResult,essayResultHref} from '@/lib/my/essay-result-route';
 import {useAuth} from '../auth-context';
 import {MathInputClient} from '@/lib/math-input/runtime/input-client';
 import type {ReadInputResult,EvidenceMetadata} from '@/lib/math-input/runtime/contract';
@@ -131,6 +132,7 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
   const timer=setInterval(()=>{void call('math_session_read',{p_run:acceptedRunId}).then(value=>{if(active)setAccepted(round(value));}).catch(()=>{});},10000);
   return()=>{active=false;clearInterval(timer);};
  },[acceptedRunId,acceptedState,onInputsReady,call]);
+ useEffect(()=>{if(!onInputsReady&&accepted&&allQuestionsCompleted(accepted.state,accepted.questions))openEssayResult('math',accepted.run_id);},[accepted,onInputsReady]);
  const retryable=accepted?.state==='reserved'&&accepted.questions.some(q=>q.state==='FAILED')&&accepted.questions.every(q=>['FAILED','COMPLETED'].includes(q.state));
  return <section className="essay-submit-gate" aria-label={restoreExistingInputs?"사진 답안 확인":"수리논술 회차 첨삭"} aria-busy={busy}>
   {!onInputsReady&&parents.length>0&&!pending&&<label>제출 방식<select value={parentId} disabled={busy} onChange={e=>setParentId(e.target.value)}><option value="">새 첨삭 · 1 크레딧</option>{parents.map(r=><option key={r.run_id} value={r.run_id}>무료 재첨삭 · {r.created_at.slice(0,10)}</option>)}</select></label>}
@@ -145,7 +147,7 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
   {pending&&!pending.submitted&&!accepted&&<button className="button button--outline" disabled={busy} onClick={()=>{temporaryDraftStore.remove(scope);setPending(null);setInputs({});setCorrections({});onInputsReady?.({});}}>입력 다시 준비</button>}
   {!onInputsReady&&confirm&&<div className="essay-confirm-backdrop"><section role="dialog" aria-modal="true" aria-labelledby="math-session-confirm-title" className="my-panel essay-confirm-dialog"><h2 id="math-session-confirm-title">{missing.length?'작성하지 않았거나 제외한 답안이 있습니다':'시험 회차 첨삭 요청'}</h2>{missing.length>0&&<p>{missing.map(q=>q.label).join(', ')}은 이번 첨삭에 포함하지 않습니다.</p>}<p>이번 첨삭에는 {parentId?0:1} 크레딧이 사용됩니다.</p>{missing.length>0&&<p>미제출 문항을 나중에 새로 첨삭받으면 별도 회차로 1 크레딧이 사용됩니다.</p>}<button className="button button--outline" onClick={()=>setConfirm(false)}>계속 작성하기</button><button className="button button--primary" onClick={()=>void work(submit)}>첨삭 진행하기</button></section></div>}
   {accepted&&!onInputsReady&&<button className="button button--outline" onClick={()=>setShowProgress(true)}>접수한 첨삭 진행 상태 보기</button>}
-  {accepted&&showProgress&&!onInputsReady&&<EssayProgressDialog state={accepted.state} questions={accepted.questions.map(q=>({id:q.question_id,label:exam.questions.find(item=>item.dbQuestionId===q.question_id)?.label??'문항',state:q.state}))} onClose={()=>setShowProgress(false)}>{accepted.state==='completed'&&<Link className="button button--primary" href="/my/essays/">첨삭 결과 확인하기</Link>}{retryable&&<button className="button button--primary" onClick={()=>setShowProgress(false)}>실패 문항 재처리로 이동 · 0 크레딧</button>}</EssayProgressDialog>}
+  {accepted&&showProgress&&!onInputsReady&&<EssayProgressDialog state={accepted.state} questions={accepted.questions.map(q=>({id:q.question_id,label:exam.questions.find(item=>item.dbQuestionId===q.question_id)?.label??'문항',state:q.state}))} onClose={()=>setShowProgress(false)}>{accepted.state==='completed'&&<Link className="button button--primary" href={essayResultHref('math',accepted.run_id)}>첨삭 결과 확인하기</Link>}{retryable&&<button className="button button--primary" onClick={()=>setShowProgress(false)}>실패 문항 재처리로 이동 · 0 크레딧</button>}</EssayProgressDialog>}
   {accepted&&<><p>{accepted.state==='completed'?'회차 첨삭이 완료됐습니다.':'제출한 회차의 처리 상태를 확인하고 있습니다.'}</p>{accepted.questions.map(q=><p key={q.question_id}>{exam.questions.find(item=>item.dbQuestionId===q.question_id)?.label} · {q.state==='COMPLETED'?'완료':q.state==='FAILED'?'재처리 필요':'진행 중'}</p>)}<button className="button button--outline" disabled={busy} onClick={()=>void work(()=>dispatch(accepted))}>같은 회차 상태 확인</button>
    {retryable&&<button className="button button--outline" disabled={busy} onClick={()=>void work(async()=>{const p:Pending={...pending!,retryKey:pending?.retryKey??crypto.randomUUID()};persist(p);await call('math_session_retry',{p_run:accepted.run_id,p_key:p.retryKey});delete p.retryKey;persist(p);const next=round(await call('math_session_read',{p_run:accepted.run_id}));await dispatch(next);})}>실패 문항만 재처리 · 0 크레딧</button>}
    {accepted.state==='completed'&&<button className="button button--outline" disabled={busy} onClick={()=>{temporaryDraftStore.remove(scope);setPending(null);setAccepted(null);setInputs({});setCorrections({});}}>새 회차 작성</button>}
