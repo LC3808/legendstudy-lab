@@ -1,5 +1,5 @@
 'use client';
-import {useRef, useState} from 'react';
+import {useId, useRef, useState} from 'react';
 import {useAuth} from '@/components/auth-context';
 import {requestCreditGrant, type CreditGrantInput} from '@/lib/admin/finance-boundary';
 
@@ -9,6 +9,7 @@ export function AdminCreditGrantForm({accountId,email,onGranted}:{accountId:stri
   client={status==='authenticated'?client:null} actor={user?.id??''} onGranted={onGranted}/>;
 }
 function GrantForm({accountId,email,client,actor,onGranted}:{accountId:string;email:string|null;client:ReturnType<typeof useAuth>['client'];actor:string;onGranted:()=>void}) {
+ const formId=useId();
  const [quantity,setQuantity]=useState(1);const [reason,setReason]=useState('');
  const [busy,setBusy]=useState(false);const [notice,setNotice]=useState('');
  const [pending,setPending]=useState<CreditGrantInput|null>(null);
@@ -43,15 +44,15 @@ function GrantForm({accountId,email,client,actor,onGranted}:{accountId:string;em
  return <div className="admin-panel">
   <button ref={trigger} type="button" className="button button--outline button--small" disabled={!email||!client} onClick={open}>크레딧 지급</button>
   {notice?<p role="status" className="admin-hint">{notice}</p>:null}
-  <dialog ref={dialog} className="my-lab-dialog" aria-labelledby="credit-grant-title" onCancel={event=>{if(lock.current)event.preventDefault();}} onClose={()=>trigger.current?.focus()}>
-   <h3 id="credit-grant-title">크레딧 지급 확인</h3>
+  <dialog ref={dialog} className="my-lab-dialog" aria-labelledby={`${formId}-title`} onCancel={event=>{if(lock.current)event.preventDefault();}} onClose={()=>trigger.current?.focus()}>
+   <h3 id={`${formId}-title`}>크레딧 지급 확인</h3>
    <p>대상 이메일: {pending?.email??email}</p><p style={{overflowWrap:'anywhere'}}>회원 UID: {accountId}</p>
    <p className="admin-muted">운영 지급 · 만료 없음 · 유료 구매 크레딧과 별도 기록</p>
    <form className="admin-stack" onSubmit={event=>{event.preventDefault();void grant();}}>
-    <label htmlFor="grant-quantity">지급 수량 (1~100)</label>
-    <input className="admin-search__input" id="grant-quantity" type="number" min={1} max={100} required value={quantity} disabled={busy||!!pending} onChange={e=>setQuantity(Number(e.target.value))}/>
-    <label htmlFor="grant-reason">지급 사유</label>
-    <textarea className="admin-search__input" id="grant-reason" required maxLength={500} rows={3} value={reason} disabled={busy||!!pending} onChange={e=>setReason(e.target.value)}/>
+    <label htmlFor={`${formId}-quantity`}>지급 수량 (1~100)</label>
+    <input className="admin-search__input" id={`${formId}-quantity`} type="number" min={1} max={100} required value={quantity} disabled={busy||!!pending} onChange={e=>setQuantity(Number(e.target.value))}/>
+    <label htmlFor={`${formId}-reason`}>지급 사유</label>
+    <textarea className="admin-search__input" id={`${formId}-reason`} required maxLength={500} rows={3} value={reason} disabled={busy||!!pending} onChange={e=>setReason(e.target.value)}/>
     <p>위 회원에게 {quantity} 크레딧을 지급합니다. 대상과 사유를 확인하세요.</p>
     {notice?<p role="status">{notice}</p>:null}
     <div className="admin-search__row"><button type="button" className="button button--outline" disabled={busy} onClick={()=>dialog.current?.close()}>닫기</button>

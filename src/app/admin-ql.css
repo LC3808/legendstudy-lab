@@ -733,3 +733,7 @@
 .admin-section--primary{border-top:4px solid var(--accent)}
 .admin-payment-summary{border:1px solid var(--line);border-radius:12px;padding:1rem;margin:1rem 0;background:#f7f9fc}
 .admin-payment-summary p{margin:.5rem 0}.admin-payment-summary strong{font-size:1.2rem}
+
+/* Compact member credit actions; grant dialog retains its existing layout. */
+.admin-credit-directory td > .admin-panel { display:inline-block; border:0; padding:0; margin:4px 0 4px 6px; box-shadow:none; background:transparent; }
+.admin-credit-directory td:last-child { min-width:180px; }

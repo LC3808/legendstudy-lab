@@ -1,3 +1,4 @@
+import {parseCreditMembers,type CreditMembers,type CreditMemberSort} from './credit-members';
 import {parseMobilePurchases,type MobilePurchases} from './mobile-purchases';
 import {parseLearningSummary,type LearningSummary} from './learning-summary';
 import {parseReleaseReport,type ReleaseReport,type ReportFilter} from './release-report';
@@ -44,6 +45,7 @@ import { AdminError, mapRpcError } from "./errors";
  * credential is introduced and finance-only functions remain inaccessible.
  */
 export interface AdminClient {
+  creditMembers(query:string,sort:CreditMemberSort,limit:number,offset:number):Promise<CreditMembers>;
   mobilePurchases(from:string|null,to:string|null,quantity:number|null):Promise<MobilePurchases>;
   learningSummary(subject?:string):Promise<LearningSummary>;
   releaseReport(filters:ReportFilter):Promise<ReleaseReport>;
@@ -195,6 +197,12 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
     async dashboard(): Promise<AdminDashboard> {
       await requireSession();
       return parseDashboard(await callRpc<unknown>("admin_dashboard", undefined));
+    },
+
+    async creditMembers(query:string,sort:CreditMemberSort,limit:number,offset:number):Promise<CreditMembers>{
+      await requireSession();
+      if(query.trim().length>254||![10,20,50].includes(limit)||!Number.isSafeInteger(offset)||offset<0)throw new AdminError('INVALID_REQUEST');
+      return parseCreditMembers(await callRpc('admin_credit_member_list',{p_query:query.trim(),p_sort:sort,p_limit:limit,p_offset:offset}));
     },
 
     async searchMembers(query: string, options: AdminPageOptions = {}): Promise<AdminSearchPage> {

@@ -145,6 +145,7 @@ function creditPayload() {
 type Handler = (fn: string, params?: Record<string, unknown>) => { data?: unknown; error?: unknown };
 
 function payloadFor(fn: string) {
+  if(fn==='admin_credit_member_list')return {version:'admin-credit-members-v1',total:1,limit:10,offset:0,items:[{account_id:member.account_id,email:member.email,last_used_at:null,summary:{spendable:7,reserved:0,paid:0,free:0,other:7}}]};
   if (fn === "admin_member_list") return directoryPayload();
   if (fn === "admin_dashboard") return dashboardPayload();
   if (fn === "admin_member_search") return searchPayload([member]);
@@ -328,9 +329,9 @@ describe("AdminCreditView", () => {
   it("routes a lookup to one member's credit panel", async () => {
     setSession("authenticated", okOperator);
     render(<AdminCreditView />);
-    await userEvent.type(screen.getByLabelText("이메일 또는 계정 ID"), "member@legendstudy.com");
-    await userEvent.click(screen.getByRole("button", { name: "조회" }));
-    await userEvent.click(await screen.findByRole("button", { name: /member@legendstudy.com/ }));
+    await userEvent.type(screen.getByLabelText("이메일 또는 회원 ID"), "member@legendstudy.com");
+    await userEvent.click(screen.getByRole("button", { name: "검색" }));
+    await userEvent.click(await screen.findByRole("button", { name: "상세 보기" }));
     expect(await screen.findByText("거래 내역")).toBeInTheDocument();
   });
 });

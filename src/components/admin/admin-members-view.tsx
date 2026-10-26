@@ -45,7 +45,7 @@ function DetailRow({ label, value }: { label: string; value: ReactNode }) {
  * Credit or 논술 기록 looks empty against the canonical record (see the §6/§7
  * read-path notes). It is the id this screen passed to every member RPC.
  */
-function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
+export function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
   const { state, reload } = useAdminQuery<AdminMemberDetail>(
     (client) => client.memberDetail(accountId),
     `detail:${accountId}`,
