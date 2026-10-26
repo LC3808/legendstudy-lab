@@ -1,3 +1,4 @@
+import partialEvidence from '../../../src/data/essay-partial-exam-release-evidence.json';
 import {publicExamScope} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
@@ -20,7 +21,7 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
   if(raw&&!scope.length)throw Error('INVALID_PUBLIC_SCOPE');
   if(scope.length>256||!scope.every(uuid)||new Set(scope).size!==scope.length)throw Error('INVALID_PUBLIC_SCOPE');
   const transport=serverTransport(env),subject=await transport.subject(token,true);
-  const candidates=env.ESSAY_EXAM_RUNTIME_ENABLED==='true'?evidence.exams.filter(e=>scope.includes(e.examId)&&e.questionIds.length&&e.questionIds.every(q=>studentPdfForExam(e.examId,q))):[];
+  const candidates=env.ESSAY_EXAM_RUNTIME_ENABLED==='true'?[...evidence.exams.map(e=>({...e,partial:false})),...partialEvidence.exams.map(e=>({...e,partial:true}))].filter(e=>scope.includes(e.examId)&&e.questionIds.length&&e.questionIds.every(q=>studentPdfForExam(e.examId,q))):[];
   const universities=new Set<string>(),exams:{examId:string;universityId:string;questionIds:string[]}[]=[];
   if(candidates.length){
    const credential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);
@@ -34,13 +35,13 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
     if(!Array.isArray(rows))throw Error('INVALID_CATALOG');
     for(const candidate of candidates.filter(e=>e.universityId===universityId)){
      const row=rows.find(r=>r.examId===candidate.examId);
-     if(!row||row.universityId!==universityId||!Array.isArray(row.questions)||row.questions.length!==candidate.questionIds.length||new Set(row.questions.map((q:{id:string})=>q.id)).size!==candidate.questionIds.length||!row.questions.every((q:{id:string})=>candidate.questionIds.includes(q.id)))throw Error('WHOLE_EXAM_CHANGED');
+     if(!row||row.universityId!==universityId||!Array.isArray(row.questions)||new Set(row.questions.map((q:{id:string})=>q.id)).size!==row.questions.length||new Set(candidate.questionIds).size!==candidate.questionIds.length||!candidate.questionIds.every(id=>row.questions.some((q:{id:string})=>q.id===id))||(!candidate.partial&&row.questions.length!==candidate.questionIds.length))throw Error('WHOLE_EXAM_CHANGED');
      const policy=await transport.rpcRaw('essay_exam_preflight',{p_subject:subject,p_exam:candidate.examId},credential);
      if(policy?.package_digest!==candidate.packageDigest)throw Error('RELEASE_EVIDENCE_CHANGED');
      universities.add(universityId);exams.push({examId:candidate.examId,universityId,questionIds:candidate.questionIds});
     }
    }
   }
-  return reply({version:'essay-public-service-v1',checked:true,basis:'whole-exam-public-policy',universityIds:[...universities].sort(),exams});
+  return reply({version:'essay-public-service-v1',checked:true,basis:'whole-exam-public-policy-with-owner-exceptions',universityIds:[...universities].sort(),exams});
  }catch{return fail();}
 }

@@ -1,0 +1,13 @@
+{
+  "basis": "Owner explicit one-question exception 2026-10-26",
+  "exams": [
+    {
+      "examId": "942c1c43-914f-5b99-9a30-e6474c363f6f",
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "questionIds": [
+        "c1f90870-3ad9-59f8-afe3-c26d665f292f"
+      ],
+      "packageDigest": "9afbeece5b9348c5402430f3bd215a9d8acf2c1ce0add6b38fffab78f7229ea4"
+    }
+  ]
+}

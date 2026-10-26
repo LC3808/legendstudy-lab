@@ -21,7 +21,15 @@ export function UniversityDiscovery({essayFirst=false}:{essayFirst?:boolean}){
  }catch{/* session storage unavailable; start from defaults */}setRestored(true);});return()=>{active=false;};},[storeKey]);
  // Persist only after the restore pass completed, so the stored view is never clobbered by initial defaults (incl. StrictMode double-mount).
  useEffect(()=>{if(!restored)return;try{sessionStorage.setItem(storeKey,JSON.stringify({query,region,type,year,page,featured,sort,all}));}catch{/* ignore */}},[restored,storeKey,query,region,type,year,page,featured,sort,all]);
- const rows=sortCatalog(filterCatalog(query,essayFirst?'':region,essayFirst?'':type,essayFirst?'':year).filter(u=>!featured||isFeaturedUniversity(u)),sort).sort((a,b)=>Number(readyUniversities.has(b.universityId??''))-Number(readyUniversities.has(a.universityId??''))),pages=Math.max(1,Math.ceil(rows.length/12)),current=Math.min(page,pages-1);
+ const rows=sortCatalog(filterCatalog(query,essayFirst?'':region,essayFirst?'':type,essayFirst?'':year).filter(u=>!featured||isFeaturedUniversity(u)),sort).sort((a,b)=>{
+  // Owner display priority only; server readiness still controls each button.
+  if(sort==='service'){
+   const front=(id:string)=>id==='sogang'?0:id==='korea'?1:2;
+   const priority=front(a.sourceUniversityId)-front(b.sourceUniversityId);
+   if(priority)return priority;
+  }
+  return Number(readyUniversities.has(b.universityId??''))-Number(readyUniversities.has(a.universityId??''));
+ }),pages=Math.max(1,Math.ceil(rows.length/12)),current=Math.min(page,pages-1);
  const visible=all?rows:rows.slice(current*12,current*12+12);
  function change(set:(v:string)=>void,value:string){set(value);setPage(0);}
  return <section className={`essay-service university-discovery${essayFirst?' university-discovery--essay-first':''}`} aria-label="전국 대학 탐색">
@@ -37,6 +45,7 @@ export function UniversityDiscovery({essayFirst=false}:{essayFirst?:boolean}){
  {!essayFirst&&<><div className="university-card-meta">{u.offerings.map(o=><p key={o.id}>{campusLabel(o.campus)} · {o.admissionYear}학년도</p>)}</div>
  <EssayTypeBadges types={u.offerings.flatMap(o=>o.types)}/>
  <div className="university-card-status"><UniversityAvailability id={u.universityId} later={!isPriorityUniversity(u.sourceUniversityId)} detailed typesKnown={u.offerings.some(o=>o.types.length>0)}/></div></>}
+ {essayFirst&&u.sourceUniversityId==='korea'&&<p>2025 수시 인문 오후 · 승인된 1문항 공개</p>}
  {essayFirst&&service.status==='loading'?<button className="university-primary service-preparing" disabled>서비스 확인 중</button>:essayFirst&&service.status==='error'?<button className="university-primary" onClick={service.retry}>일시적으로 확인할 수 없습니다 · 다시 시도</button>:essayFirst&&!readyUniversities.has(u.universityId??'')?<button className="university-primary service-preparing" disabled>첨삭 서비스 준비 중</button>:<Link className="university-primary" aria-label={`${u.name} ${essayFirst?'첨삭 시작하기':'자료 보기'}`} href={`/essay-lab/universities/${u.sourceUniversityId}/`}>{essayFirst?'첨삭 시작하기':'자료 보기'} <span aria-hidden="true">→</span></Link>}</article>)}</div>
  {!rows.length&&<p>검색 조건에 맞는 대학이 없습니다.</p>}
  <nav className="discovery-pagination" aria-label="대학 목록 페이지">{all?<span>{rows.length}개 대학 전체 표시</span>:<><button className="button button--outline" disabled={current===0} onClick={()=>setPage(current-1)}>이전</button><span>{current+1} / {pages}</span><button className="button button--outline" disabled={current+1>=pages} onClick={()=>setPage(current+1)}>다음</button></>}<button type="button" className="button button--outline discovery-viewall" aria-pressed={all} onClick={()=>setAll(v=>!v)}>{all?'페이지 보기':'전체보기'}</button></nav>

@@ -4,7 +4,7 @@ vi.mock('../math-release/server/transport',()=>({serverTransport:()=>m}));
 vi.mock('./server/registry-credential',()=>({registryWorkerCredential:()=> 'worker-fixture'}));
 vi.mock('../materials/student-asset',()=>({studentPdfForExam:()=>({})}));
 vi.mock('../../data/essay-whole-exam-release-evidence.json',()=>({default:{exams:[{examId:'11111111-1111-4111-8111-111111111111',universityId:'33333333-3333-4333-8333-333333333333',questionIds:['22222222-2222-4222-8222-222222222222'],packageDigest:'digest'}]}}));
-vi.mock('./public-discovery',()=>({publicCatalog:{universities:[{sourceUniversityId:'cau',universityId:'33333333-3333-4333-8333-333333333333'}]}}));
+vi.mock('./public-discovery',()=>({publicCatalog:{universities:[{sourceUniversityId:'cau',universityId:'33333333-3333-4333-8333-333333333333'},{sourceUniversityId:'korea',universityId:'a93ec9df-2096-4550-801f-07a25b9a437b'}]}}));
 import {onRequestGet} from '../../../functions/api/essay/public-service-status';
 import {legendStudySupabaseUrl} from '../auth-config';
 const exam='11111111-1111-4111-8111-111111111111',q='22222222-2222-4222-8222-222222222222',uni='33333333-3333-4333-8333-333333333333';
@@ -19,3 +19,10 @@ it('auth failure cannot expose a configured release',async()=>{m.subject.mockRej
 
 it('does not promote a partially connected public exam',async()=>{const other='44444444-4444-4444-8444-444444444444';expect(await(await send({ESSAY_PUBLIC_EXAMS:other})).json()).toMatchObject({checked:true,universityIds:[],exams:[]});});
 it('changed package or complete question set fails with ERROR',async()=>{m.rpcRaw.mockImplementation(async name=>name==='essay_exam_session_ready'?'exam-session-v1':name==='essay_exam_preflight'?{package_digest:'changed'}:[{examId:exam,universityId:uni,questions:[{id:q}]}]);expect((await send()).status).toBe(503);});
+
+it('exposes only the Owner-approved Korea question, never the whole exam',async()=>{
+ const id='942c1c43-914f-5b99-9a30-e6474c363f6f',allowed='c1f90870-3ad9-59f8-afe3-c26d665f292f';
+ m.rpcRaw.mockImplementation(async name=>name==='essay_exam_session_ready'?'exam-session-v1':name==='essay_exam_preflight'?{package_digest:'9afbeece5b9348c5402430f3bd215a9d8acf2c1ce0add6b38fffab78f7229ea4'}:[{examId:id,universityId:'a93ec9df-2096-4550-801f-07a25b9a437b',questions:[{id:allowed},{id:q}]}]);
+ const response=await send({ESSAY_PUBLIC_EXAMS:id});expect(response.status).toBe(200);expect((await response.json()).exams).toEqual([{examId:id,universityId:'a93ec9df-2096-4550-801f-07a25b9a437b',questionIds:[allowed]}]);
+ expect(m.worker).not.toHaveBeenCalled();
+});
