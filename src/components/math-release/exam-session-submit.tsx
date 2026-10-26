@@ -19,7 +19,7 @@ function round(value:unknown):Round{
  return v;
 }
 /** Existing saved text/photos and Math input/confirmation contracts; one financial submit. */
-export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady}:{exam:SourceExam;drafts:Record<string,SubmissionDraft>;included:string[];leaves:Record<string,string>;onInputsReady?:(refs:Record<string,{attemptId:string;confirmedRunId:string}>)=>void}){
+export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady,restoreExistingInputs=false}:{restoreExistingInputs?:boolean;exam:SourceExam;drafts:Record<string,SubmissionDraft>;included:string[];leaves:Record<string,string>;onInputsReady?:(refs:Record<string,{attemptId:string;confirmedRunId:string}>)=>void}){
  const auth=useAuth(),owner=auth.user?.id;
  const alive=useRef(true),running=useRef(false);
  const [ready,setReady]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState('');
@@ -83,6 +83,22 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
   }
   setNotice('문항별 입력을 확인한 뒤 한 번에 첨삭을 요청해 주세요. 입력 확인에는 크레딧이 사용되지 않습니다.');
  }
+ // Restore this exam's existing photo result without creating attempts, extracting,
+ // confirming student content, or submitting a paid evaluation.
+ useEffect(()=>{let active=true;
+  if(!restoreExistingInputs||!ready||!pending||pending.submitted||running.current)return;
+  void(async()=>{
+   if((await snapshot()).fingerprint!==pending.fingerprint)return;
+   const restored:Record<string,ReadInputResult>={};
+   for(const q of selected){const id=pending.attempts[q.key];if(!uuid(id))return;
+    const input=await inputClient().readInput(id);
+    if(input.attempt.leaf_id!==leaves[q.dbQuestionId!])throw Error('INPUT_SCOPE_CHANGED');
+    restored[q.key]=input;
+   }
+   if(active){setInputs(restored);setNotice('저장된 사진 입력을 불러왔습니다. 내용을 확인하면 전체 회차 첨삭을 요청할 수 있습니다.');}
+  })().catch(()=>{if(active)setNotice('기존 사진 입력을 불러오지 못했습니다. 저장한 답안 입력 확인으로 다시 조회해 주세요.');});
+  return()=>{active=false;};
+ },[restoreExistingInputs,ready,scope,pending?.key]);
  async function dispatch(r:Round){
   for(const q of r.questions){if(q.state!=='REQUESTED')continue;try{await gateway('evaluate',{evaluation_id:q.evaluation_id});}catch{/* Preserve confirmed successes; status is read before offering retry. */}}
   const next=round(await call('math_session_read',{p_run:r.run_id}));setAccepted(next);if(next.free_rewrite_available)setParents(old=>[next,...old.filter(item=>item.run_id!==next.run_id)]);
@@ -104,7 +120,7 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
   onInputsReady(refs);
  },[onInputsReady,allReady,pending,inputs]);
  const retryable=accepted?.state==='reserved'&&accepted.questions.some(q=>q.state==='FAILED')&&accepted.questions.every(q=>['FAILED','COMPLETED'].includes(q.state));
- return <section className="essay-submit-gate" aria-label="수리논술 회차 첨삭" aria-busy={busy}>
+ return <section className="essay-submit-gate" aria-label={restoreExistingInputs?"사진 답안 확인":"수리논술 회차 첨삭"} aria-busy={busy}>
   {!onInputsReady&&parents.length>0&&!pending&&<label>제출 방식<select value={parentId} disabled={busy} onChange={e=>setParentId(e.target.value)}><option value="">새 첨삭 · 1 크레딧</option>{parents.map(r=><option key={r.run_id} value={r.run_id}>무료 재첨삭 · {r.created_at.slice(0,10)}</option>)}</select></label>}
   {!accepted&&<button className="button button--outline" disabled={!ready||busy||blocked} onClick={()=>void work(prepare)}>저장한 답안 입력 확인 · 0 크레딧</button>}
   {selected.map(q=>{const input=inputs[q.key];if(!input)return null;return <article key={q.key}><h3>{q.label}</h3>{input.can_request_evaluation?<p>첨삭 요청 준비 완료</p>:<>

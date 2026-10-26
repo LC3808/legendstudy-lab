@@ -57,3 +57,27 @@ describe('Math session submission uses the saved exam unit',()=>{
   const calls=f.rpc.mock.calls.filter(([name])=>name==='math_session_submit');expect(calls).toHaveLength(2);expect(calls[1][1]).toEqual(firstCall);expect(f.create).toHaveBeenCalledTimes(1);
  });
 });
+
+it('restores an existing mixed-input candidate read-only and waits for student confirmation',async()=>{
+ const fingerprint=JSON.stringify({owner:f.owner,examId:exam.dbExamId,parentId:'',answers:[{questionId:id(11),body:drafts.q1.body,images:[]}]});
+ const scope=`legendstudy:essay-source-draft:v1:${f.owner}:math-session:${exam.dbExamId}:initial:${id(11)}`;
+ f.saved.set(scope,JSON.stringify({fingerprint,key:id(90),attemptKeys:{q1:id(91)},attempts:{q1:id(101)}}));
+ f.read.mockResolvedValue({attempt:{leaf_id:id(21)},can_request_evaluation:false,input_state:'CONFIRMATION_REQUIRED',candidate_regions:[],candidate:{run_id:id(50),state:'COMPLETED'}});
+ const onReady=vi.fn();
+ render(<MathExamSessionSubmit exam={exam} drafts={drafts} included={['q1']} leaves={leaves} onInputsReady={onReady} restoreExistingInputs/>);
+ await screen.findByRole('button',{name:'이 내용으로 확인'});
+ expect(screen.getByRole('region',{name:'사진 답안 확인'})).toBeTruthy();
+ expect(f.read).toHaveBeenCalledWith(id(101));expect(f.create).not.toHaveBeenCalled();expect(fetch).not.toHaveBeenCalled();
+ expect(f.rpc).not.toHaveBeenCalled();expect(onReady).not.toHaveBeenCalled();
+ expect(screen.queryByRole('button',{name:'회차 첨삭 요청 · 1 크레딧'})).toBeNull();
+});
+
+it('passes already-confirmed input to the Essay parent without a Math paid submission',async()=>{
+ const fingerprint=JSON.stringify({owner:f.owner,examId:exam.dbExamId,parentId:'',answers:[{questionId:id(11),body:drafts.q1.body,images:[]}]});
+ const scope=`legendstudy:essay-source-draft:v1:${f.owner}:math-session:${exam.dbExamId}:initial:${id(11)}`;
+ f.saved.set(scope,JSON.stringify({fingerprint,key:id(90),attemptKeys:{q1:id(91)},attempts:{q1:id(101)}}));
+ f.read.mockResolvedValue({attempt:{leaf_id:id(21)},can_request_evaluation:true,input_state:'READY_FOR_EVALUATION',selected_extraction_id:id(51),candidate_regions:[],candidate:{run_id:id(50),state:'COMPLETED'}});
+ const onReady=vi.fn();render(<MathExamSessionSubmit exam={exam} drafts={drafts} included={['q1']} leaves={leaves} onInputsReady={onReady} restoreExistingInputs/>);
+ await waitFor(()=>expect(onReady).toHaveBeenCalledWith({q1:{attemptId:id(101),confirmedRunId:id(51)}}));
+ expect(f.create).not.toHaveBeenCalled();expect(fetch).not.toHaveBeenCalled();expect(f.rpc).not.toHaveBeenCalled();
+});
