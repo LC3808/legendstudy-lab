@@ -11,6 +11,8 @@ import {sourceExams,type SourceExam} from '@/lib/essay-runtime/source-registry';
 /** Reuse the source writer and submit gateway. No copied History or Provider path. */
 export function ExamRewrite({runId,additional}:{runId:string;additional:boolean}){
  const auth=useAuth();const [state,setState]=useState<{exam:SourceExam;run:Record<string,unknown>}|null>(null),[error,setError]=useState(false),[active,setActive]=useState('');
+ const [mathInputs,setMathInputs]=useState<Record<string,string>>({});
+ const onInputContract=useCallback((_examId:string,math:Record<string,string>)=>setMathInputs(math),[]);
  const [drafts,setDrafts]=useState<Record<string,SubmissionDraft>>({});
  const onDraft=useCallback((key:string,body:string,images:boolean,saved:boolean)=>setDrafts(old=>({...old,[key]:{body,images,saved,revision:old[key]?.body===body?old[key].revision:(old[key]?.revision??0)+1}})),[]);
  const onDirty=useCallback(()=>{},[]);
@@ -36,5 +38,5 @@ export function ExamRewrite({runId,additional}:{runId:string;additional:boolean}
  if(!state||!auth.user)return <p>시험과 작성 중인 답안을 확인하고 있어요.</p>;
  const {exam,run}=state;const questions=exam.questions.filter(q=>(run.question_ids as string[]).includes(q.dbQuestionId??''));
  const current=questions.find(q=>q.key===active)??questions[0];const root=String(run.parent_id??run.id);
- return <section><h3>다시 써보기</h3><div role="group" aria-label="작성할 문항">{questions.map(q=><button key={q.key} onClick={()=>setActive(q.key)}>{q.label}</button>)}</div>{questions.map(q=><div key={q.key} hidden={current?.key!==q.key}><SourceExamWriter exam={exam} question={q} owner={auth.user!.id} onDirty={onDirty} onDraft={onDraft} rewrite={{id:runId,additional,previousAnswer:String((run.answers as {questionId:string;body:string}[]).find(a=>a.questionId===q.dbQuestionId)?.body??'')}}/></div>)}<ScopedExamSubmit exam={exam} includedKeys={questions.map(q=>q.key)} drafts={drafts} cycle={additional?{previousPaidRunId:root}:{parentId:root}}/></section>;
+ return <section><h3>다시 써보기</h3><div role="group" aria-label="작성할 문항">{questions.map(q=><button key={q.key} onClick={()=>setActive(q.key)}>{q.label}</button>)}</div>{questions.map(q=><div key={q.key} hidden={current?.key!==q.key}><SourceExamWriter supportsImages={q.inputMode==='image'||!!(q.dbQuestionId&&mathInputs[q.dbQuestionId])} exam={exam} question={q} owner={auth.user!.id} onDirty={onDirty} onDraft={onDraft} rewrite={{id:runId,additional,previousAnswer:String((run.answers as {questionId:string;body:string}[]).find(a=>a.questionId===q.dbQuestionId)?.body??'')}}/></div>)}<ScopedExamSubmit onInputContract={onInputContract} exam={exam} includedKeys={questions.map(q=>q.key)} drafts={drafts} cycle={additional?{previousPaidRunId:root}:{parentId:root}}/></section>;
 }

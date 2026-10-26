@@ -6,7 +6,7 @@ import {useAuth} from './auth-context';
 import {EssayExamSubmit,type SubmissionDraft} from './essay-exam-submit';
 import type {SourceExam} from '@/lib/essay-runtime/source-registry';
 /** Existing server admission is authority; metadata review state never activates evaluation. */
-export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle}:{cycle?:{parentId?:string;previousPaidRunId?:string};exam:SourceExam;questionKey?:string;includedKeys?:string[];drafts:Record<string,SubmissionDraft>}){
+export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onInputContract}:{onInputContract?:(examId:string,math:Record<string,string>)=>void;cycle?:{parentId?:string;previousPaidRunId?:string};exam:SourceExam;questionKey?:string;includedKeys?:string[];drafts:Record<string,SubmissionDraft>}){
  const auth=useAuth(),owner=auth.user?.id;
  const [retry,setRetry]=useState(0),[failure,setFailure]=useState<string|null>(null);
  const scope=`${owner??''}:${exam.dbExamId??''}`;
@@ -34,6 +34,7 @@ export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle}:{c
    if(active)setAdmitted({owner,exam:exam.dbExamId,questions:result?.ready===true&&Array.isArray(result.questionIds)?result.questionIds.filter((v:unknown)=>typeof v==='string'):[],math});
   })().catch(()=>{if(active)setFailure(scope);});return()=>{active=false;};
  },[auth.client,owner,exam.dbExamId,retry,scope]);
+ useEffect(()=>{if(admitted?.owner===owner&&admitted?.exam===exam.dbExamId)onInputContract?.(admitted.exam,admitted.math);},[admitted,owner,exam.dbExamId,onInputContract]);
  if(failure===scope)return <div role="status">일시적으로 첨삭 가능 여부를 확인할 수 없습니다. <button onClick={()=>{setFailure(null);setAdmitted(null);setRetry(v=>v+1);}}>다시 시도</button></div>;
  if(admitted?.owner!==owner||admitted?.exam!==exam.dbExamId)return <button disabled>첨삭 가능 여부 확인 중</button>;
  const q=exam.questions.find(q=>q.key===questionKey);

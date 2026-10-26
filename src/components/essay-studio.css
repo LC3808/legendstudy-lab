@@ -9,3 +9,7 @@
 @keyframes essay-activity{0%{transform:translateX(-100%)}100%{transform:translateX(350%)}}@keyframes essay-rest-fade{0%,100%{opacity:0;transform:translateY(4px)}10%,90%{opacity:1;transform:translateY(0)}}
 @media(max-width:48rem){.essay-studio-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.essay-request-summary{grid-template-columns:1fr;gap:.5rem}.essay-session-request>.button{width:100%;margin:.35rem 0}.essay-studio-hero .university-source-button{width:100%}.essay-answer-card .answer-images__grid{grid-template-columns:1fr}.essay-progress-actions{flex-direction:column}.essay-progress-actions .button{width:100%}}
 @media(prefers-reduced-motion:reduce){.essay-progress-track span,.essay-progress-dialog .essay-rest-message{animation:none}.essay-progress-track span{width:100%;opacity:.6}}
+
+.essay-question-toggle{margin:1rem 0;border:1px solid #c5cfdd;border-top:3px solid #193653;border-radius:14px;background:#fff;overflow:hidden}
+.essay-question-toggle>header{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:#f7f9fc}.essay-question-toggle>header h3{margin:0;color:#193653}.essay-question-toggle>header span{flex:1;color:#52647d;font-size:.9rem}.essay-question-toggle [hidden]{display:none!important}.essay-question-toggle .essay-answer-card{border:0;margin:0;box-shadow:none}
+@media(max-width:36rem){.essay-question-toggle>header{flex-wrap:wrap;gap:.6rem}.essay-question-toggle>header span{flex-basis:calc(100% - 6rem)}.essay-question-toggle>header button{min-height:44px}}
