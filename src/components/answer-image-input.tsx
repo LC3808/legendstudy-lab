@@ -10,7 +10,7 @@ export function AnswerImageInput({file,onChange,disabled=false}:{file:File|null;
   {file&&<div className="answer-image-input__selected"><img ref={preview} alt="선택한 답안 사진" className="answer-image-input__preview"/><p className="answer-image-input__name">{file.name}</p><button type="button" className="button button--outline button--small" disabled={disabled} onClick={()=>onChange(null)}>사진 삭제</button></div>}
   <div className="answer-image-input__sources">
    <label className="answer-image-input__source">답안 사진 촬영<input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" disabled={disabled} onChange={e=>{choose(e.target.files?.[0]);e.target.value='';}}/></label>
-   <label className="answer-image-input__source">답안 이미지 첨부<input type="file" accept="image/jpeg,image/png,image/webp" disabled={disabled} onChange={e=>{choose(e.target.files?.[0]);e.target.value='';}}/></label>
+   <label className="answer-image-input__source">{file?'사진 교체':'답안 이미지 첨부'}<input type="file" accept="image/jpeg,image/png,image/webp" disabled={disabled} onChange={e=>{choose(e.target.files?.[0]);e.target.value='';}}/></label>
   </div>
   {error&&<p role="alert" className="answer-image-input__error">{error}</p>}
  </div>;

@@ -12,13 +12,13 @@ it('real Sookmyung four subquestions write/restore without a Provider or DB writ
  await waitFor(()=>expect(screen.getByLabelText('문제 1-1 답안')).toBeEnabled());
  fireEvent.change(screen.getByLabelText('문제 1-1 답안'),{target:{value:'학생이 직접 쓴 답안'}});
  fireEvent.click(screen.getByRole('tab',{name:'문제 2-2'}));
- expect(screen.getByLabelText('문제 1-1 답안')).not.toBeVisible();
+ expect(screen.getByLabelText('문제 1-1 답안')).toBeVisible(); // All question cards stay visible.
  fireEvent.click(screen.getByRole('tab',{name:'문제 1-1'}));
  expect(screen.getByLabelText('문제 1-1 답안')).toHaveValue('학생이 직접 쓴 답안');
  view.unmount();render(<SourceExamSelection sourceId="sookmyung"/>);
  await waitFor(()=>expect(screen.getByLabelText('문제 1-1 답안')).toBeEnabled());
  expect(screen.getByLabelText('문제 1-1 답안')).toHaveValue('학생이 직접 쓴 답안');
- expect(screen.getByRole('button',{name:'첨삭 서비스 준비 중'})).toBeDisabled();
+ expect(screen.getByRole('button',{name:'첨삭 가능 여부 확인 중'})).toBeDisabled();
 });
 it('account switch does not expose another draft and no implicit guest transfer',async()=>{
  const view=render(<SourceExamSelection sourceId="sookmyung"/>);

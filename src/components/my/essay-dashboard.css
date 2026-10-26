@@ -115,3 +115,7 @@
 .essay-confirm-dialog{max-width:32rem;width:100%;background:white;box-shadow:0 12px 48px #10243d33}
 .report-feedback+.report-feedback{border-top:1px solid #e1e7ef;margin-top:1rem;padding-top:1rem}
 .essay-result-identity{padding:1.5rem;border:1px solid #dfe5ed;border-radius:1rem;box-shadow:0 3px 12px #10243d08;margin:1rem 0}
+
+/* Owner Oct26: history-list affordances only; result detail is unchanged. */
+.essay-history-card .essay-history-badge,.essay-history-card .essay-history-badge.included{background:transparent;color:#244b7c;border:1px solid #8fa9ca;border-radius:6px;padding:.3rem .6rem;font-weight:700}
+.essay-history-card .essay-history-result-action{display:inline-flex;align-items:center;justify-content:center;min-height:44px;background:#183553;color:#fff;border:1px solid #183553;border-radius:9px;padding:.6rem 1rem;margin-top:.5rem;justify-self:start;font-weight:700}

@@ -15,6 +15,7 @@ const exam:SourceExam={key:'konkuk-humanities-local',dbExamId:examId,universityI
 it('canonical humanities draft uses existing submit, result, free rewrite and owner History adapters',async()=>{
  state.runs=[];sessionStorage.clear();localStorage.clear();
  state.rpc.mockImplementation(async(name:string,args:{p_run:string|null})=>{
+  if(name==='essay_exam_session_status')return {data:{version:'exam-session-v1',run_id:args.p_run,exam_id:examId,state:'completed',retry_allowed:false,questions:[{question_id:questionId,state:'completed'}]},error:null};
   expect(name).toBe('essay_exam_history');
   return {data:{version:'essay-exam-history-v1',runs:args.p_run?state.runs.filter(r=>r.id===args.p_run):state.runs},error:null};
  });
@@ -34,8 +35,9 @@ it('canonical humanities draft uses existing submit, result, free rewrite and ow
  }));
  const u=userEvent.setup();
  const first=render(<EssayExamSubmit exam={exam} included={['q2']} drafts={{q2:{body:'First synthetic answer',revision:1,images:false,saved:true}}}/>);
- await u.click(await screen.findByRole('button',{name:'첨삭 요청 · 1 크레딧'}));
+ await u.click(await screen.findByRole('button',{name:'논술 첨삭 요청하기 · 1 크레딧'}));
  await u.click(await screen.findByRole('button',{name:'첨삭 진행하기'}));
+ await u.click(await screen.findByRole('button',{name:'첨삭 결과 확인하기'}));
  await screen.findByText('First summary');
  expect(screen.getByRole('link',{name:'나의 첨삭 기록 →'})).toHaveAttribute('href','/my/essays');
  first.unmount();
@@ -43,6 +45,7 @@ it('canonical humanities draft uses existing submit, result, free rewrite and ow
  await u.click(await screen.findByRole('button',{name:'무료 재첨삭 요청'}));
  await u.click(await screen.findByRole('button',{name:'첨삭 진행하기'}));
  await waitFor(()=>expect(state.runs).toHaveLength(2));
+ await u.click(await screen.findByRole('button',{name:'첨삭 결과 확인하기'}));
  await screen.findByText('Rewritten synthetic answer');
  expect(quotes).toEqual([1,0]);expect(submissions[1].parentId).toBe('first');
  expect(submissions[0].key).not.toBe(submissions[1].key);

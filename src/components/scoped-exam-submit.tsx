@@ -11,7 +11,7 @@ export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle}:{c
  const [retry,setRetry]=useState(0),[failure,setFailure]=useState<string|null>(null);
  const scope=`${owner??''}:${exam.dbExamId??''}`;
  const [admitted,setAdmitted]=useState<{owner:string;exam:string;questions:string[];math:Record<string,string>}|null>(null);
- useEffect(()=>{let active=true;setFailure(null);
+ useEffect(()=>{let active=true;queueMicrotask(()=>{if(active)setFailure(null);});
   void(async()=>{
    if(!auth.client||!owner||!exam.dbExamId)return;
    const session=(await auth.client.auth.getSession()).data.session;

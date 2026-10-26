@@ -6,6 +6,6 @@ import {SourceExamSelection} from './source-exam-selection';
  * The old published-only table selector dropped registered, unpublished questions and
  * discarded the approved Hanyang PDF descriptor when projecting metadata rows.
  */
-export function UniversityEssayStart({sourceId}:{universityId:string|null;sourceId:string}){
- return <SourceExamSelection sourceId={sourceId} registeredOnly/>;
+export function UniversityEssayStart({sourceId,onSelectionChange}:{universityId:string|null;sourceId:string;onSelectionChange?:(title:string)=>void}){
+ return <SourceExamSelection sourceId={sourceId} registeredOnly onSelectionChange={onSelectionChange}/>;
 }
