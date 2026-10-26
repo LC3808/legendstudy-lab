@@ -13,7 +13,7 @@ export function MixedExamSubmit({exam,drafts,included,leaves,cycle}:{cycle?:{par
  const missing=images.some(key=>!refs[key]);
  const prepared=Object.fromEntries(Object.entries(drafts).map(([key,value])=>[key,{...value,...(refs[key]?{mathInput:refs[key]}:{})}]));
  return <>
-  {images.length>0&&<MathExamSessionSubmit key={fingerprint} exam={exam} drafts={drafts} included={images} leaves={leaves} onInputsReady={onReady} restoreExistingInputs={exam.dbExamId==='68996278-1e19-5560-ac94-cf43656bf684'}/>}
+  {images.length>0&&<MathExamSessionSubmit key={fingerprint} exam={exam} drafts={drafts} included={images} leaves={leaves} onInputsReady={onReady} restoreExistingInputs/>}
   {missing&&<p>사진에서 읽은 내용을 확인하고 ‘이 내용으로 확인’을 누르면 회차 첨삭을 요청할 수 있습니다.</p>}
   <EssayExamSubmit exam={exam} drafts={prepared} included={included} mathQuestions={Object.keys(leaves)} cycle={cycle} inputBlocked={missing}/>
  </>;

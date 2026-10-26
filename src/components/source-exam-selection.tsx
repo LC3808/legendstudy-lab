@@ -63,7 +63,7 @@ function Selection({rows,owner,onSelectionChange}:{rows:SourceExam[];owner:strin
  useEffect(()=>{onSelectionChange?.(title);},[onSelectionChange,title]);
  function reset(action:()=>void){if(hasUnsaved&&!window.confirm("저장하지 못한 답안이 있습니다. 선택을 바꿀까요?"))return;action();setHasUnsaved(false);}
  return <section className="university-section essay-start" aria-label="논술 첨삭 시작">
-  <div className="discovery-topline"><h2>시험 선택</h2><Link href="/my/essays/">나의 첨삭 기록 →</Link></div>
+  <div className="discovery-topline"><h2>시험 선택</h2><Link href="/my/essays/" className="essay-history-button">나의 첨삭 기록 확인 →</Link></div>
   {!rows.length&&<p role="status">기출문제를 준비하고 있어요.</p>}
   <div className="essay-selection-grid">
    <label>학년도·시험<select aria-label="학년도·시험" value={selectedPeriod} onChange={e=>reset(()=>{setPeriod(e.target.value);setTrack('');setExamKey('');})}><option value="">학년도·시험 선택</option>{periods.map(p=>{const [year,kind]=p.split(':');return <option key={p} value={p}>{year}학년도 {kind==='mock'?'모의논술':kind==='admission'?'수시논술':'시험 유형 확인 중'}</option>;})}</select></label>

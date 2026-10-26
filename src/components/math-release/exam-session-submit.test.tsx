@@ -29,7 +29,7 @@ afterEach(()=>{cleanup();vi.unstubAllGlobals();});
 describe('Math session submission uses the saved exam unit',()=>{
  it.each([1,2,4])('%i answers produce one explicit round request',async n=>{
   render(<MathExamSessionSubmit exam={exam} drafts={drafts} included={[1,2,3,4].slice(0,n).map(x=>`q${x}`)} leaves={leaves}/>);
-  const prepare=await screen.findByRole('button',{name:/保存|저장한 답안 입력 확인/});
+  const prepare=await screen.findByRole('button',{name:/保存|사진에서 답안 추출하기/});
   await waitFor(()=>expect((prepare as HTMLButtonElement).disabled).toBe(false));fireEvent.click(prepare);
   const submit=await screen.findByRole('button',{name:'회차 첨삭 요청 · 1 크레딧'});
   expect(f.rpc.mock.calls.filter(([name])=>name==='math_session_submit')).toHaveLength(0);
@@ -42,13 +42,13 @@ describe('Math session submission uses the saved exam unit',()=>{
  });
  it('empty answers cannot prepare or create a paid request',async()=>{
   render(<MathExamSessionSubmit exam={exam} drafts={{}} included={[]} leaves={leaves}/>);
-  const button=await screen.findByRole('button',{name:/저장한 답안 입력 확인/});expect((button as HTMLButtonElement).disabled).toBe(true);
+  const button=await screen.findByRole('button',{name:/사진에서 답안 추출하기/});expect((button as HTMLButtonElement).disabled).toBe(true);
   expect(f.create).not.toHaveBeenCalled();expect(f.rpc.mock.calls.some(([name])=>name==='math_session_submit')).toBe(false);
  });
  it('ambiguous submission survives remount and reuses the same round key',async()=>{
   lost=true;const props={exam,drafts,included:['q1'],leaves};
   const view=render(<MathExamSessionSubmit {...props}/>);
-  const prepare=await screen.findByRole('button',{name:/저장한 답안 입력 확인/});await waitFor(()=>expect((prepare as HTMLButtonElement).disabled).toBe(false));fireEvent.click(prepare);
+  const prepare=await screen.findByRole('button',{name:/사진에서 답안 추출하기/});await waitFor(()=>expect((prepare as HTMLButtonElement).disabled).toBe(false));fireEvent.click(prepare);
   fireEvent.click(await screen.findByRole('button',{name:'회차 첨삭 요청 · 1 크레딧'}));fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));
   await screen.findByRole('button',{name:'같은 회차 처리 확인'});await waitFor(()=>expect(screen.getByRole('status').textContent).toContain('확인하지 못했어요'));
   const firstCall=f.rpc.mock.calls.find(([name])=>name==='math_session_submit')![1];view.unmount();
@@ -82,7 +82,7 @@ it('passes already-confirmed input to the Essay parent without a Math paid submi
  expect(f.create).not.toHaveBeenCalled();expect(fetch).not.toHaveBeenCalled();expect(f.rpc).not.toHaveBeenCalled();
 });
 
-it('explicit re-extraction clears the old confirmation and never reserves evaluation credit',async()=>{
+it('retry reuses the existing attempt and never reserves evaluation credit',async()=>{
  const fingerprint=JSON.stringify({owner:f.owner,examId:exam.dbExamId,parentId:'',answers:[{questionId:id(11),body:drafts.q1.body,images:[]}]});
  const scope=`legendstudy:essay-source-draft:v1:${f.owner}:math-session:${exam.dbExamId}:initial:${id(11)}`;
  f.saved.set(scope,JSON.stringify({fingerprint,key:id(90),attemptKeys:{q1:id(91)},attempts:{q1:id(101)}}));
@@ -92,7 +92,7 @@ it('explicit re-extraction clears the old confirmation and never reserves evalua
  f.read.mockResolvedValue({attempt:{leaf_id:id(21)},can_request_evaluation:false,input_state:'CONFIRMATION_REQUIRED',candidate:{run_id:id(52)},candidate_regions:[]});
  fireEvent.click(screen.getByRole('button',{name:'다시 추출하기'}));
  await screen.findByRole('button',{name:'이 내용으로 확인'});
- expect(onReady).toHaveBeenLastCalledWith({});
- expect(f.saved.has(scope+':previous-input:'+id(90))).toBe(true);
- expect(f.create).toHaveBeenCalledOnce();expect(f.rpc).not.toHaveBeenCalled();expect(fetch).not.toHaveBeenCalled();
+ expect(onReady).toHaveBeenCalled();
+ expect(JSON.parse(f.saved.get(scope)!).attempts.q1).toBe(id(101));
+ expect(f.create).not.toHaveBeenCalled();expect(f.rpc).not.toHaveBeenCalled();expect(fetch).not.toHaveBeenCalled();
 });

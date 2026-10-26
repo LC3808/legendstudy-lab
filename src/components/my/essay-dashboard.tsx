@@ -24,7 +24,7 @@ function PersonalContent(){
  return <>
   <ReturnNavigation/>
   <div className="my-actions report-controls"><button className="button button--outline" onClick={()=>window.print()}>인쇄 / PDF 저장</button><GrowthShare rows={rows} selected={selected}/></div>
-  <section className="my-section report-controls"><h2>확인할 답안 선택</h2><Link href="/my/essays/">나의 첨삭 기록 →</Link>
+  <section className="my-section report-controls"><h2>확인할 답안 선택</h2><Link href="/my/essays/" className="essay-history-button">나의 첨삭 기록 확인 →</Link>
    {!essay.data&&<div><h3>논술 기록</h3><DataStatus error={essay.error} reload={essay.reload}/></div>}
    {!math.data&&<div><h3>수리논술 기록</h3><DataStatus error={math.error} reload={math.reload}/></div>}
    {ready&&!rows.length&&<div className="my-panel"><p>아직 첨삭 기록이 없습니다.</p><p>첫 답안을 작성하고 나의 논술 기록을 시작해보세요.</p><Link className="button button--primary" href="/essay-lab/">논술 LAB 시작하기 →</Link></div>}

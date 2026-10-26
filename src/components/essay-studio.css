@@ -28,3 +28,17 @@
 .essay-brand-hero.essay-studio-hero a:focus-visible{outline-color:#244A6A}
 @media(max-width:40rem){.essay-brand-hero.essay-studio-hero.university-detail-hero{padding:1rem!important}.essay-brand-hero .essay-studio-logo{max-width:95px}.essay-brand-hero .essay-studio-identity{gap:.7rem}.essay-brand-hero .essay-studio-identity>div:last-child{min-width:0}}
 .essay-reentry-dialog .button--primary{background:#19314e;border-color:#19314e;color:#fff}
+
+/* Photo actions retain native camera/file selection while hiding browser chrome. */
+.answer-image-input__source {position:relative;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;min-height:44px;border-radius:10px;font-weight:700;overflow:hidden;}
+.answer-image-input__source[hidden] {display:none;}
+.answer-image-input__source input[type=file] {position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;}
+.answer-image-input__source:focus-within {outline:3px solid #93c5fd;outline-offset:2px;}
+.answer-image-input__source:has(input:disabled) {opacity:.5;cursor:not-allowed;}
+.answer-image-input__source.answer-image-input__camera {background:#172d49;color:white;border-color:#172d49;}
+.answer-image-input__source.answer-image-input__upload {background:#155eef;color:white;border-color:#155eef;}
+.answer-image-card__move {display:flex;gap:8px;}
+.answer-image-card__move button {min-width:44px;}
+.answer-image-card .answer-image-input__sources {display:flex;gap:8px;}
+.answer-image-card--add {grid-column:1 / -1;}
+.essay-history-button {display:inline-flex;align-items:center;min-height:44px;padding:10px 16px;border:1px solid #e7d49a;border-radius:10px;background:#fff6d8;color:#172d49;font-weight:700;text-decoration:none;}
