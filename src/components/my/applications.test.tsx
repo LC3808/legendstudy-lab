@@ -27,3 +27,16 @@ it('appends a correction without changing the original event',async()=>{
  render(<ApplicationsPanel/>);await user.click(await screen.findByRole('button',{name:'이력 보기'}));await user.click(await screen.findByRole('button',{name:'정정'}));await user.selectOptions(screen.getByLabelText('진행·결과'),'rejected');await user.click(screen.getByRole('button',{name:'기록 저장'}));
  await waitFor(()=>expect(addApplicationEvent).toHaveBeenCalled());expect(vi.mocked(addApplicationEvent).mock.calls[0].slice(2,6)).toEqual(['app1','rejected',null,'old']);
 });
+it('filters the latest year across server pages without hiding older years',async()=>{
+ const user=userEvent.setup();
+ const base={university_id:'u1',intended_division:'경영학과',admission_name:'논술',revision:1,latest_event:null};
+ vi.mocked(readApplicationPage).mockImplementation(async(_client,_owner,offset)=>offset===0?{offset:0,has_more:true,items:[{...base,id:'old',admission_year:2026,university_name_snapshot:'지난대학교',admission_type:'수시'}]}:{offset:25,has_more:false,items:[{...base,id:'new',admission_year:2027,university_name_snapshot:'최신대학교',admission_type:'정시'}]});
+ render(<ApplicationsPanel/>);
+ await screen.findByText('최신대학교 · 경영학과');
+ expect(screen.queryByText('지난대학교 · 경영학과')).toBeNull();
+ await user.selectOptions(screen.getByLabelText('학년도'),'2026');
+ expect(screen.getByText('지난대학교 · 경영학과')).toBeTruthy();
+ expect(screen.queryByText('최신대학교 · 경영학과')).toBeNull();
+ await user.selectOptions(screen.getByLabelText('모집 구분'),'정시');
+ expect(screen.queryByText('지난대학교 · 경영학과')).toBeNull();
+});

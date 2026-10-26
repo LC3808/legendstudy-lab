@@ -41,7 +41,7 @@ it('presents the MY dashboard sections in the agreed order', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
   const headings = [...container.querySelectorAll('.my-section > h2')].map((h) => h.textContent);
-  expect(headings).toEqual(['나의 프로필', '내 이용 현황', 'LAB', '나의 성장', '나의 학습 시간', '나의 대학 지원 현황', '계정 및 지원']);
+  expect(headings).toEqual(['나의 프로필', '나의 대학 관리', '내 이용 현황', 'LAB', '나의 성장', '나의 학습 시간', '계정 및 지원']);
 });
 
 it('leads with the email as the profile name when no nickname is set, and never prints it twice', async () => {
@@ -79,7 +79,7 @@ it('keeps school and grade as facts and drops raw profile columns', async () => 
 it('keeps the university search closed until the student asks for it', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
-  expect(within(container).getByRole('button', { name: '+ 대학·학과 추가' })).toBeTruthy();
+  expect(within(container).getByRole('button', { name: '+ 관심 대학 추가' })).toBeTruthy();
   expect(container.querySelector('.my-goals input')).toBeNull();
 });
 
@@ -94,7 +94,7 @@ it('keeps empty sections short instead of making a large empty card', async () =
 it('keeps same-university add disabled while the target constraint rollout is held',async()=>{
  const user=userEvent.setup();vi.mocked(searchUniversities).mockResolvedValueOnce([{id:'u1',name:'연세대학교'}]);
  render(<MyDashboard/>);await screen.findByText('사회·상경');
- await user.click(screen.getByRole('button',{name:'+ 대학·학과 추가'}));
+ await user.click(screen.getByRole('button',{name:'+ 관심 대학 추가'}));
  await user.type(screen.getByLabelText('대학 찾기'),'연세');await user.click(screen.getByRole('button',{name:'검색'}));
  expect(await screen.findByRole('button',{name:'선택'})).toBeDisabled();
  expect(addTarget).not.toHaveBeenCalled();
@@ -112,8 +112,19 @@ it('renders only date, signed quantity and user reason in purchase history',asyn
 vi.mock('next/navigation',()=>({useRouter:()=>({back:vi.fn(),replace:vi.fn()})}));
 it('saves the selected university and intended division together',async()=>{
  const u=userEvent.setup();vi.mocked(searchUniversities).mockResolvedValueOnce([{id:'new',name:'새대학교'}]);
- render(<MyDashboard/>);await screen.findByText('사회·상경');await u.click(screen.getByRole('button',{name:'+ 대학·학과 추가'}));
+ render(<MyDashboard/>);await screen.findByText('사회·상경');await u.click(screen.getByRole('button',{name:'+ 관심 대학 추가'}));
  await u.type(screen.getByLabelText('대학 찾기'),'새대');await u.click(screen.getByRole('button',{name:'검색'}));
  await u.click(await screen.findByRole('button',{name:'선택'}));await u.type(screen.getByLabelText('희망 학과·모집단위'),'경제학과');await u.click(screen.getByRole('button',{name:'저장'}));
  expect(addTarget).toHaveBeenCalledWith(expect.anything(),'owner-1','new','경제학과');
+});
+
+it('prefills an explicit application form from a target without creating a record', async () => {
+ const user=userEvent.setup();
+ const {container}=render(<MyDashboard/>);
+ await screen.findByText('사회·상경');
+ const targets=container.querySelector('.my-college-grid > div:first-child') as HTMLElement;
+ await user.click(within(targets).getByRole('button',{name:'지원 내역 추가'}));
+ expect((screen.getByLabelText('지원 학과·모집단위') as HTMLInputElement).value).toBe('경영학과');
+ expect(container.querySelector('.my-profile-card .my-target-list')).toBeNull();
+ expect(screen.getByText('등록된 지원 내역이 없습니다.')).toBeTruthy();
 });

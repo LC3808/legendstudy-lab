@@ -1,5 +1,5 @@
 'use client';
-import {useCallback,useRef,useState,type FormEvent} from 'react';
+import {useRef,useState,type FormEvent} from 'react';
 import type {SupabaseClient} from '@supabase/supabase-js';
 import {useAuth} from '@/components/auth-context';
 import {assertOwner,searchUniversities} from '@/lib/my/data';
@@ -10,32 +10,46 @@ function useRequestKey(){
  const previous=useRef<{input:string;key:string}|null>(null);
  return (input:unknown)=>{const signature=JSON.stringify(input);if(previous.current?.input!==signature)previous.current={input:signature,key:crypto.randomUUID()};return previous.current.key;};
 }
-export function ApplicationsPanel(){
- const [offset,setOffset]=useState(0);
- const load=useCallback((client:SupabaseClient,owner:string)=>readApplicationPage(client,owner,offset),[offset]);
- const result=useOwnerData(load);
+export type ApplicationSeed={university:{id:string;name:string};division:string;key:string};
+export function ApplicationsPanel({seed=null,clearSeed=()=>{}}:{seed?:ApplicationSeed|null;clearSeed?:()=>void}={}){
+ const result=useOwnerData(readAllApplications);
  if(!result.data)return <DataStatus error={result.error} reload={result.reload}/>;
  return <div className="my-panel">
-  <Applications key={JSON.stringify(result.data)} items={result.data.items} reload={result.reload}/>
-  {offset>0&&<button className="text-link" onClick={()=>setOffset(Math.max(0,offset-25))}>이전</button>}
-  {result.data.has_more&&<button className="text-link" onClick={()=>setOffset(offset+25)}>다음</button>}
+  <Applications key={JSON.stringify(result.data)} items={result.data} reload={result.reload}/>
+  {seed&&<ApplicationForm key={seed.key} seed={seed} done={()=>{clearSeed();result.reload();}} cancel={clearSeed}/>}
  </div>;
+}
+async function readAllApplications(client:SupabaseClient,owner:string){
+ const items:Application[]=[];
+ for(let offset=0;offset<10000;offset+=25){
+  const page=await readApplicationPage(client,owner,offset);
+  items.push(...page.items);
+  if(!page.has_more)return items;
+  if(!page.items.length)throw new Error('APPLICATION_PAGE_EMPTY');
+ }
+ throw new Error('APPLICATION_PAGE_LIMIT');
 }
 function Applications({items,reload}:{items:Application[];reload:()=>void}){
  const [adding,setAdding]=useState(false);
+ const years=[...new Set(items.map(a=>a.admission_year))].sort((a,b)=>b-a);
+ const [year,setYear]=useState(String(years[0]??''));
+ const [type,setType]=useState('');const [page,setPage]=useState(0);
+ const filtered=items.filter(a=>(!year||String(a.admission_year)===year)&&(!type||a.admission_type===type));
  return <>
   {items.length===0&&<p className="my-empty">등록된 지원 내역이 없습니다.</p>}
-  {items.map(a=><ApplicationCard key={a.id} application={a} reload={reload}/>)}
-  {adding?<ApplicationForm done={reload} cancel={()=>setAdding(false)}/>:<button className="button button--outline button--small" onClick={()=>setAdding(true)}>지원 내역 추가</button>}
+  {items.length>0&&<><div className="my-application-filters"><label>학년도<select value={year} onChange={e=>{setYear(e.target.value);setPage(0);}}>{years.map(y=><option key={y} value={y}>{y}학년도</option>)}</select></label><label>모집 구분<select value={type} onChange={e=>{setType(e.target.value);setPage(0);}}><option value="">전체</option>{[...new Set(items.map(a=>a.admission_type))].map(t=><option key={t}>{t}</option>)}</select></label></div><p className="my-note">등록 내역 {filtered.length}건 · 최근 상태가 최초·추가합격인 내역 {filtered.filter(a=>['accepted','additional_acceptance'].includes(a.latest_event?.kind??'')).length}건</p></>}
+  {filtered.slice(page*10,page*10+10).map(a=><ApplicationCard key={a.id} application={a} reload={reload}/>)}
+  {filtered.length>10&&<div className="button-row"><button disabled={page===0} onClick={()=>setPage(page-1)}>이전</button><span>{page+1} / {Math.ceil(filtered.length/10)}</span><button disabled={(page+1)*10>=filtered.length} onClick={()=>setPage(page+1)}>다음</button></div>}
+  {adding?<ApplicationForm done={reload} cancel={()=>setAdding(false)}/>:<button className="button button--primary button--small" onClick={()=>setAdding(true)}>지원 내역 추가</button>}
  </>;
 }
-function ApplicationForm({application,done,cancel}:{application?:Application;done:()=>void;cancel:()=>void}){
+function ApplicationForm({application,seed,done,cancel}:{application?:Application;seed?:ApplicationSeed;done:()=>void;cancel:()=>void}){
  const {client,user}=useAuth();const requestKey=useRequestKey();
- const [university,setUniversity]=useState(application?{id:application.university_id,name:application.university_name_snapshot}:null);
+ const [university,setUniversity]=useState(application?{id:application.university_id,name:application.university_name_snapshot}:seed?.university??null);
  const [query,setQuery]=useState('');const [results,setResults]=useState<{id:string;name:string}[]>([]);
  // New applications default to the upcoming admission year (e.g. 2027 in late 2026),
  // never the 1900 input floor; an existing record keeps its own saved year.
- const [year,setYear]=useState(application?application.admission_year.toString():String(new Date().getFullYear()+1));const [division,setDivision]=useState(application?.intended_division??'');
+ const [year,setYear]=useState(application?application.admission_year.toString():String(new Date().getFullYear()+1));const [division,setDivision]=useState(application?.intended_division??seed?.division??'');
  const [type,setType]=useState(application?.admission_type??'수시');const [name,setName]=useState(application?.admission_name??'');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
  // 수시/정시 is the common choice; a legacy or other saved value is kept as its own
  // option so editing never silently rewrites it.
@@ -69,8 +83,8 @@ function ApplicationCard({application:a,reload}:{application:Application;reload:
  return <article className="my-target-card">
   <h3>{a.university_name_snapshot} · {a.intended_division}</h3>
   <p>{a.admission_year}학년도 · {a.admission_type} · {a.admission_name}</p>
-  <p>{a.latest_event&&a.latest_event.kind in eventLabels?eventLabels[a.latest_event.kind as EventKind]:'결과 미입력'}</p>
-  <div className="button-row"><button disabled={busy} className="text-link" onClick={()=>setEditing(true)}>변경</button><button disabled={busy} className="text-link" onClick={()=>setShowEvent(!showEvent)}>진행·결과 기록</button><button disabled={busy} className="text-link" onClick={()=>void loadHistory()}>이력 보기</button><button disabled={busy} className="text-link" onClick={()=>{if(window.confirm('이 지원 내역과 기록한 이력을 삭제할까요?'))void run(async()=>{await deleteApplication(client!,user!.id,a.id);reload();});}}>삭제</button></div>
+  <p className="my-application-badge">{a.latest_event&&a.latest_event.kind in eventLabels?eventLabels[a.latest_event.kind as EventKind]:'결과 미입력'}</p>
+  <div className="button-row"><button disabled={busy} className="button button--outline button--small" onClick={()=>setEditing(true)}>변경</button><button disabled={busy} className="button button--outline button--small" onClick={()=>setShowEvent(!showEvent)}>진행·결과 기록</button><button disabled={busy} className="button button--outline button--small" onClick={()=>void loadHistory()}>이력 보기</button><button disabled={busy} className="button button--outline button--small my-danger" onClick={()=>{if(window.confirm('이 지원 내역과 기록한 이력을 삭제할까요?'))void run(async()=>{await deleteApplication(client!,user!.id,a.id);reload();});}}>삭제</button></div>
   {showEvent&&<form className="my-goal-form" onSubmit={e=>{e.preventDefault();const at=occurred?new Date(`${occurred}+09:00`).toISOString():null;void run(async()=>{await addApplicationEvent(client!,user!.id,a.id,kind,at,supersedes,requestKey({kind,at,supersedes}));reload();});}}>
    <label>진행·결과<select disabled={busy} value={kind} onChange={e=>setKind(e.target.value as EventKind)}>{Object.entries(eventLabels).map(([v,label])=><option key={v} value={v}>{label}</option>)}</select></label>
    <label>발생 일시 (선택, 한국 시간)<input disabled={busy} type="datetime-local" value={occurred} onChange={e=>setOccurred(e.target.value)}/></label>
