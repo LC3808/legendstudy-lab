@@ -1692,3 +1692,17 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 .admin-recovery-facts dt {font-size:.8rem;color:#516078;}
 .admin-recovery-facts dd {margin:.2rem 0 0;font-weight:700;}
 .admin-credit-dialog {max-height:90dvh;overflow-y:auto;}
+.admin-credit-dialog { margin:auto; width:min(35rem,calc(100vw - 2rem)); max-width:35rem; padding:1.5rem; }
+.admin-credit-dialog h3 {margin:0 0 .75rem;font-size:1.2rem;}
+.admin-credit-dialog p {margin:.5rem 0;overflow-wrap:anywhere;}
+.admin-credit-dialog .admin-stack {gap:.6rem;margin-top:1rem;}
+.admin-credit-dialog .admin-stack > label {font-weight:600;margin-top:.35rem;}
+.admin-credit-dialog select,.admin-credit-dialog input[type=number],.admin-credit-dialog input[type=date],.admin-credit-dialog textarea {width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:.65rem;font:inherit;background:white;color:#172d49;}
+.admin-credit-dialog fieldset {border:0;padding:.5rem 0;min-width:0;}
+.admin-credit-dialog legend {font-weight:600;margin-bottom:.5rem;}
+.admin-credit-dialog fieldset .admin-search__row label {display:inline-flex;align-items:center;gap:.35rem;padding:.4rem .55rem;border:1px solid #cbd5e1;border-radius:8px;}
+.admin-credit-dialog fieldset .admin-search__row label:has(input:checked) {background:#eaf1fa;border-color:#183451;}
+.admin-credit-dialog input[type=radio] {accent-color:#183451;}
+.admin-credit-dialog fieldset > label {display:block;margin-top:.75rem;}
+.admin-credit-dialog form > .admin-search__row:last-child {justify-content:flex-end;margin-top:.75rem;}
+@media(max-width:480px) {.admin-credit-dialog {padding:1rem;} .admin-recovery-facts {font-size:.9rem;} }
