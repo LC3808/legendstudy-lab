@@ -7,7 +7,7 @@ import {AuthContext,type AuthContextValue} from '@/components/auth-context';
 import {AdminCreditGrantForm} from './admin-credit-grant-form';
 const actor='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';const target='bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
 const rpc=vi.fn();const granted=vi.fn();
-function mount(){const auth:AuthContextValue={status:'authenticated',client:{rpc} as unknown as SupabaseClient,user:{id:actor,email:'admin@example.test'},signOut:vi.fn(),recoveryActive:false,completeRecovery:vi.fn()};return render(<AuthContext.Provider value={auth}><AdminCreditGrantForm accountId={target} email="recipient@example.test" onGranted={granted}/></AuthContext.Provider>);}
+function mount(){const auth:AuthContextValue={status:'authenticated',client:{rpc:(name:string,args:unknown)=>name==='admin_credit_operation_info'?Promise.resolve({data:null,error:{code:'PGRST202'}}):rpc(name,args)} as unknown as SupabaseClient,user:{id:actor,email:'admin@example.test'},signOut:vi.fn(),recoveryActive:false,completeRecovery:vi.fn()};return render(<AuthContext.Provider value={auth}><AdminCreditGrantForm accountId={target} email="recipient@example.test" onGranted={granted}/></AuthContext.Provider>);}
 beforeEach(()=>{vi.clearAllMocks();sessionStorage.clear();HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','');};HTMLDialogElement.prototype.close=function(){this.removeAttribute('open');this.dispatchEvent(new Event('close'));};});
 async function open(){await userEvent.click(screen.getByRole('button',{name:'크레딧 지급'}));}
 describe('operator manual grant confirmation',()=>{

@@ -22,6 +22,8 @@ export function formatCreditGrantType(code:string|null|undefined):string {
 export function formatCreditReason(raw:string|null|undefined,quantity?:number):string {
  if(!raw?.trim())return '사유 미제공';
  const reason=raw.trim();
+ if(reason.startsWith('{')){try{const audit=JSON.parse(reason);if(['admin_grant_v2','admin_recovery_v1'].includes(audit.operation)&&typeof audit.reason==='string')return audit.reason;}catch{/* Preserve legacy free text. */}}
+
  if(['signup_bonus_v1','signup_bonus','signup'].includes(reason)) {
   return typeof quantity==='number'&&Number.isInteger(quantity)&&quantity>0 ? `가입 축하 크레딧 ${quantity.toLocaleString('ko-KR')}개` : '가입 축하 크레딧';
  }

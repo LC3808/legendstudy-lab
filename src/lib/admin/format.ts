@@ -184,3 +184,9 @@ export function formatDuration(value: AdminCount): string {
   if (hours < 48) return `${hours.toFixed(1)}시간`;
   return `${(hours / 24).toFixed(1)}일`;
 }
+
+/** Grant expiry is displayed in Korea regardless of the operator browser zone. */
+export function formatCreditExpiry(value:string|null):string {
+ if(!value)return '무기한';const date=new Date(value);if(Number.isNaN(date.getTime()))return '확인 필요';
+ return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(date)+' (한국시간)';
+}

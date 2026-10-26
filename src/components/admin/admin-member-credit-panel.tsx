@@ -13,6 +13,8 @@ import type { AdminCredit } from "@/lib/admin/contract";
 
 import { AdminEmpty, AdminErrorPanel, AdminLoading, AdminPanel, useAdminQuery } from "./admin-surface";
 
+import {formatCreditExpiry} from "@/lib/admin/format";
+import {AdminCreditRecovery} from "./admin-credit-recovery";
 import {AdminCreditGrantForm} from "./admin-credit-grant-form";
 
 import {formatCreditReason, formatCreditActor} from "@/lib/credit-display";
@@ -108,7 +110,7 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
                     <th scope="col">예약</th>
                     <th scope="col">사용 가능</th>
                     <th scope="col">지급일</th>
-                    <th scope="col">만료</th>
+                    <th scope="col">만료</th><th scope="col">운영</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -125,8 +127,8 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
                         <strong>{formatNumber(grant.available)}</strong>
                       </td>
                       <td>{formatDate(grant.createdAt)}</td>
-                      <td>{grant.expiresAt ? formatDate(grant.expiresAt) : "없음"}</td>
-                    </tr>
+                      <td>{formatCreditExpiry(grant.expiresAt)}</td>
+                    <td><AdminCreditRecovery accountId={accountId} email={email} grant={grant} onRecovered={reload}/></td></tr>
                   ))}
                 </tbody>
               </table>
