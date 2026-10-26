@@ -141,3 +141,14 @@ it('retry uses existing run and explicit idempotency key without reserve',async(
  expect(m.request.mock.calls[0][0]).toBe('/rest/v1/rpc/essay_exam_retry');
  expect(JSON.parse(m.request.mock.calls[0][2].body)).toEqual({p_subject:id,p_run:id,p_key:id,p_exam:id});
 });
+
+it.each(['availability','quote','submit'])('launch hold blocks %s before reservation or evaluation',async action=>{
+ const response=await send({...body,action,examId:'19f4c1e7-a82a-53ad-9aa2-7c72594518f1',questionIds:[id]});
+ expect(response.status).toBe(action==='availability'?200:409);expect(await response.json()).toMatchObject({code:'NATURAL_MATH_HOLD'});
+ expect(m.request).not.toHaveBeenCalled();expect(m.dispatch).not.toHaveBeenCalled();
+});
+it('launch hold preserves existing retry admission and request identity',async()=>{
+ const response=await send({action:'retry',examId:'19f4c1e7-a82a-53ad-9aa2-7c72594518f1',runId:id,key:id});
+ expect(response.status).toBe(202);expect(m.request.mock.calls[0][0]).toBe('/rest/v1/rpc/essay_exam_retry');
+ expect(JSON.parse(m.request.mock.calls[0][2].body).p_run).toBe(id);
+});

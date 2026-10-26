@@ -1,0 +1,205 @@
+{
+  "decision": "Owner 2026-10-26 launch: natural Math hold, unverified mixed hold; existing history/recovery preserved",
+  "exams": [
+    {
+      "examId": "2919c142-21d7-539d-952a-5382d16dbdf7",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "5ff20127-f5b6-5d4c-a6fd-f54c97a87130",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "3566b3a0-10a3-56ab-a7dc-5b9638706164",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "d4f1b0c4-98ef-5b28-999b-b369bb81d3ae",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "e9e7daf3-854c-57d3-a6dd-cc18fca0d8ea",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "42c8d5be-6cdb-5528-8808-174d9785b9d4",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "7a00b094-234c-5376-b339-326a41abdeb9",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "b4e457a5-0ce6-5973-bade-f4f43ecfa604",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "45f76789-e20e-596f-9760-3850644d21a9",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "c5870bbe-a74f-5e7f-8767-8502166c56b4",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "c3bb88cd-6a1d-54d0-bc84-4a4707202868",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "8931ed55-1c11-538a-b324-9765a60d3a75",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "f88663fb-a0d4-52ed-bead-ea11f2c2970e",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "c722ffa2-0ff4-5718-9748-186111a7c560",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "81b81d92-0a1a-54af-b4dd-2702222bc1f3",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "7e232cd6-cbad-547f-bb34-2eb6cebb65f7",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "1f382418-b4b8-5562-82ec-0c2e5f3cfaef",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "53bdd6f5-78be-548f-ac1b-23081f9bf74c",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "8c5dc701-9b26-5935-9610-7b27256eb767",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "56a6be43-48eb-5aaa-a0ce-f646faaabe23",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "f45667e4-bbd0-5372-b044-e5e9d3983521",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "ef5ca7d9-3a56-5068-933e-f7a2859ef438",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "6536445f-75b2-5f84-894a-f33382e8ea91",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "54d99cb2-f04e-598a-b5e9-9222d0b97bba",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "e8ea5bb3-0956-5fd6-b90e-4b7fb350b2f9",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "68996278-1e19-5560-ac94-cf43656bf684",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "df220173-b0ef-5cd2-8a92-12a958fd669e",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "7b2ba890-bb8d-5c00-b665-b926cdd5008f",
+      "reason": "MIXED_QA_PENDING"
+    },
+    {
+      "examId": "3e1a421d-0c40-5120-88ed-b1646f50e0fd",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "216c2d1c-e807-5823-aab6-578560b52498",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "33af3caf-afc5-5243-b110-4ba4d6a6651a",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "3dc612e2-15e0-51cc-9906-40a387f128a5",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "2e3a428b-a02a-5803-b317-3b9ad41e4834",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "c2f698b5-c617-57da-bc44-ee21b9df25e6",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "28055f9c-b578-5d11-93f6-b3243ec7a014",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "b59d5983-e977-52be-89cf-385d6ecc0403",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "1131e065-951f-5aba-bbc4-85c15fb9f0b0",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "7398c5f5-7678-5294-a7f8-81ac8d88be7c",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "e5f1d7de-f69b-5d7b-85e6-8ded440ee94d",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "43621b22-b507-5c54-816c-66ea6d06a01b",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "5a42333d-9def-5438-9baa-f46201f97fae",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "fd82164c-936c-56b2-ab96-b576f0c3be40",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "c951a7bf-3acc-5c4e-8ddf-07f09b257f25",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "3e2526ee-14af-5c47-a5fc-76b70cc5bf8c",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "19f4c1e7-a82a-53ad-9aa2-7c72594518f1",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "eab15ec7-dd3c-5c41-865b-4b018b715a71",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "1a51f7f2-76c3-5d2f-a6f2-8020d00ff637",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "84f67679-aa38-541a-a208-a3eceb1b17c5",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "70b0ddd5-0816-5395-8ac5-6a4e3664a282",
+      "reason": "NATURAL_MATH_HOLD"
+    },
+    {
+      "examId": "4418be93-d956-5ec5-ab74-16cc48baab23",
+      "reason": "NATURAL_MATH_HOLD"
+    }
+  ]
+}

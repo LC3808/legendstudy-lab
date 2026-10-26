@@ -23,7 +23,7 @@ export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onI
    if(result?.ready===true&&result.mathQuestions&&typeof result.mathQuestions==='object'){
     for(const [id,leaf] of Object.entries(result.mathQuestions))if(typeof leaf==='string'&&/^[0-9a-f-]{36}$/i.test(id)&&/^[0-9a-f-]{36}$/i.test(leaf))math[id]=leaf;
    }
-   if(result?.ready!==true){
+   if(result?.ready!==true&&!['NATURAL_MATH_HOLD','MIXED_QA_PENDING'].includes(result?.code)){
     const response=await fetch('/api/essay/availability',{headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store'});
     if(!response.ok)throw Error('ADMISSION_UNAVAILABLE');
     const status=await response.json();

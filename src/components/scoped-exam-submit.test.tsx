@@ -40,3 +40,9 @@ it('explains missing original questions before a free rewrite quote',async()=>{
  v.rerender(<ScopedExamSubmit exam={e} includedKeys={['q1','q2']} cycle={{parentId:'original'}} drafts={{q1:{body:'새 답안',revision:1,images:false},q2:{body:'이전 답안',revision:1,images:false}}}/>);
  expect(screen.getByText('approved:q1,q2')).toBeVisible();
 });
+it.each(['NATURAL_MATH_HOLD','MIXED_QA_PENDING'])('does not fall back to legacy Math when session is held: %s',async code=>{
+ vi.mocked(fetch).mockResolvedValue(Response.json({ready:false,code}));
+ render(<ScopedExamSubmit exam={exam} questionKey="q1" drafts={{}}/>);
+ expect(await screen.findByRole('button',{name:'첨삭 서비스 제공 예정'})).toBeDisabled();
+ expect(fetch).toHaveBeenCalledTimes(1);
+});

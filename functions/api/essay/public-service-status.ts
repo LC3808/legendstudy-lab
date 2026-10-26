@@ -1,3 +1,4 @@
+import {examLaunchHold} from '../../../src/lib/essay-runtime/launch-policy';
 import partialEvidence from '../../../src/data/essay-partial-exam-release-evidence.json';
 import {publicExamScope} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
@@ -21,7 +22,7 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
   if(raw&&!scope.length)throw Error('INVALID_PUBLIC_SCOPE');
   if(scope.length>256||!scope.every(uuid)||new Set(scope).size!==scope.length)throw Error('INVALID_PUBLIC_SCOPE');
   const transport=serverTransport(env),subject=await transport.subject(token,true);
-  const candidates=env.ESSAY_EXAM_RUNTIME_ENABLED==='true'?[...evidence.exams.map(e=>({...e,partial:false})),...partialEvidence.exams.map(e=>({...e,partial:true}))].filter(e=>scope.includes(e.examId)&&e.questionIds.length&&e.questionIds.every(q=>studentPdfForExam(e.examId,q))):[];
+  const candidates=env.ESSAY_EXAM_RUNTIME_ENABLED==='true'?[...evidence.exams.map(e=>({...e,partial:false})),...partialEvidence.exams.map(e=>({...e,partial:true}))].filter(e=>!examLaunchHold(e.examId)&&scope.includes(e.examId)&&e.questionIds.length&&e.questionIds.every(q=>studentPdfForExam(e.examId,q))):[];
   const universities=new Set<string>(),exams:{examId:string;universityId:string;questionIds:string[]}[]=[];
   if(candidates.length){
    const credential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);

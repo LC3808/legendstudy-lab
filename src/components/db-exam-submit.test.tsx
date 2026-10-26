@@ -8,11 +8,11 @@ vi.mock('./auth-context',()=>({useAuth:()=>({client,user:{id:'owner'}})}));
 vi.mock('./essay-exam-submit',()=>({EssayExamSubmit:(props:unknown)=>{f.submit(props);return <div>existing submit</div>;}}));
 const exam={dbExamId:'exam',verification:'VERIFIED',questions:[{key:'key',dbQuestionId:'question'}]};
 const props={examId:'exam',questionIds:['question'],included:['question'],drafts:{question:{body:'saved answer',revision:7,images:false,saved:true}}};
-beforeEach(()=>{vi.clearAllMocks();f.session.mockResolvedValue({data:{session:{user:{id:'owner'},access_token:'fixture'}}});vi.stubGlobal('fetch',vi.fn().mockResolvedValue({ok:true,json:async()=>({version:'essay-source-registry-v1',exams:[exam]})}));});
+beforeEach(()=>{vi.clearAllMocks();f.session.mockResolvedValue({data:{session:{user:{id:'owner'},access_token:'fixture'}}});vi.stubGlobal('fetch',vi.fn().mockResolvedValue({ok:true,json:async()=>({version:'essay-source-registry-v1',exams:[exam],ready:true,questionIds:['question']})}));});
 it('maps saved canonical drafts to the existing submit consumer',async()=>{
  render(<DbExamSubmit {...props}/>);await screen.findByText('existing submit');
  expect(f.submit).toHaveBeenLastCalledWith(expect.objectContaining({included:['key'],drafts:{key:props.drafts.question}}));
- expect(fetch).toHaveBeenCalledTimes(1);
+ expect(fetch).toHaveBeenCalledTimes(2);
 });
 it('fails closed for unverified metadata',async()=>{
  vi.mocked(fetch).mockResolvedValue({ok:true,json:async()=>({version:'essay-source-registry-v1',exams:[{...exam,verification:'PENDING'}]})} as Response);

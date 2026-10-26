@@ -1,3 +1,4 @@
+import {examLaunchHold} from '../../../src/lib/essay-runtime/launch-policy';
 import {publicExamScope} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
@@ -18,6 +19,9 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const publicExams=publicExamScope(env.ESSAY_PUBLIC_EXAMS);
   const publicRelease=publicExams.length<=256&&publicExams.every(uuid)&&uuid(input.examId)&&publicExams.includes(input.examId);
   const transport=serverTransport(env),subject=await transport.subject(token,publicRelease);
+  const hold=examLaunchHold(input.examId);
+  if(hold&&input.action==='availability')return reply({ready:false,questionIds:[],mathQuestions:{},code:hold});
+  if(hold&&['quote','submit'].includes(String(input.action)))return reply({code:hold},409);
   // Optional server-only single-submission scope for explicitly approved operating E2E.
   const scope=env.ESSAY_E2E_SCOPE?JSON.parse(env.ESSAY_E2E_SCOPE) as {subject:string;exam:string;requestKey:string;parentId?:string;previousPaidRunId?:string}:null;
   if(scope&&(!uuid(scope.subject)||!uuid(scope.exam)||!uuid(scope.requestKey)||subject!==scope.subject||input.examId!==scope.exam||(scope.parentId!==undefined&&!uuid(scope.parentId))||(scope.previousPaidRunId!==undefined&&!uuid(scope.previousPaidRunId))||(scope.parentId!==undefined&&scope.previousPaidRunId!==undefined)||(['submit','quote'].includes(String(input.action))&&((input.parentId??null)!==(scope.parentId??null)||(input.previousPaidRunId??null)!==(scope.previousPaidRunId??null)))))return reply({code:'ACCESS_DENIED'},403);
