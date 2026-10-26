@@ -10,7 +10,7 @@ import {publicCatalog} from '@/lib/essay-runtime/public-discovery';
 import {sourceExams,type SourceExam} from '@/lib/essay-runtime/source-registry';
 /** Reuse the source writer and submit gateway. No copied History or Provider path. */
 export function ExamRewrite({runId,additional}:{runId:string;additional:boolean}){
- const auth=useAuth();const [state,setState]=useState<{exam:SourceExam;run:Record<string,unknown>}|null>(null),[error,setError]=useState(false),[active,setActive]=useState('');
+ const auth=useAuth();const [state,setState]=useState<{exam:SourceExam;run:Record<string,unknown>}|null>(null),[error,setError]=useState(false);
  const [mathInputs,setMathInputs]=useState<Record<string,string>>({});
  const onInputContract=useCallback((_examId:string,math:Record<string,string>)=>setMathInputs(math),[]);
  const [drafts,setDrafts]=useState<Record<string,SubmissionDraft>>({});
@@ -37,6 +37,6 @@ export function ExamRewrite({runId,additional}:{runId:string;additional:boolean}
  if(error)return <p>기존 시험과 답안을 불러오지 못했어요. 다시 열어 주세요.</p>;
  if(!state||!auth.user)return <p>시험과 작성 중인 답안을 확인하고 있어요.</p>;
  const {exam,run}=state;const questions=exam.questions.filter(q=>(run.question_ids as string[]).includes(q.dbQuestionId??''));
- const current=questions.find(q=>q.key===active)??questions[0];const root=String(run.parent_id??run.id);
- return <section><h3>다시 써보기</h3><div role="group" aria-label="작성할 문항">{questions.map(q=><button key={q.key} onClick={()=>setActive(q.key)}>{q.label}</button>)}</div>{questions.map(q=><div key={q.key} hidden={current?.key!==q.key}><SourceExamWriter supportsImages={q.inputMode==='image'||!!(q.dbQuestionId&&mathInputs[q.dbQuestionId])} exam={exam} question={q} owner={auth.user!.id} onDirty={onDirty} onDraft={onDraft} rewrite={{id:runId,additional,previousAnswer:String((run.answers as {questionId:string;body:string}[]).find(a=>a.questionId===q.dbQuestionId)?.body??'')}}/></div>)}<ScopedExamSubmit onInputContract={onInputContract} exam={exam} includedKeys={questions.map(q=>q.key)} drafts={drafts} cycle={additional?{previousPaidRunId:root}:{parentId:root}}/></section>;
+ const root=String(run.parent_id??run.id);
+ return <section><h3>다시 써보기</h3><p>최초 제출한 모든 문항의 답안을 준비해 주세요. 수정하지 않을 문항은 ‘이전 답안 불러오기’를 사용할 수 있습니다.</p>{questions.map(q=><div key={q.key} className="essay-rewrite-question"><SourceExamWriter supportsImages={q.inputMode==='image'||!!(q.dbQuestionId&&mathInputs[q.dbQuestionId])} exam={exam} question={q} owner={auth.user!.id} onDirty={onDirty} onDraft={onDraft} rewrite={{id:runId,additional,previousAnswer:String((run.answers as {questionId:string;body:string}[]).find(a=>a.questionId===q.dbQuestionId)?.body??'')}}/></div>)}<ScopedExamSubmit onInputContract={onInputContract} exam={exam} includedKeys={questions.map(q=>q.key)} drafts={drafts} cycle={additional?{previousPaidRunId:root}:{parentId:root}}/></section>;
 }

@@ -39,6 +39,8 @@ export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onI
  if(admitted?.owner!==owner||admitted?.exam!==exam.dbExamId)return <button disabled>첨삭 가능 여부 확인 중</button>;
  const q=exam.questions.find(q=>q.key===questionKey);
  const included=exam.questions.filter(q=>(drafts[q.key]?.body.trim()||drafts[q.key]?.images)&&(includedKeys===undefined||includedKeys.includes(q.key)));
+ const missingRewrite=cycle?.parentId&&includedKeys?exam.questions.filter(q=>includedKeys.includes(q.key)&&!included.some(answer=>answer.key===q.key)):[];
+ if(missingRewrite.length)return <div className="essay-submit-gate essay-session-request"><h2>무료 재첨삭 요청</h2><p role="status">{missingRewrite.map(q=>q.label).join(', ')} 답안을 작성하거나 이전 답안을 불러와 주세요. 무료 재첨삭은 최초 제출한 모든 문항을 함께 제출합니다.</p><button className="button button--primary" disabled>무료 재첨삭 요청 · 답안 준비 필요</button></div>;
  const ready=admitted?.owner===owner&&admitted?.exam===exam.dbExamId&&admitted.questions.length>0;
  const unavailable=ready&&included.some(q=>!q.dbQuestionId||!admitted.questions.includes(q.dbQuestionId));
  const mathLeaf=admitted?.owner===owner&&admitted?.exam===exam.dbExamId&&q?.dbQuestionId?admitted.math[q.dbQuestionId]:null;
