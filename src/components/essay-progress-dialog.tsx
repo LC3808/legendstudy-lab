@@ -3,15 +3,15 @@ import {useEffect,useRef,useState,type ReactNode} from 'react';
 import './essay-studio.css';
 // Reuse the existing wait messages; animation conveys activity, never a fake percentage.
 export const essayRestMessages=['오늘도 수고했어요.','잠깐 어깨를 펴고 쉬어가세요.','물 한 모금 마시고 오셔도 좋아요.'];
-export function EssayProgressDialog({state,questions=[],children,onClose,onResult,error=false}:{state:string;questions?:{id:string;label:string;state:string}[];children?:ReactNode;onClose:()=>void;onResult?:()=>void;error?:boolean}){
+export function EssayProgressDialog({state,questions=[],children,onClose,onResult,error=false,retrying=false}:{state:string;questions?:{id:string;label:string;state:string}[];children?:ReactNode;onClose:()=>void;onResult?:()=>void;error?:boolean;retrying?:boolean}){
  const dialog=useRef<HTMLDialogElement>(null),[message,setMessage]=useState(0);
  const completed=questions.filter(q=>q.state.toLowerCase()==='completed').length;
  const done=state==='completed'&&(!questions.length||completed===questions.length);
- const failed=['failed','cancelled'].includes(state)||questions.some(q=>q.state.toLowerCase()==='failed');
+ const failed=!retrying&&(['failed','cancelled'].includes(state)||questions.some(q=>q.state.toLowerCase()==='failed'));
  const active=!done&&!failed&&!error;
  useEffect(()=>{const el=dialog.current;if(!el)return;const previous=document.activeElement as HTMLElement|null;if(el.showModal)el.showModal();else el.setAttribute('open','');return()=>{el.close?.();previous?.focus?.();};},[]);
  useEffect(()=>{if(!active)return;const timer=setInterval(()=>setMessage(i=>(i+1)%essayRestMessages.length),10000);return()=>clearInterval(timer);},[active]);
- const title=error?'처리 상태를 확인하고 있어요':done?'첨삭이 완료됐어요!':failed?'재처리가 필요해요':'논술 첨삭 진행 중';
+ const title=retrying?'재처리 요청 중':error?'처리 상태를 확인하고 있어요':done?'첨삭이 완료됐어요!':failed?'재처리가 필요해요':'논술 첨삭 진행 중';
  return <dialog ref={dialog} className="essay-progress-dialog" aria-labelledby="essay-progress-title" onCancel={e=>{e.preventDefault();onClose();}}>
   <button className="essay-progress-close" type="button" onClick={onClose} aria-label="진행 화면 닫기">×</button>
   <span className="essay-progress-eyebrow">{done?'첨삭 완료':failed?'재처리 필요':'접수 완료'}</span>

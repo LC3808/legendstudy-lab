@@ -42,3 +42,5 @@
 .answer-image-card .answer-image-input__sources {display:flex;gap:8px;}
 .answer-image-card--add {grid-column:1 / -1;}
 .essay-history-button {display:inline-flex;align-items:center;min-height:44px;padding:10px 16px;border:1px solid #e7d49a;border-radius:10px;background:#fff6d8;color:#172d49;font-weight:700;text-decoration:none;}
+
+.button.essay-retry-button{background:#b42318;color:#fff;border:1px solid #b42318;font-weight:700}.button.essay-retry-button:hover{background:#912018}.button.essay-retry-button:disabled{opacity:.6;cursor:wait}.essay-retry-notice{margin:16px 0;padding:16px;background:#fff4f2;border:1px solid #f4b4ac;border-radius:12px}
