@@ -99,10 +99,10 @@ it('foreign Origin cannot reach authentication, 크레딧 or worker admission',a
 
 it('availability exposes only admitted UUIDs without any 크레딧 reservation',async()=>{
  m.dispatch.mockResolvedValue(Response.json({ready:true,question_ids:[id,'invalid',null]}));
- expect(await (await send({action:'availability',examId:id})).json()).toEqual({ready:true,questionIds:[id]});
+ expect(await (await send({action:'availability',examId:id})).json()).toEqual({ready:true,questionIds:[id],mathQuestions:{}});
  expect(m.request).not.toHaveBeenCalled();
  m.dispatch.mockResolvedValue(Response.json({ready:false,question_ids:[id]}));
- expect(await (await send({action:'availability',examId:id})).json()).toEqual({ready:false,questionIds:[]});
+ expect(await (await send({action:'availability',examId:id})).json()).toEqual({ready:false,questionIds:[],mathQuestions:{}});
 });
 
 it('public admission requires an exact server-owned exam scope, never a client flag',async()=>{

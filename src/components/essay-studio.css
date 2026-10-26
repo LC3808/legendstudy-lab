@@ -13,3 +13,17 @@
 .essay-question-toggle{margin:1rem 0;border:1px solid #c5cfdd;border-top:3px solid #193653;border-radius:14px;background:#fff;overflow:hidden}
 .essay-question-toggle>header{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:#f7f9fc}.essay-question-toggle>header h3{margin:0;color:#193653}.essay-question-toggle>header span{flex:1;color:#52647d;font-size:.9rem}.essay-question-toggle [hidden]{display:none!important}.essay-question-toggle .essay-answer-card{border:0;margin:0;box-shadow:none}
 @media(max-width:36rem){.essay-question-toggle>header{flex-wrap:wrap;gap:.6rem}.essay-question-toggle>header span{flex-basis:calc(100% - 6rem)}.essay-question-toggle>header button{min-height:44px}}
+
+/* Shared compact university hero; logos retain their original transparent assets. */
+.essay-brand-hero.essay-studio-hero.university-detail-hero{background:#fff;border:1px solid #dce4ec;border-top:4px solid var(--university-brand);color:#172b43;padding:1.1rem 1.4rem!important;border-radius:16px}
+.essay-brand-hero .essay-studio-identity{flex-wrap:nowrap;gap:1rem}
+.essay-brand-hero.essay-studio-hero .essay-studio-identity h1{color:var(--university-brand);font-size:1.35rem}
+.essay-brand-hero.essay-studio-hero .essay-studio-exam{color:#172b43;font-size:clamp(1rem,2vw,1.2rem);margin:.3rem 0;line-height:1.5}
+.essay-brand-hero .essay-studio-logo{background:transparent;padding:0;max-width:160px}
+.essay-brand-hero .university-logo{object-fit:contain;max-width:100%;height:auto;max-height:64px}
+.essay-brand-hero .university-logo-frame .university-logo--padded{max-width:none;max-height:none}
+.essay-brand-hero .essay-studio-links{margin-top:.8rem}
+.essay-brand-hero.essay-studio-hero .essay-schedule{color:#172b43;border-top:1px solid #e5ebf1;margin-top:.7rem}
+.essay-brand-hero.essay-studio-hero .essay-schedule summary{background:var(--university-tint);border-color:#dce4ec;min-height:44px;padding:.5rem .8rem}
+.essay-brand-hero.essay-studio-hero a:focus-visible{outline-color:var(--university-brand)}
+@media(max-width:40rem){.essay-brand-hero.essay-studio-hero.university-detail-hero{padding:1rem!important}.essay-brand-hero .essay-studio-logo{max-width:95px}.essay-brand-hero .essay-studio-identity{gap:.7rem}.essay-brand-hero .essay-studio-identity>div:last-child{min-width:0}}
