@@ -8,7 +8,7 @@ import {ApplicationsPanel, type ApplicationSeed} from './applications';
 import {StudySummaryPanel} from './study-summary';
 import { ProfileHeaderView } from './profile-header';
 import { EssayGrowthCard } from './essay-growth';
-import { useState, type FormEvent, type ReactNode } from 'react';
+import { useState, useEffect, useRef, type FormEvent, type ReactNode } from 'react';
 import {showsApplications} from '@/lib/my/contract';
 import { useCreditSummary } from '@/components/credit-balance';
 import { useAuth } from '@/components/auth-context';
@@ -93,6 +93,9 @@ export function GoalsEditor({data,reload,part,onApply}:{data:Goals;reload:()=>vo
  const {client,user}=useAuth();const [major,setMajor]=useState(data.intended_major??'');const [query,setQuery]=useState('');const [editingMajor,setEditingMajor]=useState(false);
  const [selectedUniversity,setSelectedUniversity]=useState<{id:string;name:string}|null>(null);const [newDivision,setNewDivision]=useState('');
  const [results,setResults]=useState<{id:string;name:string}[]>([]);const [busy,setBusy]=useState(false);const [message,setMessage]=useState('');const [adding,setAdding]=useState(false);
+ const [limitNotice,setLimitNotice]=useState(false);const limitTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
+ useEffect(()=>()=>{if(limitTimer.current)clearTimeout(limitTimer.current);},[]);
+ function openAdd(){if(limitTimer.current)clearTimeout(limitTimer.current);if(data.targets.length>=5){setLimitNotice(true);limitTimer.current=setTimeout(()=>setLimitNotice(false),4000);return;}setLimitNotice(false);setAdding(true);}
  async function run(action:()=>Promise<void>,refresh=true){
   if(!client||!user||busy)return false;setBusy(true);setMessage('');
   try{await assertOwner(client,user.id);await action();await assertOwner(client,user.id);if(refresh)reload();return true;}
@@ -111,7 +114,7 @@ export function GoalsEditor({data,reload,part,onApply}:{data:Goals;reload:()=>vo
    {data.targets.length===0&&<p className="my-empty">관심 대학을 추가해보세요.</p>}
    {data.targets.length>0&&<ol className="my-target-list">{data.targets.map(t=><li key={t.id}><TargetEditor target={t} onApply={onApply?()=>onApply({university:{id:t.university_id,name:t.universities?.name??"관심 대학"},division:t.intended_division??"",key:crypto.randomUUID()}):undefined} busy={busy} save={value=>run(()=>editTarget(client!,user!.id,t.id,value))}/></li>)}</ol>}
    {!adding
-    ?<button type="button" className="button button--primary button--small" disabled={busy||data.targets.length>=5} onClick={()=>setAdding(true)}>+ 관심 대학 추가</button>
+    ?<div className="my-target-add"><button type="button" className="button button--primary button--small" disabled={busy} onClick={openAdd}>+ 관심 대학 추가</button>{limitNotice&&<span role="status" className="my-target-limit">관심 대학은 최대 5개 설정할 수 있어요.</span>}</div>
     :<div className="my-add-panel">
       <form className="my-goal-form" onSubmit={e=>{e.preventDefault();void run(async()=>{const values=await searchUniversities(client!,user!.id,query);await assertOwner(client!,user!.id);setResults(values);setMessage(values.length?'':'검색 결과가 없습니다.');},false);}}><label>대학 찾기<input value={query} maxLength={60} disabled={busy} onChange={e=>setQuery(e.target.value)} placeholder="대학 이름을 검색해 주세요"/></label><button className="button button--outline button--small" disabled={busy||!query.trim()}>검색</button></form>
       {results.length>0&&<ul className="my-search-results">{results.map(u=><li key={u.id}><span>{u.name}</span><button className="button button--outline button--small" disabled={busy||data.targets.length>=5||data.targets.some(t=>t.university_id===u.id)} onClick={()=>{setSelectedUniversity(u);setResults([]);}}>선택</button></li>)}</ul>}

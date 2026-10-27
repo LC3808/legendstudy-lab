@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, within, fireEvent, act } from '@testing-library/react';
 import { beforeEach, expect, it, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import {addTarget,searchUniversities,readHistory,readMyProfile,saveMyProfile} from '@/lib/my/data';
-import { MyDashboard, CreditHistory } from './dashboard';
+import { MyDashboard, CreditHistory, GoalsEditor } from './dashboard';
 
 vi.mock('@/lib/my/essay-dashboard',async original=>({...await original<typeof import('@/lib/my/essay-dashboard')>(),readEssayDashboard:async()=>[],readMathDashboard:async()=>[]}));
 
@@ -136,4 +136,17 @@ it('prefills an explicit application form from a target without creating a recor
 
 it.each([1,2,3,null])('shows applications only for student grade %s when eligible',async grade=>{vi.mocked(readMyProfile).mockResolvedValue({academic_status:'student',grade_level:grade,neis_office_code:null,neis_school_code:null});render(<MyDashboard/>);await screen.findByText('사회·상경');expect(Boolean(screen.queryByText('나의 대학 지원 현황'))).toBe(grade===3);});
 it.each(['retaker','other',null])('uses existing status %s without inventing mappings',async status=>{vi.mocked(readMyProfile).mockResolvedValue({academic_status:status,grade_level:null,neis_office_code:null,neis_school_code:null});render(<MyDashboard/>);await screen.findByText('사회·상경');expect(Boolean(screen.queryByText('나의 대학 지원 현황'))).toBe(status==='retaker');});
-it('updates eligibility after profile saves in both directions without application writes',async()=>{vi.mocked(saveMyProfile).mockImplementation(async(_client,_owner,profile)=>{vi.mocked(readMyProfile).mockResolvedValue(profile);});const u=userEvent.setup();render(<MyDashboard/>);await screen.findByText('사회·상경');for(const grade of ['3','2']){await u.click(screen.getByRole('button',{name:'프로필 편집'}));await u.selectOptions(screen.getByLabelText('학년'),grade);await u.click(screen.getByRole('button',{name:'프로필 저장'}));await screen.findByText(`${grade}학년`);expect(Boolean(screen.queryByText('나의 대학 지원 현황'))).toBe(grade==='3');}});
+it('updates eligibility after profile saves in both directions without application writes',async()=>{vi.mocked(saveMyProfile).mockImplementation(async(_client,_owner,profile)=>{vi.mocked(readMyProfile).mockResolvedValue(profile);});const u=userEvent.setup();render(<MyDashboard/>);await screen.findByText('사회·상경');for(const grade of ['3','2']){await u.click(screen.getByRole('button',{name:'프로필 편집'}));await u.click(screen.getByRole('radio',{name:`${grade}학년`}));await u.click(screen.getByRole('button',{name:'프로필 저장'}));await screen.findByText(`${grade}학년`);expect(Boolean(screen.queryByText('나의 대학 지원 현황'))).toBe(grade==='3');}});
+
+it('keeps the five-interest button clickable and shows one timed notice without opening a form',()=>{
+ vi.useFakeTimers();try{
+ const data={intended_major:null,targets:Array.from({length:5},(_,i)=>({id:String(i),university_id:String(i),intended_division:'학과',universities:{name:`대학${i}`}}))};
+ render(<GoalsEditor data={data} reload={()=>{}} part="targets"/>);
+ const button=screen.getByRole('button',{name:'+ 관심 대학 추가'});expect(button).toBeEnabled();
+ fireEvent.click(button);act(()=>vi.advanceTimersByTime(2000));fireEvent.click(button);
+ expect(screen.getAllByText('관심 대학은 최대 5개 설정할 수 있어요.')).toHaveLength(1);
+ expect(screen.queryByLabelText('대학 찾기')).not.toBeInTheDocument();
+ act(()=>vi.advanceTimersByTime(3999));expect(screen.getByText('관심 대학은 최대 5개 설정할 수 있어요.')).toBeVisible();
+ act(()=>vi.advanceTimersByTime(1));expect(screen.queryByText('관심 대학은 최대 5개 설정할 수 있어요.')).not.toBeInTheDocument();
+ }finally{vi.useRealTimers();}
+});

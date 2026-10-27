@@ -58,10 +58,10 @@ it('writes only canonical school/status/grade fields and rejects invented roles'
  await expect(saveMyProfile(client,'owner',{...profile,neis_office_code:null})).rejects.toThrow('INVALID_SCHOOL');
 });
 
-it('school identity implies student with an optional grade and ignores a client school name',async()=>{
+it('school identity preserves unset status and ignores a client school name',async()=>{
  const {saveMyProfile}=await import('./data');const {client,q}=fixture();
  await saveMyProfile(client,'owner',{neis_office_code:'J10',neis_school_code:'7530851',academic_status:null,grade_level:null,school_name:'forged'} as never);
- expect(q.update).toHaveBeenCalledWith({neis_office_code:'J10',neis_school_code:'7530851',academic_status:'student',grade_level:null});
+ expect(q.update).toHaveBeenCalledWith({neis_office_code:'J10',neis_school_code:'7530851',academic_status:null,grade_level:null});
  expect(lookupSchoolName).toHaveBeenCalledWith('J10','7530851',expect.any(AbortSignal));
 });
 it('rejects an unresolved school identity without changing the shared profile',async()=>{
@@ -86,4 +86,10 @@ it('uses shared labels for MY/Essay history without changing the original ledger
  expect(rows[0]).toMatchObject({label:'신규가입 무료',delta:3});
  expect(rows[1]).toMatchObject({label:'관리자 지급 · 오류 보상',delta:1});
  expect(JSON.stringify(rows)).not.toMatch(/operator|system|manual_support|signup_bonus_v1/);expect(facts).toEqual(original);expect(rows.reduce((n,r)=>n+r.delta,0)).toBe(4);
+});
+
+it.each(['retaker','other','student'])('preserves independent school and status %s',async(status)=>{
+ const {saveMyProfile}=await import('./data');const {client,q}=fixture();
+ const profile={neis_office_code:'J10',neis_school_code:'7530851',academic_status:status,grade_level:status==='student'?3:null};
+ await saveMyProfile(client,'owner',profile);expect(q.update).toHaveBeenCalledWith(profile);
 });

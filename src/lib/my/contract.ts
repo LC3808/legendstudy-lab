@@ -3,7 +3,7 @@ import type { Goals, MyProfile } from './data';
 
 /** View contract only: canonical Auth/profiles/Credit remain independent authorities. */
 export function myIdentity(user:{id:string;email?:string},profile:MyProfile & {display_name?:string|null}) {
- const labels:Record<string,string>={student:'재학생',retaker:'N수·검정고시 등',other:'기타'};
+ const labels:Record<string,string>={student:'재학생',retaker:'재수/N수생',other:'해당 없음'};
  return {id:user.id,email:user.email??null,displayName:profile.display_name??null,
   school:{officeCode:profile.neis_office_code,schoolCode:profile.neis_school_code},
   status:profile.academic_status,statusLabel:profile.academic_status?labels[profile.academic_status]??'확인 필요':'설정 안 함',

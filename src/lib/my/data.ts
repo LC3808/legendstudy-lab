@@ -117,6 +117,6 @@ export async function saveMyProfile(client: SupabaseClient, owner: string, profi
   await assertOwner(client,owner);
   if (office && school && !await lookupSchoolName(office,school,AbortSignal.timeout(15000))) throw new Error('INVALID_SCHOOL');
   await ensureOwnerProfile(client,owner);
-  checked(await client.from('profiles').update({...(profile.display_name!==undefined?{display_name:nickname}:{}),neis_office_code:office,neis_school_code:school,academic_status:school?'student':status==='student'?null:status,grade_level:school?grade:null}).eq('id',owner).select('id').single());
+  checked(await client.from('profiles').update({...(profile.display_name!==undefined?{display_name:nickname}:{}),neis_office_code:office,neis_school_code:school,academic_status:status,grade_level:status==='student'||status===null?grade:null}).eq('id',owner).select('id').single());
   await assertOwner(client,owner);
 }
