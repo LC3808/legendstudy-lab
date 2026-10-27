@@ -259,3 +259,9 @@
 .essay-submission-selection label { flex-wrap:wrap; }
 
 .service-preparing:disabled { background: #e5e7eb; color: #4b5563; border-color: #d1d5db; cursor: not-allowed; }
+
+/* Show launch holds before a student invests time in an answer. */
+.essay-math-hold-notice {border:1px solid #c62828;border-left-width:4px;background:#fff5f5;color:#a51d1d;padding:16px 20px;border-radius:12px;font-size:1rem;font-weight:650;line-height:1.65;}
+.essay-math-hold-button {color:#6b7280;background:#eef0f3;border:1px solid #cbd5e1;white-space:normal;text-align:left;cursor:not-allowed;}
+.essay-math-hold-button:hover,.essay-math-hold-button:focus-visible,.essay-math-hold-button:active {border-color:#c62828;outline-color:#c62828;}
+.essay-first .university-discovery,.university-discovery {border:1px solid #171717;box-shadow:0 8px 24px rgba(15,23,42,.10);}

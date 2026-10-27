@@ -83,7 +83,7 @@ it('keeps registered natural exams discoverable across years without enabling gr
   fireEvent.click(screen.getByRole('button',{name:'자연계열 · 1회차'}));
   expect(screen.getByLabelText('학년도·시험')).toHaveValue('2022:mock');
   expect(screen.getByLabelText('계열')).toHaveValue('자연계열');
-  await waitFor(()=>expect(screen.getByRole('button',{name:'첨삭 서비스 준비 중'})).toBeDisabled());
+  await waitFor(()=>expect(screen.getByRole('button',{name:'수리 논술 서비스 준비 중입니다. 빠른 시일내에 제공하도록 하겠습니다.'})).toHaveAttribute('aria-disabled','true'));
   expect(screen.queryByRole('button',{name:'첨삭 가능 여부 확인 중'})).toBeNull();
   expect(screen.getByRole('button',{name:'인문계열 · 1회차'})).toBeEnabled();
  }finally{vi.unstubAllGlobals();}
