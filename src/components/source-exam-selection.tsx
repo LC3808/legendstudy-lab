@@ -1,4 +1,5 @@
 'use client';
+import {examLaunchHold} from '@/lib/essay-runtime/launch-policy';
 import {isUniversityServicePreparing} from '@/lib/essay-runtime/catalog-policy';
 
 import Link from 'next/link';
@@ -55,6 +56,7 @@ function Selection({rows,owner,onSelectionChange}:{rows:SourceExam[];owner:strin
   const [ay,ak]=a.split(':'),[by,bk]=b.split(':');
   return Number(by)-Number(ay)||(ak===bk?0:ak==='admission'?-1:1);
  });
+ const registeredTracks=[...new Set(rows.map(e=>e.track))];
  const selectedPeriod=period||(periods.length===1?periods[0]:'');
  const kindRows=rows.filter(e=>`${e.year}:${e.kind}`===selectedPeriod);
  const tracks=[...new Set(kindRows.map(e=>e.track))],selectedTrack=track||(tracks.length===1?tracks[0]:'');
@@ -65,6 +67,7 @@ function Selection({rows,owner,onSelectionChange}:{rows:SourceExam[];owner:strin
  return <section className="university-section essay-start" aria-label="논술 첨삭 시작">
   <div className="discovery-topline"><h2>시험 선택</h2><Link href="/my/essays/" className="essay-history-button">나의 첨삭 기록 확인 →</Link></div>
   {!rows.length&&<p role="status">기출문제를 준비하고 있어요.</p>}
+  {registeredTracks.length>1&&<div className="essay-registered-tracks" aria-label="등록된 전체 계열"><span>등록 계열</span>{registeredTracks.map(t=><button type="button" key={t} className="button button--outline" onClick={()=>reset(()=>{const latest=periods.find(p=>rows.some(e=>`${e.year}:${e.kind}`===p&&e.track===t))!;setPeriod(latest);setTrack(t);setExamKey('');})}>{t} · {rows.filter(e=>e.track===t).length}회차</button>)}<small>계열을 선택하면 등록된 최신 학년도로 이동합니다.</small></div>}
   <div className="essay-selection-grid">
    <label>학년도·시험<select aria-label="학년도·시험" value={selectedPeriod} onChange={e=>reset(()=>{setPeriod(e.target.value);setTrack('');setExamKey('');})}><option value="">학년도·시험 선택</option>{periods.map(p=>{const [year,kind]=p.split(':');return <option key={p} value={p}>{year}학년도 {kind==='mock'?'모의논술':kind==='admission'?'수시논술':'시험 유형 확인 중'}</option>;})}</select></label>
    <label>계열<select aria-label="계열" disabled={!selectedPeriod} value={selectedTrack} onChange={e=>reset(()=>{setTrack(e.target.value);setExamKey('');})}><option value="">계열 선택</option>{tracks.map(t=><option key={t}>{t}</option>)}</select></label>
@@ -75,6 +78,7 @@ function Selection({rows,owner,onSelectionChange}:{rows:SourceExam[];owner:strin
 }
 
 function ExamWorkspace({exam,owner,onUnsaved}:{exam:SourceExam;owner:string;onUnsaved:(value:boolean)=>void}){
+ const naturalHeld=examLaunchHold(exam.dbExamId)==='NATURAL_MATH_HOLD'||/자연|의예/.test(exam.track);
  const [questionKey,setQuestionKey]=useState('');
  const [panels,setPanels]=useState<Record<string,{open:string[];manual:boolean}>>({});
  const [inputContract,setInputContract]=useState<{examId:string;math:Record<string,string>}|null>(null);
@@ -91,9 +95,10 @@ function ExamWorkspace({exam,owner,onUnsaved}:{exam:SourceExam;owner:string;onUn
  // The keyed workspace keeps each independent draft's UI and pending request isolated.
  useEffect(()=>{const leave=(e:BeforeUnloadEvent)=>{if(Object.values(dirty).some(Boolean)){e.preventDefault();}};window.addEventListener('beforeunload',leave);return()=>window.removeEventListener('beforeunload',leave);},[dirty]);
  return <>{exam.dbExamId==='942c1c43-914f-5b99-9a30-e6474c363f6f'&&<p role="note">이 시험은 승인된 문제 2만 첨삭할 수 있습니다. 나머지 문항은 첨삭 준비 중이며 전체 회차 공개 완료가 아닙니다.</p>}
+   {naturalHeld&&<p role="status" className="essay-submit-note">첨삭 서비스 준비 중 · 등록된 시험과 문항을 확인할 수 있습니다. 문제 PDF는 열람이 허용된 자료만 제공됩니다.</p>}
    <p className="essay-submit-note">답안 저장은 무료입니다. 작성한 답안을 시험 회차 단위로 함께 첨삭하며, 새 첨삭 회차에는 문항 수와 관계없이 1 크레딧이 사용됩니다. 이전에 제출하지 않은 문항을 나중에 첨삭받으면 새 회차로 1 크레딧이 사용됩니다.</p>
    {written.length>1&&<fieldset className="essay-submission-selection"><legend>이번 첨삭 회차에 제출할 답안</legend>{written.map(q=><label key={q.key}><input type="checkbox" checked={!excluded.includes(q.key)} onChange={e=>setExcluded(old=>e.target.checked?old.filter(key=>key!==q.key):[...old,q.key])}/>{q.label}</label>)}<p>선택하지 않은 답안과 기존 첨삭 기록은 그대로 보존됩니다. 무료 재첨삭은 기존 회차의 문항으로만 요청할 수 있습니다.</p></fieldset>}
    {exam.questions.map((q,index)=>{const expanded=(panels[exam.key]?.open??[exam.questions[0].key]).includes(q.key),draft=drafts[q.key];return <section className="essay-question-toggle" key={q.key} id={`essay-question-${q.key}`}><header><h3>{q.label}</h3><span>{draft?.body.trim()||draft?.images?'답안 작성됨':'미작성'} · {draft===undefined?'답안 확인 중':draft.saved?'저장됨':'저장 확인 필요'}</span><button type="button" className="button button--outline" aria-expanded={expanded} aria-controls={`answer-panel-${q.key}`} onClick={()=>{setQuestionKey(q.key);setPanels(old=>{const open=old[exam.key]?.open??[exam.questions[0].key];return {...old,[exam.key]:{manual:true,open:expanded?open.filter(k=>k!==q.key):[...open,q.key]}};});}}>{expanded?'접기':'펼치기'} · {q.label}</button></header><div id={`answer-panel-${q.key}`} hidden={!expanded}><SourceExamWriter key={`${owner}:${q.key}`} exam={exam} question={q} owner={owner} onDirty={onDirty} onDraft={onDraft} supportsImages={q.inputMode==='image'||!!(inputContract?.examId===exam.dbExamId&&q.dbQuestionId&&inputContract.math[q.dbQuestionId])} onSaved={()=>setPanels(old=>{if(old[exam.key]?.manual)return old;const next=exam.questions.slice(index+1).find(item=>!drafts[item.key]?.body.trim()&&!drafts[item.key]?.images);return next?{...old,[exam.key]:{manual:false,open:[next.key]}}:old;})}/></div></section>;})}
-   {isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button>:<ScopedExamSubmit onInputContract={onInputContract} exam={exam} questionKey={question?.key} drafts={drafts} includedKeys={submitIncluded}/>}
+   {naturalHeld?<button className="button button--primary service-preparing" disabled>첨삭 서비스 준비 중</button>:isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button>:<ScopedExamSubmit onInputContract={onInputContract} exam={exam} questionKey={question?.key} drafts={drafts} includedKeys={submitIncluded}/>}
 </>;
 }
