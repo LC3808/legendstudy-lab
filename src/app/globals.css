@@ -1792,3 +1792,8 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 .my-profile-colleges .my-goal-block h3 {margin-bottom:10px;}
 .my-profile-colleges .my-target-list>li {padding:9px 0;}
 @media(max-width:560px){.my-target-add {align-items:flex-start;flex-direction:column;gap:8px;}.my-grade-options label {padding:9px 10px;}}
+
+.essay-math-hold-notice strong{display:block;color:#991b1b;font-size:1.05rem}
+.essay-math-hold-notice p{color:#374151;font-weight:400;line-height:1.65;margin:.5rem 0 0;word-break:keep-all;overflow-wrap:break-word}
+.essay-math-hold-break{display:none}
+@media(max-width:640px){.essay-math-hold-break{display:initial}}

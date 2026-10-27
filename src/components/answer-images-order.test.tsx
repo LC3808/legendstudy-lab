@@ -7,8 +7,8 @@ function Harness(){const [files,setFiles]=useState(Array.from({length:6},(_,i)=>
 it('keeps six ordered previews, supports reorder and individual deletion',()=>{
  vi.stubGlobal('URL',Object.assign(URL,{createObjectURL:vi.fn(()=> 'blob:fixture'),revokeObjectURL:vi.fn()}));
  render(<Harness/>);expect(screen.getAllByAltText('선택한 답안 사진')).toHaveLength(6);
- expect(screen.getAllByLabelText('답안 이미지 첨부')).toHaveLength(6);
- fireEvent.click(screen.getByText('사진 2 앞으로'));expect(screen.getByRole('status')).toHaveTextContent('2.png,1.png,3.png,4.png,5.png,6.png');
+ expect(screen.getAllByLabelText('사진 교체')).toHaveLength(6);
+ fireEvent.click(screen.getByRole('button',{name:'사진 2 앞으로'}));expect(screen.getByRole('status')).toHaveTextContent('2.png,1.png,3.png,4.png,5.png,6.png');
  fireEvent.click(screen.getAllByText('사진 삭제')[0]);expect(screen.getByRole('status')).toHaveTextContent('1.png,3.png,4.png,5.png,6.png');
  expect(screen.getAllByAltText('선택한 답안 사진')).toHaveLength(5);
 });

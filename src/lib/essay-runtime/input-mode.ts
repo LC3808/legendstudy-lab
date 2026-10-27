@@ -1,6 +1,14 @@
-import imageInputs from '../../data/essay-image-inputs.json';
-// Public identity-only projection of existing Math input contracts (2026-10-27).
-// Input capability is independent of launch approval; this never authorizes submission.
-export function questionSupportsImages(examId:string|null|undefined,questionId:string|null|undefined,mode?:string){
- return mode==='image'||!!(examId&&questionId&&(imageInputs as Record<string,string[]>)[examId]?.includes(questionId));
+import inputs from '../../data/essay-question-inputs.json';
+
+type InputMode = 'image' | 'text';
+const contracts: Record<string, {examId: string; mode: InputMode}> = inputs as Record<string, {examId: string; mode: InputMode}>;
+// Identity-only projection of verified Registry/package input contracts.
+// Availability is deliberately not an input: writing capability never grants evaluation approval.
+export function questionInputMode(examId: string | null | undefined, questionId: string | null | undefined, mode?: string): InputMode | 'unknown' {
+ const contract = questionId ? contracts[questionId] : undefined;
+ if (contract) return contract.examId === examId ? contract.mode : 'unknown';
+ return mode === 'image' || mode === 'text' ? mode : 'unknown';
+}
+export function questionSupportsImages(examId: string | null | undefined, questionId: string | null | undefined, mode?: string) {
+ return questionInputMode(examId, questionId, mode) === 'image';
 }
