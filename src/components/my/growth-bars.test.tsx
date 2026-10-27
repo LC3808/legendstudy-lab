@@ -1,0 +1,9 @@
+// @vitest-environment jsdom
+import {render,screen,cleanup} from '@testing-library/react';
+import {afterEach,expect,it} from 'vitest';
+import {GrowthBars} from './growth-bars';
+import type {GrowthPoint} from '@/lib/my/growth-history';
+afterEach(cleanup);
+function points(n:number):GrowthPoint[]{return Array.from({length:n},(_,i)=>({runId:`run${i}`,at:'2026-10-27',label:i?'무료 재첨삭':'최초 첨삭',report:{id:`run${i}/q`,answer:'',question:'',summary:'',rubric:[{id:'c',name:'논리 구성',stars:i===2?null:4-i,value:'',feedback:''}],strengths:[],weaknesses:[],actions:[],nextSteps:[],pins:['q','v','e','1.3'],priorId:null}}));}
+it('renders one and two stored bars with result links',()=>{const {rerender}=render(<GrowthBars history={points(1)}/>);expect(screen.getByLabelText('최초 첨삭 논리 구성 4 · 결과 보기')).toHaveAttribute('href','/my/essays/result/?source=exam&id=run0');rerender(<GrowthBars history={points(2)}/>);expect(screen.getByLabelText('무료 재첨삭 논리 구성 3 · 결과 보기')).toBeInTheDocument();});
+it('keeps a compact summary and full line history, leaving missing scores as gaps',()=>{const {container}=render(<GrowthBars history={points(4)}/>);expect(screen.getByText('전체 성장 과정 보기 · 4회')).toBeInTheDocument();expect(container.querySelector('details')).not.toHaveAttribute('open');expect(container.querySelectorAll('circle')).toHaveLength(3);expect(container.querySelectorAll('line[stroke-width="2"]')).toHaveLength(1);expect(screen.getAllByText(/점수 없음/).length).toBeGreaterThan(0);});
