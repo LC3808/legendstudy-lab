@@ -1,4 +1,5 @@
 'use client';
+import {RowActions} from './row-actions';
 import Link from 'next/link';
 import {CreditExpiry} from './credit-expiry';
 import {ReturnNavigation} from './return-navigation';
@@ -106,9 +107,25 @@ export function GoalsEditor({data,reload,part,onApply}:{data:Goals;reload:()=>vo
  </div>;
 }
 
-export function TargetEditor({target,busy,save,onApply}:{target:Target;busy:boolean;onApply?:()=>void;save:(value:string|null)=>Promise<boolean>}){
- const [division,setDivision]=useState(target.intended_division??'');const [editing,setEditing]=useState(false);
- return <article className="my-target"><p className="my-target__name">{target.universities?.name??'관심 대학'}</p>{editing ? <form onSubmit={async(e:FormEvent)=>{e.preventDefault();if(await save(division))setEditing(false);}}><label>희망 학과·모집단위<input value={division} maxLength={120} disabled={busy} onChange={e=>setDivision(e.target.value)}/></label><div className="button-row"><button className="button button--outline button--small" disabled={busy}>학과 저장</button><button className="text-link" type="button" disabled={busy} onClick={()=>{setDivision(target.intended_division??'');setEditing(false);}}>취소</button></div></form> : <><p className="my-target__division">{target.intended_division||'희망 학과 미설정'}</p><div className="button-row"><button className="button button--outline button--small" type="button" disabled={busy} onClick={()=>setEditing(true)}>변경</button><button className="button button--outline button--small my-danger" type="button" disabled={busy} onClick={()=>{if(window.confirm("이 관심 대학을 삭제할까요? 기존 지원 내역은 유지됩니다."))void save(null);}}>삭제</button>{onApply&&<button className="button button--outline button--small" type="button" disabled={busy} onClick={onApply}>지원 내역 추가</button>}</div></>}</article>;
+export function TargetEditor({target,busy,save,onApply}:{target:Target;busy:boolean;save:(value:string|null)=>Promise<boolean>;onApply?:()=>void}) {
+ const [division,setDivision]=useState(target.intended_division??'');
+ const [editing,setEditing]=useState(false);
+ return <article className="my-target">
+  <p className="my-target__name">{target.universities?.name??'관심 대학'}</p>
+  {editing ? <form onSubmit={async(e:FormEvent)=>{e.preventDefault();if(await save(division))setEditing(false);}}>
+   <label>희망 학과·모집단위<input value={division} maxLength={120} disabled={busy} onChange={e=>setDivision(e.target.value)}/></label>
+   <div className="button-row"><button className="button button--outline button--small" disabled={busy}>학과 저장</button><button className="text-link" type="button" disabled={busy} onClick={()=>{setDivision(target.intended_division??'');setEditing(false);}}>취소</button></div>
+  </form> : <>
+   <p className="my-target__division">{target.intended_division||'희망 학과 미설정'}</p>
+   <div className="my-target-actions">
+    {onApply&&<button className="button button--outline button--small" type="button" disabled={busy} onClick={onApply}>지원 추가</button>}
+    <RowActions label={`${target.universities?.name??'관심 대학'} 관리`}>
+     <button className="button button--outline button--small" type="button" disabled={busy} onClick={()=>setEditing(true)}>관심 대학 변경</button>
+     <button className="button button--outline button--small my-danger" type="button" disabled={busy} onClick={()=>{if(window.confirm('이 관심 대학을 삭제할까요? 기존 지원 내역은 유지됩니다.'))void save(null);}}>관심 대학 삭제</button>
+    </RowActions>
+   </div>
+  </>}
+ </article>;
 }
 
 /**

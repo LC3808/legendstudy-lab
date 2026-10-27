@@ -123,7 +123,7 @@ it('prefills an explicit application form from a target without creating a recor
  const {container}=render(<MyDashboard/>);
  await screen.findByText('사회·상경');
  const targets=container.querySelector('.my-college-grid > div:first-child') as HTMLElement;
- await user.click(within(targets).getByRole('button',{name:'지원 내역 추가'}));
+ await user.click(within(targets).getByRole('button',{name:'지원 추가'}));
  expect((screen.getByLabelText('지원 학과·모집단위') as HTMLInputElement).value).toBe('경영학과');
  expect(container.querySelector('.my-profile-card .my-target-list')).toBeNull();
  expect(screen.getByText('등록된 지원 내역이 없습니다.')).toBeTruthy();

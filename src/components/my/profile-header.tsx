@@ -24,10 +24,10 @@ export function ProfileHeader({children}:{children?:ReactNode}={}) {
     {showEmail && <p className="my-identity__email">{identity.email}</p>}
    </div>
    <dl className="my-profile-card__facts">
-    <div><dt>현재 상태</dt><dd>{hasSchool?'재학생':result.data.academic_status?identity.statusLabel:''}</dd></div>
+    {(hasSchool||result.data.academic_status)&&<div><dt>현재 상태</dt><dd>{hasSchool?'재학생':result.data.academic_status?identity.statusLabel:''}</dd></div>}
     <>
-     <div><dt>학교</dt><dd>{hasSchool&&<SchoolName office={identity.school.officeCode} school={identity.school.schoolCode} />}</dd></div>
-     <div><dt>학년</dt><dd>{identity.grade ? `${identity.grade}학년` : ''}</dd></div>
+     {hasSchool&&<div><dt>학교</dt><dd>{hasSchool&&<SchoolName office={identity.school.officeCode} school={identity.school.schoolCode} />}</dd></div>}
+     {identity.grade&&<div><dt>학년</dt><dd>{identity.grade ? `${identity.grade}학년` : ''}</dd></div>}
     </>
    </dl>
    <ProfileEditor compact key={JSON.stringify(result.data)} profile={result.data} reload={result.reload}/>

@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import {render,screen,waitFor} from '@testing-library/react';
+import {render,screen,waitFor,within} from '@testing-library/react';
 import {beforeEach,it,expect,vi} from 'vitest';
 import userEvent from '@testing-library/user-event';
 import {ApplicationsPanel} from './applications';
@@ -24,7 +24,7 @@ it('shows read failure rather than an empty application list',async()=>{
 it('appends a correction without changing the original event',async()=>{
  const user=userEvent.setup();vi.mocked(readApplicationPage).mockResolvedValue({offset:0,has_more:false,items:[{id:'app1',admission_year:2027,university_id:'u1',university_name_snapshot:'테스트대학교',intended_division:'경영학과',admission_type:'수시',admission_name:'논술',revision:1,latest_event:null}]});
  vi.mocked(readApplicationEvents).mockResolvedValue({offset:0,has_more:false,items:[{id:'old',kind:'accepted',recorded_at:'2026-10-08T00:00:00Z',occurred_at:null}]});vi.mocked(addApplicationEvent).mockResolvedValue('new');
- render(<ApplicationsPanel/>);await user.click(await screen.findByRole('button',{name:'이력 보기'}));await user.click(await screen.findByRole('button',{name:'정정'}));await user.selectOptions(screen.getByLabelText('진행·결과'),'rejected');await user.click(screen.getByRole('button',{name:'기록 저장'}));
+ render(<ApplicationsPanel/>);await user.click(await screen.findByLabelText('테스트대학교 지원 내역 관리'));await user.click(await screen.findByRole('button',{name:'이력 보기'}));await user.click(await screen.findByRole('button',{name:'정정'}));await user.selectOptions(screen.getByLabelText('진행·결과'),'rejected');await user.click(screen.getByRole('button',{name:'기록 저장'}));
  await waitFor(()=>expect(addApplicationEvent).toHaveBeenCalled());expect(vi.mocked(addApplicationEvent).mock.calls[0].slice(2,6)).toEqual(['app1','rejected',null,'old']);
 });
 it('filters the latest year across server pages without hiding older years',async()=>{
@@ -39,4 +39,20 @@ it('filters the latest year across server pages without hiding older years',asyn
  expect(screen.queryByText('최신대학교 · 경영학과')).toBeNull();
  await user.selectOptions(screen.getByLabelText('모집 구분'),'정시');
  expect(screen.queryByText('지난대학교 · 경영학과')).toBeNull();
+});
+
+it('keeps stage pass separate from final acceptance and exposes compact actions',async()=>{
+ const user=userEvent.setup();
+ const base={admission_year:2027,university_id:'u1',university_name_snapshot:'긴이름대학교',intended_division:'국제경영경제융합학과',admission_type:'수시',admission_name:'학교장추천',revision:1};
+ vi.mocked(readApplicationPage).mockResolvedValue({offset:0,has_more:false,items:['stage_pass','accepted','registered'].map((kind,i)=>({...base,id:String(i),latest_event:{id:'e'+i,kind:kind as 'stage_pass'|'accepted'|'registered',occurred_at:null,recorded_at:'2026-10-27T00:00:00Z'}}))});
+ render(<ApplicationsPanel/>);
+ expect(await screen.findByText('최종 합격 1건')).toBeTruthy();
+ expect(screen.getByText('1단계 합격 1건')).toBeTruthy();
+ const menu=screen.getAllByLabelText('긴이름대학교 지원 내역 관리')[0];
+ expect(menu.closest('details')?.open).toBe(false);
+ await user.click(menu);
+ expect(menu.closest('details')?.open).toBe(true);
+ expect(within(menu.closest('details')!).getByRole('button',{name:'지원 내역 변경'})).toBeTruthy();
+ await user.keyboard('{Escape}');
+ expect(menu.closest('details')?.open).toBe(false);
 });
