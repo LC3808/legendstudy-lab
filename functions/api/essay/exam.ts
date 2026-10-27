@@ -4,7 +4,7 @@ import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/re
 import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import {boundedBody} from '../../../src/lib/math-release/server/request';
-type Env=MathEnvironment&WorkerEnvironment&{ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_CONTINUOUS_CYCLES_ENABLED?:string;ESSAY_E2E_SCOPE?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
+type Env=MathEnvironment&WorkerEnvironment&{ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_CREDIT_SOURCE_ENABLED?:string;ESSAY_CONTINUOUS_CYCLES_ENABLED?:string;ESSAY_E2E_SCOPE?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(v);
 /** Shared Native/Web gateway. Disabled until DB/host/content/E2E authorization. */
 export async function onRequestPost({request,env}:{request:Request;env:Env}){
@@ -55,8 +55,8 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   if(input.action==='quote'&&Array.isArray(input.questionIds)&&input.questionIds.length>1&&!await sessionReady())return reply({code:'EXAM_SESSION_CONTRACT_PENDING'},409);
   if(input.previousPaidRunId!=null&&(env.ESSAY_CONTINUOUS_CYCLES_ENABLED!=='true'||!uuid(input.previousPaidRunId)||input.parentId!=null))return reply({code:'ADDITIONAL_CYCLE_UNAVAILABLE'},422);
   if(input.action==='quote'&&uuid(input.examId)&&Array.isArray(input.questionIds)&&input.questionIds.length>0&&input.questionIds.every(uuid)&&!(input.parentId!=null&&!uuid(input.parentId))){
-   const quoted=await transport.request('/rest/v1/rpc/essay_exam_quote',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_questions:input.questionIds,p_parent:input.parentId??null,p_previous:input.previousPaidRunId??null})});
-   if(!quoted.ok)return reply({code:'QUOTE_UNAVAILABLE'},422);
+   const quoted=await transport.request(env.ESSAY_CREDIT_SOURCE_ENABLED==='true'?'/rest/v1/rpc/essay_exam_quote_source':'/rest/v1/rpc/essay_exam_quote',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_questions:input.questionIds,p_parent:input.parentId??null,p_previous:input.previousPaidRunId??null})});
+   if(!quoted.ok){const error=await quoted.json().catch(()=>null) as {message?:string}|null;return reply({code:error?.message==='INSUFFICIENT_CREDIT'?'INSUFFICIENT_CREDIT':'QUOTE_UNAVAILABLE'},error?.message==='INSUFFICIENT_CREDIT'?402:422);}
    return reply(await quoted.json());
   }
   if(input.action!=='submit'||!uuid(input.examId)||!uuid(input.key)||!Array.isArray(input.answers)||input.answers.length<1||input.answers.length>100||!(input.parentId==null||uuid(input.parentId)))return reply({code:'INVALID_REQUEST'},422);
@@ -64,9 +64,11 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
    (a.mathInput?(Object.keys(a).some(k=>!['questionId','revision','mathInput'].includes(k))||typeof a.mathInput!=='object'||!uuid(a.mathInput.attemptId)||!uuid(a.mathInput.confirmedRunId)||Object.keys(a.mathInput).some(k=>!['attemptId','confirmedRunId'].includes(k))):
     (typeof a.body!=='string'||!a.body.trim()||a.body.length>30000||Object.keys(a).some(k=>!['questionId','body','revision'].includes(k))))))return reply({code:'INVALID_ANSWERS'},422);
   if(!await sessionReady())return reply({code:'EXAM_SESSION_CONTRACT_PENDING'},409);
-  const reserved=await transport.request(input.previousPaidRunId?'/rest/v1/rpc/essay_exam_submit_cycle':'/rest/v1/rpc/essay_exam_submit',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_key:scope?.requestKey??input.key,p_answers:input.answers,p_parent:input.parentId??null,...(input.previousPaidRunId?{p_previous:input.previousPaidRunId}:{})})});
+  const sourceConsent=Object.hasOwn(input,'expectedGrant');
+  if(sourceConsent&&(env.ESSAY_CREDIT_SOURCE_ENABLED!=='true'||!(input.expectedGrant===null||uuid(input.expectedGrant))))return reply({code:'CREDIT_SOURCE_CONFIRMATION_REQUIRED'},409);
+  const reserved=await transport.request(sourceConsent?'/rest/v1/rpc/essay_exam_submit_source':input.previousPaidRunId?'/rest/v1/rpc/essay_exam_submit_cycle':'/rest/v1/rpc/essay_exam_submit',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_key:scope?.requestKey??input.key,p_answers:input.answers,p_parent:input.parentId??null,...(sourceConsent?{p_expected_grant:input.expectedGrant,p_previous:input.previousPaidRunId??null}:input.previousPaidRunId?{p_previous:input.previousPaidRunId}:{})})});
   const value=JSON.parse(new TextDecoder().decode(await boundedBody(reserved,16384)));
-  if(!reserved.ok){const reason=typeof value?.message==='string'?value.message:'';return reply({code:reason==='INSUFFICIENT_CREDIT'?'INSUFFICIENT_CREDIT':'SUBMISSION_REJECTED'},reason==='INSUFFICIENT_CREDIT'?402:422);}
+  if(!reserved.ok){const reason=typeof value?.message==='string'?value.message:'';if(['CREDIT_SOURCE_CHANGED','CREDIT_SOURCE_CONFIRMATION_REQUIRED'].includes(reason))return reply({code:reason},409);return reply({code:reason==='INSUFFICIENT_CREDIT'?'INSUFFICIENT_CREDIT':'SUBMISSION_REJECTED'},reason==='INSUFFICIENT_CREDIT'?402:422);}
   if(!uuid(value))throw Error('INVALID_RESERVATION');run=value;
   // Uncertain dispatch/finalization never refunds or creates another reservation.
   await dispatch('/exam-evaluate',{run_id:run});

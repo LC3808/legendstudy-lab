@@ -123,3 +123,27 @@ it('restores an accepted request after re-entry without a second reservation or 
  expect(screen.getByRole('button',{name:'논술 첨삭 요청하기 · 1 크레딧'})).toBeDisabled();
  expect(actions).toEqual(['availability']);
 });
+
+it('paid fallback waits for explicit source consent and source change requires a new quote',async()=>{
+ const requests:Record<string,unknown>[]=[];
+ const grant='11111111-1111-4111-8111-111111111111';
+ vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{
+  const b=JSON.parse(init.body);requests.push(b);
+  if(b.action==='submit')return Response.json({code:'CREDIT_SOURCE_CHANGED'},{status:409});
+  return Response.json(b.action==='availability'?{ready:true}:{version:'essay-exam-quote-v1',credits:1,credit_source:{version:'essay-credit-source-v1',grant_id:grant,source:'purchase',beta:0,signup_bonus:0,purchase:3,other:0}});
+ }));
+ render(<EssayExamSubmit exam={exam} included={['q']} drafts={{q:{body:'Synthetic answer',revision:1,images:false}}}/>);
+ await act(async()=>{});
+ await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'논술 첨삭 요청하기 · 1 크레딧'}));});
+ const dialog=screen.getByRole('dialog');
+ expect(dialog).toHaveTextContent('베타 Credit 잔액');expect(dialog).toHaveTextContent('신규가입 무료 Credit 잔액');
+ expect(dialog).toHaveTextContent('이번 사용: 유료 Credit · 1개');
+ expect(requests.filter(r=>r.action==='submit')).toHaveLength(0);
+ await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));});
+ expect(requests.find(r=>r.action==='submit')?.expectedGrant).toBe(grant);
+ expect(screen.getByRole('status')).toHaveTextContent('출처가 변경');
+ await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'논술 첨삭 요청하기 · 1 크레딧'}));});
+ expect(requests.filter(r=>r.action==='quote')).toHaveLength(2);
+ expect(requests.filter(r=>r.action==='submit')).toHaveLength(1);
+ expect(screen.getByRole('dialog')).toBeVisible();
+});

@@ -1,5 +1,5 @@
 /** Local idempotency state only; never changes server billing or existing runs. */
-export type PendingRequest={fingerprint:string;key:string;answers:{questionId:string;body?:string;revision:number;mathInput?:{attemptId:string;confirmedRunId:string}}[]};
+export type PendingRequest={fingerprint:string;key:string;expectedGrant?:string|null;answers:{questionId:string;body?:string;revision:number;mathInput?:{attemptId:string;confirmedRunId:string}}[]};
 type Store={read(key:string):string;write(key:string,value:string):void};
 export function questionScope(ids:string[]){return JSON.stringify([...new Set(ids)].sort());}
 export function pendingStorageKey(legacy:string,ids:string[]){return `${legacy}:questions:${questionScope(ids)}`;}

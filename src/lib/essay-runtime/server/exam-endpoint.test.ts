@@ -152,3 +152,26 @@ it('launch hold preserves existing retry admission and request identity',async()
  expect(response.status).toBe(202);expect(m.request.mock.calls[0][0]).toBe('/rest/v1/rpc/essay_exam_retry');
  expect(JSON.parse(m.request.mock.calls[0][2].body).p_run).toBe(id);
 });
+
+it('source flag routes quote through worker-only source RPC without evaluation',async()=>{
+ m.request.mockResolvedValue(Response.json({credits:1,credit_source:{grant_id:id,source:'purchase'}}));
+ expect((await send({action:'quote',examId:id,questionIds:[id]},{ESSAY_CREDIT_SOURCE_ENABLED:'true'})).status).toBe(200);
+ expect(m.request.mock.calls[0][0]).toBe('/rest/v1/rpc/essay_exam_quote_source');expect(m.dispatch).not.toHaveBeenCalled();
+});
+it('confirmed grant is sent to the atomic source submit RPC',async()=>{
+ expect((await send({...body,expectedGrant:id},{ESSAY_CREDIT_SOURCE_ENABLED:'true'})).status).toBe(202);
+ expect(m.request.mock.calls[0][0]).toBe('/rest/v1/rpc/essay_exam_submit_source');
+ expect(JSON.parse(m.request.mock.calls[0][2].body)).toMatchObject({p_expected_grant:id,p_previous:null,p_parent:null,p_key:id});
+});
+it.each(['CREDIT_SOURCE_CHANGED','CREDIT_SOURCE_CONFIRMATION_REQUIRED'])('source rejection never dispatches evaluation: %s',async code=>{
+ m.request.mockResolvedValue(Response.json({message:code},{status:409}));
+ const response=await send({...body,expectedGrant:id},{ESSAY_CREDIT_SOURCE_ENABLED:'true'});
+ expect(response.status).toBe(409);expect(await response.json()).toEqual({code});
+ expect(m.dispatch).toHaveBeenCalledTimes(1);
+});
+it('disabled source contract and malformed grant cannot reserve',async()=>{
+ for(const [expectedGrant,extra] of [[id,{}],['invalid',{ESSAY_CREDIT_SOURCE_ENABLED:'true'}]] as const){
+  expect((await send({...body,expectedGrant},extra)).status).toBe(409);
+ }
+ expect(m.request).not.toHaveBeenCalled();
+});
