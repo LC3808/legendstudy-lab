@@ -6,33 +6,49 @@ import {ReturnNavigation} from './return-navigation';
 import {LabCards} from './lab-cards';
 import {ApplicationsPanel, type ApplicationSeed} from './applications';
 import {StudySummaryPanel} from './study-summary';
-import { ProfileHeader } from './profile-header';
+import { ProfileHeaderView } from './profile-header';
 import { EssayGrowthCard } from './essay-growth';
 import { useState, type FormEvent, type ReactNode } from 'react';
+import {showsApplications} from '@/lib/my/contract';
 import { useCreditSummary } from '@/components/credit-balance';
 import { useAuth } from '@/components/auth-context';
 import { OwnerArea, useOwnerData, DataStatus, dateLabel } from './owner-data';
-import { readGoals, readHistory, readEssays, saveMajor, addTarget, editTarget, searchUniversities, majorOptions, assertOwner, type Goals, type Target } from '@/lib/my/data';
+import { readMyProfile, readGoals, readHistory, readEssays, saveMajor, addTarget, editTarget, searchUniversities, majorOptions, assertOwner, type Goals, type Target } from '@/lib/my/data';
 
 /** Owner MY order, existing shared identity and data contracts. */
 export function MyDashboard(){
- const [applicationSeed,setApplicationSeed]=useState<ApplicationSeed|null>(null);
+
  return <div className="my-dashboard content-wrap content-wrap--detail">
   <header className="my-head">
    <h1>마이페이지</h1>
   </header>
   <OwnerArea>
-   <section className="my-section" aria-labelledby="my-profile-title"><h2 id="my-profile-title">나의 프로필</h2><ProfileHeader><GoalsPanel part="major" /></ProfileHeader></section>
-   <section className="my-section" aria-labelledby="my-colleges-title"><h2 id="my-colleges-title">나의 대학 관리</h2><p className="my-note">관심 대학과 실제 지원 현황을 한눈에 확인하세요.</p><div className="my-college-grid"><div className="my-panel"><GoalsPanel part="targets" onApply={setApplicationSeed}/></div><div><h3>나의 대학 지원 현황</h3><ApplicationsPanel seed={applicationSeed} clearSeed={()=>setApplicationSeed(null)}/></div></div></section>
+   <ProfileColleges/>
    <section className="my-section" aria-labelledby="my-usage-title"><h2 id="my-usage-title">내 이용 현황</h2><Usage /></section>
    <section className="my-section" aria-labelledby="my-labs-title"><h2 id="my-labs-title">LAB</h2><LabCards /></section>
-   <section className="my-section" aria-labelledby="my-growth-title"><h2 id="my-growth-title">나의 성장</h2><EssayGrowthCard /></section>
+   <section className="my-section" aria-labelledby="my-growth-title"><h2 id="my-growth-title">나의 성장</h2><EssayGrowthCard compact /></section>
    <section className="my-section" aria-labelledby="my-study-title"><h2 id="my-study-title">나의 학습 시간</h2><StudySummaryPanel /></section>
    <section className="my-section my-section--last" aria-labelledby="my-account-title"><h2 id="my-account-title">계정 및 지원</h2>
     <div className="my-links"><Link className="button button--outline button--small" href="/account/settings/">계정 설정</Link><Link className="button button--outline button--small" href="/support/">고객센터</Link></div>
    </section>
   </OwnerArea>
  </div>;
+}
+
+export function ProfileColleges(){
+ const profile=useOwnerData(readMyProfile,true);
+ const [applicationSeed,setApplicationSeed]=useState<ApplicationSeed|null>(null);
+ const eligible=showsApplications(profile.data);
+ return <section className="my-section my-panel my-profile-colleges" aria-labelledby="my-profile-title">
+  <h2 id="my-profile-title">나의 프로필</h2>
+  {profile.data?<ProfileHeaderView profile={profile.data} reload={profile.reload}><GoalsPanel part="major"/></ProfileHeaderView>:<DataStatus error={profile.error} reload={profile.reload}/>}
+  <div className="my-colleges-inner"><h2 id="my-colleges-title">나의 대학 관리</h2>
+   <div className={`my-college-grid${eligible?'':' my-college-grid--interests'}`}>
+    <div><GoalsPanel part="targets" onApply={eligible?setApplicationSeed:undefined}/></div>
+    {eligible&&<div><h3>나의 대학 지원 현황</h3><ApplicationsPanel seed={applicationSeed} clearSeed={()=>setApplicationSeed(null)}/></div>}
+   </div>
+  </div>
+ </section>;
 }
 
 /**

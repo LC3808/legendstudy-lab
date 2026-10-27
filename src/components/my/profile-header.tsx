@@ -4,16 +4,19 @@ import {useAuth} from '@/components/auth-context';
 import type {ReactNode} from 'react';
 import {ProfileEditor} from './profile-editor';
 import {myIdentity} from '@/lib/my/contract';
-import {readMyProfile} from '@/lib/my/data';
+import {readMyProfile, type MyProfile} from '@/lib/my/data';
 import {DataStatus, useOwnerData} from './owner-data';
 
 /** Canonical APP profile fields; unset values remain blank. */
 export function ProfileHeader({children}:{children?:ReactNode}={}) {
- const {user} = useAuth();
  const result = useOwnerData(readMyProfile);
- if (!user) return null;
- if (!result.data) return <div className="my-panel my-profile-card"><DataStatus error={result.error} reload={result.reload} /></div>;
- const identity = myIdentity({id: user.id, email: user.email ?? undefined}, result.data);
+ if (!result.data) return <DataStatus error={result.error} reload={result.reload} />;
+ return <ProfileHeaderView profile={result.data} reload={result.reload}>{children}</ProfileHeaderView>;
+}
+export function ProfileHeaderView({profile,reload,children}:{profile:MyProfile;reload:()=>void;children?:ReactNode}) {
+ const {user}=useAuth();
+ if(!user)return null;
+ const identity = myIdentity({id: user.id, email: user.email ?? undefined}, profile);
  const hasSchool = Boolean(identity.school.officeCode && identity.school.schoolCode);
  const name = identity.displayName?.trim() || '';
  const showEmail = Boolean(identity.email);
@@ -24,13 +27,13 @@ export function ProfileHeader({children}:{children?:ReactNode}={}) {
     {showEmail && <p className="my-identity__email">{identity.email}</p>}
    </div>
    <dl className="my-profile-card__facts">
-    {(hasSchool||result.data.academic_status)&&<div><dt>현재 상태</dt><dd>{hasSchool?'재학생':result.data.academic_status?identity.statusLabel:''}</dd></div>}
+    {(hasSchool||profile.academic_status)&&<div><dt>현재 상태</dt><dd>{hasSchool?'재학생':profile.academic_status?identity.statusLabel:''}</dd></div>}
     <>
      {hasSchool&&<div><dt>학교</dt><dd>{hasSchool&&<SchoolName office={identity.school.officeCode} school={identity.school.schoolCode} />}</dd></div>}
      {identity.grade&&<div><dt>학년</dt><dd>{identity.grade ? `${identity.grade}학년` : ''}</dd></div>}
     </>
    </dl>
-   <ProfileEditor compact key={JSON.stringify(result.data)} profile={result.data} reload={result.reload}/>
+   <ProfileEditor compact key={JSON.stringify(profile)} profile={profile} reload={reload}/>
    {children&&<div className="my-profile-goals">{children}</div>}
   </div>
  );

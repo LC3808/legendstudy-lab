@@ -32,3 +32,9 @@ export function comparableDimensionDelta(before:DimensionPoint,after:DimensionPo
  if(!Number.isInteger(before.level)||!Number.isInteger(after.level)||before.level!<1||before.level!>5||after.level!<1||after.level!>5)return null;
  return after.level!-before.level!;
 }
+
+/** Display eligibility only; hiding never changes stored applications. */
+export function showsApplications(profile:MyProfile|undefined):boolean {
+ return profile?.academic_status==='retaker' ||
+  (profile?.academic_status==='student' && profile.grade_level===3);
+}

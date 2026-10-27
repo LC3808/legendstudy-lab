@@ -18,9 +18,9 @@ import {DataStatus, useOwnerData} from './owner-data';
  * growth block reports how many elements moved and links to the detail view for the
  * named breakdown rather than inventing a label.
  */
-export function EssayGrowthCard(){
+export function EssayGrowthCard({compact=false}:{compact?:boolean}={}){
  const [tab,setTab]=useState('논술 LAB');
- return <><div className="my-growth-tabs" role="tablist" aria-label="성장 서비스">{['논술 LAB','내신 LAB','수능 LAB'].map(t=><button key={t} role="tab" aria-selected={tab===t} onClick={()=>setTab(t)}>{t}</button>)}</div><div role="tabpanel">{tab==='논술 LAB'?<><EssayGrowthSummary/><EssayGrowth/></>:<p className="my-panel my-coming">서비스 준비 중입니다.</p>}</div></>;
+ return <><div className="my-growth-tabs" role="tablist" aria-label="성장 서비스">{['논술 LAB','내신 LAB','수능 LAB'].map(t=><button key={t} role="tab" aria-selected={tab===t} onClick={()=>setTab(t)}>{t}</button>)}</div><div role="tabpanel">{tab==='논술 LAB'?<>{!compact&&<EssayGrowthSummary/>}<EssayGrowth compact={compact}/></>:<p className="my-panel my-coming">서비스 준비 중입니다.</p>}</div></>;
 }
 function EssayGrowthSummary() {
  const result = useOwnerData(readEssaySummary);

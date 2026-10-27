@@ -1754,3 +1754,18 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
  .my-college-grid .my-application-row .my-application-badge { order:2; }
  .my-row-actions>summary { min-height:44px; width:44px; }
 }
+
+/* MY summary: one profile/college surface; existing detail pages stay unchanged. */
+.my-profile-colleges .my-profile-card {border:0;box-shadow:none;background:transparent;padding:0;margin:0;}
+.my-colleges-inner {border-top:1px solid #e4e9ef;margin-top:18px;padding-top:18px;}
+.my-profile-colleges .my-college-grid > div {border:0;border-radius:0;box-shadow:none;background:transparent;padding:0;}
+.my-profile-colleges .my-college-grid > div + div {border-left:1px solid #e4e9ef;padding-left:20px;}
+.my-college-grid--interests {grid-template-columns:minmax(0,1fr);}
+.my-profile-colleges h2 {margin-bottom:18px;}
+.learning-growth--compact {padding:20px;}
+.learning-growth--compact .learning-section-head {margin-bottom:12px;}
+.learning-growth--compact h3 {margin:0;}
+.learning-growth--compact .growth-select {display:grid;gap:6px;}
+.learning-growth--compact select {width:100%;min-width:0;max-width:100%;text-overflow:ellipsis;}
+@media(max-width:850px){.my-profile-colleges .my-college-grid > div + div{border-left:0;border-top:1px solid #e4e9ef;padding:18px 0 0;}}
+@media(max-width:560px){.learning-growth--compact{padding:16px;}.my-profile-colleges .my-profile-card{padding:0;}.my-profile-colleges .my-profile-card__identity{flex-basis:100%;}}

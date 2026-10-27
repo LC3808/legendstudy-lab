@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import { render, screen, within } from '@testing-library/react';
-import { expect, it, vi } from 'vitest';
+import { beforeEach, expect, it, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import {addTarget,searchUniversities,readHistory} from '@/lib/my/data';
+import {addTarget,searchUniversities,readHistory,readMyProfile,saveMyProfile} from '@/lib/my/data';
 import { MyDashboard, CreditHistory } from './dashboard';
 
 vi.mock('@/lib/my/essay-dashboard',async original=>({...await original<typeof import('@/lib/my/essay-dashboard')>(),readEssayDashboard:async()=>[],readMathDashboard:async()=>[]}));
@@ -20,16 +20,19 @@ vi.mock('@/components/admin/admin-school-name', () => ({ AdminSchoolName: () => 
 vi.mock('@/lib/admin/school', () => ({ searchSchools: async () => [] }));
 vi.mock('@/lib/my/data', () => ({
   assertOwner: async () => {},
-  readMyProfile: async () => ({ neis_office_code: 'B10', neis_school_code: '7130001', academic_status: 'student', grade_level: 2 }),
+  readMyProfile: vi.fn(),
   readGoals: async () => ({ intended_major: '사회·상경', targets: [{ id: '1', university_id: 'u1', intended_division: '경영학과', universities: { name: '연세대학교' } }] }),
   readEssays: async () => [],
   readHistory: vi.fn().mockResolvedValue([]),
   saveMajor: async () => {},
+  saveMyProfile: vi.fn(),
   addTarget: vi.fn().mockResolvedValue(undefined),
   editTarget: async () => {},
   searchUniversities: vi.fn().mockResolvedValue([]),
   majorOptions: ['사회·상경'],
 }));
+
+beforeEach(()=>{vi.mocked(readMyProfile).mockResolvedValue({academic_status:'student',grade_level:2,neis_office_code:'B10',neis_school_code:'7130001'});});
 
 /**
  * MY is a dashboard, so the order of its sections is the product decision this
@@ -41,7 +44,7 @@ it('presents the MY dashboard sections in the agreed order', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
   const headings = [...container.querySelectorAll('.my-section > h2')].map((h) => h.textContent);
-  expect(headings).toEqual(['나의 프로필', '나의 대학 관리', '내 이용 현황', 'LAB', '나의 성장', '나의 학습 시간', '계정 및 지원']);
+  expect(headings).toEqual(['나의 프로필', '내 이용 현황', 'LAB', '나의 성장', '나의 학습 시간', '계정 및 지원']);
 });
 
 it('leads with the email as the profile name when no nickname is set, and never prints it twice', async () => {
@@ -87,7 +90,8 @@ it('keeps empty sections short instead of making a large empty card', async () =
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
   const empty = [...container.querySelectorAll('.my-empty')].map((p) => p.textContent);
-  expect(empty).toContain('등록된 지원 내역이 없습니다.');
+  expect(empty).not.toContain('등록된 지원 내역이 없습니다.');
+  expect(screen.queryByRole('button',{name:'지원 추가'})).not.toBeInTheDocument();
   expect(within(container).getByRole('link', { name: /논술 LAB.*내 논술/ })).toHaveAttribute('href','/account/essay');
   expect(container.textContent).not.toContain('아직 구현되지 않았습니다');
 });
@@ -120,6 +124,7 @@ it('saves the selected university and intended division together',async()=>{
 
 it('prefills an explicit application form from a target without creating a record', async () => {
  const user=userEvent.setup();
+ vi.mocked(readMyProfile).mockResolvedValue({academic_status:'student',grade_level:3,neis_office_code:null,neis_school_code:null});
  const {container}=render(<MyDashboard/>);
  await screen.findByText('사회·상경');
  const targets=container.querySelector('.my-college-grid > div:first-child') as HTMLElement;
@@ -128,3 +133,7 @@ it('prefills an explicit application form from a target without creating a recor
  expect(container.querySelector('.my-profile-card .my-target-list')).toBeNull();
  expect(screen.getByText('등록된 지원 내역이 없습니다.')).toBeTruthy();
 });
+
+it.each([1,2,3,null])('shows applications only for student grade %s when eligible',async grade=>{vi.mocked(readMyProfile).mockResolvedValue({academic_status:'student',grade_level:grade,neis_office_code:null,neis_school_code:null});render(<MyDashboard/>);await screen.findByText('사회·상경');expect(Boolean(screen.queryByText('나의 대학 지원 현황'))).toBe(grade===3);});
+it.each(['retaker','other',null])('uses existing status %s without inventing mappings',async status=>{vi.mocked(readMyProfile).mockResolvedValue({academic_status:status,grade_level:null,neis_office_code:null,neis_school_code:null});render(<MyDashboard/>);await screen.findByText('사회·상경');expect(Boolean(screen.queryByText('나의 대학 지원 현황'))).toBe(status==='retaker');});
+it('updates eligibility after profile saves in both directions without application writes',async()=>{vi.mocked(saveMyProfile).mockImplementation(async(_client,_owner,profile)=>{vi.mocked(readMyProfile).mockResolvedValue(profile);});const u=userEvent.setup();render(<MyDashboard/>);await screen.findByText('사회·상경');for(const grade of ['3','2']){await u.click(screen.getByRole('button',{name:'프로필 편집'}));await u.selectOptions(screen.getByLabelText('학년'),grade);await u.click(screen.getByRole('button',{name:'프로필 저장'}));await screen.findByText(`${grade}학년`);expect(Boolean(screen.queryByText('나의 대학 지원 현황'))).toBe(grade==='3');}});
