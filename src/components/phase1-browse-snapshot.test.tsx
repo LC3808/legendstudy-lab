@@ -11,10 +11,12 @@ vi.mock('client-only',()=>({}));
 const state=vi.hoisted(()=>({user:null,status:'anonymous',client:{rpc:vi.fn(),auth:{getSession:vi.fn().mockResolvedValue({data:{session:null}})}}}));
 vi.mock('./auth-context',()=>({useAuth:()=>state}));
 type Row=ExamRow&{questions:Detail['questions']};
-const snapshot:Record<string,Row[]>=process.env.ESSAY_BROWSE_SNAPSHOT?JSON.parse(readFileSync(process.env.ESSAY_BROWSE_SNAPSHOT,'utf8')):{};
+const sample=sourceExams('hanyang').find(e=>e.kind==='admission')!;
+const fallback:Record<string,Row[]>={hanyang:[{examId:sample.dbExamId!,universityId:sample.universityId!,year:sample.year,kind:sample.kind,track:sample.track,title:'Offline public catalog fixture',questionCount:sample.questions.length,questions:sample.questions.map(q=>({id:q.dbQuestionId!,label:q.label}))} as Row]};
+const snapshot:Record<string,Row[]>=process.env.ESSAY_BROWSE_SNAPSHOT?JSON.parse(readFileSync(process.env.ESSAY_BROWSE_SNAPSHOT,'utf8')):fallback;
 afterEach(()=>{cleanup();vi.unstubAllGlobals();});
 for(const slug of Object.keys(snapshot).filter(slug=>snapshot[slug].length)){
- it.skipIf(!snapshot[slug])(`selects every captured public exam and question for ${slug}`,async()=>{
+ it(`selects every captured public exam and question for ${slug}`,async()=>{
   const rows=snapshot[slug];state.client.rpc.mockReset().mockResolvedValue({data:rows,error:null});
   vi.stubGlobal('fetch',vi.fn(()=>Promise.reject(Error('Unexpected network'))));
   render(<SourceExamSelection sourceId={slug} registeredOnly/>);
@@ -27,11 +29,16 @@ for(const slug of Object.keys(snapshot).filter(slug=>snapshot[slug].length)){
    const session=screen.queryByLabelText('캠퍼스·시험 회차');
    if(session)fireEvent.change(session,{target:{value:exam.key}});
    for(const question of exam.questions){
-    if(exam.questions.length>1)fireEvent.click(screen.getByRole('tab',{name:question.label}));
+    // Exercise the replacement accordion interaction, not just static labels.
+    const toggle=(screen.queryByRole('button',{name:`접기 · ${question.label}`})??screen.getByRole('button',{name:`펼치기 · ${question.label}`}));
+    if(toggle.getAttribute('aria-expanded')==='true')fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded','false');
+    fireEvent.click(toggle);expect(toggle).toHaveAttribute('aria-expanded','true');
+    expect(document.getElementById(toggle.getAttribute('aria-controls')!)).not.toHaveAttribute('hidden');
     expect(screen.getAllByText(question.label).length).toBeGreaterThan(0);
     expect(question.dbQuestionId).toBeTruthy();
    }
-   if(exam.verification==='REVIEW_REQUIRED')expect(screen.getByRole('button',{name:'첨삭 서비스 준비 중'})).toBeDisabled();
+   expect(screen.queryByRole('button',{name:'첨삭 진행하기'})).toBeNull();
   }
   expect(fetch).not.toHaveBeenCalled();
  },30000);

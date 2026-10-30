@@ -50,7 +50,7 @@ it('keeps essay-first selection compact without changing all42 routes and applie
   if(page<3)fireEvent.click(screen.getByRole('button',{name:'다음'}));
  }
  expect(new Set(names).size).toBe(42);
- expect(names.slice(0,3)).toEqual(['건국대학교','경희대학교','고려대학교']);
+ expect(names.slice(0,3)).toEqual(['서강대학교','고려대학교','건국대학교']);
  expect(names.slice(-1)).toEqual(['홍익대학교']);
  fireEvent.change(screen.getByLabelText('대학 검색'),{target:{value:'성균관'}});
  expect(screen.getByRole('status')).toHaveTextContent('1개 대학');

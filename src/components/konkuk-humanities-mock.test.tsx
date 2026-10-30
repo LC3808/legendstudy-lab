@@ -40,7 +40,7 @@ it('canonical humanities draft uses existing submit, result, free rewrite and ow
  await u.click(await screen.findByRole('button',{name:'첨삭 진행하기'}));
  await waitFor(()=>expect(state.navigate).toHaveBeenCalledWith('exam','first'));
  expect(screen.queryByText('First summary')).toBeNull();
- expect(screen.getByRole('link',{name:'나의 첨삭 기록 →'})).toHaveAttribute('href','/my/essays');
+ expect(screen.getByRole('link',{name:'나의 첨삭 기록 확인 →'})).toHaveAttribute('href','/my/essays');
  first.unmount();
  render(<EssayExamSubmit exam={exam} included={['q2']} cycle={{parentId:'first'}} drafts={{q2:{body:'Rewritten synthetic answer',revision:2,images:false,saved:true}}}/>);
  await u.click(await screen.findByRole('button',{name:'무료 재첨삭 요청'}));

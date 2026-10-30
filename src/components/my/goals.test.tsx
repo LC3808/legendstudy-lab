@@ -8,7 +8,7 @@ it('shows saved target and only opens inputs on change, returning to summary on 
  const user=userEvent.setup();const save=vi.fn().mockResolvedValue(true);
  const view=render(<TargetEditor target={target} busy={false} save={save}/>);
  expect(screen.getByText('경영학과')).toBeInTheDocument();expect(screen.queryByRole('textbox')).toBeNull();
- await user.click(screen.getByRole('button',{name:'변경'}));
+ await user.click(screen.getByLabelText('서울대학교 관리'));await user.click(screen.getByRole('button',{name:'관심 대학 변경'}));
  await user.clear(screen.getByRole('textbox'));await user.type(screen.getByRole('textbox'),'경제학과');
  await user.click(screen.getByRole('button',{name:'학과 저장'}));
  expect(save).toHaveBeenCalledWith('경제학과');
@@ -17,7 +17,7 @@ it('shows saved target and only opens inputs on change, returning to summary on 
 });
 it('keeps editing after failed save and cancel preserves saved value',async()=>{
  const user=userEvent.setup();render(<TargetEditor target={target} busy={false} save={vi.fn().mockResolvedValue(false)}/>);
- await user.click(screen.getByRole('button',{name:'변경'}));await user.clear(screen.getByRole('textbox'));
+ await user.click(screen.getByLabelText('서울대학교 관리'));await user.click(screen.getByRole('button',{name:'관심 대학 변경'}));await user.clear(screen.getByRole('textbox'));
  await user.click(screen.getByRole('button',{name:'학과 저장'}));expect(screen.getByRole('textbox')).toBeInTheDocument();
  await user.click(screen.getByRole('button',{name:'취소'}));expect(screen.getByText('경영학과')).toBeInTheDocument();
 });

@@ -12,7 +12,7 @@ it('shows one round submission surface for the selected server-mapped Math quest
  const leaf='3bab07d3-c047-53c2-89ad-9fa20ec7b3f3';
  vi.stubGlobal('fetch',vi.fn(async(url:string)=>Response.json(url.endsWith('/exam')?{ready:false}:{types:{math:true},mathQuestions:[{examId:'exam',questionId:'question',leafId:leaf}]})));
  const view=render(<ScopedExamSubmit exam={exam} questionKey="q1" drafts={{}}/>);
- expect(await screen.findByRole('region',{name:'수리논술 회차 첨삭'})).toBeInTheDocument();
+ expect(await screen.findByRole('region',{name:'사진 답안 확인'})).toBeInTheDocument();
  expect(screen.queryByRole('link',{name:'수리논술 첨삭하기'})).toBeNull();
  view.rerender(<ScopedExamSubmit exam={exam} questionKey="q2" drafts={{}}/>);
  expect(screen.queryByRole('link')).toBeNull();

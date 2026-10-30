@@ -75,7 +75,7 @@ describe("student route integration",()=>{
   const f=fixture();vi.stubGlobal("fetch",vi.fn(async()=>Response.json({status:"CONFIRMATION_REQUIRED"})));
   render(<AuthContext.Provider value={f.auth}><MathStudentRoute enabled/></AuthContext.Provider>);
   await screen.findByText("연습 문제 · 식을 계산하세요");
-  fireEvent.change(screen.getByLabelText(/답안 사진/),{target:{files:[new File(["synthetic"],"answer.png",{type:"image/png"})]}});
+  fireEvent.change(screen.getByLabelText("답안 이미지 첨부"),{target:{files:[new File(["synthetic"],"answer.png",{type:"image/png"})]}});
   fireEvent.click(screen.getByRole("button",{name:"답안 제출 · 입력 확인"}));
   const correction=await screen.findByLabelText("수정할 내용");fireEvent.change(correction,{target:{value:"x²"}});
   fireEvent.click(screen.getByRole("button",{name:"수정"}));fireEvent.click(screen.getByRole("button",{name:"확인한 답안 저장"}));

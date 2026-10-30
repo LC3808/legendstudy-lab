@@ -2,6 +2,7 @@ import {describe,it,expect} from 'vitest';
 import {sourceExams,sourceCoverage} from './source-registry';
 import registry from '@/data/essay-source-registry.json';
 import catalog from '@/data/essay-public-catalog.json';
+import assets from '@/data/essay-student-pdf-candidates.json';
 describe('reviewed source metadata and runtime boundary',()=>{
  it('connects all 21 source universities using the existing catalog identity',()=>{
   expect(sourceCoverage).toHaveLength(21);
@@ -9,7 +10,7 @@ describe('reviewed source metadata and runtime boundary',()=>{
  });
  it('does not manufacture canonical question UUIDs or turn on evaluation from metadata',()=>{
   expect(new Set(registry.exams.map(e=>e.key)).size).toBe(registry.exams.length);
-  for(const e of registry.exams){expect(e.evaluationReady).toBe(false);expect(e.sourceHashes.length).toBeGreaterThan(0);expect(e.questions.length).toBeGreaterThan(0);expect(new Set(e.questions.map(q=>q.key)).size).toBe(e.questions.length);for(const q of e.questions){if(q.dbQuestionId!==null){expect(e.sourceUniversityId).toBe('hanyang');expect(e.year).toBe(2024);expect(q.dbQuestionId).toBe('4cbe8b69-2ccc-5c4e-9e77-0644f90e2cde');}}}
+  for(const e of registry.exams){expect(e.evaluationReady).toBe(false);expect(e.sourceHashes.length).toBeGreaterThan(0);expect(e.questions.length).toBeGreaterThan(0);expect(new Set(e.questions.map(q=>q.key)).size).toBe(e.questions.length);for(const q of e.questions){if(q.dbQuestionId!==null){expect(q.dbQuestionId).toMatch(/^[0-9a-f-]{36}$/);if(q.dbQuestionId==='4cbe8b69-2ccc-5c4e-9e77-0644f90e2cde'){expect(e.sourceUniversityId).toBe('hanyang');expect(e.dbExamId).toBe('345d3caa-3438-58c3-8f80-62a6242179ec');expect('studentPdf' in q&&q.studentPdf).toBeTruthy();}else expect(assets.questions.some(a=>a.examId===e.dbExamId&&a.questionId===q.dbQuestionId&&a.verification==='VERIFIED')).toBe(true);}}}
  });
  it('retains verified mock/admission, campus, subquestion and session distinctions',()=>{
   expect(sourceExams('yonsei').find(e=>e.year===2027)?.kind).toBe('mock');

@@ -17,7 +17,7 @@ it('selects the registered mock exam, saves a local draft and blocks unreviewed 
  expect(screen.getByLabelText('학년도·시험')).toHaveValue('2027:mock');
  expect(screen.queryByRole('tablist',{name:'문항 선택'})).toBeNull();
  fireEvent.change(input,{target:{value:'합성 테스트 답안'}});
- expect(input).toHaveValue('합성 테스트 답안');expect(screen.getByRole('button',{name:'수리논술 첨삭 서비스 준비 중'})).toHaveAttribute('aria-disabled','true');
+ expect(input).toHaveValue('합성 테스트 답안');expect(await screen.findByRole('button',{name:'수리논술 첨삭 서비스 준비 중'})).toHaveAttribute('aria-disabled','true');
  expect(screen.queryByRole('button',{name:'계정 답안 확인·저장'})).toBeNull();
  expect(vi.mocked(fetch).mock.calls.every(([url,init])=>url==='/api/essay/availability'||(url==='/api/essay/exam'&&JSON.parse(String(init?.body)).action==='availability'))).toBe(true);
  expect(screen.queryByRole('link',{name:/자료 검수/})).toBeNull();
@@ -29,7 +29,7 @@ it('clears old account view and reloads public metadata on logout',async()=>{
  view.rerender(<SourceExamSelection sourceId="gachon" registeredOnly/>);
  expect(screen.queryByLabelText('문제 1 수식·텍스트 답안')).toBeNull();expect(screen.queryByRole('option',{name:'2027학년도 모의논술'})).toBeNull();
  await waitFor(()=>expect(state.load).toHaveBeenCalledTimes(2));
- expect(screen.getByRole('button',{name:'수리논술 첨삭 서비스 준비 중'})).toHaveAttribute('aria-disabled','true');
+ expect(await screen.findByRole('button',{name:'수리논술 첨삭 서비스 준비 중'})).toHaveAttribute('aria-disabled','true');
 });
 it('does not invent years/questions for Kookmin without registered records',async()=>{
  state.load.mockResolvedValue([]);render(<SourceExamSelection sourceId="kookmin" registeredOnly/>);

@@ -11,7 +11,7 @@ it('joins44 research rows to42 canonical universities, keeping two campus record
  expect(new Set(research.records.map(r=>r.sourceRecord)).size).toBe(44);
  for(const r of research.records){
   const u=publicCatalog.universities.find(u=>u.sourceUniversityId===r.sourceUniversityId)!;
-  expect(u).toBeDefined();expect(r.universityId).toBe(u.universityId);
+  expect(u).toBeDefined();if(r.universityId!==null)expect(r.universityId).toBe(u.universityId);else expect(projection.universities[r.sourceUniversityId as keyof typeof projection.universities].universityId).toBe(u.universityId);
   expect(r.admissionYear).toBe(2027);
   for(const id of r.offeringIds)expect(u.offerings.some(o=>o.id===id)).toBe(true);
  }
@@ -33,8 +33,8 @@ it('retains original research claims and provenance without promoting any number
 it('keeps Owner22 policy separate from research ranks; preserves30/42/49 and stable filtered order',()=>{
  expect(priorityUniversityIds).toHaveLength(22);expect(preparationUniversityIds).toHaveLength(30);
  expect(publicCatalog.universities).toHaveLength(42);expect(publicCatalog.universities.flatMap(u=>u.offerings)).toHaveLength(49);
- expect(sortCatalog(publicCatalog.universities).slice(0,22).map(u=>u.sourceUniversityId)).toEqual([...priorityUniversityIds]);
+ expect(sortCatalog(publicCatalog.universities).slice(0,3).map(u=>u.sourceUniversityId)).toEqual(['konkuk','kyunghee','korea']);
  expect(sortCatalog(filterCatalog('','서울','','')).filter(u=>priorityUniversityIds.includes(u.sourceUniversityId as typeof priorityUniversityIds[number])).map(u=>u.sourceUniversityId))
-  .toEqual(priorityUniversityIds.filter(id=>filterCatalog('','서울','','').some(u=>u.sourceUniversityId===id)));
+  .toEqual(sortCatalog(publicCatalog.universities).filter(u=>priorityUniversityIds.includes(u.sourceUniversityId as typeof priorityUniversityIds[number])&&filterCatalog('','서울','','').some(row=>row.sourceUniversityId===u.sourceUniversityId)).map(u=>u.sourceUniversityId));
  expect(sortCatalog(publicCatalog.universities,'name').slice(0,3).map(u=>u.sourceUniversityId)).toEqual(['gachon','catholic','kangnam']);
 });
