@@ -1,0 +1,27 @@
+/* Stored result presentation. No score, ordering or entitlement changes. */
+.evaluation-report,.evaluation-growth{min-width:0;overflow-wrap:anywhere;word-break:normal}
+.criterion-card,.comparison-card{min-width:0;border:1px solid #dce3ec;border-radius:12px;padding:18px;margin:14px 0;background:#fff}
+.criterion-card h4,.comparison-card h3,.evaluation-report .report-feedback h4{font-size:17px;font-weight:700;line-height:1.6;margin:0 0 12px;white-space:normal;overflow:visible;text-overflow:clip}
+.criterion-feedback,.criterion-original{white-space:pre-wrap;line-height:1.85;font-size:16px}
+.criterion-rating{font-weight:650;color:#8b5913}
+.criterion-card summary,.comparison-card summary{cursor:pointer;min-height:44px;padding:10px 0;color:#253e5c;font-weight:600}
+.comparison-levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+.comparison-levels>div{background:#f4f6f9;padding:12px;border-radius:8px;min-width:0}
+.comparison-levels dt{font-weight:600}.comparison-levels dd{margin:6px 0 0}
+.evaluation-report .report-sentences blockquote{background:#f2f4f6;border-left:3px solid #c9d1db;margin:0 0 16px;padding:16px;white-space:pre-wrap}
+.evaluation-report .report-sentences .report-feedback{background:#fff;padding:16px;border-radius:10px}
+.evaluation-report .rewrite-direction{background:#edf3f9;padding:16px;border-radius:8px}
+.exam-result .report-block.report-priorities{background:#fff7eb;border:1px solid #f2dfbe}
+.exam-result .report-block.report-next{background:#eff5fb;border:1px solid #d9e5f0}
+.exam-result .report-block.report-strengths{background:#f1f8f4;border:1px solid #d5e6dc}
+.exam-result .report-block.report-weaknesses{background:#fcf3f3;border:1px solid #ecd8dc}
+.exam-result .report-strengths h3,.exam-result .report-strengths h4{color:#236345}
+.exam-result .report-weaknesses h3,.exam-result .report-weaknesses h4{color:#923f4e}
+.exam-result .report-feedback p{font-size:16px;line-height:1.85}
+.exam-result-nav{flex-wrap:wrap;overflow:visible}.exam-result-nav button{flex:1 1 140px;white-space:normal}
+@media(max-width:600px){.comparison-levels{grid-template-columns:1fr}.criterion-card,.comparison-card{padding:12px}.evaluation-growth{padding:12px}.exam-result-identity{flex-wrap:wrap}}
+.essay-personal .exam-result .report-block.report-priorities{background:#fff7eb;border-color:#f2dfbe}
+.essay-personal .exam-result .report-block.report-next{background:#eff5fb;border-color:#d9e5f0}
+.essay-personal .exam-result .report-block.report-strengths{background:#f1f8f4;border-color:#d5e6dc}
+.essay-personal .exam-result .report-block.report-weaknesses{background:#fcf3f3;border-color:#ecd8dc}
+.history-detail .exam-result-nav{flex-wrap:wrap;overflow:visible}.history-detail .exam-result-nav button{flex:1 1 140px}

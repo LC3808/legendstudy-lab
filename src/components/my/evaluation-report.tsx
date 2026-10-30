@@ -1,7 +1,9 @@
 'use client';
+import {criterionDisplayName,criterionEvidence} from '@/lib/my/criterion-display';
+import './evaluation-refinement.css';
 import {GrowthBars} from './growth-bars';
 import '../essay-service.css';
-import {evaluationChangeSentence,evaluationSpeech,criterionTitle} from '@/lib/my/evaluation-presentation';
+import {evaluationChangeSentence,evaluationSpeech} from '@/lib/my/evaluation-presentation';
 import {VoiceFeedback} from './voice-feedback';
 import {changeLabels,compareReports,criterionValue,type Feedback,type Report} from '@/lib/my/evaluation-report';
 function FeedbackSection({title,items,answer,separateActions=[]}:{title:string;items:Feedback[];answer:string;separateActions?:string[]}){return <section className={`report-block ${title==='잘한 점'?'report-strengths':'report-weaknesses'}`}><h3 className="report-block__title">{title}</h3>{items.length?items.map((f,i)=><div className="report-feedback" key={i}>{f.title&&f.title!==title&&<h4>{f.title}</h4>}<p>{f.explanation}</p>{f.evidence&&answer.includes(f.evidence)&&<blockquote className="report-evidence"><span className="report-evidence__label">학생이 작성한 글</span><br/>{f.evidence}</blockquote>}{f.action&&!separateActions.includes(f.action)&&<p className="rewrite-direction"><strong>수정 방향 안내</strong><br/>{f.action}</p>}</div>):<p className="my-note">이 기록에는 해당 피드백이 저장되어 있지 않습니다.</p>}</section>;}
@@ -9,21 +11,44 @@ export function EvaluationReport({report,title,voiceType,answerLabel,before}:{be
 export function EvaluationComparison({before,after}:{before?:Report;after?:Report}){
  if(!before||!after)return null;
  const changes=compareReports(before,after);
- return <details className="my-panel evaluation-growth"><summary>최초 첨삭과 재첨삭 비교</summary>{changes?<><div className="report-comparison">{[...changes].sort((a,b)=>Number(a.direction==='UNCHANGED')-Number(b.direction==='UNCHANGED')).map(c=><details open key={c.id} className={`report-feedback report-change report-change--${c.direction.toLowerCase()}`}><summary>{criterionTitle(c.name)}{c.direction==='UNCHANGED'?' · 유지된 항목':''}</summary>{c.before.stars!==null&&c.after.stars!==null&&<><p>{evaluationChangeSentence(c.before.stars,c.after.stars)}</p><p>평가 단계: {c.before.stars}단계 → {c.after.stars}단계 (5단계 기준)</p></>}<dl><div><dt>최초</dt><dd>{criterionValue(c.before)}{c.before.stars!==null&&` · ${humanLevels[c.before.stars]}`}</dd></div><div><dt>재첨삭</dt><dd>{criterionValue(c.after)}{c.after.stars!==null&&` · ${humanLevels[c.after.stars]}`}</dd></div><div><dt>변화</dt><dd>{changeLabels[c.direction]}{c.before.stars!==null&&c.after.stars!==null&&` (${c.after.stars-c.before.stars>0?'+':''}${c.after.stars-c.before.stars})`}</dd></div></dl>{c.after.feedback&&<details open><summary>재첨삭 평가 설명</summary><p>{c.after.feedback}</p></details>}</details>)}</div><h3>성장 과정 요약</h3><GrowthBars changes={changes}/><p>{changes.filter(c=>c.direction==='IMPROVED').length}개 항목 향상 · {changes.filter(c=>c.direction==='UNCHANGED').length}개 동일 · {changes.filter(c=>c.direction==='DECLINED').length}개 하락 · {changes.filter(c=>c.direction==='UNAVAILABLE').length}개 비교 불가</p><p className="my-note">동일한 문제·평가 기준의 결과만 비교합니다. 등급 변화만으로 어떤 수정이 변화의 원인인지 단정하지 않습니다.</p></>:<p>평가 기준이 다르거나 비교에 필요한 정보가 없어 직접 비교하기 어렵습니다.</p>}</details>;
+ return <details className="my-panel evaluation-growth"><summary>최초 첨삭과 재첨삭 비교</summary>{changes?<><div className="report-comparison">{changes.map(c=><section key={c.id} className={`comparison-card report-change--${c.direction.toLowerCase()}`}>
+ <h3>{criterionDisplayName(c.name,c.id)}</h3>
+ <dl className="comparison-levels"><div><dt>최초 첨삭</dt><dd>{criterionValue(c.before)} {c.before.stars!==null&&`${c.before.stars}/5`}</dd></div><div><dt>재첨삭</dt><dd>{criterionValue(c.after)} {c.after.stars!==null&&`${c.after.stars}/5`}</dd></div><div><dt>변화</dt><dd>{c.direction==='UNCHANGED'?'변화 없음':changeLabels[c.direction]}</dd></div></dl>
+ {c.before.stars!==null&&c.after.stars!==null&&<p>{evaluationChangeSentence(c.before.stars,c.after.stars)}</p>}
+ <h4>재첨삭 평가 설명</h4><p className="criterion-feedback">{c.after.feedback||'상세 평가 설명이 제공되지 않았습니다.'}</p>
+ <details><summary>상세 평가 근거 보기</summary><p className="criterion-original">{c.name}</p></details>
+ <GrowthBars changes={[c]} hideHeading/>
+ </section>)}</div><p>{changes.filter(c=>c.direction==='IMPROVED').length}개 항목 향상 · {changes.filter(c=>c.direction==='UNCHANGED').length}개 동일 · {changes.filter(c=>c.direction==='DECLINED').length}개 하락 · {changes.filter(c=>c.direction==='UNAVAILABLE').length}개 비교 불가</p><p className="my-note">동일한 문제·평가 기준의 결과만 비교합니다. 등급 변화만으로 어떤 수정이 변화의 원인인지 단정하지 않습니다.</p></>:<p>평가 기준이 다르거나 비교에 필요한 정보가 없어 직접 비교하기 어렵습니다.</p>}</details>;
 }
 
+export function CriterionResults({report}:{report:Report}){
+ const matched=new Set<string>();
+ const cards=report.rubric.map(c=>{
+  const evidence=criterionEvidence(c,report.evidenceLabels??[]);
+  evidence.forEach(e=>matched.add(e.original));
+  const feedback=c.feedback||evidence.find(e=>e.body)?.body||'';
+  const extra=evidence.filter(e=>e.body&&e.body!==feedback);
+  return <article key={c.id||c.name} className="criterion-card">
+   <h4>{criterionDisplayName(c.name,c.id)}</h4>
+   <p className="criterion-rating" aria-label={c.stars===null?undefined:`5단계 중 ${c.stars}단계`}>{c.stars===null?'판단 어려움':humanLevels[c.stars]} {criterionValue(c)} {c.stars!==null&&`· 평가 단계 ${c.stars}/5`}</p>
+   <p className="criterion-feedback">{feedback||'상세 평가 설명이 제공되지 않았습니다.'}</p>
+   <details><summary>평가 근거 자세히 보기</summary><h5>공식 평가기준 원문</h5><p className="criterion-original">{c.name}</p>{extra.map(e=><p key={e.original}>{e.body}</p>)}</details>
+  </article>;
+ });
+ const remaining=(report.evidenceLabels??[]).filter(e=>!matched.has(e));
+ return <section className="report-block report-criteria"><h3>평가 기준별 결과</h3>{cards}{!cards.length&&<p>저장된 평가 항목이 없습니다.</p>}{remaining.length>0&&<details><summary>추가 평가 근거</summary>{remaining.map(e=><p key={e}>{e}</p>)}</details>}<p className="my-note">별은 5단계 학습 평가이며 대학의 공식 점수나 합격 가능성을 뜻하지 않습니다.</p></section>;
+}
 const humanLevels=['','크게 보완 필요','부족','보완 필요','대체로 충실','매우 충실'];
-/** Sep28 approved order and five-level presentation; no invented score or generated answer. */
 function HumanEvaluationReport({report,title,answerLabel}:{before?:Report;report:Report;title:string;answerLabel?:string}){
  return <article className="my-panel evaluation-report essay-service"><h2 className="evaluation-report__title">{title}</h2>
  <details className="report-answer"><summary>{answerLabel??'제출 답안'}</summary><p className="essay-answer">{report.answer}</p></details>
  <section className="report-block report-block--summary"><h3>종합 평가</h3><VoiceFeedback text={evaluationSpeech(report)}/><p>{report.summary||'저장된 종합 평가가 없습니다.'}</p></section>
  <FeedbackSection title="잘한 점" items={report.strengths} answer={report.answer}/>
- <section className="report-block report-criteria"><h3>평가 기준별 결과</h3>{report.rubric.map(c=><details key={c.id||c.name} className="human-criterion"><summary><span>{criterionTitle(c.name)}</span><span>{c.stars===null?'판단 어려움':humanLevels[c.stars]}</span><span aria-label={c.stars===null?undefined:`5단계 중 ${c.stars}단계`}>{criterionValue(c)}{c.stars!==null&&` · 평가 단계 ${c.stars}/5`}</span></summary>{c.feedback&&<p className="criterion-feedback">{c.feedback}</p>}</details>)}{!report.rubric.length&&<p>저장된 평가 항목이 없습니다.</p>}<p className="my-note">별은 5단계 학습 평가이며 대학의 공식 점수나 합격 가능성을 뜻하지 않습니다.</p></section>
- {report.sentences?.length?<section className="report-block report-sentences"><h3>문장 다듬기</h3>{report.sentences.map((s,i)=><article className="report-feedback" key={i}><h4>학생이 작성한 글</h4><blockquote>{s.quote}</blockquote><h4>평가</h4><p>{s.diagnosis}</p><div className="rewrite-direction"><h4>수정 방향 안내</h4><p>{s.direction}</p></div></article>)}</section>:null}
+ <CriterionResults report={report}/>
+ {report.sentences?.length?<section className="report-block report-sentences"><h3>문장 다듬기</h3>{report.sentences.map((s,i)=><article className="report-feedback" key={i}><h4><span aria-hidden="true">✎ </span>학생이 작성한 글</h4><blockquote>{s.quote}</blockquote><h4><span aria-hidden="true">▤ </span>평가</h4><p>{s.diagnosis}</p><div className="rewrite-direction"><h4><span aria-hidden="true">→ </span>수정 방향</h4><p>{s.direction}</p></div></article>)}</section>:null}
  <FeedbackSection title="보완할 점" items={report.weaknesses} answer={report.answer} separateActions={report.actions}/>
  {report.actions.length>0&&<section className="report-block report-priorities"><h3>우선 수정할 부분</h3>{report.actions.length?<ul>{report.actions.map((a,i)=><li key={i}>{a}</li>)}</ul>:<p>별도로 지정된 우선 수정 과제가 없습니다.</p>}</section>}
  {report.nextSteps.some(step=>!report.actions.includes(step))&&<section className="report-block report-next"><h3>재작성 안내</h3><ul>{report.nextSteps.filter(step=>!report.actions.includes(step)).map((a,i)=><li key={i}>{a}</li>)}</ul><p>잘 표현한 부분은 살리고, 조언을 참고해 직접 다시 써보세요.</p></section>}
- <section className="report-block report-evidence-section"><h3>평가 근거</h3>{report.evidenceLabels?.length?<ul>{report.evidenceLabels.map(s=><li key={s}><strong className="criterion-label">{criterionTitle(s.split(" — ")[0])}</strong><p className="criterion-feedback">{s.split(" — ").slice(1).join(" — ")}</p></li>)}</ul>:<p>연결된 근거 표시가 없습니다.</p>}</section>
+
  </article>;
 }
