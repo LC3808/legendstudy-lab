@@ -11,7 +11,9 @@ export function projectCatalogDemand(research,catalog){
  }]));
  for(const r of research.records){
   const u=byId.get(r.sourceUniversityId);
-  if(!u||u.universityId!==r.universityId||r.admissionYear!==2027)throw new Error('Invalid catalog identity/year');
+  // Historical research can predate canonical linking. Resolve only its exact
+  // catalog source key; a conflicting non-null UUID must still fail closed.
+  if(!u||(r.universityId!==null&&u.universityId!==r.universityId)||r.admissionYear!==2027)throw new Error('Invalid catalog identity/year');
   if(r.offeringIds.some(id=>!u.offerings.some(o=>o.id===id)))throw new Error('Invalid campus offering');
   const out=universities[r.sourceUniversityId];out.sourceRecords.push(r.sourceRecord);
   const v=r.officialVerification;

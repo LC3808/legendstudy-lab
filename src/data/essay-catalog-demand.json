@@ -256,7 +256,7 @@
       "verifiedAt": null
     },
     "swu": {
-      "universityId": null,
+      "universityId": "eba1d65c-5bb6-5454-afd4-82a18c57262a",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-41"
@@ -461,7 +461,7 @@
       "verifiedAt": null
     },
     "kau": {
-      "universityId": null,
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-35"

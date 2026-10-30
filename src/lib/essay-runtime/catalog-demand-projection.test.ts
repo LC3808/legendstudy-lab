@@ -20,3 +20,13 @@ it('rejects mismatched canonical identities and duplicate totals',()=>{
  valid.records[0].officialVerification={status:'verified',admissionYear:2027,scope:'university_total',sourceUrl:'https://example.edu/admission',verifiedAt:'2026-10-11',applicants:10000,competitionRatio:25};
  valid.records.push(structuredClone(valid.records[0]));expect(()=>projectCatalogDemand(valid,catalog)).toThrow('Duplicate');
 });
+
+it('resolves historical null UUIDs only by exact catalog source identity without mutating research',()=>{
+ const input=structuredClone(research),before=structuredClone(input);
+ const historical=input.records.find((r:{universityId:string|null,sourceUniversityId:string})=>r.universityId===null&&catalog.universities.some((u:{sourceUniversityId:string,universityId:string|null})=>u.sourceUniversityId===r.sourceUniversityId&&u.universityId));
+ expect(historical).toBeDefined();
+ const current=catalog.universities.find((u:{sourceUniversityId:string})=>u.sourceUniversityId===historical.sourceUniversityId);
+ expect(projectCatalogDemand(input,catalog).universities[historical.sourceUniversityId].universityId).toBe(current.universityId);
+ expect(input).toEqual(before);
+ historical.sourceUniversityId='missing-source';expect(()=>projectCatalogDemand(input,catalog)).toThrow('identity');
+});
