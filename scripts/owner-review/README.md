@@ -9,7 +9,9 @@ control; it does not replace the normal result export implementation.
 The only data endpoint is GET `/api/owner-review/essay`. It validates the caller
 with Auth, requires the existing `admin_operator()` RPC to return exactly true,
 and calls the existing owner-scoped `essay_exam_history(p_run)` with the same
-caller token. No service-role key, new SQL or privileged query is used. The list
+caller token. No service-role key, new SQL or privileged query is used. Upstream redirects use
+`manual` (Cloudflare fetch does not support `error`) and never follow another host.
+Account changes clear results and invalidate pending reads. The list
 shows the existing RPC's latest 50 runs; completed exam results and their stored
 parent can be inspected. It is not a synthetic fixture viewer or a submission UI.
 
