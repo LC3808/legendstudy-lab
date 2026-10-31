@@ -21,3 +21,12 @@ it('does not offer free rewrite without explicit server eligibility',()=>{
  expect(button.disabled).toBe(true);fireEvent.click(button);expect(rewrite).not.toHaveBeenCalled();
  fireEvent.click(screen.getByRole('button',{name:'제출 답안'}));expect(screen.getByText('저장된 답안')).toBeTruthy();
 });
+it('final rewrite CTA uses server entitlement and never submits an evaluation',()=>{
+ const rewrite=vi.fn(),additional=vi.fn();
+ const {rerender}=render(<ExamResultLayout row={row} run={{free_rewrite_available:false,continuous_cycles_supported:true}} reports={[report('run/a')]} previous={[]} onRewrite={rewrite} onAdditional={additional}/>);
+ const final=screen.getByRole('button',{name:'답안 다시 작성하기 · 무료 재첨삭'});
+ expect(final).toBeDisabled();fireEvent.click(final);expect(rewrite).not.toHaveBeenCalled();
+ rerender(<ExamResultLayout row={row} run={{free_rewrite_available:true}} reports={[report('run/a')]} previous={[]} onRewrite={rewrite} onAdditional={additional}/>);
+ fireEvent.click(screen.getByRole('button',{name:'답안 다시 작성하기 · 무료 재첨삭'}));
+ expect(rewrite).toHaveBeenCalledTimes(1);expect(additional).not.toHaveBeenCalled();
+});

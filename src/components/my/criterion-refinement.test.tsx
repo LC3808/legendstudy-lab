@@ -6,11 +6,12 @@ import {criterionDisplayName} from '@/lib/my/criterion-display';
 import type {Report} from '@/lib/my/evaluation-report';
 afterEach(cleanup);
 const base:Report={id:'a',answer:'',question:'q',summary:'',rubric:[{id:'c',name:'공식 원문',stars:4,value:'',feedback:'저장된 설명'}],strengths:[],weaknesses:[],actions:[],nextSteps:[],pins:['q','v1'],priorId:null,evidenceLabels:['공식 원문 — 저장된 설명']};
-it('renders shared explanation once, retains distinct and unmatched evidence',()=>{
+it('renders shared explanation once, retains distinct matched evidence without exposing raw unmatched sources',()=>{
  render(<CriterionResults report={{...base,evidenceLabels:[...base.evidenceLabels!,'공식 원문 — 별도 근거','다른 출처']}}/>);
  expect(screen.getAllByText('저장된 설명')).toHaveLength(1);
- expect(screen.getByText('별도 근거')).toBeTruthy();expect(screen.getByText('다른 출처')).toBeTruthy();
- expect(screen.getByText('공식 채점기준 자세히 보기').closest('details')).not.toHaveAttribute('open');
+ expect(screen.getByText('별도 근거')).toBeTruthy();expect(screen.queryByText('다른 출처')).toBeNull();
+ expect(base.evidenceLabels).toEqual(['공식 원문 — 저장된 설명']);
+ expect(screen.queryByText('공식 채점기준 자세히 보기')).toBeNull();
 });
 it('uses exact-label evidence fallback and honestly marks missing explanations',()=>{
  render(<CriterionResults report={{...base,rubric:[{...base.rubric[0],feedback:''},{id:'missing',name:'다른 기준',stars:2,value:'',feedback:''}]}}/>);

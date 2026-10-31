@@ -10,10 +10,14 @@
 .exam-result .voice-feedback .my-actions{gap:6px;align-items:center}.exam-result .voice-feedback button{padding:6px 10px;min-height:34px;font-size:.85rem}.exam-result .voice-feedback select{padding:4px;min-height:32px}.exam-result .voice-feedback label{font-size:.8rem}.exam-result .voice-feedback p:empty{display:none}
 .exam-result-sidebar section{background:#fff;border:1px solid #e1e7ee;border-radius:16px;padding:20px;margin-bottom:16px}.exam-result-sidebar h2{font-size:1.1rem;margin:0 0 14px}.exam-result-sidebar dl{margin:0}.exam-result-sidebar dl>div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #edf0f4;padding:10px 0;font-size:.85rem}.exam-result-sidebar dd{margin:0;text-align:right}.exam-result-sidebar .button,.exam-result-sidebar .essay-history-button{display:block;text-align:center;margin:10px 0;width:100%;white-space:normal}.exam-result-answer{padding:20px}.exam-result .essay-answer{white-space:pre-wrap;overflow-wrap:anywhere}
 .exam-result:not([data-view="questions"]) .evaluation-report>details.report-answer{display:none}
-.exam-result[data-view="summary"] .evaluation-report>section:not(.report-block--summary):not(.report-strengths):not(.report-weaknesses):not(.report-priorities){display:none}
-.exam-result[data-view="criteria"] .evaluation-report>section:not(.report-criteria):not(.report-evidence-section){display:none}
 .exam-result[data-view="feedback"] .evaluation-report>section:not(.report-strengths):not(.report-weaknesses):not(.report-sentences){display:none}
-.exam-result[data-view="rewrite"] .evaluation-report>section:not(.report-priorities):not(.report-next){display:none}
 @media(max-width:760px){.exam-result-columns{grid-template-columns:1fr}.exam-result-hero{padding:18px}.exam-result-identity{gap:12px;align-items:flex-start}.exam-result-identity .university-logo{max-width:96px;height:48px}.exam-result-identity h1{font-size:1.3rem}.exam-result-identity h2{font-size:1rem}.exam-result .evaluation-report{padding:12px}.exam-result .report-block{padding:12px}.exam-result-nav button{padding:10px 12px}.exam-result-question-head{padding:12px}.exam-result-sidebar{display:grid;gap:12px}.exam-result-sidebar section{margin:0}}
 
 .exam-result-meta .essay-history-badge{color:var(--result-accent);border-color:var(--result-accent);background:#fff;font-weight:700}
+.exam-result[data-view="criteria"] .evaluation-report>section:not(.report-guide){display:none}
+.exam-result[data-view="rewrite"] .evaluation-report>section:not(.report-guide){display:none}
+.exam-result:not([data-view="summary"]):not([data-view="questions"]) .report-dimensions{display:none}
+.report-guide{background:#fff8ec!important;border:1px solid #eadab9!important}
+.report-rewrite-cta{padding:20px;border:1px solid #dce3ec;border-radius:14px;background:#f3f6fa;margin-top:20px}
+.report-rewrite-cta button{margin:8px 12px 8px 0;white-space:normal}
+.report-dimensions>summary{padding:16px;font-weight:600;cursor:pointer;min-height:44px}
