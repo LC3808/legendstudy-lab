@@ -9,6 +9,7 @@ type AuthEnvironment = {
   providers?: string;
   approvedPreviewOrigin?: string;
   approvedPreviewSupabaseUrl?: string;
+  localQaEnabled?: string;
 };
 
 export type BrowserAuthConfig = {
@@ -41,6 +42,7 @@ export function getBrowserAuthConfig(
     providers: process.env.NEXT_PUBLIC_SUPABASE_AUTH_PROVIDERS,
     approvedPreviewOrigin: process.env.NEXT_PUBLIC_AUTH_PREVIEW_ORIGIN,
     approvedPreviewSupabaseUrl: process.env.NEXT_PUBLIC_AUTH_PREVIEW_SUPABASE_URL,
+    localQaEnabled: process.env.NEXT_PUBLIC_LOCAL_QA_ENABLED,
   },
   origin: string | undefined = typeof window === "undefined" ? undefined : window.location.origin,
 ): BrowserAuthConfig | null {
@@ -55,7 +57,13 @@ export function getBrowserAuthConfig(
     && /^https:\/\/[a-z0-9]+\.supabase\.co$/.test(previewUrl)
     && previewUrl !== legendStudySupabaseUrl && url === previewUrl;
 
-  if ((!production && !preview) || !publishableKey || !/^sb_publishable_[A-Za-z0-9_-]+$/.test(publishableKey)) {
+  // Explicit synthetic QA build only. Neither a production origin nor a remote
+  // database can enter this branch; query strings/storage cannot opt in.
+  const localQa = environment.localQaEnabled === "true"
+    && origin === "http://127.0.0.1:4308"
+    && url === "http://127.0.0.1:54321";
+
+  if ((!production && !preview && !localQa) || !publishableKey || !/^sb_publishable_[A-Za-z0-9_-]+$/.test(publishableKey)) {
     return null;
   }
 

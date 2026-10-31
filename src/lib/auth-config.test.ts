@@ -32,3 +32,12 @@ it("admits only the build-approved Preview pair", () => {
   expect(getBrowserAuthConfig({...preview, approvedPreviewSupabaseUrl: legendStudySupabaseUrl, url: legendStudySupabaseUrl}, preview.approvedPreviewOrigin)).toBeNull();
   expect(getBrowserAuthConfig({...preview, approvedPreviewOrigin: undefined}, preview.approvedPreviewOrigin)).toBeNull();
 });
+
+it("isolates the explicitly enabled loopback QA build from production and remote hosts", () => {
+  const local = {url: "http://127.0.0.1:54321", publishableKey: "sb_publishable_local", localQaEnabled: "true"};
+  expect(getBrowserAuthConfig(local, "http://127.0.0.1:4308")?.url).toBe(local.url);
+  expect(getBrowserAuthConfig({...local, localQaEnabled: undefined}, "http://127.0.0.1:4308")).toBeNull();
+  for (const origin of ["https://lab.legendstudy.com", "http://localhost:4308", "http://127.0.0.1:4309", "https://evil.pages.dev"])
+    expect(getBrowserAuthConfig(local, origin)).toBeNull();
+  expect(getBrowserAuthConfig({...local, url: legendStudySupabaseUrl}, "http://127.0.0.1:4308")).toBeNull();
+});

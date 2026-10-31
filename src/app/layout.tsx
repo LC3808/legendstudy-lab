@@ -20,7 +20,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="ko">
       <body>
-        <AuthProvider><SiteShell>{children}</SiteShell></AuthProvider>
+        <AuthProvider>{process.env.NEXT_PUBLIC_LOCAL_QA_ENABLED === "true" && <aside role="note" style={{padding: 12, background: "#fff3d6", color: "#1c2948", textAlign: "center"}}>격리 검수 환경 · 합성 데이터 · 운영 평가 및 결제 불가</aside>}<SiteShell>{children}</SiteShell></AuthProvider>
       </body>
     </html>
   );
