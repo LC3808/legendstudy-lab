@@ -1,4 +1,6 @@
 'use client';
+import {logAnalytics} from '@/lib/analytics/client';
+import {analyticsEvents as AE} from '@/lib/analytics/events';
 import Link from 'next/link';
 import {GrowthBars} from './growth-bars';
 import {useEffect,useState} from 'react';
@@ -21,6 +23,7 @@ export async function readEssayGrowth(client:SupabaseClient,owner:string){
  return growthHistory(entries);
 }
 export function EssayGrowth({compact=false}:{compact?:boolean}={}){
+ useEffect(()=>{logAnalytics(AE.essayGrowthView,{screen:'essay_growth'},'growth_view');},[]);
  const [now]=useState(()=>Date.now());
  const [period,setPeriod]=useState('all'),[selected,setSelected]=useState('');
  const result=useOwnerData(readEssayGrowth,true);

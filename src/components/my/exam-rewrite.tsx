@@ -1,4 +1,6 @@
 'use client';
+import {logAnalytics} from '@/lib/analytics/client';
+import {analyticsEvents as AE} from '@/lib/analytics/events';
 import {useCallback,useEffect,useState} from 'react';
 import {useAuth} from '../auth-context';
 import {SourceExamWriter} from '../source-exam-writer';
@@ -34,6 +36,7 @@ export function ExamRewrite({runId,additional}:{runId:string;additional:boolean}
   const exam=exams.find(e=>e.dbExamId===runs[0].exam_id);if(!exam || !(runs[0].question_ids as string[]).every(id=>exam.questions.some(q=>q.dbQuestionId===id)))throw Error();
   if(live)setState({exam,run:runs[0]});
  })().catch(()=>{if(live)setError(true);});return()=>{live=false;};},[auth.client,auth.user,runId]);
+ useEffect(()=>{if(state)logAnalytics(AE.essayRewriteStart,{source:additional?'paid_followup':'included'},runId);},[state,additional,runId]);
  if(error)return <p>기존 시험과 답안을 불러오지 못했어요. 다시 열어 주세요.</p>;
  if(!state||!auth.user)return <p>시험과 작성 중인 답안을 확인하고 있어요.</p>;
  const {exam,run}=state;const questions=exam.questions.filter(q=>(run.question_ids as string[]).includes(q.dbQuestionId??''));

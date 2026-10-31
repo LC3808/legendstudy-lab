@@ -1,4 +1,6 @@
 'use client';
+import {logAnalytics} from '@/lib/analytics/client';
+import {analyticsEvents as AE} from '@/lib/analytics/events';
 import {ExamResultLayout} from './exam-result-layout';
 import {EssayGrowth} from './essay-history-growth';
 import {essayResultHref} from '@/lib/my/essay-result-route';
@@ -9,7 +11,7 @@ import {EssaySessionProgress} from './essay-session-progress';
 import {ExamRewrite} from './exam-rewrite';
 import {readExamReports,examQuestionLabel} from '@/lib/my/exam-history';
 import Link from 'next/link';
-import {useCallback,useState} from 'react';
+import {useCallback,useEffect,useState} from 'react';
 import {OwnerArea,useOwnerData,DataStatus,dateLabel} from './owner-data';
 import {EvaluationReport,EvaluationComparison} from './evaluation-report';
 import {humanReport,mathReport} from '@/lib/my/evaluation-report';
@@ -35,6 +37,7 @@ function PersonalContent(){
 }
 
 export function RecordDetail({row}:{row:RecordItem}){
+ useEffect(()=>{logAnalytics(AE.essayResultView,{source:row.source},row.source+':'+row.id);},[row.source,row.id]);
  return row.source==='exam'?<ExamDetail row={row}/>:row.source==='essay'?<HumanDetail row={row}/>:row.mathSession?<MathRoundDetail row={row}/>:<MathDetail row={row}/>;
 }
 function HumanDetail({row}:{row:RecordItem}){
@@ -71,6 +74,7 @@ function MathDetail({row}:{row:RecordItem}){
 function ExamDetail({row}:{row:RecordItem}){
  const [writing,setWriting]=useState<'free'|'paid'|null>(null);
  const load=useCallback((c:SupabaseClient,o:string)=>readExamReports(c,o,row.id),[row.id]);const data=useOwnerData(load);
+ useEffect(()=>{const run=data.data?.run;if(run?.state==='completed'&&run.parent_id)logAnalytics(AE.essayRewriteCompleted,{status:'completed',source:'client_observation'},row.id);},[data.data,row.id]);
  if(!data.data)return <DataStatus error={data.error} reload={data.reload}/>;
  if(!data.data.current.length)return <EssaySessionProgress key={row.id} runId={row.id} onComplete={data.reload}/>;
  if(writing)return <><button onClick={()=>setWriting(null)}>결과로 돌아가기</button><ExamRewrite runId={row.id} additional={writing==='paid'}/></>;

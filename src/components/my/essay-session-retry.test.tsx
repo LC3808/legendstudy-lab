@@ -2,7 +2,8 @@
 import {cleanup,render,screen,fireEvent,act} from '@testing-library/react';
 import {afterEach,expect,it,vi} from 'vitest';
 import {EssaySessionProgress} from './essay-session-progress';
-const f=vi.hoisted(()=>({reload:vi.fn(),data:{state:'reserved',exam_id:'exam',retry_allowed:true,questions:[{question_id:'q1',state:'completed'},{question_id:'q2',state:'failed'}]}}));
+const f=vi.hoisted(()=>({reload:vi.fn(),analytics:vi.fn(),data:{state:'reserved',exam_id:'exam',retry_allowed:true,questions:[{question_id:'q1',state:'completed'},{question_id:'q2',state:'failed'}]}}));
+vi.mock('@/lib/analytics/client',()=>({logAnalytics:f.analytics}));
 vi.mock('./owner-data',()=>({useOwnerData:()=>({data:f.data,reload:f.reload}),DataStatus:()=>null}));
 vi.mock('../auth-context',()=>({useAuth:()=>({user:{id:'owner'},client:{auth:{getSession:async()=>({data:{session:{user:{id:'owner'},access_token:'test'}}})}}})}));
 afterEach(()=>{cleanup();vi.unstubAllGlobals();});
@@ -14,5 +15,5 @@ it('opens progress on retry, retains the run and sends no new paid request',asyn
  expect(screen.getByRole('button',{name:'재처리 요청 중…'})).toBeDisabled();
  expect(JSON.parse(String(fetcher.mock.calls[0][1].body))).toMatchObject({action:'retry',runId:'existing-run',examId:'exam'});
  await act(async()=>resolve(new Response('{}',{status:200})));
- expect(f.reload).toHaveBeenCalled();expect(fetcher).toHaveBeenCalledTimes(1);
+ expect(f.reload).toHaveBeenCalled();expect(fetcher).toHaveBeenCalledTimes(1);expect(f.analytics.mock.calls.filter(c=>c[0]==='essay_retry_requested')).toHaveLength(1);expect(JSON.stringify(f.analytics.mock.calls)).not.toContain('access_token');
 });

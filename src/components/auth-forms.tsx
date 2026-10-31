@@ -1,4 +1,6 @@
 "use client";
+import {logAnalytics} from '@/lib/analytics/client';
+import {analyticsEvents as AE} from '@/lib/analytics/events';
 
 import { startKakaoLogin } from "@/lib/kakao-oidc";
 import Image from "next/image";
@@ -118,6 +120,7 @@ function AuthFormContent({ mode }: { mode: AuthFormMode }) {
     }
     if (!auth.client) return;
 
+    if(mode==='login'||mode==='signup')logAnalytics(mode==='login'?AE.login:AE.signUp,{source:'email',status:'started'});
     setSubmitting(true);
     try {
       if (mode === "login") {
@@ -162,6 +165,7 @@ function AuthFormContent({ mode }: { mode: AuthFormMode }) {
   const signInWithProvider = async (provider: SocialProvider) => {
     if (!auth.client || submitting) return;
     setError(null);
+    logAnalytics(AE.login,{source:provider,status:'started'});
     setSubmitting(true);
     try {
       if (provider === "kakao") {

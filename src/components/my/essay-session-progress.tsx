@@ -1,4 +1,6 @@
 'use client';
+import {logAnalytics} from '@/lib/analytics/client';
+import {analyticsEvents as AE} from '@/lib/analytics/events';
 import {allQuestionsCompleted} from '@/lib/my/essay-result-route';
 import {EssayProgressDialog} from '../essay-progress-dialog';
 import {useCallback,useEffect,useRef,useState} from 'react';
@@ -17,12 +19,15 @@ export function EssaySessionProgress({runId,onComplete,presentation,hidden=false
   const {data,error}=await client.rpc('essay_exam_session_status',{p_run:runId});
   await assertOwner(client,owner);
   if(error||data?.version!=='exam-session-v1'||data.run_id!==runId||!Array.isArray(data.questions))throw Error('READ_FAILED');
+  logAnalytics(AE.essayProcessingView,{status:'observed'},runId);
+  if(data.state==='completed'||data.state==='failed')logAnalytics(data.state==='completed'?AE.essayCompleted:AE.essayFailed,{status:data.state,source:'client_observation'},runId+':'+data.state);
   return data as Progress;
  },[runId]);
  const result=useOwnerData(load),reload=result.reload;
  useEffect(()=>{if(result.data&&allQuestionsCompleted(result.data.state,result.data.questions)){if(completedRun.current!==runId){completedRun.current=runId;onComplete();}return;}const timer=setInterval(reload,10000);return()=>clearInterval(timer);},[result.data,onComplete,reload,runId]);
  async function retry(){
   if(!auth.client||!auth.user||!result.data?.retry_allowed||retryLock.current)return;
+  logAnalytics(AE.essayRetryRequested,{source:'history',status:'started'});
   retryLock.current=true;setBusy(true);setRetryDialog(true);setNotice('재처리 요청을 접수하고 있습니다.');key.current??=crypto.randomUUID();
   try{
    const {data}=await auth.client.auth.getSession();if(data.session?.user.id!==auth.user.id)throw Error('OWNER_CHANGED');

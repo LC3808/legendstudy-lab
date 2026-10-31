@@ -1,4 +1,6 @@
 'use client';
+import {logAnalytics} from '@/lib/analytics/client';
+import {analyticsEvents as AE} from '@/lib/analytics/events';
 import {parseCreditSource,creditSourceLabels,type CreditSource} from '@/lib/essay-runtime/credit-source';
 import {useEssayDraftSession,scopedDraftKey} from './essay-draft-session';
 import {essayRestMessages} from './essay-progress-dialog';
@@ -96,10 +98,12 @@ export function EssayExamSubmit({exam,included,drafts,cycle,mathQuestions=[],inp
    pending??={fingerprint,key:crypto.randomUUID(),answers,...(source?{expectedGrant:source.grant_id}:{})};
    savePending(temporaryDraftStore,legacyStorage,pending);
    const started=Date.now();
+   logAnalytics(parentId?AE.essayRewriteSubmit:AE.essaySubmitStart,{is_free:!!parentId,question_count:answers.length,status:'started'},pending.key);
    const response=await fetch('/api/essay/exam',{method:'POST',headers:{Authorization:`Bearer ${await credential()}`,'Content-Type':'application/json'},signal:AbortSignal.timeout(100000),body:JSON.stringify({action:'submit',examId:exam.dbExamId,key:pending.key,answers:pending.answers,...(pending.expectedGrant!==undefined?{expectedGrant:pending.expectedGrant}:{}),parentId:parentId||null,previousPaidRunId:cycle?.previousPaidRunId}),cache:'no-store'});
    const data=await response.json();
-   if(!response.ok){if(response.status===402||response.status===422||['CREDIT_SOURCE_CHANGED','CREDIT_SOURCE_CONFIRMATION_REQUIRED'].includes(data.code)){temporaryDraftStore.write(requestStorage,'null');}throw Error(data.code);}
+   if(!response.ok){logAnalytics(AE.essaySubmitRejected,{status:'rejected',error_type:`http_${response.status}`},pending.key);if(response.status===402||response.status===422||['CREDIT_SOURCE_CHANGED','CREDIT_SOURCE_CONFIRMATION_REQUIRED'].includes(data.code)){temporaryDraftStore.write(requestStorage,'null');}throw Error(data.code);}
    if(typeof data.runId!=='string'||!data.runId)throw Error('STATUS_UNKNOWN');
+   logAnalytics(AE.essaySubmitAccepted,{is_free:!!parentId,question_count:answers.length,status:'accepted'},pending.key);
    const receipt={id:data.runId,owner:owner!,examId:exam.dbExamId!,scope:requestStorage,started};
    autoOpen.current=true;setWatching(true);setAccepted(receipt);setShowProgress(true);
    try{temporaryDraftStore.write(requestStorage+':accepted',JSON.stringify(receipt));}catch{/* History restores the accepted run even if browser storage is full. */}
