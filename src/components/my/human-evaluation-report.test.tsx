@@ -9,7 +9,7 @@ it('preserves approved human result order and collapsed five-level/details/examp
  const {container}=render(<EvaluationReport title="최초 첨삭" voiceType="humanities_social" report={humanReport(raw,'자료를 비교했다.','',attempt)}/>);
  expect([...container.querySelectorAll('article > section > h3')].map(e=>e.textContent)).toEqual(['종합 평가','잘한 점','평가 기준별 결과','보완할 점','우선 수정할 부분','재작성 안내']);
  expect(screen.getByLabelText('5단계 중 3단계')).toHaveTextContent('★★★☆☆');
- expect(screen.getByText('평가 근거 자세히 보기').closest('details')).not.toHaveAttribute('open');
+ expect(screen.getByText('공식 채점기준 자세히 보기').closest('details')).not.toHaveAttribute('open');
  expect(screen.queryByText('첨삭을 반영한 예시 답안')).not.toBeInTheDocument();
  expect(container.querySelector('blockquote')).toHaveTextContent('자료를 비교했다.');
 });

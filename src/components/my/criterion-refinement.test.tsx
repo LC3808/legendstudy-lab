@@ -10,7 +10,7 @@ it('renders shared explanation once, retains distinct and unmatched evidence',()
  render(<CriterionResults report={{...base,evidenceLabels:[...base.evidenceLabels!,'공식 원문 — 별도 근거','다른 출처']}}/>);
  expect(screen.getAllByText('저장된 설명')).toHaveLength(1);
  expect(screen.getByText('별도 근거')).toBeTruthy();expect(screen.getByText('다른 출처')).toBeTruthy();
- expect(screen.getByText('평가 근거 자세히 보기').closest('details')).not.toHaveAttribute('open');
+ expect(screen.getByText('공식 채점기준 자세히 보기').closest('details')).not.toHaveAttribute('open');
 });
 it('uses exact-label evidence fallback and honestly marks missing explanations',()=>{
  render(<CriterionResults report={{...base,rubric:[{...base.rubric[0],feedback:''},{id:'missing',name:'다른 기준',stars:2,value:'',feedback:''}]}}/>);
@@ -19,6 +19,8 @@ it('uses exact-label evidence fallback and honestly marks missing explanations',
 it('retains long unclear originals and uses only established aliases',()=>{
  const raw='6. 평가기준 하위 채점 기준 배점 문항 '+ '복합적인 공식 기준 '.repeat(20);
  expect(criterionDisplayName(raw,'unseen')).toBe(raw);
+ expect(criterionDisplayName(raw,'unseen',1)).toBe('문항별 채점기준');
+ expect(criterionDisplayName(raw,'unseen',2)).toBe(raw);
  expect(criterionDisplayName('논리 전개와 구성이 잘 이루어졌는가','unseen')).toBe('논리·구성');
 });
 it('keeps stored equal levels and rejects incompatible comparisons',()=>{

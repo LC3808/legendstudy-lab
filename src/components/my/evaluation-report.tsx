@@ -12,11 +12,11 @@ export function EvaluationComparison({before,after}:{before?:Report;after?:Repor
  if(!before||!after)return null;
  const changes=compareReports(before,after);
  return <details className="my-panel evaluation-growth"><summary>최초 첨삭과 재첨삭 비교</summary>{changes?<><div className="report-comparison">{changes.map(c=><section key={c.id} className={`comparison-card report-change--${c.direction.toLowerCase()}`}>
- <h3>{criterionDisplayName(c.name,c.id)}</h3>
+ <h3>{criterionDisplayName(c.name,c.id,after.rubric.length)}</h3>
  <dl className="comparison-levels"><div><dt>최초 첨삭</dt><dd>{criterionValue(c.before)} {c.before.stars!==null&&`${c.before.stars}/5`}</dd></div><div><dt>재첨삭</dt><dd>{criterionValue(c.after)} {c.after.stars!==null&&`${c.after.stars}/5`}</dd></div><div><dt>변화</dt><dd>{c.direction==='UNCHANGED'?'변화 없음':changeLabels[c.direction]}</dd></div></dl>
  {c.before.stars!==null&&c.after.stars!==null&&<p>{evaluationChangeSentence(c.before.stars,c.after.stars)}</p>}
  <h4>재첨삭 평가 설명</h4><p className="criterion-feedback">{c.after.feedback||'상세 평가 설명이 제공되지 않았습니다.'}</p>
- <details><summary>상세 평가 근거 보기</summary><p className="criterion-original">{c.name}</p></details>
+ <details><summary>공식 채점기준 자세히 보기</summary><p className="criterion-original">{c.name}</p></details>
  <GrowthBars changes={[c]} hideHeading/>
  </section>)}</div><p>{changes.filter(c=>c.direction==='IMPROVED').length}개 항목 향상 · {changes.filter(c=>c.direction==='UNCHANGED').length}개 동일 · {changes.filter(c=>c.direction==='DECLINED').length}개 하락 · {changes.filter(c=>c.direction==='UNAVAILABLE').length}개 비교 불가</p><p className="my-note">동일한 문제·평가 기준의 결과만 비교합니다. 등급 변화만으로 어떤 수정이 변화의 원인인지 단정하지 않습니다.</p></>:<p>평가 기준이 다르거나 비교에 필요한 정보가 없어 직접 비교하기 어렵습니다.</p>}</details>;
 }
@@ -29,10 +29,10 @@ export function CriterionResults({report}:{report:Report}){
   const feedback=c.feedback||evidence.find(e=>e.body)?.body||'';
   const extra=evidence.filter(e=>e.body&&e.body!==feedback);
   return <article key={c.id||c.name} className="criterion-card">
-   <h4>{criterionDisplayName(c.name,c.id)}</h4>
+   <h4>{criterionDisplayName(c.name,c.id,report.rubric.length)}</h4>
    <p className="criterion-rating" aria-label={c.stars===null?undefined:`5단계 중 ${c.stars}단계`}>{c.stars===null?'판단 어려움':humanLevels[c.stars]} {criterionValue(c)} {c.stars!==null&&`· 평가 단계 ${c.stars}/5`}</p>
    <p className="criterion-feedback">{feedback||'상세 평가 설명이 제공되지 않았습니다.'}</p>
-   <details><summary>평가 근거 자세히 보기</summary><h5>공식 평가기준 원문</h5><p className="criterion-original">{c.name}</p>{extra.map(e=><p key={e.original}>{e.body}</p>)}</details>
+   <details><summary>공식 채점기준 자세히 보기</summary><h5>공식 평가기준 원문</h5><p className="criterion-original">{c.name}</p>{extra.map(e=><p key={e.original}>{e.body}</p>)}</details>
   </article>;
  });
  const remaining=(report.evidenceLabels??[]).filter(e=>!matched.has(e));
