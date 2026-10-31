@@ -1,0 +1,16 @@
+import {createRequire} from 'node:module';
+import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+const [snapshot,output,modules]=process.argv.slice(2);
+if(!snapshot||!output||!modules)throw Error('Usage: build.mjs PRIVATE_PROJECT_SNAPSHOT OUTPUT ESBUILD_MODULE_ROOT');
+const require=createRequire(import.meta.url),{build}=require(require.resolve('esbuild',{paths:[modules]}));
+const project=JSON.parse(await readFile(snapshot,'utf8')).result;
+if(project.name!=='legendstudy-lab')throw Error('Wrong project');
+const env=project.deployment_configs.production.env_vars;
+const key=env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.value;
+if(!key.startsWith('sb_publishable_')||env.NEXT_PUBLIC_SUPABASE_URL.value!=='https://stlhijzpjfgwwdgunlsd.supabase.co')throw Error('Wrong public auth config');
+await mkdir(output,{recursive:true});
+const result=await build({entryPoints:['scripts/owner-review/app.tsx'],bundle:true,outfile:path.join(output,'review.js'),format:'esm',platform:'browser',target:'es2022',minify:true,metafile:true,define:{REVIEW_KEY:JSON.stringify(key),'process.env.NODE_ENV':'"production"'},jsx:'automatic',tsconfig:'tsconfig.json'});
+await writeFile(path.join(output,'index.html'),'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Owner 검수 · LegendStudy</title><link rel="stylesheet" href="/owner-review/essay/review.css"></head><body><div id="root"></div><script type="module" src="/owner-review/essay/review.js"></script></body></html>');
+await writeFile(path.join(output,'../bundle-inputs.json'),JSON.stringify(Object.keys(result.metafile.inputs),null,2));
+console.log('Owner review bundle built; public auth configuration only.');
