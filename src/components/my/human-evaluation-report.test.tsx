@@ -7,7 +7,7 @@ const raw={id:'first',question_id:'q',session_id:'s',regime_key:'policy',contrac
 const attempt={mode:'text',question_metadata_version:'v1',conditions_snapshot:{kind:'practice'}};
 it('preserves approved human result order and collapsed five-level/details/examples',()=>{
  const {container}=render(<EvaluationReport title="최초 첨삭" voiceType="humanities_social" report={humanReport(raw,'자료를 비교했다.','',attempt)}/>);
- expect([...container.querySelectorAll('article > section > h3')].map(e=>e.textContent)).toEqual(['종합 평가','높은 평가를 위한 작성 가이드','잘한 점','보완할 점과 개선 방법','음성으로 듣기']);
+ expect([...container.querySelectorAll('article > section > h3')].map(e=>e.textContent)).toEqual(['종합 평가','높은 평가를 위한 작성 가이드','잘한 점','보완할 점과 개선 방법']);
  expect(screen.getByLabelText('5단계 중 3단계')).toHaveTextContent('★★★☆☆');
  expect(screen.queryByText('공식 채점기준 자세히 보기')).toBeNull();
  expect(container.querySelector('.report-dimensions')).not.toHaveAttribute('open');

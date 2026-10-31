@@ -6,7 +6,7 @@ import '../essay-service.css';
 import {evaluationChangeSentence,evaluationSpeech} from '@/lib/my/evaluation-presentation';
 import {VoiceFeedback} from './voice-feedback';
 import {changeLabels,compareReports,criterionValue,type Feedback,type Report} from '@/lib/my/evaluation-report';
-function FeedbackSection({title,items,answer,separateActions=[]}:{title:string;items:Feedback[];answer:string;separateActions?:string[]}){return <section className={`report-block ${title==='잘한 점'?'report-strengths':'report-weaknesses'}`}><h3 className="report-block__title">{title}</h3>{items.length?items.map((f,i)=><div className="report-feedback" key={i}>{f.title&&f.title!==title&&<h4>{f.title}</h4>}<p>{f.explanation}</p>{f.evidence&&answer.includes(f.evidence)&&<blockquote className="report-evidence"><span className="report-evidence__label">학생이 작성한 글</span><br/>{f.evidence}</blockquote>}{f.action&&!separateActions.includes(f.action)&&<p className="rewrite-direction"><strong>개선 방법</strong><br/>{f.action}</p>}</div>):<p className="my-note">이 기록에는 해당 피드백이 저장되어 있지 않습니다.</p>}</section>;}
+function FeedbackSection({title,items,answer,separateActions=[]}:{title:string;items:Feedback[];answer:string;separateActions?:string[]}){return <section className={`report-block ${title==='잘한 점'?'report-strengths':'report-weaknesses'}`}><h3 className="report-block__title">{title}</h3>{items.length?items.map((f,i)=><div className="report-feedback" key={i}><h4>{i+1}. {f.title||title}</h4><p>{f.explanation}</p>{f.evidence&&answer.includes(f.evidence)&&<blockquote className="report-evidence"><span className="report-evidence__label">학생이 작성한 글</span><br/>{f.evidence}</blockquote>}{f.action&&!separateActions.includes(f.action)&&<p className="rewrite-direction"><strong>개선 방법</strong><br/>{f.action}</p>}</div>):<p className="my-note">이 기록에는 해당 피드백이 저장되어 있지 않습니다.</p>}</section>;}
 export function EvaluationReport({report,title,voiceType,answerLabel,before}:{before?:Report;report:Report;title:string;answerLabel?:string;voiceType?:'humanities_social'|'business_economics'|'math'|'science'}){
  return <HumanEvaluationReport report={report} title={title} answerLabel={answerLabel} before={before} allowVoice={voiceType==='humanities_social'||voiceType==='business_economics'}/>;
 }
@@ -48,6 +48,7 @@ function HumanEvaluationReport({report,title,answerLabel,before,allowVoice}:{bef
  <details className="report-answer"><summary>{answerLabel??'제출 답안'}</summary><p className="essay-answer">{report.answer||'첨부 답안 · 비공개 보관'}</p></details>
  {before&&<details className="report-answer"><summary>비교 대상 · 이전 제출 답안</summary><p className="essay-answer">{before.answer||'첨부 답안 · 비공개 보관'}</p></details>}
  <section className="report-block report-block--summary"><h3>종합 평가</h3><p>{report.summary||'저장된 종합 평가가 없습니다.'}</p></section>
+ {allowVoice&&<details className="report-audio"><summary>음성으로 듣기</summary><VoiceFeedback text={evaluationSpeech(report)}/></details>}
  <section className="report-block report-guide"><h3>높은 평가를 위한 작성 가이드</h3>
  <p>이 문항에 저장된 수정 방향과 확인 항목입니다. 보완 사유와 연결된 개선 방법은 아래에서 확인하세요.</p>
  {report.actions.length>0&&<><h4>우선 개선 과제</h4><ul>{report.weaknesses.filter(f=>report.actions.includes(f.action)).map((f,i)=><li key={i}>{f.title||'보완할 점'} · 아래 개선 방법 확인</li>)}{actions.map((a,i)=><li key={'action'+i}>{a}</li>)}</ul></>}
@@ -58,6 +59,6 @@ function HumanEvaluationReport({report,title,answerLabel,before,allowVoice}:{bef
  <FeedbackSection title="보완할 점과 개선 방법" items={report.weaknesses} answer={report.answer}/>
  {report.sentences?.filter(s=>s.quote&&report.answer.includes(s.quote)).length?<section className="report-block report-sentences"><h3>문장 다듬기</h3>{report.sentences.filter(s=>s.quote&&report.answer.includes(s.quote)).map((s,i)=><article className="report-feedback" key={i}><h4>학생이 작성한 글</h4><blockquote>{s.quote}</blockquote><h4>평가</h4><p>{s.diagnosis}</p><div className="rewrite-direction"><h4>개선 방법</h4><p>{s.direction}</p>{s.example&&<><h4>수정 예시 · 학생 원문 아님</h4><p>{s.example}</p></>}</div></article>)}</section>:null}
  <details className="report-dimensions"><summary>평가 항목별 설명과 단계</summary><CriterionResults report={report}/></details>
- {allowVoice&&<section className="report-audio"><h3>음성으로 듣기</h3><VoiceFeedback text={evaluationSpeech(report)}/></section>}
+
  </article>;
 }

@@ -25,3 +25,11 @@
 .essay-personal .exam-result .report-block.report-strengths{background:#f1f8f4;border-color:#d5e6dc}
 .essay-personal .exam-result .report-block.report-weaknesses{background:#fcf3f3;border-color:#ecd8dc}
 .history-detail .exam-result-nav{flex-wrap:wrap;overflow:visible}.history-detail .exam-result-nav button{flex:1 1 140px}
+
+/* Final feedback QA: stored items remain separate, without text rewriting. */
+.evaluation-report .report-feedback{padding:16px 0;border-bottom:1px solid #dce3ec}
+.evaluation-report .report-feedback:last-child{border-bottom:0}
+.evaluation-report .report-feedback p{white-space:pre-wrap;text-align:left;line-height:1.85}
+.evaluation-report .rewrite-direction{background:#fff5e4}
+.evaluation-report .report-audio{margin:0 0 24px;padding:16px;border:1px solid #aab8ca;border-radius:14px;background:#fff8ed}
+.evaluation-report .report-audio summary{cursor:pointer;min-height:44px;font-weight:700}

@@ -19,5 +19,7 @@ for(const c of cases)it(`stored learner feedback ${c.case}: source immutable, no
  if(c.action)expect(screen.getAllByText(c.action)).toHaveLength(1);
  expect(screen.getByText(/별도로 검증된 높은 평가의 핵심 조건/)).toBeTruthy();
  expect(screen.getByLabelText(`5단계 중 ${c.level}단계`)).toBeTruthy();
+ const audio=container.querySelector('details.report-audio')!;
+ expect(audio.hasAttribute('open')).toBe(false);expect(audio.previousElementSibling?.textContent).toContain('종합 평가');expect(audio.nextElementSibling?.textContent).toContain('높은 평가를 위한 작성 가이드');
  expect(JSON.stringify(report)).toBe(original);
 });
