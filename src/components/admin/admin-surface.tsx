@@ -22,6 +22,7 @@ export type AdminNavKey =
   | "members"
   | "credit"
   | "payment"
+  | "notices"
   | "inquiries"
   | "essay"
   | "quality"
@@ -39,6 +40,7 @@ export const ADMIN_NAV: readonly NavEntry[] = [
   { key: "credit", label: "크레딧", href: "/admin/credit/" },
   { key: "payment", label: "결제", href: "/admin/payment/" },
   { key: "essay", label: "논술·수리 운영", href: "/admin/operations/" },
+  { key: "notices", label: "공지사항", href: "/admin/notices/" },
   { key: "inquiries", label: "1:1 문의", href: "/admin/inquiries/" },
   // The quality console is the existing /ql surface, imported unchanged. Its
   // own authorization (quality_operators) is what guards it; this link grants
