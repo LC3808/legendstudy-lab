@@ -36,3 +36,7 @@ pages remain on their old assets until separate Owner approval.
 
 Canonical release evidence, artifact paths and rollback instructions live in the
 APP repository's Unified Wiki (`web-safe-owner-preview-20261031.md`).
+
+## TASK05 feedback-scoped review (approval candidate)
+
+`?feedback=<uuid>` is an alternative selector (cannot coexist with `run`). After the same Auth/admin_operator gate, the endpoint calls `admin_essay_feedback_result` with caller JWT. That approved candidate RPC restricts results to the reported question, completed run and same-owner parent, omitting telemetry/private reviews. No arbitrary user selector is accepted. Normal review without feedback retains the existing own-history flow. Install candidate RPC before enabling this link; rebuild assets for release. See `wiki/essay-feedback-task05.md`.

@@ -25,6 +25,7 @@ export type AdminNavKey =
   | "beta"
   | "beta-usage"
   | "beta-failures"
+  | "essay-feedback"
   | "notices"
   | "inquiries"
   | "essay"
@@ -46,6 +47,7 @@ export const ADMIN_NAV: readonly NavEntry[] = [
   { key: "beta", label: "논술 LAB · 베타 운영", href: "/admin/beta/" },
   { key: "beta-usage", label: "무료 이용 현황", href: "/admin/beta/usage/" },
   { key: "beta-failures", label: "평가 실패·복구 내역", href: "/admin/beta/failures/" },
+  { key: "essay-feedback", label: "피드백·오류 신고", href: "/admin/essay-feedback/" },
   { key: "notices", label: "공지사항", href: "/admin/notices/" },
   { key: "inquiries", label: "1:1 문의", href: "/admin/inquiries/" },
   // The quality console is the existing /ql surface, imported unchanged. Its

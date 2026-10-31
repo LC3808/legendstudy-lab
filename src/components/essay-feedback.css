@@ -1,0 +1,6 @@
+.essay-feedback {max-width: 900px; margin: 20px auto; padding: 20px;}
+.essay-feedback fieldset {border: 0; padding: 0; min-width: 0; display: grid; gap: 16px;}
+.essay-feedback label {display: block; overflow-wrap: anywhere;}
+.essay-feedback textarea,.essay-feedback select {display: block; width: 100%; max-width: 100%; box-sizing: border-box; padding: 12px;}
+.essay-feedback input[type=radio],.essay-feedback input[type=checkbox] {margin: 12px;}
+.essay-feedback button {min-height: 44px; padding: 12px 20px;}

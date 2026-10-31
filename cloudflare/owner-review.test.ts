@@ -13,4 +13,11 @@ describe('Owner-only read preview boundary',()=>{
  it('does not substitute privileged credentials or return errors containing data',async()=>{const f=vi.fn(async()=>{throw Error('private upstream detail');});const response=await handleOwnerReview(req(),env,f);expect(response.status).toBe(502);expect(await response.text()).not.toContain('private upstream');});
  it('does not follow an upstream redirect or expose its body',async()=>{const f=vi.fn().mockResolvedValueOnce(Response.json({id:'owner'})).mockResolvedValueOnce(Response.json(true)).mockResolvedValueOnce(new Response(JSON.stringify({code:'PGRST301',message:'private detail'}),{status:302,headers:{Location:'https://other.example'}}));const response=await handleOwnerReview(req(),env,f);expect(response.status).toBe(502);expect(await response.json()).toEqual({code:'READ_UNAVAILABLE_302_PGRST301'});expect(f).toHaveBeenCalledTimes(3);});
  it('preserves owner-scoped not-found and does not attempt another read',async()=>{const f=mock({id:'owner'},true,{version:'essay-exam-history-v1',runs:[]});expect((await (await handleOwnerReview(req('?run=00000000-0000-0000-0000-000000000001'),env,f)).json()).runs).toEqual([]);expect(f).toHaveBeenCalledTimes(3);});
+ it('keeps feedback inspection admin-only and selects a single fixed RPC',async()=>{
+ const id='00000000-0000-0000-0000-000000000001';
+ const denied=mock({id:'user'},false);expect((await handleOwnerReview(req('?feedback='+id),env,denied)).status).toBe(403);expect(denied).toHaveBeenCalledTimes(2);
+ const allowed=mock({id:'owner'},true,{version:'essay-exam-history-v1',runs:[]});expect((await handleOwnerReview(req('?feedback='+id),env,allowed)).status).toBe(200);
+ expect(allowed.mock.calls[2][0]).toBe(env.NEXT_PUBLIC_SUPABASE_URL+'/rest/v1/rpc/admin_essay_feedback_result');expect(allowed.mock.calls[2][1].body).toBe(JSON.stringify({p_feedback:id}));
+ const both=mock();expect((await handleOwnerReview(req('?feedback='+id+'&run='+id),env,both)).status).toBe(400);expect(both).not.toHaveBeenCalled();
+ });
 });

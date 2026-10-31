@@ -1,0 +1,28 @@
+'use client';
+import {useState} from 'react';
+import {useAuth} from '../auth-context';
+import {bugCategories,qualityCategories} from '../essay-feedback';
+type Row={id:string;user_id:string;body:string;status:string;updated_at:string;created_at:string;kind:string;satisfaction:string;detail_category:string;evaluation_ref?:string;platform:string;app_version:string;error_code?:string;occurred_at:string};
+type Data={rows:Row[];stats:{total:number;positive:number;negative:number;bugs:number;pending:number;resolved:number};categories:Record<string,number>;actions:{actor:string;old_status:string;new_status:string;note:string;recorded_at:string}[]};
+const statuses={new:'신규',reviewing:'확인 중',resolved:'해결 완료',closed:'종료'};
+export function AdminEssayFeedback(){
+ const {client,user}=useAuth();
+ const [data,setData]=useState<Data|null>(null),[detail,setDetail]=useState<Data|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+ const [kind,setKind]=useState(''),[status,setStatus]=useState(''),[category,setCategory]=useState(''),[owner,setOwner]=useState(''),[from,setFrom]=useState(''),[to,setTo]=useState(''),[offset,setOffset]=useState(0),[note,setNote]=useState(''),[next,setNext]=useState('reviewing');
+ async function query(p:Record<string,unknown>){if(!client||!user)throw Error();const identity=user.id;const {data,error}=await client.rpc('admin_essay_feedback',{p});if(error)throw error;const current=await client.auth.getUser();if(current.data.user?.id!==identity)throw Error();return data as Data;}
+ function filters(){return {...(kind?{kind}:{}),...(status?{status}:{}),...(category?{category}:{}),...(owner?{user_id:owner}:{}),...(from?{from:new Date(from+'T00:00:00+09:00').toISOString()}:{}),...(to?{to:new Date(Date.parse(to+'T00:00:00+09:00')+86400000).toISOString()}:{} )};}
+ async function load(page=0){if(busy)return;setBusy(true);setError('');setDetail(null);try{setData(await query({...filters(),offset:page}));setOffset(page);}catch{setData(null);setError('조회할 수 없습니다. 권한과 운영 기능 적용 상태를 확인해 주세요.');}finally{setBusy(false);}}
+ async function select(id:string){setBusy(true);setDetail(null);setError('');try{const result=await query({id});setDetail(result);setNext(result.rows[0]?.status??'reviewing');setNote('');}catch{setError('상세 내용을 조회하지 못했습니다.');}finally{setBusy(false);}}
+ async function update(){const row=detail?.rows[0];if(!row||!client||busy)return;setBusy(true);setError('');try{const {error}=await client.rpc('admin_essay_feedback_update',{p_id:row.id,p_status:next,p_note:note,p_expected:row.updated_at});if(error)throw error;setDetail(await query({id:row.id}));setData(await query({...filters(),offset}));setNote('');}catch{setError('변경하지 못했습니다. 최신 기록을 다시 조회해 주세요.');}finally{setBusy(false);}}
+ const stats=data?.stats,totalRated=(stats?.positive??0)+(stats?.negative??0),row=detail?.rows[0];
+ return <div><form onSubmit={e=>{e.preventDefault();void load();}}><fieldset disabled={busy}><legend>접수 조회 · 날짜는 KST 기준</legend>
+ <label>유형<select value={kind} onChange={e=>{setKind(e.target.value);setCategory('');}}><option value="">전체</option><option value="quality">첨삭 의견</option><option value="bug">오류 신고</option></select></label>
+ <label>세부 유형<select value={category} onChange={e=>setCategory(e.target.value)}><option value="">전체</option>{Object.entries(kind==='bug'?bugCategories:qualityCategories).map(([v,l])=><option key={v} value={v}>{l}</option>)}</select></label>
+ <label>상태<select value={status} onChange={e=>setStatus(e.target.value)}><option value="">전체</option>{Object.entries(statuses).map(([v,l])=><option key={v} value={v}>{l}</option>)}</select></label>
+ <label>사용자 ID<input value={owner} onChange={e=>setOwner(e.target.value)}/></label><label>시작일<input type="date" value={from} onChange={e=>setFrom(e.target.value)}/></label><label>종료일<input type="date" value={to} onChange={e=>setTo(e.target.value)}/></label><button>조회</button></fieldset></form>
+ {error&&<p role="alert">{error}</p>}{stats&&<section><h3>선택 범위 통계</h3><p>전체 {stats.total} · 오류 {stats.bugs} · 미처리 {stats.pending} · 해결 {stats.resolved}</p><p>만족도 응답 기준 긍정 {totalRated?(stats.positive/totalRated*100).toFixed(1)+'%':'—'} · 부정 {totalRated?(stats.negative/totalRated*100).toFixed(1)+'%':'—'}</p><ul>{Object.entries(data!.categories).map(([k,n])=><li key={k}>{({...qualityCategories,...bugCategories} as Record<string,string>)[k]??'미선택'}: {n}</li>)}</ul></section>}
+ {data?.rows.map(r=><article className="admin-panel" key={r.id}><h3>{r.kind==='bug'?'오류 신고':'첨삭 의견'} · {statuses[r.status as keyof typeof statuses]}</h3><p>{r.created_at} · {r.user_id}</p><p>{r.body}</p><button disabled={busy} onClick={()=>void select(r.id)}>상세 보기</button></article>)}
+ {data&&<nav aria-label="접수 페이지"><button disabled={busy||offset===0} onClick={()=>void load(offset-25)}>이전</button><span>{Math.floor(offset/25)+1}</span><button disabled={busy||offset+25>=data.stats.total} onClick={()=>void load(offset+25)}>다음</button></nav>}
+ {row&&<section className="admin-panel"><h3>접수 상세</h3><p>{row.body}</p><p>{row.platform} · {row.app_version} · 발생 {row.occurred_at} · {row.error_code}</p>{row.evaluation_ref&&<a href={'/owner-review/essay/?feedback='+encodeURIComponent(row.id)}>기존 Owner 검수에서 관련 평가 보기</a>}<label>처리 상태<select value={next} onChange={e=>setNext(e.target.value)}>{Object.entries(statuses).map(([v,l])=><option key={v} value={v}>{l}</option>)}</select></label><label>관리자 메모<textarea maxLength={3000} value={note} onChange={e=>setNote(e.target.value)}/></label><button disabled={busy} onClick={()=>void update()}>처리 기록 저장</button><ul>{detail!.actions.map((a,i)=><li key={i}>{a.recorded_at} · {a.actor} · {a.old_status} → {a.new_status}<p>{a.note}</p></li>)}</ul></section>}
+ </div>;
+}

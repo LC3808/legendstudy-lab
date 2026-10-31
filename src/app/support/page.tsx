@@ -1,3 +1,4 @@
+import {EssayFeedback} from '@/components/essay-feedback';
 import Link from "next/link";
 
 import { BusinessInfoList, ContactList } from "@/components/business-info-block";
@@ -30,6 +31,7 @@ export default function SupportPage() {
       </p>
 
       <ContactList />
+      <EssayFeedback bugOnly />
 
       <section className="policy-section" aria-labelledby="support-refund-rules">
         <h2 id="support-refund-rules">환불 규정</h2>

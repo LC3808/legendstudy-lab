@@ -1,3 +1,4 @@
+import {EssayFeedback} from '@/components/essay-feedback';
 import type { Metadata } from "next";
 
 import { LabLanding } from "@/components/lab-landing";
@@ -10,5 +11,5 @@ export const metadata: Metadata = buildPublicMetadata(
 );
 
 export default function RootPage() {
-  return <LabLanding />;
+  return <><LabLanding /><EssayFeedback bugOnly/></>;
 }
