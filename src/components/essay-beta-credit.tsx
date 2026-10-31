@@ -3,7 +3,7 @@ import {useEffect, useState, useRef} from 'react';
 import {getBrowserAuthClient} from '@/lib/browser-auth-client';
 
 export type BetaCredit = {version:'essay-beta-credit-v2';active:false;status:'inactive'|'ended';ends_at?:string} | {
-  version:'essay-beta-credit-v2';active:true;status:'active';grant_id:string;day:string;available:number;expires_at:string;
+  version:'essay-beta-credit-v2';active:true;status:'active';grant_id:string;day:string;available:number;daily_limit?:number;expires_at:string;
   ends_at:string;campaign_id:string;policy_version:string;notice_id:string|null;notice_seen:boolean;
 };
 export function parseBetaCredit(value:unknown):BetaCredit|null {
@@ -13,21 +13,22 @@ export function parseBetaCredit(value:unknown):BetaCredit|null {
   if(v.active===false && v.status==='inactive') return {version:v.version,active:false,status:'inactive'};
   if(v.active===false && v.status==='ended' && typeof v.ends_at==='string' && Number.isFinite(Date.parse(v.ends_at))) return v as BetaCredit;
   if(v.active!==true || v.status!=='active' || typeof v.grant_id!=='string' || typeof v.day!=='string' ||
-    !Number.isInteger(v.available) || Number(v.available)<0 || Number(v.available)>1 ||
+    !Number.isInteger(v.available) || Number(v.available)<0 || !Number.isInteger(v.daily_limit??1) || Number(v.daily_limit??1)<1 || Number(v.daily_limit??1)>100 || Number(v.available)>Number(v.daily_limit??1) ||
     typeof v.expires_at!=='string' || !Number.isFinite(Date.parse(v.expires_at)) ||
     typeof v.ends_at!=='string' || !Number.isFinite(Date.parse(v.ends_at)) ||
     typeof v.campaign_id!=='string' || typeof v.policy_version!=='string' || typeof v.notice_seen!=='boolean' || (v.notice_id!==null && typeof v.notice_id!=='string')) return null;
   return v as BetaCredit;
 }
 export function betaEndDate(end:string){
+  if((Date.parse(end)+9*3600000)%86400000!==0) return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(end))+' KST';
   return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'long',day:'numeric'}).format(new Date(Date.parse(end)-1));
 }
-function BetaNotice({end,onClose}:{end:string;onClose:()=>void}){
+function BetaNotice({end,limit=1,onClose}:{end:string;limit?:number;onClose:()=>void}){
   const dialog=useRef<HTMLDialogElement>(null);
   useEffect(()=>{dialog.current?.showModal();},[]);
   return <dialog ref={dialog} aria-labelledby="beta-notice-title" onClose={onClose} style={{maxWidth:'min(32rem,calc(100vw - 32px))',borderRadius:16,padding:24}}>
     <h2 id="beta-notice-title">논술 LAB 베타 무료 이용 안내</h2>
-    <p>인문논술 베타 대상 시험에서 매일 무료 첨삭 1회를 이용할 수 있어요. 매일 00:00 KST에 갱신되며 미사용분은 이월되지 않습니다.</p>
+    <p>인문논술 베타 대상 시험에서 매일 무료 첨삭 {limit}회를 이용할 수 있어요. 매일 00:00 KST에 갱신되며 미사용분은 이월되지 않습니다.</p>
     <p>베타는 {betaEndDate(end)}까지 운영됩니다. 베타 무료 첨삭의 무료 재첨삭은 최초 완료 후 최대 14일 이내, 베타 종료 전까지 1회 가능합니다. 가입·구매 Credit의 기존 정책은 유지됩니다.</p>
     <p>사용 중 불편한 점은 기존 문의·피드백 경로로 알려주세요. 공지사항에서 안내를 다시 확인할 수 있어요.</p>
     <button className="button" onClick={()=>dialog.current?.close()}>확인</button>
@@ -102,10 +103,10 @@ export function EssayBetaCredit(){
   };
   return <>
     <aside className="content-wrap essay-credit" aria-live="polite">
-      <strong>{!state.active ? '베타 무료 첨삭 제공이 종료되었습니다.' : state.available===1 ? '오늘의 무료 첨삭 · 1회 남음' : '오늘의 무료 첨삭을 모두 사용했습니다.'}</strong>
+      <strong>{!state.active ? '베타 무료 첨삭 제공이 종료되었습니다.' : state.available>0 ? `오늘의 무료 첨삭 · ${state.available}회 남음` : '오늘의 무료 첨삭을 모두 사용했습니다.'}</strong>
       <p className="essay-credit__meta">{state.active ? `매일 00:00 KST 갱신 · 이월 없음 · ${state.available===0 && Date.parse(state.expires_at)<Date.parse(state.ends_at)?'다음 이용: 내일 00:00 KST · ':''}${betaEndDate(state.ends_at)}까지` : '가입·구매 Credit은 기존 정책대로 이용할 수 있어요.'}</p>
       <a href={state.active && state.notice_id ? `/notices/${state.notice_id}` : '/notices'}>베타 공지 다시 보기</a>
     </aside>
-    {notice && <BetaNotice end={notice.data.ends_at} onClose={closeNotice}/>}
+    {notice && <BetaNotice end={notice.data.ends_at} limit={notice.data.daily_limit} onClose={closeNotice}/>}
   </>;
 }

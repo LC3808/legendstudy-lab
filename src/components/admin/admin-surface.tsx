@@ -22,6 +22,9 @@ export type AdminNavKey =
   | "members"
   | "credit"
   | "payment"
+  | "beta"
+  | "beta-usage"
+  | "beta-failures"
   | "notices"
   | "inquiries"
   | "essay"
@@ -40,6 +43,9 @@ export const ADMIN_NAV: readonly NavEntry[] = [
   { key: "credit", label: "크레딧", href: "/admin/credit/" },
   { key: "payment", label: "결제", href: "/admin/payment/" },
   { key: "essay", label: "논술·수리 운영", href: "/admin/operations/" },
+  { key: "beta", label: "논술 LAB · 베타 운영", href: "/admin/beta/" },
+  { key: "beta-usage", label: "무료 이용 현황", href: "/admin/beta/usage/" },
+  { key: "beta-failures", label: "평가 실패·복구 내역", href: "/admin/beta/failures/" },
   { key: "notices", label: "공지사항", href: "/admin/notices/" },
   { key: "inquiries", label: "1:1 문의", href: "/admin/inquiries/" },
   // The quality console is the existing /ql surface, imported unchanged. Its
