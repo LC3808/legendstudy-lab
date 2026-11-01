@@ -1,5 +1,6 @@
 export type MetricRow = Record<string, unknown>;
 export type OperationsReport = {
+ read_only?:boolean;
  total:number;summary:MetricRow;live:MetricRow;calendar_costs:MetricRow;cost_coverage:MetricRow;
  today_credit:MetricRow[];rows:MetricRow[];costs:MetricRow[];credit_groups:MetricRow[];free_rewrite_count:number;
  legacy_costs:MetricRow[];alerts:MetricRow[];thresholds:MetricRow[];

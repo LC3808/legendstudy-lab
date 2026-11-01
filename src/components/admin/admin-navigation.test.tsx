@@ -17,7 +17,8 @@ describe('existing admin LAB routes',()=>{
   const nav=await screen.findByRole('navigation',{name:'운영 콘솔'});
   expect(within(nav).getByRole('region',{name:'베타 운영'})).toBeVisible();
   const expected=[['사용자 행동 분석','analytics'],['베타 테스트 관리','beta'],['베타 이용 현황','beta/usage'],['평가·비용 모니터링','operations'],['피드백·오류 신고','essay-feedback'],['공지사항 관리','notices']];
-  expect(within(nav).getAllByRole('link').length).toBeGreaterThan(25);
+  expect(within(nav).getAllByRole('link')).toHaveLength(30);
+  expect(nav.querySelectorAll('details[open]')).toHaveLength(6);
   for(const [label,path] of expected)expect(within(nav).getByRole('link',{name:label})).toHaveAttribute('href',`/admin/${path}`);
   expect(screen.getByRole('link',{name:'베타 이용 현황'})).toHaveAttribute('aria-current','page');
   expect(screen.getByRole('link',{name:'회원'})).toHaveAttribute('href','/admin/members');

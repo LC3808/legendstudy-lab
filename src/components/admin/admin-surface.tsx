@@ -235,11 +235,11 @@ function AdminNavigation({ active }: { active: AdminNavKey }) {
   return <nav className="admin-nav" aria-label="운영 콘솔">
     <p className="admin-nav__brand">LegendStudy 운영 콘솔</p>
     {groups.map((group) => <section className="admin-nav__group" key={group.title} aria-label={group.title}>
-      <h2 className="admin-nav__heading">{group.title}</h2>
+      <details open><summary className="admin-nav__heading">{group.title}</summary>
       <ul className="admin-nav__list">{group.entries.map((entry) => <li key={entry.key}>
         <Link className={`admin-nav__link${selected(entry) ? " admin-nav__link--active" : ""}`}
           href={entry.href!} aria-current={selected(entry) ? "page" : undefined}>{entry.label}</Link>
       </li>)}</ul>
-    </section>)}
+    </details></section>)}
   </nav>;
 }
