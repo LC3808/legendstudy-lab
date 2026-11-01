@@ -4,3 +4,8 @@
 .actions{flex-wrap:wrap;gap:12px}.actions .button{gap:12px}.store{min-width:240px}.store:hover{background:#ffffff12}.button:hover{filter:brightness(.94)}
 @media(max-width:600px){.actions{align-items:stretch;flex-direction:column}.actions .button{width:100%}.store-links{flex-direction:column;align-items:center}.store{min-width:0;width:100%;max-width:320px}.store strong{font-size:17px}}
 @media(max-width:360px){h1{font-size:34px}.brand{font-size:17px}.brand img{width:26px;height:26px}.nav-cta{padding:8px}.hero-visual{padding-inline:12px}}
+
+/* Original store artwork, ratio preserved; equal visible badge height. */
+.official-store-badge{display:inline-flex;align-items:center;flex:none;border:0;background:transparent;padding:0;min-height:48px;}
+.official-store-badge img{height:48px;width:auto;max-width:100%;object-fit:contain;}
+.store-links,.actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;}

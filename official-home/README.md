@@ -52,3 +52,10 @@ Any separately approved future direct upload must run **from `official-home/`**,
 Before approved upload, recheck current deployment ID and production branch; retain that immutable deployment. Afterwards verify the domain, both store links, LAB, original site and legal pages on desktop/mobile. If broken, use Cloudflare Pages **Rollback to this deployment** for the retained production ID. As a secondary recovery, `qa/rollback-production-4104f06d.tar.gz` was reconstructed from production source `20cf31b` with its original business authority. Its hash manifest is in `qa/rollback-verification.json`. Browser verified old production renders; raw HTTP byte comparison was blocked by 403, so the reconstruction is not claimed to be a downloaded production artifact. No rollback action was executed.
 
 Canonical detailed report: APP Unified Wiki `wiki/official-home-launch-task12.md`.
+
+### TASK12-B official store artwork follow-up
+Hero and download CTAs reuse the existing official App Store SVG and Google Play
+badge artwork from LC3808/copacabana-homepage (f9ff33c), without redrawing logos.
+Visible height 48px, original aspect ratio, wrapping on narrow screens. Existing
+store URLs and click destination/placement attributes are retained. GA4 real
+receipt remains unverified; this change adds no measurement ID.
