@@ -69,4 +69,7 @@ const worker=new FormData();worker.set('metadata',JSON.stringify({main_module:'i
 const bundle=await new Response(worker).blob();
 const form=new FormData();form.set('manifest',JSON.stringify(manifest));form.set('branch','main');form.set('commit_hash',sha);form.set('commit_message','TASK14-C refund footer navigation; policy and APIs preserved');form.set('commit_dirty','false');
 form.set('_headers',new File([headers],'_headers'));form.set('_redirects',new File([redirects],'_redirects'));form.set('_routes.json',new File([JSON.stringify(routes)],'_routes.json'));form.set('_worker.bundle',new File([bundle],'_worker.bundle'));form.set('functions-filepath-routing-config.json',new File([JSON.stringify(compiled)],'functions-filepath-routing-config.json'));
-const deployed=await api(project+'/deployments',{method:'POST',body:form});fs.writeFileSync(path.join(backup,'new-deployment.json'),JSON.stringify(deployed,null,2));console.log({deployment:deployed.id,url:deployed.url,sha});
+const serialized=new Response(form);
+const deployed=await api(project+'/deployments',{method:'POST',headers:{'Content-Type':serialized.headers.get('content-type')},body:new Uint8Array(await serialized.arrayBuffer())});
+if(deployed.environment!=='production'||deployed.deployment_trigger?.metadata?.branch!=='main')throw Error('Not a production deployment: '+deployed.id);
+fs.writeFileSync(path.join(backup,'new-deployment.json'),JSON.stringify(deployed,null,2));console.log({deployment:deployed.id,url:deployed.url,sha});
