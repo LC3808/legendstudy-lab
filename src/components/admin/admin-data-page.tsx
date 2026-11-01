@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import {AdminDataTable} from './admin-data-table';
 import {useEffect,useMemo,useState} from 'react';
 import {useAuth} from '@/components/auth-context';
 import {AdminAnalytics} from './admin-analytics';
@@ -25,7 +26,7 @@ function Learning({section}:{section:string}){
  <p>출처: Supabase 학습 원장 · 조회 시각 {new Date(current.data.as_of).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})} KST · {current.data.state}</p>
  <p>5명 미만 또는 기록이 없는 지표는 수치를 제공하지 않습니다. 이 제한은 내부 검수용이며 공개 통계 승인 기준이 아닙니다.</p>
  <div className="admin-metrics">{Object.entries(learningMetrics).filter(([k])=>section!=='study'||k.startsWith('study_')).map(([k,label])=><div className="admin-metric" key={k}><p>{label}</p><strong>{current.data!.metrics[k as keyof typeof learningMetrics]?.toLocaleString()??'미집계 / 표본 부족'}</strong></div>)}</div>
- {kinds.map(kind=><AdminPanel key={kind} title={learningDefinitions[kind as keyof typeof learningDefinitions]}>{current.data!.rows.filter(r=>r.kind===kind).length?<ul>{current.data!.rows.filter(r=>r.kind===kind).map(r=><li key={r.label}>{r.label} — 고유 학생 {r.users}명 · 기록 {r.records}건</li>)}</ul>:<p>EMPTY 또는 표본 부족 — 순위를 제공하지 않습니다.</p>}</AdminPanel>)}
+ {kinds.map(kind=><AdminPanel key={kind} title={learningDefinitions[kind as keyof typeof learningDefinitions]}>{current.data!.rows.filter(r=>r.kind===kind).length?<AdminDataTable id={'learning-'+kind} rows={current.data!.rows.filter(r=>r.kind===kind)} rowKey={r=>r.label} scope="서버에서 반환한 집계 행만 검색·정렬합니다. 최소 표본 정책은 유지합니다." columns={[{key:'label',label:'대상',value:r=>r.label},{key:'users',label:'고유 학생 수',value:r=>r.users},{key:'records',label:'기록 수',value:r=>r.records}]}/>:<p>EMPTY 또는 표본 부족 — 순위를 제공하지 않습니다.</p>}</AdminPanel>)}
  {section==='insights'&&<AdminPanel title="인사이트 DRAFT 미리보기"><p>자동 노출 OFF · 저장·승인 원장 연결 전에는 미리보기만 제공합니다.</p>{current.data.rows.filter(r=>r.kind==='saved').slice(0,1).map(r=><p key={r.label}>선택 기간에 현재 남아 있는 저장 기록 기준, {r.users}명의 학생이 「{r.label}」 자료를 저장했습니다.</p>)}<p>기간: {current.data.from} ~ {current.data.to} · 최소 표본 5 · 조회 시각과 출처는 위와 동일합니다.</p></AdminPanel>}
  </>:null}
  <AdminPanel title="집계 해석"><p>{learningDefinitions.study}</p><p>성적 분포·인과 분석·희망 대학 변경 추이·검색 횟수는 기존 데이터만으로 복원하지 않습니다. 개인별 기록은 권한이 확인된 회원 상세에서 확인하세요.</p><Link href="/admin/members/">회원 상세 / Student 360</Link></AdminPanel>
