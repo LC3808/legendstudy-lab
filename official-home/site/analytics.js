@@ -20,4 +20,3 @@ export function installHomeAnalytics(win, runtime) {
   win.document.addEventListener('click', onClick);
   return () => win.document.removeEventListener('click', onClick);
 }
-
