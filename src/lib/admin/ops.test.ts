@@ -254,3 +254,16 @@ describe("operations labels", () => {
     expect(mathRuntimeLabel()).toBe("RC READY / RUNTIME OFF");
   });
 });
+
+it("preserves omitted legacy list metrics as unknown without rejecting valid rows", () => {
+  const payload = pagePayload();
+  const { last_24h, median_processing_ms, ...summary } = payload.summary;
+  expect(last_24h).toBe(5);
+  expect(median_processing_ms).toBe(40000);
+  const parsed = parseOpsPage({ ...payload, summary });
+  expect(parsed.items).toHaveLength(1);
+  expect(parsed.summary?.total).toBe(5);
+  expect(parsed.summary?.last24h).toBeNull();
+  expect(parsed.summary?.medianProcessingMs).toBeNull();
+  expect(() => parseOpsPage({ ...payload, summary: { ...summary, last_24h: "bad" } })).toThrow(AdminError);
+});

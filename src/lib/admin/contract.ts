@@ -787,7 +787,7 @@ export type OpsListSummary = {
   failed: number | null;
   cancelled: number | null;
   invalidated: number | null;
-  last24h: number;
+  last24h: number | null;
   medianProcessingMs: number | null;
   reevaluations: number;
 };
@@ -893,7 +893,8 @@ function opsListSummary(value: unknown, path: string): OpsListSummary | null {
     failed: numOrNull(row.failed, `${path}.failed`),
     cancelled: numOrNull(row.cancelled, `${path}.cancelled`),
     invalidated: numOrNull(row.invalidated, `${path}.invalidated`),
-    last24h: num(row.last_24h, `${path}.last_24h`),
+    // The deployed list RPC predates headline-only 24-hour metrics.
+    last24h: numOrNull(row.last_24h, `${path}.last_24h`),
     medianProcessingMs: numOrNull(row.median_processing_ms, `${path}.median_processing_ms`),
     reevaluations: num(row.reevaluations, `${path}.reevaluations`),
   };
