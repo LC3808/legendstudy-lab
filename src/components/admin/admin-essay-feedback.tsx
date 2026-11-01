@@ -1,4 +1,5 @@
 'use client';
+import { describeError } from '@/lib/admin/errors';
 import {useState} from 'react';
 import {useAuth} from '../auth-context';
 import {bugCategories,qualityCategories} from '../essay-feedback';
@@ -11,8 +12,8 @@ export function AdminEssayFeedback(){
  const [kind,setKind]=useState(''),[status,setStatus]=useState(''),[category,setCategory]=useState(''),[owner,setOwner]=useState(''),[from,setFrom]=useState(''),[to,setTo]=useState(''),[offset,setOffset]=useState(0),[note,setNote]=useState(''),[next,setNext]=useState('reviewing');
  async function query(p:Record<string,unknown>){if(!client||!user)throw Error();const identity=user.id;const {data,error}=await client.rpc('admin_essay_feedback',{p});if(error)throw error;const current=await client.auth.getUser();if(current.data.user?.id!==identity)throw Error();return data as Data;}
  function filters(){return {...(kind?{kind}:{}),...(status?{status}:{}),...(category?{category}:{}),...(owner?{user_id:owner}:{}),...(from?{from:new Date(from+'T00:00:00+09:00').toISOString()}:{}),...(to?{to:new Date(Date.parse(to+'T00:00:00+09:00')+86400000).toISOString()}:{} )};}
- async function load(page=0){if(busy)return;setBusy(true);setError('');setDetail(null);try{setData(await query({...filters(),offset:page}));setOffset(page);}catch{setData(null);setError('조회할 수 없습니다. 권한과 운영 기능 적용 상태를 확인해 주세요.');}finally{setBusy(false);}}
- async function select(id:string){setBusy(true);setDetail(null);setError('');try{const result=await query({id});setDetail(result);setNext(result.rows[0]?.status??'reviewing');setNote('');}catch{setError('상세 내용을 조회하지 못했습니다.');}finally{setBusy(false);}}
+ async function load(page=0){if(busy)return;setBusy(true);setError('');setDetail(null);try{setData(await query({...filters(),offset:page}));setOffset(page);}catch(e){setData(null);setError(describeError(e));}finally{setBusy(false);}}
+ async function select(id:string){setBusy(true);setDetail(null);setError('');try{const result=await query({id});setDetail(result);setNext(result.rows[0]?.status??'reviewing');setNote('');}catch(e){setError(describeError(e));}finally{setBusy(false);}}
  async function update(){const row=detail?.rows[0];if(!row||!client||busy)return;setBusy(true);setError('');try{const {error}=await client.rpc('admin_essay_feedback_update',{p_id:row.id,p_status:next,p_note:note,p_expected:row.updated_at});if(error)throw error;setDetail(await query({id:row.id}));setData(await query({...filters(),offset}));setNote('');}catch{setError('변경하지 못했습니다. 최신 기록을 다시 조회해 주세요.');}finally{setBusy(false);}}
  const stats=data?.stats,totalRated=(stats?.positive??0)+(stats?.negative??0),row=detail?.rows[0];
  return <div><form onSubmit={e=>{e.preventDefault();void load();}}><fieldset disabled={busy}><legend>접수 조회 · 날짜는 KST 기준</legend>

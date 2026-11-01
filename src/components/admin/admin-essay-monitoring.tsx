@@ -1,4 +1,5 @@
 'use client';
+import { describeError } from '@/lib/admin/errors';
 import {useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
 import {useAuth} from '@/components/auth-context';
@@ -13,8 +14,8 @@ function Monitor(){
  useEffect(()=>{alive.current=true;return()=>{alive.current=false;};},[]);
  useEffect(()=>{let active=true;async function load(){await Promise.resolve();if(!active)return;setReport(null);setError('');if(!client||!user){setError('로그인이 필요합니다.');return;}const dates=periodBounds(filter.period,filter.from,filter.to);if(!dates){setError('조회 기간을 확인해 주세요.');return;}
  setLoading(true);try{const filters=Object.fromEntries(Object.entries(filter).filter(([k,v])=>!['period','from','to'].includes(k)&&v!==''));if(tab===3)filters.issues='true';const res=await client.rpc('admin_essay_operations',{p_from:new Date(dates.from).toISOString(),p_to:new Date(dates.to).toISOString(),p_filters:filters,p_offset:offset,p_run:run});
- if(res.error)throw Error('관리자 권한·서버 설치 상태·조회 기간(최대 93일)을 확인해 주세요.');if(active)setReport(res.data as OperationsReport);
- }catch(e){if(active)setError(e instanceof Error?e.message:'조회하지 못했습니다.');}finally{if(active)setLoading(false);}}
+ if(res.error)throw res.error;if(active)setReport(res.data as OperationsReport);
+ }catch(e){if(active)setError(describeError(e));}finally{if(active)setLoading(false);}}
  void load();return()=>{active=false;};},[client,user,filter,offset,run,refresh,tab]);
  async function estimateCosts(){if(!client||busy.current)return;busy.current=true;setChecking(true);try{const r=await client.rpc('admin_essay_operations_estimate');if(r.error)throw Error('비용 추정을 저장하지 못했습니다.');if(alive.current)setRefresh(n=>n+1);}catch(e){if(alive.current)setError(e instanceof Error?e.message:'추정 실패');}finally{busy.current=false;if(alive.current)setChecking(false);}}
  async function checkAlerts(){if(!client||busy.current)return;busy.current=true;setChecking(true);try{const r=await client.rpc('admin_essay_operations_check_alerts');if(r.error)throw Error('경고 점검에 실패했습니다. 평가 처리에는 영향이 없습니다.');if(alive.current)setRefresh(n=>n+1);}catch(e){if(alive.current)setError(e instanceof Error?e.message:'점검 실패');}finally{busy.current=false;if(alive.current)setChecking(false);}}

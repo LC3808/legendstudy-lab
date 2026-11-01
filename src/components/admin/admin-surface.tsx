@@ -18,6 +18,7 @@ import { adminErrorCopy, adminErrorKind, type AdminErrorKind } from "@/lib/admin
  */
 
 export type AdminNavKey =
+  | "analytics"
   | "dashboard"
   | "members"
   | "credit"
@@ -43,12 +44,13 @@ export const ADMIN_NAV: readonly NavEntry[] = [
   { key: "members", label: "회원", href: "/admin/members/" },
   { key: "credit", label: "크레딧", href: "/admin/credit/" },
   { key: "payment", label: "결제", href: "/admin/payment/" },
-  { key: "essay", label: "논술 LAB 운영 모니터링", href: "/admin/operations/" },
-  { key: "beta", label: "논술 LAB · 베타 운영", href: "/admin/beta/" },
-  { key: "beta-usage", label: "무료 이용 현황", href: "/admin/beta/usage/" },
+  { key: "analytics", label: "사용자 행동 분석", href: "/admin/analytics/" },
+  { key: "essay", label: "평가·비용 모니터링", href: "/admin/operations/" },
+  { key: "beta", label: "베타 테스트 관리", href: "/admin/beta/" },
+  { key: "beta-usage", label: "베타 이용 현황", href: "/admin/beta/usage/" },
   { key: "beta-failures", label: "평가 실패·복구 내역", href: "/admin/beta/failures/" },
   { key: "essay-feedback", label: "피드백·오류 신고", href: "/admin/essay-feedback/" },
-  { key: "notices", label: "공지사항", href: "/admin/notices/" },
+  { key: "notices", label: "공지사항 관리", href: "/admin/notices/" },
   { key: "inquiries", label: "1:1 문의", href: "/admin/inquiries/" },
   // The quality console is the existing /ql surface, imported unchanged. Its
   // own authorization (quality_operators) is what guards it; this link grants
@@ -230,36 +232,9 @@ export function AdminSurface({
   children: ReactNode;
 }) {
   return (
+    <AdminGate>
     <div className="admin-page content-wrap content-wrap--wide">
-      <nav className="admin-nav" aria-label="운영 콘솔">
-        <p className="admin-nav__brand">LegendStudy 운영 콘솔</p>
-        <ul className="admin-nav__list">
-          {ADMIN_NAV.map((entry) => {
-            const isActive = entry.key === active;
-            if (!entry.href) {
-              return (
-                <li key={entry.key}>
-                  <span className="admin-nav__link admin-nav__link--pending" aria-disabled="true">
-                    {entry.label}
-                    <span className="admin-nav__tag">미연결</span>
-                  </span>
-                </li>
-              );
-            }
-            return (
-              <li key={entry.key}>
-                <Link
-                  className={`admin-nav__link${isActive ? " admin-nav__link--active" : ""}`}
-                  href={entry.href}
-                  aria-current={isActive ? "page" : undefined}
-                >
-                  {entry.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+      <AdminNavigation active={active} />
 
       <div className="admin-main">
         <header className="admin-head">
@@ -267,8 +242,29 @@ export function AdminSurface({
           <h1>{title}</h1>
           {lead ? <p className="admin-head__lead">{lead}</p> : null}
         </header>
-        <AdminGate>{children}</AdminGate>
+        {children}
       </div>
     </div>
+    </AdminGate>
   );
+}
+
+const LAB_KEYS: readonly AdminNavKey[] = ["analytics", "beta", "beta-usage", "essay", "essay-feedback", "notices"];
+
+function AdminNavigation({ active }: { active: AdminNavKey }) {
+  const groups = [
+    { title: "기본 운영", entries: ADMIN_NAV.filter((entry) => !LAB_KEYS.includes(entry.key) && entry.key !== "beta-failures") },
+    { title: "논술 LAB 운영", entries: LAB_KEYS.map((key) => ADMIN_NAV.find((entry) => entry.key === key)!) },
+    { title: "관련 운영 내역", entries: ADMIN_NAV.filter((entry) => entry.key === "beta-failures") },
+  ];
+  return <nav className="admin-nav" aria-label="운영 콘솔">
+    <p className="admin-nav__brand">LegendStudy 운영 콘솔</p>
+    {groups.map((group) => <section className="admin-nav__group" key={group.title} aria-label={group.title}>
+      <h2 className="admin-nav__heading">{group.title}</h2>
+      <ul className="admin-nav__list">{group.entries.map((entry) => <li key={entry.key}>
+        <Link className={`admin-nav__link${entry.key === active ? " admin-nav__link--active" : ""}`}
+          href={entry.href!} aria-current={entry.key === active ? "page" : undefined}>{entry.label}</Link>
+      </li>)}</ul>
+    </section>)}
+  </nav>;
 }

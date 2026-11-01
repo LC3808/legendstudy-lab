@@ -737,3 +737,9 @@
 /* Compact member credit actions; grant dialog retains its existing layout. */
 .admin-credit-directory td > .admin-panel { display:inline-block; border:0; padding:0; margin:4px 0 4px 6px; box-shadow:none; background:transparent; }
 .admin-credit-directory td:last-child { min-width:180px; }
+
+/* Existing responsive navigation, grouped without duplicating routes. */
+.admin-nav__group + .admin-nav__group { margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--line); }
+.admin-nav__heading { margin: 0 0 0.5rem; font-size: 0.85rem; font-weight: 800; color: var(--ink); }
+.admin-nav__link { min-height: 44px; }
+.admin-nav__link--active:hover { background: var(--ink); color: #fff; }

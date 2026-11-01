@@ -66,7 +66,7 @@ export function mapRpcError(error: RpcErrorLike | null | undefined): AdminError 
   if (code === "PGRST202" || code === "42883" || /could not find the function|does not exist/.test(lower)) {
     return new AdminError("NOT_INSTALLED", "admin read boundary is not installed");
   }
-  if (/jwt|unauthor|not authenticated|permission denied/.test(lower)) {
+  if (/jwt|unauthor|not authenticated|permission denied|admin_required|operator_required/.test(lower)) {
     return new AdminError("UNAUTHORIZED", "operator access required");
   }
   if (/fetch|network|timeout|connection|failed to send/.test(lower)) {
@@ -111,6 +111,7 @@ export function adminErrorCopy(kind: AdminErrorKind): { title: string; body: str
  * the failure to the same bounded copy the read panels use.
  */
 export function describeError(error: unknown): string {
-  const copy = adminErrorCopy(adminErrorKind(error));
+  const kind = isAdminError(error) ? error.kind : mapRpcError(error && typeof error === "object" ? error as RpcErrorLike : null).kind;
+  const copy = adminErrorCopy(kind);
   return `${copy.title}. ${copy.body}`;
 }

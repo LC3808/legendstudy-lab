@@ -1,4 +1,5 @@
 "use client";
+import { describeError } from '@/lib/admin/errors';
 import { useEffect, useState, type FormEvent } from "react";
 import { useAuth } from "@/components/auth-context";
 import {
@@ -31,7 +32,7 @@ function Editor() {
   const [feed, setFeed] = useState<{
     key: string;
     data?: NoticeFeed;
-    error?: boolean;
+    error?: string;
   } | null>(null);
   const [draft, setDraft] = useState<NoticeInput>({ ...empty });
   const [busy, setBusy] = useState(false);
@@ -46,8 +47,8 @@ function Editor() {
         (data) => {
           if (active) setFeed({ key, data });
         },
-        () => {
-          if (active) setFeed({ key, error: true });
+        (error) => {
+          if (active) setFeed({ key, error: describeError(error) });
         },
       );
     return () => {
@@ -253,9 +254,10 @@ function Editor() {
         {!current ? (
           <p>불러오는 중…</p>
         ) : current.error ? (
-          <p role="alert">목록을 불러오지 못했습니다.</p>
+          <p role="alert">{current.error}</p>
         ) : (
           <>
+            {current.data?.items.length === 0 && <p>등록된 공지사항이 없습니다.</p>}
             {current.data?.items.map((n) => (
               <p key={n.notice_id}>
                 <button

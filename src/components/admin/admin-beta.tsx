@@ -1,4 +1,5 @@
 'use client';
+import { describeError } from '@/lib/admin/errors';
 import {useEffect,useRef,useState,type FormEvent} from 'react';
 import {useAuth} from '@/components/auth-context';
 import {betaInput, kstInput, type BetaConfig} from '@/lib/admin/beta';
@@ -19,13 +20,13 @@ function BetaContent({kind}:{kind:Kind}){
   if(!client) throw Error('로그인이 필요합니다.');
   if(kind==='settings'){
    const [c,a]=await Promise.all([client.rpc('admin_essay_beta_config'),client.rpc('admin_essay_beta_report',{p_kind:'audit'})]);
-   if(c.error||a.error) throw Error('베타 운영 권한 또는 서버 설치 상태를 확인해 주세요.');
+   if(c.error||a.error) throw (c.error||a.error);
    if(active){setCampaigns(c.data.campaigns);setAudit(a.data);}
   }else{
    const {data,error:e}=await client.rpc('admin_essay_beta_report',{p_kind:kind,p_user:filter.user||null,p_from:filter.from?new Date(filter.from+'T00:00:00+09:00').toISOString():null,p_to:filter.to?new Date(filter.to+'T00:00:00+09:00').toISOString():null,p_sort:filter.sort,p_offset:offset});
-   if(e) throw Error('조회하지 못했습니다. 사용자 UUID·기간·관리자 권한·서버 설치 상태를 확인해 주세요.');if(active)setReport(data);
+   if(e) throw e;if(active)setReport(data);
   }
- }catch(e){if(active)setError(e instanceof Error?e.message:'조회 실패');}finally{if(active)setLoading(false);}}
+ }catch(e){if(active)setError(describeError(e));}finally{if(active)setLoading(false);}}
  void load();return()=>{active=false;};},[client,kind,filter,offset,refresh]);
  async function save(event:FormEvent<HTMLFormElement>,c:Campaign){event.preventDefault();if(busy.current||!client)return;busy.current=true;setSaving(true);setError('');
  try{const f=new FormData(event.currentTarget);const payload=betaInput(f);const {error:e}=await client.rpc('admin_essay_beta_save',{p_campaign:c.campaign_id,p_expected_version:c.config?.version??0,p_value:payload,p_reason:String(f.get('reason')??'')});
@@ -35,7 +36,7 @@ function BetaContent({kind}:{kind:Kind}){
  return <section>{error&&<p role="alert">{error}</p>}<button className="button button--small" disabled={loading||saving} onClick={()=>setRefresh(n=>n+1)}>새로고침</button>
  {kind==='settings'?<>
  <p>한도 변경은 다음 자정 적용을 권장합니다. 당일 발급 후 즉시 변경은 차단됩니다. 발급된 이용권·과거 재첨삭 만료일은 변경되지 않습니다.</p>
- {!loading&&!campaigns.length&&<p>검수된 베타 캠페인이 없습니다. Owner 승인용 SQL의 캠페인·시험 범위·공지 연결을 먼저 준비해야 합니다.</p>}
+ {!loading&&!error&&!campaigns.length&&<p>검수된 베타 캠페인이 없습니다. Owner 승인용 SQL의 캠페인·시험 범위·공지 연결을 먼저 준비해야 합니다.</p>}
  {campaigns.map(c=><form className="admin-panel" key={c.campaign_id+':'+(c.config?.version??0)} onSubmit={e=>void save(e,c)}><h2>베타 운영 설정</h2><p>캠페인 {c.campaign_id}</p>
  <fieldset disabled={!c.can_edit||saving||loading} style={{display:'grid',gap:16,border:0}}>
  <label><input name="enabled" type="checkbox" defaultChecked={c.config?.beta_enabled??false}/> 베타 활성화</label>
