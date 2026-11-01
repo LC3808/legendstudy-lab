@@ -20,3 +20,15 @@ describe('LAB feedback',()=>{
  });
  it('rejects non-reference text',()=>expect(feedbackReference('private answer')).toBeUndefined());
 });
+
+it('numeric satisfaction is opt-in, preserves retry and does not invent binary rating',async()=>{
+ const submit=vi.fn().mockRejectedValueOnce(Error()).mockResolvedValueOnce(undefined);
+ render(<EssayFeedbackForm numeric submit={submit}/>);
+ fireEvent.click(screen.getByText('제출하기'));expect(submit).not.toHaveBeenCalled();
+ fireEvent.click(screen.getByLabelText('2점'));fireEvent.click(screen.getByLabelText('추상적인 피드백'));
+ fireEvent.click(screen.getByText('제출하기'));await screen.findByText(/접수를 확인하지 못했어요/);
+ fireEvent.click(screen.getByText('제출하기'));await screen.findByText(feedbackThanks);
+ expect(submit.mock.calls[0][0]).toEqual(submit.mock.calls[1][0]);
+ expect(submit.mock.calls[0][0]).toMatchObject({rating:2,negative_reasons:['abstract'],positive_reasons:[],message:''});
+ expect(submit.mock.calls[0][0]).not.toHaveProperty('satisfaction');
+});
