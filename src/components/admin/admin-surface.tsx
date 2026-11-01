@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import {ADMIN_NAV,ADMIN_GROUPS} from "@/lib/admin/navigation";
+export {ADMIN_NAV} from "@/lib/admin/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 import { useAuth } from "@/components/auth-context";
@@ -18,6 +21,7 @@ import { adminErrorCopy, adminErrorKind, type AdminErrorKind } from "@/lib/admin
  */
 
 export type AdminNavKey =
+  | "data"
   | "analytics"
   | "dashboard"
   | "members"
@@ -32,32 +36,6 @@ export type AdminNavKey =
   | "essay"
   | "quality"
   | "materials";
-
-type NavEntry = { key: AdminNavKey; label: string; href: string | null };
-
-/**
- * Every entry is now navigable. The `/ql` Quality Console is reached from here
- * rather than reimplemented: it keeps its own authorization and its own route.
- */
-export const ADMIN_NAV: readonly NavEntry[] = [
-  { key: "dashboard", label: "대시보드", href: "/admin/" },
-  { key: "members", label: "회원", href: "/admin/members/" },
-  { key: "credit", label: "크레딧", href: "/admin/credit/" },
-  { key: "payment", label: "결제", href: "/admin/payment/" },
-  { key: "analytics", label: "사용자 행동 분석", href: "/admin/analytics/" },
-  { key: "essay", label: "평가·비용 모니터링", href: "/admin/operations/" },
-  { key: "beta", label: "베타 테스트 관리", href: "/admin/beta/" },
-  { key: "beta-usage", label: "베타 이용 현황", href: "/admin/beta/usage/" },
-  { key: "beta-failures", label: "평가 실패·복구 내역", href: "/admin/beta/failures/" },
-  { key: "essay-feedback", label: "피드백·오류 신고", href: "/admin/essay-feedback/" },
-  { key: "notices", label: "공지사항 관리", href: "/admin/notices/" },
-  { key: "inquiries", label: "1:1 문의", href: "/admin/inquiries/" },
-  // The quality console is the existing /ql surface, imported unchanged. Its
-  // own authorization (quality_operators) is what guards it; this link grants
-  // nothing and the two roles are deliberately not merged.
-  { key: "quality", label: "첨삭 품질", href: "/ql/" },
-  { key: "materials", label: "논술 자료 검수", href: "/admin/materials/" },
-] as const;
 
 export function useAdminClient(): AdminClient | null {
   const { client } = useAuth();
@@ -249,21 +227,18 @@ export function AdminSurface({
   );
 }
 
-const LAB_KEYS: readonly AdminNavKey[] = ["analytics", "beta", "beta-usage", "essay", "essay-feedback", "notices"];
 
 function AdminNavigation({ active }: { active: AdminNavKey }) {
-  const groups = [
-    { title: "기본 운영", entries: ADMIN_NAV.filter((entry) => !LAB_KEYS.includes(entry.key) && entry.key !== "beta-failures") },
-    { title: "논술 LAB 운영", entries: LAB_KEYS.map((key) => ADMIN_NAV.find((entry) => entry.key === key)!) },
-    { title: "관련 운영 내역", entries: ADMIN_NAV.filter((entry) => entry.key === "beta-failures") },
-  ];
+  const pathname = usePathname();
+  const selected = (entry: {key:string;href:string|null}) => entry.key === active || (active === "data" && pathname?.replace(/\/$/, "") === entry.href?.replace(/\/$/, ""));
+  const groups = ADMIN_GROUPS.map(group=>({title:group.title,entries:group.keys.map(key=>ADMIN_NAV.find(entry=>entry.key===key)!)}));
   return <nav className="admin-nav" aria-label="운영 콘솔">
     <p className="admin-nav__brand">LegendStudy 운영 콘솔</p>
     {groups.map((group) => <section className="admin-nav__group" key={group.title} aria-label={group.title}>
       <h2 className="admin-nav__heading">{group.title}</h2>
       <ul className="admin-nav__list">{group.entries.map((entry) => <li key={entry.key}>
-        <Link className={`admin-nav__link${entry.key === active ? " admin-nav__link--active" : ""}`}
-          href={entry.href!} aria-current={entry.key === active ? "page" : undefined}>{entry.label}</Link>
+        <Link className={`admin-nav__link${selected(entry) ? " admin-nav__link--active" : ""}`}
+          href={entry.href!} aria-current={selected(entry) ? "page" : undefined}>{entry.label}</Link>
       </li>)}</ul>
     </section>)}
   </nav>;

@@ -18,3 +18,5 @@ Canonical Unified Wiki in APP repository: `wiki/essay-shared-test-task09-2026110
 ## 2026-11-01 — TASK10 GA4 pre-build readiness
 
 Reused the existing 31-event/14-parameter adapter and admin Analytics v1 screen. Added fail-closed, host-scoped GA4 bootstrap/manual route pageviews, privacy-safe URL/referrer context, and collection readiness separate from report read access. Collection is disabled without all reviewed configuration values. No production deployment, migration, native release build, payment or Provider call. Canonical configuration, validation and Owner checklist: APP Unified Wiki `wiki/admin-integrated-analytics-task10.md` in LC3808/legendstudy-app. Actual GA4 receipt and reporting authentication remain unverified.
+
+- 2026-11-01 TASK11: grouped admin navigation, existing reports/Student360 reuse, bounded learning aggregate viewer, private branch Preview. Partial completion and data-source gaps: [WEB handoff](admin-data-task11-web.md); canonical detail in APP Unified Wiki.
