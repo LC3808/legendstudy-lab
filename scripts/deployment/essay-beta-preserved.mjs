@@ -10,6 +10,7 @@ import {execFileSync} from 'node:child_process';
 const [backup,baseline]=process.argv.slice(2);
 if(!backup||!baseline)throw Error('Usage: essay-beta-preserved.mjs PRIVATE_BACKUP BASELINE_SOURCE [--apply]');
 const require=createRequire(import.meta.url);
+const {fetch,FormData,Response}=require(require.resolve('undici',{paths:[process.env.WRANGLER_MODULE_ROOT??process.cwd()]}));
 const {hash}=require(require.resolve('blake3-wasm',{paths:[process.env.WRANGLER_MODULE_ROOT??process.cwd()]}));
 const read=p=>JSON.parse(fs.readFileSync(path.join(backup,p),'utf8'));
 const snapshot=read('project.json'),previous=read('files.json');

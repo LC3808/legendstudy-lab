@@ -52,3 +52,10 @@ it('final beta day never promises a next free day',async()=>{
  render(<EssayBetaCredit/>);await screen.findByText('오늘의 무료 첨삭을 모두 사용했습니다.');
  expect(screen.queryByText(/다음 이용: 내일/)).toBeNull();
 });
+
+it('same-user auth refresh keeps the first-entry introduction open',async()=>{
+ m.rpc.mockResolvedValue({data:active});render(<EssayBetaCredit/>);await screen.findByRole('dialog');
+ act(()=>m.subscribe.mock.calls.at(-1)![0]('SIGNED_IN',{user:{id:'one'}}));
+ expect(screen.getByRole('dialog')).toBeInTheDocument();
+ expect(m.rpc).toHaveBeenCalledTimes(1);
+});

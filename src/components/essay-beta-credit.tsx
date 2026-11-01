@@ -55,6 +55,7 @@ export function EssayBetaCredit(){
   useEffect(()=>{
     const client=getBrowserAuthClient();
     if(!client) return;
+    let currentOwner:string|undefined;
     let alive=true, generation=0, timer:ReturnType<typeof setTimeout>|undefined;
     function show(owner:string,data:typeof intro){
       const key=noticeKey(owner,data);
@@ -68,6 +69,7 @@ export function EssayBetaCredit(){
       try{
         const owner=(await client!.auth.getSession()).data.session?.user.id;
         if(!alive || request!==generation) return;
+        currentOwner=owner;
         if(!owner){setState(null);setError(false);show('guest',intro);return;}
         const response=await client!.rpc('essay_beta_daily_status_v2');
         const current=(await client!.auth.getSession()).data.session?.user.id;
@@ -86,8 +88,9 @@ export function EssayBetaCredit(){
     }
     const refresh=()=>{void load();};
     const visible=()=>{if(document.visibilityState==='visible') refresh();};
-    const subscription=client.auth.onAuthStateChange((event)=>{
-      if(event==='INITIAL_SESSION') return;
+    const subscription=client.auth.onAuthStateChange((event,session)=>{
+      if(event==='INITIAL_SESSION'||session?.user.id===currentOwner) return;
+      currentOwner=session?.user.id;
       ++generation;setState(null);setNotice(null);setError(false);
       // Avoid awaiting another Supabase auth operation inside its auth callback.
       queueMicrotask(refresh);
