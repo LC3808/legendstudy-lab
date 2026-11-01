@@ -16,7 +16,6 @@ describe("release routes", () => {
     expect(policyRoutes.map((route) => route.href)).toEqual([
       "/privacy/",
       "/terms/",
-      "/refund/",
       "/support/",
       "/account-deletion/",
     ]);
