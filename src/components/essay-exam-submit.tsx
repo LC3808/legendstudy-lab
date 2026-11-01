@@ -89,6 +89,7 @@ export function EssayExamSubmit({exam,included,drafts,cycle,mathQuestions=[],inp
    if(pending&&pending.fingerprint!==fingerprint)throw Error('PENDING_CHANGED');
    let source:CreditSource|null=null;
    if(!pending){
+   if(!parentId){const beta=await auth.client!.rpc('essay_beta_daily_claim_v2');if(beta.error)throw Error('BETA_STATUS_UNAVAILABLE');}
    const quoteResponse=await fetch('/api/essay/exam',{method:'POST',headers:{Authorization:`Bearer ${await credential()}`,'Content-Type':'application/json'},body:JSON.stringify({action:'quote',examId:exam.dbExamId,questionIds:answers.map(a=>a.questionId),parentId:parentId||null,previousPaidRunId:cycle?.previousPaidRunId}),cache:'no-store'});
    if(!quoteResponse.ok){const failure=await quoteResponse.json().catch(()=>null);throw Error(failure?.code??'QUOTE_UNAVAILABLE');}
    const quote=await quoteResponse.json();if(quote.version!=='essay-exam-quote-v1'||quote.credits!==(parentId?0:1))throw Error('QUOTE_UNAVAILABLE');

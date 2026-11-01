@@ -16,6 +16,7 @@ const exam:SourceExam={key:'konkuk-humanities-local',dbExamId:examId,universityI
 it('canonical humanities draft uses existing submit, result, free rewrite and owner History adapters',async()=>{
  state.runs=[];sessionStorage.clear();localStorage.clear();
  state.rpc.mockImplementation(async(name:string,args:{p_run:string|null})=>{
+  if(name==='essay_beta_daily_claim_v2')return {data:{active:false,status:'inactive'},error:null};
   if(name==='essay_exam_session_status')return {data:{version:'exam-session-v1',run_id:args.p_run,exam_id:examId,state:'completed',retry_allowed:false,questions:[{question_id:questionId,state:'completed'}]},error:null};
   expect(name).toBe('essay_exam_history');
   return {data:{version:'essay-exam-history-v1',runs:args.p_run?state.runs.filter(r=>r.id===args.p_run):state.runs},error:null};

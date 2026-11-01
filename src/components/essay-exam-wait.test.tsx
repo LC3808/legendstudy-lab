@@ -4,7 +4,7 @@ import {afterEach,expect,it,vi} from 'vitest';
 import {EssayExamSubmit} from './essay-exam-submit';
 import type {SourceExam} from '@/lib/essay-runtime/source-registry';
 const mocks=vi.hoisted(()=>({history:vi.fn()}));
-const client={auth:{getSession:async()=>({data:{session:{user:{id:'owner'},access_token:'synthetic'}}})}};
+const client={rpc:vi.fn(async(name:string)=>{expect(name).toBe('essay_beta_daily_claim_v2');return {data:{active:false,status:'inactive'},error:null};}),auth:{getSession:async()=>({data:{session:{user:{id:'owner'},access_token:'synthetic'}}})}};
 vi.mock('./auth-context',()=>({useAuth:()=>({user:{id:'owner'},client})}));
 vi.mock('@/lib/my/exam-history',()=>({readExamRuns:async()=>[],readExamDashboard:mocks.history}));
 vi.mock('./my/essay-dashboard',()=>({RecordDetail:()=>null}));

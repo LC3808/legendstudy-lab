@@ -5,7 +5,7 @@ import {EssayExamSubmit} from './essay-exam-submit';
 import {EssayDraftSession,scopedDraftKey} from './essay-draft-session';
 import {pendingStorageKey} from '@/lib/essay-runtime/pending-request';
 import type {SourceExam} from '@/lib/essay-runtime/source-registry';
-const client={auth:{getSession:async()=>({data:{session:{user:{id:'owner'},access_token:'synthetic'}}})}};
+const client={rpc:vi.fn(async(name:string)=>{expect(name).toBe('essay_beta_daily_claim_v2');return {data:{active:false,status:'inactive'},error:null};}),auth:{getSession:async()=>({data:{session:{user:{id:'owner'},access_token:'synthetic'}}})}};
 vi.mock('./auth-context',()=>({useAuth:()=>({user:{id:'owner'},client})}));
 vi.mock('@/lib/my/exam-history',()=>({readExamRuns:async()=>[{id:'parent',exam_id:'exam',free_rewrite_available:true,created_at:'2026-10-26'}],readExamDashboard:async()=>[]}));
 const exam={key:'test',dbExamId:'exam',questions:[{key:'q',dbQuestionId:'question',inputMode:'text'}]} as SourceExam;
