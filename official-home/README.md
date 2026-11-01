@@ -45,7 +45,13 @@ Defaults are off. Missing/invalid reviewed settings fail the enabled build befor
 
 ## Approved production deployment and rollback
 
-Owner TASK12-B explicitly approved deployment on 2026-11-01. Production `home.legendstudy.com` now serves deployment `1b3063af-ea6f-4189-9ac5-7ad478004974`, exact source `442baf9d5f0d710f7f9ac50e7b8096d96d6b6af3`, existing production branch `codex/official-home-20261019`. Previous successful deployment `4104f06d-b748-4ee0-b40f-aca5ccbd909c` remains the rollback target. Home settings and LAB deployment were verified unchanged. No other service was deployed.
+Owner TASK12-B approved production deployment. The 2026-11-02 follow-up verified
+that deployment `37497d5b-4c02-4cd4-baa4-8fd5b8ded0ab` already served all four
+badge images. It remains the immediate rollback target for the alignment fix.
+The Owner's older text-button view could not be reproduced; its cause is unconfirmed.
+The follow-up removes inherited bottom-image margin/corner styling, versions the
+stylesheet URL, and verifies every store CTA is an image. Canonical deployment
+IDs and browser evidence are recorded in the Unified Wiki (not inferred from Git).
 
 Any separately approved future direct upload must run **from `official-home/`**, explicitly target project `legendstudy-home` and its confirmed production branch, with artifact `dist/`. Never run a Pages deployment from the LAB root: it contains unrelated Functions. Do not modify DNS, LAB deployment, DB, Worker or environment bindings.
 

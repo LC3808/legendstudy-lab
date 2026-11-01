@@ -21,7 +21,7 @@ assert(html.includes('https://home.legendstudy.com/'));
 const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 for(const [,href] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
  if(href.startsWith('#')) {if(href.length>1)assert(ids.includes(href.slice(1)),href);}
- else if(!/^(https:|mailto:)/.test(href))await access(path.join(root,'dist',href));
+ else if(!/^(https:|mailto:)/.test(href))await access(path.join(root,'dist',href.split('?')[0]));
 }
 for(const file of ['resources.png','timer.png','app-icon.png']) {
  const b=await readFile(path.join(root,'dist/assets',file));
@@ -31,3 +31,14 @@ for(const file of ['resources.png','timer.png','app-icon.png']) {
 assert(html.includes('262-88-02453'));
 assert(html.includes('2025-서울노원-1263'));
 console.log('PASS: local assets, anchors, legal identity, launch copy, store CTAs, legal links, analytics module, no forms.');
+
+const storeAnchors=[...html.matchAll(/<a\b[^>]*data-destination="(?:app_store|google_play)"[^>]*>([\s\S]*?)<\/a>/g)];
+assert.equal(storeAnchors.length,4);
+for(const [,body] of storeAnchors) {
+ assert(/<img\b[^>]*src="assets\/(?:app-store-badge\.svg|google-play-badge-tight\.png)"/.test(body));
+ assert(/height="48"/.test(body));
+ assert.equal(body.replace(/<[^>]*>/g,'').trim(),'');
+}
+const css=await readFile(path.join(root,'dist/style.css'),'utf8');
+assert(css.includes('object-fit:contain;margin:0;border-radius:0;'));
+console.log('PASS: all four download links use official image badges with equal height and no inherited image decoration.');
