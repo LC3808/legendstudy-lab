@@ -46,7 +46,7 @@ const headers=fs.readFileSync(path.join(baseline,'public/_headers'),'utf8')+'\n/
 const redirects=fs.readFileSync(path.join(baseline,'public/_redirects'),'utf8');
 const routes=JSON.parse(fs.readFileSync(path.join(baseline,'public/_routes.json'),'utf8'));routes.include.push('/api/owner-review/essay');
 const sha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
-const plan={previous:previous.id,source:sha,scope:'footer refund-link removal only; original HTML/RSC and APIs preserved',oldAssets:Object.keys(previous.files).length,assets:Object.keys(manifest).length,changedEssay:changed.filter(p=>p.startsWith('/essay-lab')).length,addedAssets:assets.size,preservedOtherPages:true,existingFunctionsPreserved:true,changed};
+const plan={previous:previous.id,source:sha,scope:'footer refund-link removal only; original HTML/RSC and APIs preserved',oldAssets:Object.keys(previous.files).length,assets:Object.keys(manifest).length,changedEssay:changed.filter(p=>p.startsWith('/essay-lab')).length,addedAssets:assets.size,preservedPageBodies:true,existingFunctionsPreserved:true,changed};
 fs.writeFileSync(path.join(backup,'deployment-plan.json'),JSON.stringify(plan,null,2));
 fs.writeFileSync(path.join(backup,'manifest.json'),JSON.stringify(manifest));
 if(!changed.length)throw Error('No footer changes');
