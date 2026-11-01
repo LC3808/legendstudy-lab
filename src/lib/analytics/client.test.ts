@@ -22,6 +22,10 @@ describe('Claude v1 browser adapter',()=>{
   const send=vi.fn(),log=createAnalytics(()=>true,()=>send);log('answer_text',{source:'private'});expect(send).not.toHaveBeenCalled();
   log(E.login,{source:'x'.repeat(200)});expect(send.mock.calls[0][2].source).toHaveLength(100);
  });
+ it('does not consume dedupe identity on a synchronous transport failure',()=>{
+  const send=vi.fn().mockImplementationOnce(()=>{throw Error('offline');});const log=createAnalytics(()=>true,()=>send);
+  log(E.login,{},'same');log(E.login,{},'same');log(E.login,{},'same');expect(send).toHaveBeenCalledTimes(2);
+ });
  it('does not mark a missing transport observation as delivered',()=>{
   let available=false;const send=vi.fn(),log=createAnalytics(()=>true,()=>available?send:undefined);log(E.login,{},'same');available=true;log(E.login,{},'same');expect(send).toHaveBeenCalledOnce();
  });

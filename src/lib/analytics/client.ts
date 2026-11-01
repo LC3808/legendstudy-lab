@@ -1,4 +1,5 @@
 import {analyticsEvents,analyticsParamKeys} from './events';
+import {browserGa4} from './ga4';
 type Params=Record<string,unknown>;
 type Transport=(command:'event',name:string,params:Record<string,string|number>)=>void;
 export function sanitizeAnalyticsParams(params:Params):Record<string,string|number>{
@@ -19,12 +20,12 @@ export function createAnalytics(enabled:()=>boolean,transport:()=>Transport|unde
   try{
    if(!enabled())return;const send=transport();if(!send)return;
    if(onceKey&&seen.has(name+':'+onceKey))return;
-   if(onceKey)seen.add(name+':'+onceKey);
    send('event',name,sanitizeAnalyticsParams({platform:'web',...params}));
+   if(onceKey)seen.add(name+':'+onceKey);
   }catch{/* Telemetry must never change authentication, submissions or payments. */}
  };
 }
 export const logAnalytics=createAnalytics(
  ()=>process.env.NEXT_PUBLIC_ANALYTICS_ENABLED==='true',
- ()=>typeof window==='undefined'?undefined:(window as Window&{gtag?:Transport}).gtag,
+ ()=>browserGa4()?.transport(),
 );

@@ -14,3 +14,7 @@ Reused existing `kpqbedylxlyntrrfybpn` sandbox. Added TEST-host-only access-code
 Owner Chrome TEST login, notice and feedback listing verified; student admin denial via API. Full Vitest1471 PASS/4 SKIP, TypeScript/build143 routes/focused lint PASS; access middleware10 tests. No real Provider/payment/evaluation. Beta predecessor schema and isolated evaluation Gateway block full acceptance; APP33 remains read-only. Secrets excluded.
 
 Canonical Unified Wiki in APP repository: `wiki/essay-shared-test-task09-20261101.md`; DB sequence under `supabase/candidates/task09_shared_test/README.md`. No second canonical status maintained here.
+
+## 2026-11-01 — TASK10 GA4 pre-build readiness
+
+Reused the existing 31-event/14-parameter adapter and admin Analytics v1 screen. Added fail-closed, host-scoped GA4 bootstrap/manual route pageviews, privacy-safe URL/referrer context, and collection readiness separate from report read access. Collection is disabled without all reviewed configuration values. No production deployment, migration, native release build, payment or Provider call. Canonical configuration, validation and Owner checklist: APP Unified Wiki `wiki/admin-integrated-analytics-task10.md` in LC3808/legendstudy-app. Actual GA4 receipt and reporting authentication remain unverified.
