@@ -23,9 +23,9 @@ it('ended campaign is explicit, does not keep a midnight refresh',async()=>{
 it('start is read-only, hide preference does not hide the allowance',async()=>{
  m.rpc.mockResolvedValue({data:{...active,notice_seen:false}});
  render(<EssayBetaCredit/>);await screen.findByRole('dialog');
- expect(screen.getByText(/2026-11-11 00:00 KST/)).toBeInTheDocument();
+ expect(screen.getAllByText(/2026년 11월 10일 23:59/)).toHaveLength(2);
  fireEvent.click(screen.getByRole('checkbox',{name:'다음부터 보지 않기'}));
- fireEvent.click(screen.getByRole('button',{name:'베타 테스트 시작하기'}));
+ fireEvent.click(screen.getByRole('button',{name:'무료 첨삭 이용하러 가기'}));
  await waitFor(()=>expect(screen.queryByRole('dialog')).toBeNull());
  expect(m.rpc.mock.calls.every(([name])=>name==='essay_beta_daily_status_v2')).toBe(true);
  expect(screen.getByText(/오늘의 무료 첨삭 · 1회 남음/)).toBeInTheDocument();
@@ -35,14 +35,14 @@ it('start is read-only, hide preference does not hide the allowance',async()=>{
 it('start rechecks and never claims an exhausted allowance',async()=>{
  m.rpc.mockResolvedValue({data:active});render(<EssayBetaCredit/>);await screen.findByRole('dialog');
  m.rpc.mockResolvedValue({data:{...active,available:0}});
- fireEvent.click(screen.getByRole('button',{name:'베타 테스트 시작하기'}));
+ fireEvent.click(screen.getByRole('button',{name:'무료 첨삭 이용하러 가기'}));
  await screen.findByText(/다음 이용 가능 시각을 확인/);
  expect(m.rpc.mock.calls.every(([name])=>name==='essay_beta_daily_status_v2')).toBe(true);
 });
 it('inactive campaign never promises a free allowance',async()=>{
  m.rpc.mockResolvedValue({data:{version:'essay-beta-credit-v2',active:false,status:'inactive'}});
  render(<EssayBetaCredit/>);await screen.findByRole('dialog');
- fireEvent.click(screen.getByRole('button',{name:'베타 테스트 시작하기'}));
+ fireEvent.click(screen.getByRole('button',{name:'무료 첨삭 이용하러 가기'}));
  await screen.findByText('베타 무료 이용 활성화를 준비 중입니다.');
  expect(screen.queryByText(/1회 남음/)).toBeNull();
 });

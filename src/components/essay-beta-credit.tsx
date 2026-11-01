@@ -22,22 +22,23 @@ export function parseBetaCredit(value:unknown):BetaCredit|null {
 }
 export function betaEndDate(end:string){
   if((Date.parse(end)+9*3600000)%86400000!==0) return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(end))+' KST';
-  return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'long',day:'numeric'}).format(new Date(Date.parse(end)-1));
+  return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'long',day:'numeric'}).format(new Date(Date.parse(end)-1))+' 23:59';
 }
 function BetaNotice({end,limit=1,onClose,onStart}:{end:string;limit?:number;onClose:(hide:boolean)=>void;onStart:()=>Promise<string|null>}){
   const dialog=useRef<HTMLDialogElement>(null);
   const [hide,setHide]=useState(false),[busy,setBusy]=useState(false),[message,setMessage]=useState<string|null>(null);
   useEffect(()=>{dialog.current?.showModal();},[]);
   return <dialog ref={dialog} className="beta-onboarding" aria-labelledby="beta-notice-title" onCancel={e=>{e.preventDefault();onClose(hide);}} style={{maxWidth:'min(32rem,calc(100vw - 32px))',borderRadius:16,padding:24}}>
-    <h2 id="beta-notice-title">논술 LAB 베타 무료 이용 안내</h2>
-    <p>대학별 평가 기준으로 답안을 분석하고 다시 쓰며 성장하는 인문논술 베타 서비스입니다.</p>
-    <p>하루 {limit}회 무료 첨삭 · 매일 00:00 KST 초기화 · 미사용분 이월 없음</p>
-    <p>베타 종료: {new Date(Date.parse(end)+9*3600000).toISOString().slice(0,16).replace('T',' ')} KST</p>
-    <p>베타 무료 첨삭의 무료 재첨삭은 최초 완료 후 최대 14일 이내, 베타 종료 전까지 1회 가능합니다. 가입·구매 Credit의 기존 정책은 유지됩니다.</p>
+    <h2 id="beta-notice-title">논술 LAB 베타 서비스 안내</h2>
+    <p>인문논술 서비스를 매일 {limit}회 무료 이용할 수 있어요.</p>
+    <p>매일 0시(자정, 한국 시간)에 무료 첨삭 이용 횟수가 갱신되며 미사용분은 소멸돼요.</p>
+    <p>베타 서비스는 {betaEndDate(end)}까지 운영돼요. 베타 무료 첨삭권과 무료 재첨삭은 베타 서비스 기간 동안만 이용할 수 있어요.</p>
+    <p>가입 축하 무료 크레딧(3개)과 구매 크레딧은 기존 정책대로 이용할 수 있어요.</p>
+    <p>사용 중 불편한 점은 문의·건의사항으로 알려주세요. 공지사항에서 안내를 다시 확인할 수 있어요.</p>
     <label><input type="checkbox" checked={hide} disabled={busy} onChange={e=>setHide(e.target.checked)}/> 다음부터 보지 않기</label>
     {message&&<p role="status">{message}</p>}
-    <div className="my-actions"><button className="button" disabled={busy} onClick={()=>onClose(hide)}>나중에</button>
-    <button className="button button--primary" disabled={busy} onClick={async()=>{setBusy(true);try{const result=await onStart();if(result)setMessage(result);else onClose(hide);}catch{setMessage('이용 가능 여부를 확인하지 못했습니다. 다시 시도해 주세요.');}finally{setBusy(false);}}}>{busy?'확인 중…':'베타 테스트 시작하기'}</button></div>
+    <div className="my-actions"><button className="button" disabled={busy} onClick={()=>onClose(hide)}>확인/닫기</button>
+    <button className="button button--primary" disabled={busy} onClick={async()=>{setBusy(true);try{const result=await onStart();if(result)setMessage(result);else onClose(hide);}catch{setMessage('이용 가능 여부를 확인하지 못했습니다. 다시 시도해 주세요.');}finally{setBusy(false);}}}>{busy?'확인 중…':'무료 첨삭 이용하러 가기'}</button></div>
   </dialog>;
 }
 const intro={ends_at:'2026-11-10T15:00:00Z',daily_limit:1,campaign_id:'beta-202611',policy_version:'daily-v2'};
@@ -121,7 +122,7 @@ export function EssayBetaCredit(){
     {error&&<aside role="status">베타 첨삭권을 확인하지 못했습니다. <button onClick={()=>setRetry(v=>v+1)}>다시 확인</button></aside>}
     {state&&(state.active||state.status==='ended')&&<aside className="content-wrap essay-credit" aria-live="polite">
       <strong>{!state.active ? '베타 무료 첨삭 제공이 종료되었습니다.' : state.available>0 ? `오늘의 무료 첨삭 · ${state.available}회 남음` : '오늘의 무료 첨삭을 모두 사용했습니다.'}</strong>
-      <p className="essay-credit__meta">{state.active ? `매일 00:00 KST 갱신 · 이월 없음 · ${state.available===0 && Date.parse(state.expires_at)<Date.parse(state.ends_at)?'다음 이용: 내일 00:00 KST · ':''}${betaEndDate(state.ends_at)}까지` : '가입·구매 Credit은 기존 정책대로 이용할 수 있어요.'}</p>
+      <p className="essay-credit__meta">{state.active ? `매일 00시(자정, 한국 시간) 갱신 · 이월 없음 · ${state.available===0 && Date.parse(state.expires_at)<Date.parse(state.ends_at)?'다음 이용: 내일 00:00 KST · ':''}${betaEndDate(state.ends_at)}까지` : '가입·구매 Credit은 기존 정책대로 이용할 수 있어요.'}</p>
       <a href={state.active && state.notice_id ? `/notices/${state.notice_id}` : '/notices'}>베타 공지 다시 보기</a>
     </aside>}
     {notice && <BetaNotice end={notice.data.ends_at} limit={notice.data.daily_limit} onClose={closeNotice} onStart={start}/>}
