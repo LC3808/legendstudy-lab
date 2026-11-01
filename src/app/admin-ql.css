@@ -13,7 +13,7 @@
 .admin-nav__link--active { background: var(--ink); color: #fff; }
 .admin-nav__link--pending { color: var(--ink-soft); cursor: default; }
 .admin-nav__tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em; padding: 0.1rem 0.35rem; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--ink-soft); white-space: nowrap; }
-.admin-main { min-width: 0; display: grid; gap: 1.5rem; }
+.admin-main { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
 .admin-head h1 { margin: 0.35rem 0 0; font-size: var(--type-dashboard); letter-spacing: -0.02em; }
 .admin-head__lead { margin: 0.75rem 0 0; color: var(--ink-body); line-height: var(--leading-body); max-width: 46rem; }
 .admin-stack { display: grid; gap: 1.75rem; min-width: 0; }

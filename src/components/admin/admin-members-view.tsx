@@ -45,7 +45,7 @@ function DetailRow({ label, value }: { label: string; value: ReactNode }) {
  * Credit or 논술 기록 looks empty against the canonical record (see the §6/§7
  * read-path notes). It is the id this screen passed to every member RPC.
  */
-export function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
+function LegacyMemberDetailPanel({ accountId }: { accountId: string }) {
   const { state, reload } = useAdminQuery<AdminMemberDetail>(
     (client) => client.memberDetail(accountId),
     `detail:${accountId}`,
@@ -177,11 +177,16 @@ export function AdminMemberDetailPanel({ accountId }: { accountId: string }) {
         <AdminMemberCreditPanel key={accountId} accountId={accountId} email={member.email} />
       </section>
 
-      <section className="admin-detail__block">
-        <Student360Panel accountId={accountId} />
-      </section>
     </div>
   );
+}
+
+// Independent read RPCs retain their own server authorization and error states.
+export function AdminMemberDetailPanel({accountId}: {accountId: string}) {
+  return <>
+    <LegacyMemberDetailPanel accountId={accountId}/>
+    <section className="admin-detail__block"><Student360Panel accountId={accountId}/></section>
+  </>;
 }
 
 const statusLabels:Record<string,string>={student:'재학생',retaker:'N수·검정고시 등',other:'기타'};
