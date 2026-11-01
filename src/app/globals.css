@@ -1797,3 +1797,11 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 .essay-math-hold-notice p{color:#374151;font-weight:400;line-height:1.65;margin:.5rem 0 0;word-break:keep-all;overflow-wrap:break-word}
 .essay-math-hold-break{display:none}
 @media(max-width:640px){.essay-math-hold-break{display:initial}}
+
+/* Beta intro: centered dialog with scrollable content on compact screens. */
+.beta-onboarding {margin:auto;width:min(32rem,calc(100vw - 2rem));max-height:calc(100dvh - 2rem);overflow-y:auto;color:var(--ink);background:var(--surface);}
+.beta-onboarding::backdrop {background:rgb(0 0 0 / .4);}
+.beta-onboarding h2 {font-size:1.2rem;font-weight:700;line-height:1.4;margin:0 0 1rem;}
+.beta-onboarding p {margin:.75rem 0;line-height:1.65;overflow-wrap:anywhere;}
+.beta-onboarding label {display:flex;align-items:center;gap:.5rem;margin-top:1rem;}
+.beta-onboarding .my-actions {display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.5rem;margin-top:1rem;}

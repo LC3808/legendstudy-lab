@@ -28,7 +28,7 @@ function BetaNotice({end,limit=1,onClose,onStart}:{end:string;limit?:number;onCl
   const dialog=useRef<HTMLDialogElement>(null);
   const [hide,setHide]=useState(false),[busy,setBusy]=useState(false),[message,setMessage]=useState<string|null>(null);
   useEffect(()=>{dialog.current?.showModal();},[]);
-  return <dialog ref={dialog} aria-labelledby="beta-notice-title" onCancel={e=>{e.preventDefault();onClose(hide);}} style={{maxWidth:'min(32rem,calc(100vw - 32px))',borderRadius:16,padding:24}}>
+  return <dialog ref={dialog} className="beta-onboarding" aria-labelledby="beta-notice-title" onCancel={e=>{e.preventDefault();onClose(hide);}} style={{maxWidth:'min(32rem,calc(100vw - 32px))',borderRadius:16,padding:24}}>
     <h2 id="beta-notice-title">논술 LAB 베타 무료 이용 안내</h2>
     <p>대학별 평가 기준으로 답안을 분석하고 다시 쓰며 성장하는 인문논술 베타 서비스입니다.</p>
     <p>하루 {limit}회 무료 첨삭 · 매일 00:00 KST 초기화 · 미사용분 이월 없음</p>
