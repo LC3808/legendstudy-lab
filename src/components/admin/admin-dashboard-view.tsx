@@ -164,9 +164,11 @@ export function AdminDashboardView() {
 
 
       <AdminReleaseReport kind="dashboard"/>
-      <AdminLearningSummary/><AdminPublicAvailability/>
+      <AdminLearningSummary/>
       <ActionBand dashboard={data} support={supportData}/>
 
+      <details className="admin-section"><summary>기존 회원·자료·원장 상세 지표</summary>
+      <AdminPublicAvailability/>
       <Section title="회원">
         <div className="admin-metrics">
           <Metric label="활성 회원" value={formatNumber(data.members.active30d)} note="최근 30일 학습 기록 기준" />
@@ -240,6 +242,7 @@ export function AdminDashboardView() {
       </Section>
 
       <SupportSection />
+      </details>
     </div>
   );
 }

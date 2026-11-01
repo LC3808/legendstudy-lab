@@ -209,14 +209,22 @@ export function AdminSurface({
   lead?: string;
   children: ReactNode;
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  function closeMenu() { setMenuOpen(false); menuButton.current?.focus(); }
   return (
     <AdminGate>
+    <div className="admin-console-toolbar"><button ref={menuButton} className="admin-menu-toggle" aria-expanded={menuOpen} aria-controls="admin-navigation" onClick={() => setMenuOpen(!menuOpen)}>☰ 메뉴</button><span>LEGENDSTUDY+ <span className="admin-console-subtitle">INTELLIGENCE CONSOLE</span></span><Link href="/essay-lab/">서비스로 돌아가기 ↗</Link></div>
     <div className="admin-page content-wrap content-wrap--wide">
-      <AdminNavigation active={active} />
+      <div id="admin-navigation" className={`admin-navigation-wrap${menuOpen ? ' is-open' : ''}`} onKeyDown={e=>{if(e.key==='Escape')closeMenu();}}>
+        <button className="admin-menu-close" onClick={closeMenu}>메뉴 닫기 ✕</button>
+        <AdminNavigation active={active} onNavigate={()=>setMenuOpen(false)} />
+      </div>
+      {menuOpen && <button className="admin-menu-backdrop" aria-label="메뉴 닫기" onClick={closeMenu}/> }
 
       <div className="admin-main">
         <header className="admin-head">
-          <p className="eyebrow eyebrow--accent">{eyebrow}</p>
+          <p className="eyebrow eyebrow--accent">운영 콘솔 / {title}<span className="sr-only"> {eyebrow}</span></p>
           <h1>{title}</h1>
           {lead ? <p className="admin-head__lead">{lead}</p> : null}
         </header>
@@ -228,17 +236,17 @@ export function AdminSurface({
 }
 
 
-function AdminNavigation({ active }: { active: AdminNavKey }) {
+function AdminNavigation({ active, onNavigate }: { active: AdminNavKey; onNavigate: () => void }) {
   const pathname = usePathname();
   const selected = (entry: {key:string;href:string|null}) => entry.key === active || (active === "data" && pathname?.replace(/\/$/, "") === entry.href?.replace(/\/$/, ""));
   const groups = ADMIN_GROUPS.map(group=>({title:group.title,entries:group.keys.map(key=>ADMIN_NAV.find(entry=>entry.key===key)!)}));
   return <nav className="admin-nav" aria-label="운영 콘솔">
-    <p className="admin-nav__brand">LegendStudy 운영 콘솔</p>
+    <p className="admin-nav__brand">LegendStudy<span>+</span><small>INTELLIGENCE CONSOLE</small></p>
     {groups.map((group) => <section className="admin-nav__group" key={group.title} aria-label={group.title}>
       <details open><summary className="admin-nav__heading">{group.title}</summary>
       <ul className="admin-nav__list">{group.entries.map((entry) => <li key={entry.key}>
         <Link className={`admin-nav__link${selected(entry) ? " admin-nav__link--active" : ""}`}
-          href={entry.href!} aria-current={selected(entry) ? "page" : undefined}>{entry.label}</Link>
+          href={entry.href!} onClick={onNavigate} aria-current={selected(entry) ? "page" : undefined}>{entry.label}</Link>
       </li>)}</ul>
     </details></section>)}
   </nav>;

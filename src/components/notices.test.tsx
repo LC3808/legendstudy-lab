@@ -125,7 +125,7 @@ describe("notices UI", () => {
     );
     render(<AdminNotices />);
     fireEvent.click(
-      await screen.findByRole("button", { name: "서비스 공지 · published" }),
+      await screen.findByRole("button", { name: "서비스 공지" }),
     );
     fireEvent.change(screen.getByLabelText("상태"), {
       target: { value: "archived" },

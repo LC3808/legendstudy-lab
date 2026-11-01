@@ -1,4 +1,5 @@
 "use client";
+import { formatDateTime } from "@/lib/admin/format";
 import { describeError } from '@/lib/admin/errors';
 import { useEffect, useState, type FormEvent } from "react";
 import { useAuth } from "@/components/auth-context";
@@ -258,17 +259,10 @@ function Editor() {
         ) : (
           <>
             {current.data?.items.length === 0 && <p>등록된 공지사항이 없습니다.</p>}
-            {current.data?.items.map((n) => (
-              <p key={n.notice_id}>
-                <button
-                  className="button button--outline"
-                  disabled={busy}
-                  onClick={() => edit(n)}
-                >
-                  {n.title} · {n.status}
-                </button>
-              </p>
-            ))}
+            <p>전체 {current.data?.total ?? 0}건 · 작성 시각은 한국시간 기준</p>
+            <div className="admin-table-scroll"><table className="admin-notices-table"><thead><tr><th>순번</th><th>제목</th><th>상태</th><th>작성 시각 (KST)</th><th>수정 시각 (KST)</th></tr></thead><tbody>
+            {current.data?.items.map((n,index) => <tr key={n.notice_id}><td>{page*20+index+1}</td><td><button className="button button--outline" disabled={busy} onClick={()=>edit(n)}>{n.title}</button>{n.is_pinned && <span> · 고정</span>}</td><td>{{published:'게시',draft:'임시저장',archived:'보관'}[n.status]}</td><td>{formatDateTime(n.created_at)}</td><td>{formatDateTime(n.updated_at)}</td></tr>)}
+            </tbody></table></div>
             <button disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
               이전
             </button>{" "}
