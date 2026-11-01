@@ -43,11 +43,11 @@ HOME_ANALYTICS_ENABLED=true HOME_GA4_MEASUREMENT_ID='<verified G-... ID>' HOME_G
 
 Defaults are off. Missing/invalid reviewed settings fail the enabled build before replacing the artifact. Allowed origin is only `https://home.legendstudy.com`; localhost and Pages preview do not transmit. Shared runtime requires enhanced measurement disabled, consent/retention review and denies ad storage/signals. GA4 reporting permission is separate. No property or measurement ID was invented. Actual GA4 reception remains **NOT_TESTED**. Tests use a local fake ID/window only, with no Google requests.
 
-## Deployment HOLD and rollback
+## Approved production deployment and rollback
 
-**Do not deploy without separate Owner approval.** Existing production remains deployment `4104f06d-b748-4ee0-b40f-aca5ccbd909c`, source `20cf31b`, branch `codex/official-home-20261019` (confirmed via Wrangler on 2026-11-01).
+Owner TASK12-B explicitly approved deployment on 2026-11-01. Production `home.legendstudy.com` now serves deployment `1b3063af-ea6f-4189-9ac5-7ad478004974`, exact source `442baf9d5f0d710f7f9ac50e7b8096d96d6b6af3`, existing production branch `codex/official-home-20261019`. Previous successful deployment `4104f06d-b748-4ee0-b40f-aca5ccbd909c` remains the rollback target. Home settings and LAB deployment were verified unchanged. No other service was deployed.
 
-Approved future direct upload must run **from `official-home/`**, explicitly target project `legendstudy-home` and its confirmed production branch, with artifact `dist/`. Never run a Pages deployment from the LAB root: it contains unrelated Functions. Do not modify DNS, LAB deployment, DB, Worker or environment bindings.
+Any separately approved future direct upload must run **from `official-home/`**, explicitly target project `legendstudy-home` and its confirmed production branch, with artifact `dist/`. Never run a Pages deployment from the LAB root: it contains unrelated Functions. Do not modify DNS, LAB deployment, DB, Worker or environment bindings.
 
 Before approved upload, recheck current deployment ID and production branch; retain that immutable deployment. Afterwards verify the domain, both store links, LAB, original site and legal pages on desktop/mobile. If broken, use Cloudflare Pages **Rollback to this deployment** for the retained production ID. As a secondary recovery, `qa/rollback-production-4104f06d.tar.gz` was reconstructed from production source `20cf31b` with its original business authority. Its hash manifest is in `qa/rollback-verification.json`. Browser verified old production renders; raw HTTP byte comparison was blocked by 403, so the reconstruction is not claimed to be a downloaded production artifact. No rollback action was executed.
 
