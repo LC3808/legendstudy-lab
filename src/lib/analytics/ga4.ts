@@ -1,5 +1,5 @@
 // Collection configuration is independent of server-side GA4 reporting access.
-export type Ga4Config = {enabled: boolean; measurementId: string; origins: string[]; privacyReviewed: boolean};
+export type Ga4Config = {enabled: boolean; measurementId: string; origins: string[]; privacyReviewed: boolean; pageTitle?: string};
 export const ga4Config: Ga4Config = {
   enabled: process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === 'true',
   measurementId: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID ?? '',
@@ -40,7 +40,7 @@ export function createGa4Runtime(config: Ga4Config, win: AnalyticsWindow) {
   function context() {
     const path = analyticsPath(win.location.pathname);
     if (!path || !config.enabled || !config.privacyReviewed || !/^G-[A-Z0-9]{6,20}$/.test(config.measurementId) || !config.origins.includes(win.location.origin)) return null;
-    return {page_location: win.location.origin + path, page_title: 'LegendStudy LAB', page_referrer: safeReferrer(win.document.referrer)};
+    return {page_location: win.location.origin + path, page_title: config.pageTitle ?? 'LegendStudy LAB', page_referrer: safeReferrer(win.document.referrer)};
   }
   function start() {
     const page = context();
