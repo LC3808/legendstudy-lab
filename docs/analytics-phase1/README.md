@@ -116,3 +116,17 @@ Sources: https://docs.cloud.google.com/iam/docs/workload-identity-federation ; h
 5. Production secret configuration/deployment waits for Owner review. A secret is a runtime binding, not proof of API success. New deployment is needed to use changed bindings. Existing Supabase admin gate remains required; no service-role key.
 6. Verify authentication/read responses and permission failures, then actual admin UI. Never log JWT/access token/private key. For rollback revoke/remove the new server credential and restore prior deployment; retain GA data and existing OAuth clients.
 Sources: https://docs.cloud.google.com/iam/docs/keys-create-delete ; https://developers.cloudflare.com/pages/functions/bindings/#secrets .
+
+## Service-account key connection verified — 2026-11-02 23:20 KST
+Owner supplied a local JSON and explicitly authorized Cloudflare Secret registration. This supersedes the prior key-not-created/credential-blocked status. JSON identity matches legendstudy-ga4-reader@legendstudy.iam.gserviceaccount.com, project legendstudy, service_account type and PKCS8 format. Original JSON was read only; no key/token/JSON was printed or committed.
+
+Existing googleToken() authenticated with Google successfully. Existing handleGaReport() then returned HTTP200 for all report requests using real Google data; only its local Supabase authorization boundary was a fixture. This is NOT live administrator authorization or production UI acceptance. Period 2026-11-01 through2026-11-02 inclusive, property396674471, main stream5829568136 and main-site hosts, timezone Asia/Seoul, fetched2026-11-02T14:20:15.867Z:
+- activeUsers12795; newUsers8493; sessions26978; screenPageViews49837; filtered returning totalUsers4922.
+- daily2 rows, channels7, pages top20. No sampling/thresholding/other-row loss reported. Current-day totals can change.
+- Four app_promo_* event report has no rows: actual receipt remains unconfirmed, not proven zero activity. LAB/home event receipt is not covered by this main-site report.
+
+Cloudflare account b9d221b20fdf8b9a9a8df0971a6b2347 / Pages legendstudy-lab / custom domain lab.legendstudy.com verified. Production-only GA4_SERVICE_ACCOUNT_EMAIL plain_text and GA4_PRIVATE_KEY secret_text added through a narrow project PATCH. Before/after comparison verified all43 pre-existing production bindings unchanged and Preview configuration unchanged. No credential copied into Preview or other projects. Canonical deployment remains bd8f7da4-9565-49aa-bec5-8fc8cbe69c4d. Secret registration is NOT deployment or runtime receipt verification.
+
+Focused server/admin-component tests:25 PASS,2 files; fixtures cover anonymous/non-admin rejection, origin/date validation, error states and Google JWT contract. Runtime code unchanged. Existing administrator visitors/installs UI consumes this response contract but production login→report rendering remains NOT_TESTED pending Owner-approved deployment. Owner approval is required before deploying the recovery branch. APP41/Auth/DB/Credit/payment unchanged.
+
+Rollback of this configuration-only step: remove only the two new GA4 bindings; do not replace deployment_configs or delete existing secrets. If abandoning the connection, revoke the newly supplied service-account key through Owner-controlled Google IAM. Preserve source JSON and GA history. Deployment rollback after approval uses the recorded prior artifact.
