@@ -1,7 +1,7 @@
 import {AdminError} from './errors';
 export type MemberFilters={query:string;sort:'newest'|'oldest';accountState:string;academicStatus:string;grade:string;office:string;school:string;schoolUnset:boolean};
 export const defaultMemberFilters:MemberFilters={query:'',sort:'newest',accountState:'',academicStatus:'',grade:'',office:'',school:'',schoolUnset:false};
-export type DirectoryMember={accountId:string;email:string|null;displayName:string|null;createdAt:string;accountState:string;academicStatus:string|null;grade:number|null;major:string|null;schoolName:string|null;schoolState:'unset'|'unresolved'|'resolved'};
+export type DirectoryMember={accountId:string;email:string|null;displayName:string|null;createdAt:string;accountState:string;academicStatus:string|null;grade:number|null;major:string|null;schoolName:string|null;schoolState:'unset'|'unresolved'|'resolved';schoolOfficeCode?:string|null;schoolCode?:string|null};
 export type MemberDirectory={total:number;filteredTotal:number;limit:number;offset:number;items:DirectoryMember[]};
 export function parseMemberDirectory(value:unknown):MemberDirectory{
  const fail=():never=>{throw new AdminError('MALFORMED_RESPONSE');};
@@ -18,7 +18,7 @@ export function parseMemberDirectory(value:unknown):MemberDirectory{
   const status=nullable(m.academic_status);if(status!==null&&!['student','retaker','other'].includes(status))fail();
   if(!['NORMAL','DELETION_PENDING','ERASING','ERASED','CANCELLED'].includes(str(m.account_state)))fail();
   if(!Number.isFinite(Date.parse(str(m.created_at))))fail();
-  return {accountId:str(m.account_id),email:nullable(m.email),displayName:nullable(m.display_name),createdAt:str(m.created_at),accountState:str(m.account_state),academicStatus:status,grade,major:nullable(m.intended_major),schoolName,schoolState:state as DirectoryMember['schoolState']};
+  return {accountId:str(m.account_id),email:nullable(m.email),displayName:nullable(m.display_name),createdAt:str(m.created_at),accountState:str(m.account_state),academicStatus:status,grade,major:nullable(m.intended_major),schoolName,schoolState:state as DirectoryMember['schoolState'],schoolOfficeCode:m.school_office_code===undefined?null:nullable(m.school_office_code),schoolCode:m.school_code===undefined?null:nullable(m.school_code)};
  });
  if(items.length>filteredTotal||new Set(items.map(m=>m.accountId)).size!==items.length)fail();
  return {total,filteredTotal,limit,offset,items};

@@ -287,7 +287,7 @@ export function AdminMembersView() {
         <td>{formatNumber(state.data.offset+index+1)}</td>
         <td>{m.displayName&&<strong>{m.displayName}<br/></strong>}{m.email??'이메일 미등록'}</td>
         <td>{accountStateLabel(m.accountState).label}</td>
-        <td>{[directorySchoolLabel(m),m.grade?`${m.grade}학년`:''].filter(Boolean).join(' · ')}<br/><span className="admin-muted">{m.academicStatus?statusLabels[m.academicStatus]:''}</span></td>
+        <td>{m.schoolState==='unresolved'&&m.schoolOfficeCode&&m.schoolCode?<><AdminSchoolName office={m.schoolOfficeCode} school={m.schoolCode}/>{m.grade?` · ${m.grade}학년`:''}</>:[directorySchoolLabel(m),m.grade?`${m.grade}학년`:'' ].filter(Boolean).join(' · ')}<br/><span className="admin-muted">{m.academicStatus?statusLabels[m.academicStatus]:''}</span></td>
         <td>{m.major??''}</td><td>{formatDateTime(m.createdAt)}</td>
         <td><button type="button" className="button button--outline button--small" aria-label={`${m.displayName||m.email||'회원'} 상세 ${open?'닫기':'보기'}`} aria-expanded={open} onClick={()=>setSelected(open?null:m.accountId)}>{open?'닫기':'보기'}</button></td>
        </tr>

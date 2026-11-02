@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
 import { render, screen, waitFor } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
+import {clearSchoolResolutionCache} from "@/lib/admin/school-resolution";
 import { AdminSchoolName } from "./admin-school-name";
 vi.mock("@/lib/auth-config", () => ({ getBrowserAuthConfig: () => ({ url: "https://example.supabase.co", publishableKey: "public-test" }) }));
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {vi.unstubAllGlobals();clearSchoolResolutionCache();});
 const row = (office: string, school: string, name: string) => ({ ATPT_OFCDC_SC_CODE: office, SD_SCHUL_CODE: school, SCHUL_NM: name });
 it("resolves the exact office/school pair without sending a session", async () => {
   const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ rows: [row("OTHER", "1", "잘못된 학교"), row("B10", "1", "검증고등학교")] }) });
