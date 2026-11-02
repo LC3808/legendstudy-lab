@@ -1,6 +1,8 @@
 /** TASK17: rebind REVIEW permission without replacing any page or API code.
  * Run with an existing private TASK17 snapshot and the preserved WEB baseline.
  * CLOUDFLARE_API_TOKEN stays in process memory. No credential is printed.
+ * Deploy a committed SHA before pushing it: an already-built Preview SHA may
+ * be returned by Pages instead of creating a new production deployment.
  */
 import fs from 'node:fs';
 import path from 'node:path';
