@@ -93,3 +93,24 @@ Owner logged into the prepared isolated browser. Account page visibly identifies
 Production integrity at09:57: TEST orders11/recorded3/grant links0, LIVE orders0 unchanged. Original grants35 and transactions124 full-row hashes exactly match09:34 baseline. Total now grants37/transactions126: two new signup_bonus_v1 entries sum+6 (reserved0), not payment purchase grants. Do NOT claim total Credit is unchanged or delete legitimate signup history. Payment-attributable grant0 and pre-existing rows unchanged; no TEST request was sent on Production during this phase.
 
 Login path: `https://lab.legendstudy.com/login/` → payment account → `/pricing/`. No credential included in Git/report. For review completion, recover finance binding, redeploy preserved artifacts against a fresh snapshot, validate all four identities then one TEST approval and failure flow, verify TEST_RECORDED/grant NULL/one confirmation and before-after lineage. Disable review after review ends via PAYMENT_ENABLED=false plus empty review subjects and redeploy; keep order records and ordinary HOLD. LIVE still prohibited. No external submission/email sent.
+
+## Finance binding diagnosis — 2026-11-02 10:10 KST
+
+Owner prohibits deletion/replacement of existing Secrets, ledger/Credit mutations and LIVE activation. Registration confirmed by Owner and independent API metadata. Earlier wording “missing/unregistered finance secret” was too broad: `finance_present=false` alone only established a falsy runtime value. No additional registration request is made in this follow-up.
+
+Current verified LAB deployment **88a28465-0c5f-46ad-b76c-9323b3dfd606**, Production, source **fccff254bb933e2f4d786f576360a06c0f34ddce**. Project and deployment both contain secret_text metadata for PAYMENT_FINANCE_TOKEN and PAYMENT_REVIEW_SUBJECTS. Exact Production configuration comparison before/after TRUE; all1178 static assets unchanged. Only the existing config diagnostic was extended to booleans distinguishing omitted vs empty bindings.141 payment/checkout/runtime tests PASS; TypeScript PASS. No new authorization or validation bypass.
+
+Actual `POST https://lab.legendstudy.com/api/payments/runtime` HTTP503:
+- finance_key_present=true
+- finance_is_string=true
+- finance_is_empty_string=true
+- reviewer_key_present=true, reviewer_nonempty=true
+- TEST client/secret family, MID and publishable-presence checks=true
+
+No secret value, token claims, length or prefix is logged/returned. This establishes an **existing runtime property delivered as an empty string**, not a missing variable name and not a rejected Supabase token. Pages context.env is passed unchanged to payment(); the compiled Worker has no overwrite/default for this field. A fresh deployment preserving all settings reproduces the empty string. API metadata redacts secrets; it cannot distinguish an empty encrypted value at rest from a Cloudflare secret materialization problem. Neither origin is proven. Do not claim a Cloudflare bug or require new Toss keys.
+
+Supabase read-only verification: payment_process EXECUTE is allowed for essay_finance only among anon/authenticated/service_role/essay_finance; the first identity guard requires non-null essay_private.uid(), which also checks account restrictions. Normal RPC credential validation occurs at PostgREST (signature/expiry/role), then function identity and order-mode checks. Empty runtime token fails CONFIG before any RPC/provider call. A nonempty invalid token would instead reach the FINANCE_RPC diagnostic (e.g. HTTP401/PGRST301); that is not the current observed failure. Existing functions and ACLs were not modified.
+
+Existing payment-test runtime remains HTTP200 TEST/TEST; no change or new order/approval was made there. Its earlier card authentication flow remains incomplete, not E2E PASS. Production DB modeTEST/orders11/LIVE0/TEST grant links0; original grants35/transactions124 hashes still match baseline. No Credit/payment writes in this diagnosis.
+
+Outcome: runtime failure boundary narrowed; **recovery remains BLOCKED** under the no-Secret-change constraint. Current binding supplies no usable finance credential, and the application cannot reconstruct a token or safely substitute another project's token. Existing configuration was reused and redeployed without fixing the empty delivery. A secure existing-value recovery or Cloudflare-side investigation remains necessary, but neither a new Secret request nor replacement/deletion was performed. HOLD and permission checks remain intact. Resume from a fresh deployment/config snapshot; do not rerun deployment script with its old fixed checkpoint.

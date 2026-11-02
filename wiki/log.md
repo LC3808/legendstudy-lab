@@ -38,3 +38,7 @@ TASK17 production checkpoint: source3e60222 → Pages2b5b0656; TEST entry UI ver
 ## 2026-11-02 — TASK17 dedicated payment review account
 
 [Checkpoint](toss-test-task17.md#dedicated-account-deployment-checkpoint--2026-11-02-0957-kst): existing confirmed non-admin payment account UUID-only permission applied. Production ed3c8c8b preserves1178 assets; bounded diagnostics prove missing finance token, TEST key format passes.140 tests/typecheck PASS, real E2E blocked. Owner login verified. Original ledger hashes unchanged; concurrent signup+6 separately recorded.
+
+## 2026-11-02 — TASK17 registered Finance binding diagnosis
+
+[Diagnosis](toss-test-task17.md#finance-binding-diagnosis--2026-11-02-1010-kst): registration confirmed; runtime property exists/string/empty=true. Not a missing name or Supabase401. Unchanged config redeploy88a28465 reproduces;141tests/typecheck PASS. No Secrets/ledger changes; restoration remains blocked, TEST runtime200 preserved.
