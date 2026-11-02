@@ -22,6 +22,13 @@ function add(file,url){
  const contentType=({html:'text/html; charset=utf-8',txt:'text/plain; charset=utf-8',js:'application/javascript',css:'text/css',woff2:'font/woff2',png:'image/png',svg:'image/svg+xml',json:'application/json'})[extension]??'application/octet-stream';
  assets.set(key,{key,value:bytes.toString('base64'),metadata:{contentType},base64:true});
 }
+// Fail before any upload/configuration when static export omitted Production Auth.
+const publicEnv=snapshot.deployment_configs.production.env_vars;
+const authKey=publicEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.value;
+const authUrl=publicEnv.NEXT_PUBLIC_SUPABASE_URL?.value;
+if(!authKey?.startsWith('sb_publishable_')||authUrl!=='https://stlhijzpjfgwwdgunlsd.supabase.co')throw Error('Missing expected public Auth config');
+const scripts=walk(path.join(process.cwd(),'out/_next')).filter(f=>f.endsWith('.js')).map(f=>fs.readFileSync(f,'utf8'));
+if(!scripts.some(s=>s.includes(authKey))||!scripts.some(s=>s.includes(authUrl)))throw Error('Static build missing Production public Auth; rebuild with existing NEXT_PUBLIC variables');
 const inScope=u=>['/payments/','/pricing/','/refund/','/_next/'].some(prefix=>u.startsWith(prefix));
 for(const dir of ['payments','pricing','refund','_next'])for(const f of walk(path.join(process.cwd(),'out',dir))){
  const u='/'+path.relative(path.join(process.cwd(),'out'),f).split(path.sep).join('/');
