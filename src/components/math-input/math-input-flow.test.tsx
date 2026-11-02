@@ -67,3 +67,11 @@ describe("MathInputFlow", () => {
     expect(screen.getByText(/다시 올려야/)).toBeInTheDocument();
   });
 });
+it('invalidates prior confirmation on edits and does not accept unreadable content as-is',()=>{
+ const invalid=vi.fn(),confirm=vi.fn();const r=needsConfirmation();r.confirmationRequired[0].confidence='UNREADABLE';
+ render(<MathInputFlow readiness={r} onConfirm={confirm} onInvalidate={invalid}/>);
+ expect(screen.getByRole('button',{name:'확인'})).toBeDisabled();
+ fireEvent.change(screen.getByLabelText('수정할 내용'),{target:{value:'x^2'}});
+ expect(invalid).toHaveBeenCalledWith(r.confirmationRequired[0].regionId);
+ fireEvent.click(screen.getByRole('button',{name:'수정'}));expect(confirm).toHaveBeenCalledOnce();
+});

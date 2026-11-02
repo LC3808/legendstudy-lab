@@ -7,3 +7,8 @@
 .math-student button:disabled{opacity:.55}
 .math-student :focus-visible{outline:3px solid #2563eb;outline-offset:3px}
 .math-student section{margin:1.5rem 0}.math-student p{white-space:pre-wrap}
+
+.math-student h1{font-size:1.6rem;font-weight:750;margin:1rem 0}.math-student h2{font-size:1.2rem;font-weight:700;margin:1.4rem 0 .6rem}
+.math-student .math-learning,.math-student .math-input-flow{border:1px solid #cbd5e1;border-radius:1rem;padding:1.2rem;background:#f8fafc}
+.math-student details{border:1px solid #cbd5e1;border-radius:.6rem;padding:.7rem;margin:.8rem 0}.math-student summary{cursor:pointer;font-weight:600}
+.math-student table{border-collapse:collapse;width:100%;margin:.7rem 0}.math-student th,.math-student td{text-align:left;border-bottom:1px solid #cbd5e1;padding:.5rem}

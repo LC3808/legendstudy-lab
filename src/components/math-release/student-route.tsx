@@ -1,5 +1,6 @@
 "use client";
 import {AnswerImagesInput} from "../answer-image-input";
+import {MathText} from "../math-display/math-text";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -194,7 +195,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
       }} />
       {file?.type === "application/pdf" && <><p>선택한 파일: {file.name}</p><LocalPreview key={file.name + file.lastModified} file={file}/></>}
       <button type="button" disabled={!evaluationEnabled || !leaf || (!answer.trim() && !file && !images.length)} onClick={() => void run(submit)}>답안 제출 · 입력 확인</button>
-      {input && <MathInputFlow readiness={readiness} onConfirm={intent => setCorrections(current => ({ ...current, [intent.regionId]: intent.confirmedRawText }))} />}
+      {input && <MathInputFlow onInvalidate={id=>setCorrections(current=>{const next={...current};delete next[id];return next;})} readiness={readiness} onConfirm={intent => setCorrections(current => ({ ...current, [intent.regionId]: intent.confirmedRawText }))} />}
       {!!regions.length && !input?.can_request_evaluation && <button type="button" disabled={regions.some(row => corrections[row.region_id] === undefined)} onClick={() => void run(async () => {
         await inputClient.confirmExtraction(attempt!, String(input!.candidate?.run_id ?? input!.candidate?.id), regions.map(row => ({ region_id: row.region_id, raw_text: corrections[row.region_id], normalized_math: corrections[row.region_id] })));
         const state = await inputClient.readInput(attempt!); if (alive.current) setInput(state);
@@ -213,9 +214,9 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
       {learning?.valid_evaluation_available && <>
         <section aria-label="첨삭 결과"><h2>첨삭 결과</h2>
           {result?.overall?.explanation && <p>{result.overall.explanation.replace(/^[A-Z_]+$/, "답안의 풀이 과정과 개선 안내를 확인해 주세요.")}</p>}
-          {result?.steps?.map(step => <article key={step.id}><p>{step.representation}</p><p>{step.explanation}</p></article>)}
+          {result?.steps?.map(step => <article key={step.id}><p><MathText text={step.representation}/></p><p><MathText text={step.explanation}/></p></article>)}
         </section>
-        <LearningGuidance coreView={coreView} l0Body="아래 안내를 확인하고 풀이를 개선해 보세요." revealedHints={hints}
+        <LearningGuidance key={learning.evaluation_id} coreView={coreView} l0Body="아래 안내를 확인하고 풀이를 개선해 보세요." revealedHints={hints}
           onRevealHint={level => void run(async () => {
             const hint = learning.hints.find(h => h.core_id === core?.core_id && h.level === level && h.can_reveal);
             if (!hint) throw Error("HINT_UNAVAILABLE");
@@ -223,7 +224,16 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
             const state = await learnClient.readLearningState(learning.evaluation_id);
             if (alive.current) { setHints(current => ({ ...current, [level]: result.body })); setLearning(state); }
           })}
-          onRevealSolution={() => {}}
+          availableHintLevels={learning.hints.filter(h=>h.core_id===core?.core_id&&h.can_reveal).map(h=>h.level)}
+          solutionAvailable={learning.solutions.some(s=>s.reveal_state==='AVAILABLE_ON_EXPLICIT_REQUEST')}
+          solutionBody={solution?.body}
+          onRevealSolution={() => void run(async()=>{
+            const target=learning.solutions.find(s=>s.reveal_state==='AVAILABLE_ON_EXPLICIT_REQUEST');
+            if(!target)throw Error('SOLUTION_UNAVAILABLE');
+            const revealed=await learnClient.revealSolution(learning.evaluation_id,target.target,key(`solution:${learning.evaluation_id}:${target.solution_id??target.target}`),target.solution_id);
+            if(alive.current)setSolution(revealed);
+            const records=await learnClient.readLearningHistory(learning.evaluation_id);if(alive.current)setHistory(records);
+          })}
           onResolve={() => { setFrozen(false); setPrior(learning); setLeaf(learning.leaf_id); setAttempt(null); setInput(null); setAnswer(""); setFile(null);setImages([]);uploadPages.current=null; setCorrections({}); keys.current.clear(); }} solutionProvenance={solution?.provenance} />
         <LearningDelta view={summarizeReevaluationDelta(learning.reevaluation_delta as ReevaluationDelta | null)} />
       </>}
