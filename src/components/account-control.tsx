@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 import { useAuth } from "@/components/auth-context";
 import { useCreditSummary } from "@/components/credit-balance";
@@ -45,8 +46,10 @@ export function AccountControl() {
 
 function HeaderCredit() {
   const { state } = useCreditSummary();
+  const pathname = usePathname() ?? "";
+  const label = /^\/(pricing|payments|refund)(\/|$)/.test(pathname) ? "이용권" : "크레딧";
   if (state.status === "signed-out") return null;
-  return <span className="header-credit" aria-live="polite">{state.status === "ready" ? `크레딧 ${state.value.spendable}` : state.status === "loading" ? "크레딧 확인 중" : "크레딧 확인 불가"}</span>;
+  return <span className="header-credit" aria-live="polite">{state.status === "ready" ? `${label} ${state.value.spendable}` : state.status === "loading" ? `${label} 확인 중` : `${label} 확인 불가`}</span>;
 }
 
 export function AccountPanel() {

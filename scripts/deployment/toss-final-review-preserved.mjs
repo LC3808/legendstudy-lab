@@ -56,8 +56,10 @@ const missing=await api('/pages/assets/check-missing',{method:'POST',headers:{'C
 if(missing.length)throw Error('Missing baseline assets; abort');
 const env=current.deployment_configs.production.env_vars;
 if(env.PAYMENT_MODE?.value!=='REVIEW'||env.PAYMENT_ENABLED?.value!=='true'||env.PAYMENT_ORIGIN?.value!=='https://lab.legendstudy.com'||env.PAYMENT_SUPABASE_URL?.value!=='https://stlhijzpjfgwwdgunlsd.supabase.co')throw Error('REVIEW configuration mismatch');
+if(!process.argv.includes('--preserve-env')) {
 const finance=fs.readFileSync(path.join(backup,'finance.jwt'),'utf8').trim();
 await api(project,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({deployment_configs:{production:{env_vars:{PAYMENT_FINANCE_TOKEN:{type:'secret_text',value:finance},PAYMENT_REVIEW_SUBJECTS:{type:'secret_text',value:'ddc5ae63-acbb-490b-a423-c996b811dea8'}}}}})});
+}
 const configured=await api(project);
 const unchanged=c=>{const copy=structuredClone(c);for(const k of ['PAYMENT_FINANCE_TOKEN','PAYMENT_REVIEW_SUBJECTS'])delete copy.production.env_vars[k];return JSON.stringify(copy);};
 if(unchanged(configured.deployment_configs)!==unchanged(current.deployment_configs)||configured.canonical_deployment.id!==previous.id)throw Error('Unexpected configuration drift');
