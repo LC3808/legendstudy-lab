@@ -33,7 +33,7 @@ export default function RefundPage() {
         <dl className="pricing-summary">
           <div>
             <dt>판매 상품</dt>
-            <dd>AI 논술 첨삭 이용권 (1 / 3 / 5 / 10회)</dd>
+            <dd>논술 첨삭 이용권 (1 / 3 / 5 / 10회)</dd>
           </div>
           <div>
             <dt>판매 가격</dt>

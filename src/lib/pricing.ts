@@ -45,7 +45,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(4900),
     perCreditKrw: 4900,
     perCreditLabel: won(4900),
-    valueLine: "AI 논술 첨삭 1회",
+    valueLine: "논술 첨삭 1회",
     recommended: false,
   },
   {
@@ -56,7 +56,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(11900),
     perCreditKrw: Math.round(11900 / 3),
     perCreditLabel: `약 ${won(Math.round(11900 / 3))}`,
-    valueLine: "AI 논술 첨삭 3회",
+    valueLine: "논술 첨삭 3회",
     recommended: false,
   },
   {
@@ -67,7 +67,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(17900),
     perCreditKrw: 3580,
     perCreditLabel: won(3580),
-    valueLine: "AI 논술 첨삭 5회",
+    valueLine: "논술 첨삭 5회",
     recommended: true,
   },
   {
@@ -78,7 +78,7 @@ export const pricingPlans: readonly CreditPlan[] = [
     priceLabel: won(29900),
     perCreditKrw: 2990,
     perCreditLabel: won(2990),
-    valueLine: "AI 논술 첨삭 10회",
+    valueLine: "논술 첨삭 10회",
     recommended: false,
   },
 ] as const;
@@ -116,7 +116,7 @@ export const pricingPolicy = {
  */
 const heroLead = "LegendStudy 논술 LAB";
 const heroBody =
-  "은 대학별 논술의 특성을 반영해, 내 답안에서 무엇을 보완해야 하는지 구체적으로 보여주는 AI 논술 첨삭 서비스입니다.";
+  "은 대학별 논술의 특성을 반영해, 내 답안에서 무엇을 보완해야 하는지 구체적으로 보여주는 논술 첨삭 서비스입니다.";
 
 export const heroCopy = {
   titleLine1: "필요한 횟수만큼 이용하고,",

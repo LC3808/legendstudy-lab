@@ -56,7 +56,7 @@ export default function PricingPage() {
 
       <section className="policy-section" aria-labelledby="pricing-plans-title">
         <h2 id="pricing-plans-title">판매 상품</h2>
-        <p>구매한 횟수만큼 AI 논술 첨삭을 이용하는 이용권입니다. 충전형 포인트가 아니며, 각 이용권에는 최초 첨삭 1회와 동일 답안 재첨삭 1회가 포함됩니다.</p>
+        <p>구매한 횟수만큼 논술 첨삭을 이용하는 이용권입니다. 충전형 포인트가 아니며, 각 이용권에는 최초 첨삭 1회와 동일 답안 재첨삭 1회가 포함됩니다.</p>
         <PricingPlans />
       </section>
 

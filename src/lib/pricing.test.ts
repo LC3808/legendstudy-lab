@@ -50,7 +50,7 @@ describe("hero copy", () => {
     expect(heroCopy.titleLine1).toBe("필요한 횟수만큼 이용하고,");
     expect(heroCopy.titleLine2).toBe("가능성을 좀 더 선명하게.");
     expect(heroCopy.description).toBe(
-      "LegendStudy 논술 LAB은 대학별 논술의 특성을 반영해, 내 답안에서 무엇을 보완해야 하는지 구체적으로 보여주는 AI 논술 첨삭 서비스입니다.",
+      "LegendStudy 논술 LAB은 대학별 논술의 특성을 반영해, 내 답안에서 무엇을 보완해야 하는지 구체적으로 보여주는 논술 첨삭 서비스입니다.",
     );
   });
 
@@ -74,13 +74,13 @@ describe("hero copy", () => {
 describe("product card copy", () => {
   it("states what each pack contains in consumer terms, one 이용권 per 이용권", () => {
     expect(pricingPlans.map((plan) => plan.valueLine)).toEqual([
-      "AI 논술 첨삭 1회",
-      "AI 논술 첨삭 3회",
-      "AI 논술 첨삭 5회",
-      "AI 논술 첨삭 10회",
+      "논술 첨삭 1회",
+      "논술 첨삭 3회",
+      "논술 첨삭 5회",
+      "논술 첨삭 10회",
     ]);
     for (const plan of pricingPlans) {
-      expect(plan.valueLine).toBe(`AI 논술 첨삭 ${plan.credits}회`);
+      expect(plan.valueLine).toBe(`논술 첨삭 ${plan.credits}회`);
     }
   });
 
