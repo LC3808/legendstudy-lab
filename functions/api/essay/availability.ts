@@ -13,6 +13,17 @@ export async function onRequestGet({request,env}:{request:Request;env:MathEnviro
   if(env.MATH_ORIGIN!==new URL(request.url).origin)return reply();
   try {
     const transport=serverTransport(env);await transport.subject(token,new URL(request.url).searchParams.get('probe')!=='worker-auth'&&publicMathLeaves(env).length>0);
+    const workerCurrent=async(credential:string|undefined,role:string)=>{
+      if(currentRole(credential,role))return true;
+      if(!credential?.startsWith('sb_secret_'))return false;
+      const own=role==='math_extraction_worker'?'math_extraction':'math_evaluation';
+      const other=own==='math_extraction'?'math_evaluation':'math_extraction';
+      const results=await Promise.all([own,other].map(async name=>{
+        const response=await transport.request(`/rest/v1/rpc/${name}`,credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_request:null})});
+        const data=await response.json() as {code?:string};return {status:response.status,code:data.code};
+      }));
+      return results[0].code==='22023'&&results[1].status===403&&results[1].code==='42501';
+    };
     // Existing allowlisted operator only. Null DTOs cannot claim work or charge Credit.
     if(new URL(request.url).searchParams.get('probe')==='worker-auth') {
       const checks=[];
@@ -39,14 +50,14 @@ export async function onRequestGet({request,env}:{request:Request;env:MathEnviro
     state.checked=true;
     state.catalog={math:catalog.length>0};
     if(env.MATH_ENABLED!=='true'||env.MATH_PROVIDER_CALLS_ENABLED!=='true'||env.MATH_PROVIDER!=='OPENAI'||!env.MATH_PRIMARY_MODEL||!env.MATH_PROVIDER_API_KEY||
-      !currentRole(env.MATH_EXTRACTION_WORKER_JWT,'math_extraction_worker')||!currentRole(env.MATH_EVALUATION_WORKER_JWT,'math_evaluation_worker'))return reply();
+      !await workerCurrent(env.MATH_EXTRACTION_WORKER_JWT,'math_extraction_worker')||!await workerCurrent(env.MATH_EVALUATION_WORKER_JWT,'math_evaluation_worker'))return reply();
     const status=await transport.rpcRaw('essay_web_runtime_status',{},token);
     if(status?.version!=='essay-web-runtime-v1')throw Error('INVALID_RUNTIME_STATUS');
     if(status.math_evaluations_enabled!==true)return reply();
     state.types.math=state.catalog.math;
     const released=publicMathLeaves(env);
     const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
-    state.mathQuestions=Array.isArray(catalog)?catalog.filter(row=>uuid(row.essay_exam_id)&&uuid(row.essay_question_id)&&uuid(row.leaf_id)&&released.includes(row.leaf_id)).map(row=>({examId:row.essay_exam_id,questionId:row.essay_question_id,leafId:row.leaf_id})):[];
+    state.mathQuestions=Array.isArray(catalog)?catalog.filter(row=>uuid(row.essay_exam_id)&&uuid(row.essay_question_id)&&uuid(row.leaf_id)&&(!released.length||released.includes(row.leaf_id))).map(row=>({examId:row.essay_exam_id,questionId:row.essay_question_id,leafId:row.leaf_id})):[];
   } catch { state.checked=false; /* Missing migration, closed lifecycle, network and configuration all remain unavailable. */ }
   // Humanities worker/review binding, economics mixed atomic orchestration and science engine
   // have no verified Production integration. Never infer these from an exam's label.

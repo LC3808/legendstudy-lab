@@ -1,4 +1,5 @@
 "use client";
+import {ServerCoaching} from "../math-learning/server-coaching";
 import {AnswerImagesInput} from "../answer-image-input";
 import {MathText} from "../math-display/math-text";
 import Link from "next/link";
@@ -113,8 +114,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
       if (alive.current) { setResult(null); setHistory(null); setLearning(state); setNotice(state.evaluation_state === "FAILED" ? "평가가 완료되지 않았습니다. 새 답안을 작성하거나 잠시 후 다시 시도해 주세요." : "평가를 진행하고 있습니다. 잠시 후 결과를 다시 확인해 주세요."); }
       return;
     }
-    const wire = await rpc.rpc("math_input", { dto_version: "math-input-v1", action: "read_result", payload: { evaluation_id: id } }) as { result: { output: typeof result } };
-    if (alive.current) setResult(wire.result.output);
+    if (alive.current) setResult(null);
     if (!alive.current) return;
     setLearning(state); setHints({}); setSolution(null);
     const records = await learnClient.readLearningHistory(id);
@@ -216,10 +216,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
         finally { window.dispatchEvent(new Event("legendstudy:credit-refresh")); await readEvaluation(learning.evaluation_id); await reloadHistory(); }
       })}>같은 첨삭 처리 다시 요청</button>}
       {learning?.valid_evaluation_available && <>
-        <section aria-label="첨삭 결과"><h2>첨삭 결과</h2>
-          <AnswerDisclosure key={learning.evaluation_id}>{result?.overall?.explanation && <p>{result.overall.explanation.replace(/^[A-Z_]+$/, "답안의 풀이 과정과 개선 안내를 확인해 주세요.")}</p>}
-          {result?.steps?.map(step => <article key={step.id}><p><MathText text={step.representation}/></p><p><MathText text={step.explanation}/></p></article>)}</AnswerDisclosure>
-        </section>
+        <ServerCoaching key={learning.evaluation_id} evaluationId={learning.evaluation_id}/>
         <LearningGuidance key={learning.evaluation_id} coreView={coreView} stepPosition={result?.steps?.find(s=>s.id===core?.step_id)?.position} l0Body="아래 안내를 확인하고 풀이를 개선해 보세요." revealedHints={hints}
           onRevealHint={level => void run(async () => {
             const hint = learning.hints.find(h => h.core_id === core?.core_id && h.level === level && h.can_reveal);

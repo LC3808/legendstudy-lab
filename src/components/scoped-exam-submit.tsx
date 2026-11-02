@@ -17,8 +17,9 @@ export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onI
    const session=(await auth.client.auth.getSession()).data.session;
    if(!active||session?.user.id!==owner)return;
    const response=await fetch('/api/essay/exam',{method:'POST',headers:{Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify({action:'availability',examId:exam.dbExamId}),cache:'no-store'});
-   if(!response.ok)throw Error('ADMISSION_UNAVAILABLE');
+   if(!response.ok&&response.status!==503)throw Error('ADMISSION_UNAVAILABLE');
    const result=await response.json();
+   if(!response.ok&&result?.code!=='EVALUATION_UNAVAILABLE')throw Error('ADMISSION_UNAVAILABLE');
    const math:Record<string,string>={};
    if(result?.ready===true&&result.mathQuestions&&typeof result.mathQuestions==='object'){
     for(const [id,leaf] of Object.entries(result.mathQuestions))if(typeof leaf==='string'&&/^[0-9a-f-]{36}$/i.test(id)&&/^[0-9a-f-]{36}$/i.test(leaf))math[id]=leaf;
@@ -45,7 +46,7 @@ export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onI
  const unavailable=ready&&included.some(q=>!q.dbQuestionId||!admitted.questions.includes(q.dbQuestionId));
  const mathLeaf=admitted?.owner===owner&&admitted?.exam===exam.dbExamId&&q?.dbQuestionId?admitted.math[q.dbQuestionId]:null;
  if(ready&&Object.keys(admitted.math).length&&!unavailable)return <MixedExamSubmit key={`${owner}:${exam.key}`} exam={exam} drafts={drafts} included={included.map(q=>q.key)} leaves={admitted.math} cycle={cycle}/>;
- if(mathLeaf)return <><MathExamSessionSubmit key={`${owner}:${exam.key}`} exam={exam} drafts={drafts} included={included.map(q=>q.key)} leaves={admitted!.math}/></>;
+ if(mathLeaf||(included.length>0&&included.every(q=>q.dbQuestionId&&admitted.math[q.dbQuestionId])))return <><MathExamSessionSubmit key={`${owner}:${exam.key}`} exam={exam} drafts={drafts} included={included.map(q=>q.key)} leaves={admitted!.math} rewrite={cycle?{id:cycle.parentId??cycle.previousPaidRunId!,additional:!!cycle.previousPaidRunId}:undefined}/></>;
  if(unavailable)return <div><button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button><p role="status">작성한 답안 중 아직 첨삭 준비 중인 문항이 있습니다. 답안은 저장되며, 해당 문항을 포함한 회차 첨삭은 준비가 완료되면 이용할 수 있습니다.</p></div>;
  return ready?<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={included.map(q=>q.key)} drafts={drafts} cycle={cycle}/>:<button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button>;
 }

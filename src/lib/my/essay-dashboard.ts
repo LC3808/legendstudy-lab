@@ -5,7 +5,7 @@ import type {SupabaseClient} from '@supabase/supabase-js';
 import {assertOwner, readEssays} from './data';
 export type Attempt={id:string;session_id:string;attempt_no:number;submitted_at:string};
 export type RecordItem={id:string;source:'essay'|'math'|'exam';question:string;university:string|null;year?:number|null;essayType?:string|null;at:string;rewrite:boolean;evaluations:{id:string;status:string;at:string;completedAt:string|null;valid:boolean}[];sessionId?:string;examId?:string;questionIds?:string[];parentId?:string|null;previousPaidRunId?:string|null;submissionIndex?:number;mathSession?:MathSession};
-export type MathSession={run_id:string;exam_id:string;parent_id:string|null;state:string;created_at:string;completed_at:string|null;questions:{attempt_id:string;leaf_id:string;question_id:string;evaluation_id:string;state:string}[]};
+export type MathSession={free_rewrite_available?:boolean;run_id:string;exam_id:string;parent_id:string|null;state:string;created_at:string;completed_at:string|null;questions:{attempt_id:string;leaf_id:string;question_id:string;evaluation_id:string;state:string}[]};
 function checked<T>(value:{data:T;error:unknown}){if(value.error)throw Error('READ_FAILED');return value.data;}
 export async function readEssayDashboard(client:SupabaseClient,owner:string):Promise<RecordItem[]>{
  const exams=await readExamDashboard(client,owner);

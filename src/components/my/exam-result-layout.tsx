@@ -1,4 +1,5 @@
 'use client';
+import {ServerCoaching} from '../math-learning/server-coaching';
 import {EssayFeedback} from '../essay-feedback';
 import Link from 'next/link';
 import {useEffect,useState,type CSSProperties} from 'react';
@@ -60,7 +61,7 @@ export function ExamResultLayout({row,run,reports,previous,onRewrite,onAdditiona
     return <section className="exam-result-question" key={report.id}>
      <header className="exam-result-question-head"><h3>{label(report,index)}</h3>{pdf&&auth.user&&<StudentQuestionPdf asset={pdf} owner={auth.user.id} label="문제·표·그래프 원문 보기 ↗"/>}{section==='questions'&&<button aria-expanded={expanded} aria-controls={`report-${index}`} onClick={()=>setOpen(old=>({...old,[report.id]:!expanded}))}>{expanded?'접기':'펼치기'} <span aria-hidden="true">{expanded?'−':'+'}</span></button>}</header>
      <div id={`report-${index}`} hidden={!expanded}>
-      {section==='answers'?<div className="exam-result-answer"><p className="essay-answer">{report.answer||'이 기록에는 표시할 텍스트 답안이 없습니다.'}</p>{report.pins.includes('math-eval-v1')&&<p className="my-note">저장된 수식·텍스트 답안입니다. 원본 사진 미리보기는 이 결과 조회 경로에서 제공되지 않습니다.</p>}</div>:<EvaluationReport voiceType={report.math?"math":"humanities_social"} title={historyType(row)} answerLabel={answerVersion(row)} before={before} report={report}/>}
+      {section==='answers'?<div className="exam-result-answer"><p className="essay-answer">{report.answer||'이 기록에는 표시할 텍스트 답안이 없습니다.'}</p>{report.pins.includes('math-eval-v1')&&<p className="my-note">저장된 수식·텍스트 답안입니다. 원본 사진 미리보기는 이 결과 조회 경로에서 제공되지 않습니다.</p>}</div>:report.coachingRef?<ServerCoaching {...report.coachingRef}/>:<EvaluationReport voiceType={report.math?"math":"humanities_social"} title={historyType(row)} answerLabel={answerVersion(row)} before={before} report={report}/>}
       {section==='questions'&&<EssayFeedback evaluationRef={report.id}/>}
 
       {(section==='summary'||section==='rewrite'||section==='questions')&&<EvaluationComparison before={before} after={row.rewrite?report:undefined}/>}

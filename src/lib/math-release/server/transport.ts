@@ -9,8 +9,14 @@ export function serverTransport(env: MathEnvironment) {
   const url = env.MATH_SUPABASE_URL;
   if (!env.MATH_PROJECT_REF || url !== `https://${env.MATH_PROJECT_REF}.supabase.co` || !env.MATH_SUPABASE_PUBLISHABLE_KEY) throw Error("CONFIGURATION_REQUIRED");
   async function request(path: string, token: string, init: RequestInit = {}) {
+    // Optional opaque worker keys carry only the configured Math role. Student
+    // requests retain their Auth JWT; never promote a caller-supplied credential.
+    const workerKey = token.startsWith('sb_secret_') &&
+      [env.MATH_EXTRACTION_WORKER_JWT, env.MATH_EVALUATION_WORKER_JWT].includes(token);
+    const credentials: Record<string,string> = workerKey ? {apikey: token} :
+      {apikey: env.MATH_SUPABASE_PUBLISHABLE_KEY!, Authorization: `Bearer ${token}`};
     const response = await fetch(url + path, { ...init, redirect: "manual", signal: AbortSignal.timeout(20000), headers: {
-      apikey: env.MATH_SUPABASE_PUBLISHABLE_KEY!, Authorization: `Bearer ${token}`, ...init.headers,
+      ...init.headers, ...credentials,
     }});
     if (response.status >= 300 && response.status < 400) throw Error("REDIRECT_DENIED");
     return response;

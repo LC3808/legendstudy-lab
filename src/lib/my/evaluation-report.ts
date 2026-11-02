@@ -2,7 +2,7 @@
 export type Feedback={title:string;explanation:string;evidence:string;action:string};
 export type Criterion={id:string;name:string;value:string;stars:number|null;feedback:string};
 export type MathAssessment={answerVerdict:string;reviewRequired:boolean;steps:{position:number;status:string;representation:string;explanation:string}[]};
-export type Report={math?:MathAssessment;id:string;answer:string;question:string;summary:string;rubric:Criterion[];strengths:Feedback[];weaknesses:Feedback[];actions:string[];nextSteps:string[];pins:string[];priorId:string|null;evidenceLabels?:string[];previousReviews?:{outcome:string;reason:string}[];example?:string;sentences?:{quote:string;diagnosis:string;direction:string;example?:string}[]};
+export type Report={coachingRef?:{runId:string;questionId:string};math?:MathAssessment;id:string;answer:string;question:string;summary:string;rubric:Criterion[];strengths:Feedback[];weaknesses:Feedback[];actions:string[];nextSteps:string[];pins:string[];priorId:string|null;evidenceLabels?:string[];previousReviews?:{outcome:string;reason:string}[];example?:string;sentences?:{quote:string;diagnosis:string;direction:string;example?:string}[]};
 export function object(v:unknown):Record<string,unknown>{return v!==null&&typeof v==='object'&&!Array.isArray(v)?v as Record<string,unknown>:{};}
 export function array(v:unknown):unknown[]{return Array.isArray(v)?v:[];}
 export function text(v:unknown):string{return typeof v==='string'?v:'';}

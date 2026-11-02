@@ -31,6 +31,13 @@ export async function testPreviewAccess(request: Request, env: PreviewEnv, next:
   // callback itself, whose service credential and parent lease are still checked.
   const machine=request.headers.get('X-Test-Preview-Access')||'';
   if(url.hostname==='legendstudy-task16b.pages.dev'&&url.pathname==='/api/essay/math-session'&&request.method==='POST'&&machine&&equal(await signature(secret,machine),await signature(secret,secret)))return next();
+  // Native has no browser review cookie. These exact TEST API routes still verify
+  // the Auth JWT, active owner and server Math allowlist in their own gateways.
+  if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='POST'&&
+    /^\/api\/math\/(upload|extract|evaluate|recover)$/.test(url.pathname)&&
+    /^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
+  if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='GET'&&['/api/essay/availability','/api/essay/student-pdfs'].includes(url.pathname)&&/^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
+  if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='POST'&&url.pathname==='/api/essay/catalog'&&/^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
   const seconds = Math.floor(now / 1000);
   if (url.pathname === '/__review-access' && request.method === 'POST') {
     if (request.headers.get('origin') !== url.origin) return response('Forbidden', 403);

@@ -21,6 +21,7 @@ function fixture(target = {leafId:uuid, label:"연습 문제", statement:"식을
    actions.push({action:p!.action,payload:p!.payload});
    switch(p!.action){
     case "history":result={attempts:[]};break;
+    case "read":result={version:"math-coaching-v1",evaluation_id:uuid,disclosed:false,diagnosis:"풀이를 확인했습니다",tasks:[],strengths:[],concepts:[]};break;
     case "create_attempt":case "create_resolve_attempt":evidence=p!.payload.input_kind!=="TYPED";serial++;result={attempt_id:uuid};break;
     case "register_evidence":result={artifact_id:uuid,storage_state:"REGISTERED",upload_available:false};break;
     case "confirm_extraction":confirmed=true;result={confirmed_run_id:uuid};break;
@@ -37,7 +38,7 @@ function fixture(target = {leafId:uuid, label:"연습 문제", statement:"식을
   }
   return {abortSignal:()=>Promise.resolve({data:result,error:null})};
  });
- const client={rpc,auth:{getSession:async()=>({data:{session:{access_token:"synthetic"}}})}} as unknown as SupabaseClient;
+ const client={rpc,auth:{getSession:async()=>({data:{session:{access_token:"synthetic",user:{id:uuid}}}})}} as unknown as SupabaseClient;
  const auth:AuthContextValue={client,status:"authenticated",user:{id:uuid,email:"synthetic@example.invalid"},recoveryActive:false,completeRecovery:()=>{},signOut:async()=>{}};
  return {auth,actions,count:()=>serial};
 }
@@ -59,7 +60,8 @@ describe("student route integration",()=>{
   fireEvent.click(await screen.findByRole("button",{name:"첨삭 진행"}));
   await screen.findAllByText("정답 포함 상세 평가 공개");fireEvent.click(screen.getAllByText("정답 포함 상세 평가 공개")[0]);await screen.findByText("풀이를 확인했습니다");
   fireEvent.click(screen.getByRole("button",{name:"힌트 보기"}));await screen.findByText("사용한 정의와 정리의 적용 조건을 확인해 보세요.");
-  expect(screen.queryByRole("button",{name:/해설/})).toBeNull();
+  expect(screen.getByRole("button",{name:"전체 풀이 및 해설 보기"})).toBeTruthy();
+  expect(f.actions.some(x=>x.action==="reveal")).toBe(false);
   expect(f.actions.some(x=>x.action==="reveal_solution")).toBe(false);
   fireEvent.click(screen.getByRole("button",{name:"답안을 다시 작성해 보세요"}));
   fireEvent.change(screen.getByLabelText("내 답안"),{target:{value:"x = 3"}});

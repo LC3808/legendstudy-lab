@@ -37,7 +37,9 @@ export function evaluationGateway(ports: MathGatewayPorts) {
       if (state.evaluation_state === "INVALIDATED") return reply(409, "EVALUATION_INVALIDATED");
       if (state.evaluation_state === "COMPLETED") return state.valid_evaluation_available === true ? reply(200, "COMPLETED") : reply(409, "RETRY_STATUS_CHECK");
       if (state.evaluation_state !== "REQUESTED") return reply(409, "RETRY_STATUS_CHECK");
-      const result = await runWorkerEvaluation({ worker: ports.worker, adapter: ports.adapter, evaluationId: payload.evaluation_id });
+      // The Provider transport permits 75s. Do not expire the worker's lease at
+      // 45s while that same call is still running (and potentially billable).
+      const result = await runWorkerEvaluation({ worker: ports.worker, adapter: ports.adapter, evaluationId: payload.evaluation_id, timeoutMs: 80000 });
       return reply(result.finalized ? 200 : 422, result.finalized ? "COMPLETED" : "EVALUATION_FAILED");
     } catch { return reply(409, "RETRY_STATUS_CHECK"); }
   };
