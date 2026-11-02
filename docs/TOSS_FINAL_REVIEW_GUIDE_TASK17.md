@@ -21,7 +21,7 @@ WEB 요금·결제·환불 화면과 해당 경로 상단 잔액 표시만 명�
 
 ## 검증 증빙
 
-- 운영 배포9459776f-fecf-47ca-8f01-35f2f661813a, 소스ecd8ffc5a32429f513645d347d244bef2f7aef72.
+- 운영 배포e8c2a05f-6e13-42c3-9346-4eb42c4d9214, 소스b0176ff74a8ee59d796214f2c55c7dffed1e0f0b. Owner 명칭 정정으로 상품의 AI 접두어를 제거했다. 기존 성공 거래의 당시 기록은 보존한다.
 - runtime HTTP200 REVIEW/TEST, 비로그인 consumer_purchase=false.
 - 비로그인 orders/confirm/status/cancel HTTP401. 관리자 로그인 화면 결제 버튼 비활성 확인. 일반 사용자/이메일·관리자 우회 차단은 서버 회귀검증 PASS; 별도 일반계정 실제 로그인 검증은 미완료.
 - Owner review 로그인 후 실제1회 TEST 주문 및 Toss 결제창 진입 PASS.
