@@ -134,3 +134,46 @@ Canonical APP wiki essay-p0-direct-execution-20261023.md records the Oct23 full 
 6. Verify unauthenticated/ordinary/admin denial and payment account access at /login/ → /pricing/. Complete Owner card authentication, TEST approval, success/failure pages and TEST_RECORDED/no-grant; compare original ledger hashes and LIVE orders. Only then declare recovery/review submission ready.
 
 Final actual checks: production POST /api/payments/runtime503 CONFIG empty; dedicated payment-test same endpoint200 TEST. Original35 grants and124 transactions hashes match the baseline exactly; LIVE orders0; production TEST orders11 with3 TEST_RECORDED and grant links0. No credential replacement, financial write, provider approval or LIVE activation occurred. Approval E2E remains blocked by the empty credential; neither previous card-window entry nor TEST runtime200 proves it. Source deployment remains fccff254bb933e2f4d786f576360a06c0f34ddce. This diagnosis/runbook does not claim restored service.
+
+
+## Original token found — 2026-11-02
+
+Supersedes earlier unknown signer/subject statements. Broader, value-suppressed local search found the original Owner files ~/review-finance-token.jwt and ~/review-signing-key.jwk (both0600, outside Git). No raw credentials/subject logged. The original JWT has Production issuer, essay_finance role and existing gateway subject; iat2026-10-07T08:37:24Z, exp2026-10-14T08:37:24Z. Signature verifies with current Production public JWKS; saved private JWK public coordinates/kid match a current key. Read-only DB confirms gateway Auth user exists and account_private.allowed=true. The expired original cannot be restored unchanged. Initial bounded repo/backup scan checked186 candidate files with no finance JWT; expanding to the Owner home found these originals. This is not an assertion that every external secret store was searched.
+
+Historical signer: APP9ea7e2a7 Oct03 introduced TEST code; Oct04 records actual TEST signing/validation. APP remote origin/manus/payment-review-signer-1 commit ed5a53a92dbad83970ad3f36d1b276f826ceda90 Oct07 adds explicit --allow-production-review, exact Production project and bounded1h/24h/7d. Current APP checkout retains TEST-only version; the remote historical implementation was missed previously. Exact production mint execution/operator log remains unidentified; token claims/signature/creation time and Oct07 successful TEST approval establish the existing material. Synthetic tests from that historical commit PASS; no real token minted.
+
+Verification is Pages→Data API /rest/v1/rpc/payment_process, not a payment Edge Function. PostgREST checks JWT then uses essay_finance; actual authenticator membership SET=true/INHERIT=false/ADMIN=false. Finance is NOLOGIN/NOBYPASSRLS and has function EXECUTE; anon/authenticated/service_role do not. DB requires non-null essay_private.uid() and account_private.allowed(). No token-string equality configuration needs updating. Finance has other existing financial RPC capabilities; this is not a payment-only token and never belongs in a browser.
+
+### Concrete renewal procedure — prepared, not executed
+
+Reuse the already trusted ES256 key and original gateway subject. Do not import/rotate a signing key, create a new user/profile, grant roles or change DB functions. Use1h for initial recovery validation; schedule renewal before expiry for any longer review window. Existing issuer/audience/role/subject remain unchanged. Only iat/exp/signature change.
+
+The following Owner-side command retrieves the exact historical signer into a new private directory and writes a new0600 token file. It never prints token/key/subject and never overwrites the original. It does not update Cloudflare or call a financial mutation. Run from the APP checkout only when proceeding with renewal:
+
+```sh
+python3 - <<'PYCODE'
+import base64, json, pathlib, subprocess, tempfile
+home = pathlib.Path.home()
+parent = home / '.legendstudy-private'
+parent.mkdir(mode=0o700, exist_ok=True)
+folder = pathlib.Path(tempfile.mkdtemp(prefix='finance-renewal-', dir=parent))
+source = subprocess.check_output(['git', 'show',
+ 'ed5a53a92dbad83970ad3f36d1b276f826ceda90:supabase/verification/payments/hosted-test/mint-finance-token.mjs'])
+script = folder / 'mint-finance-token.mjs'
+script.write_bytes(source)
+old = (home / 'review-finance-token.jwt').read_text().strip()
+claims = json.loads(base64.urlsafe_b64decode(old.split('.')[1] + '==='))
+assert claims['role'] == 'essay_finance'
+assert claims['iss'] == 'https://stlhijzpjfgwwdgunlsd.supabase.co/auth/v1'
+subprocess.run(['/opt/homebrew/opt/node@22/bin/node', str(script),
+ str(home / 'review-signing-key.jwk'), str(folder / 'finance.jwt'),
+ 'stlhijzpjfgwwdgunlsd', claims['sub'], '3600', '--allow-production-review'], check=True)
+print('Private output path:', folder / 'finance.jwt')
+PYCODE
+```
+
+Before execution recheck key still matches current JWKS and gateway remains allowed. This command is generation only, not proof that the resulting token is admitted. Next validate the new JWT via Production Data API using existing publishable apikey and Authorization Bearer from file in memory; POST {"p":{"dto_version":"payment-v1","action":"get","id":"<fresh nonexistent UUID>"}}. Confirm UUID absent via read-only SQL first. Expect404/PT404 ORDER_NOT_FOUND (before locks/writes). Never log request headers or token.401/PGRST301 means credential validation failure; PT401 identity failure;403 can indicate role/ACL/lifecycle denial. Stop on unexpected results.
+
+After that check, Owner restores only PAYMENT_FINANCE_TOKEN in Cloudflare legendstudy-lab/Production Secret, followed by preservation deployment and REVIEW/TEST acceptance checks in the preceding runbook. Private signing key stays local. No server verification-side change is required because this key is already trusted. If trust changes, stop; do not auto-import a key. Removing the Cloudflare binding does not cryptographically revoke copies of a signed JWT; retain expiry and application HOLD/permission controls.
+
+This task performed no real mint, Secret change, deployment, DB write or provider call. LIVE remains HOLD. Service recovery and TEST approval E2E are still pending renewal/deployment.

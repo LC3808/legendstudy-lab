@@ -46,3 +46,7 @@ TASK17 production checkpoint: source3e60222 → Pages2b5b0656; TEST entry UI ver
 ## 2026-11-02 — TASK17 Finance configuration-source diagnosis
 
 [Final recovery diagnosis](toss-test-task17.md#finance-final-recovery-diagnosis--2026-11-02-1025-kst): build-only probe confirms empty finance before app code; intentionally failed before deploy, command restored, production88a28465 preserved. Oct23 redacted-secret replay history identifies likely origin. Existing-token-first Owner runbook prepared; no replacement/financial writes. Original ledger hashes preserved; runtime503/TEST200, approval E2E blocked.
+
+## 2026-11-02 — TASK17 original finance material found
+
+[Origin evidence and concrete renewal](toss-test-task17.md#original-token-found--2026-11-02): existing local JWT expired Oct14; signature/private key match current Production JWKS, gateway allowed. Historical Oct07 signer synthetic regression PASS. Same-key renewal requires no DB/signing configuration change. No mint/config/ledger mutation.
