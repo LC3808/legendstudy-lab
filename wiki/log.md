@@ -64,3 +64,8 @@ Owner completed authentication and observed success CTAs/essay LAB navigation. P
 ## 2026-11-02 — Owner product wording correction
 
 Removed the mistakenly added AI prefix from product names, pricing/refund copy, provider order display name and submission guide. Production e8c2a05f-6e13-42c3-9346-4eb42c4d9214/source b0176ff verified success; public pricing/refund/checkout no AI essay wording.138 tests/build PASS. Credentials, permissions, ledger and historical confirmed order unchanged.
+
+
+## 2026-11-02 — Payment verification progress card
+
+Owner screenshot showed unstyled confirmation pending screen. Reused completion card for pending/recovery, initial busy state prevents retry-button flash; pending hides actions, resolved/error state offers styled recovery actions. API/confirmation semantics unchanged.17 callback tests/build PASS. Production e081a02c-456f-4eec-8a59-77483ad547e2/source8180124 verified initial loading text and actual recovery card in browser. No new payment/credential/ledger changes.
