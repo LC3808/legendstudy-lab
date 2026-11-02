@@ -64,10 +64,10 @@ describe("terms document", () => {
 
   it("matches the published prices", () => {
     for (const plan of pricingPlans) expect(terms).toContain(plan.priceLabel);
-    expect(terms).toContain(`${pricingPolicy.freeSignupCredits} 크레딧`);
+    expect(terms).toContain(`${pricingPolicy.freeSignupCredits} 이용권`);
   });
 
-  it("matches the published 크레딧 periods and deduction", () => {
+  it("matches the published 이용권 periods and deduction", () => {
     expect(terms).toContain(`${pricingPolicy.paidCreditValidityMonths}개월`);
     expect(terms).toContain(`${pricingPolicy.reevaluationWindowDays}일`);
     expect(terms).toContain(pricingPolicy.refundDeductionPerCreditKrw.toLocaleString("ko-KR"));
@@ -75,7 +75,7 @@ describe("terms document", () => {
 
   it("covers every topic the review requires", () => {
     for (const topic of [
-      "크레딧",
+      "이용권",
       "환금성 포인트가 아니며",
       "유효기간",
       "재첨삭",
@@ -127,7 +127,7 @@ describe("terms document", () => {
     expect(terms).toContain("결제 기능은 아직 제공되지 않습니다");
   });
 
-  it("describes 크레딧 as a non-transferable usage unit, not money", () => {
+  it("describes 이용권 as a non-transferable usage unit, not money", () => {
     expect(terms).toContain("환금성 포인트가 아니며");
     expect(terms).not.toMatch(/캐시|머니|현금처럼/);
   });

@@ -47,7 +47,7 @@ export function AccountControl() {
 function HeaderCredit() {
   const { state } = useCreditSummary();
   const pathname = usePathname() ?? "";
-  const label = /^\/(pricing|payments|refund)(\/|$)/.test(pathname) ? "이용권" : "크레딧";
+  const label = /^\/(pricing|payments|refund|terms|privacy)(\/|$)/.test(pathname) ? "이용권" : "크레딧";
   if (state.status === "signed-out") return null;
   return <span className="header-credit" aria-live="polite">{state.status === "ready" ? `${label} ${state.value.spendable}` : state.status === "loading" ? `${label} 확인 중` : `${label} 확인 불가`}</span>;
 }
