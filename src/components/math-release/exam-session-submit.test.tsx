@@ -31,10 +31,10 @@ describe('Math session submission uses the saved exam unit',()=>{
   render(<MathExamSessionSubmit exam={exam} drafts={drafts} included={[1,2,3,4].slice(0,n).map(x=>`q${x}`)} leaves={leaves}/>);
   const prepare=await screen.findByRole('button',{name:/保存|사진에서 답안 추출하기/});
   await waitFor(()=>expect((prepare as HTMLButtonElement).disabled).toBe(false));fireEvent.click(prepare);
-  const submit=await screen.findByRole('button',{name:'회차 첨삭 요청 · 1 크레딧'});
+  const submit=await screen.findByRole('button',{name:'회차 첨삭 요청 · 1 이용권'});
   expect(f.rpc.mock.calls.filter(([name])=>name==='math_session_submit')).toHaveLength(0);
   fireEvent.click(submit);await screen.findByRole('dialog');
-  if(n<4)expect(screen.getByText(/별도 회차로 1 크레딧/)).toBeTruthy();
+  if(n<4)expect(screen.getByText(/별도 회차로 1 이용권/)).toBeTruthy();
   fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));
   await screen.findByText('회차 첨삭이 완료됐습니다.');
   const calls=f.rpc.mock.calls.filter(([name])=>name==='math_session_submit');expect(calls).toHaveLength(1);
@@ -49,7 +49,7 @@ describe('Math session submission uses the saved exam unit',()=>{
   lost=true;const props={exam,drafts,included:['q1'],leaves};
   const view=render(<MathExamSessionSubmit {...props}/>);
   const prepare=await screen.findByRole('button',{name:/사진에서 답안 추출하기/});await waitFor(()=>expect((prepare as HTMLButtonElement).disabled).toBe(false));fireEvent.click(prepare);
-  fireEvent.click(await screen.findByRole('button',{name:'회차 첨삭 요청 · 1 크레딧'}));fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));
+  fireEvent.click(await screen.findByRole('button',{name:'회차 첨삭 요청 · 1 이용권'}));fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));
   await screen.findByRole('button',{name:'같은 회차 처리 확인'});await waitFor(()=>expect(screen.getByRole('status').textContent).toContain('확인하지 못했어요'));
   const firstCall=f.rpc.mock.calls.find(([name])=>name==='math_session_submit')![1];view.unmount();
   render(<MathExamSessionSubmit {...props}/>);fireEvent.click(await screen.findByRole('button',{name:'같은 회차 처리 확인'}));
@@ -69,7 +69,7 @@ it('restores an existing mixed-input candidate read-only and waits for student c
  expect(screen.getByRole('region',{name:'사진 답안 확인'})).toBeTruthy();
  expect(f.read).toHaveBeenCalledWith(id(101));expect(f.create).not.toHaveBeenCalled();expect(fetch).not.toHaveBeenCalled();
  expect(f.rpc).not.toHaveBeenCalled();expect(onReady).not.toHaveBeenCalled();
- expect(screen.queryByRole('button',{name:'회차 첨삭 요청 · 1 크레딧'})).toBeNull();
+ expect(screen.queryByRole('button',{name:'회차 첨삭 요청 · 1 이용권'})).toBeNull();
 });
 
 it('passes already-confirmed input to the Essay parent without a Math paid submission',async()=>{

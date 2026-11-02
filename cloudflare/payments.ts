@@ -27,19 +27,30 @@ function config(e: Env) {
   const mode = e.PAYMENT_MODE;
   const live = mode === 'LIVE';
   const review = mode === 'REVIEW';
-  if (!live && !review && mode !== 'TEST') fail(503, 'PAYMENT_NOT_CONFIGURED');
+  if (!live && !review && mode !== 'TEST') throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', { stage: 'CONFIG', checks: { mode_supported: false } });
   // REVIEW is the card-review mode: the real service origin and the real Production
   // database, driven by the Toss TEST merchant. The merchant key family is TEST, so
   // no real charge is possible, and persistence stays on TEST semantics.
   const test = !live;
   const clientKey = test ? e.TOSS_TEST_CLIENT_KEY : e.TOSS_LIVE_CLIENT_KEY;
   const secret = test ? e.TOSS_TEST_SECRET_KEY : e.TOSS_LIVE_SECRET_KEY;
-  if (!(test ? /^test_ck_/ : /^live_ck_/).test(clientKey || '') || !(test ? /^test_sk_/ : /^live_sk_/).test(secret || '') || e.TOSS_MID !== 'leglabn24k' || !e.PAYMENT_FINANCE_TOKEN || !e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) fail(503, 'PAYMENT_NOT_CONFIGURED');
+  const checks = { client_key_family: (test ? /^test_ck_/ : /^live_ck_/).test(clientKey || ''), secret_key_family: (test ? /^test_sk_/ : /^live_sk_/).test(secret || ''), merchant: e.TOSS_MID === 'leglabn24k', finance_present: Boolean(e.PAYMENT_FINANCE_TOKEN), publishable_present: Boolean(e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) };
+  if (Object.values(checks).some(ok => !ok)) {
+    // REVIEW-only bounded diagnostics: booleans never contain a binding value,
+    // token, key prefix/length, buyer identity or provider response.
+    throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', review ? { stage: 'CONFIG', checks, binding_state: {
+      finance_key_present: Object.hasOwn(e, 'PAYMENT_FINANCE_TOKEN'),
+      finance_is_string: typeof e.PAYMENT_FINANCE_TOKEN === 'string',
+      finance_is_empty_string: e.PAYMENT_FINANCE_TOKEN === '',
+      reviewer_key_present: Object.hasOwn(e, 'PAYMENT_REVIEW_SUBJECTS'),
+      reviewer_nonempty: Boolean(e.PAYMENT_REVIEW_SUBJECTS),
+    } } : undefined);
+  }
   const origin = test && !review ? 'https://legendstudy-lab-payment-test.pages.dev' : 'https://lab.legendstudy.com';
   const db = test && !review ? 'https://wsnrwklplnunjktyfmbr.supabase.co' : 'https://stlhijzpjfgwwdgunlsd.supabase.co';
-  if (e.PAYMENT_ORIGIN !== origin || e.PAYMENT_SUPABASE_URL !== db || !['true','false'].includes(e.PAYMENT_ENABLED || '')) fail(503, 'PAYMENT_NOT_CONFIGURED');
+  if (e.PAYMENT_ORIGIN !== origin || e.PAYMENT_SUPABASE_URL !== db || !['true','false'].includes(e.PAYMENT_ENABLED || '')) throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', review ? { stage: 'CONFIG', checks: { origin: e.PAYMENT_ORIGIN === origin, database: e.PAYMENT_SUPABASE_URL === db, enabled_valid: ['true','false'].includes(e.PAYMENT_ENABLED || '') } } : undefined);
   // A review runtime without a reviewer allowlist is a misconfiguration, not a mode.
-  if (review && !(e.PAYMENT_REVIEW_SUBJECTS || '').split(',').filter(Boolean).length) fail(503, 'PAYMENT_NOT_CONFIGURED');
+  if (review && !(e.PAYMENT_REVIEW_SUBJECTS || '').split(',').filter(Boolean).length) throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', { stage: 'CONFIG', checks: { review_subjects_present: false } });
   // `mode` stays the persistence and provider mode (TEST|LIVE); `state` is what the browser may see.
   return { origin, clientKey, secret, enabled: e.PAYMENT_ENABLED === 'true', mode: test ? 'TEST' : 'LIVE', state: mode!, review };
 }
@@ -109,7 +120,7 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
       if (!['1c','3c','5c','10c'].includes(String(p.sku))) fail(422, 'UNSUPPORTED_SKU');
       const o = safeOrder(await rpc('payment_order', { action: 'create', ...p }), cfg.mode);
       if (o.state !== 'ORDER_CREATED' || Date.parse(String(o.expires_at)) <= Date.now()) fail(409, 'ORDER_NOT_CHECKOUT_READY');
-      return Response.json({ order: o, checkout: { clientKey: cfg.clientKey, customerKey: o.id, orderId: o.order_id, orderName: `LegendStudy ${o.quantity} Credits${cfg.mode === 'TEST' ? ' TEST' : ''}`, amount: { currency: 'KRW', value: o.amount }, successUrl: `${origin}/payments/success/`, failUrl: `${origin}/payments/fail/` } }, { headers });
+      return Response.json({ order: o, checkout: { clientKey: cfg.clientKey, customerKey: o.id, orderId: o.order_id, orderName: `LegendStudy 논술 첨삭 ${o.quantity}회 이용권${cfg.mode === 'TEST' ? ' TEST' : ''}`, amount: { currency: 'KRW', value: o.amount }, successUrl: `${origin}/payments/success/`, failUrl: `${origin}/payments/fail/` } }, { headers });
     }
     const shape: Record<string,string[]> = { status: ['id'], confirm: ['id','request_key','payment_key','amount'], reconcile: ['id'], cancel: ['id','request_key'], 'support-inspect': ['id','request_key'], 'support-cancel': ['id','request_key'], 'support-reconcile': ['id','request_key'] };
     if (!action || !shape[action]) fail(404, 'NOT_FOUND'); exact(p, shape[action!]); id(p.id);

@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { paymentSessionToken } from '@/lib/payment-browser-session';
-import { paymentState, type PaymentState } from '@/lib/payment-runtime';
+import { paymentRuntime, type PaymentRuntime } from '@/lib/payment-runtime';
 import { pricingPlans } from '@/lib/pricing';
 
 type Order = { mode?: 'TEST'|'LIVE'; id: string; order_id: string; state: string; amount: number; quantity: number; grant_state: string };
@@ -25,11 +25,11 @@ async function sdk() {
   await new Promise<void>((resolve,reject) => { const s=document.createElement('script'); s.src='https://js.tosspayments.com/v2/standard';s.onload=()=>resolve();s.onerror=()=>reject(new Error('결제창을 불러오지 못했습니다.'));document.head.appendChild(s); });
 }
 export function PaymentTest({callback=false,live=false}: {callback?:boolean;live?:boolean}) {
-  const [message,setMessage]=useState(callback ? '결제 확인 중' : live ? '구매할 상품을 선택해 주세요.' : '실제 청구와 사용 가능한 크레딧 지급이 없는 테스트입니다.');
-  const [busy,setBusy]=useState(false);const [order,setOrder]=useState<Order|null>(null);
+  const [message,setMessage]=useState(callback ? '결제 확인 중' : live ? '구매할 상품을 선택해 주세요.' : '실제 청구와 사용 가능한 이용권 지급이 없는 테스트입니다.');
+  const [busy,setBusy]=useState(callback);const [order,setOrder]=useState<Order|null>(null);
   const inFlight = useRef(false);
-  const [runtime,setRuntime]=useState<PaymentState>('NOT_READY');
-  useEffect(()=>{if(!callback)void paymentState().then(setRuntime);},[callback]);
+  const [runtime,setRuntime]=useState<PaymentRuntime>({state:'NOT_READY',consumerPurchase:false});
+  useEffect(()=>{if(!callback)void paymentRuntime().then(setRuntime);},[callback]);
   async function result() {
     if (inFlight.current) return;
     inFlight.current = true;
@@ -68,11 +68,11 @@ export function PaymentTest({callback=false,live=false}: {callback?:boolean;live
     <div className="payment-completion__card">
       <div className="payment-completion__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m5 12 4 4L19 6" /></svg></div>
       <h1 id="payment-completion-title">결제가 완료되었습니다.</h1>
-      <p role="status">{order.mode === 'TEST' ? `${order.quantity} 크레딧 상품의 테스트 결제가 정상적으로 확인되었습니다.` : `${order.quantity} 크레딧이 지급되었습니다.`}</p>
+      <p role="status">{order.mode === 'TEST' ? `${order.quantity} 이용권 상품의 테스트 결제가 정상적으로 확인되었습니다.` : `${order.quantity} 이용권이 지급되었습니다.`}</p>
       <div className="payment-completion__summary" aria-label="구매 요약">
-        <strong>{order.quantity} 크레딧</strong>
+        <strong>{order.quantity} 이용권</strong>
         <span>{order.amount.toLocaleString('ko-KR')}원</span>
-        <small>크레딧 {order.quantity}개</small>
+        <small>이용권 {order.quantity}개</small>
       </div>
       <div className="payment-completion__actions">
         <Link className="button payment-completion__primary" href="/essay-lab/">논술 LAB 시작하기</Link>
@@ -80,8 +80,18 @@ export function PaymentTest({callback=false,live=false}: {callback?:boolean;live
       </div>
     </div>
   </section>;
-  if (callback) return <section className="policy-page content-wrap content-wrap--detail"><h1>결제 확인</h1><p role="status">{message}</p><button disabled={busy} onClick={()=>void result()}>다시 확인</button><p><Link href="/account/">마이페이지</Link></p></section>;
-  return <section className="policy-page content-wrap content-wrap--detail"><h1>{callback?'결제 확인':live?'크레딧 구매':'결제 테스트 환경'}</h1><p role="status">{message}</p><Link href="/login/">로그인</Link>
-    {callback ? <button disabled={busy} onClick={()=>void result()}>재확인</button> : pricingPlans.map(plan=><div key={plan.id}><h2>{plan.name} · {plan.priceLabel}</h2><button disabled={busy || runtime !== (live?'LIVE':'TEST')} onClick={()=>void buy(plan.credits)}>{live?'구매하기':'테스트 결제'}</button></div>)}
+  if (callback) return <section className="payment-completion content-wrap" aria-labelledby="payment-status-title">
+    <div className="payment-completion__card" aria-busy={busy}>
+      <div className="payment-completion__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg></div>
+      <h1 id="payment-status-title">{busy ? '결제 내역을 확인하고 있어요' : '결제 상태를 확인해 주세요'}</h1>
+      <p role="status">{busy ? '잠시만 기다려 주세요. 확인이 끝나면 결과를 안내해 드립니다.' : message}</p>
+      {!busy && <div className="payment-completion__actions">
+        <button className="button payment-completion__primary" onClick={()=>void result()}>다시 확인</button>
+        <Link className="button button--outline" href="/account/">마이페이지</Link>
+      </div>}
+    </div>
+  </section>;
+  return <section className="policy-page content-wrap content-wrap--detail"><h1>{callback?'결제 확인':live?'이용권 구매':'결제 테스트 환경'}</h1><p role="status">{message}</p><Link href="/login/">로그인</Link>
+    {callback ? <button disabled={busy} onClick={()=>void result()}>재확인</button> : pricingPlans.map(plan=><div key={plan.id}><h2>{plan.name} · {plan.priceLabel}</h2><button disabled={busy || !(live ? runtime.state === 'LIVE' : runtime.state === 'TEST' || (runtime.state === 'REVIEW' && runtime.consumerPurchase))} onClick={()=>void buy(plan.credits)}>{live?'구매하기':'테스트 결제'}</button></div>)}
     {order && <p>주문 상태: {order.state}</p>}{!callback && <button disabled={busy} onClick={()=>{for(const p of pricingPlans) sessionStorage.removeItem(`payment-${live?'live':'test'}-${p.credits}`);setOrder(null);setMessage(live?'새 주문을 시작할 수 있습니다.':'새 테스트 주문을 시작할 수 있습니다.');}}>{live?'새 주문':'새 테스트 주문'}</button>}<p><Link href="/pricing/">요금 안내</Link> · <Link href="/support/">고객센터</Link></p></section>;
 }

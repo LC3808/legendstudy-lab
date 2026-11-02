@@ -20,9 +20,9 @@ export function AdminCreditView() {
     <div className="admin-stack">
       <AdminCreditMembers onGranted={summary.reload} />
       <section className="admin-section">
-        <h2>크레딧 현황</h2>
+        <h2>이용권 현황</h2>
         {summary.state.status === "loading" ? (
-          <AdminLoading label="크레딧 현황을 불러오는 중입니다" />
+          <AdminLoading label="이용권 현황을 불러오는 중입니다" />
         ) : summary.state.status === "error" ? (
           <AdminErrorPanel kind={summary.state.kind} onRetry={summary.reload} />
         ) : (
@@ -52,7 +52,7 @@ export function AdminCreditView() {
           </>
         )}
         <p className="admin-muted">
-          회원 조회 후 운영 크레딧을 지급할 수 있습니다.
+          회원 조회 후 운영 이용권을 지급할 수 있습니다.
         </p>
       </section>
 

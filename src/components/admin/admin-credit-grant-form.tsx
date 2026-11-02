@@ -41,17 +41,17 @@ function GrantForm({accountId,email,client,actor,onGranted}:{accountId:string;em
    sessionStorage.setItem(storageKey,JSON.stringify(input));setPending(input);
    if('kind' in input)await requestExpiringGrant(client,input as ExpiringGrantInput);else await requestCreditGrant(client,input);
    sessionStorage.removeItem(storageKey);setPending(null);setQuantity(1);setReason('');
-   setNotice(`${input.quantity} 크레딧을 지급했습니다.`);dialog.current?.close();onGranted();
+   setNotice(`${input.quantity} 이용권을 지급했습니다.`);dialog.current?.close();onGranted();
   }catch{setNotice('지급 완료를 확인하지 못했습니다. 같은 요청으로 다시 시도해 주세요. 대상 정보가 변경됐다면 운영 확인이 필요합니다.');}
   finally{lock.current=false;setBusy(false);}
  }
  return <div className="admin-panel">
-  <button ref={trigger} type="button" className="button button--outline button--small" disabled={!email||!client} onClick={open}>크레딧 지급</button>
+  <button ref={trigger} type="button" className="button button--outline button--small" disabled={!email||!client} onClick={open}>이용권 지급</button>
   {notice?<p role="status" className="admin-hint">{notice}</p>:null}
   <dialog ref={dialog} className="my-lab-dialog admin-credit-dialog" aria-labelledby={`${formId}-title`} onCancel={event=>{if(lock.current)event.preventDefault();}} onClose={()=>trigger.current?.focus()}>
-   <h3 id={`${formId}-title`}>크레딧 지급 확인</h3>
+   <h3 id={`${formId}-title`}>이용권 지급 확인</h3>
    <p>대상 이메일: {pending?.email??email}</p><p style={{overflowWrap:'anywhere'}}>회원 UID: {accountId}</p>
-   <p className="admin-muted">운영 지급 · 유료 구매 크레딧과 별도 기록</p>
+   <p className="admin-muted">운영 지급 · 유료 구매 이용권과 별도 기록</p>
    <form className="admin-stack" onSubmit={event=>{event.preventDefault();void grant();}}>
     <label htmlFor={`${formId}-quantity`}>지급 수량 (1~100)</label>
     <input className="admin-search__input" id={`${formId}-quantity`} type="number" min={1} max={100} required value={quantity} disabled={busy||!!pending} onChange={e=>setQuantity(Number(e.target.value))}/>
@@ -63,7 +63,7 @@ function GrantForm({accountId,email,client,actor,onGranted}:{accountId:string;em
     <p>만료일: {validity==='none'?'무기한':validity==='custom'?`${date || '날짜 선택'} 23:59:59 (한국시간)`:`서버 지급 시각으로부터 ${validity}일 후 (한국시간 표시)`}</p>
     <label htmlFor={`${formId}-reason`}>지급 사유</label>
     <textarea className="admin-search__input" id={`${formId}-reason`} required maxLength={500} rows={3} value={reason} disabled={busy||!!pending} onChange={e=>setReason(e.target.value)}/>
-    <p>위 회원에게 {quantity} 크레딧을 지급합니다. 대상과 사유를 확인하세요.</p>
+    <p>위 회원에게 {quantity} 이용권을 지급합니다. 대상과 사유를 확인하세요.</p>
     {notice?<p role="status">{notice}</p>:null}
     <div className="admin-search__row"><button type="button" className="button button--outline" disabled={busy} onClick={()=>dialog.current?.close()}>닫기</button>
     <button type="submit" className="button button--primary" disabled={busy||!reason.trim()||quantity<1||quantity>100}>{busy?'지급 중입니다':pending?'동일 요청 다시 확인':'확인 후 지급'}</button></div>

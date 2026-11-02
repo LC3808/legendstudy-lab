@@ -16,7 +16,7 @@ import {
 
 export const metadata = buildPublicMetadata(
   "LegendStudy 논술 LAB 요금 안내",
-  "LegendStudy LAB 논술 첨삭의 크레딧 판매 상품과 이용 기간, 재첨삭 조건, 환불 정책을 안내합니다.",
+  "LegendStudy LAB 논술 첨삭의 이용권 판매 상품과 이용 기간, 재첨삭 조건, 환불 정책을 안내합니다.",
   "/pricing",
 );
 
@@ -51,11 +51,12 @@ export default function PricingPage() {
       </p>
 
       <section className="pricing-free" aria-labelledby="pricing-free-title">
-        <h2 id="pricing-free-title">신규 가입 {pricingPolicy.freeSignupCredits} 크레딧 무료</h2>
+        <h2 id="pricing-free-title">신규 가입 {pricingPolicy.freeSignupCredits} 이용권 무료</h2>
       </section>
 
       <section className="policy-section" aria-labelledby="pricing-plans-title">
         <h2 id="pricing-plans-title">판매 상품</h2>
+        <p>구매한 횟수만큼 논술 첨삭을 이용하는 이용권입니다. 충전형 포인트가 아니며, 각 이용권에는 최초 첨삭 1회와 동일 답안 재첨삭 1회가 포함됩니다.</p>
         <PricingPlans />
       </section>
 
@@ -75,10 +76,10 @@ export default function PricingPage() {
       </section>
 
       <section className="policy-section" aria-labelledby="pricing-credit-title">
-        <h2 id="pricing-credit-title">1 크레딧 이용 범위</h2>
+        <h2 id="pricing-credit-title">1 이용권 이용 범위</h2>
         <div className="pricing-facts">
           <div className="pricing-fact">
-            <h3>크레딧 이용 범위</h3>
+            <h3>이용권 이용 범위</h3>
             <p className="pricing-fact__statement">{creditCopy.primary}</p>
           </div>
           <div className="pricing-fact">
@@ -107,20 +108,20 @@ export default function PricingPage() {
       </section>
 
       <section className="policy-section" aria-labelledby="pricing-credit-policy-title">
-        <h2 id="pricing-credit-policy-title">크레딧 이용 조건</h2>
+        <h2 id="pricing-credit-policy-title">이용권 이용 조건</h2>
         <ul className="policy-list">
           <li>{creditCopy.validity}</li>
-          <li>구매한 크레딧은 여러 답안에 나누어 사용할 수 있습니다.</li>
+          <li>구매한 이용권은 여러 답안에 나누어 사용할 수 있습니다.</li>
           <li>
             재첨삭은 최초 첨삭 결과 제공일로부터 {pricingPolicy.reevaluationWindowDays}일 이내에 1회 제공되며,
-            크레딧 유효기간과는 별개로 계산합니다.
+            이용권 유효기간과는 별개로 계산합니다.
           </li>
-          <li>재첨삭에는 추가 크레딧이 차감되지 않습니다.</li>
+          <li>재첨삭에는 추가 이용권이 차감되지 않습니다.</li>
           <li>{creditCopy.oneOffPurchase}</li>
         </ul>
         <dl className="pricing-summary">
           <div>
-            <dt>크레딧 사용 기준</dt>
+            <dt>이용권 사용 기준</dt>
             <dd>{refundPolicy.usedCreditRule}</dd>
           </div>
         </dl>
@@ -130,22 +131,22 @@ export default function PricingPage() {
         <h2 id="pricing-faq-title">자주 묻는 질문</h2>
         <div className="pricing-faq">
           <details>
-            <summary>1 크레딧으로 무엇을 이용할 수 있나요?</summary>
+            <summary>1 이용권으로 무엇을 이용할 수 있나요?</summary>
             <p>최초 첨삭과 답안 수정 후 재첨삭까지 이용할 수 있습니다.</p>
           </details>
           <details>
             <summary>재첨삭은 언제까지 받을 수 있나요?</summary>
             <p>
               최초 첨삭 결과 제공일로부터 {pricingPolicy.reevaluationWindowDays}일 이내에 1회 받을 수 있으며, 추가
-              크레딧은 차감되지 않습니다.
+              이용권은 차감되지 않습니다.
             </p>
           </details>
           <details>
-            <summary>구매한 크레딧은 언제까지 사용할 수 있나요?</summary>
+            <summary>구매한 이용권은 언제까지 사용할 수 있나요?</summary>
             <p>{creditCopy.validity} 여러 답안에 나누어 사용할 수 있습니다.</p>
           </details>
           <details>
-            <summary>무료로 받은 크레딧도 유효기간이 있나요?</summary>
+            <summary>무료로 받은 이용권도 유효기간이 있나요?</summary>
             <p>{creditCopy.freeCreditTerms}</p>
           </details>
           <details>
@@ -155,8 +156,8 @@ export default function PricingPage() {
           <details>
             <summary>환불은 어떻게 신청하나요?</summary>
             <p>
-              유료 크레딧 유효기간 내에 신청할 수 있습니다. 미사용이면 결제금액 전액을, 일부 사용한 경우에는 사용한
-              크레딧을 1 크레딧 정상가(
+              유료 이용권 유효기간 내에 신청할 수 있습니다. 미사용이면 결제금액 전액을, 일부 사용한 경우에는 사용한
+              이용권을 1 이용권 정상가(
               {pricingPolicy.refundDeductionPerCreditKrw.toLocaleString("ko-KR")}원) 기준으로 공제한 뒤 남은 금액을
               환불합니다.
             </p>
@@ -164,7 +165,7 @@ export default function PricingPage() {
           <details>
             <summary>인문논술과 수리논술을 모두 이용할 수 있나요?</summary>
             <p>
-              크레딧은 논술 첨삭에 사용하며, 인문논술과 수리논술을 별도 상품으로 나누지 않습니다. 어떤 크레딧 상품을
+              이용권은 논술 첨삭에 사용하며, 인문논술과 수리논술을 별도 상품으로 나누지 않습니다. 어떤 이용권 상품을
               구매해도 이용할 수 있는 범위는 같습니다.
             </p>
           </details>
@@ -176,7 +177,7 @@ export default function PricingPage() {
         <ul className="policy-list">
           <li>{creditCopy.validity}</li>
           <li>유효기간 내에 환불을 신청할 수 있습니다.</li>
-          <li>미사용 크레딧 상품은 실제 결제금액 전액을 환불합니다.</li>
+          <li>미사용 이용권 상품은 실제 결제금액 전액을 환불합니다.</li>
           <li>{refundPolicy.partiallyUsed}</li>
           <li>{refundPolicy.freeCredit}</li>
           <li>{creditCopy.statutoryRights}</li>

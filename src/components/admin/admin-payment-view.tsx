@@ -173,7 +173,7 @@ export function AdminPaymentView() {
                           <dd>{paymentModeLabel(order.mode)}</dd>
                         </div>
                         <div>
-                          <dt>크레딧 지급</dt>
+                          <dt>이용권 지급</dt>
                           <dd>
                             <span className={`admin-tag admin-tag--${grant.tone}`}>
                               {grant.label}

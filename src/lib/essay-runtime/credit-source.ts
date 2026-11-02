@@ -1,6 +1,6 @@
 /** Server-selected grant consent. Balances are explanatory, never allocation authority. */
 export type CreditSource={version:'essay-credit-source-v1';grant_id:string|null;source:string;beta:number;signup_bonus:number;purchase:number;other:number};
-export const creditSourceLabels:Record<string,string>={beta:'일일 베타 Credit',signup_bonus:'신규가입 무료 Credit',purchase:'유료 Credit',admin_grant:'관리자 지급 Credit',promotion:'프로모션 Credit',compensation:'보상 Credit',b2b_program:'학교 지급 Credit',included:'무료 재첨삭'};
+export const creditSourceLabels:Record<string,string>={beta:'일일 베타 이용권',signup_bonus:'신규가입 무료 이용권',purchase:'유료 이용권',admin_grant:'관리자 지급 이용권',promotion:'프로모션 이용권',compensation:'보상 이용권',b2b_program:'학교 지급 이용권',included:'무료 재첨삭'};
 export function parseCreditSource(value:unknown,credits:number):CreditSource{
  const s=value as CreditSource;
  if(!s||s.version!=='essay-credit-source-v1'||!Object.hasOwn(creditSourceLabels,s.source)||

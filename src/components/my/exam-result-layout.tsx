@@ -60,10 +60,10 @@ export function ExamResultLayout({row,run,reports,previous,onRewrite,onAdditiona
      </div>
     </section>;
    })}
-   <section className="report-rewrite-cta"><h2>다시 써보기</h2><p>이번 첨삭에서 확인한 개선 방향을 적용해 답안을 다시 작성해 보세요.</p><button className="button button--primary" disabled={!canRewrite} onClick={onRewrite}>답안 다시 작성하기 · 무료 재첨삭</button>{!canRewrite&&<p>이 회차는 현재 무료 재첨삭을 사용할 수 없습니다.</p>}{run.continuous_cycles_supported===true&&<button className="button button--outline" onClick={onAdditional}>추가 첨삭 · 1 크레딧</button>}</section>
+   <section className="report-rewrite-cta"><h2>다시 써보기</h2><p>이번 첨삭에서 확인한 개선 방향을 적용해 답안을 다시 작성해 보세요.</p><button className="button button--primary" disabled={!canRewrite} onClick={onRewrite}>답안 다시 작성하기 · 무료 재첨삭</button>{!canRewrite&&<p>이 회차는 현재 무료 재첨삭을 사용할 수 없습니다.</p>}{run.continuous_cycles_supported===true&&<button className="button button--outline" onClick={onAdditional}>추가 첨삭 · 1 이용권</button>}</section>
   </main><aside className="exam-result-sidebar" aria-label="제출 정보와 다음 단계">
    <section><h2>제출 정보</h2><dl><div><dt>첨삭 유형</dt><dd>{historyType(row)}</dd></div><div><dt>제출일</dt><dd>{dateLabel(row.at)}</dd></div><div><dt>제출 문항</dt><dd>{reports.length}문항</dd></div><div><dt>무료 재첨삭</dt><dd>{canRewrite?'사용 가능':'현재 사용 불가'}</dd></div></dl></section>
-   <section><h2>다음 단계</h2><button className="button button--primary" disabled={!canRewrite} onClick={onRewrite}>이 결과를 바탕으로 재작성하기 →</button>{!canRewrite&&<p className="my-note">무료 재첨삭 가능 기간 또는 사용 상태에 따라 현재 요청할 수 없습니다.</p>}<Link className="button button--outline" href="/essay-lab/">다른 논술 풀기</Link><Link className="essay-history-button" href="/my/essays/">나의 첨삭 기록 확인 →</Link>{run.continuous_cycles_supported===true&&<details><summary>새 첨삭 회차 선택</summary><p>기존 결과와 별도로 새 회차를 작성합니다.</p><button className="button button--outline" onClick={onAdditional}>추가 첨삭 · 1 크레딧</button></details>}</section>
+   <section><h2>다음 단계</h2><button className="button button--primary" disabled={!canRewrite} onClick={onRewrite}>이 결과를 바탕으로 재작성하기 →</button>{!canRewrite&&<p className="my-note">무료 재첨삭 가능 기간 또는 사용 상태에 따라 현재 요청할 수 없습니다.</p>}<Link className="button button--outline" href="/essay-lab/">다른 논술 풀기</Link><Link className="essay-history-button" href="/my/essays/">나의 첨삭 기록 확인 →</Link>{run.continuous_cycles_supported===true&&<details><summary>새 첨삭 회차 선택</summary><p>기존 결과와 별도로 새 회차를 작성합니다.</p><button className="button button--outline" onClick={onAdditional}>추가 첨삭 · 1 이용권</button></details>}</section>
   </aside></div>
  </div>;
 }
