@@ -34,7 +34,12 @@ function config(e: Env) {
   const test = !live;
   const clientKey = test ? e.TOSS_TEST_CLIENT_KEY : e.TOSS_LIVE_CLIENT_KEY;
   const secret = test ? e.TOSS_TEST_SECRET_KEY : e.TOSS_LIVE_SECRET_KEY;
-  if (!(test ? /^test_ck_/ : /^live_ck_/).test(clientKey || '') || !(test ? /^test_sk_/ : /^live_sk_/).test(secret || '') || e.TOSS_MID !== 'leglabn24k' || !e.PAYMENT_FINANCE_TOKEN || !e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) fail(503, 'PAYMENT_NOT_CONFIGURED');
+  const checks = { client_key_family: (test ? /^test_ck_/ : /^live_ck_/).test(clientKey || ''), secret_key_family: (test ? /^test_sk_/ : /^live_sk_/).test(secret || ''), merchant: e.TOSS_MID === 'leglabn24k', finance_present: Boolean(e.PAYMENT_FINANCE_TOKEN), publishable_present: Boolean(e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) };
+  if (Object.values(checks).some(ok => !ok)) {
+    // REVIEW-only bounded diagnostics: booleans never contain a binding value,
+    // token, key prefix/length, buyer identity or provider response.
+    throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', review ? { stage: 'CONFIG', checks } : undefined);
+  }
   const origin = test && !review ? 'https://legendstudy-lab-payment-test.pages.dev' : 'https://lab.legendstudy.com';
   const db = test && !review ? 'https://wsnrwklplnunjktyfmbr.supabase.co' : 'https://stlhijzpjfgwwdgunlsd.supabase.co';
   if (e.PAYMENT_ORIGIN !== origin || e.PAYMENT_SUPABASE_URL !== db || !['true','false'].includes(e.PAYMENT_ENABLED || '')) fail(503, 'PAYMENT_NOT_CONFIGURED');

@@ -117,6 +117,15 @@ it('support compensation verifies DONE then claims no-grant refund and recovers 
 const reviewEnv:Env={...env,PAYMENT_MODE:'REVIEW',PAYMENT_ORIGIN:'https://lab.legendstudy.com',PAYMENT_SUPABASE_URL:'https://stlhijzpjfgwwdgunlsd.supabase.co',PAYMENT_REVIEW_SUBJECTS:ID};
 const anonymous=(e:Env,action='runtime')=>new Request(e.PAYMENT_ORIGIN+'/api/payments/'+action,{method:'POST',headers:{Origin:e.PAYMENT_ORIGIN!,'Content-Type':'application/json'},body:'{}'});
 describe('PAYMENT REVIEW runtime',()=>{
+ it('REVIEW configuration diagnostics identify failed checks without values',async()=>{
+  const f=fixture(reviewEnv);
+  const r=await f.send('runtime',{},{...reviewEnv,TOSS_TEST_SECRET_KEY:'private-invalid-fixture',PAYMENT_FINANCE_TOKEN:''});
+  const body=await r.json();
+  expect(r.status).toBe(503);
+  expect(body.diagnostic).toEqual({stage:'CONFIG',checks:{client_key_family:true,secret_key_family:false,merchant:true,finance_present:false,publishable_present:true}});
+  expect(JSON.stringify(body)).not.toContain('private-invalid-fixture');
+  expect(f.calls).toHaveLength(0);
+ });
  for(const action of ['orders','confirm','status']) {
   it(`payment_review ${action}: anonymous blocked before backend`,async()=>{
    const f=fixture(reviewEnv);
