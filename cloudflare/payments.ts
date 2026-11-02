@@ -27,7 +27,7 @@ function config(e: Env) {
   const mode = e.PAYMENT_MODE;
   const live = mode === 'LIVE';
   const review = mode === 'REVIEW';
-  if (!live && !review && mode !== 'TEST') fail(503, 'PAYMENT_NOT_CONFIGURED');
+  if (!live && !review && mode !== 'TEST') throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', { stage: 'CONFIG', checks: { mode_supported: false } });
   // REVIEW is the card-review mode: the real service origin and the real Production
   // database, driven by the Toss TEST merchant. The merchant key family is TEST, so
   // no real charge is possible, and persistence stays on TEST semantics.
@@ -42,9 +42,9 @@ function config(e: Env) {
   }
   const origin = test && !review ? 'https://legendstudy-lab-payment-test.pages.dev' : 'https://lab.legendstudy.com';
   const db = test && !review ? 'https://wsnrwklplnunjktyfmbr.supabase.co' : 'https://stlhijzpjfgwwdgunlsd.supabase.co';
-  if (e.PAYMENT_ORIGIN !== origin || e.PAYMENT_SUPABASE_URL !== db || !['true','false'].includes(e.PAYMENT_ENABLED || '')) fail(503, 'PAYMENT_NOT_CONFIGURED');
+  if (e.PAYMENT_ORIGIN !== origin || e.PAYMENT_SUPABASE_URL !== db || !['true','false'].includes(e.PAYMENT_ENABLED || '')) throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', review ? { stage: 'CONFIG', checks: { origin: e.PAYMENT_ORIGIN === origin, database: e.PAYMENT_SUPABASE_URL === db, enabled_valid: ['true','false'].includes(e.PAYMENT_ENABLED || '') } } : undefined);
   // A review runtime without a reviewer allowlist is a misconfiguration, not a mode.
-  if (review && !(e.PAYMENT_REVIEW_SUBJECTS || '').split(',').filter(Boolean).length) fail(503, 'PAYMENT_NOT_CONFIGURED');
+  if (review && !(e.PAYMENT_REVIEW_SUBJECTS || '').split(',').filter(Boolean).length) throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', { stage: 'CONFIG', checks: { review_subjects_present: false } });
   // `mode` stays the persistence and provider mode (TEST|LIVE); `state` is what the browser may see.
   return { origin, clientKey, secret, enabled: e.PAYMENT_ENABLED === 'true', mode: test ? 'TEST' : 'LIVE', state: mode!, review };
 }
