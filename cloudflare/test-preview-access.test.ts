@@ -34,3 +34,12 @@ it('gates TASK16B assets and limits machine access to the Math callback',async()
  for(const path of ['/','/api/essay/exam','/admin/'])expect((await testPreviewAccess(new Request(test+path,{method:'POST',headers}),env,next,now)).status).toBe(401);
  expect((await testPreviewAccess(new Request(test+'/api/essay/math-session',{method:'POST',headers:{'X-Test-Preview-Access':'wrong'}}),env,next,now)).status).toBe(401);
 });
+
+it('native original route reaches owner-authenticated handler only on canonical TEST POST',async()=>{
+ const next=vi.fn(async()=>new Response('handler'));const env={TEST_PREVIEW_ACCESS_KEY:'x'.repeat(40)};
+ const make=(host:string,method='POST',token=true)=>new Request('https://'+host+'/api/math/artifact',{method,headers:token?{authorization:'Bearer synthetic'}:{}});
+ expect((await testPreviewAccess(make('legendstudy-task16b.pages.dev'),env,next)).status).toBe(200);
+ expect(next).toHaveBeenCalledTimes(1);
+ for(const request of [make('legendstudy-task16b.pages.dev','GET'),make('legendstudy-task16b.pages.dev','POST',false),make('abc.legendstudy-task16b.pages.dev')])expect((await testPreviewAccess(request,env,next)).status).toBe(401);
+ expect(next).toHaveBeenCalledTimes(1);
+});

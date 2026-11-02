@@ -34,7 +34,7 @@ export async function testPreviewAccess(request: Request, env: PreviewEnv, next:
   // Native has no browser review cookie. These exact TEST API routes still verify
   // the Auth JWT, active owner and server Math allowlist in their own gateways.
   if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='POST'&&
-    /^\/api\/math\/(upload|extract|evaluate|recover)$/.test(url.pathname)&&
+    /^\/api\/math\/(upload|extract|evaluate|recover|artifact)$/.test(url.pathname)&&
     /^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
   if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='GET'&&['/api/essay/availability','/api/essay/student-pdfs'].includes(url.pathname)&&/^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
   if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='POST'&&url.pathname==='/api/essay/catalog'&&/^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
