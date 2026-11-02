@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { NoticeContent } from "./notice-content";
 import { useEffect, useState } from "react";
 import { useAuth } from "./auth-context";
 import {
@@ -191,7 +192,7 @@ function Detail() {
             {categories[state.notice.category]} ·{" "}
             {state.notice.published_at?.slice(0, 10)}
           </p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{state.notice.content}</p>
+          <NoticeContent content={state.notice.content} document={state.notice.content_document}/>
           {state.readFailed && (
             <p role="status">
               읽음 상태를 저장하지 못했습니다. 다시 열면 재시도합니다.

@@ -1,3 +1,4 @@
+import type { NoticeDocument } from "./document";
 import type { SupabaseClient } from "@supabase/supabase-js";
 export const categories = {
   general: "일반 공지",
@@ -11,6 +12,7 @@ export type Notice = {
   notice_id: string;
   title: string;
   content: string;
+  content_document?: NoticeDocument | null;
   category: keyof typeof categories;
   status: "draft" | "published" | "archived";
   is_pinned: boolean;
@@ -38,6 +40,7 @@ export function noticesClient(client: SupabaseClient) {
     return data as T;
   }
   return {
+    editorCapability: () => call<{version:number}>("notice_editor_capability", {}),
     list: (offset = 0) =>
       call<NoticeFeed>("notice_list", {
         p_channel: "web",
@@ -57,6 +60,6 @@ export function noticesClient(client: SupabaseClient) {
       }),
     adminList: (offset = 0) =>
       call<NoticeFeed>("notice_admin_list", { p_offset: offset }),
-    save: (p: NoticeInput) => call<Notice>("notice_admin_save", { p }),
+    save: (p: NoticeInput) => call<Notice>(p.content_document ? "notice_admin_save_rich" : "notice_admin_save", { p }),
   };
 }
