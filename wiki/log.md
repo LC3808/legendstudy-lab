@@ -30,3 +30,7 @@ TASK17 production checkpoint: source3e60222 → Pages2b5b0656; TEST entry UI ver
 ## 2026-11-02 — TASK17 continuation preflight
 
 [TEST recovery](toss-test-task17.md): production deployment/config metadata and runtime503 reconfirmed; DB TEST/LIVE0/TEST grant links0 baseline captured; review URLs200 and123 regressions PASS. Owner direct TEST key rotation pending; approval E2E/re-submission NOT_READY. No deployment/config/DB writes.
+
+## 2026-11-02 — TASK17 existing TEST environment recheck
+
+[Environment comparison](toss-test-task17.md#environment-recheck--2026-11-02-0940-kst): prior new-key handoff superseded. Existing payment-test runtime200/TEST, isolated order created and Toss card authentication reached. LAB503 separate. Owner card authentication pending; secrets/deployments/config/ledger writes0; one TEST order created by existing API.
