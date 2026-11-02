@@ -1,10 +1,10 @@
-import {examLaunchHold} from '../../../src/lib/essay-runtime/launch-policy';
+import {commerceTestScope,examLaunchHold} from '../../../src/lib/essay-runtime/launch-policy';
 import {publicExamScope} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import {boundedBody} from '../../../src/lib/math-release/server/request';
-type Env=MathEnvironment&WorkerEnvironment&{ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_CREDIT_SOURCE_ENABLED?:string;ESSAY_CONTINUOUS_CYCLES_ENABLED?:string;ESSAY_E2E_SCOPE?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
+type Env=MathEnvironment&WorkerEnvironment&{ESSAY_COMMERCE_TEST_ENABLED?:string;ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_CREDIT_SOURCE_ENABLED?:string;ESSAY_CONTINUOUS_CYCLES_ENABLED?:string;ESSAY_E2E_SCOPE?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(v);
 /** Shared Native/Web gateway. Disabled until DB/host/content/E2E authorization. */
 export async function onRequestPost({request,env}:{request:Request;env:Env}){
@@ -19,7 +19,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const publicExams=publicExamScope(env.ESSAY_PUBLIC_EXAMS);
   const publicRelease=publicExams.length<=256&&publicExams.every(uuid)&&uuid(input.examId)&&publicExams.includes(input.examId);
   const transport=serverTransport(env),subject=await transport.subject(token,publicRelease);
-  const hold=examLaunchHold(input.examId);
+  const hold=commerceTestScope(request.url,env,input.examId)?undefined:examLaunchHold(input.examId);
   if(hold&&input.action==='availability')return reply({ready:false,questionIds:[],mathQuestions:{},code:hold});
   if(hold&&['quote','submit'].includes(String(input.action)))return reply({code:hold},409);
   // Optional server-only single-submission scope for explicitly approved operating E2E.

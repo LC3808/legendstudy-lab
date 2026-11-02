@@ -78,3 +78,8 @@ Owner specified /terms/ and /privacy/: replaced all Korean credit wording in pol
 ## 2026-11-02 — TASK17 whole WEB terminology audit
 
 [Audit](../docs/TASK17_WEB_TERMINOLOGY_AUDIT.md):56 page entries/155 public HTTP routes/whole source string AST. User/shared23files83fragments,admin18/62,internal1/1 remain. Public residuals support/essay-lab/account-credits/admin-credit/internal-connection. Authenticated conditional views source-inspected only; no UI/API/DB change or deployment.
+## 2026-11-02 — TASK16-B commerce TEST integration (in progress)
+
+Existing Essay/Math Worker, immutable exam History and LAB result UI reused. Math results now separate final-answer verdict and reasoning steps; result headers distinguish complete/partial/unknown exam coverage; missing/duplicate/foreign submitted results fail closed. Approved question PDF viewer is available from results. Exact `legendstudy-task16b.pages.dev` + `kpqbedylxlyntrrfybpn` + Hanyang2026 commerce scope can bypass the production mixed hold only in TEST. All-route private access gate reused, with credentialed Math callback only. Production launch holds and financial RPC implementations unchanged.
+
+Owner authorized isolated TEST backend. Existing IAP sandbox reused; no production mutation. Representative exam `e8ea5bb3-0956-5fd6-b90e-4b7fb350b2f9`, Q1 Essay/Q2 Math. Actual Provider E2E, rewrite and browser acceptance are still pending; do not label this completed. Canonical handoff: APP repository `wiki/task16b-commerce-social-integration-20261102.md`.

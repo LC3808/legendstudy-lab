@@ -39,3 +39,15 @@ describe('complete Production Registry input contract audit',()=>{
   }
  });
 });
+
+import {commerceTestScope} from './launch-policy';
+it('opens only the explicit commerce TEST host/project/exam combination',()=>{
+ const env={ESSAY_COMMERCE_TEST_ENABLED:'true',MATH_PROJECT_REF:'kpqbedylxlyntrrfybpn',MATH_SUPABASE_URL:'https://kpqbedylxlyntrrfybpn.supabase.co'};
+ const url='https://legendstudy-task16b.pages.dev/api/essay/exam',exam='e8ea5bb3-0956-5fd6-b90e-4b7fb350b2f9';
+ expect(commerceTestScope(url,env,exam)).toBe(true);
+ for(const other of ['https://lab.legendstudy.com/api/essay/exam','https://legendstudy-task09.pages.dev/api/essay/exam'])expect(commerceTestScope(other,env,exam)).toBe(false);
+ expect(commerceTestScope(url,{...env,MATH_PROJECT_REF:'stlhijzpjfgwwdgunlsd'},exam)).toBe(false);
+ expect(commerceTestScope(url,{...env,ESSAY_COMMERCE_TEST_ENABLED:'false'},exam)).toBe(false);
+ expect(commerceTestScope(url,env,'other')).toBe(false);
+ expect(examLaunchHold(exam)).toBe('MIXED_QA_PENDING');
+});

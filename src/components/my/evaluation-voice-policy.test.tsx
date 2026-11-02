@@ -8,9 +8,10 @@ const report=mathReport({output:{overall:{explanation:'저장된 평가'},steps:
 it.each(['math','science',undefined] as const)('excludes voice for %s without removing text feedback',voiceType=>{
  render(<EvaluationReport report={report} title="평가" voiceType={voiceType}/>);
  expect(screen.queryByRole('button',{name:'음성으로 듣기'})).toBeNull();
- expect(screen.getByText('저장된 평가')).toBeVisible();expect(screen.getByText('타당한 풀이')).toBeVisible();
+ expect(screen.getByText('저장된 평가')).toBeVisible();for(const node of screen.getAllByText('타당한 풀이'))expect(node).toBeVisible();
 });
 it.each(['humanities_social','business_economics'] as const)('retains voice for %s',voiceType=>{
  render(<EvaluationReport report={report} title="평가" voiceType={voiceType}/>);
+ screen.getByText('음성으로 듣기',{selector:'summary'}).closest('details')!.open=true;
  expect(screen.getAllByRole('button',{name:'음성으로 듣기'}).length).toBeGreaterThan(0);
 });
