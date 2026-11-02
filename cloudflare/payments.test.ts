@@ -117,6 +117,38 @@ it('support compensation verifies DONE then claims no-grant refund and recovers 
 const reviewEnv:Env={...env,PAYMENT_MODE:'REVIEW',PAYMENT_ORIGIN:'https://lab.legendstudy.com',PAYMENT_SUPABASE_URL:'https://stlhijzpjfgwwdgunlsd.supabase.co',PAYMENT_REVIEW_SUBJECTS:ID};
 const anonymous=(e:Env,action='runtime')=>new Request(e.PAYMENT_ORIGIN+'/api/payments/'+action,{method:'POST',headers:{Origin:e.PAYMENT_ORIGIN!,'Content-Type':'application/json'},body:'{}'});
 describe('PAYMENT REVIEW runtime',()=>{
+ for(const action of ['orders','confirm','status']) {
+  it(`payment_review ${action}: anonymous blocked before backend`,async()=>{
+   const f=fixture(reviewEnv);
+   expect((await payment(anonymous(reviewEnv,action),reviewEnv,f.io)).status).toBe(401);
+   expect(f.calls).toHaveLength(0);
+  });
+  for(const identity of ['ordinary member','administrator','same email without permission']) {
+   it(`payment_review ${action}: ${identity} cannot bypass UUID permission`,async()=>{
+    const f=fixture(reviewEnv);
+    const io:typeof fetch=async(input,init)=>String(input).endsWith('/auth/v1/user')
+     ? Response.json({id:KEY,email:'payment@legendstudy.com',user_metadata:{payment_review:true,admin:true},app_metadata:{admin:true}})
+     : f.io(input,init);
+    const request=new Request(reviewEnv.PAYMENT_ORIGIN+'/api/payments/'+action,{method:'POST',headers:{Origin:reviewEnv.PAYMENT_ORIGIN!,Authorization:'Bearer synthetic-user-token','Content-Type':'application/json'},body:'{}'});
+    expect((await payment(request,reviewEnv,io)).status).toBe(403);
+    expect(f.calls).toHaveLength(0);
+   });
+  }
+  it(`payment_review ${action}: removal immediately denies existing session`,async()=>{
+   const f=fixture(reviewEnv);
+   expect((await f.send('runtime',{})).status).toBe(200);
+   f.calls.length=0;
+   expect((await f.send(action,{},{...reviewEnv,PAYMENT_REVIEW_SUBJECTS:KEY})).status).toBe(403);
+   expect(f.calls.every(c=>c.url.endsWith('/auth/v1/user'))).toBe(true);
+  });
+ }
+ it('payment_review approval records TEST without invoking any Credit endpoint',async()=>{
+  const f=fixture(reviewEnv);const response=await f.confirm();
+  expect(response.status).toBe(200);
+  expect((await response.json()).order).toMatchObject({mode:'TEST',state:'PAID',grant_state:'TEST_RECORDED'});
+  expect(f.calls.some(c=>c.url.includes('credit_'))).toBe(false);
+  expect((await f.send('status',{id:ID})).status).toBe(200);
+ });
  it('an anonymous visitor sees the review runtime but no purchase',async()=>{const f=fixture(reviewEnv);const b=await (await payment(anonymous(reviewEnv),reviewEnv,f.io)).json();expect(b).toEqual({state:'REVIEW',mode:'TEST',consumer_purchase:false});});
  it('the allowlisted reviewer is the only one who can open the checkout',async()=>{
   expect((await (await fixture(reviewEnv).send('runtime',{})).json()).consumer_purchase).toBe(true);
