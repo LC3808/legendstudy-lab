@@ -63,6 +63,7 @@ describe('stored Math quality read-only integration', () => {
         fireEvent.click(screen.getByRole('checkbox'));
         expect(screen.queryByRole('button', { name: /평가 first/ })).toBeNull();
         fireEvent.click(screen.getByRole('button', { name: '다음 미검토' }));
+        await screen.findAllByText('정답 포함 상세 평가 공개');screen.getAllByText('정답 포함 상세 평가 공개').forEach(b=>fireEvent.click(b));
         await screen.findByRole('heading', { name: '최초 답안과 첨삭' });
         expect(screen.getByRole('heading', { name: '재작성 답안과 재첨삭' })).toBeVisible();
         expect(screen.getAllByText('First stored answer').length).toBeGreaterThan(0);
@@ -89,6 +90,7 @@ it('renders server pseudonym, independent lineage and unverified exam state',asy
  await screen.findByRole('heading',{name:'가명 사용자 aaaaaaaaaaaa'});
  expect(screen.getAllByRole('heading',{name:/답안 과정/})).toHaveLength(1);
  fireEvent.click(screen.getByRole('button',{name:/평가 revised/}));
+ await screen.findAllByText('정답 포함 상세 평가 공개');screen.getAllByText('정답 포함 상세 평가 공개').forEach(b=>fireEvent.click(b));
  await screen.findByRole('heading',{name:'최초 답안과 첨삭'});
  expect(screen.getByText('대학 미확인 · 학년도 미확인')).toBeVisible();
  expect(c.rpc.mock.calls.every(([, {p_request}])=>p_request.action!=='submit')).toBe(true);

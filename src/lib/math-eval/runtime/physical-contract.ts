@@ -1,3 +1,4 @@
+import {assertRecognizedInputConfirmed} from "../../math-input/recognition-safety";
 /** APP MATH-2D wire adapter. Mock domain projections are not physical RPC responses. */
 import type { MathEvaluationInput, MathResponseFormat, ReferenceProvenance } from "../types";
 
@@ -19,6 +20,7 @@ export function physicalClaimToInput(raw: unknown): MathEvaluationInput {
   if (typeof profile.reasoning_required !== "boolean" ||
       !["SHORT_ANSWER", "SHORT_REASONING", "FULL_SOLUTION", "PROOF"].includes(String(leaf.response_format))) throw Error("INVALID_CLAIM");
   const extractionId = claim.selected_extraction_id === null ? null : text(claim.selected_extraction_id);
+  assertRecognizedInputConfirmed(context, extractionId);
   // Preserve question, typed answer, extracted work, sources and profile pins for the adapter.
   // Never reconstruct these from a student result or silently omit the submitted work.
   object(context.problem);

@@ -1,4 +1,5 @@
 'use client';
+import {AnswerDisclosure} from '../math-learning/answer-disclosure';
 import {MathText} from "../math-display/math-text";
 import {criterionEvidence,studentCriterionName} from '@/lib/my/criterion-display';
 import './evaluation-refinement.css';
@@ -9,10 +10,15 @@ import {VoiceFeedback} from './voice-feedback';
 import {changeLabels,compareReports,criterionValue,type Feedback,type Report} from '@/lib/my/evaluation-report';
 function FeedbackSection({title,items,answer,separateActions=[]}:{title:string;items:Feedback[];answer:string;separateActions?:string[]}){return <section className={`report-block ${title==='잘한 점'?'report-strengths':'report-weaknesses'}`}><h3 className="report-block__title">{title}</h3>{items.length?items.map((f,i)=><div className="report-feedback" key={i}><h4>{i+1}. {f.title||title}</h4><p>{f.explanation}</p>{f.evidence&&answer.includes(f.evidence)&&<blockquote className="report-evidence"><span className="report-evidence__label">학생이 작성한 글</span><br/>{f.evidence}</blockquote>}{f.action&&!separateActions.includes(f.action)&&<p className="rewrite-direction"><strong>개선 방법</strong><br/>{f.action}</p>}</div>):<p className="my-note">이 기록에는 해당 피드백이 저장되어 있지 않습니다.</p>}</section>;}
 export function EvaluationReport({report,title,voiceType,answerLabel,before}:{before?:Report;report:Report;title:string;answerLabel?:string;voiceType?:'humanities_social'|'business_economics'|'math'|'science'}){
+ if(report.math||before?.math)return <AnswerDisclosure key={JSON.stringify(report)}><HumanEvaluationReport report={report} title={title} answerLabel={answerLabel} before={before} allowVoice={false}/></AnswerDisclosure>;
  return <HumanEvaluationReport report={report} title={title} answerLabel={answerLabel} before={before} allowVoice={voiceType==='humanities_social'||voiceType==='business_economics'}/>;
 }
 export function EvaluationComparison({before,after}:{before?:Report;after?:Report}){
  if(!before||!after)return null;
+ if(before.math||after.math)return <AnswerDisclosure key={JSON.stringify(after)}><ComparisonBody before={before} after={after}/></AnswerDisclosure>;
+ return <ComparisonBody before={before} after={after}/>;
+}
+function ComparisonBody({before,after}:{before:Report;after:Report}){
  const changes=compareReports(before,after);
  return <details className="my-panel evaluation-growth"><summary>최초 첨삭과 재첨삭 비교</summary>{changes?<><h3>이전 첨삭에서 지적된 부분</h3>{before.weaknesses.map((f,i)=><p key={i}>{f.explanation}</p>)}<h3>이번 평가에서 확인한 변화</h3>{after.previousReviews?.length?after.previousReviews.map((r,i)=><p key={i}>{r.reason}</p>):<p>별도의 개선 여부 설명이 저장되어 있지 않습니다.</p>}<p>남은 과제는 보완할 점과 개선 방법에서 확인하세요.</p><div className="report-comparison">{changes.map((c,index)=><section key={c.id} className={`comparison-card report-change--${c.direction.toLowerCase()}`}>
  <h3>{studentCriterionName(c.name,c.id,index)}</h3>
@@ -25,6 +31,10 @@ export function EvaluationComparison({before,after}:{before?:Report;after?:Repor
 }
 
 export function CriterionResults({report}:{report:Report}){
+ if(report.math)return <AnswerDisclosure key={JSON.stringify(report)}><CriterionBody report={report}/></AnswerDisclosure>;
+ return <CriterionBody report={report}/>;
+}
+function CriterionBody({report}:{report:Report}){
  const cards=report.rubric.map((c,index)=>{
   const evidence=criterionEvidence(c,report.evidenceLabels??[]);
   const feedback=c.feedback||evidence.find(e=>e.body)?.body||'';

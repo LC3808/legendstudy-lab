@@ -23,7 +23,8 @@ describe("LearningGuidance", () => {
       />,
     );
     expect(screen.getByText("가장 먼저 확인할 부분")).toBeInTheDocument();
-    expect(screen.getByText(/부호 처리를 다시 확인/)).toBeInTheDocument();
+    expect(screen.queryByText(/부호 처리를 다시 확인/)).toBeNull();
+    expect(screen.getByText(/원본에서 확인한 풀이/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "힌트 보기" }));
     expect(onRevealHint).toHaveBeenCalledWith(1);

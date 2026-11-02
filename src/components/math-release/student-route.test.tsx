@@ -57,8 +57,8 @@ describe("student route integration",()=>{
   fireEvent.change(screen.getByLabelText("내 답안"),{target:{value:"x = 2"}});
   fireEvent.click(screen.getByRole("button",{name:"답안 제출 · 입력 확인"}));
   fireEvent.click(await screen.findByRole("button",{name:"첨삭 진행"}));
-  await screen.findByText("풀이를 확인했습니다");
-  fireEvent.click(screen.getByRole("button",{name:"힌트 보기"}));await screen.findByText("양변의 부호를 확인하세요");
+  await screen.findAllByText("정답 포함 상세 평가 공개");fireEvent.click(screen.getAllByText("정답 포함 상세 평가 공개")[0]);await screen.findByText("풀이를 확인했습니다");
+  fireEvent.click(screen.getByRole("button",{name:"힌트 보기"}));await screen.findByText("사용한 정의와 정리의 적용 조건을 확인해 보세요.");
   expect(screen.queryByRole("button",{name:/해설/})).toBeNull();
   expect(f.actions.some(x=>x.action==="reveal_solution")).toBe(false);
   fireEvent.click(screen.getByRole("button",{name:"답안을 다시 작성해 보세요"}));
@@ -69,7 +69,7 @@ describe("student route integration",()=>{
   await waitFor(()=>expect(refresh).toHaveBeenCalledTimes(2));
   window.removeEventListener("legendstudy:credit-refresh", refresh);
   expect(f.actions.filter(x=>x.action==="history").length).toBeGreaterThanOrEqual(3);
-  expect(f.count()).toBe(2);expect(screen.getByRole("region",{name:"학습 기록"})).toBeTruthy();
+  expect(f.count()).toBe(2);screen.getAllByText("정답 포함 상세 평가 공개").forEach(b=>fireEvent.click(b));expect(screen.getByRole("region",{name:"학습 기록"})).toBeTruthy();
  });
  it("image upload → actual row id normalization → correction → confirmation",async()=>{
   const f=fixture();vi.stubGlobal("fetch",vi.fn(async()=>Response.json({status:"CONFIRMATION_REQUIRED"})));
@@ -130,7 +130,7 @@ it("Konkuk representative: six ordered mock uploads → confirmation → evaluat
  fireEvent.click(screen.getByRole('button',{name:'수정'}));
  fireEvent.click(screen.getByRole('button',{name:'확인한 답안 저장'}));
  fireEvent.click(await screen.findByRole('button',{name:'첨삭 진행'}));
- await screen.findByText('풀이를 확인했습니다');
+ await screen.findAllByText('정답 포함 상세 평가 공개');fireEvent.click(screen.getAllByText('정답 포함 상세 평가 공개')[0]);await screen.findByText('풀이를 확인했습니다');
  expect(uploads).toEqual(['page2.png','page1.png','page3.png','page4.png','page5.png','page6.png']);
  expect(f.actions.find(x=>x.action==='create_attempt')?.payload.leaf_id).toBe(target.leafId);
  expect(f.actions.filter(x=>x.action==='register_evidence').map(x=>(x.payload.metadata as {position:number}).position)).toEqual([1,2,3,4,5,6]);
@@ -140,5 +140,5 @@ it("Konkuk representative: six ordered mock uploads → confirmation → evaluat
  fireEvent.click(await screen.findByRole('button',{name:'재첨삭'}));
  await waitFor(()=>expect(f.actions.some(x=>x.action==='request_reevaluation')).toBe(true));
  expect(f.actions.find(x=>x.action==='create_resolve_attempt')?.payload.leaf_id).toBe(target.leafId);
- expect(screen.getByRole('region',{name:'학습 기록'})).toBeTruthy();
+ screen.getAllByText('정답 포함 상세 평가 공개').forEach(b=>fireEvent.click(b));expect(screen.getByRole('region',{name:'학습 기록'})).toBeTruthy();
 });

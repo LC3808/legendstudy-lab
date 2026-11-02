@@ -39,6 +39,7 @@ it('never labels unknown exam coverage as full completion',()=>{
 it('shows Math reasoning separately from final answer within the shared result UI',()=>{
  const math={...report('run/math'),math:{answerVerdict:'정답',reviewRequired:true,steps:[{position:1,status:'근거 부족',representation:'x=2',explanation:'도출 과정이 필요해요.'}]}};
  render(<ExamResultLayout row={row} run={{}} reports={[math]} previous={[]} onRewrite={vi.fn()} onAdditional={vi.fn()}/>);
+ fireEvent.click(screen.getByText('정답 포함 상세 평가 공개'));
  expect(screen.getByRole('heading',{name:'최종 답안 판정'})).toBeTruthy();
  expect(screen.getByRole('heading',{name:'풀이 과정 평가'})).toBeTruthy();
  expect(screen.getByText('도출 과정이 필요해요.')).toBeTruthy();

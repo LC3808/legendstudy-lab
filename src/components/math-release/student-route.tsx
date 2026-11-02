@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { useAuth } from "@/components/auth-context";
+import {AnswerDisclosure} from "@/components/math-learning/answer-disclosure";
+import {hasUnresolvedRecognition} from "@/lib/math-input/recognition-safety";
 import { MathInputFlow } from "@/components/math-input/math-input-flow";
 import { LearningGuidance } from "@/components/math-learning/learning-guidance";
 import { LearningHistory } from "@/components/math-learning/learning-history";
@@ -56,7 +58,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
   const uploadPages=useRef<UploadPage[]|null>(null);
   const [frozen, setFrozen] = useState(false);
   const [busy, setBusy] = useState(false), [notice, setNotice] = useState("");
-  const [result, setResult] = useState<{ overall?: { explanation?: string }; steps?: { id: string; representation: string; explanation: string }[] } | null>(null);
+  const [result, setResult] = useState<{ overall?: { explanation?: string }; steps?: { id: string; position?:number; representation: string; explanation: string }[] } | null>(null);
   const [prior, setPrior] = useState<LearningState | null>(null);
   const [evaluations, setEvaluations] = useState<{ id: string; label: string }[]>([]);
   const token = async () => {
@@ -147,6 +149,8 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
   }
   async function evaluate() {
     if (!attempt) return;
+    const fresh=await inputClient.readInput(attempt);
+    if(!fresh.can_request_evaluation || fresh.confirmed_regions.some(row=>hasUnresolvedRecognition(row.raw_text+row.normalized_math)))throw Error("MATH_CONFIRMATION_REQUIRED");
     let response: {evaluation_id:string};
     if(prior) response=await learnClient.requestReevaluation(attempt,key("evaluation"));
     else {
@@ -195,7 +199,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
       }} />
       {file?.type === "application/pdf" && <><p>선택한 파일: {file.name}</p><LocalPreview key={file.name + file.lastModified} file={file}/></>}
       <button type="button" disabled={!evaluationEnabled || !leaf || (!answer.trim() && !file && !images.length)} onClick={() => void run(submit)}>답안 제출 · 입력 확인</button>
-      {input && <MathInputFlow onInvalidate={id=>setCorrections(current=>{const next={...current};delete next[id];return next;})} readiness={readiness} onConfirm={intent => setCorrections(current => ({ ...current, [intent.regionId]: intent.confirmedRawText }))} />}
+      {input && <MathInputFlow sourceFile={r=>uploadPages.current?.find(p=>p.artifactId===r.evidenceRef)?.file??file??undefined} onInvalidate={id=>setCorrections(current=>{const next={...current};delete next[id];return next;})} readiness={readiness} onConfirm={intent => setCorrections(current => ({ ...current, [intent.regionId]: intent.confirmedRawText }))} />}
       {!!regions.length && !input?.can_request_evaluation && <button type="button" disabled={regions.some(row => corrections[row.region_id] === undefined)} onClick={() => void run(async () => {
         await inputClient.confirmExtraction(attempt!, String(input!.candidate?.run_id ?? input!.candidate?.id), regions.map(row => ({ region_id: row.region_id, raw_text: corrections[row.region_id], normalized_math: corrections[row.region_id] })));
         const state = await inputClient.readInput(attempt!); if (alive.current) setInput(state);
@@ -213,10 +217,10 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
       })}>같은 첨삭 처리 다시 요청</button>}
       {learning?.valid_evaluation_available && <>
         <section aria-label="첨삭 결과"><h2>첨삭 결과</h2>
-          {result?.overall?.explanation && <p>{result.overall.explanation.replace(/^[A-Z_]+$/, "답안의 풀이 과정과 개선 안내를 확인해 주세요.")}</p>}
-          {result?.steps?.map(step => <article key={step.id}><p><MathText text={step.representation}/></p><p><MathText text={step.explanation}/></p></article>)}
+          <AnswerDisclosure key={learning.evaluation_id}>{result?.overall?.explanation && <p>{result.overall.explanation.replace(/^[A-Z_]+$/, "답안의 풀이 과정과 개선 안내를 확인해 주세요.")}</p>}
+          {result?.steps?.map(step => <article key={step.id}><p><MathText text={step.representation}/></p><p><MathText text={step.explanation}/></p></article>)}</AnswerDisclosure>
         </section>
-        <LearningGuidance key={learning.evaluation_id} coreView={coreView} l0Body="아래 안내를 확인하고 풀이를 개선해 보세요." revealedHints={hints}
+        <LearningGuidance key={learning.evaluation_id} coreView={coreView} stepPosition={result?.steps?.find(s=>s.id===core?.step_id)?.position} l0Body="아래 안내를 확인하고 풀이를 개선해 보세요." revealedHints={hints}
           onRevealHint={level => void run(async () => {
             const hint = learning.hints.find(h => h.core_id === core?.core_id && h.level === level && h.can_reveal);
             if (!hint) throw Error("HINT_UNAVAILABLE");
@@ -235,10 +239,10 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
             const records=await learnClient.readLearningHistory(learning.evaluation_id);if(alive.current)setHistory(records);
           })}
           onResolve={() => { setFrozen(false); setPrior(learning); setLeaf(learning.leaf_id); setAttempt(null); setInput(null); setAnswer(""); setFile(null);setImages([]);uploadPages.current=null; setCorrections({}); keys.current.clear(); }} solutionProvenance={solution?.provenance} />
-        <LearningDelta view={summarizeReevaluationDelta(learning.reevaluation_delta as ReevaluationDelta | null)} />
+        <AnswerDisclosure key={learning.evaluation_id+":delta"}><LearningDelta view={summarizeReevaluationDelta(learning.reevaluation_delta as ReevaluationDelta | null)} /></AnswerDisclosure>
       </>}
       {prior && !prior.included_reevaluation.eligible && <p>추가 비용 없는 재첨삭 기간 또는 횟수를 확인해 주세요. 요청 가능 여부는 서버에서 확인합니다.</p>}
-      {history && <LearningHistory timeline={buildLearningTimeline(history)} />}
+      {history && <AnswerDisclosure key={learning?.evaluation_id+":history"}><LearningHistory timeline={buildLearningTimeline(history)} /></AnswerDisclosure>}
       {!!evaluations.length && <section aria-label="이전 학습"><h2>이전 학습</h2>{evaluations.map(row => <button key={row.id} type="button" onClick={() => void run(() => readEvaluation(row.id))}>{row.label}</button>)}</section>}
     </fieldset>
   </main>;
