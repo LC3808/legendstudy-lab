@@ -25,3 +25,12 @@ describe('private TEST preview boundary', () => {
  });
  it('rejects forged cookies',async()=>{expect((await testPreviewAccess(new Request(origin,{headers:{Cookie:'__Host-task09_review=1793519999.fake'}}),env,next,now)).status).toBe(401);});
 });
+
+it('gates TASK16B assets and limits machine access to the Math callback',async()=>{
+ const test='https://legendstudy-task16b.pages.dev';
+ expect((await testPreviewAccess(new Request(test+'/_next/static/app.js'),env,next,now)).status).toBe(401);
+ const headers={'X-Test-Preview-Access':env.TEST_PREVIEW_ACCESS_KEY};
+ expect((await testPreviewAccess(new Request(test+'/api/essay/math-session',{method:'POST',headers}),env,next,now)).status).toBe(200);
+ for(const path of ['/','/api/essay/exam','/admin/'])expect((await testPreviewAccess(new Request(test+path,{method:'POST',headers}),env,next,now)).status).toBe(401);
+ expect((await testPreviewAccess(new Request(test+'/api/essay/math-session',{method:'POST',headers:{'X-Test-Preview-Access':'wrong'}}),env,next,now)).status).toBe(401);
+});

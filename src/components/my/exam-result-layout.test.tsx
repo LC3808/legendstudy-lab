@@ -30,3 +30,29 @@ it('final rewrite CTA uses server entitlement and never submits an evaluation',(
  fireEvent.click(screen.getByRole('button',{name:'답안 다시 작성하기 · 무료 재첨삭'}));
  expect(rewrite).toHaveBeenCalledTimes(1);expect(additional).not.toHaveBeenCalled();
 });
+
+it('never labels unknown exam coverage as full completion',()=>{
+ render(<ExamResultLayout row={row} run={{}} reports={[report('run/a')]} previous={[]} onRewrite={vi.fn()} onAdditional={vi.fn()}/>);
+ expect(screen.getByText(/제출 문항 첨삭 완료 · 전체 문항 여부 미확인/)).toBeTruthy();
+ expect(screen.queryByText(/^전체 문항 첨삭 완료$/)).toBeNull();
+});
+it('shows Math reasoning separately from final answer within the shared result UI',()=>{
+ const math={...report('run/math'),math:{answerVerdict:'정답',reviewRequired:true,steps:[{position:1,status:'근거 부족',representation:'x=2',explanation:'도출 과정이 필요해요.'}]}};
+ render(<ExamResultLayout row={row} run={{}} reports={[math]} previous={[]} onRewrite={vi.fn()} onAdditional={vi.fn()}/>);
+ expect(screen.getByRole('heading',{name:'최종 답안 판정'})).toBeTruthy();
+ expect(screen.getByRole('heading',{name:'풀이 과정 평가'})).toBeTruthy();
+ expect(screen.getByText('도출 과정이 필요해요.')).toBeTruthy();
+ expect(screen.queryByText('음성으로 듣기')).toBeNull();
+});
+
+it('distinguishes a partial registered exam from the entire two-question exam',()=>{
+ const examRow={...row,examId:'de46f947-c033-5ec8-82ef-963f1742879e'};
+ const q1=report('run/dd53705e-1dec-52b1-bef0-710891ce5fb3'),q2=report('run/84b62658-4994-5c50-8b2b-3592666d66a7');
+ const props={row:examRow,run:{},reports:[q1],previous:[],onRewrite:vi.fn(),onAdditional:vi.fn()};
+ const {rerender}=render(<ExamResultLayout {...props}/>);
+ expect(screen.getByText(/전체 2문항 중 1문항 첨삭 완료/)).toBeTruthy();
+ rerender(<ExamResultLayout {...props} reports={[q1,q2]}/>);
+ expect(screen.getByText(/전체 문항 첨삭 완료/)).toBeTruthy();
+ rerender(<ExamResultLayout {...props} reports={[q1,q1]}/>);
+ expect(screen.queryByText(/· 전체 문항 첨삭 완료/)).toBeNull();
+});

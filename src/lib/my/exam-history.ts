@@ -27,7 +27,15 @@ export async function readExamDashboard(client:SupabaseClient,owner:string):Prom
 export function examReports(run:Record<string,unknown>):Report[]{
  if(run.state!=='completed')return [];
  const answers=array(run.answers).map(object);
- return array(object(run.result).questions).map(object).map(q=>{
+ const questions=array(object(run.result).questions).map(object);
+ const answerIds=answers.map(a=>text(a.questionId)),resultIds=questions.map(q=>text(q.questionId));
+ const unique=(ids:string[])=>ids.length>0&&ids.every(Boolean)&&new Set(ids).size===ids.length;
+ const same=(a:string[],b:string[])=>a.length===b.length&&a.every(id=>b.includes(id));
+ // A completed parent must contain every submitted child exactly once. Never
+ // expose a partial mixed result as a successful session, even for stale rows.
+ if(!unique(answerIds)||!unique(resultIds)||!same(answerIds,resultIds)||
+  (Array.isArray(run.question_ids)&&(!unique(run.question_ids.map(text))||!same(answerIds,run.question_ids.map(text)))))throw Error('INVALID_EXAM_RESULT');
+ return questions.map(q=>{
   const out=object(q.evaluation),answer=answers.find(a=>a.questionId===q.questionId),criteria=array(q.criteria).map(object);
   if(!answer)throw Error('INVALID_EXAM_RESULT');
   const id=text(run.id)+'/'+text(q.questionId);

@@ -1,6 +1,6 @@
 /** TASK09 private TEST site only. This gate never authorizes Supabase/admin access. */
 export type PreviewEnv = { TEST_PREVIEW_ACCESS_KEY?: string };
-const host = /^(?:[a-z0-9-]+\.)?legendstudy-task09\.pages\.dev$/;
+const host = /^(?:[a-z0-9-]+\.)?legendstudy-(?:task09|task16b)\.pages\.dev$/;
 const cookieName = '__Host-task09_review';
 const lifetime = 8 * 60 * 60;
 const encoder = new TextEncoder();
@@ -27,6 +27,10 @@ export async function testPreviewAccess(request: Request, env: PreviewEnv, next:
   if (!host.test(url.hostname)) return next();
   const secret = env.TEST_PREVIEW_ACCESS_KEY;
   if (url.protocol !== 'https:' || !secret || secret.length < 32) return response('TEST preview unavailable', 503);
+  // Existing Worker-to-Pages Math callback only; this does not authorize the
+  // callback itself, whose service credential and parent lease are still checked.
+  const machine=request.headers.get('X-Test-Preview-Access')||'';
+  if(url.hostname==='legendstudy-task16b.pages.dev'&&url.pathname==='/api/essay/math-session'&&request.method==='POST'&&machine&&equal(await signature(secret,machine),await signature(secret,secret)))return next();
   const seconds = Math.floor(now / 1000);
   if (url.pathname === '/__review-access' && request.method === 'POST') {
     if (request.headers.get('origin') !== url.origin) return response('Forbidden', 403);

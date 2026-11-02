@@ -30,3 +30,10 @@ it('prioritizes official criteria without inventing points and retains rubric ve
  const r=mathReport({...wire(),criteria:[{criterion:{id:'official',description:'조건에 따른 경우를 모두 구분한다.'}}],output:{...wire().output,criteria:[{criterion_id:'official',verdict:'partially_satisfied',explanation:'한 경우가 빠졌어요.'}]}});
  expect(r.rubric[0]).toMatchObject({id:'criterion:official',name:'조건에 따른 경우를 모두 구분한다.',stars:null,feedback:'한 경우가 빠졌어요.'});
 });
+
+it('separates final-answer correctness from missing reasoning and preserves review uncertainty',()=>{
+ const r=mathReport({...wire(),output:{...wire().output,overall:{answer_status:'CORRECT',explanation:'ANSWER_CORRECT_REASONING_INCOMPLETE',review_status:'HUMAN_REVIEW_REQUIRED'},steps:[{position:1,status:'INSUFFICIENT_JUSTIFICATION',representation:'x=2',explanation:'도출 근거가 없습니다.'}]}});
+ expect(r.math).toEqual({answerVerdict:'정답',reviewRequired:true,steps:[{position:1,status:'근거 부족',representation:'x=2',explanation:'도출 근거가 없습니다.'}]});
+ expect(mathReport(wire()).math?.answerVerdict).toBe('판정 정보 없음');
+ expect(humanReport({}).math).toBeUndefined();
+});

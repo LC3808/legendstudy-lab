@@ -48,6 +48,11 @@ function HumanEvaluationReport({report,title,answerLabel,before,allowVoice}:{bef
  <details className="report-answer"><summary>{answerLabel??'제출 답안'}</summary><p className="essay-answer">{report.answer||'첨부 답안 · 비공개 보관'}</p></details>
  {before&&<details className="report-answer"><summary>비교 대상 · 이전 제출 답안</summary><p className="essay-answer">{before.answer||'첨부 답안 · 비공개 보관'}</p></details>}
  <section className="report-block report-block--summary"><h3>종합 평가</h3><p>{report.summary||'저장된 종합 평가가 없습니다.'}</p></section>
+ {report.math&&<section className="report-block report-math-assessment" aria-label="수리 문항 평가">
+  <h3>최종 답안 판정</h3><p>{report.math.answerVerdict}</p>
+  {report.math.reviewRequired&&<p role="status">추가 검토가 필요한 평가입니다.</p>}
+  <h3>풀이 과정 평가</h3>{report.math.steps.length?report.math.steps.map((step,index)=><article key={index} className="report-feedback"><h4>풀이 {step.position||index+1} · {step.status}</h4><p>{step.representation}</p><p>{step.explanation}</p></article>):<p>저장된 풀이 단계 평가가 없습니다.</p>}
+ </section>}
  {allowVoice&&<details className="report-audio"><summary>음성으로 듣기</summary><VoiceFeedback text={evaluationSpeech(report)}/></details>}
  <section className="report-block report-guide"><h3>높은 평가를 위한 작성 가이드</h3>
  <p>이 문항에 저장된 수정 방향과 확인 항목입니다. 보완 사유와 연결된 개선 방법은 아래에서 확인하세요.</p>

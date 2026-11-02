@@ -8,7 +8,9 @@ import {publicCatalog} from '@/lib/essay-runtime/public-discovery';
 import {universityEssayTheme} from '@/lib/essay-runtime/university-theme';
 import {loadRegisteredMaterials,mergeRegisteredCatalog} from '@/lib/essay-runtime/registered-material-catalog';
 import {sourceExams} from '@/lib/essay-runtime/source-registry';
-import {examQuestionLabel} from '@/lib/my/exam-history';
+import {StudentQuestionPdf} from '../materials/student-pdf';
+import {studentPdfForExam} from '@/lib/materials/student-asset';
+import {examAnswerCoverage,examQuestionLabel} from '@/lib/my/exam-history';
 import {historyType,answerVersion,completedAt,type RecordItem} from '@/lib/my/essay-dashboard';
 import type {Report} from '@/lib/my/evaluation-report';
 import {EvaluationReport,EvaluationComparison} from './evaluation-report';
@@ -20,26 +22,31 @@ type Section=typeof sections[number][0];
 export function ExamResultLayout({row,run,reports,previous,onRewrite,onAdditional}:{row:RecordItem;run:Record<string,unknown>;reports:Report[];previous:Report[];onRewrite:()=>void;onAdditional:()=>void}){
  const [section,setSection]=useState<Section>('summary');
  const [open,setOpen]=useState<Record<string,boolean>>({});
- const [order,setOrder]=useState<string[]>([]);
- const [labels,setLabels]=useState<Record<string,string>>({});
+ const [catalog,setCatalog]=useState<{examId:string;order:string[];labels:Record<string,string>}|null>(null);
+ const order=catalog&&catalog.examId===row.examId?catalog.order:[];
+ const labels=catalog&&catalog.examId===row.examId?catalog.labels:{};
  const auth=useAuth();
  const university=publicCatalog.universities.find(u=>u.name===row.university);
  const sourceId=university?.sourceUniversityId;
  useEffect(()=>{let live=true;if(!auth.client||!sourceId)return;
   void loadRegisteredMaterials(auth.client,sourceId).then(materials=>{
    const exam=mergeRegisteredCatalog(sourceExams(sourceId),materials).find(e=>e.dbExamId===row.examId);
-   if(live&&exam){setLabels(Object.fromEntries(exam.questions.filter(q=>q.dbQuestionId).map(q=>[q.dbQuestionId!,q.label])));setOrder(exam.questions.flatMap(q=>q.dbQuestionId?[q.dbQuestionId]:[]));}
+   if(live&&exam&&row.examId){setCatalog({examId:row.examId,labels:Object.fromEntries(exam.questions.filter(q=>q.dbQuestionId).map(q=>[q.dbQuestionId!,q.label])),order:exam.questions.map(q=>q.dbQuestionId??q.key)});}
   }).catch(()=>{/* Stored results remain available if optional catalog labels cannot be read. */});return()=>{live=false;};
  },[auth.client,sourceId,row.examId]);
  const theme=universityEssayTheme(sourceId??'');
  const title=row.question.replaceAll(row.university??'','').replace(/\bmock\b/gi,'모의논술').replace(/\badmission\b/gi,'수시논술').trim();
  const label=(report:Report,index:number)=>{const id=report.id.split('/').at(-1)??'';const stored=labels[id]??examQuestionLabel(id);return stored==='문항별 첨삭'?`제출 문항 ${index+1}`:stored;};
  const orderedReports=[...reports].sort((a,b)=>{const ai=order.indexOf(a.id.split('/').at(-1)??''),bi=order.indexOf(b.id.split('/').at(-1)??'');return ai<0||bi<0?0:ai-bi;});
+ const expected=order.length?order:examAnswerCoverage(row.examId).map(q=>q.id);
+ const evaluated=reports.map(r=>r.id.split('/').at(-1)??'');
+ const allQuestions=expected.length>0&&new Set(evaluated).size===expected.length&&evaluated.length===expected.length&&expected.every(id=>evaluated.includes(id));
+ const completionLabel=allQuestions?'전체 문항 첨삭 완료':expected.length?`전체 ${expected.length}문항 중 ${reports.length}문항 첨삭 완료`:'제출 문항 첨삭 완료 · 전체 문항 여부 미확인';
  const canRewrite=run.free_rewrite_available===true;
  return <div className="exam-result" data-view={section} style={{'--result-accent':theme.accent,'--result-border':theme.border_color} as CSSProperties}>
   <header className="exam-result-hero">
    <div className="exam-result-identity">{university&&<UniversityLogo university={university} logoAsset={theme.logo_asset}/>}<div><h1>{row.university??'논술 첨삭 결과'}</h1><h2>{title}</h2></div></div>
-   <div className="exam-result-meta"><span className="essay-history-badge">{historyType(row)}</span><span>제출 {reports.length}문항</span><span>{dateLabel(completedAt(row))} 첨삭 완료</span></div>
+   <div className="exam-result-meta"><span className="essay-history-badge">{historyType(row)}</span><span>제출 {reports.length}문항</span><span>{dateLabel(completedAt(row))} · {completionLabel}</span></div>
    <div className="my-actions"><Link className="button button--outline" href="/essay-lab/">다른 논술 풀기</Link><Link className="button button--primary" href="/my/essays/">나의 첨삭 기록 →</Link></div>
   </header>
   <nav className="exam-result-nav" aria-label="첨삭 결과 섹션">{sections.map(([key,name])=><button key={key} aria-current={section===key?'page':undefined} onClick={()=>setSection(key)}>{name}{key==='questions'?` (${reports.length})`:''}</button>)}</nav>
@@ -47,12 +54,13 @@ export function ExamResultLayout({row,run,reports,previous,onRewrite,onAdditiona
    <h2 className="exam-result-section-title">{sections.find(([key])=>key===section)?.[1]}</h2>
    {section==='summary'&&<p className="my-note">문항별로 저장된 평가입니다. 별도의 종합 점수는 산출하지 않습니다.</p>}
    {orderedReports.map((report,index)=>{
+    const pdf=row.examId?studentPdfForExam(row.examId,report.id.split('/').at(-1)??''):null;
     const before=previous.find(p=>p.id===report.priorId);
     const expanded=section!=='questions'||(open[report.id]??index===0);
     return <section className="exam-result-question" key={report.id}>
-     <header className="exam-result-question-head"><h3>{label(report,index)}</h3>{section==='questions'&&<button aria-expanded={expanded} aria-controls={`report-${index}`} onClick={()=>setOpen(old=>({...old,[report.id]:!expanded}))}>{expanded?'접기':'펼치기'} <span aria-hidden="true">{expanded?'−':'+'}</span></button>}</header>
+     <header className="exam-result-question-head"><h3>{label(report,index)}</h3>{pdf&&auth.user&&<StudentQuestionPdf asset={pdf} owner={auth.user.id} label="문제·표·그래프 원문 보기 ↗"/>}{section==='questions'&&<button aria-expanded={expanded} aria-controls={`report-${index}`} onClick={()=>setOpen(old=>({...old,[report.id]:!expanded}))}>{expanded?'접기':'펼치기'} <span aria-hidden="true">{expanded?'−':'+'}</span></button>}</header>
      <div id={`report-${index}`} hidden={!expanded}>
-      {section==='answers'?<div className="exam-result-answer"><p className="essay-answer">{report.answer||'이 기록에는 표시할 텍스트 답안이 없습니다.'}</p>{report.pins.includes('math-eval-v1')&&<p className="my-note">저장된 수식·텍스트 답안입니다. 원본 사진 미리보기는 이 결과 조회 경로에서 제공되지 않습니다.</p>}</div>:<EvaluationReport voiceType="humanities_social" title={historyType(row)} answerLabel={answerVersion(row)} before={before} report={report}/>}
+      {section==='answers'?<div className="exam-result-answer"><p className="essay-answer">{report.answer||'이 기록에는 표시할 텍스트 답안이 없습니다.'}</p>{report.pins.includes('math-eval-v1')&&<p className="my-note">저장된 수식·텍스트 답안입니다. 원본 사진 미리보기는 이 결과 조회 경로에서 제공되지 않습니다.</p>}</div>:<EvaluationReport voiceType={report.math?"math":"humanities_social"} title={historyType(row)} answerLabel={answerVersion(row)} before={before} report={report}/>}
       {section==='questions'&&<EssayFeedback evaluationRef={report.id}/>}
 
       {(section==='summary'||section==='rewrite'||section==='questions')&&<EvaluationComparison before={before} after={row.rewrite?report:undefined}/>}
