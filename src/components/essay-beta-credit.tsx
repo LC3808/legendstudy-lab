@@ -33,7 +33,7 @@ function BetaNotice({end,limit=1,onClose,onStart}:{end:string;limit?:number;onCl
     <p>인문논술 서비스를 매일 {limit}회 무료 이용할 수 있어요.</p>
     <p>매일 0시(자정, 한국 시간)에 무료 첨삭 이용 횟수가 갱신되며 미사용분은 소멸돼요.</p>
     <p>베타 서비스는 {betaEndDate(end)}까지 운영돼요. 베타 무료 첨삭권과 무료 재첨삭은 베타 서비스 기간 동안만 이용할 수 있어요.</p>
-    <p>가입 축하 무료 크레딧(3개)과 구매 크레딧은 기존 정책대로 이용할 수 있어요.</p>
+    <p>가입 축하 무료 이용권(3개)과 구매 이용권은 기존 정책대로 이용할 수 있어요.</p>
     <p>사용 중 불편한 점은 문의·건의사항으로 알려주세요. 공지사항에서 안내를 다시 확인할 수 있어요.</p>
     <label><input type="checkbox" checked={hide} disabled={busy} onChange={e=>setHide(e.target.checked)}/> 다음부터 보지 않기</label>
     {message&&<p role="status">{message}</p>}
@@ -122,7 +122,7 @@ export function EssayBetaCredit(){
     {error&&<aside role="status">베타 첨삭권을 확인하지 못했습니다. <button onClick={()=>setRetry(v=>v+1)}>다시 확인</button></aside>}
     {state&&(state.active||state.status==='ended')&&<aside className="content-wrap essay-credit" aria-live="polite">
       <strong>{!state.active ? '베타 무료 첨삭 제공이 종료되었습니다.' : state.available>0 ? `오늘의 무료 첨삭 · ${state.available}회 남음` : '오늘의 무료 첨삭을 모두 사용했습니다.'}</strong>
-      <p className="essay-credit__meta">{state.active ? `매일 00시(자정, 한국 시간) 갱신 · 이월 없음 · ${state.available===0 && Date.parse(state.expires_at)<Date.parse(state.ends_at)?'다음 이용: 내일 00:00 KST · ':''}${betaEndDate(state.ends_at)}까지` : '가입·구매 Credit은 기존 정책대로 이용할 수 있어요.'}</p>
+      <p className="essay-credit__meta">{state.active ? `매일 00시(자정, 한국 시간) 갱신 · 이월 없음 · ${state.available===0 && Date.parse(state.expires_at)<Date.parse(state.ends_at)?'다음 이용: 내일 00:00 KST · ':''}${betaEndDate(state.ends_at)}까지` : '가입·구매 이용권은 기존 정책대로 이용할 수 있어요.'}</p>
       <a href={state.active && state.notice_id ? `/notices/${state.notice_id}` : '/notices'}>베타 공지 다시 보기</a>
     </aside>}
     {notice && <BetaNotice end={notice.data.ends_at} limit={notice.data.daily_limit} onClose={closeNotice} onStart={start}/>}

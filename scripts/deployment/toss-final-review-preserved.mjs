@@ -30,10 +30,11 @@ if(!authKey?.startsWith('sb_publishable_')||authUrl!=='https://stlhijzpjfgwwdgun
 const scripts=walk(path.join(process.cwd(),'out/_next')).filter(f=>f.endsWith('.js')).map(f=>fs.readFileSync(f,'utf8'));
 if(!scripts.some(s=>s.includes(authKey))||!scripts.some(s=>s.includes(authUrl)))throw Error('Static build missing Production public Auth; rebuild with existing NEXT_PUBLIC variables');
 const scope=process.argv.includes('--legal-only')?['terms','privacy','_next']:['payments','pricing','refund','_next'];
-const inScope=u=>scope.some(dir=>u.startsWith('/'+dir+'/'));
-for(const dir of scope)for(const f of walk(path.join(process.cwd(),'out',dir))){
+const allWeb=process.argv.includes('--all-web');
+const inScope=u=>allWeb ? u.startsWith('/_next/')||/\.(html|txt)$/.test(u) : scope.some(dir=>u.startsWith('/'+dir+'/'));
+for(const f of (allWeb?walk(path.join(process.cwd(),'out')):scope.flatMap(dir=>walk(path.join(process.cwd(),'out',dir))))){
  const u='/'+path.relative(path.join(process.cwd(),'out'),f).split(path.sep).join('/');
- add(f,u);
+ if(inScope(u))add(f,u);
 }
 for(const [u,key] of Object.entries(previous.files))if(!inScope(u)&&manifest[u]!==key)throw Error('Out-of-scope baseline changed: '+u);
 const compiled=read('route-config.json');
@@ -43,7 +44,7 @@ const headers=fs.readFileSync(path.join(baseline,'public/_headers'),'utf8')+'\n/
 const redirects=fs.readFileSync(path.join(baseline,'public/_redirects'),'utf8');
 const routes=JSON.parse(fs.readFileSync(path.join(baseline,'public/_routes.json'),'utf8'));routes.include.push('/api/owner-review/essay');
 const sha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
-const plan={previous:previous.id,source:sha,scope:'Payment/pricing/refund copy; REVIEW-only reviewer; finance renewal; other routes preserved',oldAssets:Object.keys(previous.files).length,assets:Object.keys(manifest).length,changedEssay:changed.filter(p=>p.startsWith('/essay-lab')).length,addedAssets:assets.size,preservedPageBodies:true,existingFunctionsPreservedExceptPaymentProductLabel:true,changed};
+const plan={previous:previous.id,source:sha,scope:allWeb?'All WEB display terminology; existing worker and environment preserved':scope.join(','),oldAssets:Object.keys(previous.files).length,assets:Object.keys(manifest).length,changedEssay:changed.filter(p=>p.startsWith('/essay-lab')).length,addedAssets:assets.size,preservedPageBodies:!allWeb,existingFunctionsPreservedExceptPaymentProductLabel:true,changed};
 fs.writeFileSync(path.join(backup,'deployment-plan.json'),JSON.stringify(plan,null,2));
 fs.writeFileSync(path.join(backup,'manifest.json'),JSON.stringify(manifest));
 if(!changed.length)throw Error('No payment changes');

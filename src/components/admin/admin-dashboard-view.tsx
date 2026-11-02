@@ -224,7 +224,7 @@ export function AdminDashboardView() {
         </div>
       </Section>
 
-      <Section title="크레딧" note="누적 · 잔액은 현재 시점 기준">
+      <Section title="이용권" note="누적 · 잔액은 현재 시점 기준">
         <div className="admin-metrics">
           <Metric label="잔액 (사용 가능)" value={formatCredit(data.credit.spendable)} />
           <Metric label="30일 내 만료 예정" value={formatCredit(data.credit.expiring30d)} />

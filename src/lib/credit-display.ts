@@ -2,7 +2,7 @@
 const grantTypes: Readonly<Record<string,string>> = {
  signup_bonus:'신규가입 무료', signup_bonus_v1:'신규가입 무료',
  admin_grant:'관리자 지급', manual_support:'관리자 지급',
- promotion:'이벤트 지급', compensation:'이용 보상', purchase:'크레딧 구매', refund:'환불',
+ promotion:'이벤트 지급', compensation:'이용 보상', purchase:'이용권 구매', refund:'환불',
  b2b_program:'학교 단체 지급', reserve:'예약', consume:'논술 첨삭 사용',
  release:'예약 해제', expiration:'만료', adjustment:'정정',
 };
@@ -14,10 +14,10 @@ const reasons: Readonly<Record<string,string>> = {
  manual_support:'관리자 지급', test_account:'테스트 계정 지급',
  operational_promotion:'이벤트 지급', customer_compensation:'이용 보상',
  program_allocation:'학교 단체 지급', promotion:'이벤트 지급', compensation:'이용 보상',
- purchase:'크레딧 구매', refund:'환불',
+ purchase:'이용권 구매', refund:'환불',
 };
 export function formatCreditGrantType(code:string|null|undefined):string {
- return code ? lookup(grantTypes,code,'기타 크레딧 내역') : '구분 미제공';
+ return code ? lookup(grantTypes,code,'기타 이용권 내역') : '구분 미제공';
 }
 export function formatCreditReason(raw:string|null|undefined,quantity?:number):string {
  if(!raw?.trim())return '사유 미제공';
@@ -25,7 +25,7 @@ export function formatCreditReason(raw:string|null|undefined,quantity?:number):s
  if(reason.startsWith('{')){try{const audit=JSON.parse(reason);if(['admin_grant_v2','admin_recovery_v1'].includes(audit.operation)&&typeof audit.reason==='string')return audit.reason;}catch{/* Preserve legacy free text. */}}
 
  if(['signup_bonus_v1','signup_bonus','signup'].includes(reason)) {
-  return typeof quantity==='number'&&Number.isInteger(quantity)&&quantity>0 ? `가입 축하 크레딧 ${quantity.toLocaleString('ko-KR')}개` : '가입 축하 크레딧';
+  return typeof quantity==='number'&&Number.isInteger(quantity)&&quantity>0 ? `가입 축하 이용권 ${quantity.toLocaleString('ko-KR')}개` : '가입 축하 이용권';
  }
  if(reason.startsWith('manual_support:'))return reason.slice('manual_support:'.length).trim()||'관리자 지급';
  // Unknown free-text reasons must remain faithful to what was recorded.
@@ -45,19 +45,19 @@ function lookup(map:Readonly<Record<string,string>>,key:string,fallback:string):
 export function formatUserCreditReason(type:string,raw?:string|null):string {
  const labels:Readonly<Record<string,string>>={
   signup_bonus:'신규가입 무료',signup_bonus_v1:'신규가입 무료',
-  admin_grant:'관리자 지급',manual_support:'관리자 지급',purchase:'크레딧 구매',
+  admin_grant:'관리자 지급',manual_support:'관리자 지급',purchase:'이용권 구매',
   consume:'논술 첨삭',promotion:'프로모션 지급',refund:'환불',
   compensation:'이용 보상',b2b_program:'학교 단체 지급',expiration:'만료',adjustment:'정정',
  };
  const reason=raw?.trim()??'';
- const label=lookup(labels,type,'크레딧 내역');
+ const label=lookup(labels,type,'이용권 내역');
  if(type==='admin_grant'||type==='manual_support') {
   if(reason.startsWith('manual_support:')) {
-   const detail=formatCreditReason(reason);
+   const detail=formatCreditReason(reason).replace(/크레딧|\bCredits?\b/gi, '이용권');
    return detail==='관리자 지급'?label:`${label} · ${detail}`;
   }
   // Canonical fixed reason codes have existing human-readable labels.
-  if(Object.hasOwn(reasons,reason))return reason==='manual_support'?label:formatCreditReason(reason);
+  if(Object.hasOwn(reasons,reason))return reason==='manual_support'?label:formatCreditReason(reason).replace(/크레딧|\bCredits?\b/gi, '이용권');
  }
  return label;
 }

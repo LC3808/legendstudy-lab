@@ -59,10 +59,10 @@ it('shows usage as a metric row with a ranked pair of actions', async () => {
   const { container } = render(<MyDashboard />);
   await screen.findByText('사회·상경');
   const usage = [...container.querySelectorAll('.my-section')].find((s) => s.querySelector('h2')?.textContent === '내 이용 현황') as HTMLElement;
-  expect(within(usage).getByText('크레딧')).toBeTruthy();
+  expect(within(usage).getByText('이용권')).toBeTruthy();
   expect(usage.querySelector('.my-metric__value')?.textContent).toBe('3개');
   expect(within(usage).getByText('무료 3 · 구매 0 · 기타 지급 0')).toBeTruthy();
-  const buy = within(usage).getByRole('link', { name: '크레딧 구매' });
+  const buy = within(usage).getByRole('link', { name: '이용권 구매' });
   const history = within(usage).getByRole('link', { name: '구매·사용 내역' });
   expect(buy.className).toContain('button--primary');
   expect(history.className).toContain('button--outline');
@@ -109,7 +109,7 @@ it('renders only date, signed quantity and user reason in purchase history',asyn
  render(<CreditHistory/>);
  const table=await screen.findByRole('table');
  expect(within(table).getAllByRole('columnheader').map(el=>el.textContent)).toEqual(['날짜','개수','사유']);
- expect(within(table).getAllByRole('cell').map(el=>el.textContent)).toEqual(['2026. 10. 9.','+2 크레딧','관리자 지급 · 테스트']);
+ expect(within(table).getAllByRole('cell').map(el=>el.textContent)).toEqual(['2026. 10. 9.','+2 이용권','관리자 지급 · 테스트']);
  expect(table).not.toHaveTextContent('private-id');
 });
 

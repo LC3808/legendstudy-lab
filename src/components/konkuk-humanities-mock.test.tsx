@@ -37,7 +37,7 @@ it('canonical humanities draft uses existing submit, result, free rewrite and ow
  }));
  const u=userEvent.setup();
  const first=render(<EssayExamSubmit exam={exam} included={['q2']} drafts={{q2:{body:'First synthetic answer',revision:1,images:false,saved:true}}}/>);
- await u.click(await screen.findByRole('button',{name:'논술 첨삭 요청하기 · 1 크레딧'}));
+ await u.click(await screen.findByRole('button',{name:'논술 첨삭 요청하기 · 1 이용권'}));
  await u.click(await screen.findByRole('button',{name:'첨삭 진행하기'}));
  await waitFor(()=>expect(state.navigate).toHaveBeenCalledWith('exam','first'));
  expect(screen.queryByText('First summary')).toBeNull();

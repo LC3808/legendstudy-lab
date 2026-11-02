@@ -6,7 +6,7 @@ export function expiryQuantities(grants:ExpiryGrant[],transactions:ExpiryTransac
  const quantities=new Map<string,number>();
  for(const t of transactions){if(!Number.isSafeInteger(t.balance_delta)||!Number.isSafeInteger(t.reserved_delta))throw Error('INVALID_LEDGER');quantities.set(t.grant_id,(quantities.get(t.grant_id)??0)+t.balance_delta-t.reserved_delta);}
  const groups=new Map<string,number>();
- for(const g of grants){if(g.expires_at!==at)continue;const n=quantities.get(g.id)??0;if(n<0)throw Error('INVALID_LEDGER');if(n>0){const type=g.origin==='purchase'?'구매 크레딧':['signup_bonus','signup'].includes(g.origin)?'무료 크레딧':'기타 지급 크레딧';groups.set(type,(groups.get(type)??0)+n);}}
+ for(const g of grants){if(g.expires_at!==at)continue;const n=quantities.get(g.id)??0;if(n<0)throw Error('INVALID_LEDGER');if(n>0){const type=g.origin==='purchase'?'구매 이용권':['signup_bonus','signup'].includes(g.origin)?'무료 이용권':'기타 지급 이용권';groups.set(type,(groups.get(type)??0)+n);}}
  return [...groups].map(([label,quantity])=>({label,quantity}));
 }
 export async function readCreditExpiry(client:SupabaseClient,owner:string,at:string|null){

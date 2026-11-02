@@ -38,5 +38,5 @@ export function MathSessionProgress({run,onChange}:{run:MathSession;onChange:()=
   }catch{setNotice('처리 상태를 확인하지 못했어요. 기존 회차와 성공한 결과는 유지됩니다. 다시 상태를 확인해 주세요.');}
   finally{running.current=false;setBusy(false);}
  }
- return <div aria-busy={busy}><button className="button button--outline" disabled={busy} onClick={()=>void resume(false)}>같은 회차 상태 확인</button>{retryable&&<button className="button button--outline" disabled={busy} onClick={()=>void resume(true)}>실패 문항만 재처리 · 0 크레딧</button>}<p role="status">{notice}</p></div>;
+ return <div aria-busy={busy}><button className="button button--outline" disabled={busy} onClick={()=>void resume(false)}>같은 회차 상태 확인</button>{retryable&&<button className="button button--outline" disabled={busy} onClick={()=>void resume(true)}>실패 문항만 재처리 · 0 이용권</button>}<p role="status">{notice}</p></div>;
 }

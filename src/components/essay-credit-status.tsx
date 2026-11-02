@@ -38,7 +38,7 @@ export function EssayCreditStatus() {
   if (state.status === 'loading') {
     return (
       <section className="essay-credit" aria-live="polite">
-        <p className="essay-credit__meta">크레딧을 확인하고 있습니다.</p>
+        <p className="essay-credit__meta">이용권을 확인하고 있습니다.</p>
       </section>
     );
   }
@@ -46,9 +46,9 @@ export function EssayCreditStatus() {
   if (state.status === 'signed-out') {
     return (
       <section className="essay-credit" aria-live="polite">
-        <p className="essay-credit__meta">로그인하면 내 크레딧을 확인할 수 있습니다.</p>
+        <p className="essay-credit__meta">로그인하면 내 이용권을 확인할 수 있습니다.</p>
         <div className="essay-credit__actions">
-          <Link className="button button--primary button--small" href={loginHref}>로그인하고 크레딧 확인</Link>
+          <Link className="button button--primary button--small" href={loginHref}>로그인하고 이용권 확인</Link>
         </div>
       </section>
     );
@@ -57,7 +57,7 @@ export function EssayCreditStatus() {
   if (state.status === 'error') {
     return (
       <section className="essay-credit" aria-live="polite">
-        <p className="essay-credit__meta">크레딧을 확인하지 못했습니다. 잠시 후 다시 시도해 주세요.</p>
+        <p className="essay-credit__meta">이용권을 확인하지 못했습니다. 잠시 후 다시 시도해 주세요.</p>
       </section>
     );
   }
@@ -68,11 +68,11 @@ export function EssayCreditStatus() {
   if (spendable === 0) {
     return (
       <section className="essay-credit" aria-live="polite">
-        <p className="essay-credit__count">크레딧이 없습니다.</p>
+        <p className="essay-credit__count">이용권이 없습니다.</p>
         <div className="essay-credit__actions">
           <Link className="button button--outline button--small" href="/account/essay/">내 논술 분석</Link>
           <Link className="button button--outline button--small" href={historyHref}>나의 첨삭 기록</Link>
-          <Link className="button button--primary button--small" href={purchaseHref}>크레딧 구매</Link>
+          <Link className="button button--primary button--small" href={purchaseHref}>이용권 구매</Link>
         </div>
       </section>
     );
@@ -80,7 +80,7 @@ export function EssayCreditStatus() {
 
   return (
     <section className="essay-credit" aria-live="polite">
-      <p className="essay-credit__count">내 크레딧 <strong>{spendable}개</strong></p>
+      <p className="essay-credit__count">내 이용권 <strong>{spendable}개</strong></p>
       <p className="essay-credit__meta">무료 {free} · 구매 {paid}{other > 0 ? ` · 기타 ${other}` : ''}</p>
       {/* `credit_summary()` reports the nearest expiry across every spendable
           grant, purchase and signup bonus alike, so the line must not claim it is
@@ -89,7 +89,7 @@ export function EssayCreditStatus() {
       <div className="essay-credit__actions">
         <Link className="button button--outline button--small" href="/account/essay/">내 논술 분석</Link>
         <Link className="button button--outline button--small" href={historyHref}>나의 첨삭 기록</Link>
-        <Link className="button button--primary button--small" href={purchaseHref}>크레딧 구매</Link>
+        <Link className="button button--primary button--small" href={purchaseHref}>이용권 구매</Link>
       </div>
     </section>
   );

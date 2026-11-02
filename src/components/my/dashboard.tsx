@@ -57,7 +57,7 @@ export function ProfileColleges(){
  * values are shown; a period entitlement has no authority yet, so no 이용권 metric
  * is invented here.
  */
-export function Usage({balanceLabel="크레딧"}:{balanceLabel?:string}={}){
+export function Usage({balanceLabel="이용권"}:{balanceLabel?:string}={}){
  const {state,reload}=useCreditSummary();
  if(state.status!=='ready')return <DataStatus error={state.status==='error'} reload={reload}/>;
  const value=state.value;
@@ -73,7 +73,7 @@ export function Usage({balanceLabel="크레딧"}:{balanceLabel?:string}={}){
     <CreditExpiry at={value.next_expiry}/>
    </article>
   </div>
-  <div className="my-actions"><Link className="button button--primary" href="/pricing/">크레딧 구매</Link><Link className="button button--outline" href="/account/credits/">구매·사용 내역</Link></div>
+  <div className="my-actions"><Link className="button button--primary" href="/pricing/">이용권 구매</Link><Link className="button button--outline" href="/account/credits/">구매·사용 내역</Link></div>
  </>;
 }
 
@@ -163,7 +163,7 @@ export function CreditHistory(){
  const current=Math.min(page,pageCount-1);
  const shown=rows.slice(current*CREDIT_PAGE_SIZE,current*CREDIT_PAGE_SIZE+CREDIT_PAGE_SIZE);
  return <div className="my-dashboard content-wrap content-wrap--detail">
-  <header className="my-head"><h1>크레딧 내역</h1></header>
+  <header className="my-head"><h1>이용권 내역</h1></header>
   <OwnerArea path="/account/credits/">
    <ReturnNavigation href="/account/" label="마이페이지"/>
    <CreditHistoryBalance/>
@@ -171,14 +171,14 @@ export function CreditHistory(){
     {!result.data
      ?<DataStatus error={result.error} reload={result.reload}/>
      :rows.length===0
-      ?<p className="my-empty">아직 크레딧 내역이 없습니다.</p>
+      ?<p className="my-empty">아직 이용권 내역이 없습니다.</p>
       :<>
         <p className="my-note">최근 내역 · 총 {rows.length}건{rows.length===100?' (최대 100건)':''}</p>
-        <table className="user-credit-history"><caption className="sr-only">크레딧 구매·사용 내역</caption>
+        <table className="user-credit-history"><caption className="sr-only">이용권 구매·사용 내역</caption>
          <thead><tr><th scope="col">날짜</th><th scope="col">개수</th><th scope="col">사유</th></tr></thead>
-         <tbody>{shown.map(r=><tr key={r.id}><td data-label="날짜">{dateLabel(r.at)}</td><td data-label="개수">{r.delta>0?'+':''}{r.delta} 크레딧</td><td data-label="사유">{r.label}</td></tr>)}</tbody>
+         <tbody>{shown.map(r=><tr key={r.id}><td data-label="날짜">{dateLabel(r.at)}</td><td data-label="개수">{r.delta>0?'+':''}{r.delta} 이용권</td><td data-label="사유">{r.label}</td></tr>)}</tbody>
         </table>
-        {pageCount>1&&<nav className="my-pagination" aria-label="크레딧 내역 페이지">
+        {pageCount>1&&<nav className="my-pagination" aria-label="이용권 내역 페이지">
          <button type="button" className="button button--outline button--small" disabled={current===0} onClick={()=>setPage(current-1)}>이전</button>
          <span className="my-pagination__status" aria-live="polite">{current+1} / {pageCount} 페이지</span>
          <button type="button" className="button button--outline button--small" disabled={current>=pageCount-1} onClick={()=>setPage(current+1)}>다음</button>
@@ -195,11 +195,11 @@ function CreditHistoryBalance(){
  const v=state.value;
  return <div className="my-panel my-credit-summary">
   <div className="my-credit-summary__balance">
-   <p className="my-metric__label">사용 가능한 크레딧</p>
+   <p className="my-metric__label">사용 가능한 이용권</p>
    <p className="my-metric__value">{v.spendable}<span className="my-metric__unit">개</span></p>
    <p className="my-metric__meta">무료 {v.free} · 구매 {v.paid}{v.other>0?` · 기타 ${v.other}`:''}{v.next_expiry?` · 가장 가까운 만료 ${dateLabel(v.next_expiry)}`:''}</p>
   </div>
-  <Link className="button button--primary" href="/pricing/">크레딧 구매</Link>
+  <Link className="button button--primary" href="/pricing/">이용권 구매</Link>
  </div>;
 }
 

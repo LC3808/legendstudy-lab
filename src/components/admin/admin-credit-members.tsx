@@ -11,7 +11,7 @@ export function AdminCreditMembers({onGranted}:{onGranted:()=>void}) {
  const [selected,setSelected]=useState<string|null>(null);
  const {state,reload}=useAdminQuery<CreditMembers>(c=>c.creditMembers(query,sort,limit,offset),JSON.stringify([query,sort,limit,offset]));
  return <section className="admin-section admin-credit-directory">
-  <h2>회원별 크레딧 관리</h2>
+  <h2>회원별 이용권 관리</h2>
   <form className="admin-search" onSubmit={e=>{e.preventDefault();setQuery(input.trim());setOffset(0);setSelected(null);}}>
    <label htmlFor="credit-member-search">이메일 또는 회원 ID</label>
    <div className="admin-search__row"><input id="credit-member-search" className="admin-search__input" type="search" maxLength={254} value={input} onChange={e=>setInput(e.target.value)} placeholder="이메일 또는 회원 UUID"/><button className="button button--primary button--small" type="submit">검색</button></div>
@@ -22,8 +22,8 @@ export function AdminCreditMembers({onGranted}:{onGranted:()=>void}) {
    </select></label>
    <label>표시 <select value={limit} onChange={e=>{setLimit(Number(e.target.value));setOffset(0);setSelected(null);}}>{[10,20,50].map(n=><option key={n} value={n}>{n}명</option>)}</select></label>
   </div>
-  {state.status==='loading'?<AdminLoading label="회원별 크레딧을 불러오는 중입니다"/>:state.status==='error'?<AdminErrorPanel kind={state.kind} onRetry={reload}/>:<>
-   <p className="admin-muted">총 {state.data.total}명 · 최근 이용일은 크레딧 사용 확정일 기준입니다.</p>
+  {state.status==='loading'?<AdminLoading label="회원별 이용권을 불러오는 중입니다"/>:state.status==='error'?<AdminErrorPanel kind={state.kind} onRetry={reload}/>:<>
+   <p className="admin-muted">총 {state.data.total}명 · 최근 이용일은 이용권 사용 확정일 기준입니다.</p>
    <div style={{overflowX:'auto'}}><table style={{width:'100%',borderCollapse:'collapse',fontSize:13}}><thead><tr>{['회원 이메일 / ID','사용 가능','예약','유료','무료','기타','최근 사용일','관리'].map(h=><th key={h} style={{padding:'10px 8px',textAlign:'left',whiteSpace:'nowrap'}}>{h}</th>)}</tr></thead><tbody>
    {state.data.items.map(m=><tr key={m.account_id} style={{borderTop:'1px solid #e2e8f0'}}>
     <td style={{padding:8}}>{m.email??'이메일 없음'}<small style={{display:'block',color:'#64748b'}}>{m.account_id}</small></td>

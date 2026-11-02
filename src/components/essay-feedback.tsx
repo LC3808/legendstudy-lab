@@ -3,7 +3,7 @@ import "./essay-feedback.css";
 import {useEffect,useRef,useState} from 'react';
 import {useAuth} from './auth-context';
 export const qualityCategories={helpful:'첨삭 내용이 도움이 되었어요',inaccurate:'첨삭 내용이 부정확해요',rubric:'평가기준이 잘못 적용된 것 같아요',score:'점수 또는 평가 결과가 이상해요',unclear:'설명이 이해하기 어려워요',function:'기능이 정상적으로 작동하지 않아요',other:'기타 의견'};
-export const bugCategories={submission:'답안 제출 오류',ocr:'OCR 인식 오류',evaluation:'평가 실패',result:'평가 결과 오류',rewrite:'재첨삭 오류',credit:'Credit 오류',display:'화면 표시 오류',other:'기타'};
+export const bugCategories={submission:'답안 제출 오류',ocr:'OCR 인식 오류',evaluation:'평가 실패',result:'평가 결과 오류',rewrite:'재첨삭 오류',credit:'이용권 오류',display:'화면 표시 오류',other:'기타'};
 export const positiveReasons={accurate_diagnosis:'부족한 부분을 정확히 알려줌',rubric_understanding:'대학 평가기준 이해에 도움',specific_feedback:'구체적인 피드백',rewrite_help:'재작성에 도움',clear_explanation:'이해하기 쉬운 설명'};
 export const negativeReasons={inaccurate:'평가 정확성 부족',abstract:'추상적인 피드백',unsupported_claim:'실제 답안과 다른 지적',rubric_connection:'평가기준 연결 부족',slow:'긴 첨삭 시간',complex:'복잡한 이용 방법'};
 export const feedbackThanks='의견을 보내주셔서 감사합니다. 더 나은 논술 LAB을 만드는 데 활용하겠습니다.';

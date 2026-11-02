@@ -80,3 +80,7 @@
 | `src/lib/essay-runtime/credit-source.ts` | 7 | 사용자/공용 |
 | `src/lib/math-learning/handoff.ts` | 1 | 사용자/공용 |
 | `src/lib/my/credit-expiry.ts` | 3 | 사용자/공용 |
+
+## 2026-11-02 후속 구현 — WEB 전체 이용권 통일
+
+Owner 최신 지시로 관리자도 포함한다. 전체 WEB의 고정 표시문구·metadata·공용 header·MY·논술/수리 제출·오류·내역·관리자 안내의 크레딧/Credit을 이용권으로 변경했다. DB/RPC/변수명·APP·과거 거래/자유입력 원문은 보존한다. 서버 결제/Secret/원장 변경 없음. 전체 회귀 1552 PASS/4 skipped, typecheck/build PASS. 배포는 현재 운영 Functions와 환경설정·기존 자산을 보존하고 새 정적 페이지 및 해시 자산을 반영한다. 로그인 이후 모든 상태를 수동 실행한 것은 아니며 소스·회귀검사로 보완한다.

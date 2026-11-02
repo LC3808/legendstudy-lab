@@ -276,7 +276,7 @@ describe("MATH-3B-R runtime binding (B01–B20)", () => {
     expect(server.state.attempts.size).toBe(before);
   });
 
-  it("B19 vision/evidence/confirmation carry no 크레딧 fields", async () => {
+  it("B19 vision/evidence/confirmation carry no 이용권 fields", async () => {
     const server = createMockMathServer();
     const input = new MathInputClient(server.studentTransport(SUBJECT));
     const attemptId = await attemptWithEvidence(input);

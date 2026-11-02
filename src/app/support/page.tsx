@@ -37,7 +37,7 @@ export default function SupportPage() {
         <h2 id="support-refund-rules">환불 규정</h2>
         <div className="refund-summary">
           <p>
-            <span>미사용 크레딧</span>
+            <span>미사용 이용권</span>
             <strong>{refundPolicy.unused}</strong>
           </p>
           <p>

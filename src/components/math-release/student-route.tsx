@@ -73,7 +73,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
     if (busy) return; setBusy(true); setNotice("");
     try { await work(); } catch (error) {
       const code = error && typeof error === "object" && "code" in error ? String(error.code) : "";
-      if (alive.current) setNotice(code === "PT402" ? "사용 가능한 크레딧이 부족합니다. 보유 내역을 확인해 주세요." : code === "42501" ? "계정 상태 또는 접근 권한을 확인해 주세요. 삭제 진행 중인 계정은 새 답안을 제출할 수 없습니다." : unavailable);
+      if (alive.current) setNotice(code === "PT402" ? "사용 가능한 이용권이 부족합니다. 보유 내역을 확인해 주세요." : code === "42501" ? "계정 상태 또는 접근 권한을 확인해 주세요. 삭제 진행 중인 계정은 새 답안을 제출할 수 없습니다." : unavailable);
     }
     finally { if (alive.current) setBusy(false); }
   }
@@ -172,7 +172,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
   const chosen = catalog.find(row => row.leaf_id === leaf);
   return <main className="math-student" aria-busy={busy}>
     <h1>수리논술</h1><p>답안의 풀이 과정을 확인하고 다시 풀며 학습하세요.</p>
-    <p>1 크레딧은 최초 첨삭 1회와 14일 이내 같은 답안의 재첨삭 1회를 포함합니다.</p>
+    <p>1 이용권은 최초 첨삭 1회와 14일 이내 같은 답안의 재첨삭 1회를 포함합니다.</p>
     {notice && <p role="alert">{notice}</p>}
     <fieldset disabled={busy}>
       <label htmlFor="math-question">문제 선택</label>

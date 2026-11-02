@@ -7,7 +7,7 @@ export type NavEntry = { key: string; label: string; href: string | null };
 const EXISTING_NAV: readonly NavEntry[] = [
   { key: "dashboard", label: "대시보드", href: "/admin/" },
   { key: "members", label: "회원", href: "/admin/members/" },
-  { key: "credit", label: "크레딧", href: "/admin/credit/" },
+  { key: "credit", label: "이용권", href: "/admin/credit/" },
   { key: "payment", label: "결제", href: "/admin/payment/" },
   { key: "analytics", label: "사용자 행동 분석", href: "/admin/analytics/" },
   { key: "essay", label: "평가·비용 모니터링", href: "/admin/operations/" },

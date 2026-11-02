@@ -21,31 +21,31 @@ function route(name: string) {
   return screen.getByRole("link", { name }).getAttribute("href")?.replace(/\/$/, "");
 }
 
-describe("논술 LAB 크레딧 현황", () => {
+describe("논술 LAB 이용권 현황", () => {
   it("claims no balance before the read resolves", () => {
     renderWith({ status: "loading" });
-    expect(screen.getByText("크레딧을 확인하고 있습니다.")).toBeInTheDocument();
+    expect(screen.getByText("이용권을 확인하고 있습니다.")).toBeInTheDocument();
     expect(screen.queryByText(/\d+개/)).not.toBeInTheDocument();
   });
 
   it("offers sign-in instead of a balance to a signed-out visitor", () => {
     renderWith({ status: "signed-out" });
-    expect(route("로그인하고 크레딧 확인")).toBe("/login?next=%2Fessay-lab%2F");
+    expect(route("로그인하고 이용권 확인")).toBe("/login?next=%2Fessay-lab%2F");
     expect(screen.queryByText(/\d+개/)).not.toBeInTheDocument();
     expect(screen.queryByText(/무료 \d/)).not.toBeInTheDocument();
-    expect(screen.queryByText("크레딧이 없습니다.")).not.toBeInTheDocument();
+    expect(screen.queryByText("이용권이 없습니다.")).not.toBeInTheDocument();
   });
 
   it("never renders a zero balance when the read failed", () => {
     renderWith({ status: "error" });
-    expect(screen.getByText("크레딧을 확인하지 못했습니다. 잠시 후 다시 시도해 주세요.")).toBeInTheDocument();
-    expect(screen.queryByText("크레딧이 없습니다.")).not.toBeInTheDocument();
+    expect(screen.getByText("이용권을 확인하지 못했습니다. 잠시 후 다시 시도해 주세요.")).toBeInTheDocument();
+    expect(screen.queryByText("이용권이 없습니다.")).not.toBeInTheDocument();
   });
 
-  it("asks a visitor with no 크레딧 to buy one", () => {
+  it("asks a visitor with no 이용권 to buy one", () => {
     renderWith({ status: "ready", value: { dto_version: "credit-v1", spendable: 0, paid: 0, free: 0, other: 0, next_expiry: null } });
-    expect(screen.getByText("크레딧이 없습니다.")).toBeInTheDocument();
-    expect(route("크레딧 구매")).toBe("/pricing");
+    expect(screen.getByText("이용권이 없습니다.")).toBeInTheDocument();
+    expect(route("이용권 구매")).toBe("/pricing");
     expect(route("나의 첨삭 기록")).toBe("/my/essays");
     expect(route("내 논술 분석")).toBe("/account/essay");
   });
@@ -55,16 +55,16 @@ describe("논술 LAB 크레딧 현황", () => {
       status: "ready",
       value: { dto_version: "credit-v1", spendable: 5, paid: 2, free: 3, other: 0, next_expiry: "2027-01-07T14:59:59.000Z" },
     });
-    expect(screen.getByText(/내 크레딧/)).toBeInTheDocument();
+    expect(screen.getByText(/내 이용권/)).toBeInTheDocument();
     expect(screen.getByText("5개")).toBeInTheDocument();
     expect(screen.getByText("무료 3 · 구매 2")).toBeInTheDocument();
     expect(screen.getByText("가장 가까운 만료일 2027.01.07")).toBeInTheDocument();
     expect(route("내 논술 분석")).toBe("/account/essay");
     expect(route("나의 첨삭 기록")).toBe("/my/essays");
-    expect(route("크레딧 구매")).toBe("/pricing");
+    expect(route("이용권 구매")).toBe("/pricing");
   });
 
-  it("mentions 기타 only when other 크레딧 exist, and omits a missing expiry", () => {
+  it("mentions 기타 only when other 이용권 exist, and omits a missing expiry", () => {
     renderWith({ status: "ready", value: { dto_version: "credit-v1", spendable: 4, paid: 2, free: 1, other: 1, next_expiry: null } });
     expect(screen.getByText("무료 1 · 구매 2 · 기타 1")).toBeInTheDocument();
     expect(screen.queryByText(/만료일/)).not.toBeInTheDocument();

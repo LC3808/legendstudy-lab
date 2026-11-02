@@ -33,14 +33,14 @@ export function EssaySessionProgress({runId,onComplete,presentation,hidden=false
    const {data}=await auth.client.auth.getSession();if(data.session?.user.id!==auth.user.id)throw Error('OWNER_CHANGED');
    const response=await fetch('/api/essay/exam',{method:'POST',headers:{Authorization:`Bearer ${data.session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify({action:'retry',examId:result.data.exam_id,runId,key:key.current}),cache:'no-store'});
    if(!response.ok)throw Error('RETRY_UNAVAILABLE');
-   key.current=null;setNotice('실패한 문항을 다시 처리합니다. 추가 크레딧은 사용되지 않습니다.');reload();
+   key.current=null;setNotice('실패한 문항을 다시 처리합니다. 추가 이용권은 사용되지 않습니다.');reload();
   }catch{setNotice('처리 상태를 확인하지 못했습니다. 기록을 새로 확인한 뒤 같은 요청을 다시 확인해 주세요.');}
   finally{retryLock.current=false;setBusy(false);}
  }
- const retryButton=result.data?.retry_allowed&&<button type="button" className="button essay-retry-button" disabled={busy} onClick={()=>void retry()}>{busy?'재처리 요청 중…':'다시 시도 · 0 크레딧'}</button>;
+ const retryButton=result.data?.retry_allowed&&<button type="button" className="button essay-retry-button" disabled={busy} onClick={()=>void retry()}>{busy?'재처리 요청 중…':'다시 시도 · 0 이용권'}</button>;
  const progressDialog=<EssayProgressDialog state={result.data?.state??'processing'} retrying={busy} error={!!result.error} questions={result.data?.questions.map(q=>({id:q.question_id,label:examQuestionLabel(q.question_id),state:q.state}))} onClose={()=>{setRetryDialog(false);presentation?.onClose();}} onResult={presentation?.onResult??onComplete}>{retryButton}<button type="button" className="button button--outline" onClick={reload}>상태 새로 확인</button>{notice&&<p role="status">{notice}</p>}</EssayProgressDialog>;
  if(retryDialog||presentation&&!hidden)return progressDialog;
- if(hidden)return retryButton?<div className="essay-retry-notice"><p>실패한 문항만 다시 처리합니다. 완료된 결과는 보존되며 추가 크레딧은 사용하지 않습니다.</p>{retryButton}</div>:null;
+ if(hidden)return retryButton?<div className="essay-retry-notice"><p>실패한 문항만 다시 처리합니다. 완료된 결과는 보존되며 추가 이용권은 사용하지 않습니다.</p>{retryButton}</div>:null;
  if(!result.data)return <DataStatus error={result.error} reload={reload}/>;
  const labels:Record<string,string>={completed:'첨삭 완료',failed:'재처리 필요',processing:'첨삭 중',waiting:'대기 중',reconciling:'처리 상태 확인 중'};
  return <section className="my-panel"><h3>회차 처리 상태</h3><ul>{result.data.questions.map(q=><li key={q.question_id}>{examQuestionLabel(q.question_id)} · {labels[q.state]??'처리 상태 확인 중'}</li>)}</ul><p>완료된 문항의 결과는 보존됩니다.</p>{retryButton}<button type="button" className="button button--outline" onClick={()=>setRetryDialog(true)}>첨삭 진행 상태 보기</button><button type="button" className="button button--outline" onClick={reload}>상태 새로 확인</button>{notice&&<p role="status">{notice}</p>}</section>;

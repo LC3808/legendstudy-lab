@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
 
 import { useAuth } from "@/components/auth-context";
 import { useCreditSummary } from "@/components/credit-balance";
@@ -46,8 +45,7 @@ export function AccountControl() {
 
 function HeaderCredit() {
   const { state } = useCreditSummary();
-  const pathname = usePathname() ?? "";
-  const label = /^\/(pricing|payments|refund|terms|privacy)(\/|$)/.test(pathname) ? "이용권" : "크레딧";
+  const label = "이용권";
   if (state.status === "signed-out") return null;
   return <span className="header-credit" aria-live="polite">{state.status === "ready" ? `${label} ${state.value.spendable}` : state.status === "loading" ? `${label} 확인 중` : `${label} 확인 불가`}</span>;
 }
@@ -63,7 +61,7 @@ export function AccountPanel() {
       <div className="auth-card">
         <p className="eyebrow eyebrow--accent">MY ACCOUNT</p>
         <h1>로그인이 필요합니다.</h1>
-        <p className="auth-card__lead">로그인하고 내 계정과 크레딧을 확인하세요.</p>
+        <p className="auth-card__lead">로그인하고 내 계정과 이용권을 확인하세요.</p>
         <Link className="button button--primary" href="/login/?next=%2Faccount%2F">로그인 <span aria-hidden="true">→</span></Link>
       </div>
     );

@@ -57,8 +57,8 @@ export function parseAnalytics(kind:ReportKind,raw:unknown):AnalyticsReport {
  }
  if(kind==='revenue') {
   if(data.currency!=='KRW'||data.mode!=='LIVE') throw new AdminError('MALFORMED_RESPONSE','Unexpected payment scope');
-  return {note:'기존 payment_orders의 LIVE·KRW 거래만 집계합니다. APP IAP 통합 매출이 아닙니다. 환불은 취소 완료 시각 기준이며 Credit 예약 해제와 구분합니다.',metrics:[
-   metric('buyers','유료 구매자'),metric('paid_orders','구매 건수'),metric('gross_revenue','총매출',false,'원'),metric('refunded','환불 금액',false,'원'),metric('net_revenue','순매출',false,'원'),metric('arppu','구매자당 평균 매출',true,'원'),metric('excluded_currency_orders','집계 제외 통화 거래'),metric('credit_released_units','Credit 예약 해제'),metric('credit_refunded_units','Credit 환불')]};
+  return {note:'기존 payment_orders의 LIVE·KRW 거래만 집계합니다. APP IAP 통합 매출이 아닙니다. 환불은 취소 완료 시각 기준이며 이용권 예약 해제와 구분합니다.',metrics:[
+   metric('buyers','유료 구매자'),metric('paid_orders','구매 건수'),metric('gross_revenue','총매출',false,'원'),metric('refunded','환불 금액',false,'원'),metric('net_revenue','순매출',false,'원'),metric('arppu','구매자당 평균 매출',true,'원'),metric('excluded_currency_orders','집계 제외 통화 거래'),metric('credit_released_units','이용권 예약 해제'),metric('credit_refunded_units','이용권 환불')]};
  }
  const stages=data.stages;
  const names:Record<string,string>={signup:'가입',first_submit:'최초 제출',first_eval_completed:'최초 평가 완료',rewrite_submit:'재작성 제출',full_loop_nsm:'전체 학습 루프 완료'};
