@@ -120,7 +120,7 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
       if (!['1c','3c','5c','10c'].includes(String(p.sku))) fail(422, 'UNSUPPORTED_SKU');
       const o = safeOrder(await rpc('payment_order', { action: 'create', ...p }), cfg.mode);
       if (o.state !== 'ORDER_CREATED' || Date.parse(String(o.expires_at)) <= Date.now()) fail(409, 'ORDER_NOT_CHECKOUT_READY');
-      return Response.json({ order: o, checkout: { clientKey: cfg.clientKey, customerKey: o.id, orderId: o.order_id, orderName: `LegendStudy ${o.quantity} Credits${cfg.mode === 'TEST' ? ' TEST' : ''}`, amount: { currency: 'KRW', value: o.amount }, successUrl: `${origin}/payments/success/`, failUrl: `${origin}/payments/fail/` } }, { headers });
+      return Response.json({ order: o, checkout: { clientKey: cfg.clientKey, customerKey: o.id, orderId: o.order_id, orderName: `LegendStudy AI 논술 첨삭 ${o.quantity}회 이용권${cfg.mode === 'TEST' ? ' TEST' : ''}`, amount: { currency: 'KRW', value: o.amount }, successUrl: `${origin}/payments/success/`, failUrl: `${origin}/payments/fail/` } }, { headers });
     }
     const shape: Record<string,string[]> = { status: ['id'], confirm: ['id','request_key','payment_key','amount'], reconcile: ['id'], cancel: ['id','request_key'], 'support-inspect': ['id','request_key'], 'support-cancel': ['id','request_key'], 'support-reconcile': ['id','request_key'] };
     if (!action || !shape[action]) fail(404, 'NOT_FOUND'); exact(p, shape[action!]); id(p.id);
