@@ -47,3 +47,16 @@ it('shows safe RPC diagnostic without upstream content and permits manual retry'
  vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce(Response.json({order:{...order,state:'ORDER_CREATED'}})).mockResolvedValueOnce(Response.json({error:'ORDER_REQUEST_REJECTED',diagnostic:{stage:'FINANCE_RPC',code:'PGRST301'},message:'sensitive arbitrary detail'},{status:401})));
  render(<PaymentTest callback/>);await screen.findByText(/FINANCE_RPC:PGRST301/);expect(screen.queryByText('결제가 완료되었습니다.')).toBeNull();expect(screen.getByRole('button',{name:'다시 확인'})).toBeEnabled();expect(document.body.textContent).not.toContain('sensitive arbitrary detail');
 });
+
+
+for (const [state, allowed, enabled] of [
+  ['REVIEW', true, true], ['REVIEW', false, false], ['LIVE', true, false],
+  ['NOT_READY', false, false], ['PAUSED', true, false],
+] as const) it(`TEST entry ${state} reviewer=${allowed} enabled=${enabled}`, async () => {
+  const fetcher=vi.fn().mockResolvedValue(Response.json({state,consumer_purchase:allowed}));
+  vi.stubGlobal('fetch',fetcher);
+  render(<PaymentTest/>);
+  await waitFor(()=>expect(fetcher).toHaveBeenCalled());
+  await waitFor(()=>expect((screen.getAllByRole('button',{name:'테스트 결제'})[0] as HTMLButtonElement).disabled).toBe(!enabled));
+  expect(fetcher.mock.calls.every(call=>call[0]==='/api/payments/runtime')).toBe(true);
+});
