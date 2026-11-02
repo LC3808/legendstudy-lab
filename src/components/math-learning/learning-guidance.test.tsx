@@ -64,3 +64,13 @@ describe("LearningGuidance", () => {
     expect(screen.getByText("풀이 다시 살펴보기")).toBeInTheDocument();
   });
 });
+
+it('gates solution behind both hints and explicit confirmation, then keeps it collapsed',()=>{
+ const reveal=vi.fn();const props={coreView:buildCoreView(outputWithCore()),l0Body:'오류 위치',revealedHints:{1:'개념',2:'방향'},onRevealHint:vi.fn(),onRevealSolution:reveal,onResolve:vi.fn(),solutionAvailable:true};
+ const {rerender}=render(<LearningGuidance {...props}/>);
+ expect(screen.queryByText('참고 풀이 확인')).toBeNull();
+ fireEvent.click(screen.getByText('수정 풀이 비교 준비'));expect(reveal).not.toHaveBeenCalled();
+ fireEvent.click(screen.getByText('참고 풀이 확인'));expect(reveal).toHaveBeenCalledTimes(1);
+ rerender(<LearningGuidance {...props} solutionBody="전체 참고 풀이" solutionProvenance="AI_GENERATED_REFERENCE"/>);
+ expect(screen.getByText('전체 참고 풀이').closest('details')).not.toHaveAttribute('open');
+});

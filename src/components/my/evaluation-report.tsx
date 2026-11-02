@@ -1,4 +1,5 @@
 'use client';
+import {MathText} from "../math-display/math-text";
 import {criterionEvidence,studentCriterionName} from '@/lib/my/criterion-display';
 import './evaluation-refinement.css';
 import {GrowthBars} from './growth-bars';
@@ -51,7 +52,7 @@ function HumanEvaluationReport({report,title,answerLabel,before,allowVoice}:{bef
  {report.math&&<section className="report-block report-math-assessment" aria-label="수리 문항 평가">
   <h3>최종 답안 판정</h3><p>{report.math.answerVerdict}</p>
   {report.math.reviewRequired&&<p role="status">추가 검토가 필요한 평가입니다.</p>}
-  <h3>풀이 과정 평가</h3>{report.math.steps.length?report.math.steps.map((step,index)=><article key={index} className="report-feedback"><h4>풀이 {step.position||index+1} · {step.status}</h4><p>{step.representation}</p><p>{step.explanation}</p></article>):<p>저장된 풀이 단계 평가가 없습니다.</p>}
+  <h3>풀이 과정 평가</h3>{report.math.steps.length?report.math.steps.map((step,index)=><article key={index} className="report-feedback"><h4>풀이 {step.position||index+1} · {step.status}</h4><p><MathText text={step.representation}/></p><p><MathText text={step.explanation}/></p></article>):<p>저장된 풀이 단계 평가가 없습니다.</p>}
  </section>}
  {allowVoice&&<details className="report-audio"><summary>음성으로 듣기</summary><VoiceFeedback text={evaluationSpeech(report)}/></details>}
  <section className="report-block report-guide"><h3>높은 평가를 위한 작성 가이드</h3>
