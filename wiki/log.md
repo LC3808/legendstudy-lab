@@ -54,3 +54,8 @@ TASK17 production checkpoint: source3e60222 → Pages2b5b0656; TEST entry UI ver
 ## 2026-11-02 — TASK17 final review preparation
 
 [Final checkpoint](toss-test-task17.md#final-review-preparation--2026-11-02-afternoon): review account restored/24h finance renewed, usage-pass copy on bounded WEB routes. Production9459776f/source ecd8ffc,984 other assets preserved. Actual TEST window/cancel PASS; approval pending Owner authentication. Guide prepared, ledger hashes unchanged/LIVE0.
+
+
+## 2026-11-02 13:30 KST — TEST approval confirmed
+
+Owner completed authentication and observed success CTAs/essay LAB navigation. Provided Toss TEST API screenshot: confirm HTTP200, DONE, approved13:30:30 KST; order matches f1f36979-33fa-4ee2-971d-7646d6e367f8. Independent Production DB: PAID/TEST_RECORDED/grant NULL/CONFIRM SUCCEEDED exactly1. LIVE orders0/TEST grant links0; original50 grants/139transactions hashes unchanged. Current totals51/140: one concurrent signup_bonus_v1 +3, no payment grant. Successful TEST approval E2E PASS; actual provider decline and postapproval refund remain untested. [Updated submission guide](../docs/TOSS_FINAL_REVIEW_GUIDE_TASK17.md). No new deployment or external submission.
