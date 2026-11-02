@@ -24,3 +24,5 @@ Reused the existing 31-event/14-parameter adapter and admin Analytics v1 screen.
 ## 2026-11-02 TASK17
 
 Isolated WEB branch/worktree from843f3a8; APP39 preserved. Existing TEST entry REVIEW authorization mismatch fixed,123 payment tests/TS/build/lint pass. Production runtime configuration remains NOT_READY; no ledger or provider mutation. See [evidence](toss-test-task17.md).
+
+TASK17 production checkpoint: source3e60222 → Pages2b5b0656; TEST entry UI verified, unchanged API configuration still NOT_READY. DEPLOYED/PARTIAL, no payment E2E claim. APP39 source untouched.
