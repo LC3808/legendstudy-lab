@@ -42,3 +42,7 @@ TASK17 production checkpoint: source3e60222 → Pages2b5b0656; TEST entry UI ver
 ## 2026-11-02 — TASK17 registered Finance binding diagnosis
 
 [Diagnosis](toss-test-task17.md#finance-binding-diagnosis--2026-11-02-1010-kst): registration confirmed; runtime property exists/string/empty=true. Not a missing name or Supabase401. Unchanged config redeploy88a28465 reproduces;141tests/typecheck PASS. No Secrets/ledger changes; restoration remains blocked, TEST runtime200 preserved.
+
+## 2026-11-02 — TASK17 Finance configuration-source diagnosis
+
+[Final recovery diagnosis](toss-test-task17.md#finance-final-recovery-diagnosis--2026-11-02-1025-kst): build-only probe confirms empty finance before app code; intentionally failed before deploy, command restored, production88a28465 preserved. Oct23 redacted-secret replay history identifies likely origin. Existing-token-first Owner runbook prepared; no replacement/financial writes. Original ledger hashes preserved; runtime503/TEST200, approval E2E blocked.
