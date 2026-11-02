@@ -74,3 +74,7 @@ Owner screenshot showed unstyled confirmation pending screen. Reused completion 
 ## 2026-11-02 — Terms/privacy usage-pass terminology
 
 Owner specified /terms/ and /privacy/: replaced all Korean credit wording in policy text/terms metadata and scoped header label.20 existing legal tests/build PASS. Only terms/privacy static routes plus new content-hashed assets overlaid; APIs/config/other routes preserved. Production661d8736-36c7-4a80-ae46-d81f2449a757/source9c8df7e verified success, both actual URL rendered-text scans contain zero 크레딧. Legal conditions/prices/periods unchanged; no DB/APP mutation.
+
+## 2026-11-02 — TASK17 whole WEB terminology audit
+
+[Audit](../docs/TASK17_WEB_TERMINOLOGY_AUDIT.md):56 page entries/155 public HTTP routes/whole source string AST. User/shared23files83fragments,admin18/62,internal1/1 remain. Public residuals support/essay-lab/account-credits/admin-credit/internal-connection. Authenticated conditional views source-inspected only; no UI/API/DB change or deployment.
