@@ -31,6 +31,9 @@ describe('GA4 collection bootstrap (no network)',()=>{
  it('blocks collection after navigating from a public page to an admin page',()=>{
   const runtime=createGa4Runtime(config,win);runtime.pageView();const send=runtime.transport();const before=calls().length;
   history.pushState(null,'','/admin/analytics?secret=private');runtime.pageView();send?.('event','login',{});expect(calls()).toHaveLength(before);
+  expect(win['ga-disable-G-TEST123456' as keyof TestWindow]).toBe(true);
+  history.pushState(null,'','/essay-lab');runtime.pageView();
+  expect(win['ga-disable-G-TEST123456' as keyof TestWindow]).toBe(false);
  });
  it('does not take over an existing tag',()=>{win.gtag=vi.fn();const runtime=createGa4Runtime(config,win);runtime.pageView();expect(win.gtag).not.toHaveBeenCalled();expect(document.querySelector('script')).toBeNull();});
  it('loader failure stops later events without affecting the user flow',()=>{
@@ -40,4 +43,9 @@ describe('GA4 collection bootstrap (no network)',()=>{
  it('never labels configuration as confirmed delivery',()=>{
   expect(collectionReadiness({...config,enabled:false})).toContain('비활성');expect(collectionReadiness({...config,measurementId:''})).toContain('측정 ID');expect(collectionReadiness(config)).toContain('실제 수신 미검증');expect(analyticsPath('/my/essays/result?run=secret')).toBe('/my/essays/result');
  });
+});
+
+it('allows signup with a sanitized URL and preserves the known home referrer',()=>{
+ expect(analyticsPath('/signup?token=secret')).toBe('/signup');
+ expect(safeReferrer('https://home.legendstudy.com/?email=private')).toBe('https://home.legendstudy.com/');
 });

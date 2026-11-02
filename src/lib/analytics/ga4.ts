@@ -4,7 +4,7 @@ export const ga4Config: Ga4Config = {
   enabled: process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === 'true',
   measurementId: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID ?? '',
   origins: (process.env.NEXT_PUBLIC_GA4_ALLOWED_ORIGINS ?? '').split(',').map(v => v.trim()).filter(Boolean),
-  // Stream enhanced measurement must be OFF; consent/retention must be reviewed before enabling.
+  // Review individual automatic events against manual collection; do not disable all enhanced measurement.
   privacyReviewed: process.env.NEXT_PUBLIC_GA4_PRIVACY_REVIEWED === 'true',
 };
 export function collectionReadiness(config: Ga4Config): string {
@@ -14,7 +14,7 @@ export function collectionReadiness(config: Ga4Config): string {
   return '수집 대기 · 설정 존재, 실제 수신 미검증';
 }
 // Never transmit query strings, identifiers, user titles, OAuth callbacks or unknown paths.
-const paths = ['/', '/login', '/pricing', '/essay-lab', '/essay-lab/universities', '/essay-lab/write', '/my/essays', '/my/essays/result', '/my/pattern', '/notices', '/notices/detail', '/support'];
+const paths = ['/', '/login', '/signup', '/pricing', '/essay-lab', '/essay-lab/universities', '/essay-lab/write', '/my/essays', '/my/essays/result', '/my/pattern', '/notices', '/notices/detail', '/support'];
 export function analyticsPath(pathname: string): string | null {
   const path = pathname.split(/[?#]/)[0].replace(/\/+$/, '') || '/';
   if (paths.includes(path)) return path;
@@ -27,7 +27,7 @@ export function safeReferrer(raw: string): string {
   try {
     const {hostname} = new URL(raw);
     // Keep only known referral origins, never arbitrary URLs or campaign/user input.
-    const allowed = ['legendstudy.com', 'www.legendstudy.com', 'google.com', 'www.google.com', 'search.naver.com', 'm.search.naver.com', 'naver.com'];
+    const allowed = ['legendstudy.com', 'www.legendstudy.com', 'home.legendstudy.com', 'google.com', 'www.google.com', 'search.naver.com', 'm.search.naver.com', 'naver.com'];
     return allowed.includes(hostname) ? `https://${hostname}/` : '';
   } catch { return ''; }
 }
@@ -44,6 +44,7 @@ export function createGa4Runtime(config: Ga4Config, win: AnalyticsWindow) {
   }
   function start() {
     const page = context();
+    if (started) Reflect.set(win, `ga-disable-${config.measurementId}`, !page || failed);
     if (!page || failed) return false;
     if (started) return true;
     // An external tag manager/gtag needs separate review; do not configure or duplicate it.

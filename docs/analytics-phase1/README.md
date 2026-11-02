@@ -149,3 +149,38 @@ Actual logged-in production administrator verification:
 
 Remaining: four app_promo_* events have no report rows; modal transport/receipt, LAB/home receipt/reporting, native installation attribution remain follow-up and are not deployed here. APP41, production DB/Auth/Credit/Ledger/payment unchanged.
 Rollback: Cloudflare Workers & Pages > legendstudy-lab > Deployments > prior bd8f7da4 deployment > Rollback. API equivalent POST /accounts/b9d221b20fdf8b9a9a8df0971a6b2347/pages/projects/legendstudy-lab/deployments/bd8f7da4-9565-49aa-bec5-8fc8cbe69c4d/rollback. Preserve existing settings and GA history. This rollback route was actually exercised successfully after the first attempt.
+
+## Phase 2 collection recovery — 2026-11-03 KST
+
+Owner keeps the Phase1 report deployment aaf80a93 unchanged. Existing 31 events/14 keys,
+property396674471 and three streams are reused. No APP41 or DB/Auth/financial changes.
+
+- Live Tistory source still has the ordinary-Array fallback and drops early events if
+  dataLayer is absent. Owner chose **code only**: use the exact replacement above;
+  no live skin edit is authorized. Receipt remains pending Owner application.
+- LAB's actual Google tag has history pageviews enabled. An isolated local browser
+  with the existing runtime sent one initial page_view and **two** page_views for
+  one /pricing history transition. This is live transport evidence, not production
+  receipt. The test generated no signup, purchase or evaluation events.
+- Signup was missing from the safe path allowlist. Added /signup without query/hash;
+  home.legendstudy.com is now a recognized origin-only referrer. On blocked routes
+  an already initialized tag is disabled using the documented ga-disable flag.
+- LAB entry now calls existing essay_lab_view at actual LAB entry, with the same
+  existing onceKey used by exam selection to prevent duplicate reporting.
+- Read-only receipt CLI: scripts/analytics/audit-ga4-events.mjs reads a private key
+  path in memory, fixed Viewer identity/property/streams, never logs credentials.
+  --realtime returns stream/event counts for the last30minutes; daily reports have
+  ingestion delay. It emits no measurement events and is not a new reporting backend.
+- Nov3 00:02:46KST daily report Nov2–today: main page_view24232; all requested promo,
+  LAB and home rows absent. Absence is unconfirmed receipt, not assumed zero usage.
+- Nov3 00:07:27KST realtime: main page_view570/session_start293/first_visit109/other2;
+  LAB/home absent. Local sendBeacon observation does not establish GA ingestion.
+
+Automatic measurement remains ON. Individual LAB history/search/forms/outbound/
+file options are awaiting Owner decision; do not mark PRIVACY_REVIEWED true for LAB
+or activate its production bundle until this check is resolved. Home contains no
+forms/search/private routes, has fixed public outbound links and no SPA transitions.
+Store banner_click is navigation intent, never installation or purchase completion.
+
+Sources: https://developers.google.com/analytics/devguides/collection/ga4/views
+and https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-api-schema .
