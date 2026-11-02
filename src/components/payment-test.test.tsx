@@ -23,7 +23,8 @@ it('restores session before one confirm and blocks concurrent retry',async()=>{
  const f=vi.fn().mockResolvedValueOnce(Response.json({order:{...order,state:'ORDER_CREATED'}})).mockResolvedValueOnce(Response.json({order}));
  vi.stubGlobal('fetch',f);render(<React.StrictMode><PaymentTest callback/></React.StrictMode>);
  await waitFor(()=>expect(getSession).toHaveBeenCalled());
- expect(screen.getByRole('button',{name:'다시 확인'})).toBeDisabled();
+ expect(screen.queryByRole('button',{name:'다시 확인'})).toBeNull();
+ expect(screen.getByRole('heading',{name:'결제 내역을 확인하고 있어요'})).toBeTruthy();
  await screen.findByText(/테스트 결제가 정상적으로 확인되었습니다/);
  expect(f.mock.calls.filter(c=>c[0]==='/api/payments/confirm')).toHaveLength(1);
 });
