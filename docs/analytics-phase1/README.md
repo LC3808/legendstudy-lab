@@ -184,3 +184,13 @@ Store banner_click is navigation intent, never installation or purchase completi
 
 Sources: https://developers.google.com/analytics/devguides/collection/ga4/views
 and https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-api-schema .
+
+### Phase2 status, 2026-11-03 00:21 KST
+- Owner approved only LAB selective Enhanced Measurement: overall/page/scroll/video ON; history page changes/search/forms/outbound/download OFF. Saved and reopened in GA4. Main/home settings unchanged.
+- Isolated existing-runtime transport comparison: navigation page_view twice before, once after fresh settings; initial once, scroll retained. Cached tag initially retained old behavior. This is not a GA4 receipt PASS.
+- Realtime last30min at00:21:05KST: main page_view520/session_start277/first_visit107/(other)4. No LAB/home rows reported. Do not infer zero use or assign other to a stream.
+- Home collection flags deployed as0ed6d9df-3c7a-4810-bb96-15a711afc617 (431a635). Google tag loads and both store links work; receipt unconfirmed. Rollback5442b621-1005-4697-a062-436c5e1a1392.
+- LAB production remains aaf80a93-c43f-4de0-afde-69d8f7ecb67e; collection source not deployed. Reporting preserved.
+- Full tests1602PASS/4SKIP, TypeScript and home build/verify PASS. APP41 untouched.
+- Owner requested Tistory replacement code only: provide promo-track-replacement.js; do not edit live skin. Replace original track function, include lsPromoTracked declaration, do not add second tag/config. Actual modal receipt awaits Owner application.
+- Canonical detailed handoff: APP Wiki admin-integrated-analytics-task10.md, Phase2 collection and LAB settings.
