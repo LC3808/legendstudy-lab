@@ -13,6 +13,7 @@ function dates(url:URL){
  if(!valid(from)||!valid(to)||to<from||Date.parse(to)-Date.parse(from)>=400*86400000)throw new Failure('INVALID_REQUEST',400);
  return {from,to};
 }
+// Workers supports manual/follow only. Manual plus !ok checks rejects redirects without forwarding credentials.
 export async function googleToken(env:GaEnv,fetcher:typeof fetch,signal:AbortSignal){
  if(!env.GA4_SERVICE_ACCOUNT_EMAIL?.endsWith('.iam.gserviceaccount.com')||!env.GA4_PRIVATE_KEY)throw new Failure('NOT_CONFIGURED',503);
  try{
@@ -20,7 +21,7 @@ export async function googleToken(env:GaEnv,fetcher:typeof fetch,signal:AbortSig
  const assertion=await new SignJWT({scope:'https://www.googleapis.com/auth/analytics.readonly'})
  .setProtectedHeader({alg:'RS256',typ:'JWT'}).setIssuer(env.GA4_SERVICE_ACCOUNT_EMAIL)
  .setAudience('https://oauth2.googleapis.com/token').setIssuedAt().setExpirationTime('5m').sign(key);
- const r=await fetcher('https://oauth2.googleapis.com/token',{method:'POST',redirect:'error',signal,
+ const r=await fetcher('https://oauth2.googleapis.com/token',{method:'POST',redirect:'manual',signal,
  headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({grant_type:'urn:ietf:params:oauth:grant-type:jwt-bearer',assertion}).toString()});
  if(!r.ok)throw new Failure('TOKEN_UNAVAILABLE');const data=obj(await r.json());
  if(typeof data.access_token!=='string'||!data.access_token)throw new Failure('TOKEN_UNAVAILABLE');return data.access_token;
@@ -55,17 +56,17 @@ export async function handleGaReport(request:Request,env:GaEnv,fetcher:typeof fe
  if(!base||!/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(base)||!env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY)throw new Failure('NOT_CONFIGURED',503);
  const signal=AbortSignal.timeout(25000);
  const h={Authorization:authorization,apikey:env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,'Content-Type':'application/json'};
- const user=await fetcher(base+'/auth/v1/user',{headers:h,signal,redirect:'error'});
+ const user=await fetcher(base+'/auth/v1/user',{headers:h,signal,redirect:'manual'});
  if(user.status===401||user.status===403)throw new Failure('LOGIN_REQUIRED',401);
  if(!user.ok)throw new Failure('AUTH_UNAVAILABLE',502);
  if(typeof obj(await user.json()).id!=='string')throw new Failure('LOGIN_REQUIRED',401);
- const gate=await fetcher(base+'/rest/v1/rpc/admin_operator',{method:'POST',headers:h,body:'{}',signal,redirect:'error'});
+ const gate=await fetcher(base+'/rest/v1/rpc/admin_operator',{method:'POST',headers:h,body:'{}',signal,redirect:'manual'});
  if(!gate.ok)throw new Failure('AUTH_UNAVAILABLE',502);
  if(await gate.json()!==true)throw new Failure('ADMIN_REQUIRED',403);
  if(!env.GA4_SERVICE_ACCOUNT_EMAIL||!env.GA4_PRIVATE_KEY)throw new Failure('NOT_CONFIGURED',503);
  const token=await tokenProvider(env,fetcher,signal);
  const call=async(action:string,body:unknown)=>{
- const r=await fetcher(`https://analyticsdata.googleapis.com/v1beta/properties/${property}:${action}`,{method:'POST',signal,redirect:'error',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
+ const r=await fetcher(`https://analyticsdata.googleapis.com/v1beta/properties/${property}:${action}`,{method:'POST',signal,redirect:'manual',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
  if(!r.ok){const err=await r.json().catch(()=>null);const disabled=JSON.stringify(err).includes('SERVICE_DISABLED');throw new Failure(r.status===429?'RATE_LIMITED':disabled?'API_DISABLED':r.status===401||r.status===403?'PERMISSION_REQUIRED':'READ_UNAVAILABLE',r.status===429?429:502);}return obj(await r.json());};
  const metrics=['activeUsers','newUsers','sessions','screenPageViews'];
  const [batch,returning]=await Promise.all([
