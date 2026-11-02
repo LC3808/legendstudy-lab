@@ -69,3 +69,8 @@ Removed the mistakenly added AI prefix from product names, pricing/refund copy, 
 ## 2026-11-02 — Payment verification progress card
 
 Owner screenshot showed unstyled confirmation pending screen. Reused completion card for pending/recovery, initial busy state prevents retry-button flash; pending hides actions, resolved/error state offers styled recovery actions. API/confirmation semantics unchanged.17 callback tests/build PASS. Production e081a02c-456f-4eec-8a59-77483ad547e2/source8180124 verified initial loading text and actual recovery card in browser. No new payment/credential/ledger changes.
+
+
+## 2026-11-02 — Terms/privacy usage-pass terminology
+
+Owner specified /terms/ and /privacy/: replaced all Korean credit wording in policy text/terms metadata and scoped header label.20 existing legal tests/build PASS. Only terms/privacy static routes plus new content-hashed assets overlaid; APIs/config/other routes preserved. Production661d8736-36c7-4a80-ae46-d81f2449a757/source9c8df7e verified success, both actual URL rendered-text scans contain zero 크레딧. Legal conditions/prices/periods unchanged; no DB/APP mutation.
