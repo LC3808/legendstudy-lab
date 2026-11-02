@@ -88,3 +88,14 @@ not the APP41 release branch.
 
 ## Verification
 WEB TypeScript and production build PASS; Vitest 1600 PASS / 4 SKIP; lint 0 errors / 5 pre-existing warnings. Tests use fixtures, not Google receipt. Production DB read-only catalog confirms 7 analytics reports plus analytics_admin_check and migration 20261101115715 admin_analytics_readonly_task11g. No DB writes.
+
+## Owner-created streams — November 2 follow-up
+Owner confirms property396674471 now contains:
+- main: G-295EQHYTCK /5829568136 (unchanged)
+- LAB https://lab.legendstudy.com: G-MVHZ7HS214 /16254992877
+- home https://home.legendstudy.com: G-S4JZMP0141 /16255062112
+This supersedes the earlier one-stream observation; it is an Owner-reported configuration, not a receipt test.
+Both new streams have Enhanced Measurement ON. Existing runtime requires reviewed automatic measurement OFF (manual page_view, sanitized URL/referrer, no forms/admin routes). Do not set PRIVACY_REVIEWED=true merely because an ID exists. Owner approval to disable EM only on the two new streams is pending; existing main stream stays unchanged.
+Exact build inputs are in config/lab.env.candidate and config/home.env.candidate. These are not auto-loaded and remain OFF pending review. No environment or production deployment changed. After EM/privacy verification, enable collection and reviewed flags only in the approved test build. A real-origin preview/test plan and Owner review precede production rollout. Preview origins are not silently allowed; the home runtime intentionally allows only its production origin.
+Use existing page_view, essay_lab_view and banner_click; do not introduce alternate names or treat store clicks as installs. Verify exactly one page_view per navigation, actual Google tag load, and DebugView/Realtime receipts separately. No fake signup, evaluation or payment event may be emitted as a test of business completion.
+Data API reader remains restricted to main stream; adding LAB/home reports requires explicit source selection and tests, not summing unique users. Server API/Viewer/secret configuration still pending.

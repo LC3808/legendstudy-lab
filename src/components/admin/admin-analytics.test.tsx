@@ -21,7 +21,7 @@ describe('integrated analytics read-only surface',()=>{
   expect(screen.queryByText('private diagnostic')).toBeNull();
   expect(screen.getByText(/GA4 보고서 데이터 연결이 필요합니다/)).toBeInTheDocument();
   expect(screen.getByText('속성 396674471 · 위 보고서의 조회 상태 참조')).toBeInTheDocument();
-  expect(screen.getByText('전용 GA4 속성 확인 필요 · 보고서 미연결')).toBeInTheDocument();
+  expect(screen.getByText('기존 속성 396674471 · LAB 스트림 16254992877 · 보고서 미연결')).toBeInTheDocument();
   expect(screen.getByText(/교차 서비스 전환율을 계산하지 않습니다/)).toBeInTheDocument();
   await waitFor(()=>expect(a.client?.rpc).toHaveBeenCalledWith('analytics_kpi_overview',expect.objectContaining({p_from:expect.any(String),p_to:expect.any(String)})));
  });
