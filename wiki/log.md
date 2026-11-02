@@ -50,3 +50,7 @@ TASK17 production checkpoint: source3e60222 → Pages2b5b0656; TEST entry UI ver
 ## 2026-11-02 — TASK17 original finance material found
 
 [Origin evidence and concrete renewal](toss-test-task17.md#original-token-found--2026-11-02): existing local JWT expired Oct14; signature/private key match current Production JWKS, gateway allowed. Historical Oct07 signer synthetic regression PASS. Same-key renewal requires no DB/signing configuration change. No mint/config/ledger mutation.
+
+## 2026-11-02 — TASK17 final review preparation
+
+[Final checkpoint](toss-test-task17.md#final-review-preparation--2026-11-02-afternoon): review account restored/24h finance renewed, usage-pass copy on bounded WEB routes. Production9459776f/source ecd8ffc,984 other assets preserved. Actual TEST window/cancel PASS; approval pending Owner authentication. Guide prepared, ledger hashes unchanged/LIVE0.

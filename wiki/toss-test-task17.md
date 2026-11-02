@@ -177,3 +177,16 @@ Before execution recheck key still matches current JWKS and gateway remains allo
 After that check, Owner restores only PAYMENT_FINANCE_TOKEN in Cloudflare legendstudy-lab/Production Secret, followed by preservation deployment and REVIEW/TEST acceptance checks in the preceding runbook. Private signing key stays local. No server verification-side change is required because this key is already trusted. If trust changes, stop; do not auto-import a key. Removing the Cloudflare binding does not cryptographically revoke copies of a signed JWT; retain expiry and application HOLD/permission controls.
 
 This task performed no real mint, Secret change, deployment, DB write or provider call. LIVE remains HOLD. Service recovery and TEST approval E2E are still pending renewal/deployment.
+
+
+## Final review preparation — 2026-11-02 afternoon
+
+Owner supersedes payment@ with existing review@ account (UUID ddc5ae63-acbb-490b-a423-c996b811dea8). Only this authenticated subject is allowlisted, no admin grant. Existing signer/key/gateway renewed24h; read-only finance get PT404 PASS. Only finance/reviewer Secrets updated. Token expires2026-11-03T04:21:09Z; no automatic renewal. Server keys/ACL/DB/APP untouched; LIVE HOLD.
+
+WEB pricing/payment/refund and corresponding header labels use 이용권, AI essay review count stated explicitly, fixed prices unchanged. MY/learning pages and APP Credit naming remain out of scope; do not claim site-wide renaming. New checkout provider product name also uses AI 논술 첨삭 N회 이용권 TEST. Existing modules/ledger contracts preserved.
+
+Canonical deployment9459776f-fecf-47ca-8f01-35f2f661813a/source ecd8ffc5a32429f513645d347d244bef2f7aef72 verified success. All984 nonpayment/non-Next assets identical to prechange. Intermediate cf6e904a/9140fc46 had missing public Auth build config; corrected with original Production NEXT_PUBLIC variables and added deployment preflight. Do not use those intermediate versions for rollback. Server API preserved except product display label; current worker includes prior diagnostic config.
+
+175 payment/pricing tests +15 account/balance tests, typecheck, scoped lint and production static build PASS. Actual anonymous runtime200 REVIEW/TEST consumer_purchase=false; orders/confirm/status/cancel401. Chrome admin sees disabled payment. Owner review login opens real Toss TEST window4900 with new product label; cancel button returns 취소되었습니다. Failure page direct access shows no issuance and retry. Actual approval awaits Owner card authentication; provider-decline callback and postapproval refund not verified. New TEST orderf1f36979-33fa-4ee2-971d-7646d6e367f8 remains pending at checkpoint. No success E2E claim.
+
+Fresh ledger baseline cutoff2026-11-02T04:21:29.075962Z:50grants hash6b878f50751867093aa02d3a2eed9f3f and139transactions hash8650fb83ce93cf837b37a801c1d15e79; repeated full-row hashes unchanged. LIVE0, TEST grant links0. Earlier morning35/124 is a different historical baseline. No direct ledger writes; only existing TEST request API creates order. [Review guide and pending checks](../docs/TOSS_FINAL_REVIEW_GUIDE_TASK17.md). No external message/submission.
