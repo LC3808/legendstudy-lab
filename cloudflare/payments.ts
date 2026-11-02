@@ -38,7 +38,13 @@ function config(e: Env) {
   if (Object.values(checks).some(ok => !ok)) {
     // REVIEW-only bounded diagnostics: booleans never contain a binding value,
     // token, key prefix/length, buyer identity or provider response.
-    throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', review ? { stage: 'CONFIG', checks } : undefined);
+    throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', review ? { stage: 'CONFIG', checks, binding_state: {
+      finance_key_present: Object.hasOwn(e, 'PAYMENT_FINANCE_TOKEN'),
+      finance_is_string: typeof e.PAYMENT_FINANCE_TOKEN === 'string',
+      finance_is_empty_string: e.PAYMENT_FINANCE_TOKEN === '',
+      reviewer_key_present: Object.hasOwn(e, 'PAYMENT_REVIEW_SUBJECTS'),
+      reviewer_nonempty: Boolean(e.PAYMENT_REVIEW_SUBJECTS),
+    } } : undefined);
   }
   const origin = test && !review ? 'https://legendstudy-lab-payment-test.pages.dev' : 'https://lab.legendstudy.com';
   const db = test && !review ? 'https://wsnrwklplnunjktyfmbr.supabase.co' : 'https://stlhijzpjfgwwdgunlsd.supabase.co';

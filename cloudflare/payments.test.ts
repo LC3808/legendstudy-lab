@@ -122,8 +122,14 @@ describe('PAYMENT REVIEW runtime',()=>{
   const r=await f.send('runtime',{},{...reviewEnv,TOSS_TEST_SECRET_KEY:'private-invalid-fixture',PAYMENT_FINANCE_TOKEN:''});
   const body=await r.json();
   expect(r.status).toBe(503);
-  expect(body.diagnostic).toEqual({stage:'CONFIG',checks:{client_key_family:true,secret_key_family:false,merchant:true,finance_present:false,publishable_present:true}});
+  expect(body.diagnostic).toEqual({stage:'CONFIG',checks:{client_key_family:true,secret_key_family:false,merchant:true,finance_present:false,publishable_present:true},binding_state:{finance_key_present:true,finance_is_string:true,finance_is_empty_string:true,reviewer_key_present:true,reviewer_nonempty:true}});
   expect(JSON.stringify(body)).not.toContain('private-invalid-fixture');
+  expect(f.calls).toHaveLength(0);
+ });
+ it('distinguishes omitted finance binding from an empty registered value',async()=>{
+  const e={...reviewEnv};delete e.PAYMENT_FINANCE_TOKEN;
+  const f=fixture(e);const r=await f.send('runtime',{});
+  expect((await r.json()).diagnostic.binding_state).toMatchObject({finance_key_present:false,finance_is_string:false,finance_is_empty_string:false});
   expect(f.calls).toHaveLength(0);
  });
  for(const action of ['orders','confirm','status']) {
