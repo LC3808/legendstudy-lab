@@ -34,3 +34,7 @@ TASK17 production checkpoint: source3e60222 → Pages2b5b0656; TEST entry UI ver
 ## 2026-11-02 — TASK17 existing TEST environment recheck
 
 [Environment comparison](toss-test-task17.md#environment-recheck--2026-11-02-0940-kst): prior new-key handoff superseded. Existing payment-test runtime200/TEST, isolated order created and Toss card authentication reached. LAB503 separate. Owner card authentication pending; secrets/deployments/config/ledger writes0; one TEST order created by existing API.
+
+## 2026-11-02 — TASK17 dedicated payment review account
+
+[Checkpoint](toss-test-task17.md#dedicated-account-deployment-checkpoint--2026-11-02-0957-kst): existing confirmed non-admin payment account UUID-only permission applied. Production ed3c8c8b preserves1178 assets; bounded diagnostics prove missing finance token, TEST key format passes.140 tests/typecheck PASS, real E2E blocked. Owner login verified. Original ledger hashes unchanged; concurrent signup+6 separately recorded.
