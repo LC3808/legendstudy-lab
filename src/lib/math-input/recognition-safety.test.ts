@@ -30,7 +30,14 @@ it('keeps original candidate separate from student correction; unresolved symbol
  expect(hasUnresolvedRecognition('[? exponent]')).toBe(true);
 });
 
-it.each(['[이하 일부 판독 불명]', '[판독 불확실: x 또는 -x]', '[인식 불가]', 'UNCERTAIN'])('blocks observed unresolved OCR marker %s before provider',text=>{
+it.each(['[분수식]', '[ 분수식 ]', '[이하 일부 판독 불명]', '[판독 불확실: x 또는 -x]', '[인식 불가]', 'UNCERTAIN'])('blocks observed unresolved OCR marker %s before provider',text=>{
  expect(hasUnresolvedRecognition(text)).toBe(true);
  expect(()=>assertRecognizedInputConfirmed(context([{raw_text:text,uncertain:false}]),'confirmed')).toThrow('MATH_RECOGNITION_UNRESOLVED');
+});
+
+it('blocks the observed fraction placeholder in typed mixed input before provider dispatch',()=>{
+ const provider=vi.fn();
+ expect(()=>{assertRecognizedInputConfirmed({attempt:{input_kind:'TYPED',typed_answer:'따라서 [분수식] = -4'},extraction:[]},null);provider();}).toThrow('MATH_RECOGNITION_UNRESOLVED');
+ expect(provider).not.toHaveBeenCalled();
+ expect(hasUnresolvedRecognition('분수식의 분모는 0이 아니다.')).toBe(false);
 });
