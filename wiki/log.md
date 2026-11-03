@@ -120,3 +120,7 @@ A final preflight found partial mixed submission still possible. Added the exact
 ## 2026-11-04 — Expanded production WEB connection deployed
 
 After the release lead verified core/scope/beta/mixed guard transactions, final source `45bd519` was built and deployed as Pages `2a794c31-217b-42d6-81a6-d2ae79d873e7`. Actual deployed public212/expansion42/Math72/Mathtrue/cyclestrue verified. Worker public212 uses13 inherited bindings; active version `d03763e8-dcf7-4644-ac59-b7440cee87d7`, with other settings preserved. Full1,718 WEB tests PASS/four existing SKIP; build/TypeScript/Functions/boundary/security scan PASS; home200 and protected routes401. No Provider or direct DB/financial mutation by WEB deployment. Real authenticated/Provider E2E remains a separate coordinating-task check. [Evidence](math-commerce-release-integration-20261103.md).
+
+## 2026-11-04 — Inha indexed-root display follow-up prepared
+
+Actual production OCR exposed a display-only fallback for explicit `√[4]{...}`. Added lossless radical-to-TeX projection and compact question-label text separation, preserving source and malformed fallback. Rendering/input/evidence regression24 PASS; no Provider/DB change or deployment. [Details](math-commerce-release-integration-20261103.md).

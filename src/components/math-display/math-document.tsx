@@ -3,12 +3,16 @@ import {Formula,MathText} from './math-text';
 /** A lossless display projection. No OCR correction, calculation or stored-value rewrite. */
 export function isolatedMath(source:string){
  const words=source.replace(/\\[A-Za-z]+|\{(?:p|b|B|v|V)?matrix\}|\{(?:aligned|cases|array)\}/g,'').match(/[A-Za-z]{2,}/g)??[];
- return !/[가-힣]/.test(source)&&words.every(w=>/^(sin|cos|tan|log|ln|lim|max|min|exp|det|dx|dy|dt)$/.test(w))&&/\\[A-Za-z]+|[=^_∫≤≥<>]/.test(source);
+ return !/[가-힣]/.test(source)&&words.every(w=>/^(sin|cos|tan|log|ln|lim|max|min|exp|det|dx|dy|dt)$/.test(w))&&/\\[A-Za-z]+|[=^_∫√≤≥<>]/.test(source);
 }
 function Line({text}:{text:string}){
+ // A compact leading problem label is prose. Never split explicit TeX blocks
+ // or multiplication such as (1-2)u; every source character remains visible.
+ const label=text.match(/^(\s*\(\d+-\d+\)[ \t]+)(\S[\s\S]*)$/);
+ if(label)return <><span className="math-document-label">{label[1]}</span><Line text={label[2]}/></>;
  // Korean prose boundaries are retained verbatim, including terminal numerical conclusions.
- if(!/\\[A-Za-z]+|[=^_∫≤≥<>]/.test(text))return <MathText text={text}/>;
- const parts=text.split(/([가-힣]+[^A-Za-z0-9\\=^_∫≤≥<>]*)/g);
+ if(!/\\[A-Za-z]+|[=^_∫√≤≥<>]/.test(text))return <MathText text={text}/>;
+ const parts=text.split(/([가-힣]+[^A-Za-z0-9\\=^_∫√≤≥<>]*)/g);
  return <>{parts.map((part,i)=>isolatedMath(part.trim())?<Formula key={i} source={part} display/>:<MathText key={i} text={part}/>)}</>;
 }
 function Table({source}:{source:string}){

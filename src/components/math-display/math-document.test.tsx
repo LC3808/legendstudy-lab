@@ -2,6 +2,7 @@
 import {render,screen} from '@testing-library/react';
 import {describe,it,expect} from 'vitest';
 import {MathDocument} from './math-document';
+import {displayMathSource} from './math-text';
 describe('student math document projection',()=>{
  it('renders undelimited equations and preserves Korean conclusions missing from normalized OCR',()=>{
   const {container}=render(<MathDocument text={String.raw`따라서 e^{-x}=\frac{1}{x^2}
@@ -54,4 +55,31 @@ P(X=k)=\frac{n!}{k!(n-k)!}p^k(1-p)^{n-k}
   expect(container.textContent).toContain(String.raw`\frac{broken`);
   expect(container.querySelector('script,a')).toBeNull();
  });
+});
+
+it('renders production Inha indexed roots without changing their given index or operand',()=>{
+ const source='t>1/√[4]{3}\nS(√[4]{u})';
+ const {container}=render(<MathDocument text={source}/>);
+ expect(container.querySelectorAll('math')).toHaveLength(2);
+ expect(container.querySelectorAll('mroot')).toHaveLength(2);
+ expect(container.querySelector('.math-source-fallback')).toBeNull();
+ expect(Array.from(container.querySelectorAll('annotation')).map(n=>n.textContent)).toEqual([String.raw`t>1/\sqrt[4]{3}`,String.raw`S(\sqrt[4]{u})`]);
+ expect(source).toBe('t>1/√[4]{3}\nS(√[4]{u})');
+});
+it('keeps compact problem labels as text while formatting their following equation',()=>{
+ const {container}=render(<MathDocument text={'(1-2) u=t^4\n(1-2)u=t^4\n(1 - 2) u=t^4\n'+String.raw`\((1-2) u=t^4\)`}/>);
+ expect(container.querySelectorAll('.math-document-label')).toHaveLength(1);
+ expect(container.querySelector('.math-document-label')?.textContent).toBe('(1-2) ');
+ expect(Array.from(container.querySelectorAll('annotation')).map(n=>n.textContent)).toEqual(['u=t^4','(1-2)u=t^4','(1 - 2) u=t^4','(1-2) u=t^4']);
+});
+it('never fills missing indexed-root content or silently converts an unspecified index',()=>{
+ for(const source of ['√[4]{','√[4]{}','√[]{3}','√[?]{3}']){
+  const displayed=displayMathSource(source);
+  expect(displayed.includes('3')).toBe(source.includes('3'));
+  expect(displayed.includes('4')).toBe(source.includes('4'));
+ }
+ const source='t>√[4]{';
+ const {container}=render(<MathDocument text={source}/>);
+ expect(container.querySelector('.math-source-fallback')?.textContent).toContain(source);
+ expect(displayMathSource('√[?]{3}')).toBe('√[?]{3}');
 });

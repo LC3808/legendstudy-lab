@@ -2,8 +2,9 @@ import katex from 'katex';
 import 'katex/dist/katex.min.css';
 
 export function displayMathSource(source:string){
- // Explicit printed radical + a single variable/number; no missing symbols inferred.
- return source.replace(/′/g, "'").replace(/√([A-Za-zα-ωΑ-Ω]|[0-9]+)/g,(_,atom:string)=>`\\sqrt{${atom}}`).replace(/([A-Za-z])\u0304/g,(_,letter:string)=>`\\bar{${letter}}`);
+ // Display existing radical syntax only; preserve explicit index, braces and operands.
+ // A malformed or incomplete expression still falls back to its unchanged source.
+ return source.replace(/′/g, "'").replace(/√(?=(?:\[[0-9]+\])?\{)/g, '\\sqrt').replace(/√([A-Za-zα-ωΑ-Ω]|[0-9]+)/g,(_,atom:string)=>`\\sqrt{${atom}}`).replace(/([A-Za-z])\u0304/g,(_,letter:string)=>`\\bar{${letter}}`);
 }
 
 /** Display only: never rewrites the stored answer or interprets a formula as executable code. */

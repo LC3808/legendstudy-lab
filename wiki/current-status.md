@@ -10,3 +10,5 @@ As of 2026-11-04, the reviewed Math/commerce/social connection is deployed to [p
 - Production anonymous smoke: home200, availability checked=false, public-status/admin/Owner-review401. This WEB deployment invoked no Provider and made no direct DB/financial mutation. Authenticated availability and real submissions are separate evidence, not implied by these checks.
 
 See [implementation and deployment evidence](math-commerce-release-integration-20261103.md). Canonical policy and final activation/E2E report remain in the APP Wiki. APP58 and APP41 build artifacts are preserved; Store actions belong to the Owner. Post-core rollback retains compatible code under explicit Math/new-scope HOLD and never deletes accepted jobs, financial history or drafts.
+
+Pending display follow-up: actual Inha OCR indexed radicals `√[4]{3}`/`√[4]{u}` retained correct source but triggered the KaTeX fallback. A narrow lossless rendering fix and question-label separation are prepared with24 focused checks and full1,721 regression checks PASS (four existing SKIP); no Provider/confirmed-text/engine changes. It has not been deployed; current production remains the receipt above.
