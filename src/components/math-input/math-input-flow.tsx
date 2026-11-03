@@ -36,7 +36,7 @@ const STATUS_LABEL: Record<ReadinessResult["status"], string> = {
   INPUT_FAILED: "입력을 처리할 수 없습니다",
 };
 
-function RegionConfirmation({
+export function RegionConfirmation({
   region, sourceFile,
   onConfirm, onInvalidate,
 }: {

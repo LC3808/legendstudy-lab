@@ -3,11 +3,11 @@ import {render,screen,fireEvent,waitFor,cleanup} from '@testing-library/react';
 import {afterEach,beforeEach,describe,it,expect,vi} from 'vitest';
 import {MathExamSessionSubmit} from './exam-session-submit';
 import type {SourceExam} from '@/lib/essay-runtime/source-registry';
-const f=vi.hoisted(()=>({owner:'00000000-0000-4000-8000-000000000001',rpc:vi.fn(),create:vi.fn(),read:vi.fn(),images:vi.fn().mockResolvedValue(null),saved:new Map<string,string>()}));
+const f=vi.hoisted(()=>({owner:'00000000-0000-4000-8000-000000000001',rpc:vi.fn(),create:vi.fn(),read:vi.fn(),confirm:vi.fn(),images:vi.fn().mockResolvedValue(null),saved:new Map<string,string>()}));
 vi.mock('../auth-context',()=>({useAuth:()=>({user:{id:f.owner},client:{auth:{getSession:async()=>({data:{session:{user:{id:f.owner},access_token:'synthetic'}}})},rpc:f.rpc}})}));
 vi.mock('@/lib/temporary-draft-store',()=>({temporaryDraftStore:{read:(key:string)=>f.saved.get(key)||'',write:(key:string,value:string)=>f.saved.set(key,value),remove:(key:string)=>f.saved.delete(key)}}));
 vi.mock('@/lib/source-image-draft',()=>({sourceImageDraft:f.images}));
-vi.mock('@/lib/math-input/runtime/input-client',()=>({MathInputClient:class {createAttempt=f.create;readInput=f.read;}}));
+vi.mock('@/lib/math-input/runtime/input-client',()=>({MathInputClient:class {createAttempt=f.create;readInput=f.read;confirmExtraction=f.confirm;}}));
 const id=(n:number)=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
 const exam={key:'exam',dbExamId:id(9),questions:[1,2,3,4].map(n=>({key:`q${n}`,dbQuestionId:id(10+n),label:`${n}번 문제`}))} as SourceExam;
 const drafts=Object.fromEntries([1,2,3,4].map(n=>[`q${n}`,{body:`답안${n}`,saved:true,images:false,revision:1}]));
@@ -104,4 +104,23 @@ it('loads rewritten photos from the same revision-specific draft as the source w
  await waitFor(()=>expect(prepare).not.toBeDisabled());fireEvent.click(prepare);
  await waitFor(()=>expect(f.images).toHaveBeenCalledWith(`legendstudy:essay-source-draft:v1:${f.owner}:q1:additional:${id(77)}`));
  expect(f.rpc.mock.calls.some(([name])=>name==='math_session_continue')).toBe(false);
+});
+
+
+it('requires explicit region review and invalidates review when edited; UNCERTAIN never confirms',async()=>{
+ const fingerprint=JSON.stringify({owner:f.owner,examId:exam.dbExamId,parentId:'',answers:[{questionId:id(11),body:drafts.q1.body,images:[]}]});
+ f.saved.set(`legendstudy:essay-source-draft:v1:${f.owner}:math-session:${exam.dbExamId}:initial:${id(11)}`,JSON.stringify({fingerprint,key:id(90),attemptKeys:{q1:id(91)},attempts:{q1:id(101)}}));
+ f.confirm.mockReset().mockResolvedValue({confirmed_run_id:id(55)});
+ f.read.mockResolvedValue({attempt:{leaf_id:id(21)},artifacts:[],can_request_evaluation:false,input_state:'CONFIRMATION_REQUIRED',candidate:{run_id:id(50)},candidate_regions:[{region_id:id(70),artifact_id:id(71),page:1,reading_order:1,raw_text:'e^{x}',normalized_math:'e^{x}',uncertain:true,x:0,y:0,width:0.5,height:0.2}]});
+ render(<MathExamSessionSubmit exam={exam} drafts={drafts} included={['q1']} leaves={leaves} onInputsReady={vi.fn()}/>);
+ const final=await screen.findByRole('button',{name:'이 내용으로 확인'});
+ expect(final).toBeDisabled();expect(f.confirm).not.toHaveBeenCalled();
+ fireEvent.click(screen.getByRole('button',{name:'확인'}));expect(final).not.toBeDisabled();
+ fireEvent.change(screen.getByLabelText('수정할 내용'),{target:{value:'UNCERTAIN'}});
+ expect(final).toBeDisabled();expect(screen.getByRole('button',{name:'수정'})).toBeDisabled();
+ fireEvent.change(screen.getByLabelText('수정할 내용'),{target:{value:'e^{-x}'}});
+ expect(final).toBeDisabled();fireEvent.click(screen.getByRole('button',{name:'수정'}));
+ expect(final).not.toBeDisabled();fireEvent.click(final);
+ await waitFor(()=>expect(f.confirm).toHaveBeenCalledWith(id(101),id(50),[{region_id:id(70),raw_text:'e^{-x}',normalized_math:'e^{-x}'}]));
+ expect(f.rpc).not.toHaveBeenCalled();
 });

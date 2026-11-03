@@ -1,4 +1,7 @@
 'use client';
+import {RegionConfirmation} from '../math-input/math-input-flow';
+import {fromWireCandidateRegion} from '@/lib/math-input/runtime/mapping';
+import {hasUnresolvedRecognition} from '@/lib/math-input/recognition-safety';
 import {useEssayDraftSession,scopedDraftKey} from '../essay-draft-session';
 import {EssayProgressDialog} from '../essay-progress-dialog';
 import {useCallback,useEffect,useRef,useState} from 'react';
@@ -21,6 +24,11 @@ function round(value:unknown):Round{
  if(!v||v.version!=='math-session-v1'||!uuid(v.run_id)||!uuid(v.exam_id)||!Array.isArray(v.questions)||!v.questions.length||v.questions.some(q=>!uuid(q.attempt_id)||!uuid(q.question_id)||!uuid(q.evaluation_id)))throw Error('INVALID_SESSION');
  return v;
 }
+function sourceFile(input:ReadInputResult,files:File[]|undefined,artifactId:string):File|undefined{
+ const artifact=input.artifacts?.find(a=>{const row=a as Record<string,unknown>;return row.artifact_id===artifactId||row.id===artifactId;}) as Record<string,unknown>|undefined;
+ const position=artifact?.position;
+ return typeof position==='number'&&Number.isInteger(position)&&position>0?files?.[position-1]:undefined;
+}
 /** Existing saved text/photos and Math input/confirmation contracts; one financial submit. */
 export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady,restoreExistingInputs=true,rewrite}:{rewrite?:{id:string;additional:boolean};restoreExistingInputs?:boolean;exam:SourceExam;drafts:Record<string,SubmissionDraft>;included:string[];leaves:Record<string,string>;onInputsReady?:(refs:Record<string,{attemptId:string;confirmedRunId:string}>)=>void}){
  const autoOpen=useRef(false);
@@ -31,6 +39,8 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
  const [ready,setReady]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState('');
  const [parents,setParents]=useState<Round[]>([]),[parentId,setParentId]=useState(rewrite?.id??'');
  const [inputs,setInputs]=useState<Record<string,ReadInputResult>>({}),[corrections,setCorrections]=useState<Record<string,string>>({});
+ const [sourceFiles,setSourceFiles]=useState<Record<string,File[]>>({});
+ const [confirmedRegions,setConfirmedRegions]=useState<Record<string,boolean>>({});
  const [pending,setPending]=useState<Pending|null>(null),[accepted,setAccepted]=useState<Round|null>(null),[confirm,setConfirm]=useState(false);
  const selected=exam.questions.filter(q=>included.includes(q.key));
  const missing=exam.questions.filter(q=>!included.includes(q.key));
@@ -53,7 +63,7 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
   const rows=response.data.runs.map(round) as Round[];
   if(active){setReady(true);setParents(rows.filter(r=>r.exam_id===exam.dbExamId&&r.state==='completed'&&r.continuous_cycles_supported&&!rows.some(n=>n.previous_run_id===r.run_id&&n.state!=='cancelled')));}
  })().catch(()=>{});return()=>{active=false;};},[auth.client,owner,exam.dbExamId,onInputsReady]);
- useEffect(()=>{let active=true;queueMicrotask(()=>{if(!active)return;setInputs({});setCorrections({});setAccepted(null);setPending(null);setConfirm(false);
+ useEffect(()=>{let active=true;queueMicrotask(()=>{if(!active)return;setInputs({});setCorrections({});setConfirmedRegions({});setSourceFiles({});setAccepted(null);setPending(null);setConfirm(false);
   try{const value=temporaryDraftStore.read(scope);if(value){const p=JSON.parse(value) as Pending;if(!uuid(p.key)||typeof p.fingerprint!=='string'||!p.attemptKeys||!p.attempts)throw Error('INVALID_PENDING');setPending(p);}}
   catch{setNotice('저장된 요청을 확인할 수 없습니다. 나의 첨삭 기록에서 먼저 처리 상태를 확인해 주세요.');}
  });return()=>{active=false;};},[scope]);
@@ -70,7 +80,7 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
  }
  async function prepare(){
   if(blocked||!ready)return;
-  const snap=await snapshot();let p=pending?{...pending,attemptKeys:{...pending.attemptKeys},attempts:{...pending.attempts}}:null;
+  const snap=await snapshot();setSourceFiles(Object.fromEntries(snap.rows.map(r=>[r.q.key,r.files])));let p=pending?{...pending,attemptKeys:{...pending.attemptKeys},attempts:{...pending.attempts}}:null;
   if(p&&p.fingerprint!==snap.fingerprint){setNotice('이전 요청과 답안이 다릅니다. 먼저 기존 회차의 처리 상태를 확인해 주세요.');return;}
   p??={fingerprint:snap.fingerprint,key:crypto.randomUUID(),attemptKeys:{},attempts:{}};persist(p);
   if(p.runId){setAccepted(round(await call('math_session_read',{p_run:p.runId})));return;}
@@ -96,7 +106,8 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
  useEffect(()=>{let active=true;
   if(!restoreExistingInputs||!ready||!pending||pending.submitted||running.current)return;
   void(async()=>{
-   if((await snapshot()).fingerprint!==pending.fingerprint)return;
+   const snap=await snapshot();if(snap.fingerprint!==pending.fingerprint)return;
+   if(active)setSourceFiles(Object.fromEntries(snap.rows.map(r=>[r.q.key,r.files])));
    const restored:Record<string,ReadInputResult>={};
    for(const q of selected){const id=pending.attempts[q.key];if(!uuid(id))return;
     const input=await inputClient().readInput(id);
@@ -141,8 +152,8 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
   {!rewrite&&!draftSession&&!onInputsReady&&parents.length>0&&!pending&&<label>제출 방식<select value={parentId} disabled={busy} onChange={e=>setParentId(e.target.value)}><option value="">새 첨삭 · 1 이용권</option>{parents.map(r=><option key={r.run_id} value={r.run_id}>{r.next_quote?.credits_required===0?'무료 재첨삭':'다음 첨삭 · 이용권 1개'} · {r.created_at.slice(0,10)}</option>)}</select></label>}
   {!accepted&&<button className="button button--primary" disabled={!ready||busy||blocked} onClick={()=>void work(()=>prepare())}>{busy?'사진에서 답안을 확인하고 있어요…':'사진에서 답안 추출하기 · 0 이용권'}</button>}
   {selected.map(q=>{const input=inputs[q.key];if(!input)return null;return <article className="essay-extraction-card" key={q.key}><h3>{q.label} · 사진에서 추출한 내용 확인</h3>{input.can_request_evaluation?<p>첨삭 요청 준비 완료</p>:<>
-   <p>{input.input_state==='EXTRACTION_PROCESSING'?'사진 추출 처리 상태를 확인하고 있습니다. 처리가 중단됐다면 잠시 후 다시 추출하기를 눌러 주세요.':input.candidate?.state==='FAILED'?'사진 추출에 실패했습니다. 기존 사진으로 다시 추출할 수 있습니다.':'사진에서 읽은 답안을 확인해 주세요.'}</p>{input.candidate_regions.map(region=><label key={region.region_id}>확인할 내용<textarea value={corrections[region.region_id]??region.normalized_math??region.raw_text} onChange={e=>setCorrections(old=>({...old,[region.region_id]:e.target.value}))}/></label>)}
-   {input.input_state==='CONFIRMATION_REQUIRED'&&<button className="button button--primary" disabled={busy} onClick={()=>void work(async()=>{await inputClient().confirmExtraction(pending!.attempts[q.key],String(input.candidate?.run_id??input.candidate?.id),input.candidate_regions.map(region=>({region_id:region.region_id,raw_text:corrections[region.region_id]??region.normalized_math??region.raw_text,normalized_math:corrections[region.region_id]??region.normalized_math??region.raw_text})));const next=await inputClient().readInput(pending!.attempts[q.key]);setInputs(old=>({...old,[q.key]:next}));})}>이 내용으로 확인</button>}
+   <p>{input.input_state==='EXTRACTION_PROCESSING'?'사진 추출 처리 상태를 확인하고 있습니다. 처리가 중단됐다면 잠시 후 다시 추출하기를 눌러 주세요.':input.candidate?.state==='FAILED'?'사진 추출에 실패했습니다. 기존 사진으로 다시 추출할 수 있습니다.':'사진에서 읽은 답안을 확인해 주세요.'}</p><ul>{input.candidate_regions.map(region=><RegionConfirmation key={`${input.candidate?.run_id??input.candidate?.id}:${region.region_id}`} region={fromWireCandidateRegion(region)} sourceFile={sourceFile(input,sourceFiles[q.key],region.artifact_id)} onConfirm={intent=>{setCorrections(old=>({...old,[intent.regionId]:intent.confirmedRawText}));setConfirmedRegions(old=>({...old,[intent.regionId]:true}));}} onInvalidate={id=>setConfirmedRegions(old=>({...old,[id]:false}))}/>)}</ul>
+   {input.input_state==='CONFIRMATION_REQUIRED'&&<button className="button button--primary" disabled={busy||!input.candidate_regions.length||input.candidate_regions.some(r=>!confirmedRegions[r.region_id]||!corrections[r.region_id]?.trim()||hasUnresolvedRecognition(corrections[r.region_id]))} onClick={()=>void work(async()=>{await inputClient().confirmExtraction(pending!.attempts[q.key],String(input.candidate?.run_id??input.candidate?.id),input.candidate_regions.map(region=>({region_id:region.region_id,raw_text:corrections[region.region_id]??region.normalized_math??region.raw_text,normalized_math:corrections[region.region_id]??region.normalized_math??region.raw_text})));const next=await inputClient().readInput(pending!.attempts[q.key]);setInputs(old=>({...old,[q.key]:next}));})}>이 내용으로 확인</button>}
   </>}</article>;})}
   {!onInputsReady&&allReady&&!pending?.submitted&&!accepted&&<button className="button button--primary" disabled={busy||blocked} onClick={()=>void work(async()=>{const quote=parentId?await call('math_session_quote',{p_previous:parentId}):{credits_required:1};if(![0,1].includes(quote?.credits_required))throw Error('QUOTE_REQUIRED');persist({...pending!,expectedCredits:quote.credits_required});setConfirm(true);})}>회차 첨삭 요청 · 이용권 확인</button>}
   {!onInputsReady&&pending?.submitted&&!accepted&&<button className="button button--primary" disabled={busy} onClick={()=>void work(submit)}>같은 회차 처리 확인</button>}
