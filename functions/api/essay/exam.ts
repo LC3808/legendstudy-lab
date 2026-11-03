@@ -47,7 +47,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
    const questionIds=admission?.ready===true&&Array.isArray(admission.question_ids)?admission.question_ids.filter(uuid):[];
    if(expansion&&(questionIds.length!==expansion.questionIds.length||!expansion.questionIds.every(q=>questionIds.includes(q))||Object.entries(expansion.mathQuestions).some(([q,leaf])=>admission?.math_questions?.[q]!==leaf)))return reply({ready:false,questionIds:[],mathQuestions:{},code:'RELEASE_SCOPE_CHANGED'});
    const mathQuestions=Object.fromEntries(Object.entries(admission?.math_questions??{}).filter(([q,leaf])=>questionIds.includes(q)&&uuid(leaf)));
-   return reply({ready:admission?.ready===true,questionIds,mathQuestions});
+   return reply({ready:admission?.ready===true,questionIds,mathQuestions,...(expansion?.mode==='mixed'?{requireCompleteQuestionSet:true}:{})});
   }
   // Verify both deployed Worker and additive DB session contract before reserving.
   async function sessionReady(){
@@ -64,11 +64,14 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
    await dispatch('/exam-evaluate',{run_id:run});
    return reply({runId:run,code:'STATUS_CHECK_REQUIRED'},202);
   }
+  // A new mixed exam requires its entire approved question set. Submit stays
+  // DB-authoritative so accepted idempotent replays and historical runs survive.
+  if(expansion?.mode==='mixed'&&input.action==='quote'&&(!Array.isArray(input.questionIds)||input.questionIds.length!==expansion.questionIds.length||new Set(input.questionIds).size!==expansion.questionIds.length||!expansion.questionIds.every(q=>(input.questionIds as unknown[]).includes(q))))return reply({code:'MIXED_COMPLETE_ANSWERS_REQUIRED'},409);
   if(input.action==='quote'&&Array.isArray(input.questionIds)&&input.questionIds.length>1&&!await sessionReady())return reply({code:'EXAM_SESSION_CONTRACT_PENDING'},409);
   if(input.previousPaidRunId!=null&&(env.ESSAY_CONTINUOUS_CYCLES_ENABLED!=='true'||!uuid(input.previousPaidRunId)||input.parentId!=null))return reply({code:'ADDITIONAL_CYCLE_UNAVAILABLE'},422);
   if(input.action==='quote'&&uuid(input.examId)&&Array.isArray(input.questionIds)&&input.questionIds.length>0&&input.questionIds.every(uuid)&&!(input.parentId!=null&&!uuid(input.parentId))){
    const quoted=await transport.request(env.ESSAY_CREDIT_SOURCE_ENABLED==='true'?'/rest/v1/rpc/essay_exam_quote_source':'/rest/v1/rpc/essay_exam_quote',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_questions:input.questionIds,p_parent:input.parentId??null,p_previous:input.previousPaidRunId??null})});
-   if(!quoted.ok){const error=await quoted.json().catch(()=>null) as {message?:string}|null;return reply({code:error?.message==='INSUFFICIENT_CREDIT'?'INSUFFICIENT_CREDIT':'QUOTE_UNAVAILABLE'},error?.message==='INSUFFICIENT_CREDIT'?402:422);}
+   if(!quoted.ok){const error=await quoted.json().catch(()=>null) as {message?:string}|null;if(['MIXED_COMPLETE_ANSWERS_REQUIRED','MIXED_RELEASE_SCOPE_CHANGED'].includes(error?.message??''))return reply({code:error!.message},409);return reply({code:error?.message==='INSUFFICIENT_CREDIT'?'INSUFFICIENT_CREDIT':'QUOTE_UNAVAILABLE'},error?.message==='INSUFFICIENT_CREDIT'?402:422);}
    return reply(await quoted.json());
   }
   if(input.action!=='submit'||!uuid(input.examId)||!uuid(input.key)||!Array.isArray(input.answers)||input.answers.length<1||input.answers.length>100||!(input.parentId==null||uuid(input.parentId)))return reply({code:'INVALID_REQUEST'},422);
@@ -80,7 +83,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   if(sourceConsent&&(env.ESSAY_CREDIT_SOURCE_ENABLED!=='true'||!(input.expectedGrant===null||uuid(input.expectedGrant))))return reply({code:'CREDIT_SOURCE_CONFIRMATION_REQUIRED'},409);
   const reserved=await transport.request(sourceConsent?'/rest/v1/rpc/essay_exam_submit_source':input.previousPaidRunId?'/rest/v1/rpc/essay_exam_submit_cycle':'/rest/v1/rpc/essay_exam_submit',credential,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_subject:subject,p_exam:input.examId,p_key:scope?.requestKey??input.key,p_answers:input.answers,p_parent:input.parentId??null,...(sourceConsent?{p_expected_grant:input.expectedGrant,p_previous:input.previousPaidRunId??null}:input.previousPaidRunId?{p_previous:input.previousPaidRunId}:{})})});
   const value=JSON.parse(new TextDecoder().decode(await boundedBody(reserved,16384)));
-  if(!reserved.ok){const reason=typeof value?.message==='string'?value.message:'';if(['CREDIT_SOURCE_CHANGED','CREDIT_SOURCE_CONFIRMATION_REQUIRED'].includes(reason))return reply({code:reason},409);return reply({code:reason==='INSUFFICIENT_CREDIT'?'INSUFFICIENT_CREDIT':'SUBMISSION_REJECTED'},reason==='INSUFFICIENT_CREDIT'?402:422);}
+  if(!reserved.ok){const reason=typeof value?.message==='string'?value.message:'';if(['CREDIT_SOURCE_CHANGED','CREDIT_SOURCE_CONFIRMATION_REQUIRED','MIXED_COMPLETE_ANSWERS_REQUIRED','MIXED_RELEASE_SCOPE_CHANGED'].includes(reason))return reply({code:reason},409);return reply({code:reason==='INSUFFICIENT_CREDIT'?'INSUFFICIENT_CREDIT':'SUBMISSION_REJECTED'},reason==='INSUFFICIENT_CREDIT'?402:422);}
   if(!uuid(value))throw Error('INVALID_RESERVATION');run=value;
   // Uncertain dispatch/finalization never refunds or creates another reservation.
   await dispatch('/exam-evaluate',{run_id:run});

@@ -207,3 +207,50 @@ it('release configuration cannot promote a changed mixed question or leaf scope'
  expect(await(await send({action:'availability',examId:e.examId},config)).json()).toMatchObject({ready:false,code:'RELEASE_SCOPE_CHANGED'});
  expect(m.request).not.toHaveBeenCalled();
 });
+
+const mixedConfig=(examId:string)=>({MATH_PROJECT_REF:'stlhijzpjfgwwdgunlsd',MATH_SUPABASE_URL:'https://stlhijzpjfgwwdgunlsd.supabase.co',ESSAY_PUBLIC_EXAMS:examId,ESSAY_BETA_EXPANSION_EXAMS:examId});
+it('all 26 expanded mixed exams reject subset/duplicate quotes before credit calls',async()=>{
+ const mixed=betaExpansionCandidates.filter(e=>e.mode==='mixed');expect(mixed).toHaveLength(26);
+ for(const e of mixed){
+  for(const questionIds of [e.questionIds.slice(1),[...e.questionIds.slice(1),e.questionIds[1]]]){
+   const r=await send({action:'quote',examId:e.examId,questionIds},mixedConfig(e.examId));
+   expect(r.status).toBe(409);expect(await r.json()).toEqual({code:'MIXED_COMPLETE_ANSWERS_REQUIRED'});
+  }
+ }
+ expect(m.request).not.toHaveBeenCalled();expect(m.dispatch).not.toHaveBeenCalled();
+});
+it('mixed admission communicates whole-question requirement and full quote stays available',async()=>{
+ const e=betaExpansionCandidates.find(e=>e.mode==='mixed')!;
+ m.dispatch.mockImplementation(async()=>Response.json({ready:true,session_version:'exam-session-v1',question_ids:e.questionIds,math_questions:e.mathQuestions}));
+ expect(await(await send({action:'availability',examId:e.examId},mixedConfig(e.examId))).json()).toMatchObject({ready:true,requireCompleteQuestionSet:true});
+ m.request.mockResolvedValue(Response.json({version:'essay-exam-quote-v1',credits:1}));
+ expect((await send({action:'quote',examId:e.examId,questionIds:[...e.questionIds].reverse()},mixedConfig(e.examId))).status).toBe(200);
+ expect(m.request).toHaveBeenCalledTimes(1);
+});
+it('new mixed subset rejection is explicit while accepted idempotent replays remain DB-authoritative',async()=>{
+ const e=betaExpansionCandidates.find(e=>e.mode==='mixed')!;
+ const partial={...body,examId:e.examId,answers:[{questionId:e.questionIds[0],revision:1,body:'Existing or new subset'}]};
+ m.request.mockResolvedValueOnce(Response.json({message:'MIXED_COMPLETE_ANSWERS_REQUIRED'},{status:400}));
+ const rejected=await send(partial,mixedConfig(e.examId));
+ expect(rejected.status).toBe(409);expect(await rejected.json()).toEqual({code:'MIXED_COMPLETE_ANSWERS_REQUIRED'});
+ expect(m.dispatch.mock.calls.filter(([r])=>r.url.endsWith('/exam-evaluate'))).toHaveLength(0);
+ m.request.mockResolvedValueOnce(Response.json(id));
+ expect(await(await send(partial,mixedConfig(e.examId))).json()).toMatchObject({runId:id});
+ expect(m.dispatch.mock.calls.filter(([r])=>r.url.endsWith('/exam-evaluate'))).toHaveLength(1);
+});
+it('plain humanities selection remains available while unexpanded mixed retains its launch hold',async()=>{
+ m.request.mockResolvedValue(Response.json({version:'essay-exam-quote-v1',credits:1}));
+ expect((await send({action:'quote',examId:id,questionIds:[id]})).status).toBe(200);
+ const e=betaExpansionCandidates.find(e=>e.mode==='mixed')!;
+ const held=await send({action:'quote',examId:e.examId,questionIds:[e.questionIds[0]]},{...mixedConfig(e.examId),ESSAY_BETA_EXPANSION_EXAMS:undefined});
+ expect(held.status).toBe(409);expect(await held.json()).toMatchObject({code:'MIXED_QA_PENDING'});
+ expect(m.request).toHaveBeenCalledTimes(1);
+});
+
+it.each(['MIXED_COMPLETE_ANSWERS_REQUIRED','MIXED_RELEASE_SCOPE_CHANGED'])('mixed DB quote guard is preserved without a Provider dispatch: %s',async code=>{
+ const e=betaExpansionCandidates.find(e=>e.mode==='mixed')!;
+ m.request.mockResolvedValue(Response.json({message:code},{status:400}));
+ const response=await send({action:'quote',examId:e.examId,questionIds:e.questionIds},mixedConfig(e.examId));
+ expect(response.status).toBe(409);expect(await response.json()).toEqual({code});
+ expect(m.dispatch.mock.calls.filter(([r])=>r.url.endsWith('/exam-evaluate'))).toHaveLength(0);
+});
