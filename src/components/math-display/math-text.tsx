@@ -1,12 +1,17 @@
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 
+export function displayMathSource(source:string){
+ // Explicit printed radical + a single variable/number; no missing symbols inferred.
+ return source.replace(/√([A-Za-zα-ωΑ-Ω]|[0-9]+)/g,(_,atom:string)=>`\\sqrt{${atom}}`).replace(/([A-Za-z])\u0304/g,(_,letter:string)=>`\\bar{${letter}}`);
+}
+
 /** Display only: never rewrites the stored answer or interprets a formula as executable code. */
 export function Formula({source, display=false}:{source:string;display?:boolean}) {
  let html:string|null=null;
  try {
   if(source.length>6000)throw Error('TOO_LONG');
-  html=katex.renderToString(source,{displayMode:display,throwOnError:true,trust:false,strict:'error',maxExpand:200,maxSize:20,output:'htmlAndMathml'});
+  html=katex.renderToString(displayMathSource(source),{displayMode:display,throwOnError:true,trust:false,strict:'error',maxExpand:200,maxSize:20,output:'htmlAndMathml'});
  }catch{ /* Preserve the source if KaTeX rejects it. */ }
  if(html===null)return <span className="math-source-fallback" title="수식 표시를 확인해 주세요. 입력 원문을 보존했습니다."><span className="math-source-warning">수식 표시 오류 · 원문: </span>{source}</span>;
  return <span className="math-formula" style={{display:display?'block':'inline-block',maxWidth:'100%',overflowX:'auto',verticalAlign:'middle'}} dangerouslySetInnerHTML={{__html:html}}/>;

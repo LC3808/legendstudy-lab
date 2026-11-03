@@ -31,6 +31,12 @@ P(X=k)=\frac{n!}{k!(n-k)!}p^k(1-p)^{n-k}
   expect(container.querySelector('annotation')?.textContent).toBe('P(W=k/l)');
   expect(container.textContent).toContain('69/56');
  });
+ it('renders explicit printed radicals without changing their operands',()=>{
+  const {container}=render(<MathDocument text={'b-a=10/√n, d-c=6/√n\n1<10/√n, 6/√n<6/5'}/>);
+  expect(container.querySelectorAll('math')).toHaveLength(2);
+  expect(container.querySelector('.math-source-fallback')).toBeNull();
+  expect(container.querySelector('annotation')?.textContent).toBe(String.raw`b-a=10/\sqrt{n}, d-c=6/\sqrt{n}`);
+ });
  it('preserves unresolved or malformed source and never enables HTML or links',()=>{
   const {container}=render(<MathDocument text={String.raw`UNCERTAIN
 \frac{broken
