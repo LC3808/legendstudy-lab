@@ -80,7 +80,12 @@ def verify(c,rpc,new,scalar,A,B,finish):
  policy=next(x['definition'] for x in json.load(open('/tmp/legendstudy-release57-production-preflight-defs.json')) if x['proname']=='runtime_policy');c.execute(policy)
  beta=json.load(open('/tmp/legendstudy-release57-production-beta-connection-functions.json'))
  for f in beta:
-  if f['name'] in ['eligible','credit_source']:c.execute(f['definition'])
+  if f['name'] in ['eligible','credit_source']:
+   c.execute(f['definition'])
+   signature='essay_beta_private.'+f['name']+'(uuid,uuid)'
+   c.execute('revoke all on function '+signature+' from public,anon,authenticated,service_role')
+   c.execute('grant execute on function '+signature+' to postgres')
+   assert scalar('select proacl::text from pg_proc where oid=%s::regprocedure',(signature,))==f['acl']
  campaign='cfc56a2b-8fbd-4c2a-a200-e55b509ad972';c.execute("insert into essay_beta_private.campaigns values(%s,'2026-11-01','2026-11-10',true,1,'daily-v2')",(campaign,))
  for e in contract['exams']:c.execute('insert into essay_beta_private.exam_scope values(%s,%s,%s,%s,%s,%s,%s)',(campaign,e['examId'],Jsonb(e['runtimePolicy']),e['questionIds'],bool(e['mathQuestions']),'Synthetic proof only','Owner scope'))
  c.execute((O/'beta-function-bodies.sql').read_text())
@@ -169,3 +174,7 @@ def verify(c,rpc,new,scalar,A,B,finish):
  print('EXPANDED_LAST_CATALOG_ITEM_QUOTE_SUBMIT_COMPLETE_INDEPENDENT_OF_UI_LIMIT PASS',flush=True)
  # Unchanged isolated TEST upgrade proof belongs to the original package and was already PASS.
  # This expanded package does not apply TEST-specific source patches.
+
+ # Narrow mixed-only full-set reserve guard, exact migration transaction.
+ from mixed_guard_checks import verify as mixed_guard_verify
+ mixed_guard_verify(c,rpc,new,scalar,A)

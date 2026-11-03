@@ -4,7 +4,7 @@
     "name": "eligible",
     "args": "p_grant uuid, p_exam uuid",
     "owner": "postgres",
-    "acl": null,
+    "acl": "{postgres=X/postgres}",
     "config": [
       "search_path=\"\""
     ],

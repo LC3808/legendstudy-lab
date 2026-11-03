@@ -77,3 +77,17 @@ APP58은 `math_catalog(p_limit:50)`를 고정 호출하고 paging이 없다. 따
 Math Session의 `completed`는 **사용자가 제출한 선택 문항 집합**의 완료다. APP58은 제출 전 누락 문항을 나열하고, ‘이용권 1개로 선택한 문항을 첨삭’한다고 확인받는다. 이를 전체 시험의 모든 문항 완료로 보고하지 않는다. 본 검증의 부분 완료 방지는 제출 집합 내 미완료 문항이 있을 때 완료 처리하지 않는다는 의미다. 혼합형 전체 시험은 기존 Essay parent의 전체 질문 집합/Worker 제출 계약을 별도로 확인해야 하며, 자연계 선택 문항 완료를 혼합형 전체 완료 PASS로 대체하지 않는다.
 
 검증 재실행: `validation/run_validation.py --pg-bin /opt/homebrew/opt/postgresql@17/bin` (기존 LegendStudy Python venv의 psycopg 및 APP 저장소 baseline fixtures 필요). raw 함수 스냅샷은 Git에 추가하지 않는다. 테스트 소스의 `/tmp/legendstudy-release57-production-*.json` 입력은 기존 읽기 전용 SQL/ACL 스냅샷이다. 공식 시험 원문·학생 원문·Provider 응답 복제를 요구하지 않는다.
+
+## 후속 보완: 혼합형 전체 문항 제출 경계
+
+`20261103160355_mixed_complete_question_guard.sql`은 **신규 혼합형26시험**에만 적용하는 4번째 후보다. normal/source/paid-cycle/free 경로가 공유하는 기존 private `essay_exam_private.reserve` 한 함수에만 질문 집합 검사를 넣는다. 평가 엔진은 변경하지 않는다.
+
+- 이미 접수된 동일 key·동일 snapshot 재요청은 기존 순서대로 먼저 반환한다. 기존 부분 제출의 History도 보존한다.
+- 새 요청은 모든 승인 문항을 포함해야 한다. 누락 시 `PT422 / MIXED_COMPLETE_ANSWERS_REQUIRED`, Registry 문항 집합 변경 시 `PT409 / MIXED_RELEASE_SCOPE_CHANGED`로 **grant 선택·reservation·Ledger INSERT 전에** 거부한다.
+- 기존 인문160 및 순수 수리의 선택문항 정책은 변경하지 않는다.
+- 전체 문항을 제출한 parent의 무료 재첨삭은 기존 정책대로1회다. 과거 부분 parent에서 시작하는 **새 부분 재첨삭**은 이제 차단한다. 대상26시험에는 현재 완료된 run이 없고 오래된 reserved1건만 있다. 기존부분run의 동일key재조회는 계속 가능하다.
+- WEB은 누락 문항을 daily claim/quote 전에 안내하고 버튼을 제한한다. APP58은 선택부분 제출을 여전히 확인할 수 있지만 서버가 무차감 거부한다. 기존 APP의 일반 제출 실패 안내를 거쳐 모든문항 답안을 채워 재시도해야 한다. APP58 바이너리의 새 문구를 구현했다고 보고하지 않는다.
+- 이 후보 **전체 transaction**을 로컬에 실행했다. 원문/owner/ACL/security-definer guard,2개 실패지점 rollback,기존 부분 replay·History 보존,부분/빈값/null/중복/다른ID 거부,설정 rollback,정상전체1reserve,무료1회,기존 실제 humanities policy ID의 선택문항 보존,적용 후 Registry 추가문항 차단 PASS. `mixed-guard-validation.log` 참조. 무료 parent의 완료는 합성 fixture에서 설정했으며 실제 Provider E2E가 아니다.
+- 독립 에이전트가26개 pin을 target202 inventory와 비교했고 함수 diff가 새 guard만 추가됨을 검토했다.
+
+운영 최초3단계 적용 후 발견된 `eligible` postflight 불일치는 로컬 fixture가 기본 PUBLIC ACL을 남겨 기대값을 null로 기록한 문제였다. **운영의 `{postgres=X/postgres}`가 정확한 기존 권한**이며 정의hash/owner/config는 일치했다. fixture와 기대값을 수정했고 운영 권한은 변경하지 않았다. 이 부분은 기대값 수정이며 보안 완화가 아니다.

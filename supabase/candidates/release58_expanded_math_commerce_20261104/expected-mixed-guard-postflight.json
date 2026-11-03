@@ -1,0 +1,12 @@
+{
+  "acl": "{postgres=X/postgres}",
+  "args": "p_account uuid, p_exam uuid, p_key uuid, p_snapshot jsonb, p_parent uuid",
+  "name": "reserve",
+  "owner": "postgres",
+  "config": [
+    "search_path=\"\""
+  ],
+  "schema": "essay_exam_private",
+  "definition_md5": "1260c9d22d3261f84fc4d6247c33707b",
+  "security_definer": false
+}
