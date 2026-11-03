@@ -54,3 +54,12 @@ it('uses separately enabled Math for all selected leaves when Essay runtime is d
  render(<ScopedExamSubmit exam={exam} includedKeys={['q1']} cycle={{previousPaidRunId:'previous-round'}} drafts={{q1:{body:'수정 답안',revision:1,images:false}}}/>);
  expect(await screen.findByText('math-round:previous-round')).toBeVisible();
 });
+
+it('all-Math admission stays on the existing Math session path and clears the UI-only hold',async()=>{
+ const q1='11111111-1111-4111-8111-111111111111',q2='22222222-2222-4222-8222-222222222222';
+ const e={...exam,questions:[{key:'q1',dbQuestionId:q1},{key:'q2',dbQuestionId:q2}]} as SourceExam;
+ vi.mocked(fetch).mockResolvedValue(Response.json({ready:true,questionIds:[q1,q2],mathQuestions:{[q1]:q1,[q2]:q2}}));
+ const admission=vi.fn();render(<ScopedExamSubmit exam={e} questionKey="q1" drafts={{q1:{body:'풀이',revision:1,images:false}}} onAdmissionChange={admission}/>);
+ expect(await screen.findByText('math-round:initial')).toBeVisible();
+ expect(admission).toHaveBeenCalledWith(true);
+});

@@ -1,4 +1,5 @@
 'use client';
+import {betaExpansionCandidates} from '@/lib/essay-runtime/beta-expansion';
 import {logAnalytics} from '@/lib/analytics/client';
 import {analyticsEvents as AE} from '@/lib/analytics/events';
 import {questionSupportsImages,questionInputMode} from '@/lib/essay-runtime/input-mode';
@@ -96,7 +97,9 @@ function Selection({rows,owner,onSelectionChange}:{rows:SourceExam[];owner:strin
 
 function ExamWorkspace({exam,owner,onUnsaved}:{exam:SourceExam;owner:string;onUnsaved:(value:boolean)=>void}){
  const isolatedNatural=exam.dbExamId===task16gExamId&&task16gBrowser(globalThis.location?.origin);
- const naturalHeld=!isolatedNatural&&(examLaunchHold(exam.dbExamId)==='NATURAL_MATH_HOLD'||/자연|의예/.test(exam.track));
+ const activationCandidate=betaExpansionCandidates.some(e=>e.examId===exam.dbExamId);
+ const [serverAdmitted,setServerAdmitted]=useState(false);
+ const naturalHeld=!serverAdmitted&&!isolatedNatural&&(examLaunchHold(exam.dbExamId)==='NATURAL_MATH_HOLD'||/자연|의예/.test(exam.track));
  const [questionKey,setQuestionKey]=useState('');
  const [panels,setPanels]=useState<Record<string,{open:string[];manual:boolean}>>({});
  const [excluded,setExcluded]=useState<string[]>([]);
@@ -115,6 +118,7 @@ function ExamWorkspace({exam,owner,onUnsaved}:{exam:SourceExam;owner:string;onUn
    {!naturalHeld&&<p className="essay-submit-note">답안 저장은 무료입니다. 작성한 답안을 시험 회차 단위로 함께 첨삭하며, 새 첨삭 회차에는 문항 수와 관계없이 1 이용권이 사용됩니다. 이전에 제출하지 않은 문항을 나중에 첨삭받으면 새 회차로 1 이용권이 사용됩니다.</p>}
    {written.length>1&&<fieldset className="essay-submission-selection"><legend>이번 첨삭 회차에 제출할 답안</legend>{written.map(q=><label key={q.key}><input type="checkbox" checked={!excluded.includes(q.key)} onChange={e=>setExcluded(old=>e.target.checked?old.filter(key=>key!==q.key):[...old,q.key])}/>{q.label}</label>)}<p>선택하지 않은 답안과 기존 첨삭 기록은 그대로 보존됩니다. 무료 재첨삭은 기존 회차의 문항으로만 요청할 수 있습니다.</p></fieldset>}
    {exam.questions.map((q,index)=>{const expanded=(panels[exam.key]?.open??[exam.questions[0].key]).includes(q.key),draft=drafts[q.key];return <section className="essay-question-toggle" key={q.key} id={`essay-question-${q.key}`}><header><h3>{q.label}</h3><span>{draft?.body.trim()||draft?.images?'답안 작성됨':'미작성'} · {draft===undefined?'답안 확인 중':draft.saved?'저장됨':'저장 확인 필요'}</span><button type="button" className="button button--outline" aria-expanded={expanded} aria-controls={`answer-panel-${q.key}`} onClick={()=>{if(!expanded)logAnalytics(AE.questionSelect,{question_count:1,exam_code:exam.key});setQuestionKey(q.key);setPanels(old=>{const open=old[exam.key]?.open??[exam.questions[0].key];return {...old,[exam.key]:{manual:true,open:expanded?open.filter(k=>k!==q.key):[...open,q.key]}};});}}>{expanded?'접기':'펼치기'} · {q.label}</button></header><div id={`answer-panel-${q.key}`} hidden={!expanded}>{questionInputMode(exam.dbExamId,q.dbQuestionId,q.inputMode)==='unknown'?<p role="alert">문항 입력 유형을 확인 중입니다. 기존 답안은 보존됩니다.</p>:<SourceExamWriter key={`${owner}:${q.key}`} exam={exam} question={q} owner={owner} onDirty={onDirty} onDraft={onDraft} supportsImages={questionSupportsImages(exam.dbExamId,q.dbQuestionId,q.inputMode)} onSaved={()=>setPanels(old=>{if(old[exam.key]?.manual)return old;const next=exam.questions.slice(index+1).find(item=>!drafts[item.key]?.body.trim()&&!drafts[item.key]?.images);return next?{...old,[exam.key]:{manual:false,open:[next.key]}}:old;})}/> }</div></section>;})}
-   {naturalHeld?<button type="button" className="button essay-math-hold-button" aria-disabled="true">수리논술 첨삭 서비스 준비 중</button>:isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button>:<ScopedExamSubmit exam={exam} questionKey={question?.key} drafts={drafts} includedKeys={submitIncluded}/>}
+   {naturalHeld&&<button type="button" className="button essay-math-hold-button" aria-disabled="true">수리논술 첨삭 서비스 준비 중</button>}
+   {naturalHeld&&!activationCandidate?null:isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button>:<ScopedExamSubmit onAdmissionChange={setServerAdmitted} exam={exam} questionKey={question?.key} drafts={drafts} includedKeys={submitIncluded}/>}
 </>;
 }

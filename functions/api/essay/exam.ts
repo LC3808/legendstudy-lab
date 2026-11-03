@@ -1,10 +1,12 @@
+import {betaExpansionFor,expansionMathMatches,type BetaExpansionEnvironment} from '../../../src/lib/essay-runtime/beta-expansion';
+import {onRequestGet as mathAvailability} from './availability';
 import {commerceTestScope,commerceTestExam,examLaunchHold} from '../../../src/lib/essay-runtime/launch-policy';
 import {publicExamScope} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import {boundedBody} from '../../../src/lib/math-release/server/request';
-type Env=MathEnvironment&WorkerEnvironment&{ESSAY_COMMERCE_TEST_ENABLED?:string;ESSAY_COMMERCE_RUNTIME_TEST_ENABLED?:string;ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_CREDIT_SOURCE_ENABLED?:string;ESSAY_CONTINUOUS_CYCLES_ENABLED?:string;ESSAY_E2E_SCOPE?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
+type Env=MathEnvironment&WorkerEnvironment&BetaExpansionEnvironment&{ESSAY_COMMERCE_TEST_ENABLED?:string;ESSAY_COMMERCE_RUNTIME_TEST_ENABLED?:string;ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_CREDIT_SOURCE_ENABLED?:string;ESSAY_CONTINUOUS_CYCLES_ENABLED?:string;ESSAY_E2E_SCOPE?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(v);
 /** Shared Native/Web gateway. Disabled until DB/host/content/E2E authorization. */
 export async function onRequestPost({request,env}:{request:Request;env:Env}){
@@ -21,7 +23,14 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const publicExams=publicExamScope(env.ESSAY_PUBLIC_EXAMS);
   const publicRelease=publicExams.length<=256&&publicExams.every(uuid)&&uuid(input.examId)&&publicExams.includes(input.examId);
   const transport=serverTransport(env),subject=await transport.subject(token,publicRelease);
-  const hold=commerceTestScope(request.url,env,input.examId)?undefined:examLaunchHold(input.examId);
+  const expansion=betaExpansionFor(request.url,env,input.examId);
+  const hold=commerceTestScope(request.url,env,input.examId)||expansion?undefined:examLaunchHold(input.examId);
+  if(expansion?.mode==='math'){
+   if(input.action!=='availability')return reply({code:'MATH_SESSION_REQUIRED'},409);
+   const math=await (await mathAvailability({request:new Request(new URL('/api/essay/availability',request.url),{headers:{Authorization:`Bearer ${token}`}}),env})).json();
+   const ready=math.checked===true&&math.types?.math===true&&expansionMathMatches(expansion,math.mathQuestions);
+   return reply({ready,questionIds:ready?expansion.questionIds:[],mathQuestions:ready?expansion.mathQuestions:{}});
+  }
   if(hold&&input.action==='availability')return reply({ready:false,questionIds:[],mathQuestions:{},code:hold});
   if(hold&&['quote','submit'].includes(String(input.action)))return reply({code:hold},409);
   // Optional server-only single-submission scope for explicitly approved operating E2E.
@@ -36,6 +45,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
    if(ready.status===401)return reply({code:'LOGIN_REQUIRED'},401);
    const admission=ready.ok?await ready.json() as {ready?:boolean;question_ids?:unknown;math_questions?:Record<string,string>}:null;
    const questionIds=admission?.ready===true&&Array.isArray(admission.question_ids)?admission.question_ids.filter(uuid):[];
+   if(expansion&&(questionIds.length!==expansion.questionIds.length||!expansion.questionIds.every(q=>questionIds.includes(q))||Object.entries(expansion.mathQuestions).some(([q,leaf])=>admission?.math_questions?.[q]!==leaf)))return reply({ready:false,questionIds:[],mathQuestions:{},code:'RELEASE_SCOPE_CHANGED'});
    const mathQuestions=Object.fromEntries(Object.entries(admission?.math_questions??{}).filter(([q,leaf])=>questionIds.includes(q)&&uuid(leaf)));
    return reply({ready:admission?.ready===true,questionIds,mathQuestions});
   }

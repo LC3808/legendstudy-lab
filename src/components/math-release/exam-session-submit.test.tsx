@@ -12,14 +12,18 @@ const id=(n:number)=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
 const exam={key:'exam',dbExamId:id(9),questions:[1,2,3,4].map(n=>({key:`q${n}`,dbQuestionId:id(10+n),label:`${n}번 문제`}))} as SourceExam;
 const drafts=Object.fromEntries([1,2,3,4].map(n=>[`q${n}`,{body:`답안${n}`,saved:true,images:false,revision:1}]));
 const leaves=Object.fromEntries([1,2,3,4].map(n=>[id(10+n),id(20+n)]));
-let serial=0,lost=false,first=true, submitted:string[]=[];
+let serial=0,lost=false,first=true,sourceChanged=false,claimFailed=false,quoteCredits=1, submitted:string[]=[];
+const source=()=>({version:'essay-credit-source-v1',grant_id:quoteCredits===0?null:id(500),source:quoteCredits===0?'included':'beta',beta:1,signup_bonus:2,purchase:3,other:0});
 beforeEach(()=>{
- f.saved.clear();serial=0;lost=false;first=true;submitted=[];
+ f.saved.clear();serial=0;lost=false;first=true;sourceChanged=false;claimFailed=false;quoteCredits=1;submitted=[];
  f.create.mockReset().mockImplementation(async()=>({attempt_id:id(100+(++serial))}));
  f.read.mockReset().mockResolvedValue({can_request_evaluation:true,input_state:'READY_FOR_EVALUATION',candidate_regions:[],candidate:null});
  f.rpc.mockReset().mockImplementation((name:string,args:Record<string,unknown>)=>({abortSignal:async()=>{
   if(name==='math_session_history')return {data:{version:'math-session-history-v1',runs:[]},error:null};
-  if(name==='math_session_continue'){submitted=args.p_attempts as string[];if(lost&&first){first=false;throw Error('response lost');}return {data:id(200),error:null};}
+  if(name==='essay_beta_daily_claim_v2')return claimFailed?{data:null,error:{message:'CLAIM_FAILED'}}:{data:{active:true},error:null};
+  if(name==='math_session_quote')return {data:{credits_required:quoteCredits},error:null};
+  if(name==='math_session_quote_source')return {data:{credits_required:quoteCredits,credit_source:source()},error:null};
+  if(name==='math_session_continue_source'){if(sourceChanged)return {data:null,error:{message:'CHARGE_SOURCE_CHANGED'}};submitted=args.p_attempts as string[];if(lost&&first){first=false;throw Error('response lost');}return {data:id(200),error:null};}
   if(name==='math_session_read')return {data:{version:'math-session-v1',run_id:id(200),exam_id:id(9),parent_id:null,state:'completed',created_at:'2026-10-25',free_rewrite_available:true,questions:submitted.map((attempt_id,i)=>({attempt_id,leaf_id:id(21+i),question_id:id(11+i),evaluation_id:id(300+i),state:'COMPLETED'}))},error:null};
   throw Error('unexpected RPC '+name);
  }}));
@@ -32,18 +36,20 @@ describe('Math session submission uses the saved exam unit',()=>{
   const prepare=await screen.findByRole('button',{name:/保存|사진에서 답안 추출하기/});
   await waitFor(()=>expect((prepare as HTMLButtonElement).disabled).toBe(false));fireEvent.click(prepare);
   const submit=await screen.findByRole('button',{name:'회차 첨삭 요청 · 이용권 확인'});
-  expect(f.rpc.mock.calls.filter(([name])=>name==='math_session_continue')).toHaveLength(0);
+  expect(f.rpc.mock.calls.filter(([name])=>name==='math_session_continue_source')).toHaveLength(0);
   fireEvent.click(submit);await screen.findByRole('dialog');
   if(n<4)expect(screen.getByText(/별도 회차로 1 이용권/)).toBeTruthy();
   fireEvent.click(await screen.findByRole('button',{name:'첨삭 진행하기'}));
   await screen.findByText('회차 첨삭이 완료됐습니다.');
-  const calls=f.rpc.mock.calls.filter(([name])=>name==='math_session_continue');expect(calls).toHaveLength(1);
-  expect(calls[0][1].p_attempts).toHaveLength(n);expect(calls[0][1].p_previous).toBeNull();expect(calls[0][1].p_expected_credits).toBe(1);
+  const calls=f.rpc.mock.calls.filter(([name])=>name==='math_session_continue_source');expect(calls).toHaveLength(1);
+  expect(calls[0][1].p_attempts).toHaveLength(n);expect(calls[0][1].p_previous).toBeNull();expect(calls[0][1].p_expected_credits).toBe(1);expect(calls[0][1].p_expected_grant).toBe(id(500));
+  expect(f.rpc.mock.calls.filter(([name])=>name==='essay_beta_daily_claim_v2')).toHaveLength(1);
+  expect(f.rpc.mock.calls.findIndex(([name])=>name==='essay_beta_daily_claim_v2')).toBeLessThan(f.rpc.mock.calls.findIndex(([name])=>name==='math_session_quote_source'));
  });
  it('empty answers cannot prepare or create a paid request',async()=>{
   render(<MathExamSessionSubmit exam={exam} drafts={{}} included={[]} leaves={leaves}/>);
   const button=await screen.findByRole('button',{name:/사진에서 답안 추출하기/});expect((button as HTMLButtonElement).disabled).toBe(true);
-  expect(f.create).not.toHaveBeenCalled();expect(f.rpc.mock.calls.some(([name])=>name==='math_session_continue')).toBe(false);
+  expect(f.create).not.toHaveBeenCalled();expect(f.rpc.mock.calls.some(([name])=>name==='math_session_continue_source')).toBe(false);
  });
  it('ambiguous submission survives remount and reuses the same round key',async()=>{
   lost=true;const props={exam,drafts,included:['q1'],leaves};
@@ -51,10 +57,10 @@ describe('Math session submission uses the saved exam unit',()=>{
   const prepare=await screen.findByRole('button',{name:/사진에서 답안 추출하기/});await waitFor(()=>expect((prepare as HTMLButtonElement).disabled).toBe(false));fireEvent.click(prepare);
   fireEvent.click(await screen.findByRole('button',{name:'회차 첨삭 요청 · 이용권 확인'}));fireEvent.click(await screen.findByRole('button',{name:'첨삭 진행하기'}));
   await screen.findByRole('button',{name:'같은 회차 처리 확인'});await waitFor(()=>expect(screen.getByRole('status').textContent).toContain('확인하지 못했어요'));
-  const firstCall=f.rpc.mock.calls.find(([name])=>name==='math_session_continue')![1];view.unmount();
+  const firstCall=f.rpc.mock.calls.find(([name])=>name==='math_session_continue_source')![1];view.unmount();
   render(<MathExamSessionSubmit {...props}/>);fireEvent.click(await screen.findByRole('button',{name:'같은 회차 처리 확인'}));
   await screen.findByText('회차 첨삭이 완료됐습니다.');
-  const calls=f.rpc.mock.calls.filter(([name])=>name==='math_session_continue');expect(calls).toHaveLength(2);expect(calls[1][1]).toEqual(firstCall);expect(f.create).toHaveBeenCalledTimes(1);
+  const calls=f.rpc.mock.calls.filter(([name])=>name==='math_session_continue_source');expect(calls).toHaveLength(2);expect(calls[1][1]).toEqual(firstCall);expect(f.create).toHaveBeenCalledTimes(1);expect(f.rpc.mock.calls.filter(([name])=>name==='essay_beta_daily_claim_v2')).toHaveLength(1);expect(f.rpc.mock.calls.filter(([name])=>name==='math_session_quote_source')).toHaveLength(1);
  });
 });
 
@@ -103,7 +109,7 @@ it('loads rewritten photos from the same revision-specific draft as the source w
  const prepare=await screen.findByRole('button',{name:/사진에서 답안 추출하기/});
  await waitFor(()=>expect(prepare).not.toBeDisabled());fireEvent.click(prepare);
  await waitFor(()=>expect(f.images).toHaveBeenCalledWith(`legendstudy:essay-source-draft:v1:${f.owner}:q1:additional:${id(77)}`));
- expect(f.rpc.mock.calls.some(([name])=>name==='math_session_continue')).toBe(false);
+ expect(f.rpc.mock.calls.some(([name])=>name==='math_session_continue_source')).toBe(false);
 });
 
 
@@ -123,4 +129,41 @@ it('requires explicit region review and invalidates review when edited; UNCERTAI
  expect(final).not.toBeDisabled();fireEvent.click(final);
  await waitFor(()=>expect(f.confirm).toHaveBeenCalledWith(id(101),id(50),[{region_id:id(70),raw_text:'e^{-x}',normalized_math:'e^{-x}'}]));
  expect(f.rpc).not.toHaveBeenCalled();
+});
+
+
+it('never claims a daily grant or consumes a grant for a known free rewrite',async()=>{
+ quoteCredits=0;
+ const previous=id(77),fingerprint=JSON.stringify({owner:f.owner,examId:exam.dbExamId,parentId:previous,answers:[{questionId:id(11),body:drafts.q1.body,images:[]}]});
+ f.saved.set(`legendstudy:essay-source-draft:v1:${f.owner}:math-session:${exam.dbExamId}:${previous}:${id(11)}`,JSON.stringify({fingerprint,key:id(90),attemptKeys:{q1:id(91)},attempts:{q1:id(101)}}));
+ f.read.mockResolvedValue({attempt:{leaf_id:id(21)},can_request_evaluation:true,input_state:'READY_FOR_EVALUATION',confirmed_regions:[],candidate_regions:[]});
+ render(<MathExamSessionSubmit exam={exam} drafts={drafts} included={['q1']} leaves={leaves} rewrite={{id:previous,additional:false}}/>);
+ fireEvent.click(await screen.findByRole('button',{name:'회차 첨삭 요청 · 이용권 확인'}));
+ await screen.findByText('이번 사용: 무료 재첨삭 · 0개');fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));
+ await screen.findByText('회차 첨삭이 완료됐습니다.');
+ expect(f.rpc.mock.calls.some(([name])=>name==='essay_beta_daily_claim_v2')).toBe(false);
+ expect(f.rpc.mock.calls.find(([name])=>name==='math_session_continue_source')![1]).toMatchObject({p_expected_credits:0,p_expected_grant:null,p_previous:previous});
+});
+
+it('changed credit source requires a fresh quote and consent without silently using paid credit',async()=>{
+ sourceChanged=true;
+ render(<MathExamSessionSubmit exam={exam} drafts={drafts} included={['q1']} leaves={leaves}/>);
+ const prepare=await screen.findByRole('button',{name:/사진에서 답안 추출하기/});await waitFor(()=>expect(prepare).not.toBeDisabled());fireEvent.click(prepare);
+ fireEvent.click(await screen.findByRole('button',{name:'회차 첨삭 요청 · 이용권 확인'}));
+ await screen.findByText('이번 사용: 일일 베타 이용권 · 1개');fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));
+ await waitFor(()=>expect(screen.getByRole('status')).toHaveTextContent('사용할 이용권이 변경되었습니다'));
+ expect(screen.queryByRole('button',{name:'같은 회차 처리 확인'})).toBeNull();
+ expect(screen.getByRole('button',{name:'회차 첨삭 요청 · 이용권 확인'})).toBeVisible();
+ const calls=f.rpc.mock.calls.filter(([name])=>name==='math_session_continue_source');expect(calls).toHaveLength(1);expect(calls[0][1].p_expected_grant).toBe(id(500));
+ expect(f.rpc.mock.calls.some(([name])=>name==='math_session_continue')).toBe(false);
+});
+
+it('a daily grant claim failure cannot fall through to a paid quote or submission',async()=>{
+ claimFailed=true;
+ render(<MathExamSessionSubmit exam={exam} drafts={drafts} included={['q1']} leaves={leaves}/>);
+ const prepare=await screen.findByRole('button',{name:/사진에서 답안 추출하기/});await waitFor(()=>expect(prepare).not.toBeDisabled());fireEvent.click(prepare);
+ fireEvent.click(await screen.findByRole('button',{name:'회차 첨삭 요청 · 이용권 확인'}));
+ await waitFor(()=>expect(screen.getByRole('status')).toHaveTextContent('확인하지 못했어요'));
+ expect(screen.queryByRole('dialog')).toBeNull();
+ expect(f.rpc.mock.calls.some(([name])=>['math_session_quote_source','math_session_continue_source'].includes(name))).toBe(false);
 });

@@ -95,3 +95,8 @@ Code e3efa29 / dedicated TEST deployment e22dd7a8. Reused region confirmation, p
 ## 2026-11-03 — Candidate B Native LAB discovery repair
 
 Owner B51 normal LAB navigation exposed a TEST boundary gap: authenticated Native GETs to `public-service-status` and `service-status` returned the browser access-code HTML (401), while `availability` returned valid JSON (200). Add only these two exact GET paths on the canonical TASK16B hostname to the existing bearer-to-handler handoff. The handlers still validate the session and server-approved exam scope; no browser gate removal, key/configuration change, production deployment, Provider call or financial write. Gate/discovery/service regression 31 PASS, TypeScript and isolated static build PASS. TEST deployment/read verification and Native retry-state regression are recorded in the canonical APP Wiki `wiki/app-candidate-b-device-web-qa-20261103.md`.
+
+
+## 2026-11-03 — Production-based Math/commerce integration candidate
+
+Reused 23 Math commits on actual production `c9bda913`; preserved TEST branch and unrelated production analytics/payment/admin/humanities changes. Added exact production manifest admission for 16 existing exams (46 canonical Math leaves plus one preserved legacy leaf), full-set checks, natural Math-session routing and shared daily-beta credit-source consent. Existing engine, Registry and financial/history contracts reused. Full tests 1704 PASS/4 existing SKIP, lint/Next build/Functions compile/boundaries PASS. No production mutation or deployment. [WEB implementation evidence](math-commerce-release-integration-20261103.md); canonical APP report `wiki/app-math-commerce-integration-report-20261103.md`.
