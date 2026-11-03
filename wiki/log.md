@@ -108,3 +108,5 @@ Added production core/scope/beta candidates with PG17 and rollback proofs; produ
 ## 2026-11-04 — Broader Math/commerce/social connection candidate
 
 Reused current production Registry/Evidence reads to expand the explicit WEB manifest from 16 to 42 complete exams (six universities, 110 questions, 71 Math leaves). Preserved existing humanities evidence and prior partial visibility; excluded medical/incomplete new exams. Removed an unnecessary Math Provider dependency for Essay-only social/commerce discovery. Full WEB regression 1,707 PASS / four existing SKIP; TypeScript/focused lint PASS. Current production deployment and secret presence verified read-only; no deployment, Provider call or DB mutation in this source step. [Implementation/deployment contract](math-commerce-release-integration-20261103.md).
+
+Packaging follow-up: persisted the two existing production GA4/Owner-review routes and private admin/review headers that the prior custom deployment script had injected. This prevents full-build deployment from silently bypassing those APIs. Two additional route/header regression tests PASS.

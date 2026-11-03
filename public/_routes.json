@@ -4,7 +4,9 @@
     "/api/auth/kakao/*",
     "/api/payments/*",
     "/api/math/*",
-    "/api/essay/*"
+    "/api/essay/*",
+    "/api/owner-review/essay",
+    "/api/admin/ga4"
   ],
   "exclude": []
 }
