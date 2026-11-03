@@ -63,7 +63,7 @@ function MathDetail({row}:{row:RecordItem}){
  const load=useCallback((c:SupabaseClient,o:string)=>mathRead(c,o,'read_input',{attempt_id:row.id}),[row.id]);
  const input=useOwnerData(load);
  const completed=row.evaluations.filter(e=>e.status.toLowerCase()==='completed');
- return <>{completed.length?completed.map(e=><ServerCoaching key={e.id} evaluationId={e.id}/>):<><p className="essay-answer">{input.data?.attempt?.typed_answer||'첨부 답안 · 비공개 보관'}</p><p>완료된 평가가 없습니다.</p></>}</>;
+ return <>{completed.length?completed.map(e=><div key={e.id}><Link className="button button--outline" href={`/math-review/?evaluation=${e.id}`}>넓은 학습 화면에서 보기 ↗</Link><ServerCoaching evaluationId={e.id}/></div>):<><p className="essay-answer">{input.data?.attempt?.typed_answer||'첨부 답안 · 비공개 보관'}</p><p>완료된 평가가 없습니다.</p></>}</>;
 }
 
 function ExamDetail({row}:{row:RecordItem}){
