@@ -41,3 +41,8 @@ it('blocks the observed fraction placeholder in typed mixed input before provide
  expect(provider).not.toHaveBeenCalled();
  expect(hasUnresolvedRecognition('분수식의 분모는 0이 아니다.')).toBe(false);
 });
+
+it.each(['2n+?개의 점', 'x = ？', String.raw`\frac{?}{2}`])('blocks an unresolved mathematical placeholder even after confirmation: %s', text=>{
+ expect(()=>assertRecognizedInputConfirmed(context([{raw_text:text,normalized_math:'',uncertain:false}]),'confirmed')).toThrow('MATH_RECOGNITION_UNRESOLVED');
+ expect(hasUnresolvedRecognition('왜 이 식을 사용했나요?')).toBe(false);
+});

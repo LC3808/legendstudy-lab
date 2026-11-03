@@ -1,6 +1,6 @@
 /** Deterministic review policy. Confidence never establishes source fidelity. */
 export function hasUnresolvedRecognition(text: string): boolean {
-  return /UNCERTAIN|UNREADABLE|판독\s*(?:불가|불명|불확실)|인식\s*(?:불명|불가|불확실)|불명확|불확실|\[\s*분수식\s*\]|\[\s*\?[^\]]*\]|�/i.test(text);
+  return /UNCERTAIN|UNREADABLE|판독\s*(?:불가|불명|불확실)|인식\s*(?:불명|불가|불확실)|불명확|불확실|\[\s*분수식\s*\]|\[\s*\?[^\]]*\]|[+−*/=^_{(\-]\s*[?？]|[?？]\s*[+−*/=^_})\-]|^\s*[?？]\s*$|�/i.test(text);
 }
 export function criticalMath(text: string): boolean {
   return /[0-9⁰-⁹₀-₉²³¹⁺⁻+−±=<>≤≥^_∫()[\]{}]|\\(?:frac|sqrt|int|times|leq|geq)|[a-z]\s*[-/]/i.test(text);
