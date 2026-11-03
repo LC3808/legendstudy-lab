@@ -91,3 +91,7 @@ Academic Purple math review workspace (source/result/concepts), responsive 3/2/1
 ## 2026-11-03 — TASK16-I real isolated integration validation
 
 Code e3efa29 / dedicated TEST deployment e22dd7a8. Reused region confirmation, preserved raw transcription conclusions, blocked observed unreadable markers. Natural WEB photos→paid Q1/Q2→free Q1/Q2 completed; commerce Essay+Math completed as one exam. Existing TEST grant2 consumed2, free0, final balance/reserved0; duplicate Math requests preserve ledger. Native cross-read/hash verification pass; WEB1586pass/4existing skip. OCR/learning feedback/full-solution quality remains PARTIAL, production HOLD. Canonical APP report: `wiki/task16i-integration-quality-20261103.md`.
+
+## 2026-11-03 — Candidate B Native LAB discovery repair
+
+Owner B51 normal LAB navigation exposed a TEST boundary gap: authenticated Native GETs to `public-service-status` and `service-status` returned the browser access-code HTML (401), while `availability` returned valid JSON (200). Add only these two exact GET paths on the canonical TASK16B hostname to the existing bearer-to-handler handoff. The handlers still validate the session and server-approved exam scope; no browser gate removal, key/configuration change, production deployment, Provider call or financial write. Gate/discovery/service regression 31 PASS, TypeScript and isolated static build PASS. TEST deployment/read verification and Native retry-state regression are recorded in the canonical APP Wiki `wiki/app-candidate-b-device-web-qa-20261103.md`.

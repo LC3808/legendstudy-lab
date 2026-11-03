@@ -36,7 +36,7 @@ export async function testPreviewAccess(request: Request, env: PreviewEnv, next:
   if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='POST'&&
     /^\/api\/math\/(upload|extract|evaluate|recover|artifact)$/.test(url.pathname)&&
     /^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
-  if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='GET'&&['/api/essay/availability','/api/essay/student-pdfs'].includes(url.pathname)&&/^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
+  if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='GET'&&['/api/essay/availability','/api/essay/student-pdfs','/api/essay/public-service-status','/api/essay/service-status'].includes(url.pathname)&&/^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
   if(env.ESSAY_COMMERCE_RUNTIME_TEST_ENABLED==='true'&&url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='POST'&&url.pathname==='/api/essay/exam'&&/^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
   if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='POST'&&url.pathname==='/api/essay/catalog'&&/^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
   const seconds = Math.floor(now / 1000);

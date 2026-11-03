@@ -53,3 +53,20 @@ it('only explicitly enabled canonical TEST exam POST reaches JWT handler without
  expect((await testPreviewAccess(req(),{...env,ESSAY_COMMERCE_RUNTIME_TEST_ENABLED:'false'},next)).status).toBe(401);
  expect(next).toHaveBeenCalledTimes(1);
 });
+
+it.each(['/api/essay/public-service-status','/api/essay/service-status'])('native discovery %s reaches JWT validation without a browser cookie',async path=>{
+ const request=(host='legendstudy-task16b.pages.dev',method='GET',authorization='Bearer synthetic')=>new Request(`https://${host}${path}`,{method,headers:{authorization}});
+ // A bearer-shaped value only reaches the handler. It is not authentication:
+ // preserve downstream rejection and do not return a preview HTML page.
+ const handler=vi.fn(async()=>Response.json({checked:false}, {status:401}));
+ const result=await testPreviewAccess(request(),env,handler,now);
+ expect(result.status).toBe(401);
+ expect(result.headers.get('content-type')).toContain('application/json');
+ expect(handler).toHaveBeenCalledTimes(1);
+ for(const blocked of [request('abc.legendstudy-task16b.pages.dev'),request('legendstudy-task09.pages.dev'),request('legendstudy-task16b.pages.dev','POST'),request('legendstudy-task16b.pages.dev','GET',''),request('legendstudy-task16b.pages.dev','GET','Bearer two tokens')]){
+  expect((await testPreviewAccess(blocked,env,handler,now)).status).toBe(401);
+ }
+ expect(handler).toHaveBeenCalledTimes(1);
+ expect((await testPreviewAccess(request(),{},handler,now)).status).toBe(503);
+ expect(handler).toHaveBeenCalledTimes(1);
+});
