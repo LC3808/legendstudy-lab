@@ -23,7 +23,7 @@ export function MathDocument({text}:{text:string}){
  return <span className="math-document" style={{display:'block',whiteSpace:'pre-wrap',overflowWrap:'anywhere',minWidth:0}}>{chunks.map((chunk,i)=>{
   if(/^(\$|\\\[|\\\()/.test(chunk))return <MathText key={i} text={chunk}/>;
   if(chunk.startsWith('\\begin{'))return <Formula key={i} source={chunk} display/>;
-  const blocks=chunk.split(/(^[ \t]*\|[^\n]*\|[ \t]*(?:\n[ \t]*\|[^\n]*\|[ \t]*)+)/m);
-  return <span key={i}>{blocks.map((block,j)=>/^\s*\|/.test(block)?<Table key={j} source={block.trim()}/>:block.split('\n').map((line,k)=><span key={`${j}/${k}`} style={{display:'block',minHeight:line?'':'1em'}}><Line text={line}/></span>))}</span>;
+  const blocks=chunk.split(/(^[^\n]*[ \t]\|[ \t][^\n]*(?:\n[^\n]*[ \t]\|[ \t][^\n]*)+|^[ \t]*\|[^\n]*\|[ \t]*(?:\n[ \t]*\|[^\n]*\|[ \t]*)+)/m);
+  return <span key={i}>{blocks.map((block,j)=>block.includes('\n')&&block.split('\n').every(row=>row.includes('|'))?<Table key={j} source={block.trim()}/>:block.split('\n').map((line,k)=><span key={`${j}/${k}`} style={{display:'block',minHeight:line?'':'1em'}}><Line text={line}/></span>))}</span>;
  })}</span>;
 }

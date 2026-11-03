@@ -24,6 +24,13 @@ P(X=k)=\frac{n!}{k!(n-k)!}p^k(1-p)^{n-k}
   expect(screen.getByRole('cell',{name:'-0.25'})).toBeInTheDocument();
   expect(screen.getByRole('cell',{name:'1/2'})).toBeInTheDocument();
  });
+ it('renders Q2 table rows without outer pipes and keeps following calculation',()=>{
+  const {container}=render(<MathDocument text={'k/l | 1 | 1/2\nP(W=k/l) | 1/4 | 19/140\nE(W)=69/56'}/>);
+  expect(screen.getByRole('table')).toBeInTheDocument();
+  expect(Array.from(container.querySelectorAll('[role=cell]')).some(c=>c.textContent==='19/140')).toBe(true);
+  expect(container.querySelector('annotation')?.textContent).toBe('P(W=k/l)');
+  expect(container.textContent).toContain('69/56');
+ });
  it('preserves unresolved or malformed source and never enables HTML or links',()=>{
   const {container}=render(<MathDocument text={String.raw`UNCERTAIN
 \frac{broken

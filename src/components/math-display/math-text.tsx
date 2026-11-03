@@ -8,7 +8,7 @@ export function Formula({source, display=false}:{source:string;display?:boolean}
   if(source.length>6000)throw Error('TOO_LONG');
   html=katex.renderToString(source,{displayMode:display,throwOnError:true,trust:false,strict:'error',maxExpand:200,maxSize:20,output:'htmlAndMathml'});
  }catch{ /* Preserve the source if KaTeX rejects it. */ }
- if(html===null)return <span className="math-source-fallback" title="수식 표시를 확인해 주세요. 입력 원문을 보존했습니다.">{source}</span>;
+ if(html===null)return <span className="math-source-fallback" title="수식 표시를 확인해 주세요. 입력 원문을 보존했습니다."><span className="math-source-warning">수식 표시 오류 · 원문: </span>{source}</span>;
  return <span className="math-formula" style={{display:display?'block':'inline-block',maxWidth:'100%',overflowX:'auto',verticalAlign:'middle'}} dangerouslySetInnerHTML={{__html:html}}/>;
 }
 export function MathText({text}:{text:string}) {
