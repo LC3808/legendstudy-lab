@@ -28,13 +28,18 @@ export function SourceExamSelection({sourceId,registeredOnly=false,onSelectionCh
   queueMicrotask(()=>{if(active)setRows(registeredOnly?[]:sourceExams(sourceId));});
   void (async()=>{
    let response:Response;
+   let testRegistered:SourceExam[]=[];
    const session=auth.client?(await auth.client.auth.getSession()).data.session:null;
    if(!active)return;
    // TEST metadata includes the reviewed image-input and official PDF contract.
    // Its authenticated endpoint still checks the existing owner allowlist.
-   if(registeredOnly&&auth.client&&!(session&&task16gBrowser(globalThis.location?.origin))){
+   if(registeredOnly&&auth.client){
     const registered=await loadRegisteredMaterials(auth.client,sourceId);
-    if(registered.length){if(active){setRows(mergeRegisteredCatalog(sourceExams(sourceId),registered));setLoadedFor(identity);setLoadError(false);}return;}
+    if(registered.length){
+     const merged=mergeRegisteredCatalog(sourceExams(sourceId),registered);
+     if(session&&task16gBrowser(globalThis.location?.origin))testRegistered=merged;
+     else {if(active){setRows(merged);setLoadedFor(identity);setLoadError(false);}return;}
+    }
    }
    if(session&&session.user.id===auth.user?.id){
     response=await fetch('/api/essay/catalog',{method:'POST',headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store'});
@@ -48,6 +53,11 @@ export function SourceExamSelection({sourceId,registeredOnly=false,onSelectionCh
    if(registeredOnly){
     next=next.filter(e=>e.dbExamId).map(e=>({...e,questions:e.questions.filter(q=>q.dbQuestionId)})).filter(e=>e.questions.length);
 
+   }
+   if(registeredOnly&&session&&task16gBrowser(globalThis.location?.origin)){
+    // Preserve registered Commerce/Essay exams; only the reviewed natural exam
+    // receives the TEST-only image/PDF metadata. Static source IDs are not admission.
+    next=[...testRegistered.filter(e=>e.dbExamId!==task16gExamId),...next.filter(e=>e.dbExamId===task16gExamId)];
    }
    if(active){setRows(next);setLoadedFor(identity);setLoadError(false);}
   })().catch(()=>{if(active){if(registeredOnly){setLoadError(true);setLoadedFor(identity);setRows([]);}}});

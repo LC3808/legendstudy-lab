@@ -37,19 +37,20 @@ it('does not invent years/questions for Kookmin without registered records',asyn
  expect(screen.queryByRole('textbox')).toBeNull();
 });
 
-it('TASK16-J TEST uses authenticated official image metadata instead of incomplete material projection',async()=>{
+it('TASK16-J preserves registered exams and does not admit unrelated static source metadata',async()=>{
  vi.stubGlobal('location',{origin:'https://legendstudy-task16b.pages.dev'});
  vi.mocked(fetch).mockResolvedValue(Response.json({version:'essay-source-registry-v1',exams:[{...exam,year:2024,kind:'admission',track:'자연계열',verification:'VERIFIED'}]}));
  render(<SourceExamSelection sourceId="gachon" registeredOnly/>);
- await screen.findByRole('option',{name:'2024학년도 수시논술'});
- expect(state.load).not.toHaveBeenCalled();
+ await screen.findByRole('option',{name:'2027학년도 모의논술'});
+ expect(screen.queryByRole('option',{name:'2024학년도 수시논술'})).toBeNull();
+ expect(state.load).toHaveBeenCalled();
  expect(fetch).toHaveBeenCalledWith('/api/essay/catalog',expect.objectContaining({method:'POST',headers:{Authorization:'Bearer fixture'}}));
- // A different natural exam remains held even on the TEST host.
  expect(await screen.findByRole('button',{name:'수리논술 첨삭 서비스 준비 중'})).toHaveAttribute('aria-disabled','true');
 });
 
 it('TASK16-J exposes Q1/Q2 photo input for the exact TEST natural exam while submission remains server-gated',async()=>{
  const {task16gExam}=await import('@/lib/essay-runtime/task16g-test-catalog');
+ state.load.mockResolvedValue([]);
  vi.stubGlobal('location',{origin:'https://legendstudy-task16b.pages.dev'});
  vi.mocked(fetch).mockImplementation(async url=>Response.json(url==='/api/essay/catalog'?{version:'essay-source-registry-v1',exams:[task16gExam]}:{ready:false,types:{math:false}}));
  render(<SourceExamSelection sourceId="hanyang" registeredOnly/>);
@@ -59,4 +60,18 @@ it('TASK16-J exposes Q1/Q2 photo input for the exact TEST natural exam while sub
  expect(screen.queryByRole('button',{name:'수리논술 첨삭 서비스 준비 중'})).toBeNull();
  expect(screen.getAllByText('답안 이미지 첨부').length).toBeGreaterThan(0);
  expect(await screen.findByRole('button',{name:'첨삭 서비스 제공 예정'})).toBeDisabled();
+});
+
+it('TASK16-J keeps registered 2026 Commerce beside reviewed 2024 natural input metadata',async()=>{
+ const {task16gExam}=await import('@/lib/essay-runtime/task16g-test-catalog');
+ vi.stubGlobal('location',{origin:'https://legendstudy-task16b.pages.dev'});
+ state.load.mockResolvedValue([{...exam,sourceUniversityId:'hanyang',year:2026,kind:'admission',track:'상경계열'}]);
+ vi.mocked(fetch).mockImplementation(async url=>Response.json(url==='/api/essay/catalog'?{version:'essay-source-registry-v1',exams:[task16gExam]}:{ready:false}));
+ render(<SourceExamSelection sourceId="hanyang" registeredOnly/>);
+ await screen.findByRole('option',{name:'2026학년도 수시논술'});
+ expect(screen.getByRole('option',{name:'2024학년도 수시논술'})).toBeInTheDocument();
+ fireEvent.change(screen.getByLabelText('학년도·시험'),{target:{value:'2026:admission'}});
+ expect(await screen.findByRole('option',{name:'상경계열'})).toBeInTheDocument();
+ fireEvent.change(screen.getByLabelText('학년도·시험'),{target:{value:'2024:admission'}});
+ expect(await screen.findByText('공식 문제 PDF 2쪽')).toBeInTheDocument();
 });
