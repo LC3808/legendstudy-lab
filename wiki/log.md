@@ -87,3 +87,7 @@ Owner authorized isolated TEST backend. Existing IAP sandbox reused; no producti
 ## 2026-11-03 — TASK16-H isolated WEB Preview
 
 Academic Purple math review workspace (source/result/concepts), responsive 3/2/1 columns, owner-authenticated originals/transcripts, cumulative hints, explicit server solution disclosure and existing rewrite UI. Code `6f5d726`, TEST Pages `legendstudy-task16b` deployment `4aaecbbc`. 1578 tests pass/4 existing skip; final affected18, types/lint/build pass. Live browser and Native Simulator cross reads pass. Two unevaluated WEB typed inputs saved; next-cycle quote1 cancelled before submission. Provider0/newcharge0; production unchanged. OCR/quality/mixed/newWEB evaluation E2E remain incomplete. Canonical report: APP worktree `wiki/task16h-web-math-ux-20261103.md`.
+
+## 2026-11-03 — TASK16-I real isolated integration validation
+
+Code e3efa29 / dedicated TEST deployment e22dd7a8. Reused region confirmation, preserved raw transcription conclusions, blocked observed unreadable markers. Natural WEB photos→paid Q1/Q2→free Q1/Q2 completed; commerce Essay+Math completed as one exam. Existing TEST grant2 consumed2, free0, final balance/reserved0; duplicate Math requests preserve ledger. Native cross-read/hash verification pass; WEB1586pass/4existing skip. OCR/learning feedback/full-solution quality remains PARTIAL, production HOLD. Canonical APP report: `wiki/task16i-integration-quality-20261103.md`.
