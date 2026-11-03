@@ -31,8 +31,8 @@ export function StudyEvidence({input,task,loadImage}:{input:Row|null;task:Row;lo
  {!artifacts.length&&<p>이 답안은 사진이 없는 텍스트 제출입니다.</p>}
  {text(task.id)&&!focused.some(r=>validSourceBox(r as {x:number;y:number;width:number;height:number}))&&<p className="math-study-note">이 과제의 원본 위치는 미확정입니다. 전체 답안을 대조해 주세요.</p>}
  <h3>{confirmed.length?'확정된 전사본':'제출 답안'}</h3>
- {source.map((r,i)=>{const original=candidate.find(c=>c.artifact_id===r.artifact_id&&c.reading_order===r.reading_order);const value=text(r.normalized_math)||text(r.raw_text);const before=original&&(text(original.normalized_math)||text(original.raw_text));const changed=!!before&&before!==value;return <details key={text(r.id)||i} open={source.length===1}><summary>영역 {Number(r.reading_order)||i+1} {changed?'· 학생 수정본':''} {r.uncertain===true||hasUnresolvedRecognition(value)?'· 인식 확인 필요':''}</summary><StudyMath value={value}/>{changed&&<details><summary>수정 전 인식 원문</summary><StudyMath value={before}/></details>}</details>;})}
- {!source.length&&<StudyMath value={object(input.attempt).typed_answer||'표시 가능한 전사본이 없습니다.'}/>}
+ <div className="math-study-transcript">{source.map((r,i)=>{const original=candidate.find(c=>c.artifact_id===r.artifact_id&&c.reading_order===r.reading_order);const value=text(r.normalized_math)||text(r.raw_text);const before=original&&(text(original.normalized_math)||text(original.raw_text));const changed=!!before&&before!==value;return <details key={text(r.id)||i} open={source.length===1}><summary>영역 {Number(r.reading_order)||i+1} {changed?'· 학생 수정본':''} {r.uncertain===true||hasUnresolvedRecognition(value)?'· 인식 확인 필요':''}</summary><StudyMath value={value}/>{changed&&<details><summary>수정 전 인식 원문</summary><StudyMath value={before}/></details>}</details>;})}
+ {!source.length&&<StudyMath value={object(input.attempt).typed_answer||'표시 가능한 전사본이 없습니다.'}/>}</div>
  <p className="math-study-note">인식 신뢰도는 원문 일치를 보장하지 않습니다. 확정본과 최초 인식 결과를 구분해 보세요.</p>
  </>}
  </section>;

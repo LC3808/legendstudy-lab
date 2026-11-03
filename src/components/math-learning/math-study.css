@@ -6,3 +6,5 @@
 @container (min-width:1120px){.math-study-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1fr)}.math-study-learning{grid-column:auto}}
 .math-study-page{max-width:1700px;width:100%;margin:auto;padding:24px 2vw}.math-study-error{padding:14px;background:#fff2ed;border-radius:10px}
 @media(prefers-reduced-motion:reduce){.math-study *{transition:none!important}}
+
+.math-study-transcript{max-height:460px;overflow:auto;overscroll-behavior:contain;padding-right:8px}.math-study-source .math-study-transcript{max-height:380px}.math-study-results .math-study-transcript{border:1px solid #e5dff4;border-radius:10px;padding:12px;background:#fcfbff}

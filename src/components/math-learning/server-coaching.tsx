@@ -78,7 +78,7 @@ function OwnerCoaching(props:CoachingRef){
  <h3>우선 개선 과제 <span className="math-study-badge">{tasks.length}개</span></h3><p className="math-study-note">평가 서버가 선정한 순서입니다. 공식 기준별 세부 설명은 제공된 범위에서 확인하세요.</p>
  {tasks.map((t,i)=><button className="math-study-task" key={text(t.id)} aria-pressed={task.id===t.id} onClick={()=>setSelected(text(t.id))}><strong>{i+1}. {text(t.title)}</strong><small>{text(t.importance)} · 풀이 단계 {String(t.position??'미확정')}</small></button>)}
  {!tasks.length&&<p>저장된 평가의 우선 개선 과제가 없습니다. 평가 보류를 정답 판정으로 해석하지 마세요.</p>}
- {text(task.id)&&<div><h3>{text(task.title)}</h3><StudyMath value={task.student_formula}/><p>{text(task.description)}</p><p>{text(task.direction)}</p><p className="math-study-note">{text(task.source_note)}</p><span className="math-study-badge">힌트 {exposed(2)?'2단계':exposed(1)?'1단계':'미공개'}</span></div>}
+ {text(task.id)&&<div><h3>{text(task.title)}</h3><div className="math-study-transcript"><StudyMath value={task.student_formula}/></div><p>{text(task.description)}</p><p>{text(task.direction)}</p><p className="math-study-note">{text(task.source_note)}</p><span className="math-study-badge">힌트 {exposed(2)?'2단계':exposed(1)?'1단계':'미공개'}</span></div>}
  {!!Number(data.remaining_task_count)&&<p>그 외 점검 과제 {Number(data.remaining_task_count)}개가 기록되어 있습니다.</p>}
  <button className="math-study-primary" disabled={busy||!canRewrite||!sessionId} onClick={()=>setWriting(true)}>수정 답안 작성 · {policy.eligible===true?'무료 재첨삭':policy.paid_available===true?'이용권 확인':'이용 조건 확인 필요'}</button>
  <p className="math-study-note">시험 단위 이용 조건은 서버에서 확인합니다. 각 사이클의 무료 재첨삭은 1회이며 기간과 베타 정책을 따릅니다.</p>
