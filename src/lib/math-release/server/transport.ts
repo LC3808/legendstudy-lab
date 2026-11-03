@@ -5,6 +5,9 @@ export interface MathEnvironment {
   MATH_PROVIDER_API_KEY?: string; MATH_ORIGIN?: string; MATH_SUPABASE_URL?: string; MATH_PROJECT_REF?: string;
   MATH_SUPABASE_PUBLISHABLE_KEY?: string; MATH_EXTRACTION_WORKER_JWT?: string; MATH_EVALUATION_WORKER_JWT?: string;
 }
+export class MathRpcRejection extends Error {
+  constructor() { super("RPC_DENIED"); }
+}
 export function serverTransport(env: MathEnvironment) {
   const url = env.MATH_SUPABASE_URL;
   if (!env.MATH_PROJECT_REF || url !== `https://${env.MATH_PROJECT_REF}.supabase.co` || !env.MATH_SUPABASE_PUBLISHABLE_KEY) throw Error("CONFIGURATION_REQUIRED");
@@ -23,7 +26,18 @@ export function serverTransport(env: MathEnvironment) {
   }
   async function rpcRaw(name: string, args: unknown, token: string) {
     const res = await request(`/rest/v1/rpc/${name}`, token, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(args) });
-    if (!res.ok) { console.warn("MATH_RPC_FAILURE", { operation: name, status: res.status }); throw Error("RPC_DENIED"); }
+    if (!res.ok) {
+      let validationRejected = false;
+      if (res.status === 400 || res.status === 409) {
+        try {
+          const failure = JSON.parse(new TextDecoder().decode(await boundedBody(res,16384)));
+          validationRejected = ['23514','23505','23503','22023','22P02'].includes(failure?.code);
+        } catch { /* No raw response/answers/credentials in logs. */ }
+      }
+      console.warn("MATH_RPC_FAILURE", { operation: name, status: res.status });
+      if (validationRejected) throw new MathRpcRejection();
+      throw Error("RPC_DENIED");
+    }
     const body = new TextDecoder().decode(await boundedBody(res,2097152));return JSON.parse(body);
   }
   const rpc = (token: string): MathRpcTransport => ({ rpc: (fn, p_request) => rpcRaw(fn, { p_request }, token) });

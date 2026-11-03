@@ -22,6 +22,14 @@ export async function extractInBatches<T extends Artifact>(
     // Missing photos must not silently become a completed whole-answer extraction.
     const represented = new Set(ordered.map(r => (r as {artifact_id:string}).artifact_id));
     if (batch.some(a => !represented.has(a.artifact_id))) throw Error("INVALID_OUTPUT");
+    for (const value of ordered) {
+      const r = value as Record<string, unknown>;
+      const fields = ['artifact_id','page','reading_order','raw_text','normalized_math','confidence','uncertain','x','y','width','height'];
+      if (Object.keys(r).some(k => !fields.includes(k)) || typeof r.raw_text !== 'string' || typeof r.normalized_math !== 'string' || r.raw_text.length > 10000 || r.normalized_math.length > 10000 || typeof r.uncertain !== 'boolean') throw Error('INVALID_OUTPUT');
+      if (r.confidence != null && (typeof r.confidence !== 'number' || !Number.isFinite(r.confidence) || r.confidence < 0 || r.confidence > 1)) throw Error('INVALID_OUTPUT');
+      const {x,y,width,height} = r;
+      if ([x,y,width,height].some(n => typeof n !== 'number' || !Number.isFinite(n)) || Number(x)<0 || Number(y)<0 || Number(width)<=0 || Number(height)<=0 || Number(x)+Number(width)>1 || Number(y)+Number(height)>1) throw Error('INVALID_REGION_BOUNDS');
+    }
     regions.push(...ordered);
     batch = []; parts = []; bytes = 0;
   };

@@ -1,7 +1,7 @@
 import { expect, it, vi } from 'vitest';
 import { extractInBatches, EXTRACTION_BATCH_BYTES as limit } from './extraction-batches';
 const evidence = ['left','right'].map(artifact_id => ({artifact_id,media_type:'image/png'}));
-const row = (id:string) => ({artifact_id:id,page:1,reading_order:1,raw_text:'-x²/3'});
+const row = (id:string) => ({artifact_id:id,page:1,reading_order:1,raw_text:'-x²/3',normalized_math:'-x²/3',confidence:0.9,uncertain:true,x:0.1,y:0.1,width:0.8,height:0.1});
 const recognize = (content:unknown[]) => ({regions: JSON.parse((content[0] as {text:string}).text.split('inventory: ')[1]).map((a:{artifact_id:string}) => row(a.artifact_id))});
 it('splits actual iPhone byte sizes, preserves artifact/text and global ordering', async () => {
  const provider=vi.fn(async (content:unknown[])=>recognize(content));
@@ -32,4 +32,8 @@ it.each(['foreign','right'])('rejects a region from %s outside its current batch
 it('rejects omitted photos and an aggregate over 100 regions',async()=>{
  await expect(extractInBatches(evidence,async a=>({byteLength:1,content:a}),async()=>({regions:[row('left')]}))).rejects.toThrow('INVALID_OUTPUT');
  await expect(extractInBatches(evidence,async a=>({byteLength:limit,content:a}),async content=>({regions:Array.from({length:51},()=>recognize(content).regions[0])}))).rejects.toThrow('INVALID_OUTPUT');
+});
+
+it.each([{x:0.8,width:0.3},{y:0.9,height:0.2},{width:0},{height:-1}])('rejects out-of-image bounds without inventing a replacement: %j',async bounds=>{
+ await expect(extractInBatches([evidence[0]],async a=>({byteLength:1,content:a}),async()=>({regions:[{...row('left'),...bounds}]}))).rejects.toThrow('INVALID_REGION_BOUNDS');
 });
