@@ -1,6 +1,8 @@
 import registry from '@/data/essay-source-registry.json';
 import catalog from '@/data/essay-public-catalog.json';
 import {readExamDashboard} from './exam-history';
+import {historyExamUniversity} from './history-exam-metadata';
+import {loadRegisteredMaterials} from '@/lib/essay-runtime/registered-material-catalog';
 import type {SupabaseClient} from '@supabase/supabase-js';
 import {assertOwner, readEssays} from './data';
 export type Attempt={id:string;session_id:string;attempt_no:number;submitted_at:string};
@@ -45,10 +47,15 @@ export async function readMathDashboard(client:SupabaseClient,owner:string):Prom
  if(history?.version!=='math-session-history-v1'||!Array.isArray(history.runs))throw Error('INVALID_RESPONSE');
  const runs=history.runs as MathSession[];
  if(runs.some(r=>!r.run_id||!Array.isArray(r.questions)))throw Error('INVALID_RESPONSE');
+ // Reuse the current metadata browse for known registered exams absent from
+ // the legacy bundled registry. A metadata failure never invents a label or hides History.
+ const sources=[...new Set(runs.filter(r=>!registry.exams.some(e=>e.dbExamId===r.exam_id)).flatMap(r=>{const u=historyExamUniversity(r.exam_id);return u?[u.sourceUniversityId]:[];}))];
+ const registered=(await Promise.all(sources.map(source=>loadRegisteredMaterials(client,source).catch(()=>[])))).flat();
+ await assertOwner(client,owner);
  const covered=new Set(runs.flatMap(r=>r.questions.map(q=>q.attempt_id)));
  const rounds:RecordItem[]=runs.map(r=>{
-  const exam=registry.exams.find(e=>e.dbExamId===r.exam_id);
-  return {id:r.run_id,source:'math',mathSession:r,examId:r.exam_id,parentId:r.parent_id,questionIds:r.questions.map(q=>q.question_id),question:exam?`${exam.year}학년도 · ${exam.track}`:'수리논술 회차',university:catalog.universities.find(u=>u.universityId===exam?.universityId)?.name??null,essayType:'수리',at:r.created_at,rewrite:!!r.parent_id,
+  const exam=registered.find(e=>e.dbExamId===r.exam_id&&r.questions.every(q=>e.questions.some(item=>item.dbQuestionId===q.question_id)))??registry.exams.find(e=>e.dbExamId===r.exam_id);
+  return {id:r.run_id,source:'math',mathSession:r,examId:r.exam_id,parentId:r.parent_id,questionIds:r.questions.map(q=>q.question_id),question:exam?`${exam.year}학년도 · ${exam.track}`:'수리논술 회차',university:catalog.universities.find(u=>u.universityId===exam?.universityId)?.name??null,year:exam?.year??null,essayType:'수리',at:r.created_at,rewrite:!!r.parent_id,
    evaluations:r.questions.map(q=>({id:q.evaluation_id,status:q.state,at:r.created_at,completedAt:r.state==='completed'?r.completed_at:null,valid:true}))};
  });
  const legacy:RecordItem[]=data.attempts.filter((a:{attempt_id:string})=>!covered.has(a.attempt_id)).map((a:{attempt_id:string;created_at:string;predecessor_id:string|null;evaluations:{evaluation_id:string;state:string;requested_at:string}[]})=>({id:a.attempt_id,source:'math',question:'수리논술',university:null,essayType:'수리',at:a.created_at,rewrite:!!a.predecessor_id,evaluations:a.evaluations.map(e=>({id:e.evaluation_id,status:e.state,at:e.requested_at,completedAt:null,valid:true}))}));

@@ -1,4 +1,6 @@
 'use client';
+import {historyExamUniversity} from '@/lib/my/history-exam-metadata';
+import {assertOwner} from '@/lib/my/data';
 import {readMathSession,mathRead} from '@/lib/my/essay-dashboard';
 import {logAnalytics} from '@/lib/analytics/client';
 import {analyticsEvents as AE} from '@/lib/analytics/events';
@@ -26,14 +28,17 @@ export function ExamRewrite({runId,additional,mathSession=false}:{runId:string;a
    const round=await readMathSession(auth.client,owner,runId);
    const answers=await Promise.all(round.questions.map(async q=>{
     const input=await mathRead(auth.client!,owner,'read_input',{attempt_id:q.attempt_id});
-    return {questionId:q.question_id,body:input.attempt?.typed_answer??(input.confirmed_regions??[]).map((r:{normalized_math?:string;raw_text?:string})=>r.normalized_math??r.raw_text??'').join('\n')};
+    const typed=typeof input.attempt?.typed_answer==='string'?input.attempt.typed_answer:'';
+    const confirmed=[...(input.confirmed_regions??[])].sort((a:{reading_order?:number},b:{reading_order?:number})=>(a.reading_order??0)-(b.reading_order??0));
+    return {questionId:q.question_id,body:typed.trim()?typed:confirmed.map((r:{normalized_math?:string;raw_text?:string})=>r.raw_text?.trim()?r.raw_text:r.normalized_math??'').join('\n')};
    }));
    runs=[{...round,id:round.run_id,question_ids:round.questions.map(q=>q.question_id),answers}];
   }else runs=await readExamRuns(auth.client,owner,runId);
   if(runs.length!==1)throw Error();
   const session=(await auth.client.auth.getSession()).data.session;if(!session||session.user.id!==owner)throw Error();
   let exams:SourceExam[]=[];
-  const universities=publicCatalog.universities.filter(u=>u.name===runs[0].university);
+  const canonicalUniversity=historyExamUniversity(runs[0].exam_id);
+  const universities=canonicalUniversity?[canonicalUniversity]:publicCatalog.universities.filter(u=>u.name===runs[0].university);
   if(universities.length===1){
    const sourceId=universities[0].sourceUniversityId;
    const registered=await loadRegisteredMaterials(auth.client,sourceId);
@@ -44,6 +49,7 @@ export function ExamRewrite({runId,additional,mathSession=false}:{runId:string;a
    const data=await response.json();exams=data.exams as SourceExam[];
   }
   const exam=exams.find(e=>e.dbExamId===runs[0].exam_id);if(!exam || !(runs[0].question_ids as string[]).every(id=>exam.questions.some(q=>q.dbQuestionId===id)))throw Error();
+  await assertOwner(auth.client,owner);
   if(live)setState({exam,run:runs[0]});
  })().catch(()=>{if(live)setError(true);});return()=>{live=false;};},[auth.client,auth.user,runId,mathSession]);
  useEffect(()=>{if(state)logAnalytics(AE.essayRewriteStart,{source:additional?'paid_followup':'included'},runId);},[state,additional,runId]);

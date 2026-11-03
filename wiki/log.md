@@ -128,3 +128,7 @@ Actual production OCR exposed a display-only fallback for explicit `√[4]{...}`
 ## 2026-11-04 — Indexed-root display fix deployed without configuration changes
 
 Deployed source `691ba72` as `f11d97ab-248d-49fd-aa5e-ddaf0f36c004`. Production OCR source retained the given fourth root; the rendering fallback was corrected without editing transcription. Full1,721 PASS/four existing SKIP; focused24 PASS; build/TypeScript/lint/boundary PASS. Existing API bundle/routes/headers/redirects are byte-identical, all Pages and deployed-env hashes unchanged, four new renderer assets verified over actual production HTTP. No Provider/DB call or active Owner-browser reload. [Evidence](math-commerce-release-integration-20261103.md).
+
+## 2026-11-04 — Math History and same-exam rewrite metadata repair
+
+Live Inha2027 History exposed static-registry-only identity lookup and absent Math year projection. Reuse exact known exam/university IDs plus existing `essay_browse_catalog` metadata for missing bundled exams; on metadata failure keep History without invented labels. Shared identity lookup opens the same registered Math exam for rewriting. Empty typed photo input now loads confirmed raw transcription in reading order, preserving predecessor assets and owner checks. Six regression files31 PASS; no new RPC/DB/Provider call. Deployment is coordinated with the separate photo-input adapter correction. [Details](math-commerce-release-integration-20261103.md).
