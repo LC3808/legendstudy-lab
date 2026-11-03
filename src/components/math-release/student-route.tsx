@@ -188,7 +188,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
       {!catalog.length && <p>현재 준비된 문제가 없습니다.</p>}
       {chosen && <section aria-label="문제"><p>{chosen.problem_statement}</p><p>{chosen.statement}</p></section>}
       {!evaluationEnabled && <p>문항을 확인할 수 있습니다. 현재 첨삭은 이용할 수 없습니다.</p>}
-      <AnswerImagesInput files={images} onChange={next=>{setImages(next);setFile(null);uploadPages.current=null;}} disabled={frozen}/>
+      <AnswerImagesInput allowAdjustment files={images} onChange={next=>{setImages(next);setFile(null);uploadPages.current=null;}} disabled={frozen}/>
       <label htmlFor="math-answer">내 답안</label>
       <textarea id="math-answer" value={answer} maxLength={30000} disabled={frozen} onChange={e => setAnswer(e.target.value)} rows={8} />
       <label htmlFor="math-file">PDF 첨부 (선택, 20MB 이하)</label>

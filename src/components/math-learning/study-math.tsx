@@ -1,8 +1,7 @@
-import {Formula, MathText} from '../math-display/math-text';
-/** Rendering adapter only. Stored transcripts/AI text are never rewritten. */
+import {MathDocument} from '../math-display/math-document';
+import {Formula} from '../math-display/math-text';
+/** Display projection; stored transcripts and server disclosure boundaries are unchanged. */
 export function StudyMath({value,formula=false}:{value:unknown;formula?:boolean}) {
  const source=typeof value==='string'?value:'';
- const explicit=/\$|\\\[|\\\(/.test(source);
- const isolated=!/[가-힣]/.test(source)&&!/[A-Za-z]{3,}/.test(source.replace(/\\[A-Za-z]+|\{(?:p|b|B|v|V)?matrix\}|\{(?:aligned|cases|array)\}/g,''))&&/\\[A-Za-z]+|[=^_∫]/.test(source);
- return formula&&!explicit||isolated&&!explicit?<Formula source={source} display/>:<MathText text={source}/>;
+ return formula&&!/[가-힣]|\$|\\\[|\\\(/.test(source)?<Formula source={source} display/>:<MathDocument text={source}/>;
 }

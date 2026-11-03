@@ -11,7 +11,7 @@
 
 import {hasUnresolvedRecognition,criticalMath} from "@/lib/math-input/recognition-safety";
 import {SourceRegion} from "./source-region";
-import {MathText,Formula} from "../math-display/math-text";
+import {MathDocument} from "../math-display/math-document";
 import { useState } from "react";
 
 import type { ReadinessResult, VisionRegion } from "@/lib/math-input/types";
@@ -53,7 +53,7 @@ export function RegionConfirmation({
 
   return (
     <li className="math-input-region" data-region-id={region.regionId}>
-      <SourceRegion file={sourceFile} region={region}/>
+      <details><summary>원본 이미지와 비교</summary><SourceRegion file={sourceFile} region={region}/></details>
       <p className="math-input-region__context">
         원본에서 읽은 부분
         {region.evidenceRef ? <span className="math-input-region__evidence"> (원본 이미지 영역)</span> : null}
@@ -61,10 +61,11 @@ export function RegionConfirmation({
       <p>페이지 {region.pageIndex+1} · {({TEXT:'텍스트',MATH:'수식',TABLE_REGION:'표',GRAPH_REGION:'그래프',DIAGRAM_REGION:'도형',VISUAL_REGION:'시각 자료'})[region.regionType]} · 인식 신뢰도 {({HIGH:'높음',MEDIUM:'보통',LOW:'낮음',AMBIGUOUS:'기호 불명확',UNREADABLE:'판독 불가'})[region.confidence]}</p>
       <p>신뢰도가 높아도 원본과 일치한다는 뜻은 아닙니다. 부호·지수·첨자·분수·괄호·부등호·적분 구간·숫자와 단위를 확인해 주세요.</p>
       {criticalMath(interpreted)&&<p>수학 기호 원본 대조 필요 · UNCERTAIN (학생 확인 전)</p>}
-      <p className="math-input-region__reading">이렇게 읽었습니다: <MathText text={interpreted || "(읽을 수 없음)"}/></p>
-      {region.normalizedMath && <div aria-label="인식 수식 미리보기"><Formula source={value}/></div>}
+      <div className="math-input-region__reading" aria-label="정돈된 수학 답안"><MathDocument text={value || "(읽을 수 없음)"}/></div>
+      {["GRAPH_REGION","DIAGRAM_REGION","VISUAL_REGION"].includes(region.regionType)&&<p>그래프·도형은 원본 이미지 영역을 비교해 주세요. 검증되지 않은 재구성은 표시하지 않습니다.</p>}
       {['LOW','AMBIGUOUS','UNREADABLE'].includes(region.confidence)&&<p role="status">인식이 불확실합니다. 원본을 보고 수정해 주세요. 인식 오류를 풀이 오류로 채점하지 않습니다.</p>}
       <details><summary>최초 인식 원문</summary><pre style={{whiteSpace:'pre-wrap'}}>{region.rawText}</pre></details>
+      <details><summary>전사 내용 수정</summary>
       <label htmlFor={inputId} className="math-input-region__label">
         수정할 내용
       </label>
@@ -75,6 +76,7 @@ export function RegionConfirmation({
         value={value}
         onChange={(event) => {setValue(event.target.value);setConfirmed(false);onInvalidate?.(region.regionId);}}
       />
+      </details>
       <p role="status">{confirmed?"확인됨":"원본과 비교한 뒤 확인 또는 수정을 눌러 주세요."}</p>
       <div className="math-input-region__actions">
         <button
