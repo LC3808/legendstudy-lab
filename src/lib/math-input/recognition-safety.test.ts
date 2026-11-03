@@ -29,3 +29,8 @@ it('keeps original candidate separate from student correction; unresolved symbol
  expect(original.raw_text).toContain('UNCERTAIN');
  expect(hasUnresolvedRecognition('[? exponent]')).toBe(true);
 });
+
+it.each(['[이하 일부 판독 불명]', '[판독 불확실: x 또는 -x]', '[인식 불가]', 'UNCERTAIN'])('blocks observed unresolved OCR marker %s before provider',text=>{
+ expect(hasUnresolvedRecognition(text)).toBe(true);
+ expect(()=>assertRecognizedInputConfirmed(context([{raw_text:text,uncertain:false}]),'confirmed')).toThrow('MATH_RECOGNITION_UNRESOLVED');
+});

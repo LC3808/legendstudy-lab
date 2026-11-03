@@ -75,3 +75,11 @@ it('invalidates prior confirmation on edits and does not accept unreadable conte
  expect(invalid).toHaveBeenCalledWith(r.confirmationRequired[0].regionId);
  fireEvent.click(screen.getByRole('button',{name:'수정'}));expect(confirm).toHaveBeenCalledOnce();
 });
+
+it('preserves the Q2 final maxima and minima omitted from normalized math',()=>{
+ const onConfirm=vi.fn();const r=needsConfirmation();r.confirmationRequired[0].rawText='25<n<100 (최댓값 99, 최솟값 26)';r.confirmationRequired[0].normalizedMath='25<n<100';
+ render(<MathInputFlow readiness={r} onConfirm={onConfirm}/>);
+ expect(screen.getByLabelText('수정할 내용')).toHaveValue('25<n<100 (최댓값 99, 최솟값 26)');
+ fireEvent.click(screen.getByRole('button',{name:'확인'}));
+ expect(onConfirm.mock.calls[0][0].confirmedRawText).toContain('최댓값 99, 최솟값 26');
+});

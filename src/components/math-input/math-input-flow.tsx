@@ -45,7 +45,8 @@ export function RegionConfirmation({
   onConfirm: (intent: ConfirmationIntent) => void;
   onInvalidate?: (regionId: string) => void;
 }) {
-  const interpreted = region.normalizedMath ?? region.rawText;
+  // Normalized math can omit prose such as final maxima/minima. Keep the complete transcription.
+  const interpreted = region.rawText.trim() ? region.rawText : region.normalizedMath ?? "";
   const [value, setValue] = useState(interpreted);
   const [confirmed,setConfirmed]=useState(false);
   const inputId = `math-input-region-${region.regionId}`;
