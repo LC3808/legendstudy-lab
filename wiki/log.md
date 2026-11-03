@@ -100,3 +100,7 @@ Owner B51 normal LAB navigation exposed a TEST boundary gap: authenticated Nativ
 ## 2026-11-03 — Production-based Math/commerce integration candidate
 
 Reused 23 Math commits on actual production `c9bda913`; preserved TEST branch and unrelated production analytics/payment/admin/humanities changes. Added exact production manifest admission for 16 existing exams (46 canonical Math leaves plus one preserved legacy leaf), full-set checks, natural Math-session routing and shared daily-beta credit-source consent. Existing engine, Registry and financial/history contracts reused. Full tests 1705 PASS/4 existing SKIP, lint/Next build/Functions compile/boundaries PASS. No production mutation or deployment. [WEB implementation evidence](math-commerce-release-integration-20261103.md); canonical APP report `wiki/app-math-commerce-integration-report-20261103.md`.
+
+## 2026-11-04 — Versioned SQL review package and TEST source contract
+
+Added production core/scope/beta candidates with PG17 and rollback proofs; production unapplied. Separate exact TEST upgrade applied, postflight six functions and unchanged ten data counts PASS. HTTP free quote/anonymous denial PASS, paid source NOT_VERIFIED due balance0; overall PARTIAL, no Provider/new evaluation/grant allocation. [Package](../supabase/candidates/release57_math_commerce_20261103/README.md).

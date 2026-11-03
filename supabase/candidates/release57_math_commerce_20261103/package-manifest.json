@@ -1,0 +1,48 @@
+{
+  "status": "PRODUCTION_PREPARED_NOT_APPLIED_TEST_UPGRADE_APPLIED",
+  "production_db_writes": 0,
+  "provider_calls": 0,
+  "scope": {
+    "expanded_exams": 16,
+    "expanded_math_leaves": 46,
+    "retained_legacy_math_leaves": 1,
+    "catalog_total_leaves": 47
+  },
+  "validation": {
+    "core_transaction": "PASS on exact production function/table snapshot reconstructed in local PG17",
+    "scope_beta_transaction": "NOT_RUN against target DB; executable bodies PASS on synthetic 47-leaf fixture; actual runtime packages separately read-only verified",
+    "test_upgrade_transaction": "PASS on exact TEST function/ACL snapshot in local PG17 and remote isolated TEST; 6 function hashes/ACL/config match, 10 data counts unchanged",
+    "runtime_role": "postgres NOSUPERUSER BYPASSRLS",
+    "test_http_smoke": "PARTIAL: free quote and anonymous denial PASS, paid quotes unavailable due existing balance0; no Provider/new evaluations/beta allocation/ledger changes"
+  },
+  "files": [
+    {
+      "path": "migrations/20261103144209_math_commerce_learning_incremental.sql",
+      "sha256": "7df02bca52bc0286ccf10b4b21607cb5d62aa8a61dde585c8e4333af2a8a96ff"
+    },
+    {
+      "path": "migrations/20261103144918_math_commerce_release_scope.sql",
+      "sha256": "676dc4baec7226b76ad167489e1ba719055fc267616a21d37c186e6258e475e1"
+    },
+    {
+      "path": "migrations/20261103145501_math_commerce_beta_credit_connection.sql",
+      "sha256": "947bb99f710e0691077834bf6c1880efe6ad3fd490afa5523a2d99ff879768db"
+    },
+    {
+      "path": "test-upgrade/20261103150405_math_learning_source_upgrade_test_only.sql",
+      "sha256": "e89525c76d49f45db6e1c3b33ba604e9fcf6a583ece8ec50cfecf5e4794f0b14"
+    },
+    {
+      "path": "validation.log",
+      "sha256": "aee5b288704c5d357adc765b9a3ee4927cd9d9502e1576dc0f140f234c519235"
+    },
+    {
+      "path": "test-upgrade/applied-postflight.json",
+      "sha256": "453921de09d2c1a80de47780be51bc976e163250fffb919a927c0b166b0339f1"
+    },
+    {
+      "path": "test-upgrade/actual-source-smoke.json",
+      "sha256": "160a4a7625fef5489fbf989bcd077f8b0efc2af2ea50226852c9a550a9f3eec1"
+    }
+  ]
+}
