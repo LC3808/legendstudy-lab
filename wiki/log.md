@@ -124,3 +124,7 @@ After the release lead verified core/scope/beta/mixed guard transactions, final 
 ## 2026-11-04 — Inha indexed-root display follow-up prepared
 
 Actual production OCR exposed a display-only fallback for explicit `√[4]{...}`. Added lossless radical-to-TeX projection and compact question-label text separation, preserving source and malformed fallback. Rendering/input/evidence regression24 PASS; no Provider/DB change or deployment. [Details](math-commerce-release-integration-20261103.md).
+
+## 2026-11-04 — Indexed-root display fix deployed without configuration changes
+
+Deployed source `691ba72` as `f11d97ab-248d-49fd-aa5e-ddaf0f36c004`. Production OCR source retained the given fourth root; the rendering fallback was corrected without editing transcription. Full1,721 PASS/four existing SKIP; focused24 PASS; build/TypeScript/lint/boundary PASS. Existing API bundle/routes/headers/redirects are byte-identical, all Pages and deployed-env hashes unchanged, four new renderer assets verified over actual production HTTP. No Provider/DB call or active Owner-browser reload. [Evidence](math-commerce-release-integration-20261103.md).
