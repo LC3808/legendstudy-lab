@@ -151,7 +151,7 @@ export function MathExamSessionSubmit({exam,drafts,included,leaves,onInputsReady
   try{id=await call('math_session_continue_source',{p_exam:exam.dbExamId,p_key:pending.key,p_attempts:selected.map(q=>pending.attempts[q.key]),p_previous:parentId||null,p_expected_credits:pending.expectedCredits,p_expected_grant:pending.expectedGrant??null});}
   catch(error){
    const message=error&&typeof error==='object'&&'message' in error?String(error.message):'';
-   if(message.includes('CHARGE_SOURCE_CHANGED')){persist({...pending,submitted:false,expectedCredits:undefined,expectedGrant:undefined,creditSource:undefined});throw Error('CHARGE_SOURCE_CHANGED');}
+   if(message.includes('CHARGE_SOURCE_CHANGED')||message.includes('CHARGE_CHANGED')){persist({...pending,submitted:false,expectedCredits:undefined,expectedGrant:undefined,creditSource:undefined});throw Error('CHARGE_SOURCE_CHANGED');}
    throw error;
   }
   if(!uuid(id))throw Error('INVALID_SESSION');

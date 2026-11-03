@@ -12,10 +12,10 @@ const id=(n:number)=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
 const exam={key:'exam',dbExamId:id(9),questions:[1,2,3,4].map(n=>({key:`q${n}`,dbQuestionId:id(10+n),label:`${n}번 문제`}))} as SourceExam;
 const drafts=Object.fromEntries([1,2,3,4].map(n=>[`q${n}`,{body:`답안${n}`,saved:true,images:false,revision:1}]));
 const leaves=Object.fromEntries([1,2,3,4].map(n=>[id(10+n),id(20+n)]));
-let serial=0,lost=false,first=true,sourceChanged=false,claimFailed=false,quoteCredits=1, submitted:string[]=[];
+let serial=0,lost=false,first=true,sourceChanged='',claimFailed=false,quoteCredits=1, submitted:string[]=[];
 const source=()=>({version:'essay-credit-source-v1',grant_id:quoteCredits===0?null:id(500),source:quoteCredits===0?'included':'beta',beta:1,signup_bonus:2,purchase:3,other:0});
 beforeEach(()=>{
- f.saved.clear();serial=0;lost=false;first=true;sourceChanged=false;claimFailed=false;quoteCredits=1;submitted=[];
+ f.saved.clear();serial=0;lost=false;first=true;sourceChanged='';claimFailed=false;quoteCredits=1;submitted=[];
  f.create.mockReset().mockImplementation(async()=>({attempt_id:id(100+(++serial))}));
  f.read.mockReset().mockResolvedValue({can_request_evaluation:true,input_state:'READY_FOR_EVALUATION',candidate_regions:[],candidate:null});
  f.rpc.mockReset().mockImplementation((name:string,args:Record<string,unknown>)=>({abortSignal:async()=>{
@@ -23,7 +23,7 @@ beforeEach(()=>{
   if(name==='essay_beta_daily_claim_v2')return claimFailed?{data:null,error:{message:'CLAIM_FAILED'}}:{data:{active:true},error:null};
   if(name==='math_session_quote')return {data:{credits_required:quoteCredits},error:null};
   if(name==='math_session_quote_source')return {data:{credits_required:quoteCredits,credit_source:source()},error:null};
-  if(name==='math_session_continue_source'){if(sourceChanged)return {data:null,error:{message:'CHARGE_SOURCE_CHANGED'}};submitted=args.p_attempts as string[];if(lost&&first){first=false;throw Error('response lost');}return {data:id(200),error:null};}
+  if(name==='math_session_continue_source'){if(sourceChanged)return {data:null,error:{message:sourceChanged}};submitted=args.p_attempts as string[];if(lost&&first){first=false;throw Error('response lost');}return {data:id(200),error:null};}
   if(name==='math_session_read')return {data:{version:'math-session-v1',run_id:id(200),exam_id:id(9),parent_id:null,state:'completed',created_at:'2026-10-25',free_rewrite_available:true,questions:submitted.map((attempt_id,i)=>({attempt_id,leaf_id:id(21+i),question_id:id(11+i),evaluation_id:id(300+i),state:'COMPLETED'}))},error:null};
   throw Error('unexpected RPC '+name);
  }}));
@@ -145,8 +145,8 @@ it('never claims a daily grant or consumes a grant for a known free rewrite',asy
  expect(f.rpc.mock.calls.find(([name])=>name==='math_session_continue_source')![1]).toMatchObject({p_expected_credits:0,p_expected_grant:null,p_previous:previous});
 });
 
-it('changed credit source requires a fresh quote and consent without silently using paid credit',async()=>{
- sourceChanged=true;
+it.each(['CHARGE_SOURCE_CHANGED','CHARGE_CHANGED'])('%s requires a fresh quote and consent without silently using paid credit',async code=>{
+ sourceChanged=code;
  render(<MathExamSessionSubmit exam={exam} drafts={drafts} included={['q1']} leaves={leaves}/>);
  const prepare=await screen.findByRole('button',{name:/사진에서 답안 추출하기/});await waitFor(()=>expect(prepare).not.toBeDisabled());fireEvent.click(prepare);
  fireEvent.click(await screen.findByRole('button',{name:'회차 첨삭 요청 · 이용권 확인'}));
