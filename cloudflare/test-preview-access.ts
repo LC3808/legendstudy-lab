@@ -1,5 +1,5 @@
 /** TASK09 private TEST site only. This gate never authorizes Supabase/admin access. */
-export type PreviewEnv = { TEST_PREVIEW_ACCESS_KEY?: string };
+export type PreviewEnv = { TEST_PREVIEW_ACCESS_KEY?: string; ESSAY_COMMERCE_RUNTIME_TEST_ENABLED?: string };
 const host = /^(?:[a-z0-9-]+\.)?legendstudy-(?:task09|task16b)\.pages\.dev$/;
 const cookieName = '__Host-task09_review';
 const lifetime = 8 * 60 * 60;
@@ -37,6 +37,7 @@ export async function testPreviewAccess(request: Request, env: PreviewEnv, next:
     /^\/api\/math\/(upload|extract|evaluate|recover|artifact)$/.test(url.pathname)&&
     /^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
   if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='GET'&&['/api/essay/availability','/api/essay/student-pdfs'].includes(url.pathname)&&/^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
+  if(env.ESSAY_COMMERCE_RUNTIME_TEST_ENABLED==='true'&&url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='POST'&&url.pathname==='/api/essay/exam'&&/^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
   if(url.hostname==='legendstudy-task16b.pages.dev'&&request.method==='POST'&&url.pathname==='/api/essay/catalog'&&/^Bearer [^\s]+$/.test(request.headers.get('authorization')||''))return next();
   const seconds = Math.floor(now / 1000);
   if (url.pathname === '/__review-access' && request.method === 'POST') {

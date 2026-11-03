@@ -175,3 +175,12 @@ it('disabled source contract and malformed grant cannot reserve',async()=>{
  }
  expect(m.request).not.toHaveBeenCalled();
 });
+
+it('isolated commerce flag never enables other hosts, databases or exams',async()=>{
+ const testEnv={ESSAY_EXAM_RUNTIME_ENABLED:'false',ESSAY_COMMERCE_TEST_ENABLED:'true',ESSAY_COMMERCE_RUNTIME_TEST_ENABLED:'true',MATH_PROJECT_REF:'kpqbedylxlyntrrfybpn',MATH_SUPABASE_URL:'https://kpqbedylxlyntrrfybpn.supabase.co'};
+ for(const [host,ref,exam] of [['https://lab.legendstudy.com','kpqbedylxlyntrrfybpn','e8ea5bb3-0956-5fd6-b90e-4b7fb350b2f9'],['https://legendstudy-task16b.pages.dev','other','e8ea5bb3-0956-5fd6-b90e-4b7fb350b2f9'],['https://legendstudy-task16b.pages.dev','kpqbedylxlyntrrfybpn',id]]){
+  const response=await onRequestPost({request:new Request(host+'/api/essay/exam',{method:'POST',headers:{Authorization:'Bearer synthetic'},body:JSON.stringify({action:'availability',examId:exam})}),env:{...testEnv,MATH_PROJECT_REF:ref}});
+  expect(response.status).toBe(503);
+ }
+ expect(m.dispatch).not.toHaveBeenCalled();expect(m.subject).not.toHaveBeenCalled();
+});

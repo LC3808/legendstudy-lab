@@ -43,3 +43,13 @@ it('native original route reaches owner-authenticated handler only on canonical 
  for(const request of [make('legendstudy-task16b.pages.dev','GET'),make('legendstudy-task16b.pages.dev','POST',false),make('abc.legendstudy-task16b.pages.dev')])expect((await testPreviewAccess(request,env,next)).status).toBe(401);
  expect(next).toHaveBeenCalledTimes(1);
 });
+
+it('only explicitly enabled canonical TEST exam POST reaches JWT handler without browser cookie',async()=>{
+ const env={TEST_PREVIEW_ACCESS_KEY:'x'.repeat(40),ESSAY_COMMERCE_RUNTIME_TEST_ENABLED:'true'};
+ const next=vi.fn(async()=>new Response('still requires handler JWT validation'));
+ const req=(host='legendstudy-task16b.pages.dev',token=true,method='POST')=>new Request(`https://${host}/api/essay/exam`,{method,headers:token?{Authorization:'Bearer synthetic'}:{}});
+ expect((await testPreviewAccess(req(),env,next)).status).toBe(200);
+ for(const request of [req('abc.legendstudy-task16b.pages.dev'),req('legendstudy-task16b.pages.dev',false),req('legendstudy-task16b.pages.dev',true,'GET')])expect((await testPreviewAccess(request,env,next)).status).toBe(401);
+ expect((await testPreviewAccess(req(),{...env,ESSAY_COMMERCE_RUNTIME_TEST_ENABLED:'false'},next)).status).toBe(401);
+ expect(next).toHaveBeenCalledTimes(1);
+});

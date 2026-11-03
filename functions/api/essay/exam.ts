@@ -1,21 +1,23 @@
-import {commerceTestScope,examLaunchHold} from '../../../src/lib/essay-runtime/launch-policy';
+import {commerceTestScope,commerceTestExam,examLaunchHold} from '../../../src/lib/essay-runtime/launch-policy';
 import {publicExamScope} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import {boundedBody} from '../../../src/lib/math-release/server/request';
-type Env=MathEnvironment&WorkerEnvironment&{ESSAY_COMMERCE_TEST_ENABLED?:string;ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_CREDIT_SOURCE_ENABLED?:string;ESSAY_CONTINUOUS_CYCLES_ENABLED?:string;ESSAY_E2E_SCOPE?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
+type Env=MathEnvironment&WorkerEnvironment&{ESSAY_COMMERCE_TEST_ENABLED?:string;ESSAY_COMMERCE_RUNTIME_TEST_ENABLED?:string;ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_CREDIT_SOURCE_ENABLED?:string;ESSAY_CONTINUOUS_CYCLES_ENABLED?:string;ESSAY_E2E_SCOPE?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(v);
 /** Shared Native/Web gateway. Disabled until DB/host/content/E2E authorization. */
 export async function onRequestPost({request,env}:{request:Request;env:Env}){
  const headers={'Cache-Control':'private, no-store','Vary':'Authorization, Origin'};
  const reply=(body:unknown,status=200)=>Response.json(body,{status,headers});
- if(env.ESSAY_EXAM_RUNTIME_ENABLED!=='true')return reply({code:'EVALUATION_UNAVAILABLE'},503);
+ const isolatedCommerce=env.ESSAY_COMMERCE_RUNTIME_TEST_ENABLED==='true'&&commerceTestScope(request.url,env,commerceTestExam.examId);
+ if(env.ESSAY_EXAM_RUNTIME_ENABLED!=='true'&&!isolatedCommerce)return reply({code:'EVALUATION_UNAVAILABLE'},503);
  const origin=request.headers.get('origin');if(origin&&origin!==env.MATH_ORIGIN)return reply({code:'ACCESS_DENIED'},403);
  const token=request.headers.get('authorization')?.match(/^Bearer ([^\s]+)$/)?.[1];if(!token)return reply({code:'LOGIN_REQUIRED'},401);
  let run:string|undefined;
  try{
   const input=JSON.parse(new TextDecoder().decode(await boundedBody(request,1048576))) as Record<string,unknown>;
+  if(env.ESSAY_EXAM_RUNTIME_ENABLED!=='true'&&!commerceTestScope(request.url,env,input.examId))return reply({code:'EVALUATION_UNAVAILABLE'},503);
   const publicExams=publicExamScope(env.ESSAY_PUBLIC_EXAMS);
   const publicRelease=publicExams.length<=256&&publicExams.every(uuid)&&uuid(input.examId)&&publicExams.includes(input.examId);
   const transport=serverTransport(env),subject=await transport.subject(token,publicRelease);
