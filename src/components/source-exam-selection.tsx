@@ -15,6 +15,7 @@ import {sourceExams,type SourceExam} from '@/lib/essay-runtime/source-registry';
 import {loadRegisteredMaterials,mergeRegisteredCatalog} from '@/lib/essay-runtime/registered-material-catalog';
 import {ScopedExamSubmit} from './scoped-exam-submit';
 import {SourceExamWriter} from './source-exam-writer';
+import {task16gBrowser,task16gExamId} from '@/lib/essay-runtime/task16g-test-catalog';
 export function SourceExamSelection({sourceId,registeredOnly=false,onSelectionChange}:{sourceId:string;registeredOnly?:boolean;onSelectionChange?:(title:string)=>void}){
  const auth=useAuth();
  const identity=`${sourceId}:${auth.user?.id??'guest'}`;
@@ -29,7 +30,9 @@ export function SourceExamSelection({sourceId,registeredOnly=false,onSelectionCh
    let response:Response;
    const session=auth.client?(await auth.client.auth.getSession()).data.session:null;
    if(!active)return;
-   if(registeredOnly&&auth.client){
+   // TEST metadata includes the reviewed image-input and official PDF contract.
+   // Its authenticated endpoint still checks the existing owner allowlist.
+   if(registeredOnly&&auth.client&&!(session&&task16gBrowser(globalThis.location?.origin))){
     const registered=await loadRegisteredMaterials(auth.client,sourceId);
     if(registered.length){if(active){setRows(mergeRegisteredCatalog(sourceExams(sourceId),registered));setLoadedFor(identity);setLoadError(false);}return;}
    }
@@ -82,7 +85,8 @@ function Selection({rows,owner,onSelectionChange}:{rows:SourceExam[];owner:strin
 }
 
 function ExamWorkspace({exam,owner,onUnsaved}:{exam:SourceExam;owner:string;onUnsaved:(value:boolean)=>void}){
- const naturalHeld=examLaunchHold(exam.dbExamId)==='NATURAL_MATH_HOLD'||/자연|의예/.test(exam.track);
+ const isolatedNatural=exam.dbExamId===task16gExamId&&task16gBrowser(globalThis.location?.origin);
+ const naturalHeld=!isolatedNatural&&(examLaunchHold(exam.dbExamId)==='NATURAL_MATH_HOLD'||/자연|의예/.test(exam.track));
  const [questionKey,setQuestionKey]=useState('');
  const [panels,setPanels]=useState<Record<string,{open:string[];manual:boolean}>>({});
  const [excluded,setExcluded]=useState<string[]>([]);

@@ -9,3 +9,9 @@ it('requires both dedicated TEST host and isolated database',()=>{
  expect(task16gPdfs.map(q=>q.startPage)).toEqual([2,3]);
  expect(JSON.stringify(task16gExam)).not.toMatch(/scoring|correct_answer|generated_solution/);
 });
+
+import {task16gBrowser} from './task16g-test-catalog';
+it('TEST selection exception is exact HTTPS origin only, never Production or deployment aliases',()=>{
+ expect(task16gBrowser('https://legendstudy-task16b.pages.dev')).toBe(true);
+ for(const origin of [undefined,'http://legendstudy-task16b.pages.dev','https://lab.legendstudy.com','https://abc.legendstudy-task16b.pages.dev'])expect(task16gBrowser(origin)).toBe(false);
+});

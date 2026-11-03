@@ -7,7 +7,7 @@ import {publicCatalog} from '../../../src/lib/essay-runtime/public-discovery';
 import {studentPdfForExam} from '../../../src/lib/materials/student-asset';
 import evidence from '../../../src/data/essay-whole-exam-release-evidence.json';
 import {legendStudySupabaseUrl} from '../../../src/lib/auth-config';
-type Env=MathEnvironment & {ESSAY_COMMERCE_TEST_ENABLED?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
+type Env=MathEnvironment & {ESSAY_COMMERCE_TEST_ENABLED?:string;ESSAY_COMMERCE_RUNTIME_TEST_ENABLED?:string;ESSAY_PUBLIC_EXAMS?:string;ESSAY_EXAM_RUNTIME_ENABLED?:string;ESSAY_REGISTRY_WORKER_JWT?:string};
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
 /** Shared discovery only. Whole-exam evidence is pinned, then checked against live
  * public policy, Registry and DB preflight. No Python initialization or Provider. */
@@ -19,11 +19,13 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
  const test=commerceTestScope(request.url,env,commerceTestExam.examId);
  if(env.MATH_ORIGIN!==new URL(request.url).origin||(!test&&env.MATH_SUPABASE_URL!==legendStudySupabaseUrl))return fail();
  try{
-  const raw=(env.ESSAY_PUBLIC_EXAMS??'').trim(),scope=raw?publicExamScope(raw):[];
+  // TEST uses its exact reviewed exam, never the Production public allowlist.
+  const raw=test?'':(env.ESSAY_PUBLIC_EXAMS??'').trim(),scope=raw?publicExamScope(raw):[];
   if(raw&&!scope.length)throw Error('INVALID_PUBLIC_SCOPE');
   if(scope.length>256||!scope.every(uuid)||new Set(scope).size!==scope.length)throw Error('INVALID_PUBLIC_SCOPE');
   const transport=serverTransport(env),subject=await transport.subject(token,!test);
-  const candidates=env.ESSAY_EXAM_RUNTIME_ENABLED==='true'?test?[commerceTestExam]:[...evidence.exams.map(e=>({...e,partial:false})),...partialEvidence.exams.map(e=>({...e,partial:true}))].filter(e=>!examLaunchHold(e.examId)&&scope.includes(e.examId)&&e.questionIds.length&&e.questionIds.every(q=>studentPdfForExam(e.examId,q))):[];
+  const enabled=env.ESSAY_EXAM_RUNTIME_ENABLED==='true'||(test&&env.ESSAY_COMMERCE_RUNTIME_TEST_ENABLED==='true');
+  const candidates=enabled?test?[commerceTestExam]:[...evidence.exams.map(e=>({...e,partial:false})),...partialEvidence.exams.map(e=>({...e,partial:true}))].filter(e=>!examLaunchHold(e.examId)&&scope.includes(e.examId)&&e.questionIds.length&&e.questionIds.every(q=>studentPdfForExam(e.examId,q))):[];
   const universities=new Set<string>(),exams:{examId:string;universityId:string;questionIds:string[]}[]=[];
   if(candidates.length){
    const credential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);

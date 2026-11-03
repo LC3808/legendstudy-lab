@@ -1,6 +1,7 @@
 import type {SourceExam} from './source-registry';
 import type {MathEnvironment} from '../math-release/server/transport';
 /** Reviewed official question metadata, isolated TEST only; never a public launch gate. */
+export function task16gBrowser(origin:string|undefined){return origin==='https://legendstudy-task16b.pages.dev';}
 export function task16gTest(request:Request,env:MathEnvironment){
  return new URL(request.url).hostname==='legendstudy-task16b.pages.dev'&&env.MATH_PROJECT_REF==='kpqbedylxlyntrrfybpn'&&env.MATH_SUPABASE_URL==='https://kpqbedylxlyntrrfybpn.supabase.co';
 }

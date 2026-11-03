@@ -44,3 +44,12 @@ it('TEST discovery verifies both official question IDs and the pinned package',a
  m.rpcRaw.mockImplementation(async name=>name==='essay_exam_session_ready'?'exam-session-v1':[{examId:commerceTestExam.examId,universityId:commerceTestExam.universityId,questions:[{id:commerceTestExam.questionIds[0]}]}]);
  expect((await onRequestGet(context)).status).toBe(503);
 });
+
+it('TASK16-J uses the exact isolated runtime scope with the legacy empty public binding',async()=>{
+ const origin='https://legendstudy-task16b.pages.dev';
+ const context={request:new Request(origin+'/api/essay/public-service-status',{headers:{Authorization:'Bearer fixture'}}),env:{MATH_ORIGIN:origin,MATH_PROJECT_REF:'kpqbedylxlyntrrfybpn',MATH_SUPABASE_URL:'https://kpqbedylxlyntrrfybpn.supabase.co',ESSAY_COMMERCE_TEST_ENABLED:'true',ESSAY_COMMERCE_RUNTIME_TEST_ENABLED:'true',ESSAY_EXAM_RUNTIME_ENABLED:'false',ESSAY_PUBLIC_EXAMS:'[]'}};
+ m.rpcRaw.mockImplementation(async name=>name==='essay_exam_session_ready'?'exam-session-v1':name==='essay_exam_preflight'?{package_digest:commerceTestExam.packageDigest}:[{examId:commerceTestExam.examId,universityId:commerceTestExam.universityId,questions:commerceTestExam.questionIds.map(id=>({id}))}]);
+ const response=await onRequestGet(context);expect(response.status).toBe(200);expect((await response.json()).exams.map((e:{examId:string})=>e.examId)).toEqual([commerceTestExam.examId]);
+ expect(m.worker).not.toHaveBeenCalled();
+ expect((await send({ESSAY_PUBLIC_EXAMS:'[]',ESSAY_COMMERCE_RUNTIME_TEST_ENABLED:'true'})).status).toBe(503);
+});
