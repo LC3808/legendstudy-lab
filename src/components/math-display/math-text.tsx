@@ -3,8 +3,15 @@ import 'katex/dist/katex.min.css';
 
 export function displayMathSource(source:string){
  // Display existing radical syntax only; preserve explicit index, braces and operands.
+ // Only an operand boundary permits a printed superscript to be a root index;
+ // x⁴√3 can instead mean x to the fourth times a square root and stays that way.
+ const indexed=source.replace(/(^|[\s(,=<>≤≥+*/-])([⁰¹²³⁴⁵⁶⁷⁸⁹]+)√(\{|[A-Za-zα-ωΑ-Ω]|[0-9]+)/g,
+  (_,boundary:string,index:string,operand:string)=>{
+   const digits=Array.from(index,digit=>'⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(digit)).join('');
+   return `${boundary}\\sqrt[${digits}]${operand==='{'?'{':`{${operand}}`}`;
+  });
  // A malformed or incomplete expression still falls back to its unchanged source.
- return source.replace(/′/g, "'").replace(/√(?=(?:\[[0-9]+\])?\{)/g, '\\sqrt').replace(/√([A-Za-zα-ωΑ-Ω]|[0-9]+)/g,(_,atom:string)=>`\\sqrt{${atom}}`).replace(/([A-Za-z])\u0304/g,(_,letter:string)=>`\\bar{${letter}}`);
+ return indexed.replace(/′/g, "'").replace(/√(?=(?:\[[0-9]+\])?\{)/g, '\\sqrt').replace(/√([A-Za-zα-ωΑ-Ω]|[0-9]+)/g,(_,atom:string)=>`\\sqrt{${atom}}`).replace(/([A-Za-z])\u0304/g,(_,letter:string)=>`\\bar{${letter}}`);
 }
 
 /** Display only: never rewrites the stored answer or interprets a formula as executable code. */

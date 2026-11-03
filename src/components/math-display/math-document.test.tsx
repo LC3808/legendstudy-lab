@@ -83,3 +83,22 @@ it('never fills missing indexed-root content or silently converts an unspecified
  expect(container.querySelector('.math-source-fallback')?.textContent).toContain(source);
  expect(displayMathSource('√[?]{3}')).toBe('√[?]{3}');
 });
+
+it('renders the actual free-rewrite OCR superscript fourth-root index as mroot',()=>{
+ const source='t>1/⁴√3\nS(⁴√u)\n²√{x+1}\n³√8\n¹²√u';
+ const {container}=render(<MathDocument text={source}/>);
+ expect(container.querySelector('.math-source-fallback')).toBeNull();
+ expect(Array.from(container.querySelectorAll('mroot')).map(n=>n.lastElementChild?.textContent)).toEqual(['4','4','2','3','12']);
+ expect(Array.from(container.querySelectorAll('annotation')).map(n=>n.textContent)).toEqual([
+  String.raw`t>1/\sqrt[4]{3}`,String.raw`S(\sqrt[4]{u})`,String.raw`\sqrt[2]{x+1}`,String.raw`\sqrt[3]{8}`,String.raw`\sqrt[12]{u}`,
+ ]);
+ expect(source).toBe('t>1/⁴√3\nS(⁴√u)\n²√{x+1}\n³√8\n¹²√u');
+});
+it('does not reinterpret a preceding exponent or invent a missing radical operand',()=>{
+ expect(displayMathSource('x⁴√3')).toBe(String.raw`x⁴\sqrt{3}`);
+ expect(displayMathSource('⁴√')).toBe('⁴√');
+ expect(displayMathSource('⁻³√x')).toBe(String.raw`⁻³\sqrt{x}`);
+ const source='t>⁴√{';
+ const {container}=render(<MathDocument text={source}/>);
+ expect(container.querySelector('.math-source-fallback')?.textContent).toContain(source);
+});
