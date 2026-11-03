@@ -1,0 +1,400 @@
+{
+  "schema_version": 1,
+  "project": "stlhijzpjfgwwdgunlsd",
+  "status": "ALL_FOUR_PRODUCTION_MIGRATIONS_APPLIED_BY_PARENT_READONLY_VERIFIED",
+  "applied_by": "parent/root",
+  "verified_by": "app58_artifact_audit",
+  "verification_mode": "read_only",
+  "remote_mutations_by_verifier": 0,
+  "provider_calls_by_verifier": 0,
+  "store_artifacts_unchanged": true,
+  "captured_at_utc": "2026-11-03 16:09:48.562855+00",
+  "migration_history_observed_at_utc": "2026-11-03T16:12:22.098624+00:00",
+  "migrations": [
+    {
+      "name": "math_commerce_learning_incremental",
+      "version": "20261103160553"
+    },
+    {
+      "name": "expanded_math_commerce_release_scope",
+      "version": "20261103160608"
+    },
+    {
+      "name": "expanded_math_commerce_beta_connection",
+      "version": "20261103160626"
+    },
+    {
+      "name": "mixed_complete_question_guard",
+      "version": "20261103160855"
+    }
+  ],
+  "postflight": {
+    "current_user": "postgres",
+    "raw_acl_leaks": [],
+    "checked_functions": 20,
+    "function_mismatches": [],
+    "memberships_preserved": true,
+    "disclosure_tables_protected": true,
+    "temporary_privileges_absent": true
+  },
+  "scope_postflight": {
+    "total_scope": 202,
+    "expected_total": 202,
+    "campaign_preserved": true,
+    "new_scope_mismatches": [],
+    "existing_scope_preserved": true
+  },
+  "mixed_guard_postflight": {
+    "acl": "{postgres=X/postgres}",
+    "owner": "postgres",
+    "config": [
+      "search_path=\"\""
+    ],
+    "anon_denied": true,
+    "source_matches": true,
+    "security_definer": false,
+    "essay_worker_denied": true,
+    "service_role_denied": true,
+    "authenticated_denied": true
+  },
+  "preservation": {
+    "baseline_at_utc": "2026-11-03 15:54:06.217315+00",
+    "protected_unchanged_table_count": 13,
+    "unchanged_tables": [
+      {
+        "table": "public.credit_accounts",
+        "count": 144,
+        "rowset_md5": "6149d79c5edff91d2a74502a494efec4",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "public.credit_grants",
+        "count": 154,
+        "rowset_md5": "6acfaf1bcc6a4a9107941cedd16cf749",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "public.credit_transactions",
+        "count": 243,
+        "rowset_md5": "184b16673277149032b06896faae89f8",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "public.essay_billing_decisions",
+        "count": 72,
+        "rowset_md5": "b5e9106625b7d03c36048db700201daf",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "public.payment_events",
+        "count": 36,
+        "rowset_md5": "6dcef3f38fdad9f9d0580cbee561c4ad",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "public.payment_operations",
+        "count": 9,
+        "rowset_md5": "5991937b73c2563dbf5b15f8b6679b0a",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "public.payment_orders",
+        "count": 18,
+        "rowset_md5": "42e7d7d34fa07700d5813cca5efa5644",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "public.math_billing_bindings",
+        "count": 11,
+        "rowset_md5": "c22afef9e258ee319075fa705247699b",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "public.essay_evaluations",
+        "count": 0,
+        "rowset_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "public.math_evaluations",
+        "count": 11,
+        "rowset_md5": "775c30eb7e30b1a2bee2f159512c12fe",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "math_private.session_runs",
+        "count": 0,
+        "rowset_md5": "d41d8cd98f00b204e9800998ecf8427e",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "essay_exam_private.runs",
+        "count": 54,
+        "rowset_md5": "3e5319d23bc72013ebe681e0f2bfdc8a",
+        "identical_to_preapplication": true
+      },
+      {
+        "table": "essay_beta_private.campaigns",
+        "count": 1,
+        "rowset_md5": "8b746146f23e61eecdf5abbf2f79c0c7",
+        "identical_to_preapplication": true
+      }
+    ],
+    "intended_scope_change": {
+      "table": "essay_beta_private.exam_scope",
+      "before_count": 160,
+      "after_count": 202,
+      "existing_160_rows_preserved": true,
+      "new_complete_nonmedical_exams": 42,
+      "current_rowset_md5": "8830192861e1c08c7e1812d3e0d72d3a"
+    }
+  },
+  "targeted_advisors": {
+    "security": [
+      {
+        "lint": "rls_enabled_no_policy",
+        "level": "INFO",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+        "detail": "Table \\`math_private.coaching_disclosures\\` has RLS enabled, but no policies exist",
+        "metadata": {
+          "name": "coaching_disclosures",
+          "type": "table",
+          "schema": "math_private"
+        },
+        "observed_at": "2026-11-03T16:09:52.363Z"
+      },
+      {
+        "lint": "rls_enabled_no_policy",
+        "level": "INFO",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+        "detail": "Table \\`math_private.mixed_coaching_disclosures\\` has RLS enabled, but no policies exist",
+        "metadata": {
+          "name": "mixed_coaching_disclosures",
+          "type": "table",
+          "schema": "math_private"
+        },
+        "observed_at": "2026-11-03T16:09:52.363Z"
+      },
+      {
+        "lint": "rls_enabled_no_policy",
+        "level": "INFO",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+        "detail": "Table \\`math_private.mixed_coaching_hints\\` has RLS enabled, but no policies exist",
+        "metadata": {
+          "name": "mixed_coaching_hints",
+          "type": "table",
+          "schema": "math_private"
+        },
+        "observed_at": "2026-11-03T16:09:52.363Z"
+      },
+      {
+        "lint": "authenticated_security_definer_function_executable",
+        "level": "WARN",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+        "detail": "Function `public.essay_math_coaching(p_request jsonb)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/essay_math_coaching`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+        "metadata": {
+          "name": "essay_math_coaching",
+          "schema": "public",
+          "language": "plpgsql",
+          "arguments": "p_request jsonb",
+          "security_definer": true
+        },
+        "observed_at": "2026-11-03T16:09:52.363Z"
+      },
+      {
+        "lint": "authenticated_security_definer_function_executable",
+        "level": "WARN",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+        "detail": "Function `public.math_coaching(p_request jsonb)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/math_coaching`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+        "metadata": {
+          "name": "math_coaching",
+          "schema": "public",
+          "language": "plpgsql",
+          "arguments": "p_request jsonb",
+          "security_definer": true
+        },
+        "observed_at": "2026-11-03T16:09:52.363Z"
+      },
+      {
+        "lint": "authenticated_security_definer_function_executable",
+        "level": "WARN",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+        "detail": "Function `public.math_session_continue(p_exam uuid, p_key uuid, p_attempts uuid[], p_previous uuid, p_expected_credits integer)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/math_session_continue`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+        "metadata": {
+          "name": "math_session_continue",
+          "schema": "public",
+          "language": "plpgsql",
+          "arguments": "p_exam uuid, p_key uuid, p_attempts uuid[], p_previous uuid, p_expected_credits integer",
+          "security_definer": true
+        },
+        "observed_at": "2026-11-03T16:09:52.363Z"
+      },
+      {
+        "lint": "authenticated_security_definer_function_executable",
+        "level": "WARN",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+        "detail": "Function `public.math_session_continue_source(p_exam uuid, p_key uuid, p_attempts uuid[], p_previous uuid, p_expected_credits integer, p_expected_grant uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/math_session_continue_source`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+        "metadata": {
+          "name": "math_session_continue_source",
+          "schema": "public",
+          "language": "plpgsql",
+          "arguments": "p_exam uuid, p_key uuid, p_attempts uuid[], p_previous uuid, p_expected_credits integer, p_expected_grant uuid",
+          "security_definer": true
+        },
+        "observed_at": "2026-11-03T16:09:52.363Z"
+      },
+      {
+        "lint": "authenticated_security_definer_function_executable",
+        "level": "WARN",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+        "detail": "Function `public.math_session_quote(p_previous uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/math_session_quote`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+        "metadata": {
+          "name": "math_session_quote",
+          "schema": "public",
+          "language": "plpgsql",
+          "arguments": "p_previous uuid",
+          "security_definer": true
+        },
+        "observed_at": "2026-11-03T16:09:52.363Z"
+      },
+      {
+        "lint": "authenticated_security_definer_function_executable",
+        "level": "WARN",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+        "detail": "Function `public.math_session_quote_source(p_exam uuid, p_previous uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/math_session_quote_source`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+        "metadata": {
+          "name": "math_session_quote_source",
+          "schema": "public",
+          "language": "plpgsql",
+          "arguments": "p_exam uuid, p_previous uuid",
+          "security_definer": true
+        },
+        "observed_at": "2026-11-03T16:09:52.363Z"
+      }
+    ],
+    "performance": []
+  },
+  "advisor_acl_review": {
+    "rpcs": [
+      {
+        "anon": false,
+        "name": "essay_math_coaching",
+        "service_role": false,
+        "authenticated": true,
+        "has_active_check": false,
+        "has_subject_reference": true
+      },
+      {
+        "anon": false,
+        "name": "math_coaching",
+        "service_role": false,
+        "authenticated": true,
+        "has_active_check": false,
+        "has_subject_reference": true
+      },
+      {
+        "anon": false,
+        "name": "math_session_continue",
+        "service_role": false,
+        "authenticated": true,
+        "has_active_check": true,
+        "has_subject_reference": true
+      },
+      {
+        "anon": false,
+        "name": "math_session_continue_source",
+        "service_role": false,
+        "authenticated": true,
+        "has_active_check": true,
+        "has_subject_reference": true
+      },
+      {
+        "anon": false,
+        "name": "math_session_quote",
+        "service_role": false,
+        "authenticated": true,
+        "has_active_check": true,
+        "has_subject_reference": true
+      },
+      {
+        "anon": false,
+        "name": "math_session_quote_source",
+        "service_role": false,
+        "authenticated": true,
+        "has_active_check": true,
+        "has_subject_reference": true
+      }
+    ],
+    "tables": [
+      {
+        "rls": true,
+        "name": "coaching_disclosures",
+        "owner": "math_executor",
+        "policies": 0,
+        "anon_direct_access": false,
+        "service_role_direct_access": false,
+        "authenticated_direct_access": false
+      },
+      {
+        "rls": true,
+        "name": "mixed_coaching_disclosures",
+        "owner": "postgres",
+        "policies": 0,
+        "anon_direct_access": false,
+        "service_role_direct_access": false,
+        "authenticated_direct_access": false
+      },
+      {
+        "rls": true,
+        "name": "mixed_coaching_hints",
+        "owner": "postgres",
+        "policies": 0,
+        "anon_direct_access": false,
+        "service_role_direct_access": false,
+        "authenticated_direct_access": false
+      }
+    ]
+  },
+  "delegated_guard_metadata": [
+    {
+      "name": "essay_exam_history_before_task16g",
+      "source_md5": "1bf400d9b06eaae49d03b272e579bdd9",
+      "uses_auth_uid": true,
+      "checks_student": false,
+      "calls_assert_active": false,
+      "calls_owned_history": true,
+      "calls_require_active": true,
+      "calls_current_subject": false
+    },
+    {
+      "name": "math_coaching_before_task16g",
+      "source_md5": "f598ed7f4fea85bc41053a4ee7417813",
+      "uses_auth_uid": false,
+      "checks_student": true,
+      "calls_assert_active": false,
+      "calls_owned_history": true,
+      "calls_require_active": true,
+      "calls_current_subject": true
+    }
+  ],
+  "advisor_review": {
+    "verdict": "INTENTIONAL_SCOPED_PRIVILEGES_REVIEWED_NO_PERMISSION_CHANGE",
+    "private_tables": "Three private tables have RLS with no client policies; authenticated, anon and service_role direct SELECT/INSERT/UPDATE/DELETE are denied. Access is through reviewed owner-checking RPCs.",
+    "authenticated_rpcs": "Six intentionally authenticated SECURITY DEFINER RPCs deny anon/service_role execution. Four session RPCs directly check active subject/ownership.",
+    "math_coaching": "The final wrapper first delegates to the inaccessible math_coaching_before_task16g; that implementation calls current_subject and require_active and filters evaluation through attempt.student_id.",
+    "essay_math_coaching": "Delegates first to inaccessible essay_exam_history_before_task16g; that preserved implementation reads auth.uid(), calls require_active and filters runs by the current user's credit_account.",
+    "evidence": "Actual function source/owner/ACL/config hashes match reviewed candidates; local ownership, unauthenticated, HOLD and disclosure regressions passed. Production authenticated-user E2E is separate.",
+    "global_advisors": "Existing unrelated project advisor findings remain; this receipt does not claim a clean global advisor report."
+  },
+  "validation_distinction": {
+    "local_core_full_transaction": "PASS",
+    "local_mixed_guard_full_transaction": "PASS",
+    "local_scope_beta_full_target_clone": "NOT_RUN; proprietary official package body export was rejected, not bypassed",
+    "production_all_four_guarded_transactions": "APPLIED_BY_PARENT",
+    "production_metadata_acl_preservation_readonly": "PASS",
+    "production_student_provider_e2e": "NOT_PERFORMED_BY_THIS_VERIFIER",
+    "web_activation": "NOT_ESTABLISHED_BY_THIS_SQL_RECEIPT"
+  },
+  "root_initial_receipt": "/tmp/legendstudy-expanded-production-apply-receipt.json",
+  "note": "The initial parent receipt predates the fourth migration and eligible ACL fixture correction; this independent receipt records observed final database state. Candidate file creation timestamps differ from actual remote migration history versions."
+}

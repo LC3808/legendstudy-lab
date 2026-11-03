@@ -1,6 +1,6 @@
-# APP58 보존 · 수리/상경 확대 연결 SQL 후보 — 2026-11-04
+# APP58 보존 · 수리/상경 확대 연결 SQL — 2026-11-04
 
-상태: **검토용 후보, 이 패키지로 운영/TEST DB를 변경하지 않음**. APP58 IPA/AAB·소스와 기존 release57의 16시험 후보를 보존한다. 기존 Registry·Evidence Package·Credit·Ledger·History를 연결하며 새로운 시험 데이터나 평가 엔진을 만들지 않는다.
+상태: **root가 운영에 4개 Migration 적용 완료; 별도 에이전트의 읽기 전용 postflight PASS**. 적용과 검증의 주체를 구분한다. SQL 작성·독립 검증 에이전트는 운영 DB를 변경하지 않았다. APP58 IPA/AAB·소스와 기존 release57의 16시험 후보를 보존한다. 기존 Registry·Evidence Package·Credit·Ledger·History를 연결하며 새로운 시험 데이터나 평가 엔진을 만들지 않는다.
 
 ## 정확한 범위
 
@@ -16,6 +16,7 @@
 1. `20261103144209_math_commerce_learning_incremental.sql`: 기존 검증 core와 SHA256가 동일하다. 공개 제어·힌트/공개 이력·반복 첨삭 연결을 추가하며 기존 이용권 및 평가 사실을 수정하지 않는다.
 2. `20261103155019_expanded_math_commerce_release_scope.sql`: 기존 41시험의 공식 package/review revision/digest, **전체 Registry question set**, canonical leaf 연결을 고정한다. 범위 밖/원문 drift이면 transaction 전체를 중단한다.
 3. `20261103155021_expanded_math_commerce_beta_connection.sql`: 기존 160행을 보존하고 42행만 추가한다. 이전 scope 함수의 정확한 해시를 요구한다. campaign·기간·일일 제한을 변경하지 않는다.
+4. `20261103160355_mixed_complete_question_guard.sql`: 신규 혼합형 26시험의 전체 문항 제출을 reserve 이전에 강제한다. 기존 동일 요청 재조회와 인문 선택문항 정책은 보존한다.
 
 APP58은 `math_catalog(p_limit:50)`를 고정 호출하고 paging이 없다. 따라서 `50`은 승인된 전체 catalog를 반환하는 호환 요청으로 처리한다(최대 512, 현재 72). JSON 배열 응답 형식은 같다. 1~49의 작은 limit은 그대로 지킨다. 51~512는 지정한 수만 반환한다. 무제한 Registry 공개가 아니다.
 
@@ -46,13 +47,13 @@ APP58은 `math_catalog(p_limit:50)`를 고정 호출하고 paging이 없다. 따
 - 실제 후보의 전체 question set guard predicate: Registry 새 문항 추가 시 fail-closed, rollback 후 정상 PASS.
 - 서강 business Essay-only 허용, 불완전 시험 제외, 범위 밖/다른 사용자/runtime HOLD 차단 PASS.
 
-**scope/beta 전체 target transaction은 NOT_RUN**이다. 확대 함수 본문은 합성 72문항 fixture에서 검증했고, 실제 대상 package pin은 운영 읽기 전용 검증을 사용했다. 대상 DB 전체 extensions/triggers/HTTP/Provider/실기기 품질까지 이 로컬 검증으로 PASS 처리하지 않는다.
+**scope/beta의 실제 target 전체를 복제한 로컬 transaction은 NOT_RUN**이다. 이후 root의 운영 적용에서는 실제 대상의 pin·질문 집합·권한·보존 guard를 포함한 4개 transaction이 모두 성공했고, 별도 읽기 전용 postflight로 결과를 확인했다. 확대 함수 본문은 합성 72문항 fixture에서 검증했고, 실제 대상 package pin은 운영 읽기 전용 검증을 사용했다. 대상 DB 전체 extensions/triggers/HTTP/Provider/실기기 품질까지 이 로컬 검증으로 PASS 처리하지 않는다.
 
 전체 official package를 로컬 fixture로 내보내는 추가 검증은 자동 승인 검토가 proprietary 원문 payload 반출을 사유로 거절했다. 우회하지 않았고 원문 반출도 없다. 메타데이터/합성 자료 검증은 완료했다. 실제 원문을 복제한 full-transaction 검증이 필수라면 그 반출은 별도 Owner 승인 대상이다.
 
 ## 원본 백업 · 적용 전후 검사
 
-- 안전한 함수/ACL 원본 스냅샷은 `/tmp/legendstudy-expanded-production-originals-20261104`(디렉터리700/파일600). 수정 대상의 기존 함수 해시는 현재 운영과 일치한다. 기존 지원 함수 스냅샷도 포함하며 학생 데이터/Secret은 없다. 자동 복원 스크립트가 아니다.
+- 안전한 함수/ACL 원본 스냅샷은 `/tmp/legendstudy-expanded-production-originals-20261104`(디렉터리700/파일600). 적용 직전 기존 함수 해시가 운영과 일치함을 확인했다. 현재는 적용 후 기대값과 대조한다. 기존 지원 함수 스냅샷도 포함하며 학생 데이터/Secret은 없다. 자동 복원 스크립트가 아니다.
 - `production-preflight-receipt.json`: core11/scope3 원문·owner·ACL·config,58개 table/index 메타데이터 일치. scope/new namespace 충돌 없음. 실제 SQL 실행 역할 postgres 확인.
 - `production-protected-baseline.json` / `protected-baseline.sql`:14개 보호 테이블의 count·행집합hash만 보관. accounts144/grants154/transactions243/billing72/payment events36/operations9/orders18/math bindings11/math evaluation11/math runs0/essay runs54/campaign1/scope160. 사용자 원문은 없다.
 - `verify-core.sql`은 core 직후, `verify-expanded.sql` 및 `verify-expanded-scope.sql`은 전체 연결 직후 읽기 전용 검사다. 함수 원문hash/owner/ACL/config, raw endpoint deny, role membership 및 private table 보호를 확인한다.
@@ -63,7 +64,7 @@ APP58은 `math_catalog(p_limit:50)`를 고정 호출하고 paging이 없다. 따
 기존 운영 WEB은 새로운 coaching 응답을 모를 수 있다. core는 Math raw RPC를 안전 projection으로 바꾸므로 core 단독 장기 운영을 피한다. 인문 결과 바이트는 보존되지만 legacy Math 화면과 원본 detail 응답은 영향을 받는다.
 
 1. 확대 dispatch는 HOLD한다. 필요하면 짧은 전환 동안 Math만 HOLD하고 Essay 전체 runtime은 유지한다.
-2. 위 SQL을 core→scope→beta 순으로 검토/적용하고 각 단계 postflight를 확인한다.
+2. 위 SQL을 core→scope→beta→mixed guard 순으로 검토/적용하고 각 단계 postflight를 확인한다. 이 4단계는 root가 적용 완료했다.
 3. 같은 42시험 manifest·72문항 allowlist·coaching/source 계약의 신규 WEB/Worker를 연결한다. APP58 바이너리는 변경하지 않는다.
 4. 기존 인문 및 legacy Math 결과 조회, 신규 시험 선택/quote, 명시적 해설 공개와 History를 확인한 뒤 Owner 승인 범위만 연다.
 5. beta claim은 기존 서버 allocator를 사용한다. 실제 E2E와 합성 SQL PASS를 분리하고 Provider 호출은 최소화한다.
@@ -74,13 +75,13 @@ APP58은 `math_catalog(p_limit:50)`를 고정 호출하고 paging이 없다. 따
 
 2026-11-04 KST 현재 41시험의 Math context 71건은 모두 `openai / gpt-5.6-sol`이며 Pages 기본 모델과 일치한다. Math evaluation은 COMPLETED10/FAILED1, session은0건이다. OCR PROCESSING2건과 Essay reserved1건은 2026-10-26 생성된 오래된 행이고 lease가 같은 날 만료됐다. 활성 lease와 새 작업으로 오인하지 않고 기존 이력 그대로 보존한다. 이 패키지는 재시도·취소·환불을 실행하지 않는다.
 
-Math Session의 `completed`는 **사용자가 제출한 선택 문항 집합**의 완료다. APP58은 제출 전 누락 문항을 나열하고, ‘이용권 1개로 선택한 문항을 첨삭’한다고 확인받는다. 이를 전체 시험의 모든 문항 완료로 보고하지 않는다. 본 검증의 부분 완료 방지는 제출 집합 내 미완료 문항이 있을 때 완료 처리하지 않는다는 의미다. 혼합형 전체 시험은 기존 Essay parent의 전체 질문 집합/Worker 제출 계약을 별도로 확인해야 하며, 자연계 선택 문항 완료를 혼합형 전체 완료 PASS로 대체하지 않는다.
+Math Session의 `completed`는 **사용자가 제출한 선택 문항 집합**의 완료다. APP58은 제출 전 누락 문항을 나열하고, ‘이용권 1개로 선택한 문항을 첨삭’한다고 확인받는다. 이를 전체 시험의 모든 문항 완료로 보고하지 않는다. 본 검증의 부분 완료 방지는 제출 집합 내 미완료 문항이 있을 때 완료 처리하지 않는다는 의미다. 신규 혼합형 26시험은 아래 4번째 guard가 전체 승인 질문 집합 제출을 강제한다. 자연계 선택 문항 완료를 혼합형 전체 완료 PASS로 대체하지 않는다. 실제 Provider E2E 결과와 서버 제출 집합 검증도 구분한다.
 
 검증 재실행: `validation/run_validation.py --pg-bin /opt/homebrew/opt/postgresql@17/bin` (기존 LegendStudy Python venv의 psycopg 및 APP 저장소 baseline fixtures 필요). raw 함수 스냅샷은 Git에 추가하지 않는다. 테스트 소스의 `/tmp/legendstudy-release57-production-*.json` 입력은 기존 읽기 전용 SQL/ACL 스냅샷이다. 공식 시험 원문·학생 원문·Provider 응답 복제를 요구하지 않는다.
 
 ## 후속 보완: 혼합형 전체 문항 제출 경계
 
-`20261103160355_mixed_complete_question_guard.sql`은 **신규 혼합형26시험**에만 적용하는 4번째 후보다. normal/source/paid-cycle/free 경로가 공유하는 기존 private `essay_exam_private.reserve` 한 함수에만 질문 집합 검사를 넣는다. 평가 엔진은 변경하지 않는다.
+`20261103160355_mixed_complete_question_guard.sql`은 **신규 혼합형26시험**에만 적용하는 4번째 Migration이며 root가 운영 적용했다. normal/source/paid-cycle/free 경로가 공유하는 기존 private `essay_exam_private.reserve` 한 함수에만 질문 집합 검사를 넣는다. 평가 엔진은 변경하지 않는다.
 
 - 이미 접수된 동일 key·동일 snapshot 재요청은 기존 순서대로 먼저 반환한다. 기존 부분 제출의 History도 보존한다.
 - 새 요청은 모든 승인 문항을 포함해야 한다. 누락 시 `PT422 / MIXED_COMPLETE_ANSWERS_REQUIRED`, Registry 문항 집합 변경 시 `PT409 / MIXED_RELEASE_SCOPE_CHANGED`로 **grant 선택·reservation·Ledger INSERT 전에** 거부한다.
@@ -91,3 +92,30 @@ Math Session의 `completed`는 **사용자가 제출한 선택 문항 집합**�
 - 독립 에이전트가26개 pin을 target202 inventory와 비교했고 함수 diff가 새 guard만 추가됨을 검토했다.
 
 운영 최초3단계 적용 후 발견된 `eligible` postflight 불일치는 로컬 fixture가 기본 PUBLIC ACL을 남겨 기대값을 null로 기록한 문제였다. **운영의 `{postgres=X/postgres}`가 정확한 기존 권한**이며 정의hash/owner/config는 일치했다. fixture와 기대값을 수정했고 운영 권한은 변경하지 않았다. 이 부분은 기대값 수정이며 보안 완화가 아니다.
+
+## 운영 적용 후 독립 검증 — 2026-11-04 KST
+
+실제 DB 이력의 버전은 후보 파일 생성 시각과 다르다. 파일 이름을 바꾸거나 과거 증거를 덮어쓰지 않는다.
+
+| 실제 Migration history version | 이름 | 후보 파일 생성 버전 |
+| --- | --- | --- |
+| `20261103160553` | `math_commerce_learning_incremental` | `20261103144209` |
+| `20261103160608` | `expanded_math_commerce_release_scope` | `20261103155019` |
+| `20261103160626` | `expanded_math_commerce_beta_connection` | `20261103155021` |
+| `20261103160855` | `mixed_complete_question_guard` | `20261103160355` |
+
+[`production-postflight-independent-20261104.json`](production-postflight-independent-20261104.json)은 `app58_artifact_audit`의 **읽기 전용** 검증 영수증이다. 2026-11-03 16:09~16:12 UTC(11월4일 KST)에 실제 상태를 확인했다. 운영 적용 주체는 `parent/root`이고, 이 검증 에이전트의 remote mutation·Provider 호출은 0회다.
+
+- 함수 20개의 source/owner/ACL/config 기대값 불일치 0. raw RPC 노출 0. 임시 role/schema 권한 잔류 없음.
+- scope 202행, 신규42 pin 정상, 기존160 전체 행과 campaign 동일. 나머지 보호13개 테이블의 count·행집합hash 모두 적용 전과 동일. 학생 답안/평가/이용권/결제의 원문은 이 영수증에 저장하지 않았다.
+- mixed private reserve는 source hash·owner·SECURITY INVOKER·빈 search_path 일치. authenticated/anon/service_role/essay_worker 직접 실행 모두 차단.
+- 4개 SQL 파일 SHA256는 `package-manifest.json`과 일치하며 적용 후 SQL 바이트를 변경하지 않았다.
+- SQL 적용 확인은 신규 WEB 활성화나 실제 학생 Provider E2E·OCR/첨삭 품질 PASS를 대신하지 않는다. 해당 상태는 root의 배포·서비스 검증 보고서에서 따로 판정한다.
+
+### 새 Advisor 항목 검토
+
+새 private table 3개의 [RLS enabled without policy](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy) INFO는 의도된 client default-deny다. `coaching_disclosures`, `mixed_coaching_disclosures`, `mixed_coaching_hints` 모두 RLS가 켜져 있고 authenticated/anon/service_role의 직접 SELECT/INSERT/UPDATE/DELETE 권한이 없다. 소유권을 검증하는 RPC로만 접근한다.
+
+[authenticated SECURITY DEFINER RPC](https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable) WARN 6개는 의도된 인증 사용자 계약이다. `math_coaching`, `essay_math_coaching`, `math_session_quote`, `math_session_continue`, `math_session_quote_source`, `math_session_continue_source`이며, anon/service_role 실행은 모두 거부한다. 네 session RPC는 직접 계정 활성·현재 주체·소유권을 확인한다. 두 coaching wrapper는 먼저 보호된 기존 내부 함수로 위임한다. `math_coaching_before_task16g`는 `current_subject`·`require_active`와 attempt.student_id를 검사한다. `essay_exam_history_before_task16g`는 `auth.uid()`·`require_active`와 현재 사용자의 credit_account로 run을 제한한다. 두 내부 함수의 클라이언트 실행 권한은 차단돼 있다.
+
+이 판단은 실제 해시/권한 대조와 기존 로컬 타 사용자·비인증·HOLD·공개 제어 회귀에 근거한다. 경고를 숨기거나 권한을 완화하지 않았다. 이번 새 객체와 관련한 performance advisory는 없었지만, 기존 프로젝트 전체의 다른 advisor 항목이 모두 해결됐다는 뜻은 아니다.
