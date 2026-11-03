@@ -1,0 +1,18 @@
+{
+  "status": "CANDIDATE_NOT_APPLIED",
+  "scope": "202 complete nonmedical exams =160 existing +42 additions;71canonical Math+1legacy",
+  "core_source_unchanged": true,
+  "core_full_transaction_local": "PASS",
+  "scope_beta_function_behavior_local": "PASS",
+  "whole_question_guard_predicate_local": "PASS",
+  "scope_beta_full_target_transactions": "NOT_RUN",
+  "actual_package_runtime_readonly": "PASS_213_METADATA_INVENTORY",
+  "provider_calls": 0,
+  "production_mutations": 0,
+  "store_artifacts_unchanged": true,
+  "files": {
+    "20261103144209_math_commerce_learning_incremental.sql": "7df02bca52bc0286ccf10b4b21607cb5d62aa8a61dde585c8e4333af2a8a96ff",
+    "20261103155019_expanded_math_commerce_release_scope.sql": "a4f458caeaecee467c38805c8c917fb1533a7bfd7ee3ed9b012514b7c5f1a642",
+    "20261103155021_expanded_math_commerce_beta_connection.sql": "c014027af4a4ce6502869e0fc044e14a115fdb48490a3fedbee322a7afd0618a"
+  }
+}

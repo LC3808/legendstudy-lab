@@ -1,0 +1,60 @@
+{
+  "model": {
+    "models": [
+      {
+        "exams": 41,
+        "model": "gpt-5.6-sol",
+        "provider": "openai",
+        "questions": 71
+      }
+    ],
+    "essay_exam_states": {
+      "failed": 10,
+      "reserved": 1,
+      "completed": 43
+    },
+    "math_context_count": 71,
+    "math_session_states": null,
+    "binding_mismatch_count": 0,
+    "math_evaluation_states": {
+      "FAILED": 1,
+      "COMPLETED": 10
+    },
+    "math_extraction_states": {
+      "FAILED": 5,
+      "COMPLETED": 13,
+      "PROCESSING": 2
+    }
+  },
+  "pending_lease_ages": {
+    "captured_at": "2026-11-03T16:00:07.804297+00:00",
+    "pending_essay_runs": [
+      {
+        "state": "reserved",
+        "age_hours": 204.3,
+        "created_at": "2026-10-26T03:39:51.015394+00:00",
+        "lease_until": "2026-10-26T03:54:54.167075+00:00",
+        "lease_expired": true,
+        "has_dispatch_key": true
+      }
+    ],
+    "pending_math_extraction": [
+      {
+        "state": "PROCESSING",
+        "age_hours": 198.7,
+        "created_at": "2026-10-26T09:18:13.205226+00:00",
+        "lease_until": "2026-10-26T09:23:13.205225+00:00",
+        "lease_expired": true,
+        "has_error_code": false
+      },
+      {
+        "state": "PROCESSING",
+        "age_hours": 198.7,
+        "created_at": "2026-10-26T09:18:45.999066+00:00",
+        "lease_until": "2026-10-26T09:23:45.999065+00:00",
+        "lease_expired": true,
+        "has_error_code": false
+      }
+    ]
+  }
+}
