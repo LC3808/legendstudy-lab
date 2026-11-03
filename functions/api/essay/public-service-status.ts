@@ -29,7 +29,7 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
   const enabled=env.ESSAY_EXAM_RUNTIME_ENABLED==='true'||(test&&env.ESSAY_COMMERCE_RUNTIME_TEST_ENABLED==='true');
   const expansion=test?[]:betaExpansionCandidates.filter(e=>betaExpansionFor(request.url,env,e.examId));
   const candidates=enabled?test?[commerceTestExam]:[...evidence.exams.map(e=>({...e,partial:false})),...partialEvidence.exams.map(e=>({...e,partial:true})),...expansion.filter(e=>!evidence.exams.some(old=>old.examId===e.examId)).map(e=>({...e,partial:false}))].filter(e=>(!examLaunchHold(e.examId)||expansion.some(x=>x.examId===e.examId))&&scope.includes(e.examId)&&e.questionIds.length&&e.questionIds.every(q=>studentPdfForExam(e.examId,q))):[];
-  const math=expansion.length?await (await mathAvailability({request:new Request(new URL('/api/essay/availability',request.url),{headers:{Authorization:`Bearer ${token}`}}),env})).json():null;
+  const math=expansion.some(e=>Object.keys(e.mathQuestions).length>0)?await (await mathAvailability({request:new Request(new URL('/api/essay/availability',request.url),{headers:{Authorization:`Bearer ${token}`}}),env})).json():null;
   const universities=new Set<string>(),exams:{examId:string;universityId:string;questionIds:string[]}[]=[];
   if(candidates.length){
    const credential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);
@@ -45,7 +45,7 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
      const row=rows.find(r=>r.examId===candidate.examId);
      if(!row||row.universityId!==universityId||!Array.isArray(row.questions)||new Set(row.questions.map((q:{id:string})=>q.id)).size!==row.questions.length||new Set(candidate.questionIds).size!==candidate.questionIds.length||!candidate.questionIds.every(id=>row.questions.some((q:{id:string})=>q.id===id))||(!candidate.partial&&row.questions.length!==candidate.questionIds.length))throw Error('WHOLE_EXAM_CHANGED');
      const expanded=expansion.find(e=>e.examId===candidate.examId);
-     if(expanded&&(!math?.checked||math.types?.math!==true||!expansionMathMatches(expanded,math.mathQuestions)))continue;
+     if(expanded&&Object.keys(expanded.mathQuestions).length>0&&(!math?.checked||math.types?.math!==true||!expansionMathMatches(expanded,math.mathQuestions)))continue;
      // Standalone Math uses its canonical source/profile/catalog admission; the
      // Essay preflight remains authoritative for humanities and mixed parents.
      if(expanded?.mode!=='math'){

@@ -104,3 +104,7 @@ Reused 23 Math commits on actual production `c9bda913`; preserved TEST branch an
 ## 2026-11-04 — Versioned SQL review package and TEST source contract
 
 Added production core/scope/beta candidates with PG17 and rollback proofs; production unapplied. Separate exact TEST upgrade applied, postflight six functions and unchanged ten data counts PASS. HTTP free quote/anonymous denial PASS, paid source NOT_VERIFIED due balance0; overall PARTIAL, no Provider/new evaluation/grant allocation. [Package](../supabase/candidates/release57_math_commerce_20261103/README.md).
+
+## 2026-11-04 — Broader Math/commerce/social connection candidate
+
+Reused current production Registry/Evidence reads to expand the explicit WEB manifest from 16 to 42 complete exams (six universities, 110 questions, 71 Math leaves). Preserved existing humanities evidence and prior partial visibility; excluded medical/incomplete new exams. Removed an unnecessary Math Provider dependency for Essay-only social/commerce discovery. Full WEB regression 1,707 PASS / four existing SKIP; TypeScript/focused lint PASS. Current production deployment and secret presence verified read-only; no deployment, Provider call or DB mutation in this source step. [Implementation/deployment contract](math-commerce-release-integration-20261103.md).
