@@ -5,6 +5,7 @@
  * grounding, root/propagated, rubric-version, and the SHORT_ANSWER brevity firewall.
  */
 
+import { hasSubmittedMathContent, submittedMathAnswer } from "./submitted-answer";
 import {
   MATH_RUBRIC_VERSION,
   type MathEvalOutput,
@@ -13,6 +14,7 @@ import {
 } from "./types";
 
 export type ValidationCode =
+  | "SUBMITTED_ANSWER_IGNORED"
   | "UNKNOWN_RUBRIC_VERSION"
   | "DUPLICATE_STEP_ID"
   | "UNGROUNDED_STEP_REGION"
@@ -91,6 +93,23 @@ export function validateMathEval(
 
   if (output.rubric.rubric_version !== MATH_RUBRIC_VERSION) {
     add("UNKNOWN_RUBRIC_VERSION", `unsupported rubric_version ${output.rubric.rubric_version}`);
+  }
+
+  // An empty typed field must not erase a confirmed photo answer. This checks
+  // acknowledgement, not correctness: irrelevant/non-solution submissions may
+  // remain NOT_ATTEMPTED when grounded in the actual supplied work.
+  if (output.overall.coverage === "NOT_ATTEMPTED" && hasSubmittedMathContent(input)) {
+    const answer = submittedMathAnswer(input)!;
+    const submittedRegionIds = new Set(answer.confirmed_regions.filter(
+      region => !!region.raw_text.trim() || !!region.normalized_math.trim(),
+    ).map(region => region.id));
+    const groundedRejection = output.steps.some(step =>
+      ["INVALID", "NOT_ASSESSABLE"].includes(step.status) &&
+      !!step.representation.trim() && !!step.explanation.trim() &&
+      (step.regions.some(id => submittedRegionIds.has(id)) ||
+        !!answer.typed_text?.includes(step.representation)),
+    );
+    if (!groundedRejection) add("SUBMITTED_ANSWER_IGNORED", "nonempty submitted work was not assessed or acknowledged");
   }
 
   // Steps + region grounding.
