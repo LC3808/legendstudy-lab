@@ -132,3 +132,8 @@ Deployed source `691ba72` as `f11d97ab-248d-49fd-aa5e-ddaf0f36c004`. Production 
 ## 2026-11-04 — Math History and same-exam rewrite metadata repair
 
 Live Inha2027 History exposed static-registry-only identity lookup and absent Math year projection. Reuse exact known exam/university IDs plus existing `essay_browse_catalog` metadata for missing bundled exams; on metadata failure keep History without invented labels. Shared identity lookup opens the same registered Math exam for rewriting. Empty typed photo input now loads confirmed raw transcription in reading order, preserving predecessor assets and owner checks. Six regression files31 PASS; no new RPC/DB/Provider call. Deployment is coordinated with the separate photo-input adapter correction. [Details](math-commerce-release-integration-20261103.md).
+
+
+## 2026-11-04 — Live photo-input and History integration follow-up
+
+Reviewed History/rewrite exact-ID resolution (`4fc3952`) and confirmed-photo Provider input (`0cc5350`) deployed together to Pages `98c8e200-b8e2-41c0-83b3-8c96f42d36fe`. Full1,734 PASS/four existing SKIP, TS/lint/build/Functions/boundaries PASS; unchanged Pages settings and46 environment bindings verified. Actual production Inha2027 History, same-exam free-rewrite entry and confirmed text loading now PASS. Fresh-photo free-rewrite assessment and quality remain separately recorded by the release lead. Prior held result/data preserved; deployment itself invoked no Provider or DB mutation. [Detailed receipt](math-commerce-release-integration-20261103.md#combined-photo-input-and-history-deployment).
