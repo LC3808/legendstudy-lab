@@ -37,6 +37,14 @@ P(X=k)=\frac{n!}{k!(n-k)!}p^k(1-p)^{n-k}
   expect(container.querySelector('.math-source-fallback')).toBeNull();
   expect(container.querySelector('annotation')?.textContent).toBe(String.raw`b-a=10/\sqrt{n}, d-c=6/\sqrt{n}`);
  });
+ it('renders the actual commerce derivative prime without altering stored source',()=>{
+  const source='f(t)=t⁴-1, f′(t)=4t³\nf′(-2)=-32.';
+  const {container}=render(<MathDocument text={source}/>);
+  expect(container.querySelectorAll('math')).toHaveLength(2);
+  expect(container.querySelector('.math-source-fallback')).toBeNull();
+  expect(container.querySelector('annotation')?.textContent).toBe("f(t)=t⁴-1, f'(t)=4t³");
+  expect(source).toContain('f′(-2)=-32.');
+ });
  it('preserves unresolved or malformed source and never enables HTML or links',()=>{
   const {container}=render(<MathDocument text={String.raw`UNCERTAIN
 \frac{broken
