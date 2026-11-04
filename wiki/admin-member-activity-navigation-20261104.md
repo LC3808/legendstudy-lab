@@ -31,3 +31,8 @@ Production receipt and actual UI read checks are appended after deployment. No f
 - Authenticated production browser: member bookmark latest5 of7 and recent-view latest5 of9 show titles/KST dates; existing APP inquiry present; credit v2 source/action statistics present; dashboard first outside categories on inquiries/credit/dashboard.
 - During immediate release propagation an older dashboard document/chunk was observed. Fresh release navigation loaded correctly; subsequent credit → dashboard navigation succeeded with the new top-level link.
 - No replies, grants, consumption, payments, refunds or APP builds executed.
+
+## School chart alignment follow-up
+- Source f9a5c6c: dedicated school chart columns use common 42% label, flexible track and 3ch right-aligned count. Previously each row sized its label independently, shifting track starts and making equal counts appear different.
+- Production 51f34857-677e-4985-956a-eeb374bd0f76, 2026-11-04 19:46 KST; exact manifest and unchanged49bindings verified.
+- Build/TypeScript PASS. Authenticated DOM geometry: all20 tracks share identical start and width; count1 bars are exactly one quarter of count4. No data or SQL changes.
