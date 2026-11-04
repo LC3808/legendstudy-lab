@@ -137,6 +137,7 @@ export type AdminCreditSummary = {
 
 export type AdminCreditGrant = {
   grantId: string;
+  displayKind?: string | null;
   origin: string;
   createdAt: string;
   expiresAt: string | null;
@@ -422,6 +423,7 @@ export function parseCredit(raw: unknown): AdminCredit {
       const row = record(entry, `grants[${index}]`);
       return {
         grantId: str(row.grant_id, `grants[${index}].grant_id`),
+        displayKind: row.display_kind == null ? null : str(row.display_kind, `grants[${index}].display_kind`),
         origin: str(row.origin, `grants[${index}].origin`),
         createdAt: str(row.created_at, `grants[${index}].created_at`),
         expiresAt: strOrNull(row.expires_at, `grants[${index}].expires_at`),

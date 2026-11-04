@@ -1,7 +1,7 @@
 'use client';
 import type {Student360} from '@/lib/admin/student360';
-import {studyDuration,eventLabels,type EventKind} from '@/lib/my/foundation';
-import {StudyBars} from '@/components/my/study-summary';
+import {eventLabels,type EventKind} from '@/lib/my/foundation';
+import {formatStudyTime as studyDuration} from '@/lib/admin/study-time';
 import {AdminErrorPanel,AdminLoading,useAdminQuery} from './admin-surface';
 export function Student360Panel({accountId}:{accountId:string}){
  const {state,reload}=useAdminQuery<Student360>(client=>client.student360(accountId),`student360:${accountId}`);
@@ -9,17 +9,12 @@ export function Student360Panel({accountId}:{accountId:string}){
  if(state.status==='error')return <AdminErrorPanel kind={state.kind} onRetry={reload}/>;
  const d=state.data;const labels:Record<string,string>={student:'재학생',retaker:'N수·검정고시 등',other:'기타'};
  return <section>
-  <h4 className="admin-subhead">학습·지원 기록</h4>
+  <h4 className="admin-subhead">공부 시간·지원 현황</h4>
   <dl className="admin-detail__grid"><div className="admin-detail__row"><dt>현재 상태</dt><dd>{d.status?labels[d.status]:'설정 안 함'}</dd></div>
   <div className="admin-detail__row"><dt>학습시간</dt><dd>오늘 {studyDuration(d.study.today_ms)} · 이번 주 {studyDuration(d.study.week_ms)} · 최근 30일 {studyDuration(d.study.last30_ms)}</dd></div></dl>
-  {d.study.last30_ms===0||d.study.daily7.length===0
-   ? <p className="admin-detail__muted">최근 완료된 학습 기록이 없습니다.</p>
-   : <div className="admin-study"><StudyBars days={d.study.daily7}/></div>}
   <h4 className="admin-subhead">지원 내역</h4>
   {d.applications.items.length?<ul>{d.applications.items.map(a=><li key={a.id}>{a.admission_year}학년도 · {a.university_name_snapshot} · {a.intended_division} · {a.admission_name} · {a.latest_event?eventLabels[a.latest_event.kind as EventKind]??'결과 미입력':'결과 미입력'}</li>)}</ul>:<p>등록된 지원 내역이 없습니다.</p>}
   {d.applications.has_more&&<p>최근 25개 내역을 표시합니다.</p>}
-  <h4 className="admin-subhead">최근 논술 기록</h4>
-  {d.essay.sessions.length?<ul>{d.essay.sessions.map(s=><li key={s.id}>{s.universityName} · {s.admissionYear}학년도 · {s.questionLabel} · 제출 {s.attemptCount}회</li>)}</ul>:<p>등록된 논술 기록이 없습니다.</p>}
-  {d.essay.hasMoreSessions&&<p>최근 50개 연습 기록을 표시합니다.</p>}
+  {d.essay.sessions.length>0&&<details><summary>이전 문항별 논술 연습 기록</summary><ul>{d.essay.sessions.map(s=><li key={s.id}>{s.universityName} · {s.admissionYear}학년도 · {s.questionLabel} · 제출 {s.attemptCount}회</li>)}</ul>{d.essay.hasMoreSessions&&<p>최근 50개 연습 기록입니다.</p>}</details>}
  </section>;
 }

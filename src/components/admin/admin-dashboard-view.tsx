@@ -1,252 +1,45 @@
-"use client";
-import Link from "next/link";
-import {AdminLearningSummary,AdminPublicAvailability} from './admin-learning-summary';
-import {AdminReleaseReport} from './admin-release-report';
-
-import { SchoolDistribution } from "./school-distribution";
-
-import {
-  creditOriginLabel,
-  formatCount,
-  formatCredit,
-  formatNumber,
-  gradeLabel,
-} from "@/lib/admin/format";
-import type { AdminDashboard, AdminSupportMetrics } from "@/lib/admin/contract";
-import { formatDateTime, formatDuration } from "@/lib/admin/format";
-
-import { AdminErrorPanel, AdminLoading, useAdminQuery, useSupportRefresh } from "./admin-surface";
-
-function Metric({ label, value, note }: { label: string; value: string; note?: string }) {
-  return (
-    <div className="admin-metric">
-      <p className="admin-metric__label">{label}</p>
-      <p className="admin-metric__value">{value}</p>
-      {note ? <p className="admin-metric__note">{note}</p> : null}
-    </div>
-  );
+'use client';
+import {useState,useMemo,useEffect} from 'react';
+import Link from 'next/link';
+import {useAuth} from '@/components/auth-context';
+import {analyticsWindow} from '@/lib/admin/analytics';
+import {AdminPeriodFilter} from './admin-period-filter';
+import type {AdminPeriod} from '@/lib/admin/period';
+import {formatStudyTime} from '@/lib/admin/study-time';
+import {useAdminQuery,useSupportRefresh,AdminErrorPanel} from './admin-surface';
+import type {AdminSupportMetrics} from '@/lib/admin/contract';
+import './member-dashboard.css';
+export function useReadReport<T>(name:string,args:Record<string,unknown>,refresh=0){
+ const {client,user}=useAuth();const key=JSON.stringify([name,args,user?.id,refresh]);const [result,setResult]=useState<{key:string;data?:T;error?:boolean}>();
+ useEffect(()=>{let active=true;if(!client||!user)return;const params=JSON.parse(key)[1];void Promise.resolve(client.rpc(name,params)).then(({data,error})=>{if(active)setResult(error?{key,error:true}:{key,data:data as T});}).catch(()=>{if(active)setResult({key,error:true});});return()=>{active=false;};},[client,user,key,name]);
+ return result?.key===key?result:{key};
 }
-
-function Section({ title, note, children }: { title: string; note?: string; children: React.ReactNode }) {
-  return (
-    <section className="admin-section">
-      <h2>{title}</h2>
-      {note ? <p className="admin-section__note">{note}</p> : null}
-      {children}
-    </section>
-  );
-}
-
-function Bars({ rows }: { rows: { label: string; count: number }[] }) {
-  const max = rows.reduce((value, row) => Math.max(value, row.count), 0);
-  return (
-    <ul className="admin-bars">
-      {rows.map((row) => (
-        <li key={row.label}>
-          <span className="admin-bars__label">{row.label}</span>
-          <span className="admin-bars__track" aria-hidden="true">
-            <span
-              className="admin-bars__fill"
-              style={{ width: max > 0 ? `${Math.max(4, (row.count / max) * 100)}%` : "0%" }}
-            />
-          </span>
-          <span className="admin-bars__count">{formatNumber(row.count)}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function ActionCard({
-  label,
-  value,
-  note,
-  tone,
-}: {
-  label: string;
-  value: string;
-  note?: string;
-  tone: "ok" | "attn" | "danger" | "muted";
-}) {
-  return (
-    <div className={`admin-action admin-action--${tone}`}>
-      <p className="admin-action__label">{label}</p>
-      <p className="admin-action__value">{value}</p>
-      {note ? <p className="admin-action__note">{note}</p> : null}
-    </div>
-  );
-}
-
-/** Percentage of a part over a whole, or "집계 불가" when the whole is zero. */
-function ratio(part: number, whole: number): string {
-  if (whole <= 0) return "집계 불가";
-  return `${((part / whole) * 100).toFixed(1)}%`;
-}
-
-function ActionBand({
-  dashboard,
-  support,
-}: {
-  dashboard: AdminDashboard;
-  support: AdminSupportMetrics | null;
-}) {
-  const failed = dashboard.essay.evaluationFailed;
-  const open = support?.open ?? null;
-  return (
-    <section className="admin-section">
-      <h2>조치 필요</h2>
-      <p className="admin-section__note">운영자가 지금 확인해야 할 신호입니다.</p>
-      <div className="admin-actions">
-        <ActionCard
-          label="미답변 문의"
-          value={open === null ? "집계 불가" : formatNumber(open)}
-          note={open === null ? "고객지원 지표를 불러오지 못했습니다" : "접수 및 처리 중"}
-          tone={open === null ? "muted" : open > 0 ? "attn" : "ok"}
-        />
-        <ActionCard
-          label="첨삭 평가 실패"
-          value={formatNumber(failed)}
-          note="이전 단일 문항 기록 기준 · 회차 실패는 핵심 운영 지표 참조"
-          tone={failed > 0 ? "danger" : "ok"}
-        />
-        <ActionCard
-          label="Worker 장애"
-          value="집계 불가"
-          note="Worker 상태 신호가 조회 계약에 없습니다 (GAP)"
-          tone="muted"
-        />
-      </div>
-    </section>
-  );
-}
-
-function SupportSection() {
-  const { state, reload } = useAdminQuery<AdminSupportMetrics>(
-    (client) => client.supportMetrics(),
-    "support-metrics",
-  );
-  useSupportRefresh(reload);
-  if (state.status === "loading") return <AdminLoading label="고객지원 현황을 불러오는 중입니다" />;
-  if (state.status === "error") return <AdminErrorPanel kind={state.kind} onRetry={reload} />;
-  const data = state.data;
-  return (
-    <Section title="고객지원" note="1:1 문의 접수와 답변 발송 상태입니다. (누적)">
-      <Link href="/admin/inquiries/">APP·WEB 문의 목록 열기</Link>
-      <div className="admin-metrics">
-        <Metric label="미처리" value={formatNumber(data.open)} note="접수 및 처리 중" />
-        <Metric label="오늘 접수" value={formatNumber(data.newToday)} />
-        <Metric label="처리 중" value={formatNumber(data.inProgress)} />
-        <Metric label="답변 완료" value={formatNumber(data.answered)} />
-        <Metric label="종결" value={formatNumber(data.closed)} />
-        <Metric label="첫 응답까지" value={formatDuration(data.firstResponseSeconds)} note="답변 완료 문의 평균" />
-        <Metric label="발송 실패" value={formatNumber(data.failedDeliveries)} note="재발송 대기 포함" />
-      </div>
-      {data.oldestOpenId ? (
-        <p className="admin-muted">가장 오래된 미처리 문의: {formatDateTime(data.oldestOpenAt)}</p>
-      ) : (
-        <p className="admin-muted">미처리 문의가 없습니다.</p>
-      )}
-    </Section>
-  );
-}
-
-export function AdminDashboardView() {
-  const dashboard = useAdminQuery<AdminDashboard>((client) => client.dashboard(), "dashboard");
-  const support = useAdminQuery<AdminSupportMetrics>((client) => client.supportMetrics(), "dashboard-support");
-  useSupportRefresh(support.reload);
-
-  if (dashboard.state.status === "loading") return <AdminLoading />;
-  if (dashboard.state.status === "error") return <AdminErrorPanel kind={dashboard.state.kind} onRetry={dashboard.reload} />;
-
-  const data = dashboard.state.data;
-  const supportData = support.state.status === "ready" ? support.state.data : null;
-  const origins = Object.entries(data.credit.availableByOrigin);
-  const evalTotal = data.essay.evaluationCompleted + data.essay.evaluationFailed;
-
-  return (
-    <div className="admin-stack">
-
-
-      <AdminReleaseReport kind="dashboard"/>
-      <AdminLearningSummary/>
-      <ActionBand dashboard={data} support={supportData}/>
-
-      <details className="admin-section"><summary>기존 회원·자료·원장 상세 지표</summary>
-      <AdminPublicAvailability/>
-      <Section title="회원">
-        <div className="admin-metrics">
-          <Metric label="활성 회원" value={formatNumber(data.members.active30d)} note="최근 30일 학습 기록 기준" />
-          <Metric label="프로필 보유 회원" value={formatNumber(data.members.total)} note="profiles 기준 · 전체 가입 계정은 위 집계 참조" />
-        </div>
-      </Section>
-
-      <Section title="프로필" note="누적">
-        <div className="admin-split">
-          <div>
-            <p className="admin-subhead">학년 분포</p>
-            {data.profile.gradeDistribution.length === 0 ? (
-              <p className="admin-muted">표시할 데이터가 없습니다.</p>
-            ) : (
-              <Bars
-                rows={data.profile.gradeDistribution.map((row) => ({
-                  label: gradeLabel(row.key === "UNKNOWN" ? null : row.key),
-                  count: row.count,
-                }))}
-              />
-            )}
-          </div>
-          <div>
-            <p className="admin-subhead">학교별 회원 분포 (상위 20)</p>
-            <SchoolDistribution rows={data.profile.schoolDistribution} unsetCount={data.profile.schoolUnsetCount ?? null} />
-          </div>
-        </div>
-      </Section>
-
-      <Section title="이전 단일 문항 인문 기록" note="기존 단일 문항 API의 누적 기록입니다. 회차 제출 기록은 위 회원·첨삭 회차 통계에서 확인합니다.">
-        <div className="admin-metrics">
-          <Metric label="답안 제출" value={formatNumber(data.essay.submissions)} />
-          <Metric label="평가 요청" value={formatNumber(data.essay.evaluationRequests)} />
-          <Metric label="평가 완료 (첨삭)" value={formatNumber(data.essay.evaluationCompleted)} />
-          <Metric label="평가 실패" value={formatNumber(data.essay.evaluationFailed)} />
-          <Metric label="재작성" value={formatNumber(data.essay.rewrites)} />
-          <Metric label="재첨삭" value={formatNumber(data.essay.reevaluations)} note="무료/유료 구분 불가" />
-        </div>
-      </Section>
-
-      <Section title="이전 단일 문항 평가 품질" note={`기존 단일 문항 기록 기준 · 완료+실패 ${formatNumber(evalTotal)}건 기준`}>
-        <div className="admin-metrics">
-          <Metric label="평가 성공률" value={ratio(data.essay.evaluationCompleted, evalTotal)} note="평가 완료 / (완료+실패)" />
-          <Metric label="평가 실패율" value={ratio(data.essay.evaluationFailed, evalTotal)} note="평가 실패 / (완료+실패)" />
-          <Metric label="평균 처리시간" value="집계 불가" note="논술·수리 운영 화면에서 확인 (대시보드 계약에 없음)" />
-        </div>
-      </Section>
-
-      <Section title="수리논술 문항 기록" note="기존 문항별 답안·평가 기록입니다. 현재 공개 실행 범위는 위 실행 승인 통계를 확인하세요.">
-        <div className="admin-metrics">
-          <Metric label="답안" value={formatCount(data.math.attempts)} />
-          <Metric label="평가" value={formatCount(data.math.evaluations)} />
-        </div>
-      </Section>
-
-      <Section title="이용권" note="누적 · 잔액은 현재 시점 기준">
-        <div className="admin-metrics">
-          <Metric label="잔액 (사용 가능)" value={formatCredit(data.credit.spendable)} />
-          <Metric label="30일 내 만료 예정" value={formatCredit(data.credit.expiring30d)} />
-        </div>
-        {origins.length > 0 ? (
-          <ul className="admin-origin">
-            {origins.map(([origin, value]) => (
-              <li key={origin}>
-                <span>{creditOriginLabel(origin)}</span>
-                <strong>{formatCredit(value)}</strong>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </Section>
-
-      <SupportSection />
-      </details>
-    </div>
-  );
+export function CompactMetric({label,value,note}:{label:string;value:React.ReactNode;note?:string}){return <div className="focus-metric"><dt>{label}</dt><dd>{value}</dd>{note&&<small>{note}</small>}</div>;}
+export function FocusSection({title,href,children}:{title:string;href?:string;children:React.ReactNode}){return <section className="focus-section"><header><h2>{title}</h2>{href&&<Link href={href}>상세 보기 →</Link>}</header><div className="focus-body">{children}</div></section>;}
+function Bars({rows}:{rows:{label:string;count:number}[]}){const max=Math.max(1,...rows.map(r=>r.count));return <ul className="focus-bars">{rows.map((r,i)=><li key={r.label+i}><span>{r.label}</span><span className="focus-track"><i style={{width:`${r.count/max*100}%`}}/></span><strong>{r.count}명</strong></li>)}</ul>;}
+type Composition={accounts:number;profiles:number;school_members:number;active:number;grades:{label:string;count:number}[];schools:{label:string;count:number}[]};
+type Study={total:{users:number;ms:number};grades:{grade:string;users:number;ms:number}[]};
+type Learning={metrics:{targets:number;target_records:number;saved:number;recent:number;applications:number;study_users:number;study_ms:number};rows:{kind:string;label:string;users:number;records:number}[]};
+const gradeNames:Record<string,string>={'1':'고1','2':'고2','3':'고3',retaker:'N수·검정고시 등',unknown:'미입력'};
+export function AdminDashboardView(){
+ const [memberPeriod,setMemberPeriod]=useState<AdminPeriod>('all'),[mf,setMf]=useState(''),[mt,setMt]=useState('');
+ const [period,setPeriod]=useState<AdminPeriod>('d30'),[from,setFrom]=useState(''),[to,setTo]=useState(''),[refresh,setRefresh]=useState(0),[grade,setGrade]=useState('all');
+ const now=useMemo(()=>{void refresh;return new Date();},[refresh]);const range=useMemo(()=>analyticsWindow(period,from,to,now),[period,from,to,now]);const membersRange=useMemo(()=>memberPeriod==='all'?{p_from:null,p_to:null}:analyticsWindow(memberPeriod,mf,mt,now),[memberPeriod,mf,mt,now]);
+ const members=useReadReport<Composition>('admin_member_composition',membersRange??{p_from:'invalid',p_to:'invalid'},refresh);
+ const study=useReadReport<Study>('admin_dashboard_study',range??{p_from:'invalid',p_to:'invalid'},refresh);
+ const learning=useReadReport<Learning>('admin_learning_analytics',range??{p_from:'invalid',p_to:'invalid'},refresh);
+ const support=useAdminQuery<AdminSupportMetrics>(c=>c.supportMetrics(),'dashboard-support');useSupportRefresh(support.reload);
+ const selected=grade==='all'?study.data?.total:study.data?.grades.find(g=>g.grade===grade);
+ const state=(r:{error?:boolean;data?:unknown})=>r.error?<p role="alert">조회 실패 · 새로고침해 주세요.</p>:!r.data?<p role="status">집계 중…</p>:null;
+ return <div className="focused-admin">
+ <FocusSection title="회원과 학생 구성" href="/admin/members/"><AdminPeriodFilter period={memberPeriod} from={mf} to={mt} onChange={(p,f,t)=>{setMemberPeriod(p);setMf(f);setMt(t);}}/><p className="focus-note">{memberPeriod==='all'?'전체 가입 회원의 현재 프로필 · 활동 회원은 최근 30일':'선택 기간 가입 회원의 현재 프로필 · 활동 회원은 이 가입자 중 선택 기간 공부 기록 보유자'} · 한국 날짜 기준</p>
+ {!membersRange?<p role="alert">400일 이내의 올바른 기간을 선택하세요.</p>:state(members)}{membersRange&&members.data&&<><dl className="focus-metrics"><CompactMetric label={memberPeriod==='all'?'전체 가입 계정':'기간 내 가입 계정'} value={members.data.accounts}/><CompactMetric label="공부 기록 회원" value={members.data.active}/><CompactMetric label="프로필 보유" value={members.data.profiles} note={`미작성 ${members.data.accounts-members.data.profiles}명`}/><CompactMetric label="학교 입력 회원" value={members.data.school_members} note={`프로필 중 미입력 ${members.data.profiles-members.data.school_members}명`}/></dl><div className="focus-split"><div><h3>학년 분포</h3><Bars rows={members.data.grades}/></div><div><h3>학교 분포 · 상위 20</h3><Bars rows={members.data.schools}/></div></div></>}
+ </FocusSection>
+ <div className="focus-toolbar"><div><strong>학습·입시·운영 집계 기간</strong><small>기록 시각 기준 · KST</small></div><AdminPeriodFilter allowAll={false} period={period} from={from} to={to} onChange={(p,f,t)=>{setPeriod(p);setFrom(f);setTo(t);setGrade('all');}}/><button onClick={()=>{setRefresh(n=>n+1);support.reload();}}>새로고침</button></div>
+ {!range?<p role="alert">전체 대신 400일 이내 기간을 선택해 주세요.</p>:<>
+ <FocusSection title="기록된 공부 시간" href="/admin/data/study/"><div className="focus-toolbar"><p>앱 공부 타이머 + 학습 합산을 선택한 모의고사 풀이 시간</p><label>학년 <select value={grade} onChange={e=>setGrade(e.target.value)}><option value="all">전체 기록자</option>{study.data?.grades.map(g=><option key={g.grade} value={g.grade}>{gradeNames[g.grade]??g.grade}</option>)}</select></label></div>{state(study)}{study.data&&<><dl className="focus-metrics"><CompactMetric label="전체 공부 시간" value={formatStudyTime(selected?.ms)}/><CompactMetric label="기록자 1인당 평균" value={formatStudyTime(selected?selected.users?selected.ms/selected.users:0:null)}/><CompactMetric label="공부 기록자" value={`${selected?.users??0}명`}/></dl><details><summary>학년별 공부 시간 · 집계 기준</summary><table><thead><tr><th>학년</th><th>기록자</th><th>공부 시간</th><th>1인당 평균</th></tr></thead><tbody>{study.data.grades.map(g=><tr key={g.grade}><td>{gradeNames[g.grade]??g.grade}</td><td>{g.users}명</td><td>{formatStudyTime(g.ms)}</td><td>{formatStudyTime(g.ms/g.users)}</td></tr>)}</tbody></table><p className="focus-note">완료·동기화된 실제 활동 구간만 합산합니다. 일시정지와 같은 회원의 중복 시간은 제외합니다. 학년은 현재 프로필 기준이며 미기록 공부는 포함하지 않습니다.</p></details></>}</FocusSection>
+ <FocusSection title="학습·입시 종합 현황" href="/admin/data/learning/">{state(learning)}{learning.data&&<><dl className="focus-metrics"><CompactMetric label="희망 대학 기록" value={learning.data.metrics.target_records}/><CompactMetric label="희망 대학 등록 학생" value={learning.data.metrics.targets}/><CompactMetric label="실제 지원 기록" value={learning.data.metrics.applications}/><CompactMetric label="저장한 자료" value={learning.data.metrics.saved}/></dl><table><thead><tr><th>희망 대학 · 상위 10</th><th>학생 수</th><th>기록 수</th></tr></thead><tbody>{learning.data.rows.filter(r=>r.kind==='targets').map(r=><tr key={r.label}><td>{r.label}</td><td>{r.users}명</td><td>{r.records}건</td></tr>)}</tbody></table><p className="focus-note">선택 기간에 등록되어 현재 남아 있는 기록입니다. 희망 대학과 실제 지원을 구분하며, 1명부터 표시합니다.</p></>}</FocusSection>
+ </>}
+ <FocusSection title="문의와 서비스 운영" href="/admin/inquiries/">{support.state.status==='error'?<AdminErrorPanel kind={support.state.kind} onRetry={support.reload}/>:support.state.status==='ready'?<dl className="focus-metrics"><CompactMetric label="미처리 문의" value={support.state.data.open}/><CompactMetric label="오늘 접수" value={support.state.data.newToday}/><CompactMetric label="답변 완료 · 누적" value={support.state.data.answered}/><CompactMetric label="알림 발송 실패" value={support.state.data.failedDeliveries}/></dl>:<p>조회 중…</p>}<nav className="focus-links"><Link href="/admin/credit/">이용권 원장</Link><Link href="/admin/payment/">결제 내역</Link><Link href="/ql/">평가 품질 검수</Link><Link href="/admin/materials/">논술 자료 검수</Link></nav></FocusSection>
+ </div>;
 }

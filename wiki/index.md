@@ -9,3 +9,4 @@ The APP repository `wiki/` remains the canonical Unified Wiki. This index only r
 - [Existing feedback refinement](final-feedback-ux-refinement-20261031.md)
 
 Canonical report: APP `wiki/app-math-commerce-integration-report-20261103.md`.
+- [Dashboard and member focus](admin-member-dashboard-20261104.md)

@@ -22,7 +22,7 @@ export default function AdminDashboardPage() {
       active="dashboard"
       eyebrow="LEGENDSTUDY / OPERATIONS"
       title="운영 대시보드"
-      lead="실제 데이터베이스에 기록된 값만 표시합니다. 설치되지 않은 기능은 0이 아니라 미설치로 표시합니다."
+      lead="회원 구성과 공부·입시 기록을 먼저 확인하고, 필요한 운영 내역으로 이동하세요."
     >
       <AdminDashboardView />
     </AdminSurface>

@@ -20,6 +20,7 @@ import {AdminCreditGrantForm} from "./admin-credit-grant-form";
 import {formatCreditReason, formatCreditActor} from "@/lib/credit-display";
 
 const PAGE_LIMIT = 25;
+const kindLabels:Record<string,string>={beta:'베타 무료 첨삭 이용권 지급',signup:'신규가입 무료 이용권 지급',promotion:'이벤트·프로모션 지급',purchase:'유료 구매 지급',admin:'관리자 수동 지급',compensation:'보상 지급',b2b:'학교·단체 지급',unknown:'기타 지급'};
 
 export function AdminMemberCreditPanel({ accountId, email }: { accountId: string; email: string|null }) {
   const { state, reload } = useAdminQuery<AdminCredit>(
@@ -117,7 +118,7 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
                   {data.grants.map((grant) => (
                     <tr key={grant.grantId}>
                       <td>
-                        {creditOriginLabel(grant.origin)}
+                        {kindLabels[grant.displayKind??'']??creditOriginLabel(grant.origin)}
                         {grant.expired ? <span className="admin-tag">만료</span> : null}
                       </td>
                       <td>{formatNumber(grant.granted)}</td>
@@ -147,7 +148,7 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
                 <thead>
                   <tr>
                     <th scope="col">유형</th>
-                    <th scope="col">증감</th>
+                    <th scope="col">보유 증감</th><th scope="col">사용 대기 증감</th>
                     <th scope="col">사유</th>
                     <th scope="col">주체</th>
                     <th scope="col">일시</th>
@@ -156,10 +157,11 @@ export function AdminMemberCreditPanel({ accountId, email }: { accountId: string
                 <tbody>
                   {data.transactions.map((entry) => (
                     <tr key={entry.transactionId}>
-                      <td>{transactionTypeLabel(entry.transactionType)}</td>
+                      <td>{entry.reasonCode==='essay_beta_daily'?'베타 무료 첨삭 이용권 지급':entry.transactionType==='signup_bonus'?'신규가입 무료 이용권 지급':entry.transactionType==='reserve'?'첨삭 이용권 사용 대기':transactionTypeLabel(entry.transactionType)}</td>
                       <td className={entry.balanceDelta < 0 ? "admin-delta--down" : "admin-delta--up"}>
                         {formatDelta(entry.balanceDelta)}
                       </td>
+                      <td>{formatDelta(entry.reservedDelta)}</td>
                       <td className="credit-history-text">{formatCreditReason(entry.reasonCode,entry.balanceDelta)}</td>
                       <td>{formatCreditActor(entry.actorKind)}</td>
                       <td>{formatDateTime(entry.createdAt)}</td>
