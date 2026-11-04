@@ -11,3 +11,5 @@ The APP repository `wiki/` remains the canonical Unified Wiki. This index only r
 Canonical report: APP `wiki/app-math-commerce-integration-report-20261103.md`.
 - [Dashboard and member focus](admin-member-dashboard-20261104.md)
 - [Member materials and consistent admin menus](admin-member-activity-navigation-20261104.md)
+
+- [Dashboard app usage / materials rankings and APP handoff](admin-app-usage-rankings-20261104.md)

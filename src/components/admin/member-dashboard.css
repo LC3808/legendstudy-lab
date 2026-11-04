@@ -3,3 +3,10 @@
 .focus-split .admin-bars{max-height:245px;overflow:auto}.focus-split .admin-bars__track{background:#d8e3df}.focus-split .admin-bars__fill{background:#227b83}
 
 .member-recent-activity{display:grid;gap:18px}.member-recent-activity td:last-child{width:150px;white-space:nowrap}.member-recent-activity h4 small{font-size:12px;font-weight:400;color:#4c646c}
+
+.usage-rankings { display:grid; gap:18px; }
+.usage-rankings>section+section {border-top:1px solid #9db0b2;padding-top:16px}
+.usage-rankings__notice {background:#e5ede7;border-left:3px solid #527c71;padding:10px 12px}
+.focused-admin .usage-rankings__title {text-align:left}
+.usage-rankings th:first-child {width:54px}
+.usage-rankings th:last-child {width:96px}

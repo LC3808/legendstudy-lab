@@ -18,3 +18,5 @@ Deployed live-E2E follow-up: exact exam/university IDs now resolve registered Ma
 2026-11-04 dashboard/member focus: see [readout implementation and verification](admin-member-dashboard-20261104.md). Owner authorized removal of minimum-five admin statistics, N수 separation, period filters, compact member details, and production read SQL + WEB deployment. No financial actions or APP58 build.
 
 Member material follow-up: [recent5 bookmark/view activity and common admin navigation](admin-member-activity-navigation-20261104.md). Bookmarks=favorites confirmed by Owner. Admin routes publish together to eliminate mixed menu versions; existing credit v2/support contracts preserved.
+
+App usage follow-up: [WEB rankings and APP collection handoff](admin-app-usage-rankings-20261104.md). Existing material member counts only; menu telemetry not collected. APP implementation/release separate per Owner.
