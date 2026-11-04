@@ -58,7 +58,7 @@ describe('stored Math quality read-only integration', () => {
         const c = fakeClient();
         render(<MathQualityRead client={c as unknown as SupabaseClient}/>);
         await screen.findByRole('button', { name: /평가 revised/ });
-        expect(screen.getAllByRole('heading',{name:'사용자: 확인되지 않음'}).length).toBeGreaterThan(0);
+        expect(c.rpc.mock.calls.some(([, {p_request}])=>p_request.action==='detail')).toBe(false);
         expect(screen.queryByText(/가명 사용자 [a-f0-9]{12}/)).toBeNull();
         fireEvent.click(screen.getByRole('checkbox'));
         expect(screen.queryByRole('button', { name: /평가 first/ })).toBeNull();
@@ -87,8 +87,8 @@ describe('stored Math quality read-only integration', () => {
 
 it('renders server pseudonym, independent lineage and unverified exam state',async()=>{
  const c=fakeClient(true);render(<MathQualityRead client={c as unknown as SupabaseClient}/>);
- await screen.findByRole('heading',{name:'가명 사용자 aaaaaaaaaaaa'});
- expect(screen.getAllByRole('heading',{name:/답안 과정/})).toHaveLength(1);
+ await screen.findByRole('button',{name:/평가 revised/});
+ expect(c.rpc.mock.calls.some(([, {p_request}])=>p_request.action==='detail')).toBe(false);
  fireEvent.click(screen.getByRole('button',{name:/평가 revised/}));
  await screen.findAllByText('정답 포함 상세 평가 공개');screen.getAllByText('정답 포함 상세 평가 공개').forEach(b=>fireEvent.click(b));
  await screen.findByRole('heading',{name:'최초 답안과 첨삭'});

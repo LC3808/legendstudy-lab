@@ -1,11 +1,10 @@
 'use client';
 import Link from 'next/link';
+import {AdminLearningHub} from './admin-learning-hub';
 import {AdminDataTable} from './admin-data-table';
 import {useEffect,useMemo,useState} from 'react';
 import {useAuth} from '@/components/auth-context';
 import {AdminAnalytics} from './admin-analytics';
-import {AdminMembersView} from './admin-members-view';
-import {AdminEssayFeedback} from './admin-essay-feedback';
 import {AdminPanel,AdminLoading,AdminErrorPanel} from './admin-surface';
 import {adminErrorKind,mapRpcError,type AdminErrorKind} from '@/lib/admin/errors';
 import {analyticsWindow} from '@/lib/admin/analytics';
@@ -19,7 +18,7 @@ function Learning({section}:{section:string}){
  const [result,setResult]=useState<{key:string;data?:LearningAnalytics;error?:AdminErrorKind}|null>(null);
  useEffect(()=>{let active=true;if(!client||!user||!window)return;void Promise.resolve(client.rpc('admin_learning_analytics',window)).then(({data,error})=>{if(error)throw mapRpcError(error);const parsed=parseLearningAnalytics(data);if(active)setResult({key,data:parsed});}).catch(error=>{if(active)setResult({key,error:adminErrorKind(error)});});return()=>{active=false;};},[client,user,key,window]);
  const current=result?.key===key?result:null;
- const kinds=section==='universities'?['targets']:section==='materials-data'?['saved','recent']:section==='applications'?['applications']:['targets','saved','recent','applications'];
+ const kinds=section==='study'?[]:section==='universities'?['targets']:section==='materials-data'?['saved','recent']:section==='applications'?['applications']:['targets','saved','recent','applications'];
  return <div className="admin-stack">
  <form onSubmit={e=>{e.preventDefault();setNow(new Date());}} className="analytics-filter"><label>집계 기간 (KST)<select value={period} onChange={e=>setPeriod(e.target.value as AdminPeriod)}><option value="today">오늘</option><option value="d7">최근 7일</option><option value="d30">최근 30일</option><option value="custom">사용자 지정 (최대 400일)</option></select></label>{period==='custom'&&<><label>시작일<input type="date" value={from} onChange={e=>setFrom(e.target.value)}/></label><label>종료일<input type="date" value={to} onChange={e=>setTo(e.target.value)}/></label></>}<button type="submit">조회</button></form>
  {!window?<AdminPanel title="올바른 기간을 선택해 주세요"/>:!current?<AdminLoading/>:current.error?<AdminErrorPanel kind={current.error}/>:current.data?<>
@@ -32,11 +31,18 @@ function Learning({section}:{section:string}){
  <AdminPanel title="집계 해석"><p>{learningDefinitions.study}</p><p>성적 분포·인과 분석·희망 대학 변경 추이·검색 횟수는 기존 데이터만으로 복원하지 않습니다. 개인별 기록은 권한이 확인된 회원 상세에서 확인하세요.</p><Link href="/admin/members/">회원 상세 / Student 360</Link></AdminPanel>
  </div>;
 }
+function MergedEntry({href,label}:{href:string;label:string}){return <AdminPanel title="통합된 분석 화면"><p>기존 주소를 유지합니다. 같은 조회 기능은 아래 화면에서 확인하세요.</p><a href={href} onClick={e=>{e.preventDefault();window.location.assign(href+window.location.search);}}>{label} →</a></AdminPanel>;}
 export function AdminDataPage({section}:{section:string}){
+ if(section==='overview')return <MergedEntry href="/admin/" label="서비스 현황"/>;
+ if(section==='installs')return <MergedEntry href="/admin/data/visitors/" label="방문자·유입 (설치 클릭과 설치 완료 구분)"/>;
+ if(section==='students')return <MergedEntry href="/admin/members/" label="회원 / Student 360"/>;
+ if(section==='satisfaction')return <MergedEntry href="/admin/essay-feedback/" label="만족도·신고"/>;
+
+ if(section==='essay-usage')return <AdminLearningHub/>;
  if(['overview','conversion','essay-usage','visitors','installs'].includes(section))return <AdminAnalytics focus={['visitors','installs'].includes(section)?'ga4':section==='conversion'?'conversion':section==='essay-usage'?'essay':'all'}/>;
- if(section==='students')return <AdminMembersView/>;
- if(section==='satisfaction')return <AdminEssayFeedback/>;
- if(section==='samples')return <AdminPanel title="기존 첨삭 품질 검수"><p>원본 답안과 평가 결과는 기존 검수 전용 권한으로 조회합니다. 일반 운영자 권한을 품질 열람 권한으로 확대하지 않습니다.</p><Link href="/owner-review/essay/">실제 답안·재첨삭 비교 검수 →</Link><p><Link href="/ql/">품질 판정 기록 →</Link></p></AdminPanel>;
+
+
+ if(section==='samples')return <AdminPanel title="기존 첨삭 품질 검수"><p>원본 답안과 평가 결과는 기존 검수 전용 권한으로 조회합니다. 일반 운영자 권한을 품질 열람 권한으로 확대하지 않습니다.</p><Link href="/ql/">실제 답안·재첨삭 비교 검수 →</Link><p><Link href="/ql/">품질 판정 기록 →</Link></p></AdminPanel>;
  if(section==='scores')return <AdminPanel title="성적·학습 분석 — NOT_IMPLEMENTED"><p>Student 360의 academic_performance는 현재 null 계약입니다. 개인 연습 점수를 공식 성적으로 환산하지 않습니다. 비교 가능한 성적 집계와 별도 권한·조회 감사 계약이 필요합니다.</p></AdminPanel>;
  if(section==='verification')return <AdminPanel title="베타 검증 — NOT_TESTED"><p>자동 테스트 결과와 실제 사용자 평가 E2E는 다릅니다. TEST Gateway·Provider 승인·실기기 검수를 완료하기 전에는 출시 PASS로 표시하지 않습니다.</p><Link href="/admin/beta/">베타 설정 확인</Link><p><Link href="/admin/beta/failures/">실패·복구 기록 확인</Link></p></AdminPanel>;
  return <Learning section={section}/>;

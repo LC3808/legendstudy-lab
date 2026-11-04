@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import {QualityBack} from "./quality-back";
+import {ExamQuality} from './exam-quality';
 import {MathQualityRead} from "./math-quality-read";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -66,7 +67,7 @@ function OperatorGateView({ auth }: { auth: ReturnType<typeof useAuth> }) {
     () => (auth.client ? createHumanReviewClient(auth.client) : null),
     [auth.client],
   );
-  const [source,setSource]=useState<"general"|"math">("general");
+  const [source,setSource]=useState<"general"|"math"|"exam">("general");
   const [gate, setGate] = useState<OperatorGate>("checking");
   const [errorKind, setErrorKind] = useState<QualityErrorKind | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
@@ -133,7 +134,7 @@ function OperatorGateView({ auth }: { auth: ReturnType<typeof useAuth> }) {
     );
   }
 
-  return <><div className="content-wrap content-wrap--wide ql-source-controls"><QualityBack/><div role="group" aria-label="논술 유형"><button className="button button--outline button--small" aria-pressed={source==='general'} onClick={()=>setSource('general')}>일반 논술</button><button className="button button--outline button--small" aria-pressed={source==='math'} onClick={()=>setSource('math')}>수리논술</button></div></div>{source==='math'&&auth.client?<MathQualityRead client={auth.client}/>:<QualityWorkspace quality={quality as QualityClient} humanReview={humanReview as HumanReviewClient}/>}</>;
+  return <><div className="content-wrap content-wrap--wide ql-source-controls"><QualityBack/><p>일반 논술은 이전 단일 평가 기록입니다. 현재 시험 회차는 회차·혼합형에서 확인하세요. 소스별 건수는 서로 다른 단위입니다.</p><div role="group" aria-label="논술 유형"><button className="button button--outline button--small" aria-pressed={source==='exam'} onClick={()=>setSource('exam')}>회차·혼합형</button><button className="button button--outline button--small" aria-pressed={source==='general'} onClick={()=>setSource('general')}>일반 논술</button><button className="button button--outline button--small" aria-pressed={source==='math'} onClick={()=>setSource('math')}>수리논술</button></div></div>{source==='exam'&&auth.client?<ExamQuality client={auth.client}/>:source==='math'&&auth.client?<MathQualityRead client={auth.client}/>:<QualityWorkspace quality={quality as QualityClient} humanReview={humanReview as HumanReviewClient}/>}</>;
 }
 
 function GateShell({ children }: { children: React.ReactNode }) {

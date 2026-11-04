@@ -4,7 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { StoredMathQualityReader, type StoredMathCase, type StoredMathDetail, type StoredMathReview } from '@/lib/math-quality/runtime/quality-client';
 import { mathReport, object, text } from '@/lib/my/evaluation-report';
 import { EvaluationReport, EvaluationComparison } from '@/components/my/evaluation-report';
-import { traceGroups, answerChanges } from '@/lib/math-quality/traceability';
+import { answerChanges } from '@/lib/math-quality/traceability';
 import { qualityMetadata, sameTraceEdge } from '@/lib/math-quality/metadata';
 import { MathReviewHistory } from './math-review-history';
 import { QlSection, QlStructuredValue } from './quality-primitives';
@@ -17,10 +17,9 @@ export function MathQualityRead({ client }: {
     const [cases, setCases] = useState<StoredMathCase[]>([]), [reviews, setReviews] = useState<StoredMathReview[]>([]);
     const [busy, setBusy] = useState(true), [error, setError] = useState(false), [more, setMore] = useState(false), [reload, setReload] = useState(0), [unreviewed, setUnreviewed] = useState(false);
     const [selected, setSelected] = useState<string | null>(null), [detail, setDetail] = useState<StoredMathDetail | null>(null), [prior, setPrior] = useState<StoredMathDetail | null>(null), [detailError, setDetailError] = useState(false);
-    const [details, setDetails] = useState<Record<string, StoredMathDetail>>({});
     const generation = useRef(0), selection = useRef(0);
-    useEffect(() => { const generations = generation, selections = selection; const g = ++generations.current; reader.list().then(async (rows) => ({ rows, states: rows.length ? await reader.reviewState(rows.map(r => r.evaluation_id)) : [], loaded: await Promise.all(rows.map(r => reader.detail(r.evaluation_id))) })).then(({ rows, states, loaded }) => { if (g !== generation.current)
-        return; setDetails(Object.fromEntries(loaded.map(d => [d.evaluation_id,d]))); setCases(rows); setReviews(states); setMore(rows.length === 50); setBusy(false); }).catch(() => { if (g === generation.current) {
+    useEffect(() => { const generations = generation, selections = selection; const g = ++generations.current; reader.list().then(async (rows) => ({ rows, states: rows.length ? await reader.reviewState(rows.map(r => r.evaluation_id)) : [] })).then(({ rows, states }) => { if (g !== generation.current)
+        return; setCases(rows); setReviews(states); setMore(rows.length === 50); setBusy(false); }).catch(() => { if (g === generation.current) {
         setError(true);
         setBusy(false);
     } }); return () => { generations.current++; selections.current++; }; }, [reader, reload]);
@@ -28,12 +27,10 @@ export function MathQualityRead({ client }: {
     const loadMore = async () => { const g = generation.current; setBusy(true); try {
         const rows = await reader.list(cases.at(-1));
         const states = rows.length ? await reader.reviewState(rows.map(r => r.evaluation_id)) : [];
-        const loaded = await Promise.all(rows.map(r => reader.detail(r.evaluation_id)));
         if (g !== generation.current)
             return;
         setCases(v => [...v, ...rows.filter(r => !v.some(c => c.evaluation_id === r.evaluation_id))]);
         setReviews(v => [...v, ...states]);
-        setDetails(v => ({...v,...Object.fromEntries(loaded.map(d=>[d.evaluation_id,d]))}));
         setMore(rows.length === 50);
     }
     catch {
@@ -66,7 +63,7 @@ export function MathQualityRead({ client }: {
  {busy && <p role="status">목록을 확인하고 있습니다.</p>}{error && <p role="alert">수리논술 기록을 불러오지 못했습니다. 권한과 연결 상태를 확인해 주세요.</p>}
  {!busy && !error && !visible.length && <p className="ql-state">현재 조건에 맞는 수리논술 평가가 없습니다.</p>}
  <p className="ql-privacy-note">가명 사용자는 관리자 검수용 참조입니다. 답안 과정은 확인된 연결 관계로 구분하며, 확인되지 않은 대학·학년도는 표시하지 않습니다.</p>
- {traceGroups(cases.filter(c=>details[c.evaluation_id]).map(c=>({...c,detail:details[c.evaluation_id]}))).map(g=><section key={g.key}><h2>{g.label}</h2><p>수리논술 · {g.rubric}</p>{g.users.map(u=><section key={u.id}><h3>{u.reference?`가명 사용자 ${u.reference.slice(4,16)}`:'사용자: 확인되지 않음'}</h3>{u.processes.map(p=><section key={p.id}><h3>답안 과정 {p.id.slice(0,8)}</h3>{p.reason&&<p role="status">{p.reason}</p>}<ul className="ql-list__items">{p.records.filter(c=>visible.some(v=>v.evaluation_id===c.evaluation_id)).map(c=><li key={c.evaluation_id}><button className={`ql-case ${selected===c.evaluation_id?'ql-case--selected':''}`} onClick={()=>void select(c.evaluation_id)} aria-pressed={selected===c.evaluation_id}><strong>{text(c.detail.prior_evaluation_id)?'재첨삭':'최초 첨삭'} · {new Date(c.completed_at).toLocaleString('ko-KR')}</strong><span>{isUnreviewed(c.evaluation_id)?'미검토':'검수 상태 확인'}</span><span className="ql-case__meta">평가 {c.evaluation_id.slice(0,8)}</span></button></li>)}</ul></section>)}</section>)}</section>)}{more && <button className="button button--outline ql-list__more" onClick={() => void loadMore()} disabled={busy}>더 불러오기</button>}</div></aside>
+ <ul className="ql-list__items">{visible.map(c=><li key={c.evaluation_id}><button className={`ql-case ${selected===c.evaluation_id?'ql-case--selected':''}`} onClick={()=>void select(c.evaluation_id)} aria-pressed={selected===c.evaluation_id}><strong>{new Date(c.completed_at).toLocaleString('ko-KR')}</strong><span>{isUnreviewed(c.evaluation_id)?'미검토':'검수 상태 확인'}</span><span>평가 {c.evaluation_id.slice(0,8)} · 대학·문항은 선택 후 확인</span></button></li>)}</ul>{more && <button className="button button--outline ql-list__more" onClick={() => void loadMore()} disabled={busy}>더 불러오기</button>}</div></aside>
  <main className="ql-workspace__detail" aria-label="수리논술 평가 상세"><div className="ql-detail"><p className="eyebrow">CASE DETAIL</p>{detailError ? <p role="alert">평가 상세를 불러오지 못했습니다.</p> : !detail ? <p>{selected ? '평가를 확인하고 있습니다.' : '왼쪽에서 평가를 선택하세요.'}</p> : <>
  <h2>{text(object(detail.problem).title) || '수리논술'} · {text(object(detail.leaf).label) || '문항'}</h2>
  <p>{text(detail.prior_evaluation_id) ? '재첨삭' : '최초 첨삭'} · {cases.find(c => c.evaluation_id === detail.evaluation_id)?.completed_at ? new Date(cases.find(c => c.evaluation_id === detail.evaluation_id)!.completed_at).toLocaleString('ko-KR') : ''}</p>
