@@ -20,3 +20,14 @@ Owner requested recent5 bookmarks/favorites and recently viewed materials, plus 
 Migration: `supabase/migrations/20261104102732_admin_member_recent_activity.sql`. Rollback of the new function only: `drop function public.admin_member_recent_activity(uuid);` after restoring prior WEB. Original data is untouched.
 
 Production receipt and actual UI read checks are appended after deployment. No financial operations, user evaluations/replies, or APP build/integration performed.
+
+## Production completion
+
+- Read-only member activity RPC applied; bookmark checksum and pre-10:00 UTC credit ledger checksum unchanged.
+- Initial activity release: cfb01da / 927b62a8-7750-4a58-ba65-52c3db04d3c1.
+- Owner follow-up: dashboard is the first independent navigation link, outside every category, named 대시보드. Source ee017d2e6e3fcb0d11f3588f532f7167ef6e178c.
+- Final WEB: 4cc2bdbd-7ec8-42c8-88f8-1e8aec09b13f, 2026-11-04 19:37 KST. Manifest exact, 49 bindings unchanged, existing student assets/API preserved.
+- Navigation regression 12 PASS; 163-route production build and TypeScript PASS.
+- Authenticated production browser: member bookmark latest5 of7 and recent-view latest5 of9 show titles/KST dates; existing APP inquiry present; credit v2 source/action statistics present; dashboard first outside categories on inquiries/credit/dashboard.
+- During immediate release propagation an older dashboard document/chunk was observed. Fresh release navigation loaded correctly; subsequent credit → dashboard navigation succeeded with the new top-level link.
+- No replies, grants, consumption, payments, refunds or APP builds executed.
