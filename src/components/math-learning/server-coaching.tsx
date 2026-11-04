@@ -5,6 +5,7 @@ import {useAuth} from '../auth-context';
 import {array,object,text} from '@/lib/my/evaluation-report';
 import {mathRead} from '@/lib/my/essay-dashboard';
 import {ExamRewrite} from '../my/exam-rewrite';
+import {LearningCompletenessCard} from './learning-completeness';
 import {StudyMath} from './study-math';
 import {StudyEvidence,type Row} from './study-evidence';
 import './math-study.css';
@@ -74,6 +75,7 @@ function OwnerCoaching(props:CoachingRef){
  <div className="math-study-grid">
  {input?<StudyEvidence key={`${identity}/${task.id??'all'}`} input={input} task={task} loadImage={loadImage}/>:<section className="math-study-panel"><h2>학생 원본 답안</h2><p>{props.runId?'혼합형 원본은 기존 제출 답안에서 확인해 주세요.':'원본과 확정 전사본을 확인하고 있어요.'}</p></section>}
  <section className="math-study-panel math-study-results" aria-label="첨삭 결과와 개선 과제"><h2>첨삭 결과</h2><div className="math-study-diagnosis"><h3>종합 진단</h3><p><StudyMath value={data.diagnosis}/></p></div>
+ <LearningCompletenessCard value={data.learning_completeness} evaluationId={text(data.evaluation_id)}/>
  <h3>잘한 점</h3>{array(data.strengths).length?array(data.strengths).map(object).map((s,i)=><article key={i}><strong>✓ {text(s.title)}</strong><p><StudyMath value={s.description}/></p></article>):<p>별도로 확인된 강점이 없습니다. 판정 보류 여부를 함께 확인해 주세요.</p>}
  <h3>우선 개선 과제 <span className="math-study-badge">{tasks.length}개</span></h3><p className="math-study-note">평가 서버가 선정한 순서입니다. 공식 기준별 세부 설명은 제공된 범위에서 확인하세요.</p>
  {tasks.map((t,i)=><button className="math-study-task" key={text(t.id)} aria-pressed={task.id===t.id} onClick={()=>setSelected(text(t.id))}><strong>{i+1}. {text(t.title)}</strong><small>{text(t.importance)} · 풀이 단계 {String(t.position??'미확정')}</small></button>)}
@@ -87,7 +89,7 @@ function OwnerCoaching(props:CoachingRef){
  {array(data.concepts).length?array(data.concepts).map(object).map(c=><details key={text(c.id)} open><summary>{text(c.name)}</summary><div className="math-study-concept"><StudyMath value={c.formula} formula/><p><StudyMath value={c.description}/></p><p><strong>적용 조건</strong> <StudyMath value={c.condition}/></p><p><strong>주의할 점</strong> <StudyMath value={c.caution}/></p><p><strong>문제와의 관계</strong> <StudyMath value={c.relation}/></p></div></details>):<p>연결된 기본 개념이 없습니다.</p>}
  <HintSteps taskId={text(task.id)} busy={busy} revealed={[exposed(1),exposed(2)]} bodies={[hints[`${task.id}/1`],hints[`${task.id}/2`]]} onHint={level=>void act('hint',{task_id:task.id,level})}/>
  {!data.disclosed?<button className="math-study-primary" disabled={busy} onClick={()=>{if(window.confirm('전체 풀이와 정답이 공개됩니다. 먼저 직접 수정해 보셨나요? 공개하시겠습니까?'))void act('reveal');}}>전체 풀이 및 해설 보기</button>:<section aria-label="공개된 전체 풀이"><h3>전체 풀이 및 해설</h3><span className="math-study-badge">명시적 요청으로 공개됨</span>
- {array(full.references).map(object).map((r,i)=><details key={i}><summary>{r.origin==='OFFICIAL'?'공식 예시답안':r.origin==='VERIFIED_INTERNAL'?'검수 참고 풀이':'참고 풀이 · '+text(r.origin)}</summary><StudyMath value={r.body}/></details>)}
+ {array(full.references).map(object).map((r,i)=><details key={i}><summary>{r.origin==='OFFICIAL'?'공식 예시답안':r.origin==='VERIFIED_INTERNAL'?'검수 참고 풀이':'참고 풀이 · '+text(r.origin)}</summary>{r.relationship==='SUPPLEMENTAL_AFTER_ASSESSMENT'&&<p className="math-study-note">추가 연결 공식 자료 · 평가 당시 참고자료와 구분</p>}{text(r.source_locator)&&<p>{text(r.source_locator)}</p>}<StudyMath value={r.body}/></details>)}
  {!array(full.references).length&&<p className="math-study-note">연결된 공식 예시답안이 없습니다. 아래 분석을 공식 해설로 간주하지 마세요.</p>}
  {array(full.steps).length>0&&<details><summary>AI 평가의 풀이 단계</summary>{array(full.steps).map(object).map((s,i)=><article key={i}><h3>단계 {i+1}</h3><StudyMath value={s.representation}/><StudyMath value={s.explanation}/></article>)}</details>}
  {(text(full.generated_solution)||text(object(full.generated_solution).body))&&<details><summary>AI 생성 참고 해설</summary><StudyMath value={text(full.generated_solution)||object(full.generated_solution).body}/></details>}
