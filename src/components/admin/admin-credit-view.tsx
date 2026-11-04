@@ -1,6 +1,6 @@
 "use client";
 
-import {AdminReleaseReport} from './admin-release-report';
+import {AdminCreditReport} from './admin-credit-report';
 import {AdminCreditMembers} from "./admin-credit-members";
 
 import type { AdminDashboard } from "@/lib/admin/contract";
@@ -56,7 +56,7 @@ export function AdminCreditView() {
         </p>
       </section>
 
-      <AdminReleaseReport kind="credit"/>
+      <AdminCreditReport/>
 
     </div>
   );

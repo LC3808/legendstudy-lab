@@ -48,12 +48,23 @@ insert into essay_exam_private.runs select id,id,'00000000-0000-0000-0000-000000
 ''')
    sql((ROOT/'supabase/migrations/20261104095925_admin_member_dashboard_readouts.sql').read_text())
    sql((ROOT/'supabase/migrations/20261104101135_admin_member_composition_school_identity.sql').read_text())
+   sql("alter table bookmarks add column id uuid default gen_random_uuid();alter table recent_views add column id uuid default gen_random_uuid();alter table content_items add column source_url text;")
+   sql((ROOT/'supabase/migrations/20261104102732_admin_member_recent_activity.sql').read_text())
    # Existing functions retain their ACL in production; emulate their original ACL here.
    for fn in ['admin_dashboard_study','admin_learning_analytics','admin_exam_learning']:
     sql(f'revoke all on function {fn}(timestamptz,timestamptz) from public,anon,service_role;grant execute on function {fn}(timestamptz,timestamptz) to authenticated;')
    prefix="set role authenticated;set test.operator='yes';"
    args="'2026-11-04 00:00+09','2026-11-05 00:00+09'"
    def report(fn,arguments=args):return json.loads(sql(prefix+f'select {fn}({arguments});'))
+   sql("insert into content_items values('00000000-0000-0000-0000-000000000300','합성 자료','https://legendstudy.com/test');insert into bookmarks(user_id,content_item_id,created_at) select '00000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000300','2026-11-01'::timestamptz+n*interval '1 hour' from generate_series(1,8)n;insert into recent_views(user_id,content_item_id,viewed_at) select user_id,content_item_id,created_at from bookmarks;insert into bookmarks(user_id,content_item_id,created_at) values('00000000-0000-0000-0000-000000000002','00000000-0000-0000-0000-000000000300','2026-10-01');")
+   activity=report('admin_member_recent_activity',"'00000000-0000-0000-0000-000000000001'")
+   assert activity['bookmarks_total']==8 and len(activity['bookmarks'])==5 and len(activity['recent'])==5,activity
+   assert activity['bookmarks'][0]['at']>activity['bookmarks'][-1]['at']
+   assert report('admin_member_recent_activity',"'00000000-0000-0000-0000-000000000002'")['bookmarks_total']==1
+   assert report('admin_member_recent_activity',"'00000000-0000-0000-0000-000000000003'")['bookmarks']==[]
+   for role in ['anon','service_role']:sql(f"set role {role};select admin_member_recent_activity('00000000-0000-0000-0000-000000000001');",'permission denied')
+   sql("set role authenticated;select admin_member_recent_activity('00000000-0000-0000-0000-000000000001');",'insufficient_privilege')
+   sql(prefix+"set test.blocked='yes';select admin_member_recent_activity('00000000-0000-0000-0000-000000000001');",'insufficient_privilege')
    fingerprint=sql('select md5(string_agg(row_to_json(s)::text,\'\' order by id)) from study_sessions s')
    s=report('admin_dashboard_study');assert s['total']=={'users':4,'ms':7200000},s
    assert [r['users'] for r in s['grades']]==[1,3]
@@ -75,6 +86,6 @@ insert into essay_exam_private.runs select id,id,'00000000-0000-0000-0000-000000
    sql('set role anon;select admin_member_university_activity(null);','permission denied')
    sql(prefix+"set test.blocked='yes';select admin_member_composition(null,null);",'insufficient_privilege')
    assert fingerprint==sql('select md5(string_agg(row_to_json(s)::text,\'\' order by id)) from study_sessions s')
-   print('PASS: 5 read RPCs, cohorts 1/3/4, zero, KST clipping, overlap, membership window, member isolation, ACL, period limits, preservation')
+   print('PASS: recent activity limit5/order/isolation/empty/ACL; 5 dashboard read RPCs, cohorts 1/3/4, zero, KST clipping, overlap, membership window, member isolation, ACL, period limits, preservation')
   finally:command([PG/'pg_ctl','-D',p/'db','-m','immediate','-w','stop'])
 if __name__=='__main__':main()

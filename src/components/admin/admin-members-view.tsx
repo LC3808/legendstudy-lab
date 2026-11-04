@@ -1,6 +1,7 @@
 "use client";
 
 import './member-dashboard.css';
+import {MemberRecentActivity} from './member-recent-activity';
 import {MemberUniversityActivity} from './member-university-activity';
 import { Fragment, useState, type ReactNode } from "react";
 
@@ -112,6 +113,7 @@ function LegacyMemberDetailPanel({ accountId }: { accountId: string }) {
 export function AdminMemberDetailPanel({accountId,email=null}: {accountId: string;email?:string|null}) {
   return <div className="member-detail-focus"><LegacyMemberDetailPanel accountId={accountId}/><div className="admin-detail">
     <section className="admin-detail__block"><Student360Panel accountId={accountId}/></section>
+    <section className="admin-detail__block"><MemberRecentActivity accountId={accountId}/></section>
     <section className="admin-detail__block"><MemberUniversityActivity accountId={accountId}/></section>
     <details className="admin-detail__block"><summary>이용권 잔액·기록</summary><AdminMemberCreditPanel key={accountId} accountId={accountId} email={email}/></details>
   </div></div>;
