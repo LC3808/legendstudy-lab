@@ -47,6 +47,7 @@ insert into essay_exams values('00000000-0000-0000-0000-000000000200','TEST 시�
 insert into essay_exam_private.runs select id,id,'00000000-0000-0000-0000-000000000200',null,null,'{"answers":[{"questionId":"q1"}]}','completed','2026-11-04 01:00+09','2026-11-04 02:00+09' from auth.users;
 ''')
    sql((ROOT/'supabase/migrations/20261104095925_admin_member_dashboard_readouts.sql').read_text())
+   sql((ROOT/'supabase/migrations/20261104101135_admin_member_composition_school_identity.sql').read_text())
    # Existing functions retain their ACL in production; emulate their original ACL here.
    for fn in ['admin_dashboard_study','admin_learning_analytics','admin_exam_learning']:
     sql(f'revoke all on function {fn}(timestamptz,timestamptz) from public,anon,service_role;grant execute on function {fn}(timestamptz,timestamptz) to authenticated;')
@@ -58,7 +59,7 @@ insert into essay_exam_private.runs select id,id,'00000000-0000-0000-0000-000000
    assert [r['users'] for r in s['grades']]==[1,3]
    a=report('admin_learning_analytics');assert a['metrics']['targets']==4 and a['metrics']['target_records']==4 and a['metrics']['applications']==0 and a['rows'][0]['users']==4,a
    e=report('admin_exam_learning');assert e['metrics']['runs']==4 and e['exams'][0]['users']==4,e
-   m=report('admin_member_composition');assert m['accounts']==4 and m['active']==4 and m['schools'][0]['count']==4,m
+   m=report('admin_member_composition');assert m['accounts']==4 and m['active']==4 and m['schools'][0]['count']==4 and m['schools'][0]['office_code']=='B10',m
    sql("update profiles set academic_status='retaker',grade_level=3 where id::text like '%000001'")
    assert any(r['label']=='N수·검정고시 등' and r['count']==1 for r in report('admin_member_composition')['grades'])
    assert any(r['grade']=='retaker' and r['users']==1 for r in report('admin_dashboard_study')['grades'])

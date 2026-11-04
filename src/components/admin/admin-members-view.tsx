@@ -109,11 +109,11 @@ function LegacyMemberDetailPanel({ accountId }: { accountId: string }) {
 }
 
 // Independent read RPCs retain their own server authorization and error states.
-export function AdminMemberDetailPanel({accountId}: {accountId: string}) {
+export function AdminMemberDetailPanel({accountId,email=null}: {accountId: string;email?:string|null}) {
   return <div className="member-detail-focus"><LegacyMemberDetailPanel accountId={accountId}/><div className="admin-detail">
     <section className="admin-detail__block"><Student360Panel accountId={accountId}/></section>
     <section className="admin-detail__block"><MemberUniversityActivity accountId={accountId}/></section>
-    <details className="admin-detail__block"><summary>이용권 잔액·기록</summary><AdminMemberCreditPanel key={accountId} accountId={accountId} email={null}/></details>
+    <details className="admin-detail__block"><summary>이용권 잔액·기록</summary><AdminMemberCreditPanel key={accountId} accountId={accountId} email={email}/></details>
   </div></div>;
 }
 
@@ -219,7 +219,7 @@ export function AdminMembersView() {
         <td>{m.major??'—'}</td><td>{m.displayName??'—'}</td><td>{formatDateTime(m.createdAt)}</td>
         <td><button type="button" className="button button--outline button--small" aria-label={`${m.displayName||m.email||'회원'} 상세 ${open?'닫기':'보기'}`} aria-expanded={open} onClick={()=>setSelected(open?null:m.accountId)}>{open?'닫기':'보기'}</button></td>
        </tr>
-       {open?<tr className="admin-member-detail-row"><td colSpan={columns.length}><AdminMemberDetailPanel key={m.accountId} accountId={m.accountId}/></td></tr>:null}
+       {open?<tr className="admin-member-detail-row"><td colSpan={columns.length}><AdminMemberDetailPanel key={m.accountId} accountId={m.accountId} email={m.email}/></td></tr>:null}
       </Fragment>;
      })}
     </tbody></table>
