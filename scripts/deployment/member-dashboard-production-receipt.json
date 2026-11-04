@@ -1,0 +1,14 @@
+{
+  "deployment": "012f5ef8-be86-42af-bb28-9571af2f7260",
+  "status": {
+    "name": "deploy",
+    "started_on": null,
+    "ended_on": "2026-11-04T10:13:13.619703Z",
+    "status": "success"
+  },
+  "source": "f4863acf120ad0fd239b12158fb5f72384f14838",
+  "configuration_unchanged": true,
+  "manifest_exact": true,
+  "binding_count": 49,
+  "previous": "6de2e046-7bd2-449b-b406-7f68ad019c8b"
+}
