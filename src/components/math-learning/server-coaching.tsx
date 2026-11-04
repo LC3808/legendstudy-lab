@@ -75,7 +75,7 @@ function OwnerCoaching(props:CoachingRef){
  <div className="math-study-grid">
  {input?<StudyEvidence key={`${identity}/${task.id??'all'}`} input={input} task={task} loadImage={loadImage}/>:<section className="math-study-panel"><h2>학생 원본 답안</h2><p>{props.runId?'혼합형 원본은 기존 제출 답안에서 확인해 주세요.':'원본과 확정 전사본을 확인하고 있어요.'}</p></section>}
  <section className="math-study-panel math-study-results" aria-label="첨삭 결과와 개선 과제"><h2>첨삭 결과</h2><div className="math-study-diagnosis"><h3>종합 진단</h3><p><StudyMath value={data.diagnosis}/></p></div>
- <LearningCompletenessCard value={data.learning_completeness} evaluationId={text(data.evaluation_id)}/>
+ <LearningCompletenessCard value={data.learning_completeness} comparison={data.learning_comparison} evaluationId={text(data.evaluation_id)}/>
  <h3>잘한 점</h3>{array(data.strengths).length?array(data.strengths).map(object).map((s,i)=><article key={i}><strong>✓ {text(s.title)}</strong><p><StudyMath value={s.description}/></p></article>):<p>별도로 확인된 강점이 없습니다. 판정 보류 여부를 함께 확인해 주세요.</p>}
  <h3>우선 개선 과제 <span className="math-study-badge">{tasks.length}개</span></h3><p className="math-study-note">평가 서버가 선정한 순서입니다. 공식 기준별 세부 설명은 제공된 범위에서 확인하세요.</p>
  {tasks.map((t,i)=><button className="math-study-task" key={text(t.id)} aria-pressed={task.id===t.id} onClick={()=>setSelected(text(t.id))}><strong>{i+1}. {text(t.title)}</strong><small>{text(t.importance)} · 풀이 단계 {String(t.position??'미확정')}</small></button>)}
@@ -96,7 +96,7 @@ function OwnerCoaching(props:CoachingRef){
  </section>}
  </aside></div>
  <details className="math-study-panel math-study-history"><summary>학습 기록 · History</summary><button disabled={busy} onClick={()=>void request('history').then(setHistory).catch(()=>setError('학습 기록을 읽지 못했어요.'))}>기록 새로고침</button>
- {!history?<p>학습 기록 읽는 중…</p>:rows.map((r,i)=><article key={text(r.attempt_id)||text(r.run_id)||i}><strong>{r.evaluation_id===props.evaluationId?'현재 답안 · ':''}{!r.prior_attempt_id&&!r.parent_id?'최초 답안':'수정 답안'}</strong><p><time>{text(r.created_at)}</time> · {text(r.evaluation_state)||text(r.state)||'상태 확인 중'}</p><p>힌트 공개 단계: {array(r.exposed_hint_levels).join(', ')||'없음'} · 전체 해설 {r.solution_revealed===true?'공개':'비공개'}</p></article>)}
+ {!history?<p>학습 기록 읽는 중…</p>:rows.map((r,i)=><article key={text(r.attempt_id)||text(r.run_id)||i}><strong>{r.evaluation_id===props.evaluationId?'현재 답안 · ':''}{r.resolve_kind==='INITIAL'?'최초 답안':'수정 답안'}</strong><p><time>{text(r.created_at)}</time> · {text(r.evaluation_state)||text(r.state)||'상태 확인 중'}</p><LearningCompletenessCard value={r.learning_completeness} evaluationId={text(r.evaluation_id)}/><p>힌트 공개 단계: {array(r.exposed_hint_levels).join(', ')||'없음'} · 전체 해설 {r.solution_revealed===true?'공개':'비공개'}</p></article>)}
  {current&&<p className="math-study-note">공개 기록과 재첨삭 이력은 APP과 동일한 계정으로 연결됩니다.</p>}
  </details></>}
  </section>;

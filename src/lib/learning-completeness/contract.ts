@@ -14,12 +14,14 @@ export interface LearningContext {
 export interface LearningCandidate {
  status:'ASSESSED'|'INSUFFICIENT_EVIDENCE'; level:number|null; anchor:string|null;
  criterion_refs:string[]; observation_refs:string[];
+ criterion_note_refs?:Record<string,string>;
  reason_ref:string; strength_refs:string[]; improvement_refs:string[]; direction_ref:string;
 }
 export interface LearningCompleteness {
  version:typeof LEARNING_POLICY; evaluation_id:string; question_id:string; rubric_version:string;
  assessed_at:string; status:LearningCandidate['status']; level:number|null;
  rationale:string; criterion_refs:string[]; observation_refs:string[];
+ criterion_evidence?:{criterion_id:string;rationale:string}[];
  strengths:string[]; improvements:string[]; next_direction:string;
 }
 function uniqueRefs(refs:string[], allowed:readonly string[], required=false){
@@ -45,13 +47,17 @@ export function publishLearningCompleteness(candidate:LearningCandidate, context
  }
  // Existing essay/math review acceptance does not approve a newly added judgement.
  // The worker must supply the exact independently accepted judgement, bound to this evaluation.
- const fields:(keyof LearningCandidate)[]=['status','level','anchor','criterion_refs','observation_refs','reason_ref','strength_refs','improvement_refs','direction_ref'];
+ const fields:(keyof LearningCandidate)[]=['status','level','anchor','criterion_refs','observation_refs','reason_ref','strength_refs','improvement_refs','direction_ref','criterion_note_refs'];
  if(!reviewedCandidate||fields.some(k=>JSON.stringify(candidate[k])!==JSON.stringify(reviewedCandidate[k])))throw Error('LEARNING_JUDGEMENT_REVIEW_REQUIRED');
  const keys=Object.keys(context.reviewedNotes);
  const note=(key:string)=>{if(!keys.includes(key)||!context.reviewedNotes[key].trim())throw Error('LEARNING_REVIEWED_NOTE_REQUIRED');return context.reviewedNotes[key];};
  uniqueRefs(candidate.strength_refs,keys);uniqueRefs(candidate.improvement_refs,keys);
  if(candidate.improvement_refs.length>5)throw Error('LEARNING_TASK_LIMIT');
- return {version:LEARNING_POLICY,evaluation_id:context.evaluationId,question_id:context.questionId,rubric_version:context.rubricVersion,assessed_at:context.assessedAt,status:candidate.status,level:candidate.level,rationale:note(candidate.reason_ref),criterion_refs:[...candidate.criterion_refs],observation_refs:[...candidate.observation_refs],strengths:candidate.strength_refs.map(note),improvements:candidate.improvement_refs.map(note),next_direction:note(candidate.direction_ref)};
+ const criterionEvidence=candidate.criterion_note_refs?Object.entries(candidate.criterion_note_refs).map(([criterion_id,key])=>{
+  if(!context.criterionIds.includes(criterion_id))throw Error('LEARNING_EVIDENCE_REQUIRED');
+  return {criterion_id,rationale:note(key)};
+ }):undefined;
+ return {...(criterionEvidence?{criterion_evidence:criterionEvidence}:{}),version:LEARNING_POLICY,evaluation_id:context.evaluationId,question_id:context.questionId,rubric_version:context.rubricVersion,assessed_at:context.assessedAt,status:candidate.status,level:candidate.level,rationale:note(candidate.reason_ref),criterion_refs:[...candidate.criterion_refs],observation_refs:[...candidate.observation_refs],strengths:candidate.strength_refs.map(note),improvements:candidate.improvement_refs.map(note),next_direction:note(candidate.direction_ref)};
 }
 /** Caller obtains prior through the existing owned attempt lineage, never a client-supplied ID. */
 export function compareLearningCompleteness(current:LearningCompleteness, prior:LearningCompleteness|null, linkedPriorEvaluationId:string|null){

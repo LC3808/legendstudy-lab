@@ -1,3 +1,4 @@
+import {generateReviewedMathLearning} from '../../../src/lib/learning-completeness/math-worker';
 import {independentlyReviewedCandidate} from '../../../src/lib/math-release/server/independent-review';
 /** Internal child evaluator. Only the existing Essay queue can call this route.
  * Context comes from the existing parent lease, never from HTTP student content.
@@ -7,7 +8,7 @@ import {serverTransport,type MathEnvironment} from '../../../src/lib/math-releas
 import {boundedBody} from '../../../src/lib/math-release/server/request';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {evaluateExamMath,InvalidMathChildOutput} from '../../../src/lib/math-release/server/exam-bridge';
-import {openAiCandidate} from '../../../src/lib/math-release/server/provider';
+import {openAiCandidate,candidateJson} from '../../../src/lib/math-release/server/provider';
 type Env=MathEnvironment&{ESSAY_WORKER_SERVICE_TOKEN?:string;ESSAY_REGISTRY_WORKER_JWT?:string;ESSAY_MIXED_SESSION_ENABLED?:string};
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(v);
 async function evaluationId(run:string,question:string){
@@ -52,7 +53,10 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const started=Date.now();
   let evaluation;
   try{evaluation=await evaluateExamMath({evaluation_id:input.evaluationId,selected_extraction_id:null,context},(env.MATH_INDEPENDENT_REVIEW_ENABLED==='true'?independentlyReviewedCandidate:openAiCandidate)({
-   enabled:true,model:env.MATH_PRIMARY_MODEL,key:env.MATH_PROVIDER_API_KEY,onUsage:value=>{usage=Object.fromEntries(Object.keys(value).map(k=>[k,(usage?.[k]??0)+value[k]]));}}));}
+   enabled:true,model:env.MATH_PRIMARY_MODEL,key:env.MATH_PROVIDER_API_KEY,onUsage:value=>{usage=Object.fromEntries(Object.keys(value).map(k=>[k,(usage?.[k]??0)+value[k]]));}}),
+   env.MATH_LEARNING_ENABLED==='true'?(mathInput,output)=>generateReviewedMathLearning({input:mathInput,output,newEvaluation:true,allQuestionsComplete:true,
+    call:(instructions,payload)=>candidateJson({enabled:true,model:env.MATH_PRIMARY_MODEL!,key:env.MATH_PROVIDER_API_KEY!,timeoutMs:30000,
+     onUsage:value=>{usage=Object.fromEntries(Object.keys(value).map(k=>[k,(usage?.[k]??0)+value[k]]));}},instructions,payload)}):undefined);}
   catch(error){
    if(error instanceof InvalidMathChildOutput&&usage)return reply({state:'failed',code:'INVALID_MATH_OUTPUT',usage:{...usage,latency_ms:Date.now()-started,cost_amount:null,currency:'USD'}});
    throw error;

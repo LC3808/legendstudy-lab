@@ -1,7 +1,8 @@
+import {generateReviewedMathLearning} from '../../../src/lib/learning-completeness/math-worker';
 import {independentlyReviewedCandidate} from '../../../src/lib/math-release/server/independent-review';
 import { evaluationGateway } from "../../../src/lib/math-release/server/gateway";
 import { serverTransport, publicMathLeaves, type MathEnvironment } from "../../../src/lib/math-release/server/transport";
-import { openAiCandidate } from "../../../src/lib/math-release/server/provider";
+import { openAiCandidate, candidateJson } from "../../../src/lib/math-release/server/provider";
 import { MathEvaluationWorkerClient } from "../../../src/lib/math-eval/runtime/worker-client";
 export async function onRequestPost({ request, env }: { request: Request; env: MathEnvironment }) {
   try {
@@ -10,6 +11,8 @@ export async function onRequestPost({ request, env }: { request: Request; env: M
     const reviewed = env.MATH_INDEPENDENT_REVIEW_ENABLED === 'true';
     return evaluationGateway({ enabled: true, origin: env.MATH_ORIGIN ?? "", authenticate: async token => !!await transport.subject(token, publicMathLeaves(env).length>0),
       releasedLeaves: publicMathLeaves(env), student: transport.rpc, worker: new MathEvaluationWorkerClient(transport.rpc(env.MATH_EVALUATION_WORKER_JWT)),
+      learning: env.MATH_LEARNING_ENABLED === 'true' ? (input,output)=>generateReviewedMathLearning({input,output,newEvaluation:true,allQuestionsComplete:true,
+        call:(instructions,payload)=>candidateJson({enabled:true,model:env.MATH_PRIMARY_MODEL!,key:env.MATH_PROVIDER_API_KEY!,timeoutMs:30000},instructions,payload)}) : undefined,
       evaluationTimeoutMs: reviewed ? 100000 : 80000,
       adapter: (reviewed ? independentlyReviewedCandidate : openAiCandidate)({ enabled: true, model: env.MATH_PRIMARY_MODEL, key: env.MATH_PROVIDER_API_KEY }),
     })(request);

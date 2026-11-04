@@ -1,3 +1,4 @@
+import type {ReviewedLearningJudgement} from '../../learning-completeness/math-worker';
 /**
  * MATH-4B — WORKER-ONLY evaluation client + flow. Wraps math_evaluation (claim/finalize/fail), which
  * MATH-2D restricts to the trusted evaluation worker role. Never imported by a student browser
@@ -29,11 +30,12 @@ export class MathEvaluationWorkerClient {
     });
   }
 
-  finalize(evaluationId: string, leaseToken: string, output: unknown): Promise<FinalizeEvalResult> {
+  finalize(evaluationId: string, leaseToken: string, output: unknown, learning?: ReviewedLearningJudgement | null): Promise<FinalizeEvalResult> {
     return callRuntime<FinalizeEvalResult>(this.transport, "math_evaluation", MATH_WORKER_DTO, "finalize", {
       evaluation_id: evaluationId,
       lease_token: leaseToken,
       output,
+      ...(learning ? {learning_judgement:learning} : {}),
     });
   }
 
@@ -81,6 +83,7 @@ export async function runWorkerEvaluation(params: {
   evaluationId: string;
   adapter: MathEvaluatorAdapter;
   timeoutMs?: number;
+  learning?: (input:MathEvaluationInput, output:Awaited<ReturnType<MathEvaluatorAdapter["evaluate"]>>["output"])=>Promise<ReviewedLearningJudgement|null>;
 }): Promise<WorkerEvaluationResult> {
   const claim = await params.worker.claim(params.evaluationId);
   let validation: MathEvaluationValidation;
@@ -120,6 +123,17 @@ export async function runWorkerEvaluation(params: {
       return { finalized: false, validation: { ok: false, issues: [] }, evaluationId: null, failed: true };
     }
   }
-  const evaluationId = await params.worker.finalize(params.evaluationId, claim.lease_token, finalOutput);
+  let learning:ReviewedLearningJudgement|null=null;
+  // Optional learning judgement never causes a second evaluation or credit request.
+  // Failure/insufficient evidence saves the valid canonical assessment without a level.
+  if(params.learning && claim.context.attempt.kind !== 'STEP_RETRY'){
+    let learningTimer:ReturnType<typeof setTimeout>|undefined;
+    try {
+      learning=await Promise.race([params.learning(claimContextToInput(claim),candidate.output),new Promise<never>((_,reject)=>{learningTimer=setTimeout(()=>reject(Error('LEARNING_TIMEOUT')),65000);})]);
+      if(learning?.value.status!=='ASSESSED')learning=null;
+    } catch { console.warn('MATH_LEARNING_UNAVAILABLE'); }
+    finally {if(learningTimer)clearTimeout(learningTimer);}
+  }
+  const evaluationId = await params.worker.finalize(params.evaluationId, claim.lease_token, finalOutput, learning);
   return { finalized: true, validation, evaluationId, failed: false };
 }
