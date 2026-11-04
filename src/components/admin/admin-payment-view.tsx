@@ -1,7 +1,8 @@
 "use client";
 
 import {AdminReleaseReport} from './admin-release-report';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { paymentRuntime, type PaymentRuntime } from "@/lib/payment-runtime";
 
 import { ADMIN_MIN_QUERY } from "@/lib/admin/client";
 import type { AdminPaymentPage } from "@/lib/admin/contract";
@@ -31,6 +32,9 @@ import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admi
 const PAYMENT_PAGE_LIMIT = 5;
 
 export function AdminPaymentView() {
+  const [runtime,setRuntime]=useState<PaymentRuntime|null>(null);
+  useEffect(()=>{let active=true;void paymentRuntime().then(value=>{if(active)setRuntime(value);});return()=>{active=false;};},[]);
+  const runtimeLabel=runtime===null?"결제 서버 확인 중":runtime.state==='LIVE'?"LIVE 결제 운영 중":runtime.state==='PAUSED'?"신규 결제 일시 중지":runtime.state==='REVIEW'||runtime.state==='TEST'?"TEST 결제 환경": "결제 서버 설정 확인 필요";
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
   const [state, setState] = useState("");
@@ -118,10 +122,10 @@ export function AdminPaymentView() {
                 <p className="admin-metric__value">
                   {result.state.data.installed ? "설치됨" : "미설치"}
                 </p>
-                <p className="admin-metric__note">{result.state.data.runtimeLabel}</p>
+                <p className="admin-metric__note">{runtimeLabel}</p>
               </div>
               <div className="admin-metric">
-                <p className="admin-metric__label">결제 모드</p>
+                <p className="admin-metric__label">기록된 주문 환경</p>
                 <p className="admin-metric__value">{paymentModeLabel(result.state.data.mode)}</p>
               </div>
               <div className="admin-metric">

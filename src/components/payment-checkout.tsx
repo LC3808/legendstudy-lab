@@ -131,11 +131,9 @@ function CheckoutContent({ embedded, initialCredits }: { embedded: boolean; init
   const available = runtime !== null && checkoutOpen(runtime.state, runtime.consumerPurchase);
   const payable = available && signedIn === true;
   const loginHref = appendReturnPath("/login/", `${embedded ? "/pricing/" : "/payments/checkout/"}?sku=${plan.credits}c`);
-  /**
-   * Only a genuine availability state is narrated. The test-environment wording
-   * was removed by the Owner: the checkout does not explain the build to a buyer.
-   */
   const notice = runtime === null ? null : checkoutNotice(runtime.state);
+
+  const testNotice = signedIn === true && available && (runtime?.state === 'TEST' || runtime?.state === 'REVIEW') ? <p className="checkout-notice" role="note"><strong>테스트 결제 환경</strong><br />이 계정의 결제는 테스트로 처리되며 실제 금액이 청구되지 않습니다. 사용 가능한 이용권은 지급되지 않습니다.</p> : null;
 
   async function pay() {
     if (!payable || paying.current) return;
@@ -210,6 +208,7 @@ function CheckoutContent({ embedded, initialCredits }: { embedded: boolean; init
         </div>
   );
   if (embedded) return <>
+    {testNotice}
     {productGrid}
     {notice && <p className="checkout-notice" role="status">{notice}</p>}
     {message && <p className="checkout-message" role="status">{message}</p>}
@@ -226,6 +225,7 @@ function CheckoutContent({ embedded, initialCredits }: { embedded: boolean; init
 
       <section className="policy-section" aria-labelledby="checkout-plans-title">
         <h2 id="checkout-plans-title">상품 선택</h2>
+        {testNotice}
         {productGrid}
       </section>
 

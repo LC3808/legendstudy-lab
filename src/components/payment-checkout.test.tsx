@@ -55,8 +55,8 @@ describe('checkout surface', () => {
     vi.stubGlobal('fetch', runtime('TEST'));
     render(<PaymentCheckout />);
     await waitFor(() => expect(screen.getByText('결제하기')).not.toBeDisabled());
-    // The Owner removed the test-environment narration from the checkout.
-    expect(screen.queryByText(/테스트 결제 환경/)).toBeNull();
+    // The designated TEST account must see the current explicit no-charge notice.
+    expect(screen.getByText(/테스트 결제 환경/)).toBeTruthy();
     expect(await screen.findByText('주문 확인')).toBeTruthy();
     const plan = pricingPlans.find((p) => p.credits === 3);
     expect(plan).toBeTruthy();

@@ -23,7 +23,7 @@ async function read(response: Response | Request, max: number): Promise<Json> {
 function exact(p: Json, keys: string[]) { if (Object.keys(p).some(k => !keys.includes(k)) || keys.some(k => !(k in p))) fail(422, 'INVALID_FIELDS'); }
 function text(v: unknown, max = 200): string { if (typeof v !== 'string' || !v.length || v.length > max) return fail(422, 'INVALID_FIELD'); return v; }
 function id(v: unknown): string { const s = text(v, 36); if (!uuid.test(s)) fail(422, 'INVALID_ID'); return s; }
-function config(e: Env) {
+function config(e: Env, selected?: 'TEST'|'LIVE') {
   const mode = e.PAYMENT_MODE;
   const live = mode === 'LIVE';
   const review = mode === 'REVIEW';
@@ -31,7 +31,7 @@ function config(e: Env) {
   // REVIEW is the card-review mode: the real service origin and the real Production
   // database, driven by the Toss TEST merchant. The merchant key family is TEST, so
   // no real charge is possible, and persistence stays on TEST semantics.
-  const test = !live;
+  const test = selected ? selected === 'TEST' : !live;
   const clientKey = test ? e.TOSS_TEST_CLIENT_KEY : e.TOSS_LIVE_CLIENT_KEY;
   const secret = test ? e.TOSS_TEST_SECRET_KEY : e.TOSS_LIVE_SECRET_KEY;
   const checks = { client_key_family: (test ? /^test_ck_/ : /^live_ck_/).test(clientKey || ''), secret_key_family: (test ? /^test_sk_/ : /^live_sk_/).test(secret || ''), merchant: e.TOSS_MID === 'leglabn24k', finance_present: Boolean(e.PAYMENT_FINANCE_TOKEN), publishable_present: Boolean(e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) };
@@ -46,13 +46,14 @@ function config(e: Env) {
       reviewer_nonempty: Boolean(e.PAYMENT_REVIEW_SUBJECTS),
     } } : undefined);
   }
-  const origin = test && !review ? 'https://legendstudy-lab-payment-test.pages.dev' : 'https://lab.legendstudy.com';
-  const db = test && !review ? 'https://wsnrwklplnunjktyfmbr.supabase.co' : 'https://stlhijzpjfgwwdgunlsd.supabase.co';
+  const origin = mode === 'TEST' ? 'https://legendstudy-lab-payment-test.pages.dev' : 'https://lab.legendstudy.com';
+  const db = mode === 'TEST' ? 'https://wsnrwklplnunjktyfmbr.supabase.co' : 'https://stlhijzpjfgwwdgunlsd.supabase.co';
   if (e.PAYMENT_ORIGIN !== origin || e.PAYMENT_SUPABASE_URL !== db || !['true','false'].includes(e.PAYMENT_ENABLED || '')) throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', review ? { stage: 'CONFIG', checks: { origin: e.PAYMENT_ORIGIN === origin, database: e.PAYMENT_SUPABASE_URL === db, enabled_valid: ['true','false'].includes(e.PAYMENT_ENABLED || '') } } : undefined);
   // A review runtime without a reviewer allowlist is a misconfiguration, not a mode.
   if (review && !(e.PAYMENT_REVIEW_SUBJECTS || '').split(',').filter(Boolean).length) throw new Fault(503, 'PAYMENT_NOT_CONFIGURED', { stage: 'CONFIG', checks: { review_subjects_present: false } });
+  if (live && !uuid.test(e.PAYMENT_REVIEW_SUBJECTS || '')) fail(503, 'PAYMENT_NOT_CONFIGURED');
   // `mode` stays the persistence and provider mode (TEST|LIVE); `state` is what the browser may see.
-  return { origin, clientKey, secret, enabled: e.PAYMENT_ENABLED === 'true', mode: test ? 'TEST' : 'LIVE', state: mode!, review };
+  return { origin, clientKey, secret, enabled: e.PAYMENT_ENABLED === 'true', mode: test ? 'TEST' : 'LIVE', state: live && test ? 'REVIEW' : mode!, review };
 }
 /**
  * Server-authoritative reviewer identity for REVIEW. The browser only ever holds a
@@ -66,7 +67,7 @@ async function reviewer(request: Request, env: Env, io: IO): Promise<boolean> {
     const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/auth/v1/user`, { headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: bearer } });
     if (!r.ok) return false;
     const user = await read(r, 32768);
-    return uuid.test(String(user.id)) && (env.PAYMENT_REVIEW_SUBJECTS || '').split(',').filter(Boolean).includes(String(user.id));
+    return user.email === 'review@legendstudy.com' && typeof user.email_confirmed_at === 'string' && uuid.test(String(user.id)) && (env.PAYMENT_REVIEW_SUBJECTS || '').split(',').filter(Boolean).includes(String(user.id));
   } catch { return false; }
 }
 async function call(io: IO, url: string, init: RequestInit): Promise<Response> {
@@ -78,19 +79,23 @@ async function call(io: IO, url: string, init: RequestInit): Promise<Response> {
 }
 function safeOrder(o: Json, mode: string): Json {
   if (o.dto_version !== 'payment-v1' || o.mode !== mode || !uuid.test(String(o.id)) || o.order_id !== 'ls_' + String(o.id).replaceAll('-', '') || !Number.isSafeInteger(o.amount) || Number(o.amount) <= 0 || o.currency !== 'KRW' || (o.provider !== undefined && o.provider !== 'TOSS') || !(mode === 'TEST' ? ['NONE','TEST_RECORDED','REVOKED'] : ['NONE','POSTED','REVOKED']).includes(String(o.grant_state))) fail(502, 'INVALID_ORDER');
+  const catalogue: Record<string, [number,number]> = { '1c':[1,4900], '3c':[3,11900], '5c':[5,17900], '10c':[10,29900] };
+  const product = catalogue[String(o.sku)];
+  if (!product || o.quantity !== product[0] || o.amount !== product[1]) fail(502, 'INVALID_ORDER');
   const keys = ['dto_version','order_id','id','mode','sku','amount','quantity','currency','state','grant_state','expires_at','paid_at','credit_expires_at'];
   return Object.fromEntries(keys.map(k => [k, o[k]]));
 }
 export async function payment(request: Request, env: Env, io: IO = fetch): Promise<Response> {
   try {
-    const cfg = config(env); const { origin } = cfg; const url = new URL(request.url);
+    let cfg = config(env); const { origin } = cfg; const url = new URL(request.url);
     if (url.origin !== origin || request.headers.get('origin') !== origin) fail(403, 'ORIGIN_DENIED');
     if (request.method !== 'POST') fail(405, 'METHOD_NOT_ALLOWED');
     if (request.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') fail(415, 'CONTENT_TYPE');
     const action = url.pathname.replace(/\/$/, '').split('/').pop();
     if (action === 'runtime') {
       exact(await read(request, 2048), []);
-      const allowed = cfg.review ? await reviewer(request, env, io) : false;
+      const allowed = (cfg.review || env.PAYMENT_MODE === 'LIVE') ? await reviewer(request, env, io) : false;
+      if (env.PAYMENT_MODE === 'LIVE' && allowed) cfg = config(env, 'TEST');
       return Response.json({ state: cfg.enabled ? cfg.state : 'PAUSED', mode: cfg.mode, consumer_purchase: cfg.enabled && (cfg.mode === 'LIVE' || allowed) }, { headers });
     }
     const bearer = request.headers.get('authorization');
@@ -98,6 +103,15 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     // REVIEW exposes the TEST checkout to the reviewer only. Every authenticated
     // action is gated here, so a non-allowlisted member cannot create an order.
     if (cfg.review && !(await reviewer(request, env, io))) fail(403, 'REVIEW_REQUIRED');
+    let buyerMode: 'TEST'|'LIVE' = cfg.mode as 'TEST'|'LIVE';
+    if (env.PAYMENT_MODE === 'LIVE') {
+      const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/auth/v1/user`, { headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: bearer! } });
+      if (!r.ok) fail(401, 'AUTH_REQUIRED');
+      const user = await read(r, 32768);
+      if (!uuid.test(String(user.id)) || user.is_anonymous === true) fail(401, 'AUTH_REQUIRED');
+      buyerMode = user.id === env.PAYMENT_REVIEW_SUBJECTS && user.email === 'review@legendstudy.com' && typeof user.email_confirmed_at === 'string' ? 'TEST' : 'LIVE';
+      cfg = config(env, buyerMode);
+    }
     const p = await read(request, 2048);
     const rpc = async (name: string, body: Json, finance = false) => {
       const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/rest/v1/rpc/${name}`, { method: 'POST', headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: finance ? `Bearer ${env.PAYMENT_FINANCE_TOKEN}` : bearer!, 'Content-Type': 'application/json' }, body: JSON.stringify({ p: { dto_version: 'payment-v1', ...body } }) });
@@ -118,7 +132,9 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
       if (!cfg.enabled) fail(409, 'PAYMENT_PAUSED');
       exact(p, ['sku','request_key']); id(p.request_key);
       if (!['1c','3c','5c','10c'].includes(String(p.sku))) fail(422, 'UNSUPPORTED_SKU');
-      const o = safeOrder(await rpc('payment_order', { action: 'create', ...p }), cfg.mode);
+      const created = await rpc('payment_order', { action: 'create', ...p });
+      if ((created.mode === 'TEST' || created.mode === 'LIVE') && created.mode !== cfg.mode) fail(409, 'ORDER_NOT_CHECKOUT_READY');
+      const o = safeOrder(created, cfg.mode);
       if (o.state !== 'ORDER_CREATED' || Date.parse(String(o.expires_at)) <= Date.now()) fail(409, 'ORDER_NOT_CHECKOUT_READY');
       return Response.json({ order: o, checkout: { clientKey: cfg.clientKey, customerKey: o.id, orderId: o.order_id, orderName: `LegendStudy 논술 첨삭 ${o.quantity}회 이용권${cfg.mode === 'TEST' ? ' TEST' : ''}`, amount: { currency: 'KRW', value: o.amount }, successUrl: `${origin}/payments/success/`, failUrl: `${origin}/payments/fail/` } }, { headers });
     }
@@ -134,7 +150,10 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
       if (support) preview = await rpc('payment_support', { action: action!.slice(8).replace('inspect','inspect'), id: p.id, request_key: p.request_key, operator_id: id(user.id) }, true);
     }
     // Ordinary buyers always pass fresh APP ownership checks. Support passes fresh Auth+allowlist first.
-    const order = safeOrder(preview ? object(preview.order) : await rpc('payment_order', { action: 'get', id: p.id }), cfg.mode);
+    const stored = preview ? object(preview.order) : await rpc('payment_order', { action: 'get', id: p.id });
+    // Existing orders keep their original environment across activation and identity changes.
+    if (env.PAYMENT_MODE === 'LIVE' && (stored.mode === 'TEST' || stored.mode === 'LIVE')) cfg = config(env, stored.mode);
+    const order = safeOrder(stored, cfg.mode);
     const result = (o: Json) => Response.json({ order: safeOrder(o, cfg.mode) }, { headers });
     if (action === 'support-inspect') return Response.json({ order, preview: { owner_id: preview!.owner_id, used: preview!.used, remaining: preview!.remaining, reserved: preview!.reserved, refund_amount: preview!.refund_amount, eligible: preview!.eligible, reason: preview!.reason } }, { headers });
     if (action === 'status') return result(order);
