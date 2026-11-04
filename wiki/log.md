@@ -147,3 +147,5 @@ Explicit Unicode root-index display `9a8fb9f` deployed as Pages `bfb80aef-8d88-4
 Preserve sentence flow across inline TeX; retain explicit paragraphs/display math and original values. Focused16 tests + TypeScript PASS. Existing CAU complete and Inha official-solution WEB rendering observed without Provider reruns. Production unchanged; full closeout remains PARTIAL.
 
 Learning judgement orchestration added with independent review binding and no historical generation. Seven synthetic tests; not connected to live Provider or persistence. No actual learning level was generated or stored.
+
+- 2026-11-04: 실제 TEST에서 최종 산술 오판 발견·candidate-5 및 기본 비활성 독립 검산 연결. 147검사/타입 PASS, TEST 원복/운영 변경0. 저장·중앙Q2·전체품질 미완료.

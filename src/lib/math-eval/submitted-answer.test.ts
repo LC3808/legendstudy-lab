@@ -38,7 +38,7 @@ describe("explicit confirmed student work", () => {
     expect(wire.problem).toEqual(before!.problem);
     expect(input.canonicalPackage).toEqual(before);
     expect(body.instructions).toContain("typed_text may be null for a photo submission");
-    expect(result.output.provenance.prompt_version).toBe("math-activation-candidate-4");
+    expect(result.output.provenance.prompt_version).toBe("math-activation-candidate-5");
     expect(validateMathEval(result.output,input).issues.map(i=>i.code)).toContain("SUBMITTED_ANSWER_IGNORED");
   });
   it("preserves typed-only and mixed text without moving official material into the submission", () => {

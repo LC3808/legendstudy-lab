@@ -1,3 +1,4 @@
+import {independentlyReviewedCandidate} from '../../../src/lib/math-release/server/independent-review';
 import { evaluationGateway } from "../../../src/lib/math-release/server/gateway";
 import { serverTransport, publicMathLeaves, type MathEnvironment } from "../../../src/lib/math-release/server/transport";
 import { openAiCandidate } from "../../../src/lib/math-release/server/provider";
@@ -6,9 +7,11 @@ export async function onRequestPost({ request, env }: { request: Request; env: M
   try {
     if (env.MATH_ENABLED !== "true" || env.MATH_PROVIDER_CALLS_ENABLED !== "true" || env.MATH_PROVIDER !== "OPENAI" || !env.MATH_EVALUATION_WORKER_JWT || !env.MATH_PRIMARY_MODEL || !env.MATH_PROVIDER_API_KEY) throw Error("CONFIGURATION_REQUIRED");
     const transport = serverTransport(env);
+    const reviewed = env.MATH_INDEPENDENT_REVIEW_ENABLED === 'true';
     return evaluationGateway({ enabled: true, origin: env.MATH_ORIGIN ?? "", authenticate: async token => !!await transport.subject(token, publicMathLeaves(env).length>0),
       releasedLeaves: publicMathLeaves(env), student: transport.rpc, worker: new MathEvaluationWorkerClient(transport.rpc(env.MATH_EVALUATION_WORKER_JWT)),
-      adapter: openAiCandidate({ enabled: true, model: env.MATH_PRIMARY_MODEL, key: env.MATH_PROVIDER_API_KEY }),
+      evaluationTimeoutMs: reviewed ? 100000 : 80000,
+      adapter: (reviewed ? independentlyReviewedCandidate : openAiCandidate)({ enabled: true, model: env.MATH_PRIMARY_MODEL, key: env.MATH_PROVIDER_API_KEY }),
     })(request);
   } catch { return Response.json({ code: "EVALUATION_UNAVAILABLE" }, { status: 503, headers: { "Cache-Control": "no-store" } }); }
 }

@@ -1,3 +1,4 @@
+import {independentlyReviewedCandidate} from '../../../src/lib/math-release/server/independent-review';
 /** Internal child evaluator. Only the existing Essay queue can call this route.
  * Context comes from the existing parent lease, never from HTTP student content.
  * This endpoint has no financial submit/reserve/settle operation.
@@ -50,8 +51,8 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   let usage:Record<string,number>|undefined;
   const started=Date.now();
   let evaluation;
-  try{evaluation=await evaluateExamMath({evaluation_id:input.evaluationId,selected_extraction_id:null,context},openAiCandidate({
-   enabled:true,model:env.MATH_PRIMARY_MODEL,key:env.MATH_PROVIDER_API_KEY,onUsage:value=>{usage=value;}}));}
+  try{evaluation=await evaluateExamMath({evaluation_id:input.evaluationId,selected_extraction_id:null,context},(env.MATH_INDEPENDENT_REVIEW_ENABLED==='true'?independentlyReviewedCandidate:openAiCandidate)({
+   enabled:true,model:env.MATH_PRIMARY_MODEL,key:env.MATH_PROVIDER_API_KEY,onUsage:value=>{usage=Object.fromEntries(Object.keys(value).map(k=>[k,(usage?.[k]??0)+value[k]]));}}));}
   catch(error){
    if(error instanceof InvalidMathChildOutput&&usage)return reply({state:'failed',code:'INVALID_MATH_OUTPUT',usage:{...usage,latency_ms:Date.now()-started,cost_amount:null,currency:'USD'}});
    throw error;
