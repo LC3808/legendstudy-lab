@@ -40,3 +40,10 @@ Collection requirements for later APP/backend task:
 - Read RPC should return coverage state (NOT_COLLECTED / COLLECTING / READY), from/to, collection_start, platform/version coverage, metric basis and ranked rows; historical recent_views stays separately labeled, never backfilled as synthetic events.
 
 Isolated validation required before APP collection release: tap/rebuild semantics, repeat visit, retry idempotency, offline timestamps, KST boundary, source-tab filtering, account switch/logout, deleted account, unauthorized callers, empty/error coverage, top3/top10 ties, no financial effects.
+
+## Verification and deployment
+- Targeted UI tests2 PASS (top10/member count semantics, uncollected menu, failure/loading/empty). Changed-source lint PASS, TypeScript and163-route build PASS.
+- Production WEB 51f15f6c-4403-4c19-bab9-6efca3627727, source1037c1e015aace86b7393bd92845431584f47f73. Exact asset manifest and existing configuration preserved.
+- Existing API source matches pinned baseline a901568;138inputs recompiled with Wrangler4.136.1 because old temporary bundle was gone. Routing matched deployed config; no API source modification.
+- Authenticated Chrome production dashboard verified both section headings, explicit menu NOT_COLLECTED message and all10 materials matching read-only SQL counts26/22/21/19/18/17/16/15/14/13.
+- No SQL/RPC, account access, financial ledger, APP code or app build changes.
