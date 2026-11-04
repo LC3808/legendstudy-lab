@@ -103,7 +103,12 @@ export async function runWorkerEvaluation(params: {
     return { finalized: false, validation: { ok: false, issues: [] }, evaluationId: null, failed: true };
   } finally { if (timer !== undefined) clearTimeout(timer); }
   try { validation = validateMathEval(candidate.output, claimContextToInput(claim)); }
-  catch { validation = { ok: false, issues: [] }; }
+  catch {
+    // A structural exception is distinct from a semantic validation rejection.
+    // Do not print the exception, candidate, source text, or arbitrary field values.
+    console.warn("MATH_OUTPUT_STRUCTURE_INVALID");
+    validation = { ok: false, issues: [] };
+  }
   if (!validation.ok) {
     // Sanitized diagnostics: issue codes only, never student content.
     console.warn("MATH_VALIDATION_FAILED", { codes: validation.issues.map((i) => i.code).slice(0, 20) });

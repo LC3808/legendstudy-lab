@@ -53,22 +53,22 @@ export function physicalFinalize(output: MathEvalOutput, input: MathEvaluationIn
   const dimensions = [...required, ...(profile.optional_dimensions as string[]).filter(key => key in output.rubric.dimensions)];
   const materiality = { MATERIAL: "MATERIAL_ERROR", MINOR: "MINOR_ERROR", PRESENTATION: "PRESENTATION_ISSUE", NON_ERROR_VARIATION: "NON_ERROR_VARIATION" };
   const deltaKinds = { core_corrected: "CORE_CORRECTED", root_error_removed: "ROOT_ERROR_REMOVED", new_independent_error: "NEW_INDEPENDENT_ERROR", answer_now_correct: "ANSWER_NOW_CORRECT", justification_improved: "JUSTIFICATION_IMPROVED", no_material_change: "NO_MATERIAL_CHANGE" };
-  if (output.generated_solution && output.generated_solution.origin !== "AI_GENERATED_REFERENCE") throw Error("INVALID_OUTPUT");
-  if (output.selected_extraction !== input.selectedExtractionId) throw Error("INVALID_OUTPUT");
-  if (output.paths.some(path => path.verdict === "MATHEMATICAL_EQUIVALENCE_UNCERTAIN")) throw Error("INVALID_OUTPUT");
-  if (output.steps.some(step => step.position < 1)) throw Error("INVALID_OUTPUT");
+  if (output.generated_solution && output.generated_solution.origin !== "AI_GENERATED_REFERENCE") throw Error("INVALID_OUTPUT:GENERATED_SOLUTION_ORIGIN");
+  if (output.selected_extraction !== input.selectedExtractionId) throw Error("INVALID_OUTPUT:EXTRACTION_MISMATCH");
+  if (output.paths.some(path => path.verdict === "MATHEMATICAL_EQUIVALENCE_UNCERTAIN")) throw Error("INVALID_OUTPUT:UNSUPPORTED_PATH_VERDICT");
+  if (output.steps.some(step => step.position < 1)) throw Error("INVALID_OUTPUT:STEP_POSITION");
   // Match the persistent contract before finalize; never fabricate missing reasoning
   // or relabel a provider's disclosure classification to make it fit storage.
-  if (input.requiresReasoning && output.overall.coverage === "ATTEMPTED" && output.steps.length === 0) throw Error("INVALID_OUTPUT");
+  if (input.requiresReasoning && output.overall.coverage === "ATTEMPTED" && output.steps.length === 0) throw Error("INVALID_OUTPUT:MISSING_REASONING_STEPS");
   if (output.hints.some(hint => hint.validated !== true ||
       (hint.level === 0 || hint.level === 1 ? hint.leakage_class !== "SAFE_DIRECTION" :
-        hint.level !== 2 || hint.leakage_class !== "CONCEPT_REVEAL"))) throw Error("INVALID_OUTPUT");
+        hint.level !== 2 || hint.leakage_class !== "CONCEPT_REVEAL"))) throw Error("INVALID_OUTPUT:HINT_DISCLOSURE_CONTRACT");
   // MATH-2C does not store numeric awarded points. Reject instead of silently discarding.
-  if (output.criteria.some(criterion => criterion.awarded_points != null)) throw Error("INVALID_OUTPUT");
+  if (output.criteria.some(criterion => criterion.awarded_points != null)) throw Error("INVALID_OUTPUT:UNSUPPORTED_AWARDED_POINTS");
   // Preserve the domain's established calculation label at the unchanged SQL boundary.
   const steps = output.steps.map(step => {
     const kind = step.kind === "CALCULATION" ? "COMPUTATION" : step.kind;
-    if (!["INTERPRETATION", "CONCEPT", "TRANSFORMATION", "COMPUTATION", "JUSTIFICATION", "CASE", "CONCLUSION"].includes(kind)) throw Error("INVALID_OUTPUT");
+    if (!["INTERPRETATION", "CONCEPT", "TRANSFORMATION", "COMPUTATION", "JUSTIFICATION", "CASE", "CONCLUSION"].includes(kind)) throw Error("INVALID_OUTPUT:STEP_KIND");
     return { ...step, kind };
   });
   return {
@@ -80,7 +80,7 @@ export function physicalFinalize(output: MathEvalOutput, input: MathEvaluationIn
     references: output.references, paths: output.paths,
     criteria: output.criteria.map(criterion => ({ criterion_id: criterion.criterion_id, verdict: criterion.satisfied.toLowerCase(), explanation: criterion.reason })),
     rubric: Object.fromEntries(dimensions.map(key => {
-      const value = output.rubric.dimensions[key]; if (!value) throw Error("INVALID_OUTPUT"); return [key, value];
+      const value = output.rubric.dimensions[key]; if (!value) throw Error("INVALID_OUTPUT:MISSING_RUBRIC_DIMENSION"); return [key, value];
     })),
     overall: { status: output.overall.diagnostic, answer_status: output.overall.answer, coverage: output.overall.coverage,
       explanation: output.overall.diagnostic, review_status: output.overall.status === "NEEDS_HUMAN_REVIEW" ? "HUMAN_REVIEW_REQUIRED" : "NOT_REQUIRED" },

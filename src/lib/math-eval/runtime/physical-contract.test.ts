@@ -45,3 +45,19 @@ it("rejects missing reasoning and mismatched hint levels before persistent final
    expect(()=>physicalFinalize({...out,hints:[{...hint,leakage_class:level===2?"SAFE_DIRECTION":"CONCEPT_REVEAL"}]},input)).toThrow("INVALID_OUTPUT");
  }
 });
+
+// Diagnostics must identify a contract rejection without publishing submitted text.
+it("reports stable failure codes and preserves rejected candidates",()=>{
+ const input=physicalClaimToInput({...claim(),context:{...claim().context,profile:{reasoning_required:true,required_dimensions:["final_conclusion"],optional_dimensions:[]}}});
+ const out=baseOutput({selected_extraction:null as unknown as string,steps:[step({position:1,regions:[],representation:"private student answer"})]});
+ const cases=[
+  [{...out,steps:[{...out.steps[0],position:0}]},"STEP_POSITION"],
+  [{...out,rubric:{...out.rubric,dimensions:{}}},"MISSING_RUBRIC_DIMENSION"],
+  [{...out,selected_extraction:"foreign"},"EXTRACTION_MISMATCH"],
+ ] as const;
+ for(const [candidate,code] of cases){
+  const before=JSON.stringify(candidate);
+  expect(()=>physicalFinalize(candidate,input)).toThrow(`INVALID_OUTPUT:${code}`);
+  expect(JSON.stringify(candidate)).toBe(before);
+ }
+});
