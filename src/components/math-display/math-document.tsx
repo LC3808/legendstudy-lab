@@ -1,3 +1,4 @@
+import {Fragment} from 'react';
 import {Formula,MathText} from './math-text';
 
 /** A lossless display projection. No OCR correction, calculation or stored-value rewrite. */
@@ -13,7 +14,7 @@ function Line({text}:{text:string}){
  // Korean prose boundaries are retained verbatim, including terminal numerical conclusions.
  if(!/\\[A-Za-z]+|[=^_∫√≤≥<>]/.test(text))return <MathText text={text}/>;
  const parts=text.split(/([가-힣]+[^A-Za-z0-9\\=^_∫√≤≥<>]*)/g);
- return <>{parts.map((part,i)=>isolatedMath(part.trim())?<Formula key={i} source={part} display/>:<MathText key={i} text={part}/>)}</>;
+ return <>{parts.map((part,i)=>isolatedMath(part.trim())?<Formula key={i} source={part} display={isolatedMath(text.trim())}/>:<MathText key={i} text={part}/>)}</>;
 }
 function Table({source}:{source:string}){
  const rows=source.split('\n').map(r=>r.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map(c=>c.trim()));
@@ -28,6 +29,6 @@ export function MathDocument({text}:{text:string}){
   if(/^(\$|\\\[|\\\()/.test(chunk))return <MathText key={i} text={chunk}/>;
   if(chunk.startsWith('\\begin{'))return <Formula key={i} source={chunk} display/>;
   const blocks=chunk.split(/(^[^\n]*[ \t]\|[ \t][^\n]*(?:\n[^\n]*[ \t]\|[ \t][^\n]*)+|^[ \t]*\|[^\n]*\|[ \t]*(?:\n[ \t]*\|[^\n]*\|[ \t]*)+)/m);
-  return <span key={i}>{blocks.map((block,j)=>block.includes('\n')&&block.split('\n').every(row=>row.includes('|'))?<Table key={j} source={block.trim()}/>:block.split('\n').map((line,k)=><span key={`${j}/${k}`} style={{display:'block',minHeight:line?'':'1em'}}><Line text={line}/></span>))}</span>;
+  return <span key={i}>{blocks.map((block,j)=>block.includes('\n')&&block.split('\n').every(row=>row.includes('|'))?<Table key={j} source={block.trim()}/>:block.split('\n').map((line,k)=><Fragment key={`${j}/${k}`}>{k>0?'\n':null}<Line text={line}/></Fragment>))}</span>;
  })}</span>;
 }

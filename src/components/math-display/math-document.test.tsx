@@ -102,3 +102,20 @@ it('does not reinterpret a preceding exponent or invent a missing radical operan
  const {container}=render(<MathDocument text={source}/>);
  expect(container.querySelector('.math-source-fallback')?.textContent).toContain(source);
 });
+
+
+it('keeps official-solution prose around inline formulas on the same line',()=>{
+ const source=String.raw`점 \(P(t,f(t))\)에서 접선은 \(y=f'(t)(x-t)+f(t)\)이다.`;
+ const {container}=render(<MathDocument text={source}/>);
+ const doc=container.querySelector('.math-document')!;
+ expect(doc.querySelectorAll('.katex-display')).toHaveLength(0);
+ expect(doc.querySelectorAll('span[style*="display: block"]')).toHaveLength(0);
+ expect(Array.from(doc.querySelectorAll('annotation')).map(n=>n.textContent)).toEqual(['P(t,f(t))',"y=f'(t)(x-t)+f(t)"]);
+ expect(doc.textContent).toContain('에서 접선은');
+});
+it('preserves explicit paragraphs and display math while keeping mixed prose inline',()=>{
+ const {container}=render(<MathDocument text={'따라서 x=2이다.\n\n(1-2) 다음 풀이\n'+String.raw`\[\frac{8}{9}\]`}/>);
+ expect(container.textContent).toContain('이다.\n\n(1-2) 다음 풀이\n');
+ expect(container.querySelectorAll('.katex-display')).toHaveLength(1);
+ expect(container.querySelectorAll('annotation')).toHaveLength(2);
+});
