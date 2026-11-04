@@ -5,19 +5,39 @@ export interface MathEnvironment {
   MATH_PROVIDER_API_KEY?: string; MATH_ORIGIN?: string; MATH_SUPABASE_URL?: string; MATH_PROJECT_REF?: string;
   MATH_SUPABASE_PUBLISHABLE_KEY?: string; MATH_EXTRACTION_WORKER_JWT?: string; MATH_EVALUATION_WORKER_JWT?: string;
 }
+export class MathRpcRejection extends Error {
+  constructor() { super("RPC_DENIED"); }
+}
 export function serverTransport(env: MathEnvironment) {
   const url = env.MATH_SUPABASE_URL;
   if (!env.MATH_PROJECT_REF || url !== `https://${env.MATH_PROJECT_REF}.supabase.co` || !env.MATH_SUPABASE_PUBLISHABLE_KEY) throw Error("CONFIGURATION_REQUIRED");
   async function request(path: string, token: string, init: RequestInit = {}) {
+    // Optional opaque worker keys carry only the configured Math role. Student
+    // requests retain their Auth JWT; never promote a caller-supplied credential.
+    const workerKey = token.startsWith('sb_secret_') &&
+      [env.MATH_EXTRACTION_WORKER_JWT, env.MATH_EVALUATION_WORKER_JWT].includes(token);
+    const credentials: Record<string,string> = workerKey ? {apikey: token} :
+      {apikey: env.MATH_SUPABASE_PUBLISHABLE_KEY!, Authorization: `Bearer ${token}`};
     const response = await fetch(url + path, { ...init, redirect: "manual", signal: AbortSignal.timeout(20000), headers: {
-      apikey: env.MATH_SUPABASE_PUBLISHABLE_KEY!, Authorization: `Bearer ${token}`, ...init.headers,
+      ...init.headers, ...credentials,
     }});
     if (response.status >= 300 && response.status < 400) throw Error("REDIRECT_DENIED");
     return response;
   }
   async function rpcRaw(name: string, args: unknown, token: string) {
     const res = await request(`/rest/v1/rpc/${name}`, token, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(args) });
-    if (!res.ok) { console.warn("MATH_RPC_FAILURE", { operation: name, status: res.status }); throw Error("RPC_DENIED"); }
+    if (!res.ok) {
+      let validationRejected = false;
+      if (res.status === 400 || res.status === 409) {
+        try {
+          const failure = JSON.parse(new TextDecoder().decode(await boundedBody(res,16384)));
+          validationRejected = ['23514','23505','23503','22023','22P02'].includes(failure?.code);
+        } catch { /* No raw response/answers/credentials in logs. */ }
+      }
+      console.warn("MATH_RPC_FAILURE", { operation: name, status: res.status });
+      if (validationRejected) throw new MathRpcRejection();
+      throw Error("RPC_DENIED");
+    }
     const body = new TextDecoder().decode(await boundedBody(res,2097152));return JSON.parse(body);
   }
   const rpc = (token: string): MathRpcTransport => ({ rpc: (fn, p_request) => rpcRaw(fn, { p_request }, token) });

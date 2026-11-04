@@ -506,8 +506,13 @@ for (const file of adminFiles) {
   if (/\.from\(\s*["'`]/.test(source)) {
     errors.push(`operations console reads a table directly instead of the gated RPC: ${relative}`);
   }
-  // No write verb of any kind.
-  if (/\.(insert|update|upsert|delete)\(/.test(source)) {
+  // URL query cleanup and bounded in-memory cache eviction are not DB writes.
+  // Keep these exemptions scoped to the existing modules and exact receivers.
+  const databaseSource = relative === "src/components/admin/admin-data-table.tsx"
+    ? source.replace(/\burl\.searchParams\.delete\(/g, "localQueryCleanup(")
+    : relative === "src/lib/admin/school-resolution.ts" && /const cache = new Map</.test(source)
+      ? source.replace(/\bcache\.delete\(/g, "localCacheEviction(") : source;
+  if (/\.(insert|update|upsert|delete)\(/.test(databaseSource)) {
     errors.push(`operations console contains a write call: ${relative}`);
   }
   // No privileged or finance credential reference.

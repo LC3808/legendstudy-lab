@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import {AdminLearningSummary,AdminPublicAvailability} from './admin-learning-summary';
 import {AdminReleaseReport} from './admin-release-report';
 
@@ -14,7 +15,7 @@ import {
 import type { AdminDashboard, AdminSupportMetrics } from "@/lib/admin/contract";
 import { formatDateTime, formatDuration } from "@/lib/admin/format";
 
-import { AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
+import { AdminErrorPanel, AdminLoading, useAdminQuery, useSupportRefresh } from "./admin-surface";
 
 function Metric({ label, value, note }: { label: string; value: string; note?: string }) {
   return (
@@ -124,11 +125,13 @@ function SupportSection() {
     (client) => client.supportMetrics(),
     "support-metrics",
   );
+  useSupportRefresh(reload);
   if (state.status === "loading") return <AdminLoading label="고객지원 현황을 불러오는 중입니다" />;
   if (state.status === "error") return <AdminErrorPanel kind={state.kind} onRetry={reload} />;
   const data = state.data;
   return (
     <Section title="고객지원" note="1:1 문의 접수와 답변 발송 상태입니다. (누적)">
+      <Link href="/admin/inquiries/">APP·WEB 문의 목록 열기</Link>
       <div className="admin-metrics">
         <Metric label="미처리" value={formatNumber(data.open)} note="접수 및 처리 중" />
         <Metric label="오늘 접수" value={formatNumber(data.newToday)} />
@@ -150,6 +153,7 @@ function SupportSection() {
 export function AdminDashboardView() {
   const dashboard = useAdminQuery<AdminDashboard>((client) => client.dashboard(), "dashboard");
   const support = useAdminQuery<AdminSupportMetrics>((client) => client.supportMetrics(), "dashboard-support");
+  useSupportRefresh(support.reload);
 
   if (dashboard.state.status === "loading") return <AdminLoading />;
   if (dashboard.state.status === "error") return <AdminErrorPanel kind={dashboard.state.kind} onRetry={dashboard.reload} />;

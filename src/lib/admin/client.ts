@@ -59,7 +59,7 @@ export interface AdminClient {
   paymentOrders(options?: AdminOrderOptions): Promise<AdminPaymentPage>;
   supportMetrics(): Promise<AdminSupportMetrics>;
   inquiryList(options?: AdminInquiryOptions): Promise<AdminInquiryPage>;
-  inquiryDetail(inquiryId: string): Promise<AdminInquiryDetail>;
+  inquiryDetail(inquiryId: string, source?: string): Promise<AdminInquiryDetail>;
   replyInquiry(input: InquiryReplyInput): Promise<{ replyId: string; created: boolean }>;
   setInquiryStatus(input: InquiryStatusInput): Promise<{ status: string; changed: boolean }>;
   submitInquiry(input: InquirySubmitInput): Promise<{ inquiryId: string; created: boolean }>;
@@ -88,17 +88,21 @@ export interface AdminOrderOptions extends AdminPageOptions {
 }
 
 export interface AdminInquiryOptions extends AdminPageOptions {
+  source?: string;
+  category?: string;
   query?: string;
   status?: string;
 }
 
 export interface InquiryReplyInput {
+  source?: string;
   inquiryId: string;
   body: string;
   requestKey: string;
 }
 
 export interface InquiryStatusInput {
+  source?: string;
   inquiryId: string;
   status: string;
 }
@@ -269,7 +273,7 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
 
     async supportMetrics(): Promise<AdminSupportMetrics> {
       await requireSession();
-      return parseSupportMetrics(await callRpc<unknown>("admin_support_metrics", undefined));
+      return parseSupportMetrics(await callRpc<unknown>("support_metrics", undefined));
     },
 
     async inquiryList(options: AdminInquiryOptions = {}): Promise<AdminInquiryPage> {
@@ -282,15 +286,17 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
       const query = optionalQuery(options.query);
       if (query) payload.query = query;
       if (options.status) payload.status = options.status;
-      return parseInquiryPage(await callRpc<unknown>("admin_inquiry_list", { p: payload }));
+      if (options.source) payload.source = options.source;
+      if (options.category) payload.category = options.category;
+      return parseInquiryPage(await callRpc<unknown>("support_admin_list", { p: payload }));
     },
 
-    async inquiryDetail(inquiryId: string): Promise<AdminInquiryDetail> {
+    async inquiryDetail(inquiryId: string, source = "WEB"): Promise<AdminInquiryDetail> {
       await requireSession();
       if (!inquiryId) throw new AdminError("INVALID_REQUEST", "invalid inquiry");
       return parseInquiryDetail(
-        await callRpc<unknown>("admin_inquiry_detail", {
-          p: { dto_version: "admin-v1", id: inquiryId },
+        await callRpc<unknown>("support_admin_detail", {
+          p: { dto_version: "admin-v1", source, id: inquiryId },
         }),
       );
     },
@@ -300,15 +306,15 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
       const body = typeof input.body === "string" ? input.body.trim() : "";
       if (!input.inquiryId || !body) throw new AdminError("INVALID_REQUEST", "invalid reply");
       if (body.length > INQUIRY_MAX_REPLY) throw new AdminError("INVALID_REQUEST", "invalid reply");
-      const data = await callRpc<Record<string, unknown>>("admin_inquiry_reply", {
+      const data = await callRpc<Record<string, unknown>>("support_admin_reply", {
         p: {
           dto_version: "admin-v1",
-          id: input.inquiryId,
+          id: input.inquiryId, source: input.source ?? "WEB",
           body,
           request_key: input.requestKey,
         },
       });
-      return { replyId: String(data.reply_id ?? ""), created: data.created === true };
+      return { replyId: String(data.reply_id ?? ""), created: data.created === true || data.duplicate === false };
     },
 
     async setInquiryStatus(input: InquiryStatusInput): Promise<{ status: string; changed: boolean }> {
@@ -316,8 +322,8 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
       if (!input.inquiryId || !input.status) {
         throw new AdminError("INVALID_REQUEST", "invalid status");
       }
-      const data = await callRpc<Record<string, unknown>>("admin_inquiry_set_status", {
-        p: { dto_version: "admin-v1", id: input.inquiryId, status: input.status },
+      const data = await callRpc<Record<string, unknown>>("support_admin_status", {
+        p: { dto_version: "admin-v1", id: input.inquiryId, source: input.source ?? "WEB", status: input.status },
       });
       return { status: String(data.status ?? ""), changed: data.changed === true };
     },
@@ -341,7 +347,7 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
           request_key: input.requestKey,
         },
       });
-      return { inquiryId: String(data.inquiry_id ?? ""), created: data.created === true };
+      return { inquiryId: String(data.inquiry_id ?? ""), created: data.created === true || data.duplicate === false };
     },
 
     async myInquiries(): Promise<MyInquiryRow[]> {

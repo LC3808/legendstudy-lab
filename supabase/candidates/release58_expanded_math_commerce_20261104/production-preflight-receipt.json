@@ -1,0 +1,364 @@
+{
+  "captured_utc": "2026-11-03 15:54:06.217315+00",
+  "project": "stlhijzpjfgwwdgunlsd",
+  "function_preflight": [
+    {
+      "audit": {
+        "counts": {
+          "credit_grants": 154,
+          "credit_accounts": 144,
+          "essay_exam_runs": 54,
+          "math_session_runs": 0,
+          "credit_transactions": 243,
+          "essay_billing_decisions": 72
+        },
+        "storage": [
+          {
+            "id": "math-private",
+            "public": false,
+            "file_size_limit": 20971520,
+            "allowed_mime_types": [
+              "image/png",
+              "image/jpeg",
+              "image/webp",
+              "application/pdf"
+            ]
+          },
+          {
+            "id": "essay-material-originals",
+            "public": false,
+            "file_size_limit": 33554432,
+            "allowed_mime_types": [
+              "application/pdf"
+            ]
+          }
+        ],
+        "migrations": [],
+        "memberships": [
+          {
+            "set": false,
+            "role": "essay_executor",
+            "admin": true,
+            "member": "postgres",
+            "grantor": "supabase_admin",
+            "inherit": false
+          },
+          {
+            "set": false,
+            "role": "math_executor",
+            "admin": true,
+            "member": "postgres",
+            "grantor": "supabase_admin",
+            "inherit": false
+          }
+        ],
+        "new_objects": [
+          {
+            "name": "public.math_coaching(jsonb)",
+            "present": false
+          },
+          {
+            "name": "public.essay_math_coaching(jsonb)",
+            "present": false
+          },
+          {
+            "name": "public.math_session_quote(uuid)",
+            "present": false
+          },
+          {
+            "name": "public.math_session_continue(uuid,uuid,uuid[],uuid,integer)",
+            "present": false
+          },
+          {
+            "name": "public.math_session_quote_source(uuid,uuid)",
+            "present": false
+          },
+          {
+            "name": "public.math_session_continue_source(uuid,uuid,uuid[],uuid,integer,uuid)",
+            "present": false
+          }
+        ],
+        "beta_campaigns": [
+          {
+            "id": "cfc56a2b-8fbd-4c2a-a200-e55b509ad972",
+            "enabled": true,
+            "ends_on": "2026-11-10",
+            "starts_on": "2026-11-01",
+            "daily_limit": 1,
+            "policy_version": "daily-v2"
+          }
+        ],
+        "function_checks": [
+          {
+            "acl": "{postgres=X/postgres}",
+            "args": "p_account uuid, p_exam uuid",
+            "name": "credit_source",
+            "owner": "postgres",
+            "phase": "beta",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "essay_beta_private",
+            "matches": true,
+            "present": true,
+            "definition_md5": "09fc9d66ee9286fac0f6bfed03046d3b"
+          },
+          {
+            "acl": "{postgres=X/postgres}",
+            "args": "p_grant uuid, p_exam uuid",
+            "name": "eligible",
+            "owner": "postgres",
+            "phase": "beta",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "essay_beta_private",
+            "matches": true,
+            "present": true,
+            "definition_md5": "5cc8547ed15874d932d84e6d74009552"
+          },
+          {
+            "acl": "{postgres=X/postgres,authenticated=X/postgres}",
+            "args": "p_exam uuid, p_key uuid, p_attempts uuid[], p_parent uuid",
+            "name": "math_session_submit",
+            "owner": "postgres",
+            "phase": "beta",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "public",
+            "matches": false,
+            "present": true,
+            "definition_md5": "b4b592e12240af3d87efda7b8e03aa71"
+          },
+          {
+            "acl": "{postgres=X/postgres,essay_executor=X/postgres}",
+            "args": "p_grant uuid",
+            "name": "is_beta",
+            "owner": "postgres",
+            "phase": "core",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "essay_beta_private",
+            "matches": true,
+            "present": true,
+            "definition_md5": "846c12982684247d8ce489aabfa9521f"
+          },
+          {
+            "acl": "{essay_executor=X/essay_executor,math_executor=X/essay_executor}",
+            "args": "uuid",
+            "name": "authorize_billing",
+            "owner": "essay_executor",
+            "phase": "core",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "math_private",
+            "matches": true,
+            "present": true,
+            "definition_md5": "3026c4744a65f23403c63c12581877d4"
+          },
+          {
+            "acl": "{postgres=X/postgres}",
+            "args": "",
+            "name": "evaluation_admission",
+            "owner": "postgres",
+            "phase": "core",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "math_private",
+            "matches": true,
+            "present": true,
+            "definition_md5": "99e6437c3e6cca4c08f0d06f78896b80"
+          },
+          {
+            "acl": "{postgres=X/postgres}",
+            "args": "p_evaluation_id uuid, p_at timestamp with time zone",
+            "name": "learning_eligibility",
+            "owner": "postgres",
+            "phase": "core",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "math_private",
+            "matches": true,
+            "present": true,
+            "definition_md5": "67e094441b482057beb6ab88c475a732"
+          },
+          {
+            "acl": "{postgres=X/postgres}",
+            "args": "p_eval uuid, p_at timestamp with time zone",
+            "name": "session_eligibility",
+            "owner": "postgres",
+            "phase": "core",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "math_private",
+            "matches": true,
+            "present": true,
+            "definition_md5": "dc245a94b299166386cc0ed91ad4ecbc"
+          },
+          {
+            "acl": "{postgres=X/postgres,authenticated=X/postgres}",
+            "args": "p_run uuid",
+            "name": "essay_exam_history",
+            "owner": "postgres",
+            "phase": "core",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "public",
+            "matches": true,
+            "present": true,
+            "definition_md5": "1f7646fc89f40d667768176fbcb4551d"
+          },
+          {
+            "acl": "{math_executor=X/math_executor,authenticated=X/math_executor,postgres=X/math_executor}",
+            "args": "uuid",
+            "name": "math_evaluation_detail",
+            "owner": "math_executor",
+            "phase": "core",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "public",
+            "matches": true,
+            "present": true,
+            "definition_md5": "84ada0ea1872d764ebbb40f57526b3f4"
+          },
+          {
+            "acl": "{postgres=X/postgres,authenticated=X/postgres}",
+            "args": "p_request jsonb",
+            "name": "math_learning",
+            "owner": "postgres",
+            "phase": "core",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "public",
+            "matches": true,
+            "present": true,
+            "definition_md5": "09c463d28cd9645a7918fc6b11e48cea"
+          },
+          {
+            "acl": "{math_executor=X/math_executor,authenticated=X/math_executor,postgres=X/math_executor}",
+            "args": "uuid, uuid",
+            "name": "math_reveal_hint",
+            "owner": "math_executor",
+            "phase": "core",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "public",
+            "matches": true,
+            "present": true,
+            "definition_md5": "b03a65f6f8f9ca6fb590ecc119e4e109"
+          },
+          {
+            "acl": "{postgres=X/postgres,authenticated=X/postgres}",
+            "args": "p_run uuid",
+            "name": "math_session_read",
+            "owner": "postgres",
+            "phase": "core",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "public",
+            "matches": true,
+            "present": true,
+            "definition_md5": "6a12564da469a5e6c6d1a8dea2ca487a"
+          },
+          {
+            "acl": "{postgres=X/postgres,authenticated=X/postgres}",
+            "args": "p_exam uuid, p_key uuid, p_attempts uuid[], p_parent uuid",
+            "name": "math_session_submit",
+            "owner": "postgres",
+            "phase": "core",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "public",
+            "matches": true,
+            "present": true,
+            "definition_md5": "b4b592e12240af3d87efda7b8e03aa71"
+          },
+          {
+            "acl": "{postgres=X/postgres}",
+            "args": "",
+            "name": "evaluation_admission",
+            "owner": "postgres",
+            "phase": "scope",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "math_private",
+            "matches": true,
+            "present": true,
+            "definition_md5": "99e6437c3e6cca4c08f0d06f78896b80"
+          },
+          {
+            "acl": "{postgres=X/postgres,service_role=X/postgres,essay_worker=X/postgres}",
+            "args": "p_exam uuid, p_digest text",
+            "name": "essay_material_runtime_package",
+            "owner": "postgres",
+            "phase": "scope",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "public",
+            "matches": true,
+            "present": true,
+            "definition_md5": "ccf30a6441346d6d203f35b7052e0433"
+          },
+          {
+            "acl": "{postgres=X/postgres,authenticated=X/postgres}",
+            "args": "p_limit integer",
+            "name": "math_catalog",
+            "owner": "postgres",
+            "phase": "scope",
+            "config": [
+              "search_path=\"\""
+            ],
+            "schema": "public",
+            "matches": true,
+            "present": true,
+            "definition_md5": "6727dac14c4ed845a6564787405bfbcd"
+          }
+        ],
+        "runtime_control": {
+          "singleton": true,
+          "evaluations_enabled": true
+        },
+        "beta_scope_counts": {
+          "total": 160,
+          "has_math": 0
+        },
+        "temporary_privileges": {
+          "essay_math_create": false,
+          "math_public_create": false,
+          "math_private_create": false,
+          "math_evaluation_references": false
+        }
+      }
+    }
+  ],
+  "table_preflight": [
+    {
+      "audit": {
+        "checked": 58,
+        "mismatches": [],
+        "new_tables": {
+          "math_private.coaching_disclosures": false,
+          "math_private.mixed_coaching_hints": false,
+          "math_private.mixed_coaching_disclosures": false
+        },
+        "new_columns": [],
+        "canonical_link_uuid": true,
+        "new_namespace_collision": []
+      }
+    }
+  ]
+}

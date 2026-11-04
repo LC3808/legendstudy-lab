@@ -1,3 +1,4 @@
+import {task16gTest,task16gExam} from '../../../src/lib/essay-runtime/task16g-test-catalog';
 import registry from '../../../src/data/essay-source-registry.json';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {publicCatalog as catalog} from '../../../src/lib/essay-runtime/public-discovery';
@@ -28,6 +29,16 @@ export async function onRequestGet(context?:{env:MathEnvironment}){
 export async function onRequestPost({request,env}:{request:Request;env:MathEnvironment&{ESSAY_REGISTRY_WORKER_JWT?:string}}){
  const headers={'Cache-Control':'private, no-store','Vary':'Authorization, Origin','X-Content-Type-Options':'nosniff'};
  const unavailable=()=>Response.json({code:'REGISTRY_UNAVAILABLE'},{status:503,headers});
+ if(task16gTest(request,env)){
+  const token=request.headers.get('authorization')?.match(/^Bearer ([^\s]+)$/)?.[1];
+  if(!token)return Response.json({code:'LOGIN_REQUIRED'},{status:401,headers});
+  if(request.headers.get('origin')&&request.headers.get('origin')!==env.MATH_ORIGIN)return Response.json({code:'ACCESS_DENIED'},{status:403,headers});
+  try{
+   await serverTransport(env).subject(token);
+   const base=await (await onRequestGet()).json();
+   return Response.json({...base,exams:[...base.exams.filter((e:SourceExam)=>e.dbExamId!==task16gExam.dbExamId),task16gExam]},{headers});
+  }catch{return unavailable();}
+ }
  const workerCredential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);
  if(!workerCredential||env.MATH_SUPABASE_URL!==legendStudySupabaseUrl)return unavailable();
  const origin=request.headers.get('origin');

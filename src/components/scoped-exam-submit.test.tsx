@@ -4,6 +4,7 @@ import {beforeEach,it,expect,vi} from 'vitest';
 import type {SourceExam} from '@/lib/essay-runtime/source-registry';
 const auth=vi.hoisted(()=>({user:{id:'owner-a'} as {id:string}|null,client:{auth:{getSession:vi.fn()}}}));
 vi.mock('./auth-context',()=>({useAuth:()=>auth}));
+vi.mock('./math-release/exam-session-submit',()=>({MathExamSessionSubmit:({rewrite}:{rewrite?:{id:string}})=><div>math-round:{rewrite?.id??'initial'}</div>}));
 vi.mock('./essay-exam-submit',()=>({EssayExamSubmit:({included}:{included:string[]})=><div>approved:{included.join(',')}</div>}));
 import {ScopedExamSubmit} from './scoped-exam-submit';
 const exam={key:'exam',dbExamId:'exam-id',questions:[{key:'q1',dbQuestionId:'id1'},{key:'q2',dbQuestionId:'id2'}]} as SourceExam;
@@ -45,4 +46,20 @@ it.each(['NATURAL_MATH_HOLD','MIXED_QA_PENDING'])('does not fall back to legacy 
  render(<ScopedExamSubmit exam={exam} questionKey="q1" drafts={{}}/>);
  expect(await screen.findByRole('button',{name:'첨삭 서비스 제공 예정'})).toBeDisabled();
  expect(fetch).toHaveBeenCalledTimes(1);
+});
+
+it('uses separately enabled Math for all selected leaves when Essay runtime is disabled',async()=>{
+ const leaf='00000000-0000-4000-8000-000000000001';
+ vi.mocked(fetch).mockResolvedValueOnce(Response.json({code:'EVALUATION_UNAVAILABLE'},{status:503})).mockResolvedValueOnce(Response.json({types:{math:true},mathQuestions:[{examId:'exam-id',questionId:'id1',leafId:leaf}]}));
+ render(<ScopedExamSubmit exam={exam} includedKeys={['q1']} cycle={{previousPaidRunId:'previous-round'}} drafts={{q1:{body:'수정 답안',revision:1,images:false}}}/>);
+ expect(await screen.findByText('math-round:previous-round')).toBeVisible();
+});
+
+it('all-Math admission stays on the existing Math session path and clears the UI-only hold',async()=>{
+ const q1='11111111-1111-4111-8111-111111111111',q2='22222222-2222-4222-8222-222222222222';
+ const e={...exam,questions:[{key:'q1',dbQuestionId:q1},{key:'q2',dbQuestionId:q2}]} as SourceExam;
+ vi.mocked(fetch).mockResolvedValue(Response.json({ready:true,questionIds:[q1,q2],mathQuestions:{[q1]:q1,[q2]:q2}}));
+ const admission=vi.fn();render(<ScopedExamSubmit exam={e} questionKey="q1" drafts={{q1:{body:'풀이',revision:1,images:false}}} onAdmissionChange={admission}/>);
+ expect(await screen.findByText('math-round:initial')).toBeVisible();
+ expect(admission).toHaveBeenCalledWith(true);
 });

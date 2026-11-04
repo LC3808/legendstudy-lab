@@ -1,0 +1,738 @@
+{
+  "q1": [
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 1,
+      "raw_text": "문제 1번 (반드시 해당문제와 일치하여야 함)",
+      "normalized_math": "",
+      "confidence": 0.99,
+      "uncertain": false,
+      "x": 0.03,
+      "y": 0.119,
+      "width": 0.347,
+      "height": 0.018
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 2,
+      "raw_text": "aₙ=arⁿ⁻¹이라고 할 때 ∑aₙ이 수렴하면\n-1<r<1이다. a₂ₙ=ar²ⁿ⁻¹이고 ∑a₂ₙ=ar/(1-r²)=-4이다.",
+      "normalized_math": "a_n=ar^{n-1},\\quad -1<r<1,\\quad a_{2n}=ar^{2n-1},\\quad \\sum_{n=1}^{\\infty}a_{2n}=\\frac{ar}{1-r^2}=-4",
+      "confidence": 0.9,
+      "uncertain": false,
+      "x": 0.035,
+      "y": 0.143,
+      "width": 0.435,
+      "height": 0.065
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 3,
+      "raw_text": "i) a>0, r>0일 때,\n항상 aₙ>0이므로 ∑|aₙ|=a/(1-r)=20이다.\n[?] 식을 풀면 r=-1/4, a=20/3 이므로\n모순이다.",
+      "normalized_math": "a>0,\\ r>0;\\quad \\sum_{n=1}^{\\infty}|a_n|=\\frac{a}{1-r}=20;\\quad r=-\\frac14,\\ a=\\frac{20}{3}",
+      "confidence": 0.74,
+      "uncertain": true,
+      "x": 0.035,
+      "y": 0.207,
+      "width": 0.428,
+      "height": 0.105
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 4,
+      "raw_text": "ii) a>0, r<0일 때, |aₙ|은\na-ar+ar²-ar³+…이고 첫째항이 a, 공비가 -r인\n등비수열이다.\n∴ a/(1+r)=20이고, r/(1-r)×a/(1+r)=-4를 풀면\nr=-1/4, a=15이다.",
+      "normalized_math": "a>0,\\ r<0;\\quad |a_n|:a-ar+ar^2-ar^3+\\cdots;\\quad \\sum|a_n|=\\frac{a}{1+r}=20;\\quad \\frac{r}{1-r}\\frac{a}{1+r}=-4;\\quad r=-\\frac14,\\ a=15",
+      "confidence": 0.87,
+      "uncertain": false,
+      "x": 0.032,
+      "y": 0.313,
+      "width": 0.43,
+      "height": 0.13
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 5,
+      "raw_text": "∴ ∑ₙ₌₁^∞ a₄ₙ₋₁ = ∑ₙ₌₁^∞ 15×(-1/4)⁴ⁿ⁻²\n= ∑ₙ₌₁^∞ 240×(1/256)ⁿ\n= (240/256)/(1-1/256)=240/255=16/17이다.",
+      "normalized_math": "\\sum_{n=1}^{\\infty}a_{4n-1}=\\sum_{n=1}^{\\infty}15\\left(-\\frac14\\right)^{4n-2}=\\sum_{n=1}^{\\infty}240\\left(\\frac1{256}\\right)^n=\\frac{240/256}{1-1/256}=\\frac{240}{255}=\\frac{16}{17}",
+      "confidence": 0.94,
+      "uncertain": false,
+      "x": 0.036,
+      "y": 0.439,
+      "width": 0.426,
+      "height": 0.087
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 6,
+      "raw_text": "iii) a<0, r>0일 때, |aₙ|은\n-a-ar-ar²-…이고 첫째항이 -a, 공비가 r인\n등비수열이다. ∴ -a/(1-r)=20이고 r/(1+r)×(-a)/(1-r)=-4를 풀면\nr=-1/4이고 a=-15이다.\n∴ ∑a₄ₙ₋₁=…=-16/17이다.",
+      "normalized_math": "a<0,\\ r>0;\\quad \\sum|a_n|=\\frac{-a}{1-r}=20;\\quad r=-\\frac14,\\ a=-15;\\quad \\sum a_{4n-1}=-\\frac{16}{17}",
+      "confidence": 0.78,
+      "uncertain": true,
+      "x": 0.032,
+      "y": 0.521,
+      "width": 0.432,
+      "height": 0.137
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 7,
+      "raw_text": "iv) a<0, r<0일 때, |aₙ|은\n-a+ar-ar²+ar³-…이고 첫째항이 -a, 공비가 -r인\n등비수열이다. ∴ ∑|aₙ|=-a/(1+r)=20이고 [?]를\n풀면 r=1/4, a=-[?]이므로 모순이다.\n∴ ∑a₄ₙ₋₁의 값이 될 수 있는 수는 16/17이다.",
+      "normalized_math": "a<0,\\ r<0;\\quad \\sum|a_n|=\\frac{-a}{1+r}=20;\\quad r=\\frac14;\\quad \\sum a_{4n-1}=\\frac{16}{17}",
+      "confidence": 0.72,
+      "uncertain": true,
+      "x": 0.029,
+      "y": 0.659,
+      "width": 0.437,
+      "height": 0.142
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 8,
+      "raw_text": "2. |h|는 x=a, x=b에서 미분가능하지 않는다.\nh(x)=(x-a)(x-b)이고 y=|h(x)| 위의 점 중, |h(6)|에서의 접선이\ny절편이 |h(0)|이기 위해서는\ni) 6<a or b<6일 때는 그림으로 그려보면\n접선은 y=|h(x)|와 x=6 이외에도 만나는 점이므로 모순이다.\n따라서 a<6<b이다.",
+      "normalized_math": "h(x)=(x-a)(x-b),\\quad y=|h(x)|,\\quad a<6<b",
+      "confidence": 0.68,
+      "uncertain": true,
+      "x": 0.031,
+      "y": 0.797,
+      "width": 0.436,
+      "height": 0.074
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 9,
+      "raw_text": "y=|h(x)|의 (6,|h(6)|)에서의 접선을 그려보면 한 점에서 만나고 한 점의 x좌표는 α라고 잡고 한 점을 β라고 하면\n한 점은 6이다. 그러므로 0<α<6을 알 수 있다.",
+      "normalized_math": "y=|h(x)|;\\quad (6,|h(6)|);\\quad 0<\\alpha<6",
+      "confidence": 0.57,
+      "uncertain": true,
+      "x": 0.5,
+      "y": 0.143,
+      "width": 0.459,
+      "height": 0.079
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 10,
+      "raw_text": "∫₀^α |h(x)|dx = ∫₀^α (x-a)(x-b)dx\n= ∫₀^α (x²-(a+b)x+ab)dx\n= 1/3 α³-(a+b)/2 α²+abα=50/3.",
+      "normalized_math": "\\int_0^\\alpha |h(x)|\\,dx=\\int_0^\\alpha(x-a)(x-b)\\,dx=\\int_0^\\alpha\\left(x^2-(a+b)x+ab\\right)dx=\\frac13\\alpha^3-\\frac{a+b}{2}\\alpha^2+ab\\alpha=\\frac{50}{3}",
+      "confidence": 0.94,
+      "uncertain": false,
+      "x": 0.498,
+      "y": 0.223,
+      "width": 0.459,
+      "height": 0.075
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 11,
+      "raw_text": "a<x<b에서 |h(x)|=-x²+(a+b)x-ab이고\n(|h(x)|)'=-2x+a+b이다. (|h(6)|)'=-12+a+b이므로\ny=|h(x)|의 (6,|h(6)|)에서의 접선은\ny=(-12+a+b)(x-6)-(6-a)(6-b).\nx=0일 때 y절편은 36-ab이고 h(0)=ab와 같다는 조건에\nab=18이다.",
+      "normalized_math": "a<x<b:\\quad |h(x)|=-x^2+(a+b)x-ab,\\quad (|h(x)|)'=-2x+a+b;\\quad y=(-12+a+b)(x-6)-(6-a)(6-b);\\quad ab=18",
+      "confidence": 0.82,
+      "uncertain": true,
+      "x": 0.498,
+      "y": 0.296,
+      "width": 0.458,
+      "height": 0.137
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 12,
+      "raw_text": "∴ αβ=18이고, 1/3α³-1/2α³-α²/2+α×18=50/3과 연립하면\n-1/6α³-α²+18α=50/3이고 α에 대한 삼차방정식을\n풀면 α=2 또는 α=-1+√51이다. α<6이므로\nα=2이고 β=9이다. ∴ f(10)=(10-2)(10-9)=8이다.",
+      "normalized_math": "\\alpha\\beta=18;\\quad -\\frac16\\alpha^3-\\alpha^2+18\\alpha=\\frac{50}{3};\\quad \\alpha=2\\ \\text{or}\\ \\alpha=-1+\\sqrt{51};\\quad \\alpha=2,\\ \\beta=9;\\quad f(10)=(10-2)(10-9)=8",
+      "confidence": 0.79,
+      "uncertain": true,
+      "x": 0.499,
+      "y": 0.419,
+      "width": 0.456,
+      "height": 0.132
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 13,
+      "raw_text": "3. g(x)={ eˣcosx, cosx≥0\n         {-eˣcosx, cosx<0\n∴ g'(x)={ eˣ(cosx-sinx), cosx≥0\n          {-eˣ(cosx-sinx), cosx<0",
+      "normalized_math": "g(x)=\\begin{cases}e^x\\cos x,&\\cos x\\ge0\\\\-e^x\\cos x,&\\cos x<0\\end{cases},\\quad g'(x)=\\begin{cases}e^x(\\cos x-\\sin x),&\\cos x\\ge0\\\\-e^x(\\cos x-\\sin x),&\\cos x<0\\end{cases}",
+      "confidence": 0.9,
+      "uncertain": false,
+      "x": 0.499,
+      "y": 0.549,
+      "width": 0.457,
+      "height": 0.07
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 14,
+      "raw_text": "g'(x)=0에서 x=(4k+3)π/4 (k는 정수)\n(0,π/2), (3π/4,5π/4), (7π/4,5π/2), …에서 g'(x)<0이고\n(π/2,3π/4), (5π/4,7π/4), (5π/2, …)에서 g'(x)>0이다.",
+      "normalized_math": "g'(x)=0:\\quad x=\\frac{(4k+3)\\pi}{4},\\ k\\in\\mathbb Z",
+      "confidence": 0.75,
+      "uncertain": true,
+      "x": 0.499,
+      "y": 0.622,
+      "width": 0.455,
+      "height": 0.095
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 15,
+      "raw_text": "g(x)의 2대각선은 g(x)의 g(3π/4)=√2/2 e^(3π/4), g(7π/4)=√2/2 e^(7π/4)를\n작은 것부터 이을 수 있다. 따라서 g(x)의 개형을 그리면 [그래프]\ng(x)와 y=k가 만나는 점이 1개이기 위한 k의 범위는\n√2/2 e^(3π/4)<k<1이다.",
+      "normalized_math": "g\\left(\\frac{3\\pi}{4}\\right)=\\frac{\\sqrt2}{2}e^{3\\pi/4},\\quad g\\left(\\frac{7\\pi}{4}\\right)=\\frac{\\sqrt2}{2}e^{7\\pi/4};\\quad \\frac{\\sqrt2}{2}e^{3\\pi/4}<k<1",
+      "confidence": 0.64,
+      "uncertain": true,
+      "x": 0.5,
+      "y": 0.714,
+      "width": 0.454,
+      "height": 0.126
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 16,
+      "raw_text": "b₂<k<b₁인 k가 g(x)와 3개의 점에서 만나기 위한 k의 범위는\n√2/2 e^(π/4)<k<√2/2 e^(3π/4)이고\nbₙ<k<bₙ₋₁인 k가 g(x)와 5개씩 점에서 만나기 위한\nk의 범위는 √2/2 e^((4n-7)π/4)<k<√2/2 e^((4n-3)π/4)이다.\n따라서 b₁=√2/2 e^(3π/4), b₂=√2/2 e^(-π/4), …, bₙ=√2/2 e^((4n-1)π/4).",
+      "normalized_math": "\\frac{\\sqrt2}{2}e^{\\pi/4}<k<\\frac{\\sqrt2}{2}e^{3\\pi/4};\\quad \\frac{\\sqrt2}{2}e^{(4n-7)\\pi/4}<k<\\frac{\\sqrt2}{2}e^{(4n-3)\\pi/4};\\quad b_1=\\frac{\\sqrt2}{2}e^{3\\pi/4},\\ b_2=\\frac{\\sqrt2}{2}e^{-\\pi/4},\\ b_n=\\frac{\\sqrt2}{2}e^{(4n-1)\\pi/4}",
+      "confidence": 0.65,
+      "uncertain": true,
+      "x": 0.499,
+      "y": 0.826,
+      "width": 0.454,
+      "height": 0.134
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 17,
+      "raw_text": "임을 알 수 있다. bₙ은 첫째항이 √2/2 e^(3π/4)이고\n공비가 e⁻π인 등비수열이므로\n∑ₙ₌₁^∞ bₙ의 합은 (√2/2 e^(3π/4))/(1-e⁻π)\n= √2 e^(7π/4)/[2(e²π-1)]이다.",
+      "normalized_math": "\\sum_{n=1}^{\\infty}b_n=\\frac{(\\sqrt2/2)e^{3\\pi/4}}{1-e^{-\\pi}}=\\frac{\\sqrt2e^{7\\pi/4}}{2(e^{2\\pi}-1)}",
+      "confidence": 0.79,
+      "uncertain": true,
+      "x": 0.499,
+      "y": 0.928,
+      "width": 0.449,
+      "height": 0.087
+    },
+    {
+      "artifact_id": "1fbcdddf-314c-5bb9-9c38-2ae239af5d2b",
+      "page": 1,
+      "reading_order": 18,
+      "raw_text": "이 줄 아래 답안 작성 시 무효 처리됨",
+      "normalized_math": "",
+      "confidence": 0.99,
+      "uncertain": false,
+      "x": 0.38,
+      "y": 0.869,
+      "width": 0.24,
+      "height": 0.016
+    }
+  ],
+  "q2": [
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 1,
+      "raw_text": "이 줄 위에 답안 작성 시 무효 처리됨",
+      "normalized_math": "",
+      "confidence": 0.98,
+      "uncertain": false,
+      "x": 0.383,
+      "y": 0.098,
+      "width": 0.239,
+      "height": 0.016
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 2,
+      "raw_text": "문제 2번 (반드시 해당문제와 일치하여야 함)",
+      "normalized_math": "",
+      "confidence": 0.98,
+      "uncertain": false,
+      "x": 0.026,
+      "y": 0.121,
+      "width": 0.357,
+      "height": 0.019
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 3,
+      "raw_text": "1. 파란상자에서 숫자 1, 2, 3, 4를 뽑을 확률은 각각 같다.\n빨간 상자에는 총 7개 중 4개를 뽑으니 ₇C₄ 경우의수가있고\n5가 1개, 6이 3개 뽑을 확률 = ₄C₁×₃C₃/₇C₄ = 4/35\n5가 2개, 6이 2개 뽑을 확률 = ₄C₂×₃C₂/₇C₄ = 18/35\n5가 3개, 6이 1개 뽑을 확률 = ₄C₃×₃C₁/₇C₄ = 12/35\n5가 4개, 6이 0개 뽑을 확률 = ₄C₄×₃C₀/₇C₄ = 1/35 이며",
+      "normalized_math": "P(Q=1)=\\frac{\\binom41\\binom33}{\\binom74}=\\frac4{35};\\quad P(Q=2)=\\frac{\\binom42\\binom32}{\\binom74}=\\frac{18}{35};\\quad P(Q=3)=\\frac{\\binom43\\binom31}{\\binom74}=\\frac{12}{35};\\quad P(Q=4)=\\frac{\\binom44\\binom30}{\\binom74}=\\frac1{35}",
+      "confidence": 0.94,
+      "uncertain": false,
+      "x": 0.053,
+      "y": 0.158,
+      "width": 0.425,
+      "height": 0.144
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 4,
+      "raw_text": "K/Q로 가능한 값은\n1/1, 1/2, 1/3, 1/4, 2/1, 2/2, 2/3, 2/4,\n3/1, 3/2, 3/3, 3/4, 4/1, 4/2, 4/3, 4/4 가 있고",
+      "normalized_math": "\\frac KQ\\in\\left\\{\\frac11,\\frac12,\\frac13,\\frac14,\\frac21,\\frac22,\\frac23,\\frac24,\\frac31,\\frac32,\\frac33,\\frac34,\\frac41,\\frac42,\\frac43,\\frac44\\right\\}",
+      "confidence": 0.93,
+      "uncertain": false,
+      "x": 0.073,
+      "y": 0.299,
+      "width": 0.377,
+      "height": 0.106
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 5,
+      "raw_text": "K/Q = 1 : (K,Q)=(1,1),(2,2),(3,3),(4,4)\n1/2 : (1,2),(2,4)\n1/3 : (1,3)\n1/4 : (1,4)\n2 : (2,1),(4,2)\n2/3 : (2,3)\n3 : (3,1)\n3/2 : (3,2)\n3/4 : (3,4)\n4 : (4,1)\n4/3 : (4,3)",
+      "normalized_math": "\\frac KQ=1:(1,1),(2,2),(3,3),(4,4);\\ \\frac12:(1,2),(2,4);\\ \\frac13:(1,3);\\ \\frac14:(1,4);\\ 2:(2,1),(4,2);\\ \\frac23:(2,3);\\ 3:(3,1);\\ \\frac32:(3,2);\\ \\frac34:(3,4);\\ 4:(4,1);\\ \\frac43:(4,3)",
+      "confidence": 0.96,
+      "uncertain": false,
+      "x": 0.083,
+      "y": 0.411,
+      "width": 0.355,
+      "height": 0.289
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 6,
+      "raw_text": "K/Q | 1 | 1/2 | 1/3 | 1/4 | 2 | 2/3 | 3 | 3/2 | 3/4 | 4 | 4/3\nP(W=K/Q) | 1/4 | 19/140 | 12/140 | 1/140 | 22/140 | 12/140 | 4/140 | 18/140 | 1/140 | 4/140 | 12/140",
+      "normalized_math": "\\begin{array}{c|ccccccccccc}K/Q&1&1/2&1/3&1/4&2&2/3&3&3/2&3/4&4&4/3\\\\P(W=K/Q)&1/4&19/140&12/140&1/140&22/140&12/140&4/140&18/140&1/140&4/140&12/140\\end{array}",
+      "confidence": 0.96,
+      "uncertain": false,
+      "x": 0.044,
+      "y": 0.709,
+      "width": 0.439,
+      "height": 0.077
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 7,
+      "raw_text": "E(W)=1×1/4 + 1/2×19/140 + 1/3×12/140 + 1/4×1/140 + 2×22/140 + 2/3×12/140\n+ 3×4/140 + 3/2×18/140 + 3/4×1/140 + 4×4/140 + 4/3×12/140\n= 69/56",
+      "normalized_math": "E(W)=1\\cdot\\frac14+\\frac12\\cdot\\frac{19}{140}+\\frac13\\cdot\\frac{12}{140}+\\frac14\\cdot\\frac1{140}+2\\cdot\\frac{22}{140}+\\frac23\\cdot\\frac{12}{140}+3\\cdot\\frac4{140}+\\frac32\\cdot\\frac{18}{140}+\\frac34\\cdot\\frac1{140}+4\\cdot\\frac4{140}+\\frac43\\cdot\\frac{12}{140}=\\frac{69}{56}",
+      "confidence": 0.95,
+      "uncertain": false,
+      "x": 0.061,
+      "y": 0.789,
+      "width": 0.413,
+      "height": 0.075
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 8,
+      "raw_text": "2. 가로길이 K, 세로길이 Q. A에서 B까지 최단거리 이동 경우의 수 = (K+Q)!/(K!Q!)",
+      "normalized_math": "\\text{최단거리 이동 경우의 수}=\\frac{(K+Q)!}{K!Q!}",
+      "confidence": 0.9,
+      "uncertain": false,
+      "x": 0.508,
+      "y": 0.146,
+      "width": 0.466,
+      "height": 0.033
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 9,
+      "raw_text": "(K,Q)=(1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),\n(3,1),(3,2),(3,3),(3,4),(4,1),(4,2),(4,3),(4,4)",
+      "normalized_math": "(K,Q)\\in\\{(1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,1),(3,2),(3,3),(3,4),(4,1),(4,2),(4,3),(4,4)\\}",
+      "confidence": 0.98,
+      "uncertain": false,
+      "x": 0.512,
+      "y": 0.18,
+      "width": 0.451,
+      "height": 0.045
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 10,
+      "raw_text": "V = 2, 3, 4, 5, 6, 10, 15, 20, 35, 70\n(1,1)  (1,2)  (1,3)  (1,4)  (2,2)  (2,3)  (2,4)  (3,3)  (3,4)  (4,4)\n       (2,1)  (3,1)  (4,1)         (3,2)  (4,2)         (4,3)",
+      "normalized_math": "V\\in\\{2,3,4,5,6,10,15,20,35,70\\}",
+      "confidence": 0.91,
+      "uncertain": false,
+      "x": 0.502,
+      "y": 0.251,
+      "width": 0.47,
+      "height": 0.072
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 11,
+      "raw_text": "u | 2 | 3 | 4 | 5 | 6 | 10 | 15 | 20 | 35 | 70\nP(U=u) | 4/140 | 22/140 | 16/140 | 5/140 | 18/140 | 30/140 | 19/140 | 12/140 | 13/140 | 1/140",
+      "normalized_math": "\\begin{array}{c|cccccccccc}u&2&3&4&5&6&10&15&20&35&70\\\\P(U=u)&4/140&22/140&16/140&5/140&18/140&30/140&19/140&12/140&13/140&1/140\\end{array}",
+      "confidence": 0.95,
+      "uncertain": false,
+      "x": 0.5,
+      "y": 0.323,
+      "width": 0.466,
+      "height": 0.061
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 12,
+      "raw_text": "P(U≤10)=4/140+22/140+16/140+5/140+18/140+30/140\n=95/140=19/28",
+      "normalized_math": "P(U\\le10)=\\frac4{140}+\\frac{22}{140}+\\frac{16}{140}+\\frac5{140}+\\frac{18}{140}+\\frac{30}{140}=\\frac{95}{140}=\\frac{19}{28}",
+      "confidence": 0.97,
+      "uncertain": false,
+      "x": 0.522,
+      "y": 0.375,
+      "width": 0.404,
+      "height": 0.059
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 13,
+      "raw_text": "3. X의 정규분포 N(10,4²)\nm=E(Y)=-0.5E(X)+5=-0.5×10+5=0.\nσ²=V(Y)=0.5²V(X)=0.5²×16=4\nY의 정규분포 N(0,2²)\nZ=(X-m)/σ=(X-0)/2=X/2\nP(0≤Z≤z)=P(0≤X/2≤z)",
+      "normalized_math": "X\\sim N(10,4^2);\\quad m=E(Y)=-0.5E(X)+5=-0.5\\times10+5=0;\\quad \\sigma^2=V(Y)=0.5^2V(X)=0.5^2\\times16=4;\\quad Y\\sim N(0,2^2);\\quad Z=\\frac{X-m}{\\sigma}=\\frac{X-0}{2}=\\frac X2;\\quad P(0\\le Z\\le z)=P(0\\le X/2\\le z)",
+      "confidence": 0.94,
+      "uncertain": false,
+      "x": 0.51,
+      "y": 0.434,
+      "width": 0.393,
+      "height": 0.139
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 14,
+      "raw_text": "z | P(0≤X≤z)\n1.0 | 0.6826\n1.5 | 0.8664\n2.0 | 0.9544\n2.5 | 0.9876",
+      "normalized_math": "\\begin{array}{c|c}z&P(0\\le X\\le z)\\\\1.0&0.6826\\\\1.5&0.8664\\\\2.0&0.9544\\\\2.5&0.9876\\end{array}",
+      "confidence": 0.93,
+      "uncertain": false,
+      "x": 0.5,
+      "y": 0.574,
+      "width": 0.18,
+      "height": 0.105
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 15,
+      "raw_text": "신뢰도 98.76% 신뢰구간은\nx̄-2.5×2/√n ≤ m ≤ x̄+2.5×2/√n\n⇔ a ≤ m ≤ b.\nb-a=5×2/√n",
+      "normalized_math": "\\bar x-2.5\\frac2{\\sqrt n}\\le m\\le\\bar x+2.5\\frac2{\\sqrt n}\\iff a\\le m\\le b;\\quad b-a=5\\frac2{\\sqrt n}",
+      "confidence": 0.95,
+      "uncertain": false,
+      "x": 0.685,
+      "y": 0.592,
+      "width": 0.286,
+      "height": 0.103
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 16,
+      "raw_text": "신뢰도 86.64% 신뢰구간은\nx̄-1.5×2/√n ≤ m ≤ x̄+1.5×2/√n\n⇔ c ≤ m ≤ d.\nd-c=3×2/√n",
+      "normalized_math": "\\bar x-1.5\\frac2{\\sqrt n}\\le m\\le\\bar x+1.5\\frac2{\\sqrt n}\\iff c\\le m\\le d;\\quad d-c=3\\frac2{\\sqrt n}",
+      "confidence": 0.95,
+      "uncertain": false,
+      "x": 0.68,
+      "y": 0.696,
+      "width": 0.294,
+      "height": 0.103
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 17,
+      "raw_text": "1 < 10/√n, 6/√n < 6/5 만족하는 n\n25<n<100  (최댓값 99, 최솟값 26)",
+      "normalized_math": "1<\\frac{10}{\\sqrt n},\\quad \\frac6{\\sqrt n}<\\frac65;\\qquad 25<n<100",
+      "confidence": 0.92,
+      "uncertain": false,
+      "x": 0.562,
+      "y": 0.812,
+      "width": 0.389,
+      "height": 0.054
+    },
+    {
+      "artifact_id": "0508069e-5a65-50fd-b8a0-1e2287e386c7",
+      "page": 1,
+      "reading_order": 18,
+      "raw_text": "이 줄 아래 답안 작성 시 무효 처리됨",
+      "normalized_math": "",
+      "confidence": 0.98,
+      "uncertain": false,
+      "x": 0.384,
+      "y": 0.88,
+      "width": 0.244,
+      "height": 0.016
+    }
+  ],
+  "boundary": {
+    "steps": [
+      {
+        "id": "43ab9c7c-cc2e-4d25-b8d6-6428f39de639",
+        "position": 1,
+        "kind": "COMPUTATION",
+        "representation": "P(l=1,2,3,4)=(4,18,12,1)/35",
+        "status": "VALID",
+        "explanation": "조합을 이용하여 빨간 상자에서 뽑힌 숫자 5의 개수 l의 확률분포를 정확히 구했다.",
+        "regions": [
+          "139fe2ca-9507-5c7c-8945-5fbb426b0378"
+        ]
+      },
+      {
+        "id": "e832fc4e-dceb-49a9-96bc-e35ce6a63708",
+        "position": 2,
+        "kind": "CASE",
+        "representation": "W=k/l의 값에 따라 (k,l)을 분류",
+        "status": "VALID",
+        "explanation": "가능한 모든 (k,l)을 빠짐없이 나열하고 같은 W 값을 만드는 경우끼리 적절하게 분류했다.",
+        "regions": [
+          "98a8fdc5-f462-59e7-85df-de5d3c0582e3",
+          "27b29d6b-6d43-52d3-9389-7a08025f7f88"
+        ]
+      },
+      {
+        "id": "a7890e08-8485-477c-8247-92e7ce8ff9cb",
+        "position": 3,
+        "kind": "COMPUTATION",
+        "representation": "W의 확률분포 및 E(W)=69/56",
+        "status": "VALID",
+        "explanation": "k와 l의 독립성과 각 확률을 이용하여 W의 확률분포를 구했고, 그 분포로부터 기댓값 69/56을 정확히 계산했다.",
+        "regions": [
+          "5c9bfbb9-6661-5ba5-948a-8516b8046105",
+          "bd65db1a-6c03-55fc-a21d-ca3a91775272"
+        ]
+      },
+      {
+        "id": "67e934cf-f7cb-4474-8ef7-61fb0b8ff3ab",
+        "position": 4,
+        "kind": "CONCEPT",
+        "representation": "U=(k+l)!/(k!l!)",
+        "status": "VALID",
+        "explanation": "최단경로가 가로 이동 k회와 세로 이동 l회의 배열이라는 점을 이용하여 경우의 수를 이항계수로 정확히 나타냈다.",
+        "regions": [
+          "4a6cb442-56b6-51a0-899c-73deab9882f0"
+        ]
+      },
+      {
+        "id": "04b31bbe-27a3-4d12-96f5-d3e3980ad855",
+        "position": 5,
+        "kind": "CASE",
+        "representation": "각 (k,l)에 대응하는 U의 값 분류",
+        "status": "VALID",
+        "explanation": "16개의 가능한 (k,l)에 대해 최단경로의 수를 구하고 같은 U 값을 갖는 경우를 정확히 분류했다.",
+        "regions": [
+          "e5415aff-a4c4-55f7-8122-5f4694280fc7",
+          "1708d9a5-88c6-5cef-a8ba-6148c1a6513d"
+        ]
+      },
+      {
+        "id": "6f746fe6-489f-4abe-a397-60c0490ff31c",
+        "position": 6,
+        "kind": "COMPUTATION",
+        "representation": "P(U≤10)=95/140=19/28",
+        "status": "VALID",
+        "explanation": "U의 확률분포를 정확히 구성하고 U가 10 이하인 항들의 확률을 합하여 19/28을 얻었다.",
+        "regions": [
+          "fda9d78e-cfe6-5ac3-9023-4ec24bdfd064",
+          "446348c9-e763-59dc-a036-2f9926c553fa"
+        ]
+      },
+      {
+        "id": "9a43d47c-dcd0-4e5f-81bb-a9bb1582442e",
+        "position": 7,
+        "kind": "COMPUTATION",
+        "representation": "m=0, σ=2",
+        "status": "VALID",
+        "explanation": "선형변환의 평균과 분산을 이용하여 Y의 평균이 0이고 표준편차가 2임을 정확히 구했다.",
+        "regions": [
+          "4b8b055a-9f1b-5c8b-9348-ac6f910276b0"
+        ]
+      },
+      {
+        "id": "d871e45c-68b6-4c1c-94a0-c7b7a4bc1e89",
+        "position": 8,
+        "kind": "INTERPRETATION",
+        "representation": "98.76%에는 z=2.5, 86.64%에는 z=1.5",
+        "status": "VALID",
+        "explanation": "양측 신뢰도와 표준정규분포표를 연결하여 두 신뢰구간에 필요한 임계값을 정확히 선택했다.",
+        "regions": [
+          "a26e43c7-8dc0-559c-83ac-87141c984467"
+        ]
+      },
+      {
+        "id": "b88584ac-905f-4389-89d6-45e08a56a2e9",
+        "position": 9,
+        "kind": "TRANSFORMATION",
+        "representation": "b-a=10/√n",
+        "status": "VALID",
+        "explanation": "신뢰도 98.76%인 신뢰구간의 전체 길이를 2×2.5×2/√n=10/√n으로 정확히 나타냈다.",
+        "regions": [
+          "f7aeea6a-5cd8-568d-a651-619252f4662d"
+        ]
+      },
+      {
+        "id": "65ddd659-b89d-44b9-833d-39dc42579603",
+        "position": 10,
+        "kind": "TRANSFORMATION",
+        "representation": "d-c=6/√n",
+        "status": "VALID",
+        "explanation": "신뢰도 86.64%인 신뢰구간의 전체 길이를 2×1.5×2/√n=6/√n으로 정확히 나타냈다.",
+        "regions": [
+          "dbfca1a0-ddd7-5a42-8c7d-a38dfb63d4b4"
+        ]
+      },
+      {
+        "id": "30d791c3-a5a6-4c80-a9f3-f6fd5d5bd006",
+        "position": 11,
+        "kind": "CONCLUSION",
+        "representation": "25≤n≤100, 최댓값 100, 최솟값 25",
+        "status": "INVALID",
+        "explanation": "엄격한 부등호를 경계값에 반영하지 않았다. 1<10/√n에서는 n<100이고, 6/√n<6/5에서는 n>25이므로 자연수 n의 범위는 26≤n≤99이다.",
+        "regions": [
+          "0f157d7b-2830-52b5-ac27-49b259f9bc06"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "43ab9c7c-cc2e-4d25-b8d6-6428f39de639",
+        "to": "e832fc4e-dceb-49a9-96bc-e35ce6a63708"
+      },
+      {
+        "from": "e832fc4e-dceb-49a9-96bc-e35ce6a63708",
+        "to": "a7890e08-8485-477c-8247-92e7ce8ff9cb"
+      },
+      {
+        "from": "67e934cf-f7cb-4474-8ef7-61fb0b8ff3ab",
+        "to": "04b31bbe-27a3-4d12-96f5-d3e3980ad855"
+      },
+      {
+        "from": "04b31bbe-27a3-4d12-96f5-d3e3980ad855",
+        "to": "6f746fe6-489f-4abe-a397-60c0490ff31c"
+      },
+      {
+        "from": "9a43d47c-dcd0-4e5f-81bb-a9bb1582442e",
+        "to": "d871e45c-68b6-4c1c-94a0-c7b7a4bc1e89"
+      },
+      {
+        "from": "d871e45c-68b6-4c1c-94a0-c7b7a4bc1e89",
+        "to": "b88584ac-905f-4389-89d6-45e08a56a2e9"
+      },
+      {
+        "from": "d871e45c-68b6-4c1c-94a0-c7b7a4bc1e89",
+        "to": "65ddd659-b89d-44b9-833d-39dc42579603"
+      },
+      {
+        "from": "b88584ac-905f-4389-89d6-45e08a56a2e9",
+        "to": "30d791c3-a5a6-4c80-a9f3-f6fd5d5bd006"
+      },
+      {
+        "from": "65ddd659-b89d-44b9-833d-39dc42579603",
+        "to": "30d791c3-a5a6-4c80-a9f3-f6fd5d5bd006"
+      }
+    ],
+    "errors": [
+      {
+        "id": "b5d4515d-0f41-44ef-8f3a-5001a26de282",
+        "step_id": "30d791c3-a5a6-4c80-a9f3-f6fd5d5bd006",
+        "classification": "ROOT",
+        "category": "CONCLUSION",
+        "materiality": "MATERIAL",
+        "explanation": "두 조건이 모두 엄격한 부등식인데 경계값 n=25와 n=100을 포함했다. 따라서 최솟값과 최댓값을 각각 25와 100으로 제시한 결론이 틀렸다."
+      }
+    ],
+    "causes": [],
+    "core": [
+      {
+        "id": "8c0137d0-f462-4e13-9920-29050fecad17",
+        "position": 1,
+        "error_id": "b5d4515d-0f41-44ef-8f3a-5001a26de282",
+        "step_id": "30d791c3-a5a6-4c80-a9f3-f6fd5d5bd006",
+        "title": "엄격한 부등식의 경계값 처리",
+        "diagnosis": "부등식 변형 과정에서 등호가 없는 조건을 자연수 범위로 옮길 때 경계값을 포함했다.",
+        "why": "1<10/√n은 n≤100이 아니라 n<100이고, 6/√n<6/5는 n≥25가 아니라 n>25이다.",
+        "next_action": "각 부등식을 별도로 풀어 n<100과 n>25를 얻은 뒤 자연수 조건을 적용하여 경계 바로 안쪽의 정수를 선택한다."
+      }
+    ],
+    "hints": [
+      {
+        "id": "31c098f6-55f0-49ef-82af-ac5cfd4ec142",
+        "core_id": "8c0137d0-f462-4e13-9920-29050fecad17",
+        "level": 0,
+        "body": "원래 조건의 두 부등호에 등호가 포함되어 있는지 먼저 확인해 보세요.",
+        "leakage_class": "SAFE_DIRECTION",
+        "validated": true
+      },
+      {
+        "id": "7ef76367-5e78-4754-a38f-1d932d43a29d",
+        "core_id": "8c0137d0-f462-4e13-9920-29050fecad17",
+        "level": 1,
+        "body": "1<10/√n과 6/√n<6/5를 각각 풀 때 n=100과 n=25가 실제로 원래 부등식을 만족하는지 대입해 보세요.",
+        "leakage_class": "SAFE_DIRECTION",
+        "validated": true
+      },
+      {
+        "id": "bc9a6550-d851-4e82-82cb-0c8a24d9e251",
+        "core_id": "8c0137d0-f462-4e13-9920-29050fecad17",
+        "level": 2,
+        "body": "두 조건은 각각 n<100과 n>25를 뜻합니다. 여기에 자연수 조건을 적용하여 최솟값과 최댓값을 다시 정하세요.",
+        "leakage_class": "CONCEPT_REVEAL",
+        "validated": true
+      }
+    ],
+    "references": [],
+    "paths": [
+      {
+        "key": "subproblem_1",
+        "verdict": "OFFICIAL_PATH_MATCH",
+        "explanation": "l의 초기하분포를 구하고 (k,l)을 W의 값별로 분류하여 기댓값을 계산하는 공식 풀이 경로와 일치한다."
+      },
+      {
+        "key": "subproblem_2",
+        "verdict": "OFFICIAL_PATH_MATCH",
+        "explanation": "최단경로의 수를 이항계수로 구한 뒤 U의 분포를 구성하여 확률을 합하는 공식 풀이 경로와 일치한다."
+      },
+      {
+        "key": "subproblem_3",
+        "verdict": "INVALID_PATH",
+        "explanation": "표준편차, 임계값 및 신뢰구간 길이까지는 공식 풀이와 일치하지만 마지막에 엄격한 부등식의 경계값을 잘못 포함하여 결론이 틀렸다."
+      }
+    ],
+    "criteria": [
+      {
+        "criterion_id": "8caa413c-36fe-55f4-a7a6-4e475e2745bd",
+        "satisfied": "PARTIALLY_SATISFIED",
+        "reason": "문항 1과 문항 2는 확률분포, 기댓값, 최단경로의 수 및 최종 확률을 정확히 구했다. 문항 3도 신뢰구간 길이와 n에 대한 부등식 설정은 정확하지만, 엄격한 부등식의 경계값 처리 오류로 최종 최댓값과 최솟값이 틀렸다."
+      }
+    ],
+    "rubric": {
+      "rubric_version": "math-rubric-v1",
+      "dimensions": {
+        "logical_development": "ADEQUATE",
+        "computation_accuracy": "NEEDS_IMPROVEMENT",
+        "final_conclusion": "NEEDS_IMPROVEMENT"
+      }
+    },
+    "overall": {
+      "status": "PARTIAL",
+      "diagnostic": "ANSWER_INCORRECT_APPROACH_MOSTLY_VALID",
+      "answer": "PARTIALLY_CORRECT",
+      "coverage": "ATTEMPTED"
+    },
+    "provenance": {
+      "model_provider": "openai",
+      "model_name": "gpt-5.6-sol",
+      "prompt_version": "math-activation-candidate-2",
+      "contract_version": "math-eval-v1"
+    },
+    "progression": null,
+    "generated_solution": null,
+    "selected_extraction": "604c7bca-9c27-532e-9262-5d88d8620a6d"
+  }
+}

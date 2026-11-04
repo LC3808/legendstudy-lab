@@ -67,3 +67,19 @@ describe("MathInputFlow", () => {
     expect(screen.getByText(/다시 올려야/)).toBeInTheDocument();
   });
 });
+it('invalidates prior confirmation on edits and does not accept unreadable content as-is',()=>{
+ const invalid=vi.fn(),confirm=vi.fn();const r=needsConfirmation();r.confirmationRequired[0].confidence='UNREADABLE';
+ render(<MathInputFlow readiness={r} onConfirm={confirm} onInvalidate={invalid}/>);
+ expect(screen.getByRole('button',{name:'확인'})).toBeDisabled();
+ fireEvent.change(screen.getByLabelText('수정할 내용'),{target:{value:'x^2'}});
+ expect(invalid).toHaveBeenCalledWith(r.confirmationRequired[0].regionId);
+ fireEvent.click(screen.getByRole('button',{name:'수정'}));expect(confirm).toHaveBeenCalledOnce();
+});
+
+it('preserves the Q2 final maxima and minima omitted from normalized math',()=>{
+ const onConfirm=vi.fn();const r=needsConfirmation();r.confirmationRequired[0].rawText='25<n<100 (최댓값 99, 최솟값 26)';r.confirmationRequired[0].normalizedMath='25<n<100';
+ render(<MathInputFlow readiness={r} onConfirm={onConfirm}/>);
+ expect(screen.getByLabelText('수정할 내용')).toHaveValue('25<n<100 (최댓값 99, 최솟값 26)');
+ fireEvent.click(screen.getByRole('button',{name:'확인'}));
+ expect(onConfirm.mock.calls[0][0].confirmedRawText).toContain('최댓값 99, 최솟값 26');
+});

@@ -1,3 +1,4 @@
+import {criticalMath,hasUnresolvedRecognition} from "../recognition-safety";
 /**
  * MATH-3B-R — mapping between MATH-3B canonical domain and MATH-2D wire shapes, so the domain
  * pipeline stays persistence-independent. Canonical VisionRegion ↔ wire extraction region;
@@ -29,7 +30,7 @@ export function toWireExtractionRegion(region: VisionRegion): WireExtractionRegi
 export function fromWireCandidateRegion(wire: WireCandidateRegion): VisionRegion {
   return {
     regionId: wire.region_id,
-    pageIndex: wire.page,
+    pageIndex: wire.page - 1,
     readingOrder: wire.reading_order,
     regionType: "MATH",
     role: "OTHER",
@@ -37,7 +38,7 @@ export function fromWireCandidateRegion(wire: WireCandidateRegion): VisionRegion
     rawText: wire.raw_text,
     normalizedMath: wire.normalized_math === "" ? null : wire.normalized_math,
     structuralHints: [],
-    confidence: wire.uncertain ? "AMBIGUOUS" : "HIGH",
+    confidence: wire.uncertain || criticalMath(wire.raw_text+wire.normalized_math) || hasUnresolvedRecognition(wire.raw_text+wire.normalized_math) ? "AMBIGUOUS" : "HIGH",
     uncertaintyReason: wire.uncertain ? "MODEL_LOW_CONFIDENCE" : null,
     evidenceRef: wire.artifact_id,
     subproblemCandidate: null,

@@ -1,3 +1,4 @@
+import {assertRecognizedInputConfirmed} from "../../math-input/recognition-safety";
 /** APP MATH-2D wire adapter. Mock domain projections are not physical RPC responses. */
 import type { MathEvaluationInput, MathResponseFormat, ReferenceProvenance } from "../types";
 
@@ -19,6 +20,7 @@ export function physicalClaimToInput(raw: unknown): MathEvaluationInput {
   if (typeof profile.reasoning_required !== "boolean" ||
       !["SHORT_ANSWER", "SHORT_REASONING", "FULL_SOLUTION", "PROOF"].includes(String(leaf.response_format))) throw Error("INVALID_CLAIM");
   const extractionId = claim.selected_extraction_id === null ? null : text(claim.selected_extraction_id);
+  assertRecognizedInputConfirmed(context, extractionId);
   // Preserve question, typed answer, extracted work, sources and profile pins for the adapter.
   // Never reconstruct these from a student result or silently omit the submitted work.
   object(context.problem);
@@ -55,6 +57,12 @@ export function physicalFinalize(output: MathEvalOutput, input: MathEvaluationIn
   if (output.selected_extraction !== input.selectedExtractionId) throw Error("INVALID_OUTPUT");
   if (output.paths.some(path => path.verdict === "MATHEMATICAL_EQUIVALENCE_UNCERTAIN")) throw Error("INVALID_OUTPUT");
   if (output.steps.some(step => step.position < 1)) throw Error("INVALID_OUTPUT");
+  // Match the persistent contract before finalize; never fabricate missing reasoning
+  // or relabel a provider's disclosure classification to make it fit storage.
+  if (input.requiresReasoning && output.overall.coverage === "ATTEMPTED" && output.steps.length === 0) throw Error("INVALID_OUTPUT");
+  if (output.hints.some(hint => hint.validated !== true ||
+      (hint.level === 0 || hint.level === 1 ? hint.leakage_class !== "SAFE_DIRECTION" :
+        hint.level !== 2 || hint.leakage_class !== "CONCEPT_REVEAL"))) throw Error("INVALID_OUTPUT");
   // MATH-2C does not store numeric awarded points. Reject instead of silently discarding.
   if (output.criteria.some(criterion => criterion.awarded_points != null)) throw Error("INVALID_OUTPUT");
   // Preserve the domain's established calculation label at the unchanged SQL boundary.

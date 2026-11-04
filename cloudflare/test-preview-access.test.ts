@@ -25,3 +25,48 @@ describe('private TEST preview boundary', () => {
  });
  it('rejects forged cookies',async()=>{expect((await testPreviewAccess(new Request(origin,{headers:{Cookie:'__Host-task09_review=1793519999.fake'}}),env,next,now)).status).toBe(401);});
 });
+
+it('gates TASK16B assets and limits machine access to the Math callback',async()=>{
+ const test='https://legendstudy-task16b.pages.dev';
+ expect((await testPreviewAccess(new Request(test+'/_next/static/app.js'),env,next,now)).status).toBe(401);
+ const headers={'X-Test-Preview-Access':env.TEST_PREVIEW_ACCESS_KEY};
+ expect((await testPreviewAccess(new Request(test+'/api/essay/math-session',{method:'POST',headers}),env,next,now)).status).toBe(200);
+ for(const path of ['/','/api/essay/exam','/admin/'])expect((await testPreviewAccess(new Request(test+path,{method:'POST',headers}),env,next,now)).status).toBe(401);
+ expect((await testPreviewAccess(new Request(test+'/api/essay/math-session',{method:'POST',headers:{'X-Test-Preview-Access':'wrong'}}),env,next,now)).status).toBe(401);
+});
+
+it('native original route reaches owner-authenticated handler only on canonical TEST POST',async()=>{
+ const next=vi.fn(async()=>new Response('handler'));const env={TEST_PREVIEW_ACCESS_KEY:'x'.repeat(40)};
+ const make=(host:string,method='POST',token=true)=>new Request('https://'+host+'/api/math/artifact',{method,headers:token?{authorization:'Bearer synthetic'}:{}});
+ expect((await testPreviewAccess(make('legendstudy-task16b.pages.dev'),env,next)).status).toBe(200);
+ expect(next).toHaveBeenCalledTimes(1);
+ for(const request of [make('legendstudy-task16b.pages.dev','GET'),make('legendstudy-task16b.pages.dev','POST',false),make('abc.legendstudy-task16b.pages.dev')])expect((await testPreviewAccess(request,env,next)).status).toBe(401);
+ expect(next).toHaveBeenCalledTimes(1);
+});
+
+it('only explicitly enabled canonical TEST exam POST reaches JWT handler without browser cookie',async()=>{
+ const env={TEST_PREVIEW_ACCESS_KEY:'x'.repeat(40),ESSAY_COMMERCE_RUNTIME_TEST_ENABLED:'true'};
+ const next=vi.fn(async()=>new Response('still requires handler JWT validation'));
+ const req=(host='legendstudy-task16b.pages.dev',token=true,method='POST')=>new Request(`https://${host}/api/essay/exam`,{method,headers:token?{Authorization:'Bearer synthetic'}:{}});
+ expect((await testPreviewAccess(req(),env,next)).status).toBe(200);
+ for(const request of [req('abc.legendstudy-task16b.pages.dev'),req('legendstudy-task16b.pages.dev',false),req('legendstudy-task16b.pages.dev',true,'GET')])expect((await testPreviewAccess(request,env,next)).status).toBe(401);
+ expect((await testPreviewAccess(req(),{...env,ESSAY_COMMERCE_RUNTIME_TEST_ENABLED:'false'},next)).status).toBe(401);
+ expect(next).toHaveBeenCalledTimes(1);
+});
+
+it.each(['/api/essay/public-service-status','/api/essay/service-status'])('native discovery %s reaches JWT validation without a browser cookie',async path=>{
+ const request=(host='legendstudy-task16b.pages.dev',method='GET',authorization='Bearer synthetic')=>new Request(`https://${host}${path}`,{method,headers:{authorization}});
+ // A bearer-shaped value only reaches the handler. It is not authentication:
+ // preserve downstream rejection and do not return a preview HTML page.
+ const handler=vi.fn(async()=>Response.json({checked:false}, {status:401}));
+ const result=await testPreviewAccess(request(),env,handler,now);
+ expect(result.status).toBe(401);
+ expect(result.headers.get('content-type')).toContain('application/json');
+ expect(handler).toHaveBeenCalledTimes(1);
+ for(const blocked of [request('abc.legendstudy-task16b.pages.dev'),request('legendstudy-task09.pages.dev'),request('legendstudy-task16b.pages.dev','POST'),request('legendstudy-task16b.pages.dev','GET',''),request('legendstudy-task16b.pages.dev','GET','Bearer two tokens')]){
+  expect((await testPreviewAccess(blocked,env,handler,now)).status).toBe(401);
+ }
+ expect(handler).toHaveBeenCalledTimes(1);
+ expect((await testPreviewAccess(request(),{},handler,now)).status).toBe(503);
+ expect(handler).toHaveBeenCalledTimes(1);
+});

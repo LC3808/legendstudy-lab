@@ -1,4 +1,6 @@
 "use client";
+import { NoticeEditor } from "./notice-editor";
+import { parseDocument, plainContent } from "@/lib/notices/document";
 import { AdminDataTable } from "./admin-data-table";
 import { formatDateTime } from "@/lib/admin/format";
 import { describeError } from '@/lib/admin/errors';
@@ -37,6 +39,13 @@ function Editor() {
     error?: string;
   } | null>(null);
   const [draft, setDraft] = useState<NoticeInput>({ ...empty });
+  const [richReady,setRichReady] = useState(false);
+  const [uploading,setUploading] = useState(false);
+  useEffect(() => {
+    let active = true;
+    if(client) void noticesClient(client).editorCapability().then(r=>{if(active)setRichReady(r?.version===1);},()=>{if(active)setRichReady(false);});
+    return ()=>{active=false;};
+  },[client]);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const key = `${page}:${nonce}`;
@@ -63,7 +72,10 @@ function Editor() {
   }
   async function save(e: FormEvent) {
     e.preventDefault();
-    if (!client || busy) return;
+    if (!client || busy || uploading) return;
+    if (draft.content_document && (!richReady || !parseDocument(draft.content_document) || !plainContent(draft.content_document))) {
+      setMessage("본문과 이미지 설명, 편집기 연결 상태를 확인해 주세요."); return;
+    }
     setBusy(true);
     setMessage("");
     try {
@@ -90,7 +102,7 @@ function Editor() {
         <h2>공지 관리</h2>
         <button
           className="button button--outline"
-          disabled={busy}
+          disabled={busy || uploading}
           onClick={() => {
             setDraft({ ...empty });
             setMessage("");
@@ -103,7 +115,7 @@ function Editor() {
           style={{ display: "grid", gap: 16, maxWidth: 850 }}
         >
           <fieldset
-            disabled={busy}
+            disabled={busy || uploading}
             style={{
               display: "grid",
               gap: 16,
@@ -122,6 +134,8 @@ function Editor() {
                 style={{ display: "block", width: "100%" }}
               />
             </label>
+            {richReady ? <NoticeEditor content={draft.content} document={draft.content_document} onBusyChange={setUploading} onChange={(content,content_document)=>setDraft({...draft,content,content_document})}/> : <>
+              <p role="status">서식·이미지 편집기 연결 준비 중입니다. 기존 텍스트 공지는 계속 작성할 수 있어요.</p>
             <label>
               본문 (일반 텍스트)
               <textarea
@@ -129,12 +143,15 @@ function Editor() {
                 maxLength={50000}
                 rows={12}
                 value={draft.content}
+                readOnly={!!draft.content_document}
                 onChange={(e) =>
                   setDraft({ ...draft, content: e.target.value })
                 }
                 style={{ display: "block", width: "100%" }}
               />
             </label>
+              {draft.content_document && <p role="alert">서식 공지는 편집기 연결 후 수정해 주세요.</p>}
+            </>}
             <label>
               카테고리{" "}
               <select
@@ -263,7 +280,7 @@ function Editor() {
             <p>전체 {current.data?.total ?? 0}건 · 작성 시각은 한국시간 기준</p>
             <AdminDataTable id="notices" rows={(current.data?.items??[]).map((n,index)=>({...n,sequence:page*20+index+1}))} rowKey={n=>n.notice_id} pageSize={20} scope="현재 서버 페이지(최대 20건) 안에서 검색·정렬합니다. 다른 공지는 아래 이전·다음으로 조회하세요." columns={[
               {key:'sequence',label:'순번',value:n=>n.sequence},
-              {key:'title',label:'제목',value:n=>n.title,render:n=><><button className="button button--outline" disabled={busy} onClick={()=>edit(n)}>{n.title}</button>{n.is_pinned&&' · 고정'}</>},
+              {key:'title',label:'제목',value:n=>n.title,render:n=><><button className="button button--outline" disabled={busy || uploading} onClick={()=>edit(n)}>{n.title}</button>{n.is_pinned&&' · 고정'}</>},
               {key:'status',label:'상태',value:n=>({published:'게시',draft:'임시저장',archived:'보관'}[n.status])},
               {key:'created',label:'작성 시각 (KST)',value:n=>n.created_at?Date.parse(n.created_at):null,render:n=>formatDateTime(n.created_at)},
               {key:'updated',label:'수정 시각 (KST)',value:n=>Date.parse(n.updated_at),render:n=>formatDateTime(n.updated_at)},

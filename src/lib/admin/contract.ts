@@ -344,7 +344,7 @@ export function parseMemberDetail(raw: unknown): AdminMemberDetail {
 
   return {
     member: {
-      accountId: str(member.account_id, "member.account_id"),
+      accountId: strOrNull(member.account_id, "member.account_id") ?? "비회원",
       email: strOrNull(member.email, "member.email"),
       createdAt: str(member.created_at, "member.created_at"),
       displayName: strOrNull(member.display_name, "member.display_name"),
@@ -545,6 +545,7 @@ export const INQUIRY_STATUSES = ["RECEIVED", "IN_PROGRESS", "ANSWERED", "CLOSED"
 export type InquiryStatus = (typeof INQUIRY_STATUSES)[number];
 
 export type InquiryRow = {
+  source?: string;
   inquiryId: string;
   status: string;
   category: string;
@@ -575,6 +576,7 @@ export type AdminInquiryReply = {
 };
 
 export type AdminInquiryDetail = {
+  source?: string;
   asOf: string;
   inquiry: {
     inquiryId: string;
@@ -613,11 +615,12 @@ export type AdminSupportMetrics = {
 function inquiryRow(value: unknown, path: string): InquiryRow {
   const row = record(value, path);
   return {
+    source: str(row.source ?? "WEB", `${path}.source`),
     inquiryId: str(row.inquiry_id, `${path}.inquiry_id`),
     status: str(row.status, `${path}.status`),
     category: str(row.category, `${path}.category`),
     title: str(row.title, `${path}.title`),
-    userId: str(row.user_id, `${path}.user_id`),
+    userId: strOrNull(row.user_id, `${path}.user_id`) ?? "비회원",
     createdAt: str(row.created_at, `${path}.created_at`),
     updatedAt: str(row.updated_at, `${path}.updated_at`),
     replyCount: num(row.reply_count, `${path}.reply_count`),
@@ -645,6 +648,7 @@ export function parseInquiryDetail(raw: unknown): AdminInquiryDetail {
   const member = record(root.member, "inquiryDetail.member");
   const related = record(root.related, "inquiryDetail.related");
   return {
+    source: str(root.source ?? "WEB", "inquiryDetail.source"),
     asOf: str(root.as_of, "inquiryDetail.as_of"),
     inquiry: {
       inquiryId: str(inquiry.inquiry_id, "inquiry.inquiry_id"),
@@ -658,7 +662,7 @@ export function parseInquiryDetail(raw: unknown): AdminInquiryDetail {
       closedAt: strOrNull(inquiry.closed_at, "inquiry.closed_at"),
     },
     member: {
-      accountId: str(member.account_id, "member.account_id"),
+      accountId: strOrNull(member.account_id, "member.account_id") ?? "비회원",
       gradeLevel: strOrNull(member.grade_level, "member.grade_level"),
       accountState: strOrNull(member.account_state, "member.account_state"),
       spendable: numOrNull(member.spendable, "member.spendable"),

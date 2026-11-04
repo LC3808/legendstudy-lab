@@ -1,0 +1,84 @@
+{
+  "project": "kpqbedylxlyntrrfybpn",
+  "started_at_utc": "2026-11-03T15:13:43.901544+00:00",
+  "mode": "EXECUTE",
+  "provider_calls": 0,
+  "new_evaluation_requests": 0,
+  "beta_allocation_calls": 0,
+  "login": "PASS",
+  "before": {
+    "credit_summary": {
+      "spendable": 0,
+      "paid": 0,
+      "free": 0,
+      "other": 0,
+      "reserved": 0
+    },
+    "credit_grant_count": 3,
+    "ledger_transaction_count": 17,
+    "billing_decision_count": 12,
+    "math_history_visible_count": 10
+  },
+  "anonymous_denial": {
+    "math_session_quote_source": {
+      "status": "PASS",
+      "http_status": 401,
+      "code": "42501"
+    },
+    "math_session_continue_source": {
+      "status": "PASS",
+      "http_status": 401,
+      "code": "42501"
+    }
+  },
+  "initial_quotes": {
+    "hanyang_2024_natural_am": {
+      "status": "NOT_VERIFIED",
+      "http_status": 402,
+      "code": "PT402",
+      "message": "INSUFFICIENT_CREDIT"
+    },
+    "hanyang_2026_commerce": {
+      "status": "NOT_VERIFIED",
+      "http_status": 402,
+      "code": "PT402",
+      "message": "INSUFFICIENT_CREDIT"
+    }
+  },
+  "free_quote": {
+    "status": "PASS",
+    "credits_required": 0,
+    "source": "included",
+    "grant_present": false
+  },
+  "wrong_expected_grant": {
+    "status": "NOT_VERIFIED",
+    "reason": "NO_SUCCESSFUL_INITIAL_QUOTE"
+  },
+  "after": {
+    "credit_summary": {
+      "spendable": 0,
+      "paid": 0,
+      "free": 0,
+      "other": 0,
+      "reserved": 0
+    },
+    "credit_grant_count": 3,
+    "ledger_transaction_count": 17,
+    "billing_decision_count": 12,
+    "math_history_visible_count": 10
+  },
+  "no_ledger_or_history_delta": "PASS",
+  "status": "PARTIAL",
+  "request_counts": {
+    "POST /auth/v1/token": 1,
+    "GET /rest/v1/credit_accounts": 1,
+    "POST /rest/v1/rpc/credit_summary": 2,
+    "POST /rest/v1/rpc/math_session_history": 2,
+    "HEAD /rest/v1/credit_grants": 2,
+    "HEAD /rest/v1/credit_transactions": 2,
+    "HEAD /rest/v1/essay_billing_decisions": 2,
+    "POST /rest/v1/rpc/math_session_quote_source": 4,
+    "POST /rest/v1/rpc/math_session_continue_source": 1
+  }
+}

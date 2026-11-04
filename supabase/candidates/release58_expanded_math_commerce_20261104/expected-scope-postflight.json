@@ -1,0 +1,35 @@
+[
+  {
+    "schema": "math_private",
+    "name": "evaluation_admission",
+    "args": "",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}",
+    "config": [
+      "search_path=\"\""
+    ],
+    "definition_md5": "a30734f808523a03fe25112c01fee348"
+  },
+  {
+    "schema": "math_private",
+    "name": "release_catalog",
+    "args": "p_exam uuid",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}",
+    "config": [
+      "search_path=\"\""
+    ],
+    "definition_md5": "5b06c0972361be37587de2e0364702e1"
+  },
+  {
+    "schema": "public",
+    "name": "math_catalog",
+    "args": "p_limit integer",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,authenticated=X/postgres}",
+    "config": [
+      "search_path=\"\""
+    ],
+    "definition_md5": "7ed861737f44ab15a481633a1f3c1fdd"
+  }
+]

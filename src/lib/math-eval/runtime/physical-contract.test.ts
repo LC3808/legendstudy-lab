@@ -32,3 +32,16 @@ it("maps calculation steps to existing SQL kinds, rejecting unrecognized output"
  expect(out.steps[0].kind).toBe("CALCULATION");
  expect(()=>physicalFinalize({...out,steps:[{...out.steps[0],kind:"invented"}]},input)).toThrow("INVALID_OUTPUT");
 });
+
+it("rejects missing reasoning and mismatched hint levels before persistent finalize", () => {
+ const wire={...claim(),context:{...claim().context,profile:{reasoning_required:true,required_dimensions:["final_conclusion"],optional_dimensions:[]}}};
+ const input=physicalClaimToInput(wire);
+ const out=baseOutput({selected_extraction:null as unknown as string,steps:[step({position:1,regions:[]})]});
+ expect(()=>physicalFinalize({...out,steps:[]},input)).toThrow("INVALID_OUTPUT");
+ for(const level of [0,1,2] as const){
+   const hint={id:"hint",core_id:"core",level,body:"해당 개념을 확인하세요",validated:true,
+     leakage_class:level===2?"CONCEPT_REVEAL" as const:"SAFE_DIRECTION" as const};
+   expect(physicalFinalize({...out,hints:[hint]},input)).toMatchObject({hints:[{level,leakage_class:level===0?"CORE_ONLY":hint.leakage_class}]});
+   expect(()=>physicalFinalize({...out,hints:[{...hint,leakage_class:level===2?"SAFE_DIRECTION":"CONCEPT_REVEAL"}]},input)).toThrow("INVALID_OUTPUT");
+ }
+});

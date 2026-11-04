@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import { ADMIN_MIN_QUERY, INQUIRY_MAX_REPLY } from "@/lib/admin/client";
 import type { AdminInquiryDetail, AdminInquiryPage } from "@/lib/admin/contract";
@@ -22,6 +22,7 @@ import {
   AdminLoading,
   useAdminClient,
   useAdminQuery,
+  useSupportRefresh,
 } from "./admin-surface";
 
 const STATUS_FILTERS = [
@@ -42,6 +43,9 @@ const REPLY_MIN = 2;
  * 상태를 표시할 뿐 직접 메일을 보내지 않습니다.
  */
 export function AdminInquiriesView() {
+  const [offset, setOffset] = useState(0);
+  const [source, setSource] = useState("");
+  const [category, setCategory] = useState("");
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("");
@@ -49,9 +53,11 @@ export function AdminInquiriesView() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   const list = useAdminQuery<AdminInquiryPage>(
-    (client) => client.inquiryList({ query: query || undefined, status: status || undefined }),
-    `inquiries:${query}:${status}`,
+    (client) => client.inquiryList({ offset, source: source || undefined, category: category || undefined, query: query || undefined, status: status || undefined }),
+    `inquiries:${query}:${status}:${source}:${category}:${offset}`,
   );
+
+  useSupportRefresh(list.reload, openId === null);
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -61,7 +67,7 @@ export function AdminInquiriesView() {
       return;
     }
     setHint(null);
-    setQuery(trimmed);
+    setQuery(trimmed); setOffset(0); setOpenId(null);
   }
 
   return (
@@ -69,8 +75,7 @@ export function AdminInquiriesView() {
       <section className="admin-section">
         <h2>1:1 문의</h2>
         <p className="admin-section__note">
-          제목 또는 회원 식별자로 조회합니다. 회원에게는 답변이 등록될 때 알림 메일이
-          발송됩니다.
+          제목 또는 회원 식별자로 조회합니다. 회원 답변은 내 문의에서 확인하며 알림 메일은 비동기로 발송됩니다. 비회원은 답변 알림을 받을 수 없습니다.
         </p>
         <form className="admin-search" onSubmit={submit} role="search">
           <label className="admin-search__label" htmlFor="admin-inquiry-query">
@@ -98,7 +103,7 @@ export function AdminInquiriesView() {
               id="admin-inquiry-status"
               className="admin-search__input"
               value={status}
-              onChange={(event) => setStatus(event.target.value)}
+              onChange={(event) => {setStatus(event.target.value); setOffset(0); setOpenId(null);}}
             >
               {STATUS_FILTERS.map((option) => (
                 <option key={option.value || "all"} value={option.value}>
@@ -107,6 +112,8 @@ export function AdminInquiriesView() {
               ))}
             </select>
           </div>
+          <label>출처<select aria-label="문의 출처" value={source} onChange={e=>{setSource(e.target.value);setOffset(0);setOpenId(null);}}><option value="">전체</option><option>APP</option><option>WEB</option></select></label>
+          <label>유형<select aria-label="문의 유형" value={category} onChange={e=>{setCategory(e.target.value);setOffset(0);setOpenId(null);}}>{["","inquiry","suggestion","bug","other","account","material","essay_humanities","essay_math","credit","payment","deletion","technical"].map(c=><option key={c} value={c}>{c?inquiryCategoryLabel(c):"전체"}</option>)}</select></label>
           {hint ? (
             <p className="admin-search__hint" role="status">
               {hint}
@@ -140,31 +147,33 @@ export function AdminInquiriesView() {
             <ul className="admin-inquiries">
               {list.state.data.items.map((row) => {
                 const badge = inquiryStatusLabel(row.status);
-                const expanded = openId === row.inquiryId;
+                const rowKey = `${row.source ?? "WEB"}:${row.inquiryId}`;
+                const expanded = openId === rowKey;
                 return (
-                  <li key={row.inquiryId} className="admin-inquiry">
+                  <li key={rowKey} className="admin-inquiry">
                     <div className="admin-inquiry__head">
                       <p className="admin-inquiry__title">{row.title}</p>
                       <p className={`admin-tag admin-tag--${badge.tone}`}>{badge.label}</p>
                     </div>
                     <p className="admin-inquiry__meta">
-                      {inquiryCategoryLabel(row.category)} · {formatDateTime(row.createdAt)} ·
-                      답변 {formatNumber(row.replyCount)}건
+                      {row.source ?? "WEB"} · {row.status === "RECEIVED" ? "신규 · " : ""}{inquiryCategoryLabel(row.category)} · {formatDateTime(row.createdAt)} ·
+                      회원 {row.userId} · 답변 {formatNumber(row.replyCount)}건
                     </p>
                     <p className="admin-inquiry__preview">{row.preview}</p>
                     <button
                       className="button button--quiet"
                       type="button"
                       aria-expanded={expanded}
-                      onClick={() => setOpenId(expanded ? null : row.inquiryId)}
+                      onClick={() => setOpenId(expanded ? null : rowKey)}
                     >
                       {expanded ? "상세 닫기" : "상세 열기"}
                     </button>
                     {expanded ? (
                       <AdminInquiryDetailPanel
+                        source={row.source ?? "WEB"}
                         inquiryId={row.inquiryId}
                         onChanged={() => {
-                          list.reload();
+                          list.reload(); window.dispatchEvent(new Event("support-changed"));
                         }}
                       />
                     ) : null}
@@ -173,6 +182,7 @@ export function AdminInquiriesView() {
               })}
             </ul>
           )}
+          <div><button type="button" disabled={offset===0} onClick={()=>{setOffset(Math.max(0,offset-25));setOpenId(null);}}>이전</button> <button type="button" disabled={offset+list.state.data.items.length>=list.state.data.total} onClick={()=>{setOffset(offset+25);setOpenId(null);}}>다음</button></div>
         </section>
       )}
     </div>
@@ -180,17 +190,21 @@ export function AdminInquiriesView() {
 }
 
 function AdminInquiryDetailPanel({
+  source,
   inquiryId,
   onChanged,
 }: {
+  source: string;
   inquiryId: string;
   onChanged: () => void;
 }) {
   const detail = useAdminQuery<AdminInquiryDetail>(
-    (client) => client.inquiryDetail(inquiryId),
-    `inquiry-detail:${inquiryId}`,
+    (client) => client.inquiryDetail(inquiryId, source),
+    `inquiry-detail:${source}:${inquiryId}`,
   );
   const client = useAdminClient();
+  const pendingReply = useRef<{body:string;key:string}|null>(null);
+  const inFlight = useRef(false);
   const [body, setBody] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -206,6 +220,7 @@ function AdminInquiryDetailPanel({
 
   async function submitReply(event: React.FormEvent) {
     event.preventDefault();
+    if(inFlight.current) return;
     const trimmed = body.trim();
     if (trimmed.length < REPLY_MIN) {
       setFailure("답변 내용을 입력해 주세요.");
@@ -215,18 +230,20 @@ function AdminInquiryDetailPanel({
       setFailure(`답변은 ${formatNumber(INQUIRY_MAX_REPLY)}자 이내로 입력해 주세요.`);
       return;
     }
+    inFlight.current = true;
     setBusy(true);
     setFailure(null);
     setNotice(null);
     try {
       if (!client) throw new AdminError("NETWORK", "client unavailable");
-      // A fresh request key per submission makes a double-click idempotent at the
-      // database rather than a second reply.
+      // Retain the key across uncertain network failures and retries.
+      if(!pendingReply.current || pendingReply.current.body!==trimmed) pendingReply.current={body:trimmed,key:crypto.randomUUID()};
       const result = await client.replyInquiry({
-        inquiryId,
+        inquiryId, source,
         body: trimmed,
-        requestKey: crypto.randomUUID(),
+        requestKey: pendingReply.current.key,
       });
+      pendingReply.current=null;
       setBody("");
       setNotice(
         result.created
@@ -238,23 +255,27 @@ function AdminInquiryDetailPanel({
     } catch (error) {
       setFailure(describeError(error));
     } finally {
+      inFlight.current=false;
       setBusy(false);
     }
   }
 
   async function changeStatus(next: string) {
+    if(inFlight.current) return;
+    inFlight.current = true;
     setBusy(true);
     setFailure(null);
     setNotice(null);
     try {
       if (!client) throw new AdminError("NETWORK", "client unavailable");
-      const result = await client.setInquiryStatus({ inquiryId, status: next });
+      const result = await client.setInquiryStatus({ inquiryId, source, status: next });
       setNotice(result.changed ? "처리 상태를 변경했습니다." : "이미 같은 상태입니다.");
       detail.reload();
       onChanged();
     } catch (error) {
       setFailure(describeError(error));
     } finally {
+      inFlight.current=false;
       setBusy(false);
     }
   }
@@ -262,6 +283,7 @@ function AdminInquiryDetailPanel({
   return (
     <div className="admin-inquiry__detail">
       <dl className="admin-order__facts">
+        <div><dt>출처 · 회원</dt><dd>{source} · {data.member.accountId}</dd></div>
         <div>
           <dt>문의 유형</dt>
           <dd>{inquiryCategoryLabel(data.inquiry.category)}</dd>

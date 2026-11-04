@@ -143,6 +143,9 @@ export function inquiryCategoryLabel(category: string): string {
     payment: "결제·환불",
     deletion: "회원 탈퇴·계정 삭제",
     technical: "오류·기술 문제",
+    inquiry: "일반 문의",
+    bug: "오류 신고",
+    suggestion: "기능 제안",
     other: "기타",
   };
   return map[category] ?? category;

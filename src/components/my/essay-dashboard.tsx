@@ -1,4 +1,5 @@
 'use client';
+import {ServerCoaching} from '../math-learning/server-coaching';
 import {logAnalytics} from '@/lib/analytics/client';
 import {analyticsEvents as AE} from '@/lib/analytics/events';
 import {ExamResultLayout} from './exam-result-layout';
@@ -14,7 +15,7 @@ import Link from 'next/link';
 import {useCallback,useEffect,useState} from 'react';
 import {OwnerArea,useOwnerData,DataStatus,dateLabel} from './owner-data';
 import {EvaluationReport,EvaluationComparison} from './evaluation-report';
-import {humanReport,mathReport} from '@/lib/my/evaluation-report';
+import {humanReport} from '@/lib/my/evaluation-report';
 import {readEssayDashboard,readMathDashboard,readEssayDetail,mathRead,readMathSession,type RecordItem} from '@/lib/my/essay-dashboard';
 import type {SupabaseClient} from '@supabase/supabase-js';
 import './essay-dashboard.css';
@@ -50,25 +51,19 @@ function HumanDetail({row}:{row:RecordItem}){
 
 }
 function MathRoundDetail({row}:{row:RecordItem}){
+ const [writing,setWriting]=useState(false);
  const load=useCallback((c:SupabaseClient,o:string)=>readMathSession(c,o,row.id),[row.id]);
  const result=useOwnerData(load);
  if(!result.data)return <DataStatus error={result.error} reload={result.reload}/>;
  const run=result.data;
- return <><header className="essay-result-identity"><h2>{row.university??'수리논술'}</h2><p>{row.question} · {run.state==='completed'?'첨삭 완료':run.state==='cancelled'?'취소된 회차':'첨삭 진행 중'}</p><MathSessionProgress run={run} onChange={result.reload}/></header>{run.questions.map(q=><section key={q.attempt_id}><h3>{examQuestionLabel(q.question_id)}</h3><MathDetail row={{...row,id:q.attempt_id,mathSession:undefined,evaluations:[{id:q.evaluation_id,status:q.state,at:run.created_at,completedAt:run.state==='completed'?run.completed_at:null,valid:true}]}}/></section>)}</>;
+ if(writing)return <><button onClick={()=>setWriting(false)}>결과로 돌아가기</button><ExamRewrite runId={run.run_id} additional={!run.free_rewrite_available} mathSession/></>;
+ return <><header className="essay-result-identity"><h2>{row.university??'수리논술'}</h2><p>{row.question} · {run.state==='completed'?'첨삭 완료':run.state==='cancelled'?'취소된 회차':'첨삭 진행 중'}</p><MathSessionProgress run={run} onChange={result.reload}/>{run.state==='completed'&&<button className="button button--primary" onClick={()=>setWriting(true)}>수정 답안 작성 · 이용 조건 확인</button>}</header>{run.questions.map(q=><section key={q.attempt_id}><h3>{examQuestionLabel(q.question_id)}</h3><MathDetail row={{...row,id:q.attempt_id,mathSession:undefined,evaluations:[{id:q.evaluation_id,status:q.state,at:run.created_at,completedAt:run.state==='completed'?run.completed_at:null,valid:true}]}}/></section>)}</>;
 }
 function MathDetail({row}:{row:RecordItem}){
- const load=useCallback(async(c:SupabaseClient,o:string)=>{
-  const input=await mathRead(c,o,'read_input',{attempt_id:row.id});
-  const prior=input.attempt?.predecessor_id?await mathRead(c,o,'read_input',{attempt_id:input.attempt.predecessor_id}):null;
-  const completed=row.evaluations.filter(e=>e.status.toLowerCase()==='completed');
-  const ids=[...new Set([...completed.map(e=>e.id),...(input.attempt?.prior_evaluation_id?[input.attempt.prior_evaluation_id]:[])])];
-  const evaluations=await Promise.all(ids.map(async id=>({id,prior:id===input.attempt?.prior_evaluation_id,result:await mathRead(c,o,'read_result',{evaluation_id:id})})));
-  return {input,prior,evaluations};
- },[row]);const result=useOwnerData(load);
- if(!result.data)return <DataStatus error={result.error} reload={result.reload}/>;
- const reports=result.data.evaluations.map(e=>({prior:e.prior,report:mathReport(e.result)}));
- const before=reports.find(r=>r.prior)?.report,after=reports.find(r=>!r.prior)?.report;
- return <>{!reports.some(r=>!r.prior)&&<article className="my-panel"><h3>{row.rewrite?"재작성 답안":"최초 답안"}</h3><p className="essay-answer">{result.data.input.attempt?.typed_answer||"첨부 답안 · 비공개 보관"}</p><p>완료된 평가가 없습니다.</p></article>}{reports.map(({report,prior})=><EvaluationReport key={report.id} title={prior?'최초 평가':row.rewrite?'재첨삭 평가':'최초 평가'} report={report}/>)}<EvaluationComparison before={before} after={after}/></>;
+ const load=useCallback((c:SupabaseClient,o:string)=>mathRead(c,o,'read_input',{attempt_id:row.id}),[row.id]);
+ const input=useOwnerData(load);
+ const completed=row.evaluations.filter(e=>e.status.toLowerCase()==='completed');
+ return <>{completed.length?completed.map(e=><div key={e.id}><Link className="button button--outline" href={`/math-review/?evaluation=${e.id}`}>넓은 학습 화면에서 보기 ↗</Link><ServerCoaching evaluationId={e.id}/></div>):<><p className="essay-answer">{input.data?.attempt?.typed_answer||'첨부 답안 · 비공개 보관'}</p><p>완료된 평가가 없습니다.</p></>}</>;
 }
 
 function ExamDetail({row}:{row:RecordItem}){

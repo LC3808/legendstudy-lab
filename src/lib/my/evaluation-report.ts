@@ -1,7 +1,8 @@
 /** Display-only contract growth-display-v1. Never persists or re-evaluates results. */
 export type Feedback={title:string;explanation:string;evidence:string;action:string};
 export type Criterion={id:string;name:string;value:string;stars:number|null;feedback:string};
-export type Report={id:string;answer:string;question:string;summary:string;rubric:Criterion[];strengths:Feedback[];weaknesses:Feedback[];actions:string[];nextSteps:string[];pins:string[];priorId:string|null;evidenceLabels?:string[];previousReviews?:{outcome:string;reason:string}[];example?:string;sentences?:{quote:string;diagnosis:string;direction:string;example?:string}[]};
+export type MathAssessment={answerVerdict:string;reviewRequired:boolean;steps:{position:number;status:string;representation:string;explanation:string}[]};
+export type Report={coachingRef?:{runId:string;questionId:string};math?:MathAssessment;id:string;answer:string;question:string;summary:string;rubric:Criterion[];strengths:Feedback[];weaknesses:Feedback[];actions:string[];nextSteps:string[];pins:string[];priorId:string|null;evidenceLabels?:string[];previousReviews?:{outcome:string;reason:string}[];example?:string;sentences?:{quote:string;diagnosis:string;direction:string;example?:string}[]};
 export function object(v:unknown):Record<string,unknown>{return v!==null&&typeof v==='object'&&!Array.isArray(v)?v as Record<string,unknown>:{};}
 export function array(v:unknown):unknown[]{return Array.isArray(v)?v:[];}
 export function text(v:unknown):string{return typeof v==='string'?v:'';}
@@ -9,6 +10,8 @@ export function rating(v:unknown):number|null{return typeof v==='number'&&Number
 export function stars(v:number):string{return '★'.repeat(v)+'☆'.repeat(5-v);}
 const labels:Record<string,string>={logical_development:'논리적 전개',computation_accuracy:'계산의 정확성',final_conclusion:'최종 결론',problem_understanding:'문제 이해',concept_selection:'개념 선택',solution_strategy:'풀이 전략',justification_completeness:'근거의 충실성',mathematical_writing:'수학적 표현',case_analysis:'경우 분석',graph_interpretation:'그래프 해석'};
 const verdicts:Record<string,string>={STRONG:'충실',ADEQUATE:'대체로 충실',NEEDS_IMPROVEMENT:'보완 필요',INSUFFICIENT:'부족',NOT_APPLICABLE:'해당 없음',NOT_ASSESSABLE:'판단 어려움',satisfied:'충족',partially_satisfied:'일부 충족',not_satisfied:'미충족',not_determinable:'판단 어려움'};
+const answerVerdicts:Record<string,string>={CORRECT:'정답',INCORRECT:'오답',PARTIALLY_CORRECT:'일부 정답',NOT_DETERMINABLE:'판단 어려움'};
+const stepVerdicts:Record<string,string>={VALID:'타당',INVALID:'타당하지 않음',INSUFFICIENT_JUSTIFICATION:'근거 부족',CALCULATION_ERROR:'계산 오류',LOGICAL_GAP:'논리적 연결 부족',PROPAGATED_ERROR:'앞 단계 오류의 영향',NOT_ASSESSABLE:'판단 어려움'};
 const overall:Record<string,string>={ANSWER_CORRECT_AND_REASONING_SUFFICIENT:'답을 정확하게 구했고, 풀이 근거도 충분히 설명했어요.',ANSWER_CORRECT_REASONING_INCOMPLETE:'답은 맞았어요. 다만 풀이 근거를 더 설명해야 해요.',ANSWER_INCORRECT_APPROACH_MOSTLY_VALID:'접근 방법은 대체로 타당하지만, 답은 맞지 않았어요.',FUNDAMENTAL_APPROACH_ERROR:'문제에 접근하는 방법부터 다시 살펴볼 필요가 있어요.',NOT_DETERMINABLE:'현재 답안만으로는 정확한 판단이 어려워요.'};
 export function criterionValue(c:Criterion){return c.stars===null?(verdicts[c.value]??c.value):stars(c.stars);}
 export function mathReport(value:unknown):Report{
@@ -19,7 +22,8 @@ export function mathReport(value:unknown):Report{
  const weaknesses=core.map(c=>({title:text(c.title),explanation:[text(c.diagnosis),text(c.why)].filter(Boolean).join('\n'),evidence:text(steps.find(s=>s.id===c.step_id)?.representation),action:text(c.next_action)}));
  for(const e of errors)if(!core.some(c=>c.error_id===e.id))weaknesses.push({title:'확인할 부분',explanation:text(e.explanation),evidence:text(steps.find(s=>s.id===e.step_id)?.representation),action:''});
  // No hints/generated solutions: their release remains under the learning runtime.
- return {id:text(v.evaluation_id),answer:text(v.typed_answer),question:text(object(v.problem).statement),summary:overall[text(o.explanation)]??text(o.explanation),
+ return {math:{answerVerdict:answerVerdicts[text(o.answer_status)]??'판정 정보 없음',reviewRequired:o.review_status==='HUMAN_REVIEW_REQUIRED',
+  steps:steps.map(s=>({position:typeof s.position==='number'?s.position:0,status:stepVerdicts[text(s.status)]??'판단 어려움',representation:text(s.representation),explanation:text(s.explanation)}))},id:text(v.evaluation_id),answer:text(v.typed_answer),question:text(object(v.problem).statement),summary:overall[text(o.explanation)]??text(o.explanation),
   rubric:[...array(out.criteria).map(object).map(c=>{const definition=array(v.criteria).map(object).map(x=>object(x.criterion)).find(d=>d.id===c.criterion_id);return {id:'criterion:'+text(c.criterion_id),name:text(definition?.description)||'대학 평가 기준',value:text(c.verdict),stars:null,feedback:text(c.explanation)};}),...Object.entries(object(out.rubric)).map(([id,value])=>({id,name:labels[id]??id,value:text(value),stars:null,feedback:''}))],strengths,weaknesses,actions:core.map(c=>text(c.next_action)).filter(Boolean),nextSteps:[],
   pins:[text(v.leaf_id),text(v.profile_id),text(profile.rubric_version),text(out.contract_version),text(prov.provider),text(prov.model_version),text(prov.prompt_version),text(v.kind)==='STEP_RETRY'?'': 'full-answer'],priorId:text(v.prior_evaluation_id)||null};
 }

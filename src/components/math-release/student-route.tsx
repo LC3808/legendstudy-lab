@@ -1,9 +1,13 @@
 "use client";
+import {ServerCoaching} from "../math-learning/server-coaching";
 import {AnswerImagesInput} from "../answer-image-input";
+import {MathText} from "../math-display/math-text";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { useAuth } from "@/components/auth-context";
+import {AnswerDisclosure} from "@/components/math-learning/answer-disclosure";
+import {hasUnresolvedRecognition} from "@/lib/math-input/recognition-safety";
 import { MathInputFlow } from "@/components/math-input/math-input-flow";
 import { LearningGuidance } from "@/components/math-learning/learning-guidance";
 import { LearningHistory } from "@/components/math-learning/learning-history";
@@ -55,7 +59,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
   const uploadPages=useRef<UploadPage[]|null>(null);
   const [frozen, setFrozen] = useState(false);
   const [busy, setBusy] = useState(false), [notice, setNotice] = useState("");
-  const [result, setResult] = useState<{ overall?: { explanation?: string }; steps?: { id: string; representation: string; explanation: string }[] } | null>(null);
+  const [result, setResult] = useState<{ overall?: { explanation?: string }; steps?: { id: string; position?:number; representation: string; explanation: string }[] } | null>(null);
   const [prior, setPrior] = useState<LearningState | null>(null);
   const [evaluations, setEvaluations] = useState<{ id: string; label: string }[]>([]);
   const token = async () => {
@@ -110,8 +114,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
       if (alive.current) { setResult(null); setHistory(null); setLearning(state); setNotice(state.evaluation_state === "FAILED" ? "평가가 완료되지 않았습니다. 새 답안을 작성하거나 잠시 후 다시 시도해 주세요." : "평가를 진행하고 있습니다. 잠시 후 결과를 다시 확인해 주세요."); }
       return;
     }
-    const wire = await rpc.rpc("math_input", { dto_version: "math-input-v1", action: "read_result", payload: { evaluation_id: id } }) as { result: { output: typeof result } };
-    if (alive.current) setResult(wire.result.output);
+    if (alive.current) setResult(null);
     if (!alive.current) return;
     setLearning(state); setHints({}); setSolution(null);
     const records = await learnClient.readLearningHistory(id);
@@ -146,6 +149,8 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
   }
   async function evaluate() {
     if (!attempt) return;
+    const fresh=await inputClient.readInput(attempt);
+    if(!fresh.can_request_evaluation || fresh.confirmed_regions.some(row=>hasUnresolvedRecognition(row.raw_text+row.normalized_math)))throw Error("MATH_CONFIRMATION_REQUIRED");
     let response: {evaluation_id:string};
     if(prior) response=await learnClient.requestReevaluation(attempt,key("evaluation"));
     else {
@@ -183,7 +188,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
       {!catalog.length && <p>현재 준비된 문제가 없습니다.</p>}
       {chosen && <section aria-label="문제"><p>{chosen.problem_statement}</p><p>{chosen.statement}</p></section>}
       {!evaluationEnabled && <p>문항을 확인할 수 있습니다. 현재 첨삭은 이용할 수 없습니다.</p>}
-      <AnswerImagesInput files={images} onChange={next=>{setImages(next);setFile(null);uploadPages.current=null;}} disabled={frozen}/>
+      <AnswerImagesInput allowAdjustment files={images} onChange={next=>{setImages(next);setFile(null);uploadPages.current=null;}} disabled={frozen}/>
       <label htmlFor="math-answer">내 답안</label>
       <textarea id="math-answer" value={answer} maxLength={30000} disabled={frozen} onChange={e => setAnswer(e.target.value)} rows={8} />
       <label htmlFor="math-file">PDF 첨부 (선택, 20MB 이하)</label>
@@ -194,7 +199,7 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
       }} />
       {file?.type === "application/pdf" && <><p>선택한 파일: {file.name}</p><LocalPreview key={file.name + file.lastModified} file={file}/></>}
       <button type="button" disabled={!evaluationEnabled || !leaf || (!answer.trim() && !file && !images.length)} onClick={() => void run(submit)}>답안 제출 · 입력 확인</button>
-      {input && <MathInputFlow readiness={readiness} onConfirm={intent => setCorrections(current => ({ ...current, [intent.regionId]: intent.confirmedRawText }))} />}
+      {input && <MathInputFlow sourceFile={r=>uploadPages.current?.find(p=>p.artifactId===r.evidenceRef)?.file??file??undefined} onInvalidate={id=>setCorrections(current=>{const next={...current};delete next[id];return next;})} readiness={readiness} onConfirm={intent => setCorrections(current => ({ ...current, [intent.regionId]: intent.confirmedRawText }))} />}
       {!!regions.length && !input?.can_request_evaluation && <button type="button" disabled={regions.some(row => corrections[row.region_id] === undefined)} onClick={() => void run(async () => {
         await inputClient.confirmExtraction(attempt!, String(input!.candidate?.run_id ?? input!.candidate?.id), regions.map(row => ({ region_id: row.region_id, raw_text: corrections[row.region_id], normalized_math: corrections[row.region_id] })));
         const state = await inputClient.readInput(attempt!); if (alive.current) setInput(state);
@@ -211,11 +216,8 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
         finally { window.dispatchEvent(new Event("legendstudy:credit-refresh")); await readEvaluation(learning.evaluation_id); await reloadHistory(); }
       })}>같은 첨삭 처리 다시 요청</button>}
       {learning?.valid_evaluation_available && <>
-        <section aria-label="첨삭 결과"><h2>첨삭 결과</h2>
-          {result?.overall?.explanation && <p>{result.overall.explanation.replace(/^[A-Z_]+$/, "답안의 풀이 과정과 개선 안내를 확인해 주세요.")}</p>}
-          {result?.steps?.map(step => <article key={step.id}><p>{step.representation}</p><p>{step.explanation}</p></article>)}
-        </section>
-        <LearningGuidance coreView={coreView} l0Body="아래 안내를 확인하고 풀이를 개선해 보세요." revealedHints={hints}
+        <ServerCoaching key={learning.evaluation_id} evaluationId={learning.evaluation_id}/>
+        <LearningGuidance key={learning.evaluation_id} coreView={coreView} stepPosition={result?.steps?.find(s=>s.id===core?.step_id)?.position} l0Body="아래 안내를 확인하고 풀이를 개선해 보세요." revealedHints={hints}
           onRevealHint={level => void run(async () => {
             const hint = learning.hints.find(h => h.core_id === core?.core_id && h.level === level && h.can_reveal);
             if (!hint) throw Error("HINT_UNAVAILABLE");
@@ -223,12 +225,21 @@ function Workspace({ client, evaluationEnabled, requestedLeafId }: { client: Sup
             const state = await learnClient.readLearningState(learning.evaluation_id);
             if (alive.current) { setHints(current => ({ ...current, [level]: result.body })); setLearning(state); }
           })}
-          onRevealSolution={() => {}}
+          availableHintLevels={learning.hints.filter(h=>h.core_id===core?.core_id&&h.can_reveal).map(h=>h.level)}
+          solutionAvailable={learning.solutions.some(s=>s.reveal_state==='AVAILABLE_ON_EXPLICIT_REQUEST')}
+          solutionBody={solution?.body}
+          onRevealSolution={() => void run(async()=>{
+            const target=learning.solutions.find(s=>s.reveal_state==='AVAILABLE_ON_EXPLICIT_REQUEST');
+            if(!target)throw Error('SOLUTION_UNAVAILABLE');
+            const revealed=await learnClient.revealSolution(learning.evaluation_id,target.target,key(`solution:${learning.evaluation_id}:${target.solution_id??target.target}`),target.solution_id);
+            if(alive.current)setSolution(revealed);
+            const records=await learnClient.readLearningHistory(learning.evaluation_id);if(alive.current)setHistory(records);
+          })}
           onResolve={() => { setFrozen(false); setPrior(learning); setLeaf(learning.leaf_id); setAttempt(null); setInput(null); setAnswer(""); setFile(null);setImages([]);uploadPages.current=null; setCorrections({}); keys.current.clear(); }} solutionProvenance={solution?.provenance} />
-        <LearningDelta view={summarizeReevaluationDelta(learning.reevaluation_delta as ReevaluationDelta | null)} />
+        <AnswerDisclosure key={learning.evaluation_id+":delta"}><LearningDelta view={summarizeReevaluationDelta(learning.reevaluation_delta as ReevaluationDelta | null)} /></AnswerDisclosure>
       </>}
       {prior && !prior.included_reevaluation.eligible && <p>추가 비용 없는 재첨삭 기간 또는 횟수를 확인해 주세요. 요청 가능 여부는 서버에서 확인합니다.</p>}
-      {history && <LearningHistory timeline={buildLearningTimeline(history)} />}
+      {history && <AnswerDisclosure key={learning?.evaluation_id+":history"}><LearningHistory timeline={buildLearningTimeline(history)} /></AnswerDisclosure>}
       {!!evaluations.length && <section aria-label="이전 학습"><h2>이전 학습</h2>{evaluations.map(row => <button key={row.id} type="button" onClick={() => void run(() => readEvaluation(row.id))}>{row.label}</button>)}</section>}
     </fieldset>
   </main>;

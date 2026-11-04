@@ -147,3 +147,42 @@ it('paid fallback waits for explicit source consent and source change requires a
  expect(requests.filter(r=>r.action==='submit')).toHaveLength(1);
  expect(screen.getByRole('dialog')).toBeVisible();
 });
+
+it('mixed whole-question admission blocks incomplete answers before daily claim or quote',async()=>{
+ client.rpc.mockClear();
+ const actions:string[]=[];
+ vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{actions.push(JSON.parse(init.body).action);return Response.json({ready:true,requireCompleteQuestionSet:true});}));
+ const two={...exam,questions:[{...exam.questions[0],label:'문제 1'},{key:'q2',dbQuestionId:'question2',label:'문제 2',inputMode:'text'}]} as SourceExam;
+ const drafts={q:{body:'서술 답안',revision:1,images:false},q2:{body:'수리 풀이',revision:1,images:false}};
+ const view=render(<EssayExamSubmit exam={two} included={['q']} drafts={drafts}/>);await act(async()=>{});
+ expect(screen.getByRole('note')).toHaveTextContent('문제 2 답안을 작성하고 이번 첨삭에 포함');
+ const submit=screen.getByRole('button',{name:'논술 첨삭 요청하기 · 1 이용권'});expect(submit).toBeDisabled();fireEvent.click(submit);
+ expect(client.rpc).not.toHaveBeenCalled();expect(actions).toEqual(['availability']);
+ expect(screen.getByRole('heading',{name:'선택 문항 첨삭 요청'})).toBeVisible();
+ view.rerender(<EssayExamSubmit exam={two} included={['q','q2']} drafts={drafts}/>);
+ expect(screen.queryByRole('note')).toBeNull();expect(submit).toBeEnabled();
+ expect(screen.getByRole('heading',{name:'전체 문항 첨삭 요청'})).toBeVisible();
+});
+it('server mixed rejection gives actionable instructions instead of ambiguous transport failure',async()=>{
+ vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{
+  const b=JSON.parse(init.body);
+  if(b.action==='submit')return Response.json({code:'MIXED_COMPLETE_ANSWERS_REQUIRED'},{status:409});
+  return Response.json(b.action==='availability'?{ready:true}:{version:'essay-exam-quote-v1',credits:1});
+ }));
+ render(<EssayExamSubmit exam={exam} included={['q']} drafts={{q:{body:'Saved answer',revision:1,images:false}}}/>);await act(async()=>{});
+ await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'논술 첨삭 요청하기 · 1 이용권'}));});
+ await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'첨삭 진행하기'}));});
+ expect(screen.getByRole('status')).toHaveTextContent('모든 문항의 답안을 작성·확인');
+ expect(screen.getByRole('status')).toHaveTextContent('저장된 답안은 유지');
+});
+it('already accepted partial mixed run remains readable without a new reservation',async()=>{
+ client.rpc.mockClear();mocks.history.mockResolvedValue([{id:'existing-partial',evaluations:[{status:'processing'}]}]);
+ const scope='legendstudy:essay-exam-request:v1:owner:test:initial:questions:["question"]';
+ localStorage.setItem(scope+':accepted',JSON.stringify({id:'existing-partial',owner:'owner',examId:'exam',scope,started:Date.now()}));
+ const actions:string[]=[];vi.stubGlobal('fetch',vi.fn(async(_url,init)=>{actions.push(JSON.parse(init.body).action);return Response.json({ready:true,requireCompleteQuestionSet:true});}));
+ const two={...exam,questions:[...exam.questions,{key:'q2',dbQuestionId:'question2',label:'문제 2',inputMode:'text'}]} as SourceExam;
+ render(<EssayExamSubmit exam={two} included={['q']} drafts={{q:{body:'Existing answer',revision:1,images:false}}}/>);await act(async()=>{});
+ expect(screen.getByRole('button',{name:'접수한 첨삭 진행 상태 보기'})).toBeVisible();
+ expect(screen.getByRole('button',{name:'논술 첨삭 요청하기 · 1 이용권'})).toBeDisabled();
+ expect(client.rpc).not.toHaveBeenCalled();expect(actions).toEqual(['availability']);
+});

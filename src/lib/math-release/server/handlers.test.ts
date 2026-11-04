@@ -56,3 +56,33 @@ it('public extraction refuses an owned but unreleased leaf before claim or Provi
  expect((await extract({request:req,env:{...env,MATH_PUBLIC_LEAVES:id,MATH_PROVIDER:'OPENAI',MATH_PRIMARY_MODEL:'fixture',MATH_PROVIDER_API_KEY:'fixture',MATH_PROVIDER_CALLS_ENABLED:'true'}})).status).toBe(409);
  expect(calls).toHaveLength(2);
 });
+
+it.each(['success','23514','ambiguous'] as const)('OCR finalization recovery distinguishes %s without retrying the Provider',async mode=>{
+ const actions:string[]=[];let providerCalls=0;
+ vi.stubGlobal('fetch',vi.fn(async(url:string,init:RequestInit={})=>{
+  const path=new URL(url).pathname;
+  if(path==='/auth/v1/user')return Response.json({id});
+  if(path.endsWith('/math_input'))return Response.json({result:{attempt:{leaf_id:id}}});
+  if(path.endsWith('/math_extraction')){
+   const {p_request:r}=JSON.parse(String(init.body));actions.push(r.action);
+   if(r.action==='claim')return Response.json({result:{run_id:id,lease_token:id,evidence:[{artifact_id:id,bucket:'math-private',object_key:id+'/page.png',media_type:'image/png'}]}});
+   if(r.action==='finalize'){
+    if(mode==='23514')return Response.json({code:'23514',details:'private answer must not be logged'},{status:400});
+    if(mode==='ambiguous')throw Error('connection lost');
+    expect(r.payload.output.regions).toHaveLength(1);
+   }
+   return Response.json({result:{}});
+  }
+  if(path.includes('/storage/'))return new Response(new Uint8Array([1,2]));
+  if(url==='https://api.openai.com/v1/responses'){
+   providerCalls++;
+   return Response.json({status:'completed',output:[{content:[{type:'output_text',text:JSON.stringify({regions:[{artifact_id:id,page:1,reading_order:1,raw_text:'x²',normalized_math:'x^2',confidence:0.9,uncertain:true,x:0,y:0,width:0.5,height:0.2}]})}]}]});
+  }
+  throw Error('unexpected transport');
+ }));
+ const req=new Request('https://math.example.invalid/api/math/extract',{method:'POST',headers:{origin:env.MATH_ORIGIN!,authorization:'Bearer fixture'},body:JSON.stringify({attempt_id:id})});
+ const result=await extract({request:req,env:{...env,MATH_PROVIDER:'OPENAI',MATH_PRIMARY_MODEL:'fixture',MATH_PROVIDER_API_KEY:'fixture',MATH_PROVIDER_CALLS_ENABLED:'true'}});
+ expect(result.status).toBe(mode==='success'?200:409);
+ expect(providerCalls).toBe(1);
+ expect(actions).toEqual(mode==='23514'?['claim','finalize','fail']:['claim','finalize']);
+});

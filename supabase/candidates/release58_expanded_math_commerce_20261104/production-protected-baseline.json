@@ -1,0 +1,77 @@
+{
+  "current_user": "postgres",
+  "session_user": "postgres",
+  "captured_at": "2026-11-03 15:54:06.217315+00",
+  "protected": [
+    {
+      "count": 144,
+      "table": "public.credit_accounts",
+      "rowset_md5": "6149d79c5edff91d2a74502a494efec4"
+    },
+    {
+      "count": 154,
+      "table": "public.credit_grants",
+      "rowset_md5": "6acfaf1bcc6a4a9107941cedd16cf749"
+    },
+    {
+      "count": 243,
+      "table": "public.credit_transactions",
+      "rowset_md5": "184b16673277149032b06896faae89f8"
+    },
+    {
+      "count": 72,
+      "table": "public.essay_billing_decisions",
+      "rowset_md5": "b5e9106625b7d03c36048db700201daf"
+    },
+    {
+      "count": 36,
+      "table": "public.payment_events",
+      "rowset_md5": "6dcef3f38fdad9f9d0580cbee561c4ad"
+    },
+    {
+      "count": 9,
+      "table": "public.payment_operations",
+      "rowset_md5": "5991937b73c2563dbf5b15f8b6679b0a"
+    },
+    {
+      "count": 18,
+      "table": "public.payment_orders",
+      "rowset_md5": "42e7d7d34fa07700d5813cca5efa5644"
+    },
+    {
+      "count": 11,
+      "table": "public.math_billing_bindings",
+      "rowset_md5": "c22afef9e258ee319075fa705247699b"
+    },
+    {
+      "count": 0,
+      "table": "public.essay_evaluations",
+      "rowset_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "count": 11,
+      "table": "public.math_evaluations",
+      "rowset_md5": "775c30eb7e30b1a2bee2f159512c12fe"
+    },
+    {
+      "count": 0,
+      "table": "math_private.session_runs",
+      "rowset_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "count": 54,
+      "table": "essay_exam_private.runs",
+      "rowset_md5": "3e5319d23bc72013ebe681e0f2bfdc8a"
+    },
+    {
+      "count": 1,
+      "table": "essay_beta_private.campaigns",
+      "rowset_md5": "8b746146f23e61eecdf5abbf2f79c0c7"
+    },
+    {
+      "count": 160,
+      "table": "essay_beta_private.exam_scope",
+      "rowset_md5": "eebae7563865e279842c93c2c040a161"
+    }
+  ]
+}

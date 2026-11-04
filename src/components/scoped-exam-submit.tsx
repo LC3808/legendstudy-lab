@@ -6,7 +6,7 @@ import {useAuth} from './auth-context';
 import {EssayExamSubmit,type SubmissionDraft} from './essay-exam-submit';
 import type {SourceExam} from '@/lib/essay-runtime/source-registry';
 /** Existing server admission is authority; metadata review state never activates evaluation. */
-export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onInputContract}:{onInputContract?:(examId:string,math:Record<string,string>)=>void;cycle?:{parentId?:string;previousPaidRunId?:string};exam:SourceExam;questionKey?:string;includedKeys?:string[];drafts:Record<string,SubmissionDraft>}){
+export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onInputContract,onAdmissionChange}:{onAdmissionChange?:(ready:boolean)=>void;onInputContract?:(examId:string,math:Record<string,string>)=>void;cycle?:{parentId?:string;previousPaidRunId?:string};exam:SourceExam;questionKey?:string;includedKeys?:string[];drafts:Record<string,SubmissionDraft>}){
  const auth=useAuth(),owner=auth.user?.id;
  const [retry,setRetry]=useState(0),[failure,setFailure]=useState<string|null>(null);
  const scope=`${owner??''}:${exam.dbExamId??''}`;
@@ -17,8 +17,9 @@ export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onI
    const session=(await auth.client.auth.getSession()).data.session;
    if(!active||session?.user.id!==owner)return;
    const response=await fetch('/api/essay/exam',{method:'POST',headers:{Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify({action:'availability',examId:exam.dbExamId}),cache:'no-store'});
-   if(!response.ok)throw Error('ADMISSION_UNAVAILABLE');
+   if(!response.ok&&response.status!==503)throw Error('ADMISSION_UNAVAILABLE');
    const result=await response.json();
+   if(!response.ok&&result?.code!=='EVALUATION_UNAVAILABLE')throw Error('ADMISSION_UNAVAILABLE');
    const math:Record<string,string>={};
    if(result?.ready===true&&result.mathQuestions&&typeof result.mathQuestions==='object'){
     for(const [id,leaf] of Object.entries(result.mathQuestions))if(typeof leaf==='string'&&/^[0-9a-f-]{36}$/i.test(id)&&/^[0-9a-f-]{36}$/i.test(leaf))math[id]=leaf;
@@ -35,6 +36,7 @@ export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onI
   })().catch(()=>{if(active)setFailure(scope);});return()=>{active=false;};
  },[auth.client,owner,exam.dbExamId,retry,scope]);
  useEffect(()=>{if(admitted?.owner===owner&&admitted?.exam===exam.dbExamId)onInputContract?.(admitted.exam,admitted.math);},[admitted,owner,exam.dbExamId,onInputContract]);
+ useEffect(()=>{if(admitted?.owner===owner&&admitted?.exam===exam.dbExamId)onAdmissionChange?.(admitted.questions.length>0&&exam.questions.every(q=>!!q.dbQuestionId&&admitted.questions.includes(q.dbQuestionId)));},[admitted,owner,exam,onAdmissionChange]);
  if(failure===scope)return <div role="status">일시적으로 첨삭 가능 여부를 확인할 수 없습니다. <button onClick={()=>{setFailure(null);setAdmitted(null);setRetry(v=>v+1);}}>다시 시도</button></div>;
  if(admitted?.owner!==owner||admitted?.exam!==exam.dbExamId)return <button disabled>첨삭 가능 여부 확인 중</button>;
  const q=exam.questions.find(q=>q.key===questionKey);
@@ -44,8 +46,8 @@ export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onI
  const ready=admitted?.owner===owner&&admitted?.exam===exam.dbExamId&&admitted.questions.length>0;
  const unavailable=ready&&included.some(q=>!q.dbQuestionId||!admitted.questions.includes(q.dbQuestionId));
  const mathLeaf=admitted?.owner===owner&&admitted?.exam===exam.dbExamId&&q?.dbQuestionId?admitted.math[q.dbQuestionId]:null;
- if(ready&&Object.keys(admitted.math).length&&!unavailable)return <MixedExamSubmit key={`${owner}:${exam.key}`} exam={exam} drafts={drafts} included={included.map(q=>q.key)} leaves={admitted.math} cycle={cycle}/>;
- if(mathLeaf)return <><MathExamSessionSubmit key={`${owner}:${exam.key}`} exam={exam} drafts={drafts} included={included.map(q=>q.key)} leaves={admitted!.math}/></>;
+ if(ready&&Object.keys(admitted.math).length&&admitted.questions.some(id=>!admitted.math[id])&&!unavailable)return <MixedExamSubmit key={`${owner}:${exam.key}`} exam={exam} drafts={drafts} included={included.map(q=>q.key)} leaves={admitted.math} cycle={cycle}/>;
+ if(mathLeaf||(included.length>0&&included.every(q=>q.dbQuestionId&&admitted.math[q.dbQuestionId])))return <><MathExamSessionSubmit key={`${owner}:${exam.key}`} exam={exam} drafts={drafts} included={included.map(q=>q.key)} leaves={admitted!.math} rewrite={cycle?{id:cycle.parentId??cycle.previousPaidRunId!,additional:!!cycle.previousPaidRunId}:undefined}/></>;
  if(unavailable)return <div><button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button><p role="status">작성한 답안 중 아직 첨삭 준비 중인 문항이 있습니다. 답안은 저장되며, 해당 문항을 포함한 회차 첨삭은 준비가 완료되면 이용할 수 있습니다.</p></div>;
  return ready?<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={included.map(q=>q.key)} drafts={drafts} cycle={cycle}/>:<button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button>;
 }
