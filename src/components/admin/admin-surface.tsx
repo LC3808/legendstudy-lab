@@ -238,6 +238,8 @@ export function AdminSurface({
 
 function AdminNavigation({ active, onNavigate }: { active: AdminNavKey; onNavigate: () => void }) {
   const pathname = usePathname();
+  const support = useAdminQuery(client => client.supportMetrics(), "support-badge");
+  useSupportRefresh(support.reload);
   const selected = (entry: {key:string;href:string|null}) => entry.key === active || (active === "data" && pathname?.replace(/\/$/, "") === entry.href?.replace(/\/$/, ""));
   const groups = ADMIN_GROUPS.map(group=>({title:group.title,entries:group.keys.map(key=>ADMIN_NAV.find(entry=>entry.key===key)!)}));
   return <nav className="admin-nav" aria-label="운영 콘솔">
@@ -246,8 +248,22 @@ function AdminNavigation({ active, onNavigate }: { active: AdminNavKey; onNaviga
       <details open><summary className="admin-nav__heading">{group.title}</summary>
       <ul className="admin-nav__list">{group.entries.map((entry) => <li key={entry.key}>
         <Link className={`admin-nav__link${selected(entry) ? " admin-nav__link--active" : ""}`}
-          href={entry.href!} onClick={onNavigate} aria-current={selected(entry) ? "page" : undefined}>{entry.label}</Link>
+          href={entry.href!} onClick={onNavigate} aria-current={selected(entry) ? "page" : undefined}>{entry.label}{entry.key === "inquiries" && <span aria-label="미처리 문의"> · {support.state.status==="ready" ? support.state.data.open : support.state.status==="error" ? "확인 필요" : "…"}</span>}</Link>
       </li>)}</ul>
     </details></section>)}
   </nav>;
+}
+
+/** Refresh support counts without replacing an open reply draft. */
+export function useSupportRefresh(reload:()=>void, enabled=true) {
+  const latest=useRef(reload);
+  useEffect(()=>{latest.current=reload;});
+  useEffect(()=>{
+    if(!enabled) return;
+    const refresh=()=>latest.current();
+    const timer=setInterval(refresh,30000);
+    window.addEventListener("support-changed",refresh);
+    window.addEventListener("focus",refresh);
+    return()=>{clearInterval(timer);window.removeEventListener("support-changed",refresh);window.removeEventListener("focus",refresh);};
+  },[enabled]);
 }

@@ -1,3 +1,4 @@
+import {SupportInquiries} from '@/components/support-inquiries';
 import {EssayFeedback} from '@/components/essay-feedback';
 import Link from "next/link";
 
@@ -31,6 +32,7 @@ export default function SupportPage() {
       </p>
 
       <ContactList />
+      <SupportInquiries />
       <EssayFeedback bugOnly />
 
       <section className="policy-section" aria-labelledby="support-refund-rules">
