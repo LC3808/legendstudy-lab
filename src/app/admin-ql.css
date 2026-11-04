@@ -772,3 +772,5 @@
  .admin-page .admin-section,.admin-page .admin-panel{padding:16px;}.admin-notices-table{min-width:600px;}
 }
 .admin-table-tools{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:12px 0}.admin-table-tools label{display:grid;gap:6px}.admin-table-scroll{max-width:100%;overflow-x:auto}.admin-data-table th button{border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:8px;cursor:pointer}.admin-data-table td{padding:12px;vertical-align:top;overflow-wrap:anywhere;min-width:100px}.admin-data-table th[aria-sort=ascending],.admin-data-table th[aria-sort=descending]{color:#A85300}
+
+.admin-nav__dashboard { margin-bottom: 1rem; border: 1px solid #8ba4b7; font-weight: 800; }

@@ -27,9 +27,13 @@ describe('existing admin LAB routes',()=>{
  });
  it.each(['dashboard','members','inquiries','credit','payment'] as const)('keeps identical groups and links on %s',async active=>{
   render(view(auth(true),active));const nav=await screen.findByRole('navigation',{name:'운영 콘솔'});
-  const expected=ADMIN_GROUPS.flatMap(g=>g.keys.map(k=>ADMIN_NAV.find(n=>n.key===k)!.href!.replace(/\/$/,'')));
+  const expected=['/admin',...ADMIN_GROUPS.flatMap(g=>g.keys.map(k=>ADMIN_NAV.find(n=>n.key===k)!.href!.replace(/\/$/,'')))];
   expect(within(nav).getAllByRole('link').map(a=>a.getAttribute('href'))).toEqual(expected);
   expect(nav.querySelectorAll('details')).toHaveLength(4);
+  const dashboard=within(nav).getByRole('link',{name:'대시보드'});
+  expect(within(nav).getAllByRole('link')[0]).toBe(dashboard);
+  expect(dashboard.closest('section,details')).toBeNull();
+  if(active==='dashboard')expect(dashboard).toHaveAttribute('aria-current','page');
  });
  it.each(['anonymous','authenticated'] as const)('hides navigation and content for denied %s',async status=>{
   render(view(auth(false,status)));await screen.findByText(status==='anonymous'?'로그인이 필요합니다':'운영자 권한이 없습니다');
