@@ -643,6 +643,42 @@
       "mathQuestions": {
         "4b5993d2-f469-52b6-91f2-a282011e4703": "148cb335-4931-52c1-8270-a1bac78c7082"
       }
+    },
+    {
+      "examId": "25dc068b-4672-56e1-b8df-08ee8800e2f6",
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
+      "questionIds": [
+        "cea40cf3-dc05-507a-a6eb-fd5e1e1847bb",
+        "7c112225-51cc-59d8-a985-6c459a1e0a0a",
+        "40290efd-36af-55a9-beb7-8c90bbb04ee4",
+        "a7d06546-9d61-5317-afff-e656c25964f7"
+      ],
+      "packageDigest": "a10cf1f8b5bab0e2195960a29f1283092e71419504da6631643225870209430a",
+      "label": "konkuk 2026 자연 전체 문항",
+      "mode": "math",
+      "mathQuestions": {
+        "cea40cf3-dc05-507a-a6eb-fd5e1e1847bb": "3bab07d3-c047-53c2-89ad-9fa20ec7b3f3",
+        "7c112225-51cc-59d8-a985-6c459a1e0a0a": "11b0d01b-c247-54a5-88b5-368440f68c6f",
+        "40290efd-36af-55a9-beb7-8c90bbb04ee4": "6b655a53-7b90-5f83-aed4-58a7d3cbeaae",
+        "a7d06546-9d61-5317-afff-e656c25964f7": "746b66ff-064c-5498-9cf7-7c44067909c1"
+      }
+    },
+    {
+      "examId": "0a331c3e-d46b-5af3-b787-e3342e8a1ae8",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
+      "questionIds": [
+        "ed63c506-ee9b-5ce7-967f-a1d53b9feac6",
+        "4df1296d-abe4-5499-af35-20ba573fd6ae",
+        "101a7dcc-1c05-5c1d-b926-3f5729158f54"
+      ],
+      "packageDigest": "2d49ba40dcb30d6a8a27d418f9d9f26ddff80127130083e4776b82846f3813aa",
+      "label": "kyunghee 2026 자연 전체 문항",
+      "mode": "math",
+      "mathQuestions": {
+        "ed63c506-ee9b-5ce7-967f-a1d53b9feac6": "9caa0c67-a6d8-59c8-b5d6-68a24d7f3e5a",
+        "4df1296d-abe4-5499-af35-20ba573fd6ae": "873c9757-2fcb-515f-b611-c78545d7a838",
+        "101a7dcc-1c05-5c1d-b926-3f5729158f54": "9552766f-0785-54f6-86d4-c8c70c5da1b8"
+      }
     }
   ]
 }
