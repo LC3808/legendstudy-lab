@@ -1,0 +1,11 @@
+{
+  "registry_exams": 363,
+  "registry_questions": 1014,
+  "target_exams": 258,
+  "source_files": 979,
+  "sookmyung_groups": 38,
+  "sookmyung_existing": 8,
+  "sookmyung_missing": 30,
+  "production_writes": 0,
+  "provider_calls": 0
+}

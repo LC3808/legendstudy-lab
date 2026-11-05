@@ -1,0 +1,2837 @@
+[
+  {
+    "year": 2021,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "1회차",
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2021학년도 숙명여대 논술_인문계(1회차) 문제.pdf",
+        "sha256": "a6a52b9fc93ad83cc7aa5837cf7d8ca034061f6e4da9803a0746d2c39b2afc05",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2021학년도 숙명여대 논술_인문계(1회차) 해설,예시답안.pdf",
+        "sha256": "c0cfd161f784b2021f1ae4cfd0d00691cc7f5af6b8f086eed341b401264aa9fa",
+        "page_count": 16,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 11,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 14,
+            "headings": [
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 15,
+            "headings": [
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2021,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "2회차",
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2021학년도 숙명여대 논술_인문계(2회차) 문제.pdf",
+        "sha256": "94f86c6f7f2c5df2a429dc97bd083928a65d161c13eabab179793efb1e15e48f",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2021학년도 숙명여대 논술_인문계(2회차) 해설,예시답안.pdf",
+        "sha256": "2ac42c79370ced21652eb4261668e5ae8bcf888e9f5cd82de9e1e24c6650ed84",
+        "page_count": 16,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 11,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 14,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 15,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2021,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "3회차",
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2021학년도 숙명여대 논술_인문계(3회차) 문제.pdf",
+        "sha256": "94119dbe73036176d3f287832443d77c662b2793d05b390124f5f66739da0310",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2021학년도 숙명여대 논술_인문계(3회차) 해설,예시답안.pdf",
+        "sha256": "127b2ef4a7c5510f6572630ce137fec6a9024fee62606667d7b9461c09bc792c",
+        "page_count": 15,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 11,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 13,
+            "headings": [
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 14,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 15,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2021,
+    "kind": "admission",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2021학년도 숙명여대 논술_자연계 문제.pdf",
+        "sha256": "a628d35e24d559cb632fb33014819ddf75a7dae6d00dfd0b9f8135cc50da2a0b",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2021학년도 숙명여대 논술_자연계 해설,예시답안.pdf",
+        "sha256": "f985c56ac47a2e0656cc0447183cf524c43b78b50b12103c28d9824cf2bcf785",
+        "page_count": 10,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2021,
+    "kind": "mock",
+    "track": "humanities",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2021학년도 숙명여대 모의논술_인문계 문제.pdf",
+        "sha256": "c8072d8a3da863b53770ecede2c23bb35cdeea9eed21c08d1afc00b01d4a692b",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2021학년도 숙명여대 모의논술_인문계 우수답안.pdf",
+        "sha256": "54ddf86b20874549c7b86c628eb0c0ca32605a641b391459d0746c9bf4beac63",
+        "page_count": 2,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2021학년도 숙명여대 모의논술_인문계 해설,예시답안.pdf",
+        "sha256": "fd660d5c2b3247531f4d9c901aacfdc1eaa8f13e7bf27a3f80a53855349fbde4",
+        "page_count": 19,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 10,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 13,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 17,
+            "headings": [
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 18,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 19,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2021,
+    "kind": "mock",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2021학년도 숙명여대 모의논술_자연계 문제.pdf",
+        "sha256": "07d429aedc0f6cf7a25d1ace966cc5154e42e1d13ae07a0af6921374ace3fc33",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2021학년도 숙명여대 모의논술_자연계 우수답안.pdf",
+        "sha256": "937aca335dc4e743655da52c8237d2dcf6668ac95ad56ad5bb8cc0747e7c71b4",
+        "page_count": 4,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2021학년도 숙명여대 모의논술_자연계 해설,예시답안.pdf",
+        "sha256": "29638b6b163d93581cf2113f5a9c869b43482074e4c13af71da60ff286158ef2",
+        "page_count": 9,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2022,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "1회차",
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2022학년도 숙명여대 논술_인문(1회차) 문제.pdf",
+        "sha256": "8098069491066b838c3a9db167e349f56fef46248d5d898c8da2b45b652c400d",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2022학년도 숙명여대 논술_인문(1회차) 해설,예시답안.pdf",
+        "sha256": "ecba91659fc9cf6db030f183c48ed0b0ca8b667c9782057f6e8c99b504dc77dd",
+        "page_count": 17,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 12,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 15,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2022,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "2회차",
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2022학년도 숙명여대 논술_인문(2회차) 문제.pdf",
+        "sha256": "ed8afa3ee907d58ec0f2aa81e0d0e9dbf977c384cb751d940af1401cfe48d636",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2022학년도 숙명여대 논술_인문(2회차) 해설,예시답안.pdf",
+        "sha256": "7110660c5b3276277186a0e183796d35d4969303d485b8eb1f75d20ef6ff42a7",
+        "page_count": 19,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 5,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 12,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 17,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 18,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 19,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2022,
+    "kind": "admission",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2022학년도 숙명여대 논술_자연계 문제.pdf",
+        "sha256": "2f5a198b552b63114c4de05b50241eaa34e40ba1b3dad15385020bf8d07726ca",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2022학년도 숙명여대 논술_자연계 해설,예시답안.pdf",
+        "sha256": "6ea4dffd625f2d107ec48c6c0748b8bba9e170456203a16768ce4a3497604b71",
+        "page_count": 10,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2022,
+    "kind": "mock",
+    "track": "humanities",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2022학년도 숙명여대 모의논술_인문계 문제.pdf",
+        "sha256": "142e3600a5ee29d82f1994952ea63c599ecb762b3429e8d7d86208a9a0407e4d",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2022학년도 숙명여대 모의논술_인문계 우수답안.pdf",
+        "sha256": "b90f066872ade519de7280df695244d767c0c83b7290a99c73fefed2f1b575f4",
+        "page_count": 2,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2022학년도 숙명여대 모의논술_인문계 해설,예시답안.pdf",
+        "sha256": "4662ff3c2e8299bc9bbbbcddb87c2960f19f93ad59fe10951a41faa43d2be62a",
+        "page_count": 19,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 10,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 13,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 17,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 19,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2022,
+    "kind": "mock",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2022학년도 숙명여대 모의논술_자연계 문제.pdf",
+        "sha256": "745087d65a4d7e6ca9e61dc703512e3ff60395b9d4c166a8b0e75e026155fa99",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2022학년도 숙명여대 모의논술_자연계 우수답안.pdf",
+        "sha256": "f961ef633165ed6eda961e12e80f65d5af07249ce4306c537153f4b23f469a4e",
+        "page_count": 3,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2022학년도 숙명여대 모의논술_자연계 해설,예시답안.pdf",
+        "sha256": "ea2b063f17e6fb46928caf42b03577a8845422e88640c41f9f35a735eac46f45",
+        "page_count": 9,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2023,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "1회차",
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2023학년도 숙명여대 논술_인문(1회차) 문제.pdf",
+        "sha256": "cdf975278bed0f6115bed4fe4d09a5c2af86f6536a6437bd52b1fc4331fd7d8d",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2023학년도 숙명여대 논술_인문(1회차) 해설,예시답안.pdf",
+        "sha256": "d7c459671f9d89c919d45d5ad15c8cde881d00ef4afd3eaceab81d4e4357dfc9",
+        "page_count": 19,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "출제의도",
+              "채점기준"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 13,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 17,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 19,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2023,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "2회차",
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2023학년도 숙명여대 논술_인문(2회차) 문제.pdf",
+        "sha256": "5cbbd573aedd24e4a772688e23721adef26b49e3ee8a8b8907b44eff18decc53",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2023학년도 숙명여대 논술_인문(2회차) 해설,예시답안.pdf",
+        "sha256": "e38bbad661481baf41a5a4336596f0d3f1c59cdbc44ed7c03027950b10497535",
+        "page_count": 17,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 12,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 15,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "출제의도",
+              "채점기준"
+            ]
+          },
+          {
+            "page": 17,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2023,
+    "kind": "admission",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2023학년도 숙명여대 논술_자연계 문제.pdf",
+        "sha256": "cdce504e68696d2da94f5fe59a35628f15b8c0abfb52a2b99ed20b7de09cbfc5",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2023학년도 숙명여대 논술_자연계 해설,예시답안.pdf",
+        "sha256": "bae94c24a888f10957534ac7f324454f5f9e0c9fef4b52bc5646f6e077ba8ddd",
+        "page_count": 10,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 5,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2023,
+    "kind": "mock",
+    "track": "humanities",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2023학년도 숙명여대 모의논술_인문계열 문제.pdf",
+        "sha256": "318f77ca44b7bf212ff995ac2e85f6f82879a5b5c3ffd60245f038242752a2e9",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2023학년도 숙명여대 모의논술_인문계열 우수답안.pdf",
+        "sha256": "65ca672d060e808344aa859b84099136b5167b10c266a4a7415915e4713a2022",
+        "page_count": 2,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2023학년도 숙명여대 모의논술_인문계열 해설,예시답안.pdf",
+        "sha256": "f7dde0ce29010bee06e4404a2e21a33c738ed42e240b5ac67a9d766d5969a434",
+        "page_count": 22,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 5,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 10,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 11,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 12,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 20,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 21,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 22,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2023,
+    "kind": "mock",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2023학년도 숙명여대 모의논술_자연계열 문제.pdf",
+        "sha256": "6660841dad5db7a4c88794c7f4c00f864c8f420ca5095955356006d793865b26",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2023학년도 숙명여대 모의논술_자연계열 우수답안.pdf",
+        "sha256": "4f7edc3eea18238d0c8eefe2128a00140d228332b407eb03c1850e45f6482a55",
+        "page_count": 3,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2023학년도 숙명여대 모의논술_자연계열 해설,예시답안.pdf",
+        "sha256": "28c06f68852bf22a169f1263da48d1b8f03dac81baada27158ba53daffb6f119",
+        "page_count": 12,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2024,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "1회차",
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2024학년도 숙명여대 수시 논술_인문1 문제.pdf",
+        "sha256": "1641445f4a111930dde6ae7aae8439d396060b5f2bc571dabcbdb7a1f38d10cf",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2024학년도 숙명여대 수시 논술_인문1 해설,답안.pdf",
+        "sha256": "37969c051b9b6963a32ac2a32a66e3682b48df4efccaaa77505af4832c4d1512",
+        "page_count": 20,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "출제의도",
+              "채점기준"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 13,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 17,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 18,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 19,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "2024학년도 숙명여대 수시 논술_인문1,2 해설,답안.pdf",
+        "sha256": "6ed811982ea7abbacf0eb9ace0fd9fe9da78c693b570611b9e574108a06f0df5",
+        "page_count": 38,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "출제의도",
+              "채점기준"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 13,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 17,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 18,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 19,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 23,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 26,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 27,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 29,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 32,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 35,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 36,
+            "headings": [
+              "출제의도",
+              "채점기준"
+            ]
+          },
+          {
+            "page": 37,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2024,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "2회차",
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2024학년도 숙명여대 수시 논술_인문2 문제.pdf",
+        "sha256": "1822b193ef2e43af0179278d4e6c99f372600fc1f289c1c7e2d2772f2136c2df",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2024학년도 숙명여대 수시 논술_인문2 해설,답안.pdf",
+        "sha256": "31a8c58c7cab45579757382896ae06508dc946aca3b3ee7900cf371fabceeb4e",
+        "page_count": 18,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 12,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 15,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "출제의도",
+              "채점기준"
+            ]
+          },
+          {
+            "page": 17,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2024,
+    "kind": "admission",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2024학년도 숙명여대 수시 논술_자연 문제.pdf",
+        "sha256": "cb318f1068c7e4481e218247cae6a79f9064e40328caf9b5861becc85aa0fcf8",
+        "page_count": 5,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2024학년도 숙명여대 수시 논술_자연 해설,답안.pdf",
+        "sha256": "88f5a00e35239dac3e72e15304e9afd12c5eca21d19a9f7c6f8f8f830d289a53",
+        "page_count": 11,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 5,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2024,
+    "kind": "mock",
+    "track": "humanities",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2024학년도 숙명여대 모의논술_인문 문제.pdf",
+        "sha256": "82e0a0cd5fda980eb9a34e891b80eb8af3bb489374e2cf15c39579e06cebade0",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2024학년도 숙명여대 모의논술_인문 우수답안.pdf",
+        "sha256": "107ef8eb22641ac5d271a0749e89f37e18a4b652107565b6c1b69c26e7eb0b4b",
+        "page_count": 2,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2024학년도 숙명여대 모의논술_인문 총평.pdf",
+        "sha256": "04a6fe68a4e78707fe6003ac857a328eab0139f824fef1054dae0413347f38f2",
+        "page_count": 2,
+        "role": "general_commentary",
+        "heading_pages": []
+      },
+      {
+        "name": "2024학년도 숙명여대 모의논술_인문 해설,답안.pdf",
+        "sha256": "9d4d5971645f9918bf3e863d6e385a30967bd5c3031ed0599fe157a2cb8c1dc6",
+        "page_count": 17,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 12,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 15,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2024,
+    "kind": "mock",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2024학년도 숙명여대 모의논술_자연 문제.pdf",
+        "sha256": "bab12a1c74dcc9955090f6a74ee45215f6895ba251eb9d5cba62ea8e5d7fc5bf",
+        "page_count": 5,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2024학년도 숙명여대 모의논술_자연 우수답안.pdf",
+        "sha256": "7f51e69b565ba48277e8fb902c31a4f3beef71b3d370c2388c3b2f0591b5850b",
+        "page_count": 3,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2024학년도 숙명여대 모의논술_자연 총평.pdf",
+        "sha256": "0cb2222078327eee7b6ecaf7a87d2c33511dfd9cb4b6b68e9d2c0efa6e7dcccd",
+        "page_count": 1,
+        "role": "general_commentary",
+        "heading_pages": []
+      },
+      {
+        "name": "2024학년도 숙명여대 모의논술_자연 해설,답안.pdf",
+        "sha256": "092b799aa1a0db32cd903d9e3a24b2c8045021897bedaca75d923287a58b0bf4",
+        "page_count": 11,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2025,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "1회차",
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2025학년도 숙명여대 수시 논술_인문1 문제.pdf",
+        "sha256": "1514469d6a380688a4e6aadbb1d6c313e1197e186512aa0ac9eac49e5a74c58f",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 수시 논술_인문1 해설,답안.pdf",
+        "sha256": "68ac07dc81396aafab3ab50c62791cccb59bd30d46e6ab6321ed0eb1b2ef8706",
+        "page_count": 17,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "출제의도",
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          },
+          {
+            "page": 12,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 15,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 17,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2025,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "2회차",
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2025학년도 숙명여대 수시 논술_인문2 문제.pdf",
+        "sha256": "0db1dbd57dfe56027791951a42f99827fe0de06d3bfd95b2294cc407d16a9562",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 수시 논술_인문2 해설,답안.pdf",
+        "sha256": "f2cef0479f3fae2b547613e91da5c1e8c726686057a18da6dab31de510b45f8c",
+        "page_count": 16,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 11,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 14,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 15,
+            "headings": [
+              "출제의도",
+              "채점기준"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2025,
+    "kind": "admission",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2025학년도 숙명여대 수시 논술_자연 문제.pdf",
+        "sha256": "cf984c0c1483c168df8c158d508c3680b39591ed2c5720f9966984eea93eb9d5",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 수시 논술_자연 해설,답안.pdf",
+        "sha256": "9df1870d41b0e2593b6dabc5f1bd7c1026f7171dd2a2bd364dfb8e47431c7d1d",
+        "page_count": 9,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2025,
+    "kind": "admission",
+    "track": "pharmacy",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2025학년도 숙명여대 수시 논술_약학부 문제.pdf",
+        "sha256": "7e5dab3941a465c168abc5130fd2e150dcb8d3a21f64cd0621864ea6018a8a17",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 수시 논술_약학부 해설,답안.pdf",
+        "sha256": "f344dd96408f9ae7eb41f84f29954773db08ca30f1eef0776b4e4dea5c624d38",
+        "page_count": 11,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 5,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2025,
+    "kind": "mock",
+    "track": "humanities",
+    "session": null,
+    "existing_exam_ids": [
+      "a6667288-75ad-50d4-b237-d2a08e2bff8b"
+    ],
+    "existing_question_ids": [
+      "1dab31d8-ea73-513f-80c3-9f871f079e2b",
+      "d01518a8-dee3-559f-aeda-8352de2bf852",
+      "b31b6231-44f1-5c2e-a505-a6873c4c64d8",
+      "1c15526a-31b7-578c-b3b8-e0111a39c872"
+    ],
+    "status": "REUSE_EXISTING_IDS",
+    "question_file_count": 2,
+    "sources": [
+      {
+        "name": "2025학년도 숙명여대 모의논술_인문1 문제.pdf",
+        "sha256": "c3d2a9ab563c91438dea5c4ff99b172e1fced4cfc7104bf22a599d816e6be4c2",
+        "page_count": 2,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 모의논술_인문1 우수답안.pdf",
+        "sha256": "e0b55edd2eb70fe8b90da3e3d542ff9699066dfb22dd9d779bd298670d5e4429",
+        "page_count": 1,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 모의논술_인문1 해설,답안.pdf",
+        "sha256": "307def4eb76c6690dd34c41e1b19b799fdd72563b563f6d8038d2b2925478151",
+        "page_count": 7,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "출제의도",
+              "채점기준",
+              "예시답안"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "2025학년도 숙명여대 모의논술_인문2 문제.pdf",
+        "sha256": "8a9fa2a67c7ffe0c47bd19b7c0a4d5123c530a735b2de595fb8511431aa072cb",
+        "page_count": 2,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 모의논술_인문2 우수답안.pdf",
+        "sha256": "f69d0d172bd32db6cd04c896506afe2b326987d0a8ce563801523e56a128aa43",
+        "page_count": 1,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 모의논술_인문2 해설,답안.pdf",
+        "sha256": "4056e23039e85cfa6fe703aa6bb9fb9a0e799281a29668a63be95bb259b2fb73",
+        "page_count": 8,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2025,
+    "kind": "mock",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2025학년도 숙명여대 모의논술_자연 문제.pdf",
+        "sha256": "897847b7ee34d98a31640ae84ff7f1fc7254d2b316920fc13c854b7d67045474",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 모의논술_자연 우수답안.pdf",
+        "sha256": "1089f43c73fecf5a7c1553784d391fa4f86e14b1c8bccf5a6b7451759eb840d9",
+        "page_count": 3,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 모의논술_자연 해설,답안.pdf",
+        "sha256": "013067cc2c11c82de44136a17712b97e0c326c0f0300185f90b0f580c2d33298",
+        "page_count": 9,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 5,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2025,
+    "kind": "mock",
+    "track": "pharmacy",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2025학년도 숙명여대 모의논술_약학부 문제.pdf",
+        "sha256": "dd770c3252ddd4ed410a7cd9f7a363363daf518b8e17815632ed844d508dc8a0",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 모의논술_약학부 우수답안.pdf",
+        "sha256": "40c7720c701362f1508b5c3912a021d8171ddc07a7dfbc65da6f828139d0865b",
+        "page_count": 4,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2025학년도 숙명여대 모의논술_약학부 해설,답안.pdf",
+        "sha256": "b9d93ed6501756bef3417151880ea4a6e245c0a5337c7381e6fbde5b5744d045",
+        "page_count": 9,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 5,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2026,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "1회차",
+    "existing_exam_ids": [
+      "62dab8a7-9fe6-5ab3-aaa1-7db5cfd870aa"
+    ],
+    "existing_question_ids": [
+      "12fb6834-6aeb-5436-a96e-add996fc9140",
+      "e6d3d905-d71f-513c-b5e3-30df3efd33d7"
+    ],
+    "status": "REUSE_EXISTING_IDS",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2026학년도 숙명여대 수시 논술_인문(1회차) 문제.pdf",
+        "sha256": "f2be68343b6bcd6401aa9c92838b14e3dfb4fa0ab1f7f5c1d3b28021f07f3ed2",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 수시 논술_인문(1회차) 해설,답안.pdf",
+        "sha256": "e4cb9e7a78449dad1b2b9dc0497b8fff9c06d538ca2df7ac97467ce1ba44fc59",
+        "page_count": 19,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 4,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 10,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 14,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 17,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 18,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 19,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2026,
+    "kind": "admission",
+    "track": "humanities",
+    "session": "2회차",
+    "existing_exam_ids": [
+      "3d898ef1-0f46-5b54-8891-8587e10e2c8a"
+    ],
+    "existing_question_ids": [
+      "266d9cf1-1f5b-5377-9d88-c1f377ede880",
+      "473aeaf2-413f-5abb-a044-260fad99d8ec"
+    ],
+    "status": "REUSE_EXISTING_IDS",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2026학년도 숙명여대 수시 논술_인문(2회차) 문제.pdf",
+        "sha256": "2cf50275ed408949253ef7075d6a1f003311ea85d9483314b4921a43e374502c",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 수시 논술_인문(2회차) 해설,답안.pdf",
+        "sha256": "ccba0e5eb562c34955070ba19506aca2473a88e274fcb74c887b38b893319d7f",
+        "page_count": 21,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 5,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 10,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 12,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 16,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 19,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 20,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 21,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2026,
+    "kind": "admission",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [
+      "5f002de0-5b59-50b8-8e05-684428e1e96d"
+    ],
+    "existing_question_ids": [
+      "48360807-927c-5f89-8b15-ca0761775f02",
+      "551c083d-b8e4-503b-83ee-0d63020a986f",
+      "b87278f6-aa62-5245-8fce-b01924a2d9c7"
+    ],
+    "status": "REUSE_EXISTING_IDS",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2026학년도 숙명여대 수시 논술_자연(일반) 문제.pdf",
+        "sha256": "d923bd57eed26e2895b22117c2c29bc7642b37a899c5d72c35dc128b3a1480e0",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 수시 논술_자연(일반) 해설,답안.pdf",
+        "sha256": "83b1926d98c9e083eaf7f2f83b9e01c0c091c7c80f484bdfb0ca134a5760d028",
+        "page_count": 14,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 5,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 10,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2026,
+    "kind": "admission",
+    "track": "pharmacy",
+    "session": null,
+    "existing_exam_ids": [
+      "7484fbea-4c68-5285-b525-227f835ca4cc"
+    ],
+    "existing_question_ids": [
+      "47c30af2-c2ff-5d4a-a94d-48034d332076",
+      "7f6c8eb5-2e96-58b8-9a43-5407203339bb",
+      "b96792e7-59cb-565d-adb7-afcb987e18ee"
+    ],
+    "status": "REUSE_EXISTING_IDS",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2026학년도 숙명여대 수시 논술_자연(약학부) 문제.pdf",
+        "sha256": "4986213f7ad40b4b8075e8465b640173cd5ed659484433774a00521c0ea983a7",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 수시 논술_자연(약학부) 해설,답안.pdf",
+        "sha256": "cb39fc2c249fc16ad7d299e5767838cfb33e23da90b02ea38fe679ec1c475080",
+        "page_count": 16,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 6,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 10,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 11,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2026,
+    "kind": "mock",
+    "track": "humanities",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 2,
+    "sources": [
+      {
+        "name": "2026학년도 숙명여대 모의논술_인문1 문제.pdf",
+        "sha256": "dab497c28c402cb69d75b561dff4fa6cdb7ccec189b6e2bff520c7995c809102",
+        "page_count": 2,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 모의논술_인문1 우수답안.pdf",
+        "sha256": "287439f139216e60a5347f77bd868ba89a47139b07959ca1081924ae4af09f47",
+        "page_count": 1,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 모의논술_인문1 해설,답안.pdf",
+        "sha256": "e2ccbc259d0f349ec619f536cc57a32ad30e16825b7707d067145f9e8cc36cf3",
+        "page_count": 9,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 9,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "2026학년도 숙명여대 모의논술_인문2 문제.pdf",
+        "sha256": "17286e367de259004f24d9fd33dea98495437d252c4bc0c5f59ec315323bfce0",
+        "page_count": 2,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 모의논술_인문2 우수답안.pdf",
+        "sha256": "969cdf8046e144e0ddfac4d398558ccb0e5e155eb8c22025d5bf717adbbb4917",
+        "page_count": 1,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 모의논술_인문2 해설,답안.pdf",
+        "sha256": "162e9f018f0c9106a302fe6266a8ff7ae0664ce93534ebeed3d934815d27704e",
+        "page_count": 8,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 5,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "출제의도",
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 8,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2026,
+    "kind": "mock",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2026학년도 숙명여대 모의논술_자연 문제.pdf",
+        "sha256": "fac85fe0f0e77e1b9d09cf1f34781f44407e1fb5d2a9db33ea0a52861a3e436b",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 모의논술_자연 우수답안.pdf",
+        "sha256": "0612656d216a174b57a3f21102faabd34176a0e62e64ffb11b604e3ffcc6b7b9",
+        "page_count": 3,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 모의논술_자연 해설,답안.pdf",
+        "sha256": "eb7bad2e96a6185c6c858fadcd40ff54c76338e67b0a6139d4ab96c20ca70471",
+        "page_count": 9,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 5,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2026,
+    "kind": "mock",
+    "track": "pharmacy",
+    "session": null,
+    "existing_exam_ids": [],
+    "existing_question_ids": [],
+    "status": "REGISTRY_MAPPING_REQUIRED",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2026학년도 숙명여대 모의논술_약학부 문제.pdf",
+        "sha256": "ad8675b7d9c80ec8936db307b902d88548105116c69c5472d204f383e9a1e977",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 모의논술_약학부 우수답안.pdf",
+        "sha256": "37f8120c4946f347ca72cba5bc786b8bb8b8a4bce920d1b12dc56e88672d1ac8",
+        "page_count": 3,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2026학년도 숙명여대 모의논술_약학부 해설,답안.pdf",
+        "sha256": "8ae2b2b03c2dbf28b7d34256f37e168d0452257e2a9f4023fc4c4beadd1f37cb",
+        "page_count": 10,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2027,
+    "kind": "mock",
+    "track": "humanities",
+    "session": null,
+    "existing_exam_ids": [
+      "7867dde6-7a03-5a72-a617-b1bb0084262a"
+    ],
+    "existing_question_ids": [
+      "d6ca7981-f352-517d-a5f6-f51dfaca6c96",
+      "03a91022-4555-5e72-bc6e-78726ac70de1"
+    ],
+    "status": "REUSE_EXISTING_IDS",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2027학년도 숙명여대 모의논술_인문 문제.pdf",
+        "sha256": "def655946d5a1371b538e1bce34e4c1a5777e45259f5ce7920f3e2f6ad3f7182",
+        "page_count": 4,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2027학년도 숙명여대 모의논술_인문 우수답안.pdf",
+        "sha256": "77a4f1428c56dd1e3cc7ab875337aab607a49d4e5e61aebbd8aa0181ac2ceb51",
+        "page_count": 2,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2027학년도 숙명여대 모의논술_인문 해설,답안.pdf",
+        "sha256": "eb34d1480d04ae5e6bf92b95c9b922b8e0abac8f95ce1d7ca61d0ba24c663da1",
+        "page_count": 14,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 5,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "출제의도",
+              "채점기준"
+            ]
+          },
+          {
+            "page": 7,
+            "headings": [
+              "예시답안"
+            ]
+          },
+          {
+            "page": 10,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 11,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 12,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 13,
+            "headings": [
+              "출제의도",
+              "채점기준"
+            ]
+          },
+          {
+            "page": 14,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2027,
+    "kind": "mock",
+    "track": "natural",
+    "session": null,
+    "existing_exam_ids": [
+      "deb21169-6937-5309-a9bb-c446bd6d4d5c"
+    ],
+    "existing_question_ids": [
+      "d7a1a8f4-8fba-5ece-9f20-946ece988ea5",
+      "1d25219b-a954-54e1-bfca-63d41fcca980",
+      "eb24d5aa-04a9-56a9-bc97-bf556c5bfb0e"
+    ],
+    "status": "REUSE_EXISTING_IDS",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2027학년도 숙명여대 모의논술_자연(일반) 문제.pdf",
+        "sha256": "257bfc4c32d0cc8f679f5a52b0fe6f02d0a864746def7a5e572e6345af1d867a",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2027학년도 숙명여대 모의논술_자연(일반) 우수답안.pdf",
+        "sha256": "3dca73119685bdeb242492fe3bd06c1ed1173b805a1b930c457d60ccaf00d2d1",
+        "page_count": 3,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2027학년도 숙명여대 모의논술_자연(일반) 해설,답안.pdf",
+        "sha256": "82f67c021ee792e70c02b853f63a810dda2b5b24cf269230cdecabccd60b05e5",
+        "page_count": 8,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 5,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  },
+  {
+    "year": 2027,
+    "kind": "mock",
+    "track": "pharmacy",
+    "session": null,
+    "existing_exam_ids": [
+      "7528297c-65f6-556d-9958-188ea5fad975"
+    ],
+    "existing_question_ids": [
+      "6eaa7428-3686-51f6-8efb-0e5127e0d3d0",
+      "256ebc83-09fb-5c47-9813-b9b67ca4155d",
+      "47501a70-0d53-5377-8105-da806dac184c"
+    ],
+    "status": "REUSE_EXISTING_IDS",
+    "question_file_count": 1,
+    "sources": [
+      {
+        "name": "2027학년도 숙명여대 모의논술_자연(약학부) 문제.pdf",
+        "sha256": "06c0a6b0769e08f5a9d5e63ea42dc705d53ada6df64fc5970d9b827865a23a8e",
+        "page_count": 3,
+        "role": "question",
+        "heading_pages": []
+      },
+      {
+        "name": "2027학년도 숙명여대 모의논술_자연(약학부) 우수답안.pdf",
+        "sha256": "0ebef032bebeb9610a555225fa5a07150cd1e648a00b4b6c80a4b6137aac4105",
+        "page_count": 3,
+        "role": "student_exemplar",
+        "heading_pages": []
+      },
+      {
+        "name": "2027학년도 숙명여대 모의논술_자연(약학부) 해설,답안.pdf",
+        "sha256": "325319ca423b809adc58028552c43f458f1f099b4e6bc13c14d46ce62ee08a32",
+        "page_count": 9,
+        "role": "official_assessment",
+        "heading_pages": [
+          {
+            "page": 3,
+            "headings": [
+              "출제의도"
+            ]
+          },
+          {
+            "page": 5,
+            "headings": [
+              "채점기준"
+            ]
+          },
+          {
+            "page": 6,
+            "headings": [
+              "예시답안"
+            ]
+          }
+        ]
+      }
+    ],
+    "public_activation": false,
+    "parent_question_count": null,
+    "notes": "Original subquestion structure must be reviewed; do not infer parent count from filenames."
+  }
+]
