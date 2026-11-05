@@ -11,3 +11,7 @@ Validation: 51 focused tests PASS; Pages Functions build PASS; exact routing con
 Deployment script: `scripts/deployment/task20-priority-api.mjs BACKUP WORKER ROUTES plan|apply`. It guards baseline deployment/configuration, source change allowlist and required leaf IDs; preserves all 1,972 static asset hashes. Private receipt lives in the APP worktree `.local/task20-priority-20261106/deploy`.
 
 Rollback: restore the previous deployment and exact three previous environment values, after checking concurrent deployment changes. SQL rollback restores the guarded two prior function definitions, retaining content and any in-flight history; never delete evaluations or ledgers.
+
+## Production result
+
+WEB SHA `8c05fd12c21b0400cda7bcf1baeb5f536bcf4af8` deployed as Pages `c6b969ee-d858-4b1f-bf8c-cab752de8525`; canonical deployment status success, all 1,972 static hashes and route/config preservation verified. Authenticated live WEB opened every one of the seven answer editors. Konkuk Q4 PDF page4/4 and Kyunghee Q3 PDF page2/2 rendered. No answer save, extraction, evaluation or financial actions performed. APP65 physical acceptance remains pending Owner response.
