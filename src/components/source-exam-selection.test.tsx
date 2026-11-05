@@ -20,7 +20,7 @@ it('real Sookmyung four subquestions write/restore without a Provider or DB writ
  view.unmount();render(<SourceExamSelection sourceId="sookmyung"/>);
  await waitFor(()=>expect(screen.getByLabelText('문제 1-1 답안')).toBeEnabled());
  expect(screen.getByLabelText('문제 1-1 답안')).toHaveValue('학생이 직접 쓴 답안');
- expect(screen.getByRole('button',{name:'첨삭 가능 여부 확인 중'})).toBeDisabled();
+ expect(screen.getByText('로그인 후 첨삭 가능 여부를 확인할 수 있습니다.')).toBeVisible();
 });
 it('account switch does not expose another draft and no implicit guest transfer',async()=>{
  const view=render(<SourceExamSelection sourceId="sookmyung"/>);
@@ -83,8 +83,18 @@ it('keeps registered natural exams discoverable across years without enabling gr
   fireEvent.click(screen.getByRole('button',{name:'자연계열 · 1회차'}));
   expect(screen.getByLabelText('학년도·시험')).toHaveValue('2022:mock');
   expect(screen.getByLabelText('계열')).toHaveValue('자연계열');
-  await waitFor(()=>expect(screen.getByRole('button',{name:'수리논술 첨삭 서비스 준비 중'})).toHaveAttribute('aria-disabled','true'));
+  expect(screen.getByText('로그인 후 첨삭 가능 여부를 확인할 수 있습니다.')).toBeVisible();
   expect(screen.queryByRole('button',{name:'첨삭 가능 여부 확인 중'})).toBeNull();
   expect(screen.getByRole('button',{name:'인문계열 · 1회차'})).toBeEnabled();
  }finally{vi.unstubAllGlobals();}
+});
+
+ it('does not present loading or a failed catalog as service preparation',async()=>{
+ vi.stubGlobal('fetch',vi.fn().mockRejectedValue(new Error('offline')));
+ try {
+  render(<SourceExamSelection sourceId="kwangwoon" registeredOnly/>);
+  expect(screen.getByText('등록 시험과 문항을 불러오고 있어요.')).toBeVisible();
+  expect(await screen.findByRole('alert')).toHaveAttribute('data-availability','ERROR');
+  expect(screen.queryByText('기출문제를 준비하고 있어요.')).toBeNull();
+ } finally {vi.unstubAllGlobals();}
 });

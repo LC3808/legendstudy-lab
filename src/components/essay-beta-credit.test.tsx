@@ -23,7 +23,7 @@ it('ended campaign is explicit, does not keep a midnight refresh',async()=>{
 it('start is read-only, hide preference does not hide the allowance',async()=>{
  m.rpc.mockResolvedValue({data:{...active,notice_seen:false}});
  render(<EssayBetaCredit/>);await screen.findByRole('dialog');
- expect(screen.getAllByText(/2026년 11월 10일 23:59/)).toHaveLength(2);
+ expect(screen.getAllByText(/2026년 11월 11일 00:00 KST/)).toHaveLength(2);
  fireEvent.click(screen.getByRole('checkbox',{name:'다음부터 보지 않기'}));
  fireEvent.click(screen.getByRole('button',{name:'무료 첨삭 이용하러 가기'}));
  await waitFor(()=>expect(screen.queryByRole('dialog')).toBeNull());

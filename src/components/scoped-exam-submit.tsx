@@ -10,34 +10,38 @@ export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onI
  const auth=useAuth(),owner=auth.user?.id;
  const [retry,setRetry]=useState(0),[failure,setFailure]=useState<string|null>(null);
  const scope=`${owner??''}:${exam.dbExamId??''}`;
- const [admitted,setAdmitted]=useState<{owner:string;exam:string;questions:string[];math:Record<string,string>}|null>(null);
+ const [admitted,setAdmitted]=useState<{owner:string;exam:string;questions:string[];math:Record<string,string>;code?:string}|null>(null);
  useEffect(()=>{let active=true;queueMicrotask(()=>{if(active)setFailure(null);});
   void(async()=>{
    if(!auth.client||!owner||!exam.dbExamId)return;
    const session=(await auth.client.auth.getSession()).data.session;
    if(!active||session?.user.id!==owner)return;
    const response=await fetch('/api/essay/exam',{method:'POST',headers:{Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify({action:'availability',examId:exam.dbExamId}),cache:'no-store'});
-   if(!response.ok&&response.status!==503)throw Error('ADMISSION_UNAVAILABLE');
+   if(!response.ok&&response.status!==503&&response.status!==403)throw Error('ADMISSION_UNAVAILABLE');
    const result=await response.json();
-   if(!response.ok&&result?.code!=='EVALUATION_UNAVAILABLE')throw Error('ADMISSION_UNAVAILABLE');
+   const policyDenied=response.status===403&&result?.code==='ACCESS_DENIED';
+   if(typeof result?.ready!=='boolean'&&result?.code!=='EVALUATION_UNAVAILABLE'&&!policyDenied)throw Error('ADMISSION_INVALID');
+   if(!response.ok&&result?.code!=='EVALUATION_UNAVAILABLE'&&!policyDenied)throw Error('ADMISSION_UNAVAILABLE');
    const math:Record<string,string>={};
    if(result?.ready===true&&result.mathQuestions&&typeof result.mathQuestions==='object'){
     for(const [id,leaf] of Object.entries(result.mathQuestions))if(typeof leaf==='string'&&/^[0-9a-f-]{36}$/i.test(id)&&/^[0-9a-f-]{36}$/i.test(leaf))math[id]=leaf;
    }
-   if(result?.ready!==true&&!['NATURAL_MATH_HOLD','MIXED_QA_PENDING'].includes(result?.code)){
+   if(result?.ready!==true&&!['MIXED_QA_PENDING','RELEASE_SCOPE_CHANGED'].includes(result?.code)){
     const response=await fetch('/api/essay/availability',{headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store'});
     if(!response.ok)throw Error('ADMISSION_UNAVAILABLE');
     const status=await response.json();
+    if(status?.checked===false)throw Error('ADMISSION_UNAVAILABLE');
     if(status?.types?.math===true&&Array.isArray(status.mathQuestions))for(const row of status.mathQuestions){
      if(row.examId===exam.dbExamId&&typeof row.questionId==='string'&&typeof row.leafId==='string'&&/^[0-9a-f-]{36}$/i.test(row.leafId))math[row.questionId]=row.leafId;
     }
    }
-   if(active)setAdmitted({owner,exam:exam.dbExamId,questions:result?.ready===true&&Array.isArray(result.questionIds)?result.questionIds.filter((v:unknown)=>typeof v==='string'):[],math});
+   if(active)setAdmitted({owner,exam:exam.dbExamId,code:typeof result?.code==='string'?result.code:undefined,questions:result?.ready===true&&Array.isArray(result.questionIds)?result.questionIds.filter((v:unknown)=>typeof v==='string'):[],math});
   })().catch(()=>{if(active)setFailure(scope);});return()=>{active=false;};
  },[auth.client,owner,exam.dbExamId,retry,scope]);
  useEffect(()=>{if(admitted?.owner===owner&&admitted?.exam===exam.dbExamId)onInputContract?.(admitted.exam,admitted.math);},[admitted,owner,exam.dbExamId,onInputContract]);
  useEffect(()=>{if(admitted?.owner===owner&&admitted?.exam===exam.dbExamId)onAdmissionChange?.(admitted.questions.length>0&&exam.questions.every(q=>!!q.dbQuestionId&&admitted.questions.includes(q.dbQuestionId)));},[admitted,owner,exam,onAdmissionChange]);
- if(failure===scope)return <div role="status">일시적으로 첨삭 가능 여부를 확인할 수 없습니다. <button onClick={()=>{setFailure(null);setAdmitted(null);setRetry(v=>v+1);}}>다시 시도</button></div>;
+ if(!owner)return <p role="status" data-availability="BLOCKED">로그인 후 첨삭 가능 여부를 확인할 수 있습니다.</p>;
+ if(failure===scope)return <div role="status" data-availability="ERROR">일시적으로 첨삭 가능 여부를 확인할 수 없습니다. <button onClick={()=>{setFailure(null);setAdmitted(null);setRetry(v=>v+1);}}>다시 시도</button></div>;
  if(admitted?.owner!==owner||admitted?.exam!==exam.dbExamId)return <button disabled>첨삭 가능 여부 확인 중</button>;
  const q=exam.questions.find(q=>q.key===questionKey);
  const included=exam.questions.filter(q=>(drafts[q.key]?.body.trim()||drafts[q.key]?.images)&&(includedKeys===undefined||includedKeys.includes(q.key)));
@@ -47,7 +51,7 @@ export function ScopedExamSubmit({exam,questionKey,drafts,includedKeys,cycle,onI
  const unavailable=ready&&included.some(q=>!q.dbQuestionId||!admitted.questions.includes(q.dbQuestionId));
  const mathLeaf=admitted?.owner===owner&&admitted?.exam===exam.dbExamId&&q?.dbQuestionId?admitted.math[q.dbQuestionId]:null;
  if(ready&&Object.keys(admitted.math).length&&admitted.questions.some(id=>!admitted.math[id])&&!unavailable)return <MixedExamSubmit key={`${owner}:${exam.key}`} exam={exam} drafts={drafts} included={included.map(q=>q.key)} leaves={admitted.math} cycle={cycle}/>;
- if(mathLeaf||(included.length>0&&included.every(q=>q.dbQuestionId&&admitted.math[q.dbQuestionId])))return <><MathExamSessionSubmit key={`${owner}:${exam.key}`} exam={exam} drafts={drafts} included={included.map(q=>q.key)} leaves={admitted!.math} rewrite={cycle?{id:cycle.parentId??cycle.previousPaidRunId!,additional:!!cycle.previousPaidRunId}:undefined}/></>;
+ if(mathLeaf||(included.length>0&&included.every(q=>q.dbQuestionId&&admitted.math[q.dbQuestionId])))return <>{exam.questions.some(item=>!item.dbQuestionId||!admitted!.math[item.dbQuestionId])&&<p role="status">현재 {exam.questions.filter(item=>item.dbQuestionId&&admitted!.math[item.dbQuestionId]).map(item=>item.label).join(', ')}만 첨삭할 수 있습니다. 나머지 문항은 준비 중이며, 시험 전체가 공개된 것은 아닙니다.</p>}<MathExamSessionSubmit key={`${owner}:${exam.key}`} exam={exam} drafts={drafts} included={included.map(q=>q.key)} leaves={admitted!.math} rewrite={cycle?{id:cycle.parentId??cycle.previousPaidRunId!,additional:!!cycle.previousPaidRunId}:undefined}/></>;
  if(unavailable)return <div><button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button><p role="status">작성한 답안 중 아직 첨삭 준비 중인 문항이 있습니다. 답안은 저장되며, 해당 문항을 포함한 회차 첨삭은 준비가 완료되면 이용할 수 있습니다.</p></div>;
- return ready?<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={included.map(q=>q.key)} drafts={drafts} cycle={cycle}/>:<button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button>;
+ return ready?<EssayExamSubmit key={`${owner}:${exam.key}`} exam={exam} included={included.map(q=>q.key)} drafts={drafts} cycle={cycle}/> :<div data-availability={['NATURAL_MATH_HOLD','MIXED_QA_PENDING','RELEASE_SCOPE_CHANGED','ACCESS_DENIED'].includes(admitted?.code??'')?'BLOCKED':'PREPARING'}><p role="status">{['NATURAL_MATH_HOLD','MIXED_QA_PENDING','RELEASE_SCOPE_CHANGED','ACCESS_DENIED'].includes(admitted?.code??'')?'현재 공개 범위에 포함되지 않은 시험입니다. 답안 작성·저장은 가능합니다.':'평가자료와 첨삭 서비스 연결을 준비하고 있습니다. 답안 작성·저장은 가능합니다.'}</p><button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button></div>;
 }

@@ -20,7 +20,8 @@ it.each(['guest','account'])('restores approved Hanyang PDF and original writer 
  expect(screen.queryByRole('tablist',{name:'문항 선택'})).toBeNull();
  const input=screen.getByLabelText('문제 1 답안');await waitFor(()=>expect(input).toBeEnabled());
  fireEvent.change(input,{target:{value:'로컬 합성 답안'}});expect(input).toHaveValue('로컬 합성 답안');
- expect(screen.getByRole('button',{name:'첨삭 가능 여부 확인 중'})).toBeDisabled();
+ if(mode==='guest')expect(screen.getByText('로그인 후 첨삭 가능 여부를 확인할 수 있습니다.')).toBeVisible();
+ else expect(screen.getByRole('button',{name:'첨삭 가능 여부 확인 중'})).toBeDisabled();
  expect(state.client.rpc).toHaveBeenCalledWith('essay_browse_catalog',{p_university:'hanyang'});expect(state.client.rpc.mock.calls.every(([name])=>!String(name).includes('submit'))).toBe(true);
 });
 it('loads canonical metadata even when a prior caller has no cached university UUID',async()=>{

@@ -30,7 +30,7 @@ it('ready without question scope does not activate a reviewed question',async()=
 });
 it('anonymous visitor never requests admission',async()=>{
  auth.user=null;render(<ScopedExamSubmit exam={exam} questionKey="q2" drafts={{}}/>);
- expect(screen.getByRole('button')).toBeDisabled();expect(fetch).not.toHaveBeenCalled();
+ expect(screen.getByRole('status')).toHaveTextContent('로그인 후');expect(fetch).not.toHaveBeenCalled();
 });
 it('explains missing original questions before a free rewrite quote',async()=>{
  vi.mocked(fetch).mockResolvedValue(Response.json({ready:true,questionIds:['id1','id2']}));
@@ -41,7 +41,7 @@ it('explains missing original questions before a free rewrite quote',async()=>{
  v.rerender(<ScopedExamSubmit exam={e} includedKeys={['q1','q2']} cycle={{parentId:'original'}} drafts={{q1:{body:'새 답안',revision:1,images:false},q2:{body:'이전 답안',revision:1,images:false}}}/>);
  expect(screen.getByText('approved:q1,q2')).toBeVisible();
 });
-it.each(['NATURAL_MATH_HOLD','MIXED_QA_PENDING'])('does not fall back to legacy Math when session is held: %s',async code=>{
+it.each(['MIXED_QA_PENDING','RELEASE_SCOPE_CHANGED'])('does not fall back to legacy Math when session is held: %s',async code=>{
  vi.mocked(fetch).mockResolvedValue(Response.json({ready:false,code}));
  render(<ScopedExamSubmit exam={exam} questionKey="q1" drafts={{}}/>);
  expect(await screen.findByRole('button',{name:'첨삭 서비스 제공 예정'})).toBeDisabled();
@@ -62,4 +62,36 @@ it('all-Math admission stays on the existing Math session path and clears the UI
  const admission=vi.fn();render(<ScopedExamSubmit exam={e} questionKey="q1" drafts={{q1:{body:'풀이',revision:1,images:false}}} onAdmissionChange={admission}/>);
  expect(await screen.findByText('math-round:initial')).toBeVisible();
  expect(admission).toHaveBeenCalledWith(true);
+});
+
+it('reports a backend failure as ERROR rather than service preparation',async()=>{
+ vi.mocked(fetch).mockRejectedValue(Error('network'));
+ render(<ScopedExamSubmit exam={exam} drafts={{}}/>);
+ expect(await screen.findByRole('status')).toHaveAttribute('data-availability','ERROR');
+ expect(screen.queryByText('첨삭 서비스 제공 예정')).toBeNull();
+});
+it('reports an explicit release hold as BLOCKED with an explanation',async()=>{
+ vi.mocked(fetch).mockResolvedValueOnce(Response.json({ready:false,code:'NATURAL_MATH_HOLD'})).mockResolvedValueOnce(Response.json({checked:true,types:{math:false},mathQuestions:[]}));
+ const {container}=render(<ScopedExamSubmit exam={exam} drafts={{}}/>);
+ await screen.findByText(/현재 공개 범위에 포함되지/);
+ expect(container.querySelector('[data-availability="BLOCKED"]')).not.toBeNull();
+ expect(fetch).toHaveBeenCalledTimes(2);
+});
+
+it('explains a server authorization restriction when no separately released Math exists',async()=>{
+ vi.mocked(fetch).mockResolvedValueOnce(Response.json({code:'ACCESS_DENIED'},{status:403})).mockResolvedValueOnce(Response.json({checked:true,types:{math:false},mathQuestions:[]}));
+ const {container}=render(<ScopedExamSubmit exam={exam} drafts={{}}/>);
+ await screen.findByText(/현재 공개 범위에 포함되지/);
+ expect(container.querySelector('[data-availability="BLOCKED"]')).not.toBeNull();
+ expect(fetch).toHaveBeenCalledTimes(2);
+});
+
+it('retains an already released standalone Math leaf without opening other exam questions',async()=>{
+ const leaf='00000000-0000-4000-8000-000000000001';
+ vi.mocked(fetch).mockResolvedValueOnce(Response.json({code:'ACCESS_DENIED'},{status:403})).mockResolvedValueOnce(Response.json({checked:true,types:{math:true},mathQuestions:[{examId:exam.dbExamId,questionId:'id1',leafId:leaf}]}));
+ const e={...exam,questions:exam.questions.map((q,i)=>({...q,label:`문제 ${i+1}`}))};
+ render(<ScopedExamSubmit exam={e} questionKey="q1" drafts={{q1:{body:'풀이',revision:1,images:false}}}/>);
+ expect(await screen.findByText('math-round:initial')).toBeVisible();
+ expect(screen.getByRole('status')).toHaveTextContent('현재 문제 1만 첨삭할 수 있습니다');
+ expect(screen.getByRole('status')).toHaveTextContent('시험 전체가 공개된 것은 아닙니다');
 });

@@ -254,3 +254,10 @@ it.each(['MIXED_COMPLETE_ANSWERS_REQUIRED','MIXED_RELEASE_SCOPE_CHANGED'])('mixe
  expect(response.status).toBe(409);expect(await response.json()).toEqual({code});
  expect(m.dispatch.mock.calls.filter(([r])=>r.url.endsWith('/exam-evaluate'))).toHaveLength(0);
 });
+
+it('keeps an explicit allowlist denial distinct from an availability outage',async()=>{
+ m.subject.mockRejectedValue(Error('ACCESS_DENIED'));
+ const response=await send({action:'availability',examId:id});
+ expect(response.status).toBe(403);expect(await response.json()).toEqual({code:'ACCESS_DENIED'});
+ expect(m.request).not.toHaveBeenCalled();expect(m.dispatch).not.toHaveBeenCalled();
+});

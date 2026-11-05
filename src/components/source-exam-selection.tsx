@@ -1,10 +1,7 @@
 'use client';
-import {betaExpansionCandidates} from '@/lib/essay-runtime/beta-expansion';
 import {logAnalytics} from '@/lib/analytics/client';
 import {analyticsEvents as AE} from '@/lib/analytics/events';
 import {questionSupportsImages,questionInputMode} from '@/lib/essay-runtime/input-mode';
-import {examLaunchHold} from '@/lib/essay-runtime/launch-policy';
-import {isUniversityServicePreparing} from '@/lib/essay-runtime/catalog-policy';
 
 import Link from 'next/link';
 import {ExamReentryGate} from './exam-reentry-gate';
@@ -49,7 +46,7 @@ export function SourceExamSelection({sourceId,registeredOnly=false,onSelectionCh
    if(!response.ok)throw Error('CATALOG_UNAVAILABLE');
    const data=await response.json();
    if(Number.isInteger(data.registration?.registeredQuestions))console.info('Essay registry HTTP verified',response.status,'registered questions',data.registration.registeredQuestions);
-   if(data.version!=='essay-source-registry-v1'||!Array.isArray(data.exams))return;
+   if(data.version!=='essay-source-registry-v1'||!Array.isArray(data.exams))throw Error('CATALOG_INVALID');
    let next=(data.exams as SourceExam[]).filter(e=>e.sourceUniversityId===sourceId&&e.verification==='VERIFIED');
    if(registeredOnly){
     next=next.filter(e=>e.dbExamId).map(e=>({...e,questions:e.questions.filter(q=>q.dbQuestionId)})).filter(e=>e.questions.length);
@@ -64,9 +61,10 @@ export function SourceExamSelection({sourceId,registeredOnly=false,onSelectionCh
   })().catch(()=>{if(active){if(registeredOnly){setLoadError(true);setLoadedFor(identity);setRows([]);}}});
   return()=>{active=false;};
  },[sourceId,auth.client,auth.user?.id,registeredOnly,identity]);
- return <>{registeredOnly&&auth.user==null&&<p><Link href={`/login/?next=${encodeURIComponent(`/essay-lab/universities/${sourceId}/`)}`}>로그인</Link>하면 답안과 첨삭 기록을 보관할 수 있습니다.</p>}{loadError&&<p role="alert">등록 문항을 불러오지 못했습니다. 연결을 확인하고 새로고침해 주세요.</p>}<Selection onSelectionChange={onSelectionChange} key={`${sourceId}:${auth.user?.id??'guest'}`} rows={registeredOnly&&loadedFor!==identity?[]:rows.filter(e=>e.sourceUniversityId===sourceId)} owner={auth.user?.id??'guest'}/></>;
+ const catalogState=registeredOnly&&loadedFor!==identity?'loading':loadError?'error':'ready';
+ return <>{registeredOnly&&auth.user==null&&<p><Link href={`/login/?next=${encodeURIComponent(`/essay-lab/universities/${sourceId}/`)}`}>로그인</Link>하면 답안과 첨삭 기록을 보관할 수 있습니다.</p>}<Selection catalogState={catalogState} onSelectionChange={onSelectionChange} key={identity} rows={catalogState==='ready'?rows.filter(e=>e.sourceUniversityId===sourceId):[]} owner={auth.user?.id??'guest'}/></>;
 }
-function Selection({rows,owner,onSelectionChange}:{rows:SourceExam[];owner:string;onSelectionChange?:(title:string)=>void}){
+function Selection({rows,owner,onSelectionChange,catalogState}:{rows:SourceExam[];owner:string;onSelectionChange?:(title:string)=>void;catalogState:'loading'|'error'|'ready'}){
  const [hasUnsaved,setHasUnsaved]=useState(false);
  const [period,setPeriod]=useState(''),[track,setTrack]=useState(''),[examKey,setExamKey]=useState('');
  const periods=[...new Set(rows.map(e=>`${e.year}:${e.kind}`))].sort((a,b)=>{
@@ -84,7 +82,7 @@ function Selection({rows,owner,onSelectionChange}:{rows:SourceExam[];owner:strin
  function reset(action:()=>void){if(hasUnsaved&&!window.confirm("저장하지 못한 답안이 있습니다. 선택을 바꿀까요?"))return;action();setHasUnsaved(false);}
  return <section className="university-section essay-start" aria-label="논술 첨삭 시작">
   <div className="discovery-topline"><h2>시험 선택</h2><Link href="/my/essays/" className="essay-history-button">나의 첨삭 기록 확인 →</Link></div>
-  {!rows.length&&<p role="status">기출문제를 준비하고 있어요.</p>}
+  {catalogState==='loading'?<p role="status">등록 시험과 문항을 불러오고 있어요.</p>:catalogState==='error'?<p role="alert" data-availability="ERROR">등록 문항을 불러오지 못했습니다. 연결을 확인하고 새로고침해 주세요.</p>:!rows.length&&<p role="status">등록된 시험·문항이 없습니다.</p>}
   {registeredTracks.length>1&&<div className="essay-registered-tracks" aria-label="등록된 전체 계열"><span>등록 계열</span>{registeredTracks.map(t=><button type="button" key={t} className="button button--outline" onClick={()=>reset(()=>{const latest=periods.find(p=>rows.some(e=>`${e.year}:${e.kind}`===p&&e.track===t))!;setPeriod(latest);setTrack(t);setExamKey('');})}>{t} · {rows.filter(e=>e.track===t).length}회차</button>)}<small>계열을 선택하면 등록된 최신 학년도로 이동합니다.</small></div>}
   <div className="essay-selection-grid">
    <label>학년도·시험<select aria-label="학년도·시험" value={selectedPeriod} onChange={e=>reset(()=>{setPeriod(e.target.value);setTrack('');setExamKey('');})}><option value="">학년도·시험 선택</option>{periods.map(p=>{const [year,kind]=p.split(':');return <option key={p} value={p}>{year}학년도 {kind==='mock'?'모의논술':kind==='admission'?'수시논술':'시험 유형 확인 중'}</option>;})}</select></label>
@@ -96,10 +94,6 @@ function Selection({rows,owner,onSelectionChange}:{rows:SourceExam[];owner:strin
 }
 
 function ExamWorkspace({exam,owner,onUnsaved}:{exam:SourceExam;owner:string;onUnsaved:(value:boolean)=>void}){
- const isolatedNatural=exam.dbExamId===task16gExamId&&task16gBrowser(globalThis.location?.origin);
- const activationCandidate=betaExpansionCandidates.some(e=>e.examId===exam.dbExamId);
- const [serverAdmitted,setServerAdmitted]=useState(false);
- const naturalHeld=!serverAdmitted&&!isolatedNatural&&(examLaunchHold(exam.dbExamId)==='NATURAL_MATH_HOLD'||/자연|의예/.test(exam.track));
  const [questionKey,setQuestionKey]=useState('');
  const [panels,setPanels]=useState<Record<string,{open:string[];manual:boolean}>>({});
  const [excluded,setExcluded]=useState<string[]>([]);
@@ -114,11 +108,11 @@ function ExamWorkspace({exam,owner,onUnsaved}:{exam:SourceExam;owner:string;onUn
  // The keyed workspace keeps each independent draft's UI and pending request isolated.
  useEffect(()=>{const leave=(e:BeforeUnloadEvent)=>{if(Object.values(dirty).some(Boolean)){e.preventDefault();}};window.addEventListener('beforeunload',leave);return()=>window.removeEventListener('beforeunload',leave);},[dirty]);
  return <>{exam.dbExamId==='942c1c43-914f-5b99-9a30-e6474c363f6f'&&<p role="note">이 시험은 승인된 문제 2만 첨삭할 수 있습니다. 나머지 문항은 첨삭 준비 중이며 전체 회차 공개 완료가 아닙니다.</p>}
-   {naturalHeld&&<div role="status" className="essay-math-hold-notice"><strong>수리논술 첨삭 서비스 준비 중</strong><p>더 정확한 풀이 분석과 단계별 코칭을 제공하기 위해 서비스를 개선하고 있습니다.</p><p>현재 답안 작성·저장은 가능하며,<br className="essay-math-hold-break"/> 첨삭 기능은 추후 제공됩니다.</p></div>}
-   {!naturalHeld&&<p className="essay-submit-note">답안 저장은 무료입니다. 작성한 답안을 시험 회차 단위로 함께 첨삭하며, 새 첨삭 회차에는 문항 수와 관계없이 1 이용권이 사용됩니다. 이전에 제출하지 않은 문항을 나중에 첨삭받으면 새 회차로 1 이용권이 사용됩니다.</p>}
+   
+   {<p className="essay-submit-note">답안 저장은 무료입니다. 작성한 답안을 시험 회차 단위로 함께 첨삭하며, 새 첨삭 회차에는 문항 수와 관계없이 1 이용권이 사용됩니다. 이전에 제출하지 않은 문항을 나중에 첨삭받으면 새 회차로 1 이용권이 사용됩니다.</p>}
    {written.length>1&&<fieldset className="essay-submission-selection"><legend>이번 첨삭 회차에 제출할 답안</legend>{written.map(q=><label key={q.key}><input type="checkbox" checked={!excluded.includes(q.key)} onChange={e=>setExcluded(old=>e.target.checked?old.filter(key=>key!==q.key):[...old,q.key])}/>{q.label}</label>)}<p>선택하지 않은 답안과 기존 첨삭 기록은 그대로 보존됩니다. 무료 재첨삭은 기존 회차의 문항으로만 요청할 수 있습니다.</p></fieldset>}
    {exam.questions.map((q,index)=>{const expanded=(panels[exam.key]?.open??[exam.questions[0].key]).includes(q.key),draft=drafts[q.key];return <section className="essay-question-toggle" key={q.key} id={`essay-question-${q.key}`}><header><h3>{q.label}</h3><span>{draft?.body.trim()||draft?.images?'답안 작성됨':'미작성'} · {draft===undefined?'답안 확인 중':draft.saved?'저장됨':'저장 확인 필요'}</span><button type="button" className="button button--outline" aria-expanded={expanded} aria-controls={`answer-panel-${q.key}`} onClick={()=>{if(!expanded)logAnalytics(AE.questionSelect,{question_count:1,exam_code:exam.key});setQuestionKey(q.key);setPanels(old=>{const open=old[exam.key]?.open??[exam.questions[0].key];return {...old,[exam.key]:{manual:true,open:expanded?open.filter(k=>k!==q.key):[...open,q.key]}};});}}>{expanded?'접기':'펼치기'} · {q.label}</button></header><div id={`answer-panel-${q.key}`} hidden={!expanded}>{questionInputMode(exam.dbExamId,q.dbQuestionId,q.inputMode)==='unknown'?<p role="alert">문항 입력 유형을 확인 중입니다. 기존 답안은 보존됩니다.</p>:<SourceExamWriter key={`${owner}:${q.key}`} exam={exam} question={q} owner={owner} onDirty={onDirty} onDraft={onDraft} supportsImages={questionSupportsImages(exam.dbExamId,q.dbQuestionId,q.inputMode)} onSaved={()=>setPanels(old=>{if(old[exam.key]?.manual)return old;const next=exam.questions.slice(index+1).find(item=>!drafts[item.key]?.body.trim()&&!drafts[item.key]?.images);return next?{...old,[exam.key]:{manual:false,open:[next.key]}}:old;})}/> }</div></section>;})}
-   {naturalHeld&&<button type="button" className="button essay-math-hold-button" aria-disabled="true">수리논술 첨삭 서비스 준비 중</button>}
-   {naturalHeld&&!activationCandidate?null:isUniversityServicePreparing(exam.sourceUniversityId)?<button className="button button--primary service-preparing" disabled>첨삭 서비스 제공 예정</button>:<ScopedExamSubmit onAdmissionChange={setServerAdmitted} exam={exam} questionKey={question?.key} drafts={drafts} includedKeys={submitIncluded}/>}
+   
+   {<ScopedExamSubmit exam={exam} questionKey={question?.key} drafts={drafts} includedKeys={submitIncluded}/>}
 </>;
 }

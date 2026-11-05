@@ -9,7 +9,7 @@ vi.mock('./auth-context',()=>({useAuth:()=>state}));
 vi.mock('@/lib/essay-runtime/registered-material-catalog',async importOriginal=>({...await importOriginal<typeof import('@/lib/essay-runtime/registered-material-catalog')>(),loadRegisteredMaterials:state.load}));
 const id='00000000-0000-4000-8000-000000000001';
 const exam={key:`registered:${id}`,dbExamId:id,universityId:id,sourceUniversityId:'gachon',year:2027,kind:'mock',track:'의예',session:'모의 의예',campus:null,verification:'REVIEW_REQUIRED',sourceHashes:[],evaluationReady:false,questions:[{key:`registered:${id}`,dbQuestionId:id,label:'문제 1',inputMode:'image',sourceLocator:null,lengthLabel:null,accountDraftReady:false}]};
-beforeEach(()=>{state.user={id:'operator'};state.client.auth.getSession.mockResolvedValue({data:{session:{user:{id:'operator'},access_token:'fixture'}}});state.load.mockReset().mockResolvedValue([exam]);vi.stubGlobal('fetch',vi.fn().mockResolvedValue(Response.json({version:'essay-source-registry-v1',exams:[]})));});
+beforeEach(()=>{state.user={id:'operator'};state.client.auth.getSession.mockResolvedValue({data:{session:{user:{id:'operator'},access_token:'fixture'}}});state.load.mockReset().mockResolvedValue([exam]);vi.stubGlobal('fetch',vi.fn().mockImplementation(async()=>Response.json({version:'essay-source-registry-v1',exams:[],ready:false})));});
 afterEach(()=>vi.unstubAllGlobals());
 it('selects the registered mock exam, saves a local draft and blocks unreviewed submission',async()=>{
  render(<SourceExamSelection sourceId="gachon" registeredOnly/>);
@@ -17,7 +17,7 @@ it('selects the registered mock exam, saves a local draft and blocks unreviewed 
  expect(screen.getByLabelText('학년도·시험')).toHaveValue('2027:mock');
  expect(screen.queryByRole('tablist',{name:'문항 선택'})).toBeNull();
  fireEvent.change(input,{target:{value:'합성 테스트 답안'}});
- expect(input).toHaveValue('합성 테스트 답안');expect(await screen.findByRole('button',{name:'수리논술 첨삭 서비스 준비 중'})).toHaveAttribute('aria-disabled','true');
+ expect(input).toHaveValue('합성 테스트 답안');expect(await screen.findByRole('button',{name:'첨삭 서비스 제공 예정'})).toBeDisabled();
  expect(screen.queryByRole('button',{name:'계정 답안 확인·저장'})).toBeNull();
  expect(vi.mocked(fetch).mock.calls.every(([url,init])=>url==='/api/essay/availability'||(url==='/api/essay/exam'&&JSON.parse(String(init?.body)).action==='availability'))).toBe(true);
  expect(screen.queryByRole('link',{name:/자료 검수/})).toBeNull();
@@ -29,7 +29,7 @@ it('clears old account view and reloads public metadata on logout',async()=>{
  view.rerender(<SourceExamSelection sourceId="gachon" registeredOnly/>);
  expect(screen.queryByLabelText('문제 1 수식·텍스트 답안')).toBeNull();expect(screen.queryByRole('option',{name:'2027학년도 모의논술'})).toBeNull();
  await waitFor(()=>expect(state.load).toHaveBeenCalledTimes(2));
- expect(await screen.findByRole('button',{name:'수리논술 첨삭 서비스 준비 중'})).toHaveAttribute('aria-disabled','true');
+ expect(await screen.findByText('로그인 후 첨삭 가능 여부를 확인할 수 있습니다.')).toBeVisible();
 });
 it('does not invent years/questions for Kookmin without registered records',async()=>{
  state.load.mockResolvedValue([]);render(<SourceExamSelection sourceId="kookmin" registeredOnly/>);
@@ -39,13 +39,13 @@ it('does not invent years/questions for Kookmin without registered records',asyn
 
 it('TASK16-J preserves registered exams and does not admit unrelated static source metadata',async()=>{
  vi.stubGlobal('location',{origin:'https://legendstudy-task16b.pages.dev'});
- vi.mocked(fetch).mockResolvedValue(Response.json({version:'essay-source-registry-v1',exams:[{...exam,year:2024,kind:'admission',track:'자연계열',verification:'VERIFIED'}]}));
+ vi.mocked(fetch).mockImplementation(async()=>Response.json({version:'essay-source-registry-v1',exams:[{...exam,year:2024,kind:'admission',track:'자연계열',verification:'VERIFIED'}],ready:false}));
  render(<SourceExamSelection sourceId="gachon" registeredOnly/>);
  await screen.findByRole('option',{name:'2027학년도 모의논술'});
  expect(screen.queryByRole('option',{name:'2024학년도 수시논술'})).toBeNull();
  expect(state.load).toHaveBeenCalled();
  expect(fetch).toHaveBeenCalledWith('/api/essay/catalog',expect.objectContaining({method:'POST',headers:{Authorization:'Bearer fixture'}}));
- expect(await screen.findByRole('button',{name:'수리논술 첨삭 서비스 준비 중'})).toHaveAttribute('aria-disabled','true');
+ expect(await screen.findByRole('button',{name:'첨삭 서비스 제공 예정'})).toBeDisabled();
 });
 
 it('TASK16-J exposes Q1/Q2 photo input for the exact TEST natural exam while submission remains server-gated',async()=>{

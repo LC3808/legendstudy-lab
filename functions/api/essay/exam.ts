@@ -88,5 +88,5 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   // Uncertain dispatch/finalization never refunds or creates another reservation.
   await dispatch('/exam-evaluate',{run_id:run});
   return reply({runId:run,code:'STATUS_CHECK_REQUIRED'},202);
- }catch{return reply({code:run?'STATUS_CHECK_REQUIRED':'REQUEST_UNAVAILABLE',...(run?{runId:run}:{})},run?202:503);}
+ }catch(error){if(!run&&error instanceof Error&&error.message==='ACCESS_DENIED')return reply({code:'ACCESS_DENIED'},403);return reply({code:run?'STATUS_CHECK_REQUIRED':'REQUEST_UNAVAILABLE',...(run?{runId:run}:{})},run?202:503);}
 }

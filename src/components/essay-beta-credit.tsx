@@ -21,8 +21,10 @@ export function parseBetaCredit(value:unknown):BetaCredit|null {
   return v as BetaCredit;
 }
 export function betaEndDate(end:string){
-  if((Date.parse(end)+9*3600000)%86400000!==0) return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(end))+' KST';
-  return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'long',day:'numeric'}).format(new Date(Date.parse(end)-1))+' 23:59';
+  const date=new Date(end);
+  const day=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'long',day:'numeric'}).format(date);
+  const time=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(date);
+  return `${day} ${time} KST`;
 }
 function BetaNotice({end,limit=1,onClose,onStart}:{end:string;limit?:number;onClose:(hide:boolean)=>void;onStart:()=>Promise<string|null>}){
   const dialog=useRef<HTMLDialogElement>(null);
@@ -30,10 +32,10 @@ function BetaNotice({end,limit=1,onClose,onStart}:{end:string;limit?:number;onCl
   useEffect(()=>{dialog.current?.showModal();},[]);
   return <dialog ref={dialog} className="beta-onboarding" aria-labelledby="beta-notice-title" onCancel={e=>{e.preventDefault();onClose(hide);}} style={{maxWidth:'min(32rem,calc(100vw - 32px))',borderRadius:16,padding:24}}>
     <h2 id="beta-notice-title">논술 LAB 베타 서비스 안내</h2>
-    <p>인문논술 서비스를 매일 {limit}회 무료 이용할 수 있어요.</p>
-    <p>매일 0시(자정, 한국 시간)에 무료 첨삭 이용 횟수가 갱신되며 미사용분은 소멸돼요.</p>
+    <p>인문·사회·상경·자연·수리 논술 중 실제 공개된 시험에서 매일 {limit}회 무료 첨삭을 이용할 수 있어요.</p>
+    <p>매일 00:00 KST(한국 시간)에 무료 첨삭 이용 횟수가 갱신되며 미사용분은 소멸돼요.</p>
     <p>베타 서비스는 {betaEndDate(end)}까지 운영돼요. 베타 무료 첨삭권과 무료 재첨삭은 베타 서비스 기간 동안만 이용할 수 있어요.</p>
-    <p>가입 축하 무료 이용권(3개)과 구매 이용권은 기존 정책대로 이용할 수 있어요.</p>
+    <p>신규가입 무료 이용권 3개는 베타 무료 혜택과 별도이며, 구매 이용권과 함께 기존 정책대로 이용할 수 있어요.</p>
     <p>사용 중 불편한 점은 문의·건의사항으로 알려주세요. 공지사항에서 안내를 다시 확인할 수 있어요.</p>
     <label><input type="checkbox" checked={hide} disabled={busy} onChange={e=>setHide(e.target.checked)}/> 다음부터 보지 않기</label>
     {message&&<p role="status">{message}</p>}
