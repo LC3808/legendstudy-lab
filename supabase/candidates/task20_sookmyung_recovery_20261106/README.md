@@ -1,6 +1,6 @@
 # TASK20 숙명여대 과거 자료 복구 — 운영 승인 검토 후보
 
-기준: 2026-11-06 KST. **운영 미적용 / 공개·평가 비활성.**
+기준: 2026-11-06 KST. **Owner 승인 범위 운영 적용 완료 / 공개·평가 비활성.**
 
 ## 정확한 변경 범위
 
@@ -32,3 +32,7 @@
 `local-test-result.json`: 실제 운영 DB가 아닌 임시 로컬 PostgreSQL 17, 기존 APP canonical migration을 이용한 검증이다. 원본 PDF의 모든 수식·평가기준 정밀 검수 PASS나 운영 복구 PASS를 뜻하지 않는다.
 
 재현 도구: `scripts/essay-materials/task20_prepare_sookmyung.py`, `task20_test_registration.py`. 사전 Registry 스냅샷과 PDF 추출 본문은 비공개 로컬 입력으로 받으며 Git에 원문을 저장하지 않는다.
+
+## 운영 적용 확인 — 2026-11-06
+
+Owner의 검수용 등록 승인을 받아 동일 SQL을 적용했다. 총 38시험·92문항, 신규 30시험은 비활성·review, 신규 70문항은 비공개다. 기존 8시험·22문항 전체 행 해시가 사전 값과 일치한다. 신규 Math set 및 runtime policy는 각각 0건이다. `production-postflight.json`에 적용 SQL 해시와 검증 결과를 보관한다. 이 결과는 자료 공개 또는 평가 가능 PASS가 아니다.

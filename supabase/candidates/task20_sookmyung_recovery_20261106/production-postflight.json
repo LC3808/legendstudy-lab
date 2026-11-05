@@ -1,0 +1,18 @@
+{
+  "applied_at_utc": "2026-11-05T15:39:02.631170+00:00",
+  "owner_approval": "이 범위의 검수용 등록 승인",
+  "scope": "30 exams / 70 parent questions, private review only",
+  "sql_sha256": "c7c2ba261a7628a611707de0d10b617dd77a49ee7678e6e0733e0a6adce8eaa0",
+  "total_exams": 38,
+  "total_questions": 92,
+  "new_review_exams": 30,
+  "new_hidden_questions": 70,
+  "old_exams_fingerprint": "394fa5dee92afc3325ad7aa5d958945a",
+  "old_questions_fingerprint": "39399a820dbbd41fab2552cfb22f3f9f",
+  "existing_row_fingerprints_unchanged": true,
+  "new_math_sets": 0,
+  "new_runtime_policies": 0,
+  "publication_enabled": false,
+  "evaluation_enabled": false,
+  "status": "REGISTRY_ONLY_PASS"
+}

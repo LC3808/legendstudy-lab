@@ -1,0 +1,16 @@
+{
+  "localPG17": "PASS",
+  "new_exams": 56,
+  "new_questions": 146,
+  "existing_exams": 66,
+  "existing_questions": 146,
+  "idempotent_replay": "PASS",
+  "same_identity_different_id_block": "PASS",
+  "existing_rows_preserved": "PASS",
+  "rls_unchanged": "PASS",
+  "unpublished_and_user_write_denied": "PASS",
+  "rollback_state_drift_block": "PASS",
+  "cascade_dependency_block": "PASS",
+  "rollback_restore": "PASS",
+  "production_applied": false
+}
