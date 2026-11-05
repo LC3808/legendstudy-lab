@@ -88,5 +88,5 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   // Uncertain dispatch/finalization never refunds or creates another reservation.
   await dispatch('/exam-evaluate',{run_id:run});
   return reply({runId:run,code:'STATUS_CHECK_REQUIRED'},202);
- }catch(error){if(!run&&error instanceof Error&&error.message==='ACCESS_DENIED')return reply({code:'ACCESS_DENIED'},403);return reply({code:run?'STATUS_CHECK_REQUIRED':'REQUEST_UNAVAILABLE',...(run?{runId:run}:{})},run?202:503);}
+ }catch(error){console.warn('EXAM_AVAILABILITY_FAILURE',{stage:run?'reserved':'before-reservation',code:error instanceof Error&&['ACCESS_DENIED','CONFIGURATION_REQUIRED','LOGIN_REQUIRED','RPC_DENIED','REDIRECT_DENIED'].includes(error.message)?error.message:'UNCLASSIFIED',type:error instanceof TypeError?'TypeError':'Error'});if(!run&&error instanceof Error&&error.message==='ACCESS_DENIED')return reply({code:'ACCESS_DENIED'},403);return reply({code:run?'STATUS_CHECK_REQUIRED':'REQUEST_UNAVAILABLE',...(run?{runId:run}:{})},run?202:503);}
 }
