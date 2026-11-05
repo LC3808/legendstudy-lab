@@ -1,6 +1,6 @@
 # TASK20 한양대·중앙대·광운대 자연계 검수용 Registry 복구 후보
 
-상태: 운영 미적용 / Owner 승인 필요. 기존 숙명여대 승인과 별도 범위다.
+상태: 2026-11-06 Owner 별도 승인 후 검수용 운영 등록 완료. 공개·평가 비활성.
 
 ## 변경 범위
 
@@ -32,3 +32,7 @@
 `local-test-result.json`: 임시 PostgreSQL 17에 canonical migration과 기존 Registry 66/146를 재현했다. 중복 실행, 기존 행 보존, RLS 보존, 일반 사용자 쓰기 차단, 상태 변경 원복 거부, CASCADE 참조 원복 거부, 정상 원복을 통과했다. 운영 적용 및 실제 평가 PASS가 아니다.
 
 재현: `task20_prepare_three_universities.py`, `task20_test_registration.py`. 원본 전문은 비공개 입력으로만 사용한다.
+
+## 운영 적용 결과
+
+승인받은 동일 SQL 적용 후 총 122시험·292문항을 확인했다. 신규 56시험은 비활성·review, 신규 146문항은 비공개다. 기존 66시험·146문항의 전체 행 해시가 동일하다. 신규 Math set/runtime policy는 각각 0건이다. 증거는 `production-postflight.json`에 기록했다.

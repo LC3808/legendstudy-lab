@@ -1,0 +1,17 @@
+{
+  "applied_at_utc": "2026-11-05T15:52:25.080400+00:00",
+  "owner_approval": "해당 비공개 검수용 등록 승인",
+  "sql_sha256": "831e1b5896737040dc033e033ea783b561ed80b92e730eedbf8e8940d157ac05",
+  "total_exams": 122,
+  "total_questions": 292,
+  "new_review_exams": 56,
+  "new_hidden_questions": 146,
+  "old_exam_fingerprint": "ed67eb8dd523283df7307cbacd93421f",
+  "old_question_fingerprint": "d2cf4e8d5d223f1a588249eabf2c3ffc",
+  "existing_rows_unchanged": true,
+  "new_math_sets": 0,
+  "new_runtime_policies": 0,
+  "publication_enabled": false,
+  "evaluation_enabled": false,
+  "status": "REGISTRY_ONLY_PASS"
+}
