@@ -1,0 +1,776 @@
+[
+  {
+    "exam_id": "ec06c1af-0efc-5477-80b9-ab25b3f938b7",
+    "name": "한양대학교 2021학년도 수시 논술 자연계열 오전",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "2d4f01c3-6a94-5010-84a5-ba8c410d5aa3",
+    "name": "한양대학교 2021학년도 수시 논술 자연계열 오후1",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "12fc2456-206b-5172-8a54-513056b4692f",
+    "name": "한양대학교 2021학년도 수시 논술 자연계열 오후2",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "b8fc4b28-b54c-5af1-ab01-e7a191978a93",
+    "name": "한양대학교 2022학년도 수시 논술 자연계열 오전",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "6d59d592-045f-5a07-ab47-6d2b9b1c6080",
+    "name": "한양대학교 2022학년도 수시 논술 자연계열 오후1",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "c51e9d2b-2141-582d-8fef-39aa3569146a",
+    "name": "한양대학교 2022학년도 수시 논술 자연계열 오후2",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "913dc1fb-b97a-585a-a3bc-42403307833c",
+    "name": "한양대학교 2023학년도 수시 논술 자연계열 오전",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "7a837ee4-ef07-5885-8d06-d20ff241ebc6",
+    "name": "한양대학교 2023학년도 수시 논술 자연계열 오후1",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "77f27f9e-7ef9-5184-8fb1-607c68cc03d2",
+    "name": "한양대학교 2023학년도 수시 논술 자연계열 오후2",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "1d3fbceb-ef00-5b63-adca-15d2913d2410",
+    "name": "한양대학교 2024학년도 수시 논술 자연계열 오전",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "f62c49c7-39ca-5405-9969-93ee88972bdd",
+    "name": "한양대학교 2024학년도 수시 논술 자연계열 오후2",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "2c20b87a-0594-5a1e-80ae-30bc72087152",
+    "name": "한양대학교 2025학년도 수시 논술 자연계열 오전",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "c4c633bf-8edb-536a-8a7b-89f9ab64921e",
+    "name": "한양대학교 2025학년도 수시 논술 자연계열 오후1",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "26703113-7ecb-5632-b3a3-7185fdd9bb0a",
+    "name": "한양대학교 2025학년도 수시 논술 자연계열 오후2",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "2b66ee4c-a7bf-5c2d-b648-629cf712b0ca",
+    "name": "한양대학교 2026학년도 수시 논술 자연계열 오전",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "fff2d3d1-5b69-5da9-8a67-53c9658896a4",
+    "name": "한양대학교 2026학년도 수시 논술 자연계열 오후1",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "92e250d2-e074-5e84-8b8b-60c335aa2cde",
+    "name": "한양대학교 2026학년도 수시 논술 자연계열 오후2",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "30559faa-7c26-54ee-a5ec-859a58f96bda",
+    "name": "한양대학교 2026학년도 모의논술 자연계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "cb2bd529-7d6f-5f61-a6a6-7f8deba486c1",
+    "name": "한양대학교 2027학년도 모의논술 자연계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "48f194ed-202f-5788-962c-cb259317157a",
+    "name": "중앙대학교 2021학년도 수시 논술 자연계열 1회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "8842d967-e841-5296-a9d1-1bf24c78f6f7",
+    "name": "중앙대학교 2021학년도 수시 논술 자연계열 2회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "2f7d8e9a-28d4-566c-b69a-09c0bdc01738",
+    "name": "중앙대학교 2021학년도 수시 논술 자연계열 3회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "1b7f6944-0de5-5e61-bbcb-f44c78d61dac",
+    "name": "중앙대학교 2021학년도 모의논술 자연계열",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "bfe00753-a4bf-5857-8a39-056907969d23",
+    "name": "중앙대학교 2022학년도 수시 논술 자연계열 1회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "bbd2b0a2-b1b6-5956-87fc-aa1cfa08a404",
+    "name": "중앙대학교 2022학년도 수시 논술 자연계열 2회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "be701bb5-5647-5465-a338-1119dc0e064f",
+    "name": "중앙대학교 2022학년도 수시 논술 자연계열 3회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "7bc501df-6c12-5e13-82ad-ce487947f5f9",
+    "name": "중앙대학교 2022학년도 모의논술 자연계열",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "66f3816a-221e-5bf8-9486-bf69cec2e216",
+    "name": "중앙대학교 2023학년도 수시 논술 자연계열 1회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "ee5df319-a4f8-5840-a1c2-02136655512d",
+    "name": "중앙대학교 2023학년도 수시 논술 자연계열 2회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "7def3132-0356-5e18-be98-895637c20e6e",
+    "name": "중앙대학교 2023학년도 모의논술 자연계열",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "8174f3c1-879c-582f-8a88-f658286c5b9b",
+    "name": "중앙대학교 2024학년도 수시 논술 자연계열 1회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "25b00850-70b1-594d-93b4-b124701faf5c",
+    "name": "중앙대학교 2024학년도 수시 논술 자연계열 2회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "76ae9d8e-7613-5d56-84a1-167ce31ecb14",
+    "name": "중앙대학교 2025학년도 수시 논술 자연계열 1회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "866d1793-bbb5-5991-96e8-e52c2c99b2cd",
+    "name": "중앙대학교 2025학년도 수시 논술 자연계열 2회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "66fa2252-0e8a-5f29-985a-c50adafa7dce",
+    "name": "중앙대학교 2026학년도 수시 논술 자연계열 1회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "e484b585-d3ac-56d5-9c2c-7b604f28299d",
+    "name": "중앙대학교 2026학년도 수시 논술 자연계열 2회차",
+    "question_count": 4,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "c435f96e-0ce0-5603-ac22-c0984662eb98",
+    "name": "광운대학교 2021학년도 수시 논술 자연계열 1교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "a68fa7e1-b701-5c7b-95ae-cfc46850614f",
+    "name": "광운대학교 2021학년도 수시 논술 자연계열 2교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "eb9c551a-dd29-5454-9a55-8b58a2bb432d",
+    "name": "광운대학교 2021학년도 수시 논술 자연계열 3교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "cb4dc5d6-df44-519d-82b4-64833a13304e",
+    "name": "광운대학교 2021학년도 모의논술 자연계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "de78b082-d9b1-5234-8bb9-d7f7543294db",
+    "name": "광운대학교 2022학년도 수시 논술 자연계열 1교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "1a3a3532-8fa1-5d33-917c-e99d441e1788",
+    "name": "광운대학교 2022학년도 수시 논술 자연계열 2교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "18902739-69fc-53c8-a9a7-6bf620c9008b",
+    "name": "광운대학교 2022학년도 수시 논술 자연계열 3교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "a2a9d777-2237-50c2-af89-a617b88c5bff",
+    "name": "광운대학교 2023학년도 수시 논술 자연계열 1교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "5ebc33d1-1097-5ed4-b521-6b9a25d13eaf",
+    "name": "광운대학교 2023학년도 수시 논술 자연계열 2교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "3368bb8c-eaf7-5c8f-9e50-aa86c3eb36a1",
+    "name": "광운대학교 2023학년도 모의논술 자연계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "d2abfee2-2412-5630-9af8-a858116b6759",
+    "name": "광운대학교 2024학년도 수시 논술 자연계열 1교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "baceb638-55ee-5d78-8ff4-93dad7832914",
+    "name": "광운대학교 2024학년도 수시 논술 자연계열 2교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "10ade245-4c6a-552b-beae-5dc7af3b75bd",
+    "name": "광운대학교 2024학년도 모의논술 자연계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "b1e3505a-359e-5122-bf42-32b1cb49a174",
+    "name": "광운대학교 2025학년도 수시 논술 자연계열 1교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "1705c7d2-e11d-570f-9a4a-d220d0600acd",
+    "name": "광운대학교 2025학년도 수시 논술 자연계열 2교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "91802b60-96bf-5cb6-abef-d1c1a738ae6f",
+    "name": "광운대학교 2025학년도 모의논술 자연계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "44eba80d-09ed-5e8c-a988-01e90c78ffd4",
+    "name": "광운대학교 2026학년도 수시 논술 자연계열 1교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "45febe31-1b94-5648-a081-e335f82e81a4",
+    "name": "광운대학교 2026학년도 수시 논술 자연계열 2교시",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "1e66b782-4e74-5fd4-b36d-032991875522",
+    "name": "광운대학교 2026학년도 모의논술 자연계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "6f01f238-622d-5a85-9a04-8bb5a7b9759d",
+    "name": "광운대학교 2027학년도 모의논술 자연계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "65c60943-796e-59d0-a3e6-12a43411356b",
+    "name": "숙명여자대학교 2021학년도 수시 논술 인문계열 1회차",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "52a6cbdf-dc7b-5b03-b42f-ec24d88adcb3",
+    "name": "숙명여자대학교 2021학년도 수시 논술 인문계열 2회차",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "e172d96f-0567-560d-8b80-63660e655a9a",
+    "name": "숙명여자대학교 2021학년도 수시 논술 인문계열 3회차",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "f2807bf1-7ffb-51b1-b062-41e7feb6f3a4",
+    "name": "숙명여자대학교 2021학년도 수시 논술 자연계열",
+    "question_count": 1,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "afc6578e-a531-5719-8706-b57f53921998",
+    "name": "숙명여자대학교 2021학년도 모의논술 인문계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "39493cde-f3ca-558d-9aab-7d3c5d7b871a",
+    "name": "숙명여자대학교 2021학년도 모의논술 자연계열",
+    "question_count": 1,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "452155b0-b752-5dca-8912-49b37a5c6bef",
+    "name": "숙명여자대학교 2022학년도 수시 논술 인문계열 1회차",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "423a09b8-b89e-578e-9744-e3c96d0dd611",
+    "name": "숙명여자대학교 2022학년도 수시 논술 인문계열 2회차",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "3ebbbb28-afad-514d-a294-a50fabbdd917",
+    "name": "숙명여자대학교 2022학년도 수시 논술 자연계열",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "5a565963-98db-5f0f-a7b0-5c879f4eaedb",
+    "name": "숙명여자대학교 2022학년도 모의논술 인문계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "55b45df4-d873-5c4b-9dcb-6741c0197298",
+    "name": "숙명여자대학교 2022학년도 모의논술 자연계열",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "06379378-b27e-510d-8027-abef96a08564",
+    "name": "숙명여자대학교 2023학년도 수시 논술 인문계열 1회차",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "49fd76ae-48d9-5f33-a7f9-3873203847d1",
+    "name": "숙명여자대학교 2023학년도 수시 논술 인문계열 2회차",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "6db119ec-58bd-5d5c-83ab-af33d192ffcc",
+    "name": "숙명여자대학교 2023학년도 수시 논술 자연계열",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "b462a69f-b52d-5b81-b934-3157e4eb9e7f",
+    "name": "숙명여자대학교 2023학년도 모의논술 인문계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "4c582db3-d518-57f9-b3b1-56c257aca2e5",
+    "name": "숙명여자대학교 2023학년도 모의논술 자연계열",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "bb865f39-f41b-57a3-91b9-e96d2cb86478",
+    "name": "숙명여자대학교 2024학년도 수시 논술 인문계열 1회차",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "4de2b4ff-7ce4-57f4-a864-14627899cdf9",
+    "name": "숙명여자대학교 2024학년도 수시 논술 인문계열 2회차",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "4eb4266c-f109-540a-880b-4044730b4474",
+    "name": "숙명여자대학교 2024학년도 수시 논술 자연계열",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "d01c91a0-2867-5f20-9df3-2eecc94cc329",
+    "name": "숙명여자대학교 2024학년도 모의논술 인문계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "6bc75b10-b63f-52cd-b74f-44ddacfb90e9",
+    "name": "숙명여자대학교 2024학년도 모의논술 자연계열",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "9e3bf5ce-eeeb-51e2-abad-addf41ad1973",
+    "name": "숙명여자대학교 2025학년도 수시 논술 인문계열 1회차",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "47c0b9ff-5d09-5bb9-a1d2-052f87e9803a",
+    "name": "숙명여자대학교 2025학년도 수시 논술 인문계열 2회차",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "78dc85f3-f3c8-5c8b-98fc-ff96b87527ac",
+    "name": "숙명여자대학교 2025학년도 수시 논술 자연계열",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "6aa5f389-5cf0-5a35-84e7-ba74bb13557f",
+    "name": "숙명여자대학교 2025학년도 수시 논술 자연계열(약학부)",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "f1f86385-3ee4-5af4-a836-e819bae455a6",
+    "name": "숙명여자대학교 2025학년도 모의논술 자연계열",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "4835da12-452e-57c3-b134-9dbea8f821bb",
+    "name": "숙명여자대학교 2025학년도 모의논술 자연계열(약학부)",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "dcbe742e-c418-5081-ad06-44953ec2ffac",
+    "name": "숙명여자대학교 2026학년도 모의논술 인문계열",
+    "question_count": 2,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "6be424d3-ffc6-56ed-bab5-5d86416d142e",
+    "name": "숙명여자대학교 2026학년도 모의논술 자연계열",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  },
+  {
+    "exam_id": "11ac8d4a-c8e4-5184-ac2a-8d622722cdcf",
+    "name": "숙명여자대학교 2026학년도 모의논술 자연계열(약학부)",
+    "question_count": 3,
+    "classification": "REVIEW_REQUIRED",
+    "public_candidate": false,
+    "banner_eligible": false,
+    "reason": "Existing source files found; question-level evidence/formula review and executable package are incomplete. Private policy remains in force."
+  }
+]

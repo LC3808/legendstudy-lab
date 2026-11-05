@@ -1,0 +1,199 @@
+[
+  {
+    "question_id": "7c112225-51cc-59d8-a985-6c459a1e0a0a",
+    "exam_id": "25dc068b-4672-56e1-b8df-08ee8800e2f6",
+    "label": "건국대 2026 자연 문제 2",
+    "ids": {
+      "set": "b3dca87c-86fe-53ea-bf65-855208756a6c",
+      "problem": "c021293c-30d9-5b7b-b049-61a7aa37a589",
+      "leaf": "a4b278d0-4423-5e75-950c-ad5cea9c6447",
+      "profile": "e841b760-6f9f-53f2-8fb6-92f59f873a81",
+      "solution": "b6f1d806-00a3-5bdb-947f-b2d250df3e6e"
+    },
+    "source_sha256": "74884de48371355d76021a2e9c714e78a46b113f5a51149cedf3b34ab6a4d988",
+    "pages": {
+      "QUESTION": [
+        92
+      ],
+      "INTENT": [
+        95
+      ],
+      "SCORING": [
+        98
+      ],
+      "SOLUTION": [
+        99,
+        100
+      ]
+    },
+    "criteria_count": 1,
+    "official_total": 23,
+    "source_review": "SOURCE_CHECKED",
+    "runtime_review": "NOT_VERIFIED",
+    "production_applied": false
+  },
+  {
+    "question_id": "40290efd-36af-55a9-beb7-8c90bbb04ee4",
+    "exam_id": "25dc068b-4672-56e1-b8df-08ee8800e2f6",
+    "label": "건국대 2026 자연 문제 3",
+    "ids": {
+      "set": "531413ed-f4a4-5c34-bb5c-5e9fd166a937",
+      "problem": "d433e4af-04cd-5d15-bf01-80b0aed379ea",
+      "leaf": "b471f1d5-f85f-548d-be86-ace5fb14b758",
+      "profile": "08819b39-b7a3-5997-9178-856757686211",
+      "solution": "9bde4876-2961-5367-b91d-80a0a9828fde"
+    },
+    "source_sha256": "74884de48371355d76021a2e9c714e78a46b113f5a51149cedf3b34ab6a4d988",
+    "pages": {
+      "QUESTION": [
+        93
+      ],
+      "INTENT": [
+        95
+      ],
+      "SCORING": [
+        98
+      ],
+      "SOLUTION": [
+        100
+      ]
+    },
+    "criteria_count": 1,
+    "official_total": 29,
+    "source_review": "SOURCE_CHECKED",
+    "runtime_review": "NOT_VERIFIED",
+    "production_applied": false
+  },
+  {
+    "question_id": "a7d06546-9d61-5317-afff-e656c25964f7",
+    "exam_id": "25dc068b-4672-56e1-b8df-08ee8800e2f6",
+    "label": "건국대 2026 자연 문제 4",
+    "ids": {
+      "set": "6ae3e463-4f72-55b3-be85-b1726ebba887",
+      "problem": "f576e3a8-c1f3-5810-b7f6-2041482804ce",
+      "leaf": "a0b143c5-c404-53cf-93a0-2e855960c97c",
+      "profile": "4e88f322-cda9-57b2-b81d-22848bfeafd8",
+      "solution": "e0a86a58-f686-5653-a9ad-478ccebf29ec"
+    },
+    "source_sha256": "74884de48371355d76021a2e9c714e78a46b113f5a51149cedf3b34ab6a4d988",
+    "pages": {
+      "QUESTION": [
+        94
+      ],
+      "INTENT": [
+        95
+      ],
+      "SCORING": [
+        98
+      ],
+      "SOLUTION": [
+        101
+      ]
+    },
+    "criteria_count": 1,
+    "official_total": 31,
+    "source_review": "SOURCE_CHECKED",
+    "runtime_review": "NOT_VERIFIED",
+    "production_applied": false
+  },
+  {
+    "question_id": "ed63c506-ee9b-5ce7-967f-a1d53b9feac6",
+    "exam_id": "0a331c3e-d46b-5af3-b787-e3342e8a1ae8",
+    "label": "경희대 2026 자연 논제 Ⅰ",
+    "ids": {
+      "set": "107e95f6-b22d-568e-b04a-95c1c5e0e241",
+      "problem": "8b017b7d-7589-5d60-b2ac-5e7f34fe72d2",
+      "leaf": "e7c7f989-dc04-5d38-9ebe-b9d86056f2b9",
+      "profile": "097cd91c-f1e6-58a8-8985-fa6baaf2f57c",
+      "solution": "a6e3ef6c-42ab-5c7b-8739-1d11cbd6046b"
+    },
+    "source_sha256": "8ef3db4bd42d2cd1cfa4663277a5aaf726aedbd01b457719a8a151b8a1767706",
+    "pages": {
+      "QUESTION": [
+        3
+      ],
+      "INTENT": [
+        3
+      ],
+      "SCORING": [
+        4
+      ],
+      "SOLUTION": [
+        4,
+        5
+      ]
+    },
+    "criteria_count": 6,
+    "official_total": 30,
+    "source_review": "SOURCE_CHECKED",
+    "runtime_review": "NOT_VERIFIED",
+    "production_applied": false
+  },
+  {
+    "question_id": "4df1296d-abe4-5499-af35-20ba573fd6ae",
+    "exam_id": "0a331c3e-d46b-5af3-b787-e3342e8a1ae8",
+    "label": "경희대 2026 자연 논제 Ⅱ",
+    "ids": {
+      "set": "87e95557-4042-52aa-b08b-d49a9a529b1a",
+      "problem": "f62979ad-33e2-5c4e-8b16-0ad730325d33",
+      "leaf": "47d995c9-ba8f-56a4-879c-b1f6711f754a",
+      "profile": "05780169-58bc-50ba-8b56-4c7a28f76c96",
+      "solution": "660173be-9b15-5a3d-bac4-401944674856"
+    },
+    "source_sha256": "8ef3db4bd42d2cd1cfa4663277a5aaf726aedbd01b457719a8a151b8a1767706",
+    "pages": {
+      "QUESTION": [
+        6
+      ],
+      "INTENT": [
+        6
+      ],
+      "SCORING": [
+        7
+      ],
+      "SOLUTION": [
+        7,
+        8
+      ]
+    },
+    "criteria_count": 5,
+    "official_total": 33,
+    "source_review": "SOURCE_CHECKED",
+    "runtime_review": "NOT_VERIFIED",
+    "production_applied": false
+  },
+  {
+    "question_id": "101a7dcc-1c05-5c1d-b926-3f5729158f54",
+    "exam_id": "0a331c3e-d46b-5af3-b787-e3342e8a1ae8",
+    "label": "경희대 2026 자연 논제 Ⅲ",
+    "ids": {
+      "set": "8d00ec32-1dfc-5b80-bd0c-9465b49c542b",
+      "problem": "ce4edc33-ea59-59e6-8d6d-731008112f70",
+      "leaf": "b20296b6-21df-51a4-92bd-d0e3125dd6c6",
+      "profile": "a20c91bc-aee5-53bb-b468-f1daa1d9f7d1",
+      "solution": "010e5290-7081-546a-aa7a-7dbd425f78e1"
+    },
+    "source_sha256": "8ef3db4bd42d2cd1cfa4663277a5aaf726aedbd01b457719a8a151b8a1767706",
+    "pages": {
+      "QUESTION": [
+        9,
+        10
+      ],
+      "INTENT": [
+        10
+      ],
+      "SCORING": [
+        10
+      ],
+      "SOLUTION": [
+        11,
+        12
+      ]
+    },
+    "criteria_count": 6,
+    "official_total": 37,
+    "source_review": "SOURCE_CHECKED",
+    "runtime_review": "NOT_VERIFIED",
+    "production_applied": false
+  }
+]
