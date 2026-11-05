@@ -41,9 +41,13 @@ const review=`Independently review this exact learning judgement against the fro
 
 export async function generateReviewedMathLearning(args:{input:MathEvaluationInput;output:MathEvalOutput;newEvaluation:boolean;allQuestionsComplete:boolean;call:LearningJsonCall;now?:()=>string}):Promise<ReviewedLearningJudgement|null>{
  const {input,output}=args;
- if(!args.newEvaluation||!args.allQuestionsComplete||!input.canonicalPackage||output.overall.status==='NEEDS_HUMAN_REVIEW'||output.overall.answer==='NOT_DETERMINABLE'||output.overall.coverage==='NOT_ATTEMPTED'||!input.criteria.length||!output.steps.length)return null;
+ const withheld=(reason:string,failedChecks:string[]=[]):null=>{
+  console.warn('MATH_LEARNING_WITHHELD',{evaluationId:input.evaluationId,reason,failedChecks});
+  return null;
+ };
+ if(!args.newEvaluation||!args.allQuestionsComplete||!input.canonicalPackage||output.overall.status==='NEEDS_HUMAN_REVIEW'||output.overall.answer==='NOT_DETERMINABLE'||output.overall.coverage==='NOT_ATTEMPTED'||!input.criteria.length||!output.steps.length)return withheld('INELIGIBLE');
  assertRecognizedInputConfirmed(input.canonicalPackage,input.selectedExtractionId);
- if(!validateMathEval(output,input).ok)return null;
+ if(!validateMathEval(output,input).ok)return withheld('BASE_OUTPUT_INVALID');
  const rubricVersion='pinned-'+await digest({rubric:output.rubric.rubric_version,profile:input.canonicalPackage.profile,criteria:input.canonicalPackage.criteria});
  // Never reconstruct historical records. The caller is the active canonical worker claim.
  const evidence={evaluation_id:input.evaluationId,question_id:input.leafId,policy_version:LEARNING_POLICY,anchors:LEVEL_ANCHORS,canonical:input.canonicalPackage,assessment:output};
@@ -56,14 +60,15 @@ export async function generateReviewedMathLearning(args:{input:MathEvaluationInp
  // Structural checks before spending a reviewer call. Not yet published or trusted.
  publishLearningCompleteness(candidate,context,candidate);
  // TASK16-L: insufficient evidence produces no persisted judgement and no review call.
- if(candidate.status!=='ASSESSED')return null;
+ if(candidate.status!=='ASSESSED')return withheld('INSUFFICIENT_EVIDENCE');
  const criterionNotes=object(candidate.criterion_note_refs);
  if(Object.keys(criterionNotes).length!==input.criteria.length||input.criteria.some(c=>typeof criterionNotes[c.criterion_id]!=='string'))throw Error('LEARNING_CRITERIA_NOTES_REQUIRED');
  const candidate_sha256=await digest({evidence,candidate,notes});
  const verdict=object(await args.call(review,learningProviderContent({...evidence,candidate,notes,candidate_sha256})));
  const checks=object(verdict.checks);
  const required=['base_evaluation_supported','all_official_criteria_considered','level_supported','notes_grounded','no_early_solution_disclosure'];
- if(verdict.accepted!==true||verdict.candidate_sha256!==candidate_sha256||required.some(k=>checks[k]!==true))return null;
+ if(verdict.candidate_sha256!==candidate_sha256)return withheld('REVIEW_HASH_MISMATCH');
+ if(verdict.accepted!==true||required.some(k=>checks[k]!==true))return withheld('INDEPENDENT_REVIEW_REJECTED',required.filter(k=>checks[k]!==true));
  const value=publishLearningCompleteness(candidate,context,candidate);
  return value?{value,review:{version:'learning-independent-review-v1',candidate_sha256,accepted:true}}:null;
 }

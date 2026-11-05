@@ -74,3 +74,14 @@ describe('official learning evidence transport',()=>{
   expect(()=>learningProviderContent({canonical:{official_images:[{data:'bad',sha256:'a'.repeat(64)}]}})).toThrow('INVALID_OFFICIAL_IMAGES');
  });
 });
+
+it('reports failed reviewer checks without logging student work or generated notes',async()=>{
+ const args=setup();const log=vi.spyOn(console,'warn').mockImplementation(()=>{});
+ args.call.mockImplementationOnce(async()=>({candidate,notes})).mockImplementationOnce(async(_,p)=>({...p as object,accepted:false,checks:{base_evaluation_supported:true,all_official_criteria_considered:true,level_supported:true,notes_grounded:true,no_early_solution_disclosure:false}}));
+ try{
+  expect(await generateReviewedMathLearning(args)).toBeNull();
+  expect(log).toHaveBeenCalledWith('MATH_LEARNING_WITHHELD',{evaluationId:args.input.evaluationId,reason:'INDEPENDENT_REVIEW_REJECTED',failedChecks:['no_early_solution_disclosure']});
+  expect(JSON.stringify(log.mock.calls)).not.toContain('student work');
+  expect(JSON.stringify(log.mock.calls)).not.toContain(notes.reason);
+ }finally{log.mockRestore();}
+});

@@ -136,7 +136,11 @@ export async function runWorkerEvaluation(params: {
     try {
       learning=await Promise.race([params.learning(claimContextToInput(claim),candidate.output),new Promise<never>((_,reject)=>{learningTimer=setTimeout(()=>reject(Error('LEARNING_TIMEOUT')),65000);})]);
       if(learning?.value.status!=='ASSESSED')learning=null;
-    } catch { console.warn('MATH_LEARNING_UNAVAILABLE'); }
+    } catch (error) {
+      const allowed=['LEARNING_TIMEOUT','LEARNING_INVALID_OUTPUT','LEARNING_INVALID_NOTES','LEARNING_EVIDENCE_REQUIRED','LEARNING_CRITERIA_NOTES_REQUIRED'];
+      const message=error instanceof Error?error.message:'';
+      console.warn('MATH_LEARNING_UNAVAILABLE',{evaluationId:params.evaluationId,reason:allowed.includes(message)?message:'PROVIDER_OR_VALIDATION_ERROR'});
+    }
     finally {if(learningTimer)clearTimeout(learningTimer);}
   }
   const evaluationId = await params.worker.finalize(params.evaluationId, claim.lease_token, finalOutput, learning);
