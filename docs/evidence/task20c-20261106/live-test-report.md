@@ -1,0 +1,55 @@
+# TASK20-C 실제 TEST 평가 검증 — 2026-11-06
+
+**승인된 6문항 최초 평가·저장·이용권 계약 검증 PASS. 운영 공개 미승인·미적용.** TASK20 전체 및 모든 품질 유형 완료를 뜻하지 않는다.
+
+## 지급과 호출 범위
+
+기존 TEST 관리자 계정으로 정상 로그인하고 `admin_manual_credit_grant`를 사용했다. 고정 지급 키는 비공개 grant.json에 보존하며, 원장 external_reference로 사전 중복 여부를 확인했다. 지급 전 0/예약0/31거래 → 승인 6개 지급 1건 → 6개 최초 평가 완료 후 0/예약0/44거래. 지급6 + 각 reserve/consume12 = 거래13건 증가. 추가 지급·운영 원장 변경 없음.
+
+최초 SQL 관리자 claims 설정 방식은 자동 승인 검토에서 거절되어 실행되지 않았다. 정상 Auth 로그인 방식으로 교체했다. 관리자 권한·Auth 설정은 변경하지 않았다.
+
+실제 최초 평가 요청6회 + 경희Q3 무료 재첨삭1회 = 평가 실행7회. 추가 유료 평가0회. 각 요청 안에서 생성·독립 검토·학습 평가가 여러 Provider HTTP 호출을 할 수 있어 HTTP 호출 총수를 6으로 단정하지 않는다. 이번에는 토큰/비용 측정을 수행하지 않았다.
+
+## 문항별 결과
+
+|문항|실제 평가|공식 기준 대응|풀이 단계|학습 단계|공개 후보|
+|---|---|---|---|---|---|
+|건국대 2026 자연 문제 2|정답·풀이 타당, COMPLETED|1개|5개|5|검수 완료 후보|
+|건국대 2026 자연 문제 3|정답·풀이 타당, COMPLETED|1개|8개|5|검수 완료 후보|
+|건국대 2026 자연 문제 4|정답·풀이 타당, COMPLETED|1개|5개|5|검수 완료 후보|
+|경희대 2026 자연 논제 Ⅰ|정답·풀이 타당, COMPLETED|6개|6개|5|검수 완료 후보|
+|경희대 2026 자연 논제 Ⅱ|정답·풀이 타당, COMPLETED|5개|8개|5|검수 완료 후보|
+|경희대 2026 자연 논제 Ⅲ|정답·풀이 타당, COMPLETED|6개|6개|미제공|조건부 후보 — 학습 단계 미제공|
+
+20개 공식 기준 ID와 실제 평가 criterion ID가 정확히 일치한다. 38단계 모두 타당으로 인정했다. 공식 해설을 정규화한 **정답 풀이 입력**을 사용했다. 독립적으로 기댓값·연쇄법칙·삼차식 세 실근 조건·매개곡선 길이·조건부 확률·접선과 곡선 사이 넓이를 공식 해설과 대조했다. 오답 유형·손글씨 OCR·대안 풀이 전반을 이 6회로 PASS 처리하지 않는다.
+
+경희 Q3 수학 평가는 정답/공식 기준6개 충족/오류0/저장 완료이나 optional `learning_judgement`가 null이다. 다른5건은 검토 통과한 학습5단계가 결과·History에 동일하게 저장됐다. 현재 저장 계약은 optional 판단이 구조검증/독립검토를 통과하지 못하거나 예외 발생 시 등급 없이 기본 평가를 보존한다. 실패 이유를 영속 기록하지 않아 이번 null의 정확한 내부 원인은 확인 불가다. 특정 원인으로 단정하거나 기존 결과에 등급을 소급 생성하지 않았다. 학습 단계가 모든 신규 평가에서 필수인 공개 기준이면 Q3은 추가 진단 전 공개 보류다.
+
+## 저장·재첨삭·원장
+
+- 결과와 History 동일 evaluation_id/lineage, 최초 기록1건씩 확인.
+- 6개 요청을 같은 client key로 재전송해 동일 ID 반환, 원장 거래 수·잔액 불변.
+- 각 요청 credits_required=1, consume1건, balance delta -1, reserved delta 합0.
+- 무료 재첨삭 AVAILABLE·eligible true·included_count1, 최초 완료 후14일 확인. 관리자 지급 이용권으로 실행했으므로 베타 일일 무료 지급이 아니다.
+- 경희Q3 실제 무료 재첨삭1회는 추가 이용권0·History2건·무료자격 CONSUMED·최초6결과 무변경을 확인했다. 나머지5문항 무료 재첨삭은 자격/계약만 확인했으며 실제 실행으로 보고하지 않는다. 로컬 Mock12평가·공개 scope/원복 포함115검사 PASS.
+- 공개 전 공식 해설의 ID/출처/공개 가능 메타데이터만 반환, 해설 본문은 없음. 학생이 제출한 정답 풀이 자체는 학생 답안 근거로 표시된다.
+
+## 운영 공개 변경·원복 계획
+
+현재 운영의 exact release_catalog/evaluation_admission 함수 정의와 ACL을 읽기 전용으로 확보했다. 기존 허용 leaf는 그대로 두고 manifest의 6개 leaf만 추가하는 SQL 후보와 이전 함수 정의를 준비했다. 공개 후보는 건국2026 Q2~Q4, 경희2026 Q1~Q3이며 신규86시험은 포함하지 않는다. Q3 학습 단계 누락을 공개 허용할지는 별도 명시해야 한다.
+
+적용 전: 함수 정의 MD5/ACL 재검사, 기존 Registry ID 일치, 기존 건국Q1 및 공개 Catalog 스냅샷/원장·History 보존 확인. private DRAFT 삽입 SQL의 콘텐츠 해시/충돌 검사 사용. 기존 문제 PDF는 재사용한다.
+
+승인 적용 순서: ①6개 기존 Registry 문항에 검수 콘텐츠 삽입 ②해당 set/problem/profile/공식solution만 ACTIVE ③private release_catalog/evaluation_admission의 exact6 허용 추가 ④운영 Pages MATH_PUBLIC_LEAVES의 기존 값에 같은6개 합집합 반영(Secret 수정 없이) ⑤일반 사용자 Catalog·PDF·답안 진입·첨삭 가능 상태 검증. 기존 public math_catalog/credit/history 함수와 신규86 Catalog guard는 수정하지 않는다. 현재 후보 SQL은 scope 함수 delta와 guarded rollback이며, private production-apply.private.sql에 콘텐츠 삽입·ACTIVE·함수 delta를 하나의 트랜잭션으로 준비했다. 로컬 scope exact6/ACL/원복/History 보존115검사를 통과했다. 운영 Gateway 설정 사전값 및 전체 공개 postflight는 아직 미실행이다.
+
+원복: Gateway 허용 범위를 기존 값으로 복원하고 두 private 함수 정의/ACL을 사전 스냅샷으로 복원한다. 참조 평가가 발생한 콘텐츠·답안·History·원장은 삭제하지 않는다. 미참조 콘텐츠만 기존 guarded rollback 사용 가능. 원복 후 기존 공개 범위와 건국Q1 재검증.
+
+운영 적용/배포0. Claude 배너 신규 추가0. 기존 공개 목록 유지. 실제 공개 승인과 postflight 전에는 이번6문항을 홍보 목록에 추가하지 않는다.
+
+## Q3 추가 진단 / 승인 대기
+
+무료 재첨삭도 수학 판정은 CORRECT이나 학습 단계는 null이다. 기존 결과를 수정하지 않았고 이력2건·추가차감0·최초6결과 전체 값 보존을 검증했다. 정확한 원인 로그가 없어 Provider 호출을 무작정 반복하지 않는다.
+
+기존 TEST 소스 브랜치 `codex/math-commerce-release-20261103`에 학습 단계 보류 사유(INELIGIBLE, INSUFFICIENT_EVIDENCE, 검토 해시 불일치, 독립검토 실패 항목)와 예외의 고정 코드 로그를 추가했다. 답안·원문·Provider 응답·Secret은 로그에 넣지 않는다. 평가 판정과 공개 안전장치는 변경하지 않았다. 회귀41 PASS·typecheck PASS·Cloudflare Functions bundle PASS. 기존 readonly 테스트 fixture 타입 오류1건도 명시적 tuple 타입으로 수정했다. **진단 수정은 아직 TEST 미배포·운영 미배포**다.
+
+Q3의 다음 실평가에는 새 사이클 이용권1개가 필요하여 Owner에게 격리 TEST 1개 추가 지급을 요청했다. 추가 지급/평가는 승인 전 실행하지 않는다. Q3 공개 보류, 나머지5문항은 현재 정답 사례 검수 완료 후보이며 모두 운영 미공개다.

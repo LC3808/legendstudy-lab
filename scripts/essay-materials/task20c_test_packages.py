@@ -60,6 +60,19 @@ def content_case(c,rpc,new,scalar,A,B):
  except m.psycopg.Error:
   c.execute('rollback');ok('referenced_rollback_denied')
  ok('legacy_evaluations_exact',before==scalar("select jsonb_agg(to_jsonb(t) order by id) from public.essay_evaluations t"))
+ scope_dir=Path(__file__).resolve().parents[2]/'supabase/candidates/task20c_six_packages_20261106'
+ c.execute((scope_dir/'scope-functions.rollback.sql').read_text())
+ c.execute('revoke all on function math_private.release_catalog(uuid) from public,anon,authenticated')
+ c.execute('revoke all on function math_private.evaluation_admission() from public,anon,authenticated')
+ old_scope=scalar('select math_private.release_catalog(null)')
+ ok('old_scope_excludes_six',old_scope==[])
+ c.execute((scope_dir/'scope-functions.candidate.sql').read_text())
+ visible=scalar('select math_private.release_catalog(null)')
+ ok('scope_exact_six', {x['leaf_id'] for x in visible}=={x['id'] for x in rows['math_subproblems']})
+ ok('scope_private_acl',not scalar("select has_function_privilege('authenticated','math_private.release_catalog(uuid)','EXECUTE')"))
+ c.execute((scope_dir/'scope-rollback.sql').read_text())
+ ok('scope_rollback_exact',scalar('select math_private.release_catalog(null)')==old_scope)
+ ok('scope_rollback_history_preserved',scalar('select count(*) from public.math_evaluations')==12)
  report=dict(status='PASS',checks=len(checks),details=checks,questions=6,mock_evaluations=12,actual_provider_calls=0,production_writes=0,scope='disposable canonical SQL only; hosted runtime/publication not verified')
  (P/'local-test-result.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
 source=inspect.getsource(m.verify).split(" print('MATH_FULL_NON_SUPERUSER_INSTALL_PASS')")[0]+"\n o.execute_as_production(c,admin,(R/'supabase/migrations/20261002000200_math_runtime_surface.sql').read_text())\n content_case(c,rpc,new,scalar,A,B)\n"

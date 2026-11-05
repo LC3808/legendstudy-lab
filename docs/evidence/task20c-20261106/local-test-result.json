@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "checks": 110,
+  "checks": 115,
   "details": [
     "math_problem_sets_exact_count",
     "math_problems_exact_count",
@@ -111,7 +111,12 @@
     "foreign_denied",
     "same_lineage",
     "referenced_rollback_denied",
-    "legacy_evaluations_exact"
+    "legacy_evaluations_exact",
+    "old_scope_excludes_six",
+    "scope_exact_six",
+    "scope_private_acl",
+    "scope_rollback_exact",
+    "scope_rollback_history_preserved"
   ],
   "questions": 6,
   "mock_evaluations": 12,

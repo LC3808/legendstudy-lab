@@ -1,0 +1,196 @@
+{
+  "status": "PASS",
+  "scope": "six official-solution initial evaluations; no OCR/error-case/free-rewrite execution",
+  "questions": [
+    {
+      "label": "건국대 2026 자연 문제 2",
+      "question_id": "7c112225-51cc-59d8-a985-6c459a1e0a0a",
+      "leaf_id": "a4b278d0-4423-5e75-950c-ad5cea9c6447",
+      "evaluation_id": "33ad6b1d-08af-49c2-b920-c605f06c97a9",
+      "state": "COMPLETED",
+      "criteria": 1,
+      "steps": 5,
+      "learning_level": 5,
+      "answer_status": "CORRECT",
+      "history": "PASS",
+      "request_replay": "PASS",
+      "solution_hidden": "PASS",
+      "free_rewrite_eligible": true,
+      "actual_free_rewrite_executed": false,
+      "billing": [
+        {
+          "credits_required": 1,
+          "transaction_type": "reserve",
+          "balance_delta": 0,
+          "reserved_delta": 1
+        },
+        {
+          "credits_required": 1,
+          "transaction_type": "consume",
+          "balance_delta": -1,
+          "reserved_delta": -1
+        }
+      ]
+    },
+    {
+      "label": "건국대 2026 자연 문제 3",
+      "question_id": "40290efd-36af-55a9-beb7-8c90bbb04ee4",
+      "leaf_id": "b471f1d5-f85f-548d-be86-ace5fb14b758",
+      "evaluation_id": "ae41f612-550d-4749-b9c3-86557042fcc1",
+      "state": "COMPLETED",
+      "criteria": 1,
+      "steps": 8,
+      "learning_level": 5,
+      "answer_status": "CORRECT",
+      "history": "PASS",
+      "request_replay": "PASS",
+      "solution_hidden": "PASS",
+      "free_rewrite_eligible": true,
+      "actual_free_rewrite_executed": false,
+      "billing": [
+        {
+          "credits_required": 1,
+          "transaction_type": "reserve",
+          "balance_delta": 0,
+          "reserved_delta": 1
+        },
+        {
+          "credits_required": 1,
+          "transaction_type": "consume",
+          "balance_delta": -1,
+          "reserved_delta": -1
+        }
+      ]
+    },
+    {
+      "label": "건국대 2026 자연 문제 4",
+      "question_id": "a7d06546-9d61-5317-afff-e656c25964f7",
+      "leaf_id": "a0b143c5-c404-53cf-93a0-2e855960c97c",
+      "evaluation_id": "0323b185-e4c7-46a1-8e23-d9082cfa726a",
+      "state": "COMPLETED",
+      "criteria": 1,
+      "steps": 5,
+      "learning_level": 5,
+      "answer_status": "CORRECT",
+      "history": "PASS",
+      "request_replay": "PASS",
+      "solution_hidden": "PASS",
+      "free_rewrite_eligible": true,
+      "actual_free_rewrite_executed": false,
+      "billing": [
+        {
+          "credits_required": 1,
+          "transaction_type": "reserve",
+          "balance_delta": 0,
+          "reserved_delta": 1
+        },
+        {
+          "credits_required": 1,
+          "transaction_type": "consume",
+          "balance_delta": -1,
+          "reserved_delta": -1
+        }
+      ]
+    },
+    {
+      "label": "경희대 2026 자연 논제 Ⅰ",
+      "question_id": "ed63c506-ee9b-5ce7-967f-a1d53b9feac6",
+      "leaf_id": "e7c7f989-dc04-5d38-9ebe-b9d86056f2b9",
+      "evaluation_id": "c667c561-941a-4c53-b326-28aabf1c9458",
+      "state": "COMPLETED",
+      "criteria": 6,
+      "steps": 6,
+      "learning_level": 5,
+      "answer_status": "CORRECT",
+      "history": "PASS",
+      "request_replay": "PASS",
+      "solution_hidden": "PASS",
+      "free_rewrite_eligible": true,
+      "actual_free_rewrite_executed": false,
+      "billing": [
+        {
+          "credits_required": 1,
+          "transaction_type": "reserve",
+          "balance_delta": 0,
+          "reserved_delta": 1
+        },
+        {
+          "credits_required": 1,
+          "transaction_type": "consume",
+          "balance_delta": -1,
+          "reserved_delta": -1
+        }
+      ]
+    },
+    {
+      "label": "경희대 2026 자연 논제 Ⅱ",
+      "question_id": "4df1296d-abe4-5499-af35-20ba573fd6ae",
+      "leaf_id": "47d995c9-ba8f-56a4-879c-b1f6711f754a",
+      "evaluation_id": "27b801d2-cc55-4398-93c9-2938325fabf3",
+      "state": "COMPLETED",
+      "criteria": 5,
+      "steps": 8,
+      "learning_level": 5,
+      "answer_status": "CORRECT",
+      "history": "PASS",
+      "request_replay": "PASS",
+      "solution_hidden": "PASS",
+      "free_rewrite_eligible": true,
+      "actual_free_rewrite_executed": false,
+      "billing": [
+        {
+          "credits_required": 1,
+          "transaction_type": "reserve",
+          "balance_delta": 0,
+          "reserved_delta": 1
+        },
+        {
+          "credits_required": 1,
+          "transaction_type": "consume",
+          "balance_delta": -1,
+          "reserved_delta": -1
+        }
+      ]
+    },
+    {
+      "label": "경희대 2026 자연 논제 Ⅲ",
+      "question_id": "101a7dcc-1c05-5c1d-b926-3f5729158f54",
+      "leaf_id": "b20296b6-21df-51a4-92bd-d0e3125dd6c6",
+      "evaluation_id": "321570d1-548b-482d-9f93-41dc6104b213",
+      "state": "COMPLETED",
+      "criteria": 6,
+      "steps": 6,
+      "learning_level": null,
+      "answer_status": "CORRECT",
+      "history": "PASS",
+      "request_replay": "PASS",
+      "solution_hidden": "PASS",
+      "free_rewrite_eligible": true,
+      "actual_free_rewrite_executed": false,
+      "billing": [
+        {
+          "credits_required": 1,
+          "transaction_type": "reserve",
+          "balance_delta": 0,
+          "reserved_delta": 1
+        },
+        {
+          "credits_required": 1,
+          "transaction_type": "consume",
+          "balance_delta": -1,
+          "reserved_delta": -1
+        }
+      ]
+    }
+  ],
+  "balance": {
+    "balance": 0,
+    "reserved": 0,
+    "entries": 44
+  },
+  "additional_calls": 0,
+  "production_writes": 0,
+  "evaluation_requests": 6,
+  "provider_http_call_count": "NOT_MEASURED: generation/review/learning use multiple calls per evaluation",
+  "learning_level_status": "5 assessed; Kyunghee Q3 absent, no fabricated/backfilled level"
+}

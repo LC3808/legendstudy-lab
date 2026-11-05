@@ -1,0 +1,18 @@
+[
+  {
+    "signature": "math_private.evaluation_admission()",
+    "before_md5": "19f8c40abd7e4cec2fea0f62b14b00c8",
+    "after_md5": "8775ebb892ef48a6fd6854a016503603",
+    "acl": "{postgres=X/postgres}",
+    "old_leaf_count": 78,
+    "new_leaf_count": 84
+  },
+  {
+    "signature": "math_private.release_catalog(uuid)",
+    "before_md5": "d45f0e27ae5e0917ef68315989d4082a",
+    "after_md5": "79d179c0bc947a9fb5e94ac7cd290eab",
+    "acl": "{postgres=X/postgres}",
+    "old_leaf_count": 78,
+    "new_leaf_count": 84
+  }
+]

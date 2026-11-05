@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "evaluation_id": "6c2171c3-c901-4619-97e4-829bb73b6e60",
+  "additional_credit": 0,
+  "history_attempts": 2,
+  "initial_six_preserved": true,
+  "free_rewrite_consumed": true,
+  "balance": {
+    "balance": 0,
+    "reserved": 0,
+    "entries": 44
+  },
+  "learning_level": null,
+  "math_overall": {
+    "status": "ANSWER_CORRECT_AND_REASONING_SUFFICIENT",
+    "coverage": "ATTEMPTED",
+    "explanation": "ANSWER_CORRECT_AND_REASONING_SUFFICIENT",
+    "answer_status": "CORRECT",
+    "review_status": "NOT_REQUIRED"
+  },
+  "scope": "Q3 free rewrite completed; missing learning level unresolved"
+}
