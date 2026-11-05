@@ -1,0 +1,103 @@
+{
+  "status": "APPLIED_OWNER_APPROVED",
+  "date": "2026-11-06",
+  "scope": "Exact 86 review-only exam IDs excluded from essay_browse_catalog(text); no activation",
+  "migration": "task20_private_catalog_guard_20261106",
+  "initial_attempt": "Missing SQL statement terminator; failed with original function hash unchanged. Corrected exact apply and rollback files passed local PostgreSQL before successful retry.",
+  "preserved": true,
+  "role_postflight": [
+    {
+      "source_id": "sookmyung",
+      "exams": 8,
+      "new_visible": 0
+    },
+    {
+      "source_id": "hanyang",
+      "exams": 22,
+      "new_visible": 0
+    },
+    {
+      "source_id": "cau",
+      "exams": 26,
+      "new_visible": 0
+    },
+    {
+      "source_id": "kwangwoon",
+      "exams": 17,
+      "new_visible": 0
+    }
+  ],
+  "function": [
+    {
+      "definition_hash": "6b8f759c777c6ff5e6e5b3868428017e",
+      "acl": "{postgres=X/postgres,anon=X/postgres,authenticated=X/postgres}"
+    }
+  ],
+  "before_after_hashes": [
+    {
+      "kind": "registry",
+      "data": {
+        "exams": "539775fc7706df46be3ca007b7157650",
+        "questions": "fd263fe6a86b123c966eeb7f22302df4"
+      }
+    },
+    {
+      "kind": "catalog",
+      "data": {
+        "id": "d751713988987e9331980363e24189ce",
+        "cau": "25ca3ca70512cc0bd624f8a7972da3e5",
+        "kau": "6e3cb2539c1b7d3b6ef2313699c0cec9",
+        "knu": "049d63156d5616c0ecb6f96d7162ed86",
+        "pnu": "918d1ec3eff8c465c7bb60a1d3ccc4bc",
+        "swu": "3ad8356f419e6735da9ea0a5d716fdef",
+        "syu": "d751713988987e9331980363e24189ce",
+        "uos": "b66320d4715f867307d70a17568fc6f7",
+        "ajou": "2ec8ffa43e916376825d7aba7fab0e4d",
+        "ewha": "80a5dfaa839f148fc2d961ba99f76957",
+        "hufs": "e91c1e43f7f9054343e8ee4166109fd2",
+        "inha": "e1336736c40ca02238484e23eacce68c",
+        "skku": "123a76ca3a43005032e935ba487d0d47",
+        "eulji": "d751713988987e9331980363e24189ce",
+        "korea": "4b089d064c4d3de10afb6ae7997545f2",
+        "suwon": "d751713988987e9331980363e24189ce",
+        "gachon": "62a87c366dc540157e15c0de573c5022",
+        "hongik": "7a3c6da714a603dc4a494fcd45e11e32",
+        "konkuk": "49ccf9c47d66de2f1ea84bfd6e482b8b",
+        "sejong": "5881708c2fa69b14c8a51692969fde72",
+        "sogang": "69484d3c2d8632e00a4173c5f8dc4c3d",
+        "yonsei": "3523d1e8c586d88f4155df32ec4c8b1e",
+        "dankook": "d751713988987e9331980363e24189ce",
+        "dongduk": "d751713988987e9331980363e24189ce",
+        "dongguk": "3f5cb86bc36d812c30fadb2a39bb3b4d",
+        "duksung": "d751713988987e9331980363e24189ce",
+        "hanshin": "d751713988987e9331980363e24189ce",
+        "hanyang": "2ee38bd197b993b932a9e51145191b3d",
+        "kangnam": "d751713988987e9331980363e24189ce",
+        "kookmin": "d751713988987e9331980363e24189ce",
+        "kyonggi": "d751713988987e9331980363e24189ce",
+        "shinhan": "d751713988987e9331980363e24189ce",
+        "tukorea": "d751713988987e9331980363e24189ce",
+        "catholic": "2d70fe8737d0037c336b9f7251b699e4",
+        "kyunghee": "7b4c1ad8afb7bbc67c47c9ea68b496e7",
+        "soongsil": "231cf831bc48d24b618da0c6ddd92bc9",
+        "sungshin": "d751713988987e9331980363e24189ce",
+        "koreatech": "d751713988987e9331980363e24189ce",
+        "kwangwoon": "0928bfdd24204ef89eff8b42b69b2de5",
+        "sangmyung": "d751713988987e9331980363e24189ce",
+        "seokyeong": "d751713988987e9331980363e24189ce",
+        "seoultech": "d751713988987e9331980363e24189ce",
+        "sookmyung": "7293ab3aec103e1d7fb5b7f1ea94754d"
+      }
+    }
+  ],
+  "browser_checks": {
+    "hanyang": "Natural count 20 to 1; humanities13 and commerce8 retained",
+    "sookmyung": "Existing8 retained (4 humanities/4 natural)",
+    "cau": "Existing26 retained (23 humanities-commerce/3 natural)",
+    "kwangwoon": "Existing17 retained (16 humanities/1 natural)"
+  },
+  "production_data_writes": 0,
+  "provider_calls": 0,
+  "credit_debits": 0,
+  "web_redeployment": false
+}

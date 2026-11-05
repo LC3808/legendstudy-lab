@@ -1,0 +1,26 @@
+[
+  {
+    "source_id": "sookmyung",
+    "catalog_exam_count": 38,
+    "new_metadata_visible": 30,
+    "new_evaluation_ready": 0
+  },
+  {
+    "source_id": "hanyang",
+    "catalog_exam_count": 41,
+    "new_metadata_visible": 19,
+    "new_evaluation_ready": 0
+  },
+  {
+    "source_id": "cau",
+    "catalog_exam_count": 43,
+    "new_metadata_visible": 17,
+    "new_evaluation_ready": 0
+  },
+  {
+    "source_id": "kwangwoon",
+    "catalog_exam_count": 37,
+    "new_metadata_visible": 20,
+    "new_evaluation_ready": 0
+  }
+]

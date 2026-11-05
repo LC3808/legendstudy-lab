@@ -1,0 +1,11 @@
+{
+  "exact_transaction_files_tested": true,
+  "local_postgres": "PASS",
+  "source_aliases": 42,
+  "new_metadata_hidden": 86,
+  "existing_catalog_exact_preservation": true,
+  "acl_unchanged": true,
+  "rollback_exact_restore": true,
+  "production_applied": false,
+  "expected_post_definition_md5": "6b8f759c777c6ff5e6e5b3868428017e"
+}

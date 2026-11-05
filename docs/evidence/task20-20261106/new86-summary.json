@@ -1,0 +1,17 @@
+{
+  "exams": 86,
+  "questions": 216,
+  "package_connected": 0,
+  "review_complete": 0,
+  "evaluation_ready": 0,
+  "public_candidates": 0,
+  "new_banner_targets": 0,
+  "production_writes": 0,
+  "provider_calls": 0,
+  "missing_original_hashes": [],
+  "question_reason_counts": {
+    "NO_REVIEWED_PACKAGE": 216,
+    "NO_EXECUTION_POLICY": 216,
+    "FORMULA_IMAGE_COMPARISON_REQUIRED": 195
+  }
+}
