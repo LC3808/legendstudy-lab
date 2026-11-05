@@ -6,7 +6,7 @@ Production registration of 96 rows and six-leaf activation completed. Catalog 72
 
 This WEB change appends exact exam/question bindings for Konkuk 2026 natural Q1–Q4 and Kyunghee 2026 natural Q1–Q3. Existing static files are all retained; the shared API bundle and three bounded scope values are updated. Public exams 212 → 214, expansion 42 → 44, Math leaves 72 → 78. Secrets and unrelated settings are not rewritten.
 
-Validation: 51 focused tests PASS; Pages Functions build PASS; exact routing configuration equals deployed baseline. Production authenticated entry acceptance is pending deployment; no actual evaluation or financial transaction is part of verification.
+Validation: 51 focused tests PASS; Pages Functions build PASS; exact routing configuration equals deployed baseline. Production authenticated WEB and Owner-observed APP65 entry acceptance passed; no actual evaluation or financial transaction is part of verification.
 
 Deployment script: `scripts/deployment/task20-priority-api.mjs BACKUP WORKER ROUTES plan|apply`. It guards baseline deployment/configuration, source change allowlist and required leaf IDs; preserves all 1,972 static asset hashes. Private receipt lives in the APP worktree `.local/task20-priority-20261106/deploy`.
 
@@ -14,4 +14,4 @@ Rollback: restore the previous deployment and exact three previous environment v
 
 ## Production result
 
-WEB SHA `8c05fd12c21b0400cda7bcf1baeb5f536bcf4af8` deployed as Pages `c6b969ee-d858-4b1f-bf8c-cab752de8525`; canonical deployment status success, all 1,972 static hashes and route/config preservation verified. Authenticated live WEB opened every one of the seven answer editors. Konkuk Q4 PDF page4/4 and Kyunghee Q3 PDF page2/2 rendered. No answer save, extraction, evaluation or financial actions performed. APP65 physical acceptance remains pending Owner response.
+WEB SHA `8c05fd12c21b0400cda7bcf1baeb5f536bcf4af8` deployed as Pages `c6b969ee-d858-4b1f-bf8c-cab752de8525`; canonical deployment status success, all 1,972 static hashes and route/config preservation verified. Authenticated live WEB opened every one of the seven answer editors. Konkuk Q4 PDF page4/4 and Kyunghee Q3 PDF page2/2 rendered. No answer save, extraction, evaluation or financial actions performed. APP65 physical acceptance PASS: Owner confirmed all Konkuk Q1–Q4 and Kyunghee Q1–Q3 enter normally, including full selection, and the unavailable notice is gone. This confirms entry, not a new Production evaluation run.

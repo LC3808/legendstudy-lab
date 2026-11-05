@@ -1,0 +1,111 @@
+{
+  "as_of": "2026-11-06",
+  "filter": "field_or_division matches 자연|수리|이학|공학|의|약",
+  "rows": [
+    {
+      "name": "건국대학교",
+      "slug": "konkuk",
+      "exams": 7,
+      "questions": 28,
+      "math_catalog_questions": 4,
+      "outside_math_catalog": 24
+    },
+    {
+      "name": "경희대학교",
+      "slug": "kyunghee",
+      "exams": 9,
+      "questions": 26,
+      "math_catalog_questions": 3,
+      "outside_math_catalog": 23
+    },
+    {
+      "name": "고려대학교",
+      "slug": "korea",
+      "exams": 5,
+      "questions": 20,
+      "math_catalog_questions": 0,
+      "outside_math_catalog": 20
+    },
+    {
+      "name": "광운대학교",
+      "slug": "kwangwoon",
+      "exams": 21,
+      "questions": 42,
+      "math_catalog_questions": 0,
+      "outside_math_catalog": 42
+    },
+    {
+      "name": "동국대학교",
+      "slug": "dongguk",
+      "exams": 7,
+      "questions": 21,
+      "math_catalog_questions": 0,
+      "outside_math_catalog": 21
+    },
+    {
+      "name": "서강대학교",
+      "slug": "sogang",
+      "exams": 9,
+      "questions": 11,
+      "math_catalog_questions": 0,
+      "outside_math_catalog": 11
+    },
+    {
+      "name": "서울여자대학교",
+      "slug": "swu",
+      "exams": 4,
+      "questions": 9,
+      "math_catalog_questions": 0,
+      "outside_math_catalog": 9
+    },
+    {
+      "name": "성균관대학교",
+      "slug": "sungkyunkwan",
+      "exams": 9,
+      "questions": 15,
+      "math_catalog_questions": 0,
+      "outside_math_catalog": 15
+    },
+    {
+      "name": "숙명여자대학교",
+      "slug": "sookmyung",
+      "exams": 18,
+      "questions": 50,
+      "math_catalog_questions": 0,
+      "outside_math_catalog": 50
+    },
+    {
+      "name": "숭실대학교",
+      "slug": "soongsil",
+      "exams": 5,
+      "questions": 20,
+      "math_catalog_questions": 0,
+      "outside_math_catalog": 20
+    },
+    {
+      "name": "중앙대학교",
+      "slug": "chungang",
+      "exams": 22,
+      "questions": 86,
+      "math_catalog_questions": 1,
+      "outside_math_catalog": 85
+    },
+    {
+      "name": "한국항공대학교",
+      "slug": "kau",
+      "exams": 10,
+      "questions": 20,
+      "math_catalog_questions": 0,
+      "outside_math_catalog": 20
+    },
+    {
+      "name": "한양대학교",
+      "slug": "hanyang",
+      "exams": 20,
+      "questions": 40,
+      "math_catalog_questions": 0,
+      "outside_math_catalog": 40
+    }
+  ],
+  "warning": "outside Math catalog is inventory, not automatic missing evidence or release permission; includes review-only and intentionally excluded tracks"
+}
