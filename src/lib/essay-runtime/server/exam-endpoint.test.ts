@@ -261,3 +261,8 @@ it('keeps an explicit allowlist denial distinct from an availability outage',asy
  expect(response.status).toBe(403);expect(await response.json()).toEqual({code:'ACCESS_DENIED'});
  expect(m.request).not.toHaveBeenCalled();expect(m.dispatch).not.toHaveBeenCalled();
 });
+
+it('operator admission also honors configured public exam scope without querying missing packages',async()=>{
+ const r=await send({action:'availability',examId:id},{ESSAY_PUBLIC_EXAMS:'22222222-2222-4222-8222-222222222222'});
+ expect(r.status).toBe(200);expect(await r.json()).toMatchObject({ready:false,code:'ACCESS_DENIED'});expect(m.dispatch).not.toHaveBeenCalled();expect(m.request).not.toHaveBeenCalled();
+});

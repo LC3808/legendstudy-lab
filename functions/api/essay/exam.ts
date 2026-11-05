@@ -24,6 +24,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const publicRelease=publicExams.length<=256&&publicExams.every(uuid)&&uuid(input.examId)&&publicExams.includes(input.examId);
   const transport=serverTransport(env),subject=await transport.subject(token,publicRelease);
   const expansion=betaExpansionFor(request.url,env,input.examId);
+  if(input.action==='availability'&&publicExams.length>0&&!publicRelease&&!expansion&&!commerceTestScope(request.url,env,input.examId))return reply({ready:false,questionIds:[],mathQuestions:{},code:'ACCESS_DENIED'});
   const hold=commerceTestScope(request.url,env,input.examId)||expansion?undefined:examLaunchHold(input.examId);
   if(expansion?.mode==='math'){
    if(input.action!=='availability')return reply({code:'MATH_SESSION_REQUIRED'},409);
