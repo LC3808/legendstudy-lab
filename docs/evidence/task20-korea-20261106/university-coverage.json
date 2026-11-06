@@ -1,0 +1,378 @@
+[
+  {
+    "university": "가천대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 45
+    }
+  },
+  {
+    "university": "가천대학교",
+    "scope": "유형 확인",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 48
+    }
+  },
+  {
+    "university": "가천대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 73
+    }
+  },
+  {
+    "university": "가톨릭대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 3
+    }
+  },
+  {
+    "university": "건국대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "운영 설정 연결": 4
+    }
+  },
+  {
+    "university": "건국대학교",
+    "scope": "상경·사회",
+    "questions_by_status": {
+      "운영 설정 연결": 24
+    }
+  },
+  {
+    "university": "건국대학교",
+    "scope": "유형 확인",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 6,
+      "공식 근거 후보 대조 필요": 4
+    }
+  },
+  {
+    "university": "건국대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 후보 대조 필요": 16,
+      "공식 근거 추가 확인": 8,
+      "운영 설정 연결": 4
+    }
+  },
+  {
+    "university": "경북대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 3
+    }
+  },
+  {
+    "university": "경희대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "운영 설정 연결": 22
+    }
+  },
+  {
+    "university": "경희대학교",
+    "scope": "상경·사회",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 3,
+      "운영 설정 연결": 38
+    }
+  },
+  {
+    "university": "경희대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 15,
+      "운영 설정 연결": 3,
+      "공식 근거 후보 대조 필요": 8
+    }
+  },
+  {
+    "university": "고려대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "공식 근거 후보 대조 필요": 1,
+      "운영 설정 연결": 9
+    }
+  },
+  {
+    "university": "고려대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "운영 설정 연결": 20
+    }
+  },
+  {
+    "university": "광운대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "운영 설정 연결": 32
+    }
+  },
+  {
+    "university": "광운대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "비공개 원본 대조 필요": 40,
+      "공식 근거 추가 확인": 2
+    }
+  },
+  {
+    "university": "동국대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 9,
+      "운영 설정 연결": 18
+    }
+  },
+  {
+    "university": "동국대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 9,
+      "공식 근거 후보 대조 필요": 12
+    }
+  },
+  {
+    "university": "부산대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 6
+    }
+  },
+  {
+    "university": "서강대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "운영 설정 연결": 1
+    }
+  },
+  {
+    "university": "서강대학교",
+    "scope": "상경·사회",
+    "questions_by_status": {
+      "운영 설정 연결": 28
+    }
+  },
+  {
+    "university": "서강대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 5,
+      "공식 근거 후보 대조 필요": 6
+    }
+  },
+  {
+    "university": "서울시립대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 4
+    }
+  },
+  {
+    "university": "서울여자대학교",
+    "scope": "상경·사회",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 12,
+      "운영 설정 연결": 2
+    }
+  },
+  {
+    "university": "서울여자대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 6,
+      "공식 근거 후보 대조 필요": 3
+    }
+  },
+  {
+    "university": "성균관대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "운영 설정 연결": 48
+    }
+  },
+  {
+    "university": "성균관대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 3,
+      "공식 근거 후보 대조 필요": 12
+    }
+  },
+  {
+    "university": "세종대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 9
+    }
+  },
+  {
+    "university": "숙명여자대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "비공개 원본 대조 필요": 32,
+      "공식 근거 추가 확인": 4,
+      "운영 설정 연결": 6
+    }
+  },
+  {
+    "university": "숙명여자대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "비공개 원본 대조 필요": 38,
+      "운영 설정 연결": 6,
+      "공식 근거 후보 대조 필요": 6
+    }
+  },
+  {
+    "university": "숭실대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 2,
+      "운영 설정 연결": 8,
+      "공식 근거 후보 대조 필요": 2
+    }
+  },
+  {
+    "university": "숭실대학교",
+    "scope": "상경·사회",
+    "questions_by_status": {
+      "공식 근거 후보 대조 필요": 10
+    }
+  },
+  {
+    "university": "숭실대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 후보 대조 필요": 20
+    }
+  },
+  {
+    "university": "아주대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 6
+    }
+  },
+  {
+    "university": "아주대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 6
+    }
+  },
+  {
+    "university": "연세대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 47
+    }
+  },
+  {
+    "university": "이화여자대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 3
+    }
+  },
+  {
+    "university": "인하대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "운영 설정 연결": 20
+    }
+  },
+  {
+    "university": "인하대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 3,
+      "운영 설정 연결": 72
+    }
+  },
+  {
+    "university": "중앙대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "운영 설정 연결": 3
+    }
+  },
+  {
+    "university": "중앙대학교",
+    "scope": "상경·사회",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 6,
+      "운영 설정 연결": 60
+    }
+  },
+  {
+    "university": "중앙대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "비공개 원본 대조 필요": 68,
+      "공식 근거 추가 확인": 12
+    }
+  },
+  {
+    "university": "한국외국어대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "운영 설정 연결": 30
+    }
+  },
+  {
+    "university": "한국외국어대학교",
+    "scope": "상경·사회",
+    "questions_by_status": {
+      "운영 설정 연결": 30
+    }
+  },
+  {
+    "university": "한국항공대학교",
+    "scope": "상경·사회",
+    "questions_by_status": {
+      "운영 설정 연결": 8,
+      "공식 근거 추가 확인": 2
+    }
+  },
+  {
+    "university": "한국항공대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 8,
+      "공식 근거 후보 대조 필요": 12
+    }
+  },
+  {
+    "university": "한양대학교",
+    "scope": "기타",
+    "questions_by_status": {
+      "운영 설정 연결": 13
+    }
+  },
+  {
+    "university": "한양대학교",
+    "scope": "상경·사회",
+    "questions_by_status": {
+      "운영 설정 연결": 16
+    }
+  },
+  {
+    "university": "한양대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "비공개 원본 대조 필요": 38,
+      "공식 근거 추가 확인": 2
+    }
+  },
+  {
+    "university": "홍익대학교",
+    "scope": "자연·수리",
+    "questions_by_status": {
+      "공식 근거 추가 확인": 7
+    }
+  }
+]
