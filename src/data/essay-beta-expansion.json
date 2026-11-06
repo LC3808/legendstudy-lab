@@ -808,6 +808,21 @@
         "7f6c8eb5-2e96-58b8-9a43-5407203339bb": "b2cc8e7e-0ba1-5229-aebd-ae0bce90c4cf",
         "b96792e7-59cb-565d-adb7-afcb987e18ee": "ff7e3c02-f2de-52e0-8a3c-ea1ad1ff8475"
       }
+    },
+    {
+      "examId": "1d3fbceb-ef00-5b63-adca-15d2913d2410",
+      "questionIds": [
+        "86ab14ba-6765-574b-a1d4-a1bbf3a89c3e",
+        "92cb98b4-9e46-598f-b395-ea5053c73866"
+      ],
+      "universityId": "1090e1be-174e-5042-abd3-ca929c6e26f8",
+      "packageDigest": "f1582a64d0e9f9205ade65dba803eaeca912a72343adb5a8fe57f0ed4782f761",
+      "label": "한양대학교 2024학년도 수시 논술 자연계열 오전",
+      "mode": "math",
+      "mathQuestions": {
+        "86ab14ba-6765-574b-a1d4-a1bbf3a89c3e": "20c77076-721c-521d-9764-2bbd84f45879",
+        "92cb98b4-9e46-598f-b395-ea5053c73866": "b776559a-3c43-59a6-b980-54bab7861a1a"
+      }
     }
   ]
 }
