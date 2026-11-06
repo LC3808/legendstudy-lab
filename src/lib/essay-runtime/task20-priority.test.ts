@@ -5,7 +5,7 @@ let catalog:any[]=[];
 vi.mock('../math-release/server/transport',()=>({serverTransport:()=>({subject:async()=> 'synthetic-ordinary-user'}),publicMathLeaves:()=>[]}));
 vi.mock('../../../functions/api/essay/availability',()=>({onRequestGet:async()=>Response.json({checked:true,types:{math:true},mathQuestions:catalog})}));
 const origin='https://lab.legendstudy.com';
-for(const [examId,count] of [['25dc068b-4672-56e1-b8df-08ee8800e2f6',4],['0a331c3e-d46b-5af3-b787-e3342e8a1ae8',3]] as const){
+for(const [examId,count] of [['25dc068b-4672-56e1-b8df-08ee8800e2f6',4],['0a331c3e-d46b-5af3-b787-e3342e8a1ae8',3],['4680d613-8b1f-57f2-aff6-36a084a8a59f',4]] as const){
  describe(`TASK20 ${examId}`,()=>{
   const e=betaExpansionCandidates.find(e=>e.examId===examId)!;
   const rows=()=>Object.entries(e.mathQuestions).map(([questionId,leafId])=>({examId,questionId,leafId}));

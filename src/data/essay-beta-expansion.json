@@ -696,6 +696,25 @@
         "551c083d-b8e4-503b-83ee-0d63020a986f": "98e31b7e-5eb6-52b1-8adc-392ad6ae02c3",
         "b87278f6-aa62-5245-8fce-b01924a2d9c7": "9d1518b7-ec66-5d20-a823-b87b4d7037c6"
       }
+    },
+    {
+      "examId": "4680d613-8b1f-57f2-aff6-36a084a8a59f",
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "questionIds": [
+        "e74a56d6-9412-5cf3-b5ac-61db13dead77",
+        "5efb6260-a04e-5f01-bbac-dddddebfe7fd",
+        "06a17916-13dd-5ea5-bfc6-5c6e53d2a924",
+        "0f1c972e-6b7d-5006-b819-67d1948928d0"
+      ],
+      "packageDigest": "2209b2fce10760dbf13fc1aaf5ca4b7312bcd35dadbb353d2a66fe7ae852a2c3",
+      "label": "고려대학교 2026 자연 오전",
+      "mode": "math",
+      "mathQuestions": {
+        "e74a56d6-9412-5cf3-b5ac-61db13dead77": "1b28617b-36c6-5dd8-9879-48cb53466814",
+        "5efb6260-a04e-5f01-bbac-dddddebfe7fd": "f0c79170-b07a-54b8-889e-c7448aee4bd1",
+        "06a17916-13dd-5ea5-bfc6-5c6e53d2a924": "cc285170-9f86-5541-adf1-1823401c6e29",
+        "0f1c972e-6b7d-5006-b819-67d1948928d0": "b86a7160-0a0b-52c1-84c0-7c78e81becf4"
+      }
     }
   ]
 }
