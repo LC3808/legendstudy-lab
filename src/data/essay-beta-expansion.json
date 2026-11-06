@@ -791,6 +791,23 @@
         "06e4ed73-08d8-50c3-b0c2-a0c11ed300d1": "82958b4f-bac2-53e8-8e46-fd88b5d5acab",
         "ed2d508f-618a-5b10-90d4-9c572a968f7e": "ce13b2e1-c6fb-5f2e-8500-d5166bbb1cd1"
       }
+    },
+    {
+      "examId": "7484fbea-4c68-5285-b525-227f835ca4cc",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "questionIds": [
+        "47c30af2-c2ff-5d4a-a94d-48034d332076",
+        "7f6c8eb5-2e96-58b8-9a43-5407203339bb",
+        "b96792e7-59cb-565d-adb7-afcb987e18ee"
+      ],
+      "packageDigest": "2873334831fb9b94813d9e7f06e44126c7d469c4e84bc90e5a875e043b763bc6",
+      "label": "숙명여자대학교 2026학년도 수시 자연계열(약학부)",
+      "mode": "math",
+      "mathQuestions": {
+        "47c30af2-c2ff-5d4a-a94d-48034d332076": "793cb69a-80f6-53f4-bca7-de66d92da79f",
+        "7f6c8eb5-2e96-58b8-9a43-5407203339bb": "b2cc8e7e-0ba1-5229-aebd-ae0bce90c4cf",
+        "b96792e7-59cb-565d-adb7-afcb987e18ee": "ff7e3c02-f2de-52e0-8a3c-ea1ad1ff8475"
+      }
     }
   ]
 }
