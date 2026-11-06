@@ -838,6 +838,21 @@
         "a4c360b3-41d0-5c0e-b84d-39997292d84c": "2adbe766-8cda-551c-abd4-3091440f2dff",
         "a933f55f-f9e8-5cc7-8650-0958f8217fb4": "df55f50c-4c40-50b6-84fc-4037eda43ef1"
       }
+    },
+    {
+      "examId": "30559faa-7c26-54ee-a5ec-859a58f96bda",
+      "questionIds": [
+        "fc9e57d8-7e89-5c32-97f0-a5e134f4af08",
+        "11f8b58a-208c-54ba-aac1-b4e1e268558a"
+      ],
+      "universityId": "1090e1be-174e-5042-abd3-ca929c6e26f8",
+      "packageDigest": "db4b16c49ec96e1b6881acaded847475cffdd9ff74abaa35002268336ee5317d",
+      "label": "한양대학교 2026학년도 모의논술 자연계열",
+      "mode": "math",
+      "mathQuestions": {
+        "fc9e57d8-7e89-5c32-97f0-a5e134f4af08": "0bfe0962-b793-56a3-8c14-ec66ee229f6f",
+        "11f8b58a-208c-54ba-aac1-b4e1e268558a": "25d468bf-5b14-5cc6-bb39-1f62f564bb09"
+      }
     }
   ]
 }
