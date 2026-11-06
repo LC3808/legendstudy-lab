@@ -715,6 +715,82 @@
         "06a17916-13dd-5ea5-bfc6-5c6e53d2a924": "cc285170-9f86-5541-adf1-1823401c6e29",
         "0f1c972e-6b7d-5006-b819-67d1948928d0": "b86a7160-0a0b-52c1-84c0-7c78e81becf4"
       }
+    },
+    {
+      "examId": "7f0d0a2f-7c38-5b7f-8987-91afc1773321",
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "questionIds": [
+        "efd513a6-3c77-5463-b0fd-26175158851f",
+        "e074a9a8-c8d7-57b4-ad7f-71bd062ff462",
+        "bc08db36-2484-513a-9dad-01c6e865d658",
+        "635b562d-6897-5323-a6a3-c0677583ba14"
+      ],
+      "packageDigest": "2aa0a906b6b7e7dcd8fee1dc10a9454611a54502d0ee9b0cdb0daf6823c9f61d",
+      "label": "고려대학교 2026학년도 오후 자연계",
+      "mode": "math",
+      "mathQuestions": {
+        "efd513a6-3c77-5463-b0fd-26175158851f": "2514e9c3-77ae-5f98-9eca-16de25ef1f5d",
+        "e074a9a8-c8d7-57b4-ad7f-71bd062ff462": "b262813f-0bcd-51c6-9811-492296411c2e",
+        "bc08db36-2484-513a-9dad-01c6e865d658": "4c54bfbb-5eee-54b5-be61-eefaf587cefa",
+        "635b562d-6897-5323-a6a3-c0677583ba14": "93d8b765-ad6f-5004-96fa-42013cdb3319"
+      }
+    },
+    {
+      "examId": "91d3f4ec-72ea-5031-bcbc-fb7fa7ba47af",
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "questionIds": [
+        "e8ad78ad-0033-5152-90bc-124d85ace07f",
+        "10dc8f9e-ea51-5cb0-b371-c2b994ca09ce",
+        "4229da81-151a-50f4-99c3-dda4630d2e32",
+        "3630eda8-a454-5eec-83fc-a7da325faf9d"
+      ],
+      "packageDigest": "4a46e5bd7adbd2244eb52510642c2b0f055af59a18ce3aae405684d84c974756",
+      "label": "고려대학교 2025학년도 오후 자연계",
+      "mode": "math",
+      "mathQuestions": {
+        "e8ad78ad-0033-5152-90bc-124d85ace07f": "42682f4e-fa84-507e-b5d9-cbf7fbda00f1",
+        "10dc8f9e-ea51-5cb0-b371-c2b994ca09ce": "83e40e71-85a8-520d-9c7a-7b73d6aabcd0",
+        "4229da81-151a-50f4-99c3-dda4630d2e32": "353c6711-a8a7-5418-96b5-2435b1785837",
+        "3630eda8-a454-5eec-83fc-a7da325faf9d": "39e08032-1c14-5f19-83bd-5be93efd365b"
+      }
+    },
+    {
+      "examId": "dd68fa7b-67a5-5b76-9ce6-39b44efeb079",
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "questionIds": [
+        "c9beca0b-4550-5a29-a180-a3b4a9471733",
+        "63f1c932-2450-580c-a616-cba40030922e",
+        "4120dbc6-a0b6-5732-9a16-3b538bab0675",
+        "945ea906-f324-5368-9e9c-61fe7b08c0c4"
+      ],
+      "packageDigest": "30072f6d4a2c0d19184c971862a014f45077746198a606030a519a05ac44f47e",
+      "label": "고려대학교 2025학년도 오전 자연계",
+      "mode": "math",
+      "mathQuestions": {
+        "c9beca0b-4550-5a29-a180-a3b4a9471733": "339a28cf-9bb2-5da9-a23b-7af6556ba0cd",
+        "63f1c932-2450-580c-a616-cba40030922e": "085d88cf-f279-56b6-a559-4c62679e60cf",
+        "4120dbc6-a0b6-5732-9a16-3b538bab0675": "a89a09e9-b344-5105-aa60-b586f33a7f1e",
+        "945ea906-f324-5368-9e9c-61fe7b08c0c4": "b27b1562-c9a1-59bc-a424-1862f4ff7e9d"
+      }
+    },
+    {
+      "examId": "23ff598d-4abb-5483-9ac3-a12c7e5ce09c",
+      "universityId": "a93ec9df-2096-4550-801f-07a25b9a437b",
+      "questionIds": [
+        "7003f292-82c9-5f5d-bce9-1bdae7cb64c7",
+        "71db08c1-f420-5792-9eb0-f95db4b351e3",
+        "06e4ed73-08d8-50c3-b0c2-a0c11ed300d1",
+        "ed2d508f-618a-5b10-90d4-9c572a968f7e"
+      ],
+      "packageDigest": "91cc58b9b01bba5fa0cb4c7966b29388066edfca1b0649d5d58d449ae0c25461",
+      "label": "고려대학교 2025학년도 모의 자연계",
+      "mode": "math",
+      "mathQuestions": {
+        "7003f292-82c9-5f5d-bce9-1bdae7cb64c7": "3a525e23-8893-513f-887f-5d36f03ee5dd",
+        "71db08c1-f420-5792-9eb0-f95db4b351e3": "110e8736-854d-59a0-b4e6-7036a559b83a",
+        "06e4ed73-08d8-50c3-b0c2-a0c11ed300d1": "82958b4f-bac2-53e8-8e46-fd88b5d5acab",
+        "ed2d508f-618a-5b10-90d4-9c572a968f7e": "ce13b2e1-c6fb-5f2e-8500-d5166bbb1cd1"
+      }
     }
   ]
 }
