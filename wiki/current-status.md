@@ -20,3 +20,5 @@ Deployed live-E2E follow-up: exact exam/university IDs now resolve registered Ma
 Member material follow-up: [recent5 bookmark/view activity and common admin navigation](admin-member-activity-navigation-20261104.md). Bookmarks=favorites confirmed by Owner. Admin routes publish together to eliminate mixed menu versions; existing credit v2/support contracts preserved.
 
 App usage follow-up: [WEB rankings and APP collection handoff](admin-app-usage-rankings-20261104.md). Existing material member counts only; menu telemetry not collected. APP implementation/release separate per Owner.
+
+- [고려대 자연계 운영 공개 및 TEST 20문항 검증](task20-korea-20261106.md)

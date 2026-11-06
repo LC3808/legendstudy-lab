@@ -1,0 +1,222 @@
+[
+  {
+    "exam": "4680d613-8b1f-57f2-aff6-36a084a8a59f",
+    "question": "e74a56d6-9412-5cf3-b5ac-61db13dead77",
+    "leaf": "1b28617b-36c6-5dd8-9879-48cb53466814",
+    "label": "korea-2026-am 2026 자연 Q4",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": true
+  },
+  {
+    "exam": "4680d613-8b1f-57f2-aff6-36a084a8a59f",
+    "question": "5efb6260-a04e-5f01-bbac-dddddebfe7fd",
+    "leaf": "f0c79170-b07a-54b8-889e-c7448aee4bd1",
+    "label": "korea-2026-am 2026 자연 Q1",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": true
+  },
+  {
+    "exam": "4680d613-8b1f-57f2-aff6-36a084a8a59f",
+    "question": "06a17916-13dd-5ea5-bfc6-5c6e53d2a924",
+    "leaf": "cc285170-9f86-5541-adf1-1823401c6e29",
+    "label": "korea-2026-am 2026 자연 Q2",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": true
+  },
+  {
+    "exam": "4680d613-8b1f-57f2-aff6-36a084a8a59f",
+    "question": "0f1c972e-6b7d-5006-b819-67d1948928d0",
+    "leaf": "b86a7160-0a0b-52c1-84c0-7c78e81becf4",
+    "label": "korea-2026-am 2026 자연 Q3",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": true
+  },
+  {
+    "exam": "7f0d0a2f-7c38-5b7f-8987-91afc1773321",
+    "question": "efd513a6-3c77-5463-b0fd-26175158851f",
+    "leaf": "2514e9c3-77ae-5f98-9eca-16de25ef1f5d",
+    "label": "고려대학교 2026학년도 오후 자연계 문제 1",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "7f0d0a2f-7c38-5b7f-8987-91afc1773321",
+    "question": "e074a9a8-c8d7-57b4-ad7f-71bd062ff462",
+    "leaf": "b262813f-0bcd-51c6-9811-492296411c2e",
+    "label": "고려대학교 2026학년도 오후 자연계 문제 2",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "7f0d0a2f-7c38-5b7f-8987-91afc1773321",
+    "question": "bc08db36-2484-513a-9dad-01c6e865d658",
+    "leaf": "4c54bfbb-5eee-54b5-be61-eefaf587cefa",
+    "label": "고려대학교 2026학년도 오후 자연계 문제 3",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "7f0d0a2f-7c38-5b7f-8987-91afc1773321",
+    "question": "635b562d-6897-5323-a6a3-c0677583ba14",
+    "leaf": "93d8b765-ad6f-5004-96fa-42013cdb3319",
+    "label": "고려대학교 2026학년도 오후 자연계 문제 4",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "91d3f4ec-72ea-5031-bcbc-fb7fa7ba47af",
+    "question": "e8ad78ad-0033-5152-90bc-124d85ace07f",
+    "leaf": "42682f4e-fa84-507e-b5d9-cbf7fbda00f1",
+    "label": "고려대학교 2025학년도 오후 자연계 문제 1",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "91d3f4ec-72ea-5031-bcbc-fb7fa7ba47af",
+    "question": "10dc8f9e-ea51-5cb0-b371-c2b994ca09ce",
+    "leaf": "83e40e71-85a8-520d-9c7a-7b73d6aabcd0",
+    "label": "고려대학교 2025학년도 오후 자연계 문제 2",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "91d3f4ec-72ea-5031-bcbc-fb7fa7ba47af",
+    "question": "4229da81-151a-50f4-99c3-dda4630d2e32",
+    "leaf": "353c6711-a8a7-5418-96b5-2435b1785837",
+    "label": "고려대학교 2025학년도 오후 자연계 문제 3",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "91d3f4ec-72ea-5031-bcbc-fb7fa7ba47af",
+    "question": "3630eda8-a454-5eec-83fc-a7da325faf9d",
+    "leaf": "39e08032-1c14-5f19-83bd-5be93efd365b",
+    "label": "고려대학교 2025학년도 오후 자연계 문제 4",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "dd68fa7b-67a5-5b76-9ce6-39b44efeb079",
+    "question": "c9beca0b-4550-5a29-a180-a3b4a9471733",
+    "leaf": "339a28cf-9bb2-5da9-a23b-7af6556ba0cd",
+    "label": "고려대학교 2025학년도 오전 자연계 문제 1",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "dd68fa7b-67a5-5b76-9ce6-39b44efeb079",
+    "question": "63f1c932-2450-580c-a616-cba40030922e",
+    "leaf": "085d88cf-f279-56b6-a559-4c62679e60cf",
+    "label": "고려대학교 2025학년도 오전 자연계 문제 2",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "dd68fa7b-67a5-5b76-9ce6-39b44efeb079",
+    "question": "4120dbc6-a0b6-5732-9a16-3b538bab0675",
+    "leaf": "a89a09e9-b344-5105-aa60-b586f33a7f1e",
+    "label": "고려대학교 2025학년도 오전 자연계 문제 3",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "dd68fa7b-67a5-5b76-9ce6-39b44efeb079",
+    "question": "945ea906-f324-5368-9e9c-61fe7b08c0c4",
+    "leaf": "b27b1562-c9a1-59bc-a424-1862f4ff7e9d",
+    "label": "고려대학교 2025학년도 오전 자연계 문제 4",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "23ff598d-4abb-5483-9ac3-a12c7e5ce09c",
+    "question": "7003f292-82c9-5f5d-bce9-1bdae7cb64c7",
+    "leaf": "3a525e23-8893-513f-887f-5d36f03ee5dd",
+    "label": "고려대학교 2025학년도 모의 자연계 문제 1",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "23ff598d-4abb-5483-9ac3-a12c7e5ce09c",
+    "question": "71db08c1-f420-5792-9eb0-f95db4b351e3",
+    "leaf": "110e8736-854d-59a0-b4e6-7036a559b83a",
+    "label": "고려대학교 2025학년도 모의 자연계 문제 2",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "23ff598d-4abb-5483-9ac3-a12c7e5ce09c",
+    "question": "06e4ed73-08d8-50c3-b0c2-a0c11ed300d1",
+    "leaf": "82958b4f-bac2-53e8-8e46-fd88b5d5acab",
+    "label": "고려대학교 2025학년도 모의 자연계 문제 3",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  },
+  {
+    "exam": "23ff598d-4abb-5483-9ac3-a12c7e5ce09c",
+    "question": "ed2d508f-618a-5b10-90d4-9c572a968f7e",
+    "leaf": "ce13b2e1-c6fb-5f2e-8500-d5166bbb1cd1",
+    "label": "고려대학교 2025학년도 모의 자연계 문제 4",
+    "test_provider": 200,
+    "history_match": true,
+    "learning_level": 5,
+    "free_revision_eligible": true,
+    "production_scope": false
+  }
+]

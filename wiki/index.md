@@ -13,3 +13,5 @@ Canonical report: APP `wiki/app-math-commerce-integration-report-20261103.md`.
 - [Member materials and consistent admin menus](admin-member-activity-navigation-20261104.md)
 
 - [Dashboard app usage / materials rankings and APP handoff](admin-app-usage-rankings-20261104.md)
+
+- [고려대 자연계 운영 공개 및 TEST 20문항 검증](task20-korea-20261106.md)
