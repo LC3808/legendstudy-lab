@@ -11,11 +11,11 @@
     "normalized.private.json": "0c78043c35b1696a92c79626cf97e076101f466d3db5a3fbba233be94b70adda",
     "packages/register.private.sql": "b767c5f78333cec4321a5e637be7fe1da782771d5f260e78957a7d264e09941d",
     "packages/rollback.private.sql": "437dc20f9b76b00eb34acb7a0f75a9d80df209d387a1593563591627585b4828",
-    "provider-quality.ts": "48fa6beb5d7b581785621e71763def8bc876cfa3fd355c50eb7843c7482542ed"
+    "provider-quality.ts": "a94b4bc410769620c47c93f0ada6da252c7269ed8392977ebfcd088627f0cb6f"
   },
   "production_writes": 0,
-  "provider_calls": 0,
-  "provider_approval": "REQUESTED_SIX_CALLS",
+  "provider_calls": 6,
+  "provider_approval": "APPROVED_AND_COMPLETED_SIX_CALLS",
   "physical_source_review": "question1-3; solution7-14 rendered and reviewed",
   "locator_correction": "Q2 solution includes physical page13; do not stop at page12",
   "points_policy": "official 1-9 bands retained as text; official_points NULL"

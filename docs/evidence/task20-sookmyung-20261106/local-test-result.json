@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "checks": 63,
+  "checks": 81,
   "details": [
     "math_problem_sets_exact_count",
     "math_problems_exact_count",
@@ -64,10 +64,54 @@
     "foreign_denied",
     "same_lineage",
     "referenced_rollback_denied",
-    "legacy_evaluations_exact"
+    "legacy_evaluations_exact",
+    "actual_provider_output_readback_sookmyung-general-q1.private.json.complete.result.json",
+    "actual_verdict_preserved_sookmyung-general-q1.private.json.complete.result.json",
+    "actual_criteria_preserved_sookmyung-general-q1.private.json.complete.result.json",
+    "actual_provider_output_readback_sookmyung-general-q1.private.json.wrong.result.json",
+    "actual_verdict_preserved_sookmyung-general-q1.private.json.wrong.result.json",
+    "actual_criteria_preserved_sookmyung-general-q1.private.json.wrong.result.json",
+    "actual_provider_output_readback_sookmyung-general-q2.private.json.complete.result.json",
+    "actual_verdict_preserved_sookmyung-general-q2.private.json.complete.result.json",
+    "actual_criteria_preserved_sookmyung-general-q2.private.json.complete.result.json",
+    "actual_provider_output_readback_sookmyung-general-q2.private.json.wrong.result.json",
+    "actual_verdict_preserved_sookmyung-general-q2.private.json.wrong.result.json",
+    "actual_criteria_preserved_sookmyung-general-q2.private.json.wrong.result.json",
+    "actual_provider_output_readback_sookmyung-general-q3.private.json.complete.result.json",
+    "actual_verdict_preserved_sookmyung-general-q3.private.json.complete.result.json",
+    "actual_criteria_preserved_sookmyung-general-q3.private.json.complete.result.json",
+    "actual_provider_output_readback_sookmyung-general-q3.private.json.wrong.result.json",
+    "actual_verdict_preserved_sookmyung-general-q3.private.json.wrong.result.json",
+    "actual_criteria_preserved_sookmyung-general-q3.private.json.wrong.result.json"
   ],
   "questions": 3,
   "mock_evaluations": 6,
+  "actual_provider_replays": [
+    {
+      "case": "sookmyung-general-q1.private.json.complete.result.json",
+      "status": "PASS"
+    },
+    {
+      "case": "sookmyung-general-q1.private.json.wrong.result.json",
+      "status": "PASS"
+    },
+    {
+      "case": "sookmyung-general-q2.private.json.complete.result.json",
+      "status": "PASS"
+    },
+    {
+      "case": "sookmyung-general-q2.private.json.wrong.result.json",
+      "status": "PASS"
+    },
+    {
+      "case": "sookmyung-general-q3.private.json.complete.result.json",
+      "status": "PASS"
+    },
+    {
+      "case": "sookmyung-general-q3.private.json.wrong.result.json",
+      "status": "PASS"
+    }
+  ],
   "actual_provider_calls": 0,
   "production_writes": 0,
   "scope": "disposable canonical SQL only; hosted runtime/publication not verified"

@@ -29,8 +29,8 @@
 - Q1의 6요건, Q2의 6요건, Q3의 6요건 및 각각 공식1–9등급 문장 보존. 숫자 점수/학습용5단계로 변환하지 않고 official_points=NULL. 기존 nullable 컬럼 재사용.
 - 기존 Math SQL fixture에서63검사 PASS: DRAFT 거절, 입력/평가 replay, 결과/History, 타인 접근 거절, 최초1/무료재첨삭0 합성 계약, 미사용 원복·참조 후 삭제 거절. 실제 운영/호스팅 이용권 지급·차감 없음.
 - compiler 보호6검사 PASS: Registry 일치, 원본 수식 PUA 차단, Q2 마지막쪽 보존, 임의점수 차단, 중복binding/내용변경 거절.
-- 실제 Provider 정상/오답 각각1회 ×3문항=6회 TEST 호출 승인 요청 중. 기존 건국·경희12회 승인은 이 범위에 재사용하지 않는다. 미승인 호출0.
-- 상태 PARTIAL: source/로컬계약 PASS, 실제모델 품질 NOT_VERIFIED, 운영 비공개. 승인 전 활성화SQL/WEB 공개값은 변경하지 않는다.
+- Owner 별도 승인 후 실제 Provider 정상/오답 각각1회 ×3문항=6회 완료. 모두 출력 계약·기대 판정 PASS. 추가 호출0.
+- 상태 PARTIAL: source/로컬계약/한정된 실제모델6사례 PASS, 운영 비공개. 승인 전 활성화SQL/WEB 공개값은 변경하지 않는다.
 
 ## 순차 후속 및 중복 방지
 
@@ -39,3 +39,12 @@
 다른 TASK20-C TEST 후보는 동일6문항에 다른 leaf ID를 쓴다. 운영에는 이미 이 채팅의 검증된 후보가 있으므로 해당 SQL을 중복 적용하지 않는다. 그 TEST에서 경희Q3 학습 단계가 최초/무료재첨삭 모두 미제공된 품질 이슈는 별도 추적한다. 현재 운영 패키지의 동일 결함으로 단정하지 않는다. 해당 TEST 잔액·권한·추가호출에 손대지 않았다.
 
 근거: [현재 운영 목록](evidence/task20-sookmyung-20261106/remaining-production.json), [숙명 후보](evidence/task20-sookmyung-20261106/manifest.json), [계약 검사](evidence/task20-sookmyung-20261106/local-test-result.json), [출처·private 파일 해시](evidence/task20-sookmyung-20261106/source-review.json). 공식 원문은 Git 제외 `.local/task20-sookmyung-20261106`에 보관한다.
+
+
+## 숙명 일반 실제 TEST 승인 실행 결과
+
+Q1/Q2/Q3 각각 정상풀이 CORRECT, 명백한 오답 INCORRECT. 실제응답6개를 수정 없이 canonical SQL finalize/detail에 재생했고 판정과 criteria가 그대로 저장·조회됨을 확인했다. 로컬 검사 총81 PASS(기존63+실제응답 보존18), 패키지 보호6 PASS. Provider 호출은 총6회이며 DB 재생은 추가 외부 호출0이다. 정상풀이의 근거와 잘못된0 답안의 반박·힌트를 수학적으로 검토했다. Q3 오답은 0이 일부 해라는 점과 다른 해 누락을 구분했다.
+
+공식9등급을 숫자 점수나 학습용5단계로 환산하지 않았다. 이 경로는 학습용5단계 coaching 전체 흐름 검사가 아니며, 다른 TASK20-C의 경희Q3 단계 이슈를 해결했다고 주장하지 않는다. 손글씨/OCR·다양한 부분점수/경계답안 평가는 미포함이다. 실제 이용권 지급·차감·결제·환불·운영SQL·WEB/APP 변경·스토어 제출0. 이번 결과는 숙명3문항의 검수 후보 근거이며 운영 공개 완료가 아니다.
+
+[실제6회 검증·토큰·결과해시](evidence/task20-sookmyung-20261106/provider-quality-summary.json), [81검사 및 실제6결과 저장/조회](evidence/task20-sookmyung-20261106/local-test-result.json).

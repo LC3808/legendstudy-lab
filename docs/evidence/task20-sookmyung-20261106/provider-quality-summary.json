@@ -1,0 +1,157 @@
+{
+  "status": "PASS",
+  "scope": "Three reference-based complete answers plus three obvious wrong answers; not comprehensive grading validation",
+  "model": "gpt-5.6-sol",
+  "actual_calls": 6,
+  "additional_calls": 0,
+  "cases": [
+    {
+      "file": "sookmyung-general-q1.private.json",
+      "mode": "complete",
+      "state": "completed",
+      "dispatched": true,
+      "usage": {
+        "input_tokens": 4740,
+        "output_tokens": 2248,
+        "total_tokens": 6988
+      },
+      "contract": true,
+      "issues": [],
+      "overall": {
+        "status": "COMPLETE",
+        "diagnostic": "ANSWER_CORRECT_AND_REASONING_SUFFICIENT",
+        "answer": "CORRECT",
+        "coverage": "ATTEMPTED"
+      },
+      "semanticExpected": true
+    },
+    {
+      "file": "sookmyung-general-q1.private.json",
+      "mode": "wrong",
+      "state": "completed",
+      "dispatched": true,
+      "usage": {
+        "input_tokens": 4353,
+        "output_tokens": 2326,
+        "total_tokens": 6679
+      },
+      "contract": true,
+      "issues": [],
+      "overall": {
+        "status": "COMPLETE",
+        "diagnostic": "FUNDAMENTAL_APPROACH_ERROR",
+        "answer": "INCORRECT",
+        "coverage": "PARTIAL_ATTEMPT"
+      },
+      "semanticExpected": true
+    },
+    {
+      "file": "sookmyung-general-q2.private.json",
+      "mode": "complete",
+      "state": "completed",
+      "dispatched": true,
+      "usage": {
+        "input_tokens": 4671,
+        "output_tokens": 1793,
+        "total_tokens": 6464
+      },
+      "contract": true,
+      "issues": [],
+      "overall": {
+        "status": "COMPLETE",
+        "diagnostic": "ANSWER_CORRECT_AND_REASONING_SUFFICIENT",
+        "answer": "CORRECT",
+        "coverage": "ATTEMPTED"
+      },
+      "semanticExpected": true
+    },
+    {
+      "file": "sookmyung-general-q2.private.json",
+      "mode": "wrong",
+      "state": "completed",
+      "dispatched": true,
+      "usage": {
+        "input_tokens": 4323,
+        "output_tokens": 3164,
+        "total_tokens": 7487
+      },
+      "contract": true,
+      "issues": [],
+      "overall": {
+        "status": "COMPLETE",
+        "diagnostic": "FUNDAMENTAL_APPROACH_ERROR",
+        "answer": "INCORRECT",
+        "coverage": "ATTEMPTED"
+      },
+      "semanticExpected": true
+    },
+    {
+      "file": "sookmyung-general-q3.private.json",
+      "mode": "complete",
+      "state": "completed",
+      "dispatched": true,
+      "usage": {
+        "input_tokens": 4786,
+        "output_tokens": 2636,
+        "total_tokens": 7422
+      },
+      "contract": true,
+      "issues": [],
+      "overall": {
+        "status": "COMPLETE",
+        "diagnostic": "ANSWER_CORRECT_AND_REASONING_SUFFICIENT",
+        "answer": "CORRECT",
+        "coverage": "ATTEMPTED"
+      },
+      "semanticExpected": true
+    },
+    {
+      "file": "sookmyung-general-q3.private.json",
+      "mode": "wrong",
+      "state": "completed",
+      "dispatched": true,
+      "usage": {
+        "input_tokens": 4366,
+        "output_tokens": 2249,
+        "total_tokens": 6615
+      },
+      "contract": true,
+      "issues": [],
+      "overall": {
+        "status": "COMPLETE",
+        "diagnostic": "FUNDAMENTAL_APPROACH_ERROR",
+        "answer": "INCORRECT",
+        "coverage": "PARTIAL_ATTEMPT"
+      },
+      "semanticExpected": true
+    }
+  ],
+  "usage": {
+    "input_tokens": 27239,
+    "output_tokens": 14416,
+    "total_tokens": 41655
+  },
+  "manual_review": {
+    "q1": "intermediate-value bounds and mean-value contradiction correctly recognized",
+    "q2": "normal equation, split integral and limit correctly recognized",
+    "q3": "inverse polynomial equations and official alternative path correctly recognized; wrong sample missing other root was identified",
+    "numeric_official_grade_conversion": false,
+    "generated_solution": false
+  },
+  "result_sha256": {
+    "sookmyung-general-q1.private.json.complete.result.json": "1525cfd4b6aaf53b1a9a0553141de293d4ab2f583b92a5ff475a5b21489d1b30",
+    "sookmyung-general-q1.private.json.wrong.result.json": "f9f91887722b822b7443e9c31f1318439443ed239f295f7ec0a0791321e5cfb1",
+    "sookmyung-general-q2.private.json.complete.result.json": "40fac9b26f4a667d0d904b26988230668d6f14100b193023977d4e19d71de649",
+    "sookmyung-general-q2.private.json.wrong.result.json": "c97f7b183afe7d161bbdc5f8fdcfeb1f06c257a16a868860d54b95a276605aa2",
+    "sookmyung-general-q3.private.json.complete.result.json": "50a341379681de05dc4f29669e4515c70896e742da7d24dad3560c51c3c83b82",
+    "sookmyung-general-q3.private.json.wrong.result.json": "d58d3e17803f13eb5acd4c1e24d5fb73dfe1c6ac3e1aea71f3dc5cafd434a996"
+  },
+  "limitations": [
+    "No handwriting/OCR test",
+    "No broad partial-answer/borderline or independently authored alternative-solution suite",
+    "No 5-stage coaching pipeline validation",
+    "No hosted TEST or production evaluation/billing performed"
+  ],
+  "production_writes": 0,
+  "publication_status": "NOT_APPLIED"
+}

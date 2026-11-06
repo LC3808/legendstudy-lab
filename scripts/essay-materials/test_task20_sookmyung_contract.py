@@ -61,8 +61,24 @@ def content_case(c,rpc,new,scalar,A,B):
  except m.psycopg.Error:
   c.execute('rollback');ok('referenced_rollback_denied')
  ok('legacy_evaluations_exact',before==scalar("select jsonb_agg(to_jsonb(t) order by id) from public.essay_evaluations t"))
- report=dict(status='PASS',checks=len(checks),details=checks,questions=3,mock_evaluations=6,actual_provider_calls=0,production_writes=0,scope='disposable canonical SQL only; hosted runtime/publication not verified')
+ replayed=[]
+ if os.environ.get('TASK20_SOOKMYUNG_REPLAY_PROVIDER')=='1':
+  result_files=sorted(P.parent.glob('sookmyung-general-q*.result.json'))
+  assert len(result_files)==6,'EXACT_SIX_ACTUAL_OUTPUTS_REQUIRED'
+  for file in result_files:
+   result=json.loads(file.read_text());inp=result['input'];out=result['physical']
+   assert result['validation']['ok'], 'ACTUAL_DOMAIN_VALIDATION_FAILED'
+   rpc('essay_admin_grant',[A,1,'admin_grant',new(),'test_account',None],uid=B,role='essay_finance')
+   attempt=str(rpc('math_submit_attempt',[dict(client_submission_id=new(),leaf_id=inp['leafId'],kind='INITIAL',input_kind='TYPED',typed_answer=inp['canonicalPackage']['attempt']['typed_answer'])]))
+   ev=str(rpc('math_request_evaluation',[attempt,new()]));claim=rpc('math_claim_evaluation',[ev],role='math_evaluation_worker')
+   rpc('math_finalize_evaluation',[ev,claim['lease_token'],out],role='math_evaluation_worker')
+   detail=rpc('math_evaluation_detail',[ev]);ok('actual_provider_output_readback_'+file.name,detail['output']['contract_version']=='math-eval-v1')
+   ok('actual_verdict_preserved_'+file.name,detail['output']['overall']==out['overall'])
+   ok('actual_criteria_preserved_'+file.name,detail['output']['criteria']==out['criteria'])
+   replayed.append(dict(case=file.name,status='PASS'))
+ report=dict(status='PASS',checks=len(checks),details=checks,questions=3,mock_evaluations=6,actual_provider_replays=replayed,actual_provider_calls=0,production_writes=0,scope='disposable canonical SQL only; hosted runtime/publication not verified')
  (P/'local-test-result.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
 
 source=inspect.getsource(m.verify).split(" print('MATH_FULL_NON_SUPERUSER_INSTALL_PASS')")[0]+"\n o.execute_as_production(c,admin,(R/'supabase/migrations/20261002000200_math_runtime_surface.sql').read_text())\n content_case(c,rpc,new,scalar,A,B)\n"
+source=source.replace(' content_case(c,rpc,new,scalar,A,B)'," o.execute_as_production(c,admin,(R/'supabase/migrations/20261002000300_math_learning_runtime.sql').read_text())\n content_case(c,rpc,new,scalar,A,B)")
 ns=dict(m.__dict__);ns['content_case']=content_case;exec(source,ns);m.h.verify_hqp=ns['verify'];m.h.main(bootstrap_user='supabase_admin')
