@@ -679,6 +679,23 @@
         "4df1296d-abe4-5499-af35-20ba573fd6ae": "873c9757-2fcb-515f-b611-c78545d7a838",
         "101a7dcc-1c05-5c1d-b926-3f5729158f54": "9552766f-0785-54f6-86d4-c8c70c5da1b8"
       }
+    },
+    {
+      "examId": "5f002de0-5b59-50b8-8e05-684428e1e96d",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "questionIds": [
+        "48360807-927c-5f89-8b15-ca0761775f02",
+        "551c083d-b8e4-503b-83ee-0d63020a986f",
+        "b87278f6-aa62-5245-8fce-b01924a2d9c7"
+      ],
+      "packageDigest": "f1ee87941bff035d139aa8a4263c76fe1c9f7e8bd79cb09cab76d8899e6011e7",
+      "label": "sookmyung-general 2026 자연 전체 문항",
+      "mode": "math",
+      "mathQuestions": {
+        "48360807-927c-5f89-8b15-ca0761775f02": "7a3f5d7d-1980-52f0-a170-6a8308c1f0e7",
+        "551c083d-b8e4-503b-83ee-0d63020a986f": "98e31b7e-5eb6-52b1-8adc-392ad6ae02c3",
+        "b87278f6-aa62-5245-8fce-b01924a2d9c7": "9d1518b7-ec66-5d20-a823-b87b4d7037c6"
+      }
     }
   ]
 }
