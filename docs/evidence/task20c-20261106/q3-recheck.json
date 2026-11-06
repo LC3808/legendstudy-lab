@@ -1,0 +1,40 @@
+{
+  "scope": "isolated TEST Kyunghee 2026 natural Q3",
+  "deployment": "0e42d23c-d06c-4255-8239-9e9ecf727456",
+  "source": "fb32127",
+  "evaluations": [
+    {
+      "kind": "INITIAL",
+      "evaluation": "5bf547dc-d58c-4290-a2f5-ede8d5b663fc",
+      "answer": "CORRECT",
+      "criteria_all_satisfied": true,
+      "errors": 0,
+      "steps": 8,
+      "level": null,
+      "credits": 1
+    },
+    {
+      "kind": "FREE_REWRITE",
+      "evaluation": "8f13d63b-3ec1-4101-9a36-00df4c1e0523",
+      "answer": "CORRECT",
+      "criteria_all_satisfied": true,
+      "errors": 0,
+      "steps": 7,
+      "level": 5,
+      "credits": 0
+    }
+  ],
+  "balance": {
+    "balance": 0,
+    "reserved": 0,
+    "entries": 47
+  },
+  "history": 2,
+  "original_snapshot_preserved": 6,
+  "production_changes": 0,
+  "comparison": "NO_PREVIOUS_ASSESSMENT",
+  "all_old_levels_backfilled": false,
+  "initial_withholding_cause": "NOT_VERIFIED",
+  "additional_grants": 1,
+  "provider_http_call_count": null
+}

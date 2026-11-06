@@ -13,3 +13,5 @@ DRAFT 삽입은 운영 공개 승인과 다르다. 실제 Provider 검증 및 �
 [실제 평가6건·Q3 무료 재첨삭·원장 보고](../../../docs/evidence/task20c-20261106/live-test-report.md). scope-functions.candidate.sql은 기존 두 private 함수의 허용 leaf에 정확히6개만 추가한다. scope-rollback.sql은 적용 후 함수 해시/ACL이 일치할 때만 기존 범위를 복원한다. 공개 후보 구현의 disposable PG115 검사 PASS. private compiled/production-apply.private.sql에 콘텐츠/ACTIVE/함수 증분을 트랜잭션으로 준비했다.
 
 경희Q3 학습 단계 누락은 미해결이며 이번 exact6 후보 전체 운영 적용을 요청하거나 승인받지 않았다. Q3 제외5개만 적용하려면 별도5개 후보와 검증이 필요하다. Gateway 공개 범위 설정은 Secret과 분리해 별도 사전값 보존/원복해야 한다.
+
+최신 Q3 재검증: 승인된 TEST 1개 사용. 최초 등급 미제공·무료 재첨삭 5, 두 건 모두 정답·공식 기준 6개 충족. 조건부 후보이며 운영 미적용. 위 대상별 승인과 부분 적용 제한은 유지한다.
