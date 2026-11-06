@@ -2571,6 +2571,10 @@
     "examId": "c71cb668-d9c6-52a9-b771-c48c3efd7dc3",
     "mode": "image"
   },
+  "a4c360b3-41d0-5c0e-b84d-39997292d84c": {
+    "examId": "cb2bd529-7d6f-5f61-a6a6-7f8deba486c1",
+    "mode": "image"
+  },
   "a4cff99b-ba8c-5cb3-b7e9-f9dfdcaa3ad7": {
     "examId": "499fc506-e77a-5b43-8e6e-53cc12b70b24",
     "mode": "text"
@@ -2645,6 +2649,10 @@
   },
   "a93206a4-35af-5623-92fa-d09f5f0abbd7": {
     "examId": "e5f1d7de-f69b-5d7b-85e6-8ded440ee94d",
+    "mode": "image"
+  },
+  "a933f55f-f9e8-5cc7-8650-0958f8217fb4": {
+    "examId": "cb2bd529-7d6f-5f61-a6a6-7f8deba486c1",
     "mode": "image"
   },
   "a984924d-8ae9-54a8-91fa-aa3fec44a9c9": {
