@@ -1,5 +1,7 @@
 # TASK20-C 우선 6문항 콘텐츠 후보
 
+**운영 공개 확인 완료.** 기존 운영 Package에 이미 연결된 동일 6문항을 일반 사용자로 검수했다. 아래 SQL은 이전 TEST ID 기반 후보로 운영 재적용 금지. [운영 검수 기록](../../../docs/evidence/task20c-20261106/production-web.md)
+
 **운영 적용 미승인·미실행.** 격리 TEST에 DRAFT 콘텐츠만 적용했다. [검수·대상 ID·테스트 보고](../../../docs/evidence/task20c-20261106/report.md)를 따른다.
 
 전체 SQL/공식 원문은 Git에 넣지 않는다. `/Users/woojinchang/development/legendstudy-materials/task20c-20261106-private/compiled/draft.private.sql` 및 `rollback.private.sql`에 보관한다. 원본 Registry ID가 다르면 중단하며 같은 콘텐츠 재적용은 중복 생성하지 않는다. 다른 콘텐츠가 같은 ID에 있으면 중단한다.
