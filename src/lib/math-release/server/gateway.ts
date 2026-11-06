@@ -6,6 +6,8 @@ import type { MathEvaluatorAdapter } from "../../math-eval/types";
 import type { MathRpcTransport } from "../../math-input/runtime/transport";
 export interface MathGatewayPorts {
   enabled: boolean;
+  evaluationTimeoutMs?: number;
+  learning?: Parameters<typeof runWorkerEvaluation>[0]["learning"];
   releasedLeaves?: string[];
   origin: string;
   authenticate(token: string): Promise<boolean>;
@@ -39,7 +41,7 @@ export function evaluationGateway(ports: MathGatewayPorts) {
       if (state.evaluation_state !== "REQUESTED") return reply(409, "RETRY_STATUS_CHECK");
       // The Provider transport permits 75s. Do not expire the worker's lease at
       // 45s while that same call is still running (and potentially billable).
-      const result = await runWorkerEvaluation({ worker: ports.worker, adapter: ports.adapter, evaluationId: payload.evaluation_id, timeoutMs: 80000 });
+      const result = await runWorkerEvaluation({ worker: ports.worker, adapter: ports.adapter, evaluationId: payload.evaluation_id, learning: ports.learning, timeoutMs: ports.evaluationTimeoutMs ?? 80000 });
       return reply(result.finalized ? 200 : 422, result.finalized ? "COMPLETED" : "EVALUATION_FAILED");
     } catch { return reply(409, "RETRY_STATUS_CHECK"); }
   };

@@ -4,11 +4,11 @@
 import { boundedBody } from "./request";
 import type { MathEvaluatorAdapter } from "../../math-eval/types";
 import { submittedMathAnswer } from "../../math-eval/submitted-answer";
-export type CandidateConfig = { enabled: boolean; model: string; key: string; fetcher?: typeof fetch; onUsage?:(usage:Record<string,number>)=>void };
+export type CandidateConfig = { enabled: boolean; timeoutMs?: number; model: string; key: string; fetcher?: typeof fetch; onUsage?:(usage:Record<string,number>)=>void };
 export async function candidateJson(config: CandidateConfig, instructions: string, content: unknown): Promise<unknown> {
   if (!config.enabled || !config.model || !config.key) throw Error("PROVIDER_UNAVAILABLE");
   const response = await (config.fetcher ?? fetch)("https://api.openai.com/v1/responses", {
-    method: "POST", redirect: "manual", signal: AbortSignal.timeout(75000),
+    method: "POST", redirect: "manual", signal: AbortSignal.timeout(config.timeoutMs ?? 75000),
     headers: { Authorization: `Bearer ${config.key}`, "Content-Type": "application/json" },
     body: JSON.stringify({ model: config.model, store: false, max_output_tokens: 12000,
       text: { format: { type: "json_object" } }, instructions,
