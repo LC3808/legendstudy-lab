@@ -1,4 +1,5 @@
 "use client";
+import "../notices.css";
 import { NoticeEditor } from "./notice-editor";
 import { parseDocument, plainContent } from "@/lib/notices/document";
 import { AdminDataTable } from "./admin-data-table";
@@ -39,11 +40,12 @@ function Editor() {
     error?: string;
   } | null>(null);
   const [draft, setDraft] = useState<NoticeInput>({ ...empty });
+  const [editorKey,setEditorKey] = useState(0);
   const [richReady,setRichReady] = useState(false);
   const [uploading,setUploading] = useState(false);
   useEffect(() => {
     let active = true;
-    if(client) void noticesClient(client).editorCapability().then(r=>{if(active)setRichReady(r?.version===1);},()=>{if(active)setRichReady(false);});
+    if(client) void noticesClient(client).editorCapability().then(r=>{if(active)setRichReady(r?.version===2);},()=>{if(active)setRichReady(false);});
     return ()=>{active=false;};
   },[client]);
   const [busy, setBusy] = useState(false);
@@ -67,6 +69,7 @@ function Editor() {
     };
   }, [client, page, key]);
   function edit(n: Notice) {
+    setEditorKey(k=>k+1);
     setDraft({ ...n });
     setMessage("");
   }
@@ -97,22 +100,23 @@ function Editor() {
   }
   const current = feed?.key === key ? feed : null;
   return (
-    <div className="admin-stack">
+    <div className="admin-stack notice-admin">
       <section className="admin-section">
-        <h2>공지 관리</h2>
+        <div className="notice-form-heading"><h2>{draft.notice_id ? "공지 수정" : "새 공지 작성"}</h2>
         <button
           className="button button--outline"
           disabled={busy || uploading}
           onClick={() => {
+            setEditorKey(k=>k+1);
             setDraft({ ...empty });
             setMessage("");
           }}
         >
           새 공지
-        </button>
+        </button></div>
         <form
           onSubmit={save}
-          style={{ display: "grid", gap: 16, maxWidth: 850 }}
+          className="notice-form"
         >
           <fieldset
             disabled={busy || uploading}
@@ -134,7 +138,7 @@ function Editor() {
                 style={{ display: "block", width: "100%" }}
               />
             </label>
-            {richReady ? <NoticeEditor content={draft.content} document={draft.content_document} onBusyChange={setUploading} onChange={(content,content_document)=>setDraft({...draft,content,content_document})}/> : <>
+            {richReady ? <NoticeEditor key={editorKey} disabled={busy} content={draft.content} document={draft.content_document} onBusyChange={setUploading} onChange={(content,content_document)=>setDraft(old=>({...old,content,content_document}))}/> : <>
               <p role="status">서식·이미지 편집기 연결 준비 중입니다. 기존 텍스트 공지는 계속 작성할 수 있어요.</p>
             <label>
               본문 (일반 텍스트)
@@ -152,7 +156,7 @@ function Editor() {
             </label>
               {draft.content_document && <p role="alert">서식 공지는 편집기 연결 후 수정해 주세요.</p>}
             </>}
-            <label>
+            <section className="notice-settings"><h3>게시 설정</h3><div className="notice-settings-grid"><label>
               카테고리{" "}
               <select
                 value={draft.category}
@@ -186,11 +190,11 @@ function Editor() {
                 <option value="archived">보관</option>
               </select>
             </label>
-            <p>
+            </div><h3>게시 일정</h3><p className="notice-help">
               게시 시작·종료는 현재 기기의 시간대입니다. 시작 시각 전에는 예약
               상태로 숨겨집니다. 종료 후에는 자동으로 노출이 중단됩니다.
             </p>
-            <label>
+            <div className="notice-dates"><div><label>
               게시 시작
               <input
                 type="datetime-local"
@@ -213,8 +217,8 @@ function Editor() {
                 setDraft({ ...draft, published_at: new Date().toISOString() })
               }
             >
-              시작 시각을 지금으로 설정
-            </button>
+              현재 시각으로 설정
+            </button></div>
             <label>
               게시 종료 (선택)
               <input
@@ -230,7 +234,7 @@ function Editor() {
                 }
               />
             </label>
-            {(["is_pinned", "is_public", "show_app", "show_web"] as const).map(
+            </div><h3>노출 범위</h3><div className="notice-options">{(["is_pinned", "is_public", "show_app", "show_web"] as const).map(
               (k, i) => (
                 <label key={k}>
                   <input
@@ -251,13 +255,13 @@ function Editor() {
                 </label>
               ),
             )}
-            <p>
+            </div></section><footer className="notice-save"><p className="notice-help">
               삭제 대신 보관을 사용합니다. 수정한 공지는 다시 미읽음으로
               표시됩니다.
             </p>
-            <button className="button" type="submit">
-              {busy ? "저장 중…" : "저장"}
-            </button>
+            <button className="button notice-save-button" type="submit">
+              {busy ? "저장 중…" : "공지 저장"}
+            </button></footer>
           </fieldset>
         </form>
         <p role="status">{message}</p>
@@ -285,16 +289,16 @@ function Editor() {
               {key:'created',label:'작성 시각 (KST)',value:n=>n.created_at?Date.parse(n.created_at):null,render:n=>formatDateTime(n.created_at)},
               {key:'updated',label:'수정 시각 (KST)',value:n=>Date.parse(n.updated_at),render:n=>formatDateTime(n.updated_at)},
             ]}/>
-            <button disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
+            <nav className="notice-pagination" aria-label="관리 공지 페이지"><button className="button button--outline" disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
               이전
             </button>{" "}
             {page + 1}{" "}
             <button
-              disabled={(page + 1) * 20 >= (current.data?.total ?? 0)}
+              className="button button--outline" disabled={(page + 1) * 20 >= (current.data?.total ?? 0)}
               onClick={() => setPage((p) => p + 1)}
             >
               다음
-            </button>
+            </button></nav>
           </>
         )}
       </section>

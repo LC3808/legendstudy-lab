@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import "./notices.css";
 import { NoticeContent } from "./notice-content";
 import { useEffect, useState } from "react";
 import { useAuth } from "./auth-context";
@@ -52,14 +53,14 @@ function NoticeList() {
   }, []);
   const current = result?.key === key ? result : null;
   return (
-    <section className="page-section content-wrap content-wrap--detail">
-      <h1>공지사항</h1>
+    <section className="page-section content-wrap content-wrap--detail notice-board">
+      <header className="notice-board-heading"><div><h1>공지사항</h1><p>레전드스터디의 새 소식과 서비스 안내</p></div>
       <button
         className="button button--outline"
         onClick={() => setNonce((n) => n + 1)}
       >
         새로고침
-      </button>
+      </button></header>
       {!client && status !== "loading" ? (
         <p role="alert">공지사항 연결을 확인해 주세요.</p>
       ) : !current ? (
@@ -70,7 +71,7 @@ function NoticeList() {
         current.feed && (
           <>
             {status === "authenticated" && (
-              <p>읽지 않은 공지 {current.feed.unread}개</p>
+              <p className="notice-unread">읽지 않은 공지 <strong>{current.feed.unread}개</strong></p>
             )}
             {current.feed.items.length === 0 && (
               <p>게시된 공지사항이 없습니다.</p>
@@ -78,14 +79,13 @@ function NoticeList() {
             {current.feed.items.map((n) => (
               <article
                 key={n.notice_id}
-                className="surface-card"
-                style={{ marginBlock: 16, overflowWrap: "anywhere" }}
+                className={`notice-card ${n.is_pinned ? "notice-card--pinned" : ""}`}
               >
                 <p>
-                  {n.is_pinned ? "고정 · " : ""}
-                  {categories[n.category]}{" "}
+                  {n.is_pinned && <span className="notice-tag notice-tag--pin">고정 공지</span>}
+                  <span className="notice-tag">{categories[n.category]}</span>{" "}
                   {status === "authenticated" && !n.is_read && (
-                    <strong> · NEW</strong>
+                    <strong className="notice-tag notice-tag--new">NEW</strong>
                   )}
                 </p>
                 <h2>
@@ -98,7 +98,7 @@ function NoticeList() {
                 <time>{n.published_at?.slice(0, 10)}</time>
               </article>
             ))}
-            <nav aria-label="공지 페이지">
+            <nav className="notice-pagination" aria-label="공지 페이지">
               <button
                 className="button button--outline"
                 disabled={offset === 0}
@@ -170,7 +170,7 @@ function Detail() {
     };
   }, [client, status]);
   return (
-    <section className="page-section content-wrap content-wrap--detail">
+    <section className="page-section content-wrap content-wrap--detail notice-board">
       <Link href="/notices/">← 공지사항</Link>
       {!client && status !== "loading" ? (
         <p>공지사항 연결을 확인해 주세요.</p>
@@ -184,15 +184,14 @@ function Detail() {
         <p>게시가 종료되었거나 볼 수 없는 공지입니다.</p>
       ) : (
         <article
-          className="surface-card"
-          style={{ marginBlock: 20, overflowWrap: "anywhere" }}
+          className="notice-detail"
         >
-          <h1>{state.notice.title}</h1>
+          <header className="notice-detail-heading"><h1>{state.notice.title}</h1>
           <p>
             {categories[state.notice.category]} ·{" "}
             {state.notice.published_at?.slice(0, 10)}
           </p>
-          <NoticeContent content={state.notice.content} document={state.notice.content_document}/>
+          </header><div className="notice-detail-body"><NoticeContent content={state.notice.content} document={state.notice.content_document}/></div>
           {state.readFailed && (
             <p role="status">
               읽음 상태를 저장하지 못했습니다. 다시 열면 재시도합니다.

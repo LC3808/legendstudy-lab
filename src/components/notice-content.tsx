@@ -1,7 +1,9 @@
 'use client';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { useAuth } from './auth-context';
 import { NOTICE_BUCKET, parseDocument, type NoticeDocument } from '@/lib/notices/document';
+const Surface = dynamic(()=>import('@/components/rich-text/quill-surface'),{ssr:false});
 export function NoticeImage({path,alt}:{path:string;alt:string}) {
   const {client} = useAuth();
   const [result,setResult] = useState<{path:string;url?:string} | null>(null);
@@ -25,6 +27,7 @@ export function NoticeImage({path,alt}:{path:string;alt:string}) {
 export function NoticeContent({content,document}:{content:string;document?:NoticeDocument|null}) {
   const doc=parseDocument(document);
   if (!doc) return <p style={{whiteSpace:'pre-wrap'}}>{content}</p>;
+  if(doc.version===2) return <Surface value={doc} renderPhoto={photo=><><NoticeImage path={photo.path} alt={photo.alt}/><figcaption>{photo.alt}</figcaption></>}/>;
   return <div style={{overflowWrap:'anywhere'}}>{doc.blocks.map((b,i)=>b.type==='image'
     ? <figure key={`${i}:${b.path}`} style={{margin:'20px 0'}}><NoticeImage path={b.path} alt={b.alt}/><figcaption>{b.alt}</figcaption></figure>
     : <p key={i} style={{whiteSpace:'pre-wrap',fontSize:b.size,fontWeight:b.bold?700:400,textDecoration:b.underline?'underline':undefined,lineHeight:1.7}}>{b.text}</p>)}</div>;

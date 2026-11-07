@@ -1,0 +1,15 @@
+.rich-editor .ql-toolbar,.rich-editor .ql-container{border-color:#879baa;background:white}
+.rich-editor .ql-toolbar{background:#edf3f5;border-radius:8px 8px 0 0}
+.rich-editor .ql-container{border-radius:0 0 8px 8px}
+.rich-editor .ql-editor{min-height:260px}
+.rich-reader .ql-container{border:0}
+.rich-editor .ql-editor,.rich-reader .ql-editor{font:inherit;font-size:16px;line-height:1.65;overflow-wrap:anywhere}
+.rich-editor .ql-editor .board-photo,.rich-reader .ql-editor .board-photo{display:block;margin:12px 0}
+.rich-editor .ql-snow .ql-picker.ql-size [data-value]::before{content:attr(data-value)}
+.rich-editor .ql-toolbar .ql-picker.ql-header [data-value="1"]::before{content:"제목"}
+.rich-editor .ql-toolbar .ql-picker.ql-header [data-value="2"]::before{content:"소제목"}
+.rich-editor .ql-toolbar .ql-picker.ql-header :is(.ql-picker-item,.ql-picker-label):not([data-value])::before{content:"본문"}
+.rich-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.rich-editor .ql-toolbar .ql-size .ql-picker-label:not([data-value])::before{content:"16px"}
+.rich-editor .ql-toolbar .ql-align .ql-picker-options{z-index:3}
+.rich-actions button{padding:6px 10px;border:1px solid #879baa;border-radius:5px;background:#fff;color:#17354a}

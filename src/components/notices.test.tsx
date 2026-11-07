@@ -48,7 +48,7 @@ describe("notices UI", () => {
     });
     render(<Notices />);
     expect(await screen.findByText("서비스 공지")).toBeVisible();
-    expect(screen.getByText("읽지 않은 공지 1개")).toBeVisible();
+    expect(screen.getByText((_,el)=>el?.tagName==="P" && el.textContent==="읽지 않은 공지 1개")).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: "다음" }));
     await waitFor(() =>
       expect(env.rpc).toHaveBeenCalledWith("notice_list", {
@@ -130,7 +130,7 @@ describe("notices UI", () => {
     fireEvent.change(screen.getByLabelText("상태"), {
       target: { value: "archived" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "저장" }));
+    fireEvent.click(screen.getByRole("button", { name: "공지 저장" }));
     await screen.findByText(/저장하지 못했습니다/);
     expect(env.rpc).toHaveBeenCalledWith("notice_admin_save", {
       p: expect.objectContaining({
