@@ -16,4 +16,5 @@ Canonical report: APP `wiki/app-math-commerce-integration-report-20261103.md`.
 
 - [고려대 자연계 운영 공개 및 TEST 20문항 검증](task20-korea-20261106.md)
 
-- 2026-11-07 한양대 자연 전체: 기존 4시험·8문항 보존 + 추가 17시험·34문항 TECHNICAL_READY. 운영 적용 승인 대기. [검증·승인 후보](task20-hanyang-test-connection-20261107.md). 신규 Provider/이용권/운영 쓰기 없음.
+
+- 2026-11-07 한양대 자연 **21시험·42문항 PRODUCTION_CONNECTED**. 추가 17시험·34문항 승인 적용 및 일반 사용자 WEB 전수 PDF·답안 작성·첨삭 진입 PASS. Provider·차감 0회. [운영 적용 보고](task20-hanyang-production-connection-20261107.md) · [Claude 배너 공개 목록](task20-hanyang-claude-banner-20261107.md).

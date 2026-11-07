@@ -1,0 +1,573 @@
+{
+  "date": "2026-11-07",
+  "source_sha": "fa000f62b04a67713f4734a68057db7233946af2",
+  "deployment_id": "270e517f-34af-4485-af9e-b839381031b8",
+  "ordinary_user_web": [
+    {
+      "label": "2024 모의 자연",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 1페이지",
+          "screenshot_file": "ui-01.png",
+          "screenshot_sha256": "919634a4e5277fb32873771d356365906171768d4983bbc41197ef4aeb7ea743",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 2페이지",
+          "screenshot_file": "ui-02.png",
+          "screenshot_sha256": "7b12b1ce9e1a3a74cfb0320cd379251f847cbffeb122c675a94193c084a6b92b",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2026학년도 수시 논술 자연계열 오전",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-03.png",
+          "screenshot_sha256": "58352b126fa2c8a7ee2857778fdf4daa824113051998c756a16ddc71f0a746d7",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-04.png",
+          "screenshot_sha256": "6437d050aa67b69c096c0d53e9e7cfcd82658e4fce260664f2624ebd7265d346",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2026학년도 수시 논술 자연계열 오후1",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-05.png",
+          "screenshot_sha256": "68a33b2d7cfc7fd1d1b327c991e574b15c0e16cc1dc44d577a3509a916d775a1",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-06.png",
+          "screenshot_sha256": "29171c850323e68aeac2ac037c854675465380ec2a08a137247922b89068624a",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2026학년도 수시 논술 자연계열 오후2",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-07.png",
+          "screenshot_sha256": "7ca18e566f67760f8b2e54cce3d352440b1d9ae54c26625225a2904470414080",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-08.png",
+          "screenshot_sha256": "976dd5221b511c74965b40346cfaa2d42957436d75b9b0c8c6a1182cfe30d871",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2025학년도 수시 논술 자연계열 오전",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-09.png",
+          "screenshot_sha256": "26e0da1e6397e6bfbb0c5bca407ea2edf270fcbdc63c5123186111a5d485a3da",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-10.png",
+          "screenshot_sha256": "72688e67589088efafc3b81083a4059d0906ccdad3c76fb2739b558e8ba1175e",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2025학년도 수시 논술 자연계열 오후1",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-11.png",
+          "screenshot_sha256": "b8b2ca36d21c267d561537710a13522d66319896f3ab6b64769dbf312605f112",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-12.png",
+          "screenshot_sha256": "fbff12e483f414ede808a3296cf0dddaa4d77cfb51164fa0f64e7813a809fa47",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2025학년도 수시 논술 자연계열 오후2",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-13.png",
+          "screenshot_sha256": "2af7883762f4ebd25fa74bf1640523cf9739060bf6467579e265cdbd3832613f",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-14.png",
+          "screenshot_sha256": "d37ee2df769a580003860079f5879339c219ba38fb7d986679bea1e4086f5d9a",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2024학년도 수시 논술 자연계열 오전",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-15.png",
+          "screenshot_sha256": "0463a196b51966befcf1ec22dc1cc8f80d24cc78a18a75aedbc9191969471dd4",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-16.png",
+          "screenshot_sha256": "f7080886a1930c58b77c90623c4b2dcf81f2f5dbca01f672194b0795c0a519ea",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2024학년도 수시 논술 자연계열 오후1",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 1페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-17.png",
+          "screenshot_sha256": "16006723a0613f5aeac6248b3eaa0b130324a7e1eff8fe25c57d992a54593930",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 2페이지",
+          "screenshot_file": "ui-18.png",
+          "screenshot_sha256": "0f25d23478f8e61e31280e7395a4b898e5cf88c06d6d52978372bf3ec9af34de",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2024학년도 수시 논술 자연계열 오후2",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-19.png",
+          "screenshot_sha256": "1a3664cff70a6b94d45e6c87c2fcb345a56554968e85e40921b2953dce7dc957",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-20.png",
+          "screenshot_sha256": "8b49dbb612b522c0b553d1940ef6af9d3542d21c21118385795ce467b340fd1d",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2023학년도 수시 논술 자연계열 오전",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-21.png",
+          "screenshot_sha256": "6e7644fc21978d0647d4ebeb123f6fb14e12b3a146f967d48b4d4af4eab007fe",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-22.png",
+          "screenshot_sha256": "bcdb7c431eccc3f377d6c4ead59569375035d7152efd746da0ae161c49d34f1a",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2023학년도 수시 논술 자연계열 오후1",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-23.png",
+          "screenshot_sha256": "a14e37ee37ff422be6fb62a766afa8f8d3ea9363dc4df676143cbb96a6b32f3f",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-24.png",
+          "screenshot_sha256": "42344b21838053499db5a7842dd8697e25942419e2290af7e1a689c6304eccc6",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2023학년도 수시 논술 자연계열 오후2",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-25.png",
+          "screenshot_sha256": "f78ab83605372b75d4403530669d5a1fafa46c4e179511cb5da1368582e8eead",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-26.png",
+          "screenshot_sha256": "c478beb92125f84ac322037739c9d469a5bbd89f23205e29d1bed62dea34a69d",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2022학년도 수시 논술 자연계열 오전",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-27.png",
+          "screenshot_sha256": "10b3ba8bc37feabf09018ae519890fa46d106f3ec206ebd1f66b22eb725752dc",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-28.png",
+          "screenshot_sha256": "aa632282a7c892057a839718c4fd11e2a1a8640336e37462df2cac37a398dd05",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2022학년도 수시 논술 자연계열 오후1",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-29.png",
+          "screenshot_sha256": "db3b248c771d81c80d7eee2a046eb9b8778e2c13d590bea18884024c22e50c22",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-30.png",
+          "screenshot_sha256": "e3af404844fd37b0d952ab394e151038a54afb249cecc2748438acb1d3d448ea",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2022학년도 수시 논술 자연계열 오후2",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-31.png",
+          "screenshot_sha256": "6f1b439067f980b3a8beef9144d6fc754031e3f92d0d4b5abae5cb123128053d",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-32.png",
+          "screenshot_sha256": "216a0b84ba0a9238e2dcc860c8b667a13dc649071b3aa5dc6558bce7e7c40ba9",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2021학년도 수시 논술 자연계열 오전",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-33.png",
+          "screenshot_sha256": "a1597e7bd94d7a0aae72ae9dffb00fa0b87eff4fab2fa7cd71a572192c9b2b4c",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-34.png",
+          "screenshot_sha256": "f6c19608ed6eedd887558ca70ed9f7ab388556f4827ce7e22042755ed46b9a4b",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2021학년도 수시 논술 자연계열 오후1",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-35.png",
+          "screenshot_sha256": "cdecc29a637d52a1da5e2f95257d7963242b82e8f2ca02ef40d8f6688e87df0c",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-36.png",
+          "screenshot_sha256": "56ddc36ebd7b18d75e59b2a9a486b0d34c96c69b97c1e6d64064cd89ff4229a6",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2021학년도 수시 논술 자연계열 오후2",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 2페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-37.png",
+          "screenshot_sha256": "9ce3bf99d2a5c94f61ad34dfb29d6ff2abaf8b2f963d39e6dc0de34bd5cc70ea",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 3페이지",
+          "screenshot_file": "ui-38.png",
+          "screenshot_sha256": "cded1cbc316182a329eb661f405d93afca1abe2f1304e97ffdac997dc6561e92",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2026학년도 모의논술 자연",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 1페이지",
+          "loading_finished": true,
+          "screenshot_file": "ui-39.png",
+          "screenshot_sha256": "7bf9f64de3ad80089dbc35abd5623e157b2d5aaf1a99d41afd605b56b8fe8568",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 2페이지",
+          "screenshot_file": "ui-40.png",
+          "screenshot_sha256": "45772353dcea90d48e1ea67213e9769710e420aff27224df20c538646aa73ff8",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    },
+    {
+      "label": "2027학년도 모의논술 자연",
+      "pdfs": [
+        {
+          "question": 1,
+          "page": "PDF 1페이지",
+          "screenshot_file": "ui-41.png",
+          "screenshot_sha256": "5bad43f7274f1d2de8114578d7e2f1791d88e2d2d7795a04f3dbe250ee55d9cd",
+          "visual_render_checked": true
+        },
+        {
+          "question": 2,
+          "page": "PDF 2페이지",
+          "screenshot_file": "ui-42.png",
+          "screenshot_sha256": "6889413f7b14161a32a4416ae5cf900d29210c6b17a261195da51d78ea9cc3b2",
+          "visual_render_checked": true
+        }
+      ],
+      "answer_entry": true,
+      "evaluation_entry": true,
+      "provider_called": false,
+      "ordinary_user": true
+    }
+  ],
+  "production_postflight": {
+    "exams": 21,
+    "questions": 42,
+    "catalog_includes_all": true,
+    "records": {
+      "math_evaluations": {
+        "before": 13,
+        "after": 13,
+        "existing_preserved": true
+      },
+      "math_attempts": {
+        "before": 35,
+        "after": 69,
+        "existing_preserved": true
+      },
+      "essay_evaluations": {
+        "before": 0,
+        "after": 0,
+        "existing_preserved": true
+      },
+      "credit_accounts": {
+        "before": 300,
+        "after": 303,
+        "existing_preserved": true
+      },
+      "credit_grants": {
+        "before": 312,
+        "after": 315,
+        "existing_preserved": true
+      },
+      "credit_transactions": {
+        "before": 409,
+        "after": 412,
+        "existing_preserved": true
+      }
+    },
+    "acl_preserved": true,
+    "private_sources": [
+      {
+        "questions": 34,
+        "pages": 133,
+        "student_can_read": false
+      }
+    ],
+    "provider_calls": 0
+  },
+  "scope_counts": {
+    "public_exams": [
+      225,
+      242
+    ],
+    "beta_expansion_exams": [
+      55,
+      72
+    ],
+    "math_leaves": [
+      112,
+      146
+    ]
+  },
+  "provider_calls": 0,
+  "evaluation_requests": 0,
+  "credit_claim_quote_calls": 0,
+  "screenshots_local_directory": "/Users/woojinchang/.codex/visualizations/2026/11/02/01a19ab3-5f07-75e3-839e-52283c0c1018/task20-hanyang-production"
+}
