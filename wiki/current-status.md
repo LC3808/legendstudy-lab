@@ -22,3 +22,5 @@ Member material follow-up: [recent5 bookmark/view activity and common admin navi
 App usage follow-up: [WEB rankings and APP collection handoff](admin-app-usage-rankings-20261104.md). Existing material member counts only; menu telemetry not collected. APP implementation/release separate per Owner.
 
 - [고려대 자연계 운영 공개 및 TEST 20문항 검증](task20-korea-20261106.md)
+
+- 2026-11-07 한양대 자연 전체: 기존 4시험·8문항 보존 + 추가 17시험·34문항 TECHNICAL_READY. 운영 적용 승인 대기. [검증·승인 후보](task20-hanyang-test-connection-20261107.md). 신규 Provider/이용권/운영 쓰기 없음.

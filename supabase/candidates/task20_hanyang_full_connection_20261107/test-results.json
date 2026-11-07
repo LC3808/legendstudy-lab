@@ -1,0 +1,23 @@
+{
+  "release_catalog": [
+    {
+      "exams": 17,
+      "questions": 34
+    }
+  ],
+  "full_worker_context": [
+    {
+      "questions": 34,
+      "max_full_context_bytes": 1727272,
+      "missing_pin_blocked": true,
+      "all_original_images": true
+    }
+  ],
+  "rollback_restored_definitions_and_acl": true,
+  "provider_calls": 0,
+  "production_writes": 0,
+  "web_mapping_regression": {
+    "files": 3,
+    "passed": 22
+  }
+}

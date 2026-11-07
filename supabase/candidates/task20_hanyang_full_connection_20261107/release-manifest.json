@@ -1,0 +1,1056 @@
+[
+  {
+    "question_id": "9d7e7543-03c4-5b52-a5c0-8766ebac451e",
+    "leaf_id": "de9204d7-1565-57a0-8af2-ad0847467f3e",
+    "exam_id": "6b0965be-d896-5a7a-97ef-88716c251fdb",
+    "exam": "한양대학교 · 2024 · mock · 자연계열",
+    "source_payload_hash": "cbb7552367c2c29df7a1daac553d842bcd20e02011ba3bdcb84b3b2594fc9f52",
+    "source_pages": 4,
+    "criteria": 7,
+    "active_rows": [
+      {
+        "id": "605623e6-92c3-59c1-a973-c4c862ecd6ec",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "862303df-72ac-5a0a-bea3-af0a4ce30634",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "cf4538e6-f327-5eb4-99ca-72446f356b20",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "b52ebab2-4ec8-5ddf-afc4-aaf5ab38693f",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "b5d329a7-8eb7-5500-ab88-cfcbbac7ce16",
+    "leaf_id": "144f5cd5-dca6-5b40-9b91-a4c2311d78df",
+    "exam_id": "6b0965be-d896-5a7a-97ef-88716c251fdb",
+    "exam": "한양대학교 · 2024 · mock · 자연계열",
+    "source_payload_hash": "25cfc408533b5e6d49b91b25c13f7d08e0b03e1f2e63b0e84695ea4f678c596d",
+    "source_pages": 4,
+    "criteria": 7,
+    "active_rows": [
+      {
+        "id": "aa878749-d90f-587f-a395-fc9b823ad618",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "72b708f4-925c-506a-bf14-59a8d74b0bcc",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "59c3872c-e098-5a1d-802b-69570ba9f614",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "c40a215a-ebb1-56e2-bade-5d2beec360e3",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "b3a3bd52-22fe-5e99-bccd-47b8b3a1c92b",
+    "leaf_id": "30f04d40-1c56-5944-a120-a4681dab57b8",
+    "exam_id": "ec06c1af-0efc-5477-80b9-ab25b3f938b7",
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오전",
+    "source_payload_hash": "c90982937d2b310b257a6cd9c83dcacb43c40cc57f0ab9c946ff01aff9a4cb64",
+    "source_pages": 3,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "f12ed13e-e7ec-5dbb-b5bf-f0a398e42a4f",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "d28a88c6-e672-5f21-90cd-979c975b7e45",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "77976b62-f941-5f7d-9a11-bb12475f6f66",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "d142ab68-608d-5999-a1f9-9a7ad5adfd06",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "b8996668-aa53-57d8-b5b4-aeb6c21316c2",
+    "leaf_id": "01c6a7dd-b613-5ed0-8aee-722367866df7",
+    "exam_id": "ec06c1af-0efc-5477-80b9-ab25b3f938b7",
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오전",
+    "source_payload_hash": "a793cd05109f465cbf5a57f4a9bf39579757717387eb7ed621f7d5ac0765516c",
+    "source_pages": 3,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "d4af9045-ccc5-5df3-ae42-d372a15c5a81",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "10dde9e7-5e04-5d50-985d-29bd974256fe",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "a2941cf5-ba71-56b2-9cfe-7e3dfb18a802",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "cc4ac9d6-ed5e-5148-9b11-949a5658b64e",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "874836e9-a580-515d-bc42-3ab756f8cf34",
+    "leaf_id": "0da7c83c-0d6f-5544-9e51-c7f0d4a06cc2",
+    "exam_id": "2d4f01c3-6a94-5010-84a5-ba8c410d5aa3",
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "f71a2a064656d8bdd6531bcb978bdc1d73fa006c690079ec19221bbec9b73889",
+    "source_pages": 3,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "8affa621-2345-5294-a852-400cf15e8f18",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "48f17993-fee9-58cd-a493-ae0be444273e",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "dee7fe8c-81cb-5460-aa3c-f0ff1d58b4b5",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "ff9b6edd-c06c-5350-b314-1c714bb963b6",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "6e979b95-fe10-5119-88fa-1696107a3d4d",
+    "leaf_id": "2c52f064-616b-50f5-ac92-7c05ea8b2680",
+    "exam_id": "2d4f01c3-6a94-5010-84a5-ba8c410d5aa3",
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "7c6e218602d749678648ef9f7243dfe28dce5b4032a1538e0c75a783547b7f55",
+    "source_pages": 3,
+    "criteria": 7,
+    "active_rows": [
+      {
+        "id": "7a48f1ac-2806-5c70-a8b0-6cf6a60ca3b2",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "e5b7a49d-0d74-5fee-9683-ced8fafad4f2",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "24563d0a-e35a-5fba-89cc-6ac86319e8d7",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "51b58247-1233-5633-a8f5-2cdb42c8b1cf",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "01d91911-db6f-5200-801d-495dee7d49dc",
+    "leaf_id": "3dc57772-fb44-5fd3-b34a-5ca03f3e1430",
+    "exam_id": "12fc2456-206b-5172-8a54-513056b4692f",
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "65e9181d8330470c3735486768526178496fb4c5ed6a06ba8e4845dd0af6e4f4",
+    "source_pages": 3,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "ba738700-a177-5c66-b54a-e47fde85a747",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "b96c2ff9-1428-5d12-af23-b3ce7b2f39a5",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "70b0a704-0997-5e2e-8806-c1d1eee31212",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "4232a827-18eb-51ee-8224-3ebafd26d0d8",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "53addccd-3258-5adc-8f9f-05e64978b483",
+    "leaf_id": "0a2ef554-e041-58e1-a551-8fb03b1702a9",
+    "exam_id": "12fc2456-206b-5172-8a54-513056b4692f",
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "312f069a74d22b98253d513ff2c62ef0433f62f4edb7898f80f4e26ff729947d",
+    "source_pages": 4,
+    "criteria": 5,
+    "active_rows": [
+      {
+        "id": "075be0f8-d3c7-5662-8006-728ed797e9c0",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "83e6cfb8-dd27-5c7a-b0c6-e317a66dbeee",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "fd6bf717-8ab4-5948-a7e1-03593319b3ff",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "ee910187-fb97-565f-a67f-4fe800a95faa",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "c90e737b-550b-587f-92ca-300417e1f8a6",
+    "leaf_id": "214ba2cf-bbbd-5e65-8612-f08b66a48b04",
+    "exam_id": "b8fc4b28-b54c-5af1-ab01-e7a191978a93",
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오전",
+    "source_payload_hash": "96bfa4bfc7d164ba08a1df8723646e7ddd5fed510e7f30ab6756e29f70c60ebc",
+    "source_pages": 3,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "1f925b5a-b20f-5b4f-8a03-1ef159478d12",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "d2ba8cbc-661e-5a9a-9ca1-6dee249e31d5",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "3587e026-78d7-5e28-8f81-2fc72260f55a",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "6736ae3c-83d6-5100-bee2-501791a9d12b",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "2f4ec822-48cd-5807-a8ef-9a06fbe7ab7e",
+    "leaf_id": "71f0249e-a0ac-597b-9dae-da3071f41975",
+    "exam_id": "b8fc4b28-b54c-5af1-ab01-e7a191978a93",
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오전",
+    "source_payload_hash": "906c5f4d4501e78b1a92946e773922fdd361a6412cb8e1b44bc24eb5952c5099",
+    "source_pages": 3,
+    "criteria": 7,
+    "active_rows": [
+      {
+        "id": "df7d3ee4-1f58-5c29-9d23-ac590ea8a1fa",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "e2ed28fc-648e-5141-9fcd-b39a20364f00",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "cc99be87-e7ac-5c1f-9e2a-af4fda9f5188",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "3ca8895c-ea1f-5ac1-80d8-5d5bbe54c274",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "013b0b0f-d761-518f-9ae4-f2298e147033",
+    "leaf_id": "7d6df64a-298a-5c8c-b7c4-463d842a8d23",
+    "exam_id": "6d59d592-045f-5a07-ab47-6d2b9b1c6080",
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "8b15e770a855daed69130574951409c27ac1addcfb20706f9c1cfa1b017b2267",
+    "source_pages": 3,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "2fe91c38-8168-537e-8dda-913a73180274",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "1fd47ea2-99c0-535b-93ff-049d3a80ff3e",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "5738ccde-59bc-5676-9279-bf6759d11e5c",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "abe38b14-11db-5263-ae64-0b8090662dcb",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "55c0531f-2f94-5611-baac-901f0fe2dd81",
+    "leaf_id": "bcbbdd60-3593-56c5-a798-573c00b7f0d3",
+    "exam_id": "6d59d592-045f-5a07-ab47-6d2b9b1c6080",
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "a95c78fd8bc6684ab8af0e1a807f9416d3162d3805fb70d504a4855762e283fe",
+    "source_pages": 3,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "97f00b5f-ccc4-5bff-b0fb-b6ca74678e02",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "fa9af41f-fd89-5a07-b683-453e62228b4a",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "875c46d1-1586-5d7d-ab00-1a5ed3da7b35",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "e191358b-0d16-5fbb-8ec1-d67c94abbdf1",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "255633aa-cabd-5a44-9139-0d3405a67767",
+    "leaf_id": "68988545-0975-5e99-8a12-c14aa9ecd1e3",
+    "exam_id": "c51e9d2b-2141-582d-8fef-39aa3569146a",
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "9606b7f7f73b2021a40d4792b0e54eba69c022f73443867b6df117afddf0e5e9",
+    "source_pages": 3,
+    "criteria": 7,
+    "active_rows": [
+      {
+        "id": "71f8598c-df31-5dab-92b2-4af2529e5e8c",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "c2694d19-c3ba-5e5e-9b71-a944b7379868",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "51b1956c-63b6-5669-a2a4-541bcecf249d",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "61d77a5e-7f66-5042-9767-e898ae018cbf",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "5e319c4c-d9de-5163-9165-f525b067740e",
+    "leaf_id": "fc66db06-8c5e-5886-9cc9-ac0653fddd01",
+    "exam_id": "c51e9d2b-2141-582d-8fef-39aa3569146a",
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "ad0e75f3f51f3db3df41cc601f93be3a6d55247210fb101a1e0f07b7cafdcd50",
+    "source_pages": 3,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "7f9f6818-9a63-5129-8784-550a1c81a8f1",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "5202f69d-4e7c-5eeb-8dd9-2435a1977b26",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "01b6b2e9-0201-54ab-ab8f-5743445b98e4",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "c2f80759-8e25-58d1-a036-c83e8ef636d3",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "6f066e94-839e-5e81-a171-27d9f7f3f3cf",
+    "leaf_id": "5191b890-24e7-5987-8605-fe5ce34dab16",
+    "exam_id": "913dc1fb-b97a-585a-a3bc-42403307833c",
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오전",
+    "source_payload_hash": "8206132ae129344139fde4972ffc1c1690c94b048376cb08012744b0abb803cb",
+    "source_pages": 3,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "582619d2-c74a-571c-90ec-4ed55b4d7d04",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "a4b7ea3c-f3c2-5b67-a70f-b1c080fcf999",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "b7110a81-124b-5942-9c75-ddf5b65d84db",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "f3e6bae0-0e5e-5aca-b3c0-ded40af05793",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "b26a1148-0581-50db-a663-38f68e6c935e",
+    "leaf_id": "d56ed7e0-7fa2-5a67-890a-c84a7f57e5cc",
+    "exam_id": "913dc1fb-b97a-585a-a3bc-42403307833c",
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오전",
+    "source_payload_hash": "605fe4f8316a06cc7eb0c0858f6a9f2be74c28efdf6c884b816fa91579772251",
+    "source_pages": 3,
+    "criteria": 7,
+    "active_rows": [
+      {
+        "id": "17235173-f0ce-56cc-8ab2-d5bd257683aa",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "fae49687-328d-5612-8b55-226b8932bea0",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "d8bf266e-bf45-5b32-bc5b-8c935b4dd221",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "f371c61a-ef0a-5916-be9c-171c50e3f9c7",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "8c8dd3e7-c0f3-5615-a83a-66d72393ccf2",
+    "leaf_id": "9d5f2464-5bc5-5b7b-bf34-5278cb44f244",
+    "exam_id": "7a837ee4-ef07-5885-8d06-d20ff241ebc6",
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "d765fc8eb9aa97f53ecf2f16d7febb38780fe4d8be0370bba3eb581c37d58d22",
+    "source_pages": 4,
+    "criteria": 7,
+    "active_rows": [
+      {
+        "id": "fc56ae4e-e365-5bcb-8a97-c40b5e71ec7e",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "2dbf2fe9-7c01-5aa8-8388-1fa59f1ec20a",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "2837e217-4890-59ba-8a3a-bd6d56036dca",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "ecf18410-a135-53c1-b588-4e68757a093a",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "d66eff2e-b88c-5fba-8d36-c9a1bad36f8e",
+    "leaf_id": "1db9c975-1c3f-5b3a-bd25-c98fd9376e44",
+    "exam_id": "7a837ee4-ef07-5885-8d06-d20ff241ebc6",
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "80f4f9e2ba0c6ce07a8a45c2aceef4cf35834de35ac8ae3e00645a74f1e33399",
+    "source_pages": 3,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "caabef7f-5107-5e75-a779-7d83f81bd4ec",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "65cbd2ae-0b37-5021-b28e-7f7cff889245",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "6415c909-130f-58ac-99eb-8a52331bd5ee",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "01695947-38f6-50c2-97f6-8c153fab6bde",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "0c1c239e-61ae-57d4-895a-67657b95f8ed",
+    "leaf_id": "2ca58a65-d7e0-5c81-b521-f01dc91bd99b",
+    "exam_id": "77f27f9e-7ef9-5184-8fb1-607c68cc03d2",
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "21524e0d69de7903ac2073dc3f6f7cb57f46db491d62a748847346b745b62ac9",
+    "source_pages": 3,
+    "criteria": 5,
+    "active_rows": [
+      {
+        "id": "05ceb5ca-48f6-5e56-a7b5-5bc74b6eaa69",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "fa214b24-9bfb-5ae5-abe1-f9eb2f35e5d0",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "5c2277b8-fad6-524e-839f-24251c9844d2",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "18e81d7c-4c2e-5666-b8e0-38ce42421eb6",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "ca384700-2ee9-5e4c-81c0-19ed72c561e5",
+    "leaf_id": "cc7a94e7-bf90-50d0-a230-5b8d3ffa9d88",
+    "exam_id": "77f27f9e-7ef9-5184-8fb1-607c68cc03d2",
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "92ebceb9250a9c8ffa0f0741c9ecde6dcfa76f02d98ecfc9c8014c884fd4e1ea",
+    "source_pages": 3,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "6f673055-0086-541e-9939-3310d0e47ca8",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "92819ade-486c-554b-a638-89480b23cea8",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "8c3df144-03b6-5168-a137-97dbf122849e",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "a068bb39-dbc8-5509-bbc8-e4dd607a2722",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "bccce485-0b92-5d19-a89d-29dfa6f5c621",
+    "leaf_id": "d03bc2dc-63a2-566c-b7b5-b0c523f68f23",
+    "exam_id": "f62b2b3f-5e45-50d2-843b-8f839812fcae",
+    "exam": "한양대학교 2024학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "7a669c9f67f81e99ff279f98a11b6a888609b5bc7907d04eec10b85ca0686902",
+    "source_pages": 4,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "e4a0cf38-466c-5038-8757-b061d5b31789",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "733d61e4-1e76-5825-ab1b-af20da82a766",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "cd77c92d-4bb4-52fe-a3ae-a37db2df16bb",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "2e66893e-3745-5d4e-ba27-abaf81083300",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "ba221193-6912-5c5c-9016-6a9a434740be",
+    "leaf_id": "6f5e02c4-bae8-5194-929f-4526b834f77d",
+    "exam_id": "f62b2b3f-5e45-50d2-843b-8f839812fcae",
+    "exam": "한양대학교 2024학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "329caf3303f88037d2f9bc17c8e1f8443bce263e6698bdfa173616f3c1126a4a",
+    "source_pages": 4,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "b0c31048-dcb8-5a9a-9e77-b788ed530b95",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "896fab08-ff65-5328-8e37-7bfc4ae6f8e3",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "d2befef8-d2dc-5891-824d-80346ba977f3",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "3224b617-b622-58cb-9cae-63222aaf7216",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "1fdb3284-5d82-52c8-a78b-15c51654fdf4",
+    "leaf_id": "97a920a4-d8ba-5b1f-84ec-6de14d788848",
+    "exam_id": "f62c49c7-39ca-5405-9969-93ee88972bdd",
+    "exam": "한양대학교 2024학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "69d41529990c30b744b5c4dcdd0114b68a979c7a26d9f253485cbf36a1299e14",
+    "source_pages": 4,
+    "criteria": 7,
+    "active_rows": [
+      {
+        "id": "ce1cebc1-4154-5a35-aaf1-b55822fc1dbc",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "39a3b24d-9bef-5c4b-af3a-177e6ea1d2e5",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "63fbbae0-c664-5bd0-9f53-76bbf245c0c1",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "3afafe3d-5a14-5cf0-9c47-8d2d217f7387",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "93895a05-897a-534e-ba1a-ced2aaa08722",
+    "leaf_id": "b53af2c1-db5b-5820-b1a9-41479c118695",
+    "exam_id": "f62c49c7-39ca-5405-9969-93ee88972bdd",
+    "exam": "한양대학교 2024학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "bd65ed13b389ea03f00cfca75e5a35b1b5c43972ddb689143c4e05d8d47d54ce",
+    "source_pages": 4,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "df6b7653-afa8-57cb-a4df-993ebcf6e750",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "7f5b03c4-0450-5bce-ba4a-f330d0b95305",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "66cbc025-c596-58ca-9e59-15527764ab66",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "88fca2c7-3b94-5619-96a2-04fe929945f8",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "1db56206-6ba2-57ad-bdcb-1841913576ed",
+    "leaf_id": "eebc0593-89f0-583d-84ab-40f2614613ff",
+    "exam_id": "2c20b87a-0594-5a1e-80ae-30bc72087152",
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오전",
+    "source_payload_hash": "5fd0980c17e06c0e2905f1862d1fcc84f53ede7b1cd6ab8fdefd48584c863e12",
+    "source_pages": 5,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "ae9ee739-6554-59b5-978a-672b044993ed",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "bd319fae-f5c2-5375-9cf6-44b63aa5a91f",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "9a4d8a1e-8cc3-5e37-a7a5-249f15e30ebe",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "d5cdec32-37c8-523c-acce-88027b96e523",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "275b11d7-73ba-5ac2-b0a0-4d169e5b8194",
+    "leaf_id": "15ead5c1-bd2c-5478-b04b-a155b0d12976",
+    "exam_id": "2c20b87a-0594-5a1e-80ae-30bc72087152",
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오전",
+    "source_payload_hash": "0c877e8286118748760058984dfb76420c74d08e185c8913f8fb36f14a98a08b",
+    "source_pages": 4,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "ca24cc50-2a72-56ce-9e30-0b7f30ecc16c",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "11c76e5d-cf54-56e4-8529-2016cc7622b7",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "9f61cf52-a02c-5352-83ee-a5fd5f7c70e4",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "7dfe9360-b189-54f5-a4bb-c2c3f0dc45b5",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "19344c31-bcc7-510b-bdf6-c6654a881362",
+    "leaf_id": "ac24797e-8b60-5860-9302-9b2911f05fd7",
+    "exam_id": "c4c633bf-8edb-536a-8a7b-89f9ab64921e",
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "ef229a8cd380236f781479449de8ddd376c0bbe35ee8e5673246f784c7234d3a",
+    "source_pages": 6,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "d6e7de78-73e1-5ad4-9c58-78e2b62317e8",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "d9fb0528-9d9c-5752-8807-f896d5d4dd8a",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "c496a824-0fea-572c-9a7a-d626b813844a",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "483a2e47-bad7-5df2-a9ce-16a6f0e412f0",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "34fae3c6-7419-519f-b5b0-9e3edcc81ad5",
+    "leaf_id": "98041eaa-b40c-53d1-b295-67e946bb59eb",
+    "exam_id": "c4c633bf-8edb-536a-8a7b-89f9ab64921e",
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "8bbc470b288a0c158cb8e1dab59c490dbb8139d5a1167e665e951d7da8be42dd",
+    "source_pages": 5,
+    "criteria": 7,
+    "active_rows": [
+      {
+        "id": "27e1431c-b767-5738-9bed-40c3c83add71",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "079ba965-baa8-5681-a493-c8aad5b80bcb",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "077c7867-1c64-5e58-b518-e2f7cf7ecf62",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "5e27bc1a-dc5a-588e-99d2-f85b4b6e45e8",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "f1825b95-2e4f-50c8-a295-32772ff88460",
+    "leaf_id": "c4d55464-cd19-58cc-8e91-d400610d1438",
+    "exam_id": "26703113-7ecb-5632-b3a3-7185fdd9bb0a",
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "56c623e850481be7abaaa1eaaaa64e7e29c9c413e160b12ed553e69544401bce",
+    "source_pages": 4,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "95f3b3f7-f7e0-5cc9-9d98-4a42bc07724c",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "f8ca9555-019a-5be2-8ee2-0ddd08ab4e7e",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "01dcd77c-eb5f-5a2f-8b41-5c36e7e5775e",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "d7f824cf-eccf-529a-92e2-fc99a17123ae",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "d0326e70-d047-58c2-9e13-f5d3ea9e186b",
+    "leaf_id": "acbb934e-c7a2-5785-a9fc-a2772a1a7cbe",
+    "exam_id": "26703113-7ecb-5632-b3a3-7185fdd9bb0a",
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "881582953c99622c635d8f141f676d13f7bb7e2f21bd751de686cb05f9f0c874",
+    "source_pages": 6,
+    "criteria": 8,
+    "active_rows": [
+      {
+        "id": "f656858d-b3f6-5ef1-9eab-e5b6255e189a",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "75e0a7e1-2183-5982-968d-dc070e98cdab",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "8e924821-ba56-5506-8051-92a71f020fda",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "c627b3ed-6cbc-55f0-bd77-4acadfa3c387",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "60f8ba5f-39b1-5e05-a85d-c0ff8e075fd9",
+    "leaf_id": "d3c1fc13-a2cf-586a-a768-7b6938bbb13b",
+    "exam_id": "fff2d3d1-5b69-5da9-8a67-53c9658896a4",
+    "exam": "한양대학교 2026학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "140bd2cda95570eed36fe63ad05d518f2e641a6af3e1f8dded57d283695d2e0f",
+    "source_pages": 7,
+    "criteria": 7,
+    "active_rows": [
+      {
+        "id": "9bb490c1-ba88-54d7-88ff-3d06c4bab4c4",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "5641e4d8-732f-5f7c-af70-9ee71375d6db",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "5273919e-2f41-5509-a7e0-e0e2ac2e4a29",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "98b3f1c2-017d-51e1-b0b8-ce16471fe002",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "3d1f5787-0291-5603-9aa1-d6d7b8ec97d1",
+    "leaf_id": "0a1ffdc6-51c3-5df3-9dcc-645088443e89",
+    "exam_id": "fff2d3d1-5b69-5da9-8a67-53c9658896a4",
+    "exam": "한양대학교 2026학년도 수시 논술 자연계열 오후1",
+    "source_payload_hash": "a8b3ae15c8d93b61d1a4c8ffd6d003c635392593206d5b97af5a539c35770005",
+    "source_pages": 5,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "0e9bd333-b378-5586-be33-4a8211c2e719",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "c9d2a820-7fad-5173-932b-7a0e42bfa0c4",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "ba965b0b-d6bc-5fa5-bdf2-321f5ba97616",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "01310c47-91bc-59c4-a7bb-48e2415fb065",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "5150df7b-4935-5cde-bb4c-bf8fca1fa27b",
+    "leaf_id": "2005fbe2-ab24-540d-8fd2-5e2325aab1d9",
+    "exam_id": "92e250d2-e074-5e84-8b8b-60c335aa2cde",
+    "exam": "한양대학교 2026학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "3fbb48e23aa1f1832460e6d637ff7f5b22b1ef08eb2d59a5a37cbbee213035e1",
+    "source_pages": 5,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "a3bdeb0f-bcf0-51dd-b046-6f2b5ce9aceb",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "c6857f3f-d580-5e6f-b881-78dea8202e69",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "dce9a060-ef63-5e9c-a33c-685bdcaf594c",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "be3c51f4-ddeb-5e7e-b437-3d45e53c069b",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  },
+  {
+    "question_id": "c39394ed-4df2-5a0e-9484-f09e2a28d8ff",
+    "leaf_id": "1354113d-306d-5910-88d0-10ed0cbf2cdb",
+    "exam_id": "92e250d2-e074-5e84-8b8b-60c335aa2cde",
+    "exam": "한양대학교 2026학년도 수시 논술 자연계열 오후2",
+    "source_payload_hash": "249753d0531d2570872e7e7c3c4d1f89cc3d6637e88d5551f30a5a949f963bd6",
+    "source_pages": 6,
+    "criteria": 6,
+    "active_rows": [
+      {
+        "id": "f81293c3-28ed-55fd-8405-8dd0135e2400",
+        "state": "ACTIVE",
+        "table_name": "math_problem_sets"
+      },
+      {
+        "id": "e754688c-7ed5-5b3b-b060-b169d0b94d46",
+        "state": "ACTIVE",
+        "table_name": "math_problems"
+      },
+      {
+        "id": "e6ce0366-1128-5f3c-b598-263b40cfb256",
+        "state": "ACTIVE",
+        "table_name": "math_evaluation_profiles"
+      },
+      {
+        "id": "9b0125f9-81ce-5002-8564-0431c7959861",
+        "state": "ACTIVE",
+        "table_name": "math_canonical_solutions"
+      }
+    ]
+  }
+]

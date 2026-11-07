@@ -1,0 +1,40 @@
+{
+  "applied_fingerprints": [
+    {
+      "sig": "essay_browse_catalog(text)",
+      "digest": "9258011dee2e38b719a60163cbaf6a9d"
+    },
+    {
+      "sig": "math_evaluation(jsonb)",
+      "digest": "e5ae91ebe45421588565a537389988d3"
+    },
+    {
+      "sig": "math_private.evaluation_admission()",
+      "digest": "1d972b684b872bd724412c8acaed2ba6"
+    },
+    {
+      "sig": "math_private.release_catalog(uuid)",
+      "digest": "dcb937b34fc61c59ed59a5d29aa37140"
+    }
+  ],
+  "rollback_fingerprints": [
+    {
+      "sig": "essay_browse_catalog(text)",
+      "digest": "491510be1cab17d406c732e09b313b30"
+    },
+    {
+      "sig": "math_evaluation(jsonb)",
+      "digest": "da24b842aabab6030ead35592ec45a47"
+    },
+    {
+      "sig": "math_private.evaluation_admission()",
+      "digest": "e5dfc56a4e4cd09e85c1efc379100376"
+    },
+    {
+      "sig": "math_private.release_catalog(uuid)",
+      "digest": "d3867cc8f5a665f951510a47b1e09ab5"
+    }
+  ],
+  "retains_new_registry_but_hides_pm1": true,
+  "other_functions_restored": true
+}
