@@ -1,0 +1,26 @@
+{
+  "transaction_rollback_restored_definitions_and_acl": true,
+  "functions": 4,
+  "applied": [
+    {
+      "sig": "math_private.evaluation_admission()",
+      "hash": "a6de193e8c4a7f4892abe2235e8b8d80",
+      "acl": "{postgres=X/postgres}"
+    },
+    {
+      "sig": "essay_browse_catalog(text)",
+      "hash": "e50ccb84951c664fbc9ca85098a79ad3",
+      "acl": "{postgres=X/postgres,anon=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "sig": "math_private.hanyang_worker_references(jsonb)",
+      "hash": "54acd2a1914f360e6ecd62e39acc8222",
+      "acl": "{postgres=X/postgres}"
+    },
+    {
+      "sig": "math_private.release_catalog(uuid)",
+      "hash": "d5ec622c31c80a43f2536a1ddeab8cba",
+      "acl": null
+    }
+  ]
+}

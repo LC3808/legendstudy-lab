@@ -1,0 +1,16 @@
+{
+  "draft_packages": 69,
+  "draft_rows": 920,
+  "criteria_rows": 104,
+  "source_unique_pages": 300,
+  "source_page_attachments": 302,
+  "worker_contract_pass": 69,
+  "max_context_bytes": 814115,
+  "catalog_exam_pass": 20,
+  "test_authenticated_pdf_pass": 20,
+  "web_regression_pass": 30,
+  "provider_calls": 0,
+  "credit_grants": 0,
+  "production_writes": 0,
+  "science_q4_deferred": 11
+}
