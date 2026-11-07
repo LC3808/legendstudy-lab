@@ -1,0 +1,52 @@
+{
+  "registry": {
+    "sourceKey": "source:hanyang-2024-admission-natural-afternoon-1",
+    "examId": "f62b2b3f-5e45-50d2-843b-8f839812fcae",
+    "existingExam": false,
+    "universityId": "1090e1be-174e-5042-abd3-ca929c6e26f8",
+    "year": 2024,
+    "kind": "admission",
+    "track": "자연계열",
+    "session": "오후1",
+    "campus": null,
+    "examKey": "source-hanyang-2024-admission-natural-afternoon-1",
+    "name": "한양대학교 2024학년도 수시 논술 자연계열 오후1",
+    "sourceHashes": [
+      "6de905abebcc25734b21abe4a939ebf1bb00ea605633195439b5e4c260a82a20"
+    ],
+    "questions": [
+      {
+        "sourceKey": "source:hanyang-2024-admission-natural-afternoon-1:q1",
+        "id": "bccce485-0b92-5d19-a89d-29dfa6f5c621",
+        "label": "문제 1",
+        "order": 0
+      },
+      {
+        "sourceKey": "source:hanyang-2024-admission-natural-afternoon-1:q2",
+        "id": "ba221193-6912-5c5c-9016-6a9a434740be",
+        "label": "문제 2",
+        "order": 1
+      }
+    ]
+  },
+  "guideSha256": "6de905abebcc25734b21abe4a939ebf1bb00ea605633195439b5e4c260a82a20",
+  "problemPdfSha256": "26137b73f541b0d3e0bca9e62d0c677af4117384a8a606911b17cf4a4ae0d699",
+  "pages": [
+    {
+      "problem": 23,
+      "rubric": 25,
+      "solution": [
+        27,
+        28
+      ]
+    },
+    {
+      "problem": 24,
+      "rubric": 26,
+      "solution": [
+        29,
+        30
+      ]
+    }
+  ]
+}
