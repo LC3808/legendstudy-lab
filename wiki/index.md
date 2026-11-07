@@ -19,4 +19,4 @@ Canonical report: APP `wiki/app-math-commerce-integration-report-20261103.md`.
 
 - 2026-11-07 한양대 자연 **21시험·42문항 PRODUCTION_CONNECTED**. 추가 17시험·34문항 승인 적용 및 일반 사용자 WEB 전수 PDF·답안 작성·첨삭 진입 PASS. Provider·차감 0회. [운영 적용 보고](task20-hanyang-production-connection-20261107.md) · [Claude 배너 공개 목록](task20-hanyang-claude-banner-20261107.md).
 
-- 2026-11-07 [중앙대 자연 수학 20시험·69문항 연결 후보](task20-chungang-connection-20261107.md): TEST 근거·Catalog·PDF 계약 검증 완료, 운영 승인 대기. 과학Q4 11문항 Owner 보류.
+- 2026-11-07 [중앙대 자연 수학 20시험·69문항 운영 연결](task20-chungang-connection-20261107.md): Owner 승인 적용, 일반 사용자 WEB20회차·69입력 확인. 운영391ed0b. 과학Q4 11문항 보류·품질 Owner 검수 대상.

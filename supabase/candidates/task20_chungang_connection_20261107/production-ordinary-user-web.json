@@ -1,0 +1,251 @@
+[
+  {
+    "year": "2026:admission",
+    "title": "2026학년도 수시 논술 자연계열 1회차",
+    "questions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": false
+  },
+  {
+    "year": "2026:admission",
+    "title": "2026학년도 수시 논술 자연계열 2회차",
+    "questions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": false
+  },
+  {
+    "year": "2026:mock",
+    "title": "2026학년도 모의논술 · 자연계열",
+    "questions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": false
+  },
+  {
+    "year": "2025:admission",
+    "title": "2025학년도 수시 논술 자연계열 1회차",
+    "questions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": false
+  },
+  {
+    "year": "2025:admission",
+    "title": "2025학년도 수시 논술 자연계열 2회차",
+    "questions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": false
+  },
+  {
+    "year": "2025:mock",
+    "title": "2025학년도 모의논술 · 자연",
+    "questions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": false
+  },
+  {
+    "year": "2024:admission",
+    "title": "2024학년도 수시 논술 자연계열 1회차",
+    "questions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": false
+  },
+  {
+    "year": "2024:admission",
+    "title": "2024학년도 수시 논술 자연계열 2회차",
+    "questions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": false
+  },
+  {
+    "year": "2024:mock",
+    "title": "2024학년도 모의논술 · 자연계열",
+    "questions": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": false
+  },
+  {
+    "year": "2023:admission",
+    "title": "2023학년도 수시 논술 자연계열 1회차",
+    "questions": [
+      1,
+      2,
+      3
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": true
+  },
+  {
+    "year": "2023:admission",
+    "title": "2023학년도 수시 논술 자연계열 2회차",
+    "questions": [
+      1,
+      2,
+      3
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": true
+  },
+  {
+    "year": "2023:mock",
+    "title": "2023학년도 모의논술 자연계열",
+    "questions": [
+      1,
+      2,
+      3
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": true
+  },
+  {
+    "year": "2022:admission",
+    "title": "2022학년도 수시 논술 자연계열 1회차",
+    "questions": [
+      1,
+      2,
+      3
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": true
+  },
+  {
+    "year": "2022:admission",
+    "title": "2022학년도 수시 논술 자연계열 2회차",
+    "questions": [
+      1,
+      2,
+      3
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": true
+  },
+  {
+    "year": "2022:admission",
+    "title": "2022학년도 수시 논술 자연계열 3회차",
+    "questions": [
+      1,
+      2,
+      3
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": true
+  },
+  {
+    "year": "2022:mock",
+    "title": "2022학년도 모의논술 자연계열",
+    "questions": [
+      1,
+      2,
+      3
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": true
+  },
+  {
+    "year": "2021:admission",
+    "title": "2021학년도 수시 논술 자연계열 1회차",
+    "questions": [
+      1,
+      2,
+      3
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": true
+  },
+  {
+    "year": "2021:admission",
+    "title": "2021학년도 수시 논술 자연계열 2회차",
+    "questions": [
+      1,
+      2,
+      3
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": true
+  },
+  {
+    "year": "2021:admission",
+    "title": "2021학년도 수시 논술 자연계열 3회차",
+    "questions": [
+      1,
+      2,
+      3
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": true
+  },
+  {
+    "year": "2021:mock",
+    "title": "2021학년도 모의논술 자연계열",
+    "questions": [
+      1,
+      2,
+      3
+    ],
+    "pdf": true,
+    "admission": true,
+    "partial": true
+  }
+]

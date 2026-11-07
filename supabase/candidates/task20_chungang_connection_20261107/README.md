@@ -1,6 +1,6 @@
 # 중앙대 자연 수학 연결 후보 · 2026-11-07
 
-운영 미적용. Owner의 대학별 운영 승인이 필요하다. 기존 20시험·80문항 ID를 유지하고 **수학 69문항**만 연결한다. Owner가 보류한 **과학 선택형 Q4 11문항**은 제외한다. 신규 Registry·문항 생성 없음.
+2026-11-07 Owner 승인 후 운영 적용·일반 사용자 WEB 검증 완료. 상세 결과는 [Wiki](../../../wiki/task20-chungang-connection-20261107.md)와 production-*.json 참조. 아래는 적용에 사용한 계획과 원복 절차다. 기존 20시험·80문항 ID를 유지하고 **수학 69문항**만 연결한다. Owner가 보류한 **과학 선택형 Q4 11문항**은 제외한다. 신규 Registry·문항 생성 없음.
 
 ## 검증과 범위
 
@@ -16,7 +16,7 @@
 2. 보관된 `.local/task20-chungang/draft.private.sql`로 정확한 기존 문항에 69개 Package를 추가한다. 기존 값이 다르면 실패하며 덮어쓰지 않는다. 공식 이미지 payload는 같은 디렉터리 `worker-input`에 해시 고정되어 있다. 기존 비공개 원본 테이블을 재사용하고 학생 접근은 허용하지 않는다.
 3. 문제 전용 PDF 20개를 비공개 Storage에 해시 이름으로 연결한다. 기존 객체는 덮어쓰지 않고 readback SHA 확인. `question-pdf-policy.sql`은 이 20개 문제 PDF에만 일반 로그인·계정 허용 정책을 적용한다. 공식 채점표·해설 원본을 공개하지 않는다.
 4. `activate-packages-candidate.sql`, `open-candidate.sql`: 69문항만 활성화, 기존 비공개 중앙대 17회차 Catalog 제외 해제, 기존 3회차 유지. 공통 Math Worker 입력에 원본 근거 연결. 신규 평가 엔진/전용 Worker 없음.
-5. 승인 후 WEB 후보 데이터의 studentDisplay/storageRead를 승인 상태로 바꾸어 기존 데이터에 병합하고, 정확한 20시험·69 leaf만 기존 공개 scope에 추가한다. 기존 Secret·다른 대학·Preview를 보존한다. 현재 후보 파일은 운영 데이터에 병합하지 않았다.
+5. 승인 후 WEB 후보 데이터의 studentDisplay/storageRead를 승인 상태로 바꾸어 기존 데이터에 병합하고, 정확한 20시험·69 leaf만 기존 공개 scope에 추가한다. 기존 Secret·다른 대학·Preview를 보존한다. 승인 후 WEB 데이터에 병합했다.
 6. 일반 사용자 WEB에서 회차·PDF·답안·첨삭 진입을 확인한다. 11회차는 수학 부분 제공을 명시하고 과학 Q4까지 시험 전체 완료로 보고하지 않는다. Provider 호출 없음.
 
 ## 원복

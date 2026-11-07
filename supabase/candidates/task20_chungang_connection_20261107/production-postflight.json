@@ -1,0 +1,40 @@
+{
+  "release_catalog": {
+    "exams": 20,
+    "math_questions": 69,
+    "science_q4_excluded": 11
+  },
+  "other_university_catalogs_preserved": 41,
+  "catalog_target_exams": 20,
+  "math_evaluations": {
+    "prior_rows_preserved": 13,
+    "current_rows": 13
+  },
+  "math_attempts": {
+    "prior_rows_preserved": 69,
+    "current_rows": 69
+  },
+  "essay_evaluations": {
+    "prior_rows_preserved": 0,
+    "current_rows": 0
+  },
+  "credit_accounts": {
+    "prior_rows_preserved": 303,
+    "current_rows": 303
+  },
+  "credit_grants": {
+    "prior_rows_preserved": 315,
+    "current_rows": 315
+  },
+  "credit_transactions": {
+    "prior_rows_preserved": 412,
+    "current_rows": 412
+  },
+  "acl_preserved": 4,
+  "worker_official_input": {
+    "connected_questions": 69,
+    "explicit_intent_gaps": 16
+  },
+  "provider_calls": 0,
+  "credit_mutations": 0
+}

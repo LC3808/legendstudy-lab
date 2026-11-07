@@ -1,34 +1,45 @@
-# 중앙대 자연 수학 연결 · 운영 승인 요청 · 2026-11-07
+# 중앙대 자연 수학 운영 연결 · 2026-11-07
 
-**TECHNICAL_READY: 수학 69문항 / PRODUCTION_CONNECTED: 미적용**. 실제 첨삭 품질은 Owner·사용자 검증 대상이다. 기존 20시험·80문항 Registry를 대조했다. Owner 결정으로 2021~2023학년도 11시험의 과학 선택형 Q4 11문항은 별도 작업으로 보류한다. 다음 대학은 시작하지 않았다.
+**TECHNICAL_READY / PRODUCTION_CONNECTED: 승인된 20시험·69수학 문항 PASS.** 실제 첨삭 품질은 OWNER_VERIFIED·USER_VALIDATED 미확인이다. 과학 선택 Q4 11문항은 Owner 결정에 따라 보류했으며, 다음 대학은 시작하지 않았다.
 
-## 연결 범위와 검증
+## 운영 결과
 
-- 20시험의 수학 69문항: 9시험 Q1~Q4 36문항, 11시험 Q1~Q3 33문항. 기존 ID 그대로 공통 Math Package 연결 후보 920행, 공식 채점 근거 104행.
-- 기존 공식 PDF 40개(문제20·평가자료20)와 기존 SHA·페이지 매핑 재사용. 원본 수식은 PNG 지면 300개/문항 연결302건으로 공통 Worker에 전달한다. 문항별 전용 엔진 없음.
-- **TEST DB 계약 PASS 69문항**: 저장 제약조건과 참조, 정확한 문항·시험·근거 연결, 누락/다른 ID 차단, 공식 근거 원본의 학생 직접 조회 차단. Worker context 최대814,115bytes로 기존2MiB 한도 이내.
-- **TEST 공개 Catalog PASS 20시험**: 수학69만 반환, 과학11 제외. 후보 함수 적용 후 트랜잭션 rollback으로 기존 정의·ACL 복원 확인. TEST에 원래 없던 release_catalog는 rollback 후 다시 없어지는 것까지 확인.
-- **TEST 일반 인증 계정 PDF 열람 PASS 20파일**: 비공개 Storage에서 문제 PDF를 내려받아 크기·SHA 확인. 중간 1파일 전송이 끊겨 남은 구간을 다시 확인해 통과했다. 운영 Storage는 변경하지 않았다.
-- 기존 WEB 공개/제출 경로 회귀 **30 PASS**. 실제 운영 사용자 화면 PASS를 의미하지 않는다. 부분 공개 안내와 미공개 문항 제출 제한을 재사용한다.
-- Provider0회, 이용권 지급·차감0회, 운영 DB/Worker/WEB 변경0회. 새 평가·History 생성 여부는 실평가하지 않았으므로 NOT_VERIFIED이며 기존 공통 저장/재첨삭 경로를 변경하지 않는다.
+Owner의 “수학 69문항 운영 연결 승인” 범위로 기존 Registry ID를 유지하여 69 Package·920행, 공식 원본 지면 입력, 비공개 문제 PDF 20개, 공개 Catalog 및 공통 Math Worker 진입을 연결했다. 신규 평가 엔진·Registry 중복 생성 없음. 9시험 Q1~Q4 36문항과 11시험 Q1~Q3 33문항을 제공한다.
 
-## 자료 차이와 제외 항목
+- 일반 사용자 운영 WEB: 20회차 선택, 69문항 수식·텍스트 답안 입력 활성, 20회차 사진 확인/첨삭 진입 PASS. 빈 답안의 OCR 실행 버튼은 정상적으로 비활성이다. 답안 제출이나 실제 첨삭은 실행하지 않았다.
+- 문제 PDF: 운영 private Storage 20파일 업로드 후 크기·SHA 대조 PASS. 일반 사용자 WEB에서 각 시험의 문제 PDF 뷰어 접근 확인. 문항별 페이지 연결은 DB 계약으로 확인했고, 69개 페이지를 각각 육안 검수한 것은 아니다.
+- 과학 Q4 11개는 평가 대상 제외. 해당 11회차에 “문제 1, 문제 2, 문제 3만 첨삭…시험 전체가 공개된 것은 아닙니다” 안내를 확인했다.
+- 운영 공식 Worker 입력 69개 연결 PASS. 별도 출제 의도 지면이 없는 2025·2026 수시 16문항은 승인된 `INTENT_SOURCE_NOT_PROVIDED`를 전달하며 공식 채점 기준·예시답안을 사용한다. 누락 근거를 생성하지 않았다.
+- 공통 결과 저장·History·무료 재첨삭 코드는 유지. 신규 Provider 0회, 이용권 지급·차감 0회. 신규 평가 결과 생성/학습 품질은 이번 검증 범위가 아니다.
 
-2025·2026 수시4시험16문항은 공식 채점 기준과 예시답안은 있으나 현재 보관된 해설에 별도 출제 의도 지면이 없다. 이를 만들어 넣지 않았다. 원본 입력의 정확한16개 문항에만 INTENT 부재를 허용하고 `INTENT_SOURCE_NOT_PROVIDED`를 전달하는 후보를 TEST에서 검증했다. 다른 문항의 기존 필수 근거 조건은 유지한다.
+## 보존 및 회귀
 
-보류한 과학Q4는 수학Worker에 보내지 않는다. 해당11시험은 수학Q1~Q3 부분 제공으로 표시하며 대학 전체/시험 전체 품질 PASS로 표시하지 않는다. 기존 감사에서 Registry 미등록·공통/선택 매핑 미확정인2027학년도 후보4시험은 이번20시험 공개 후보에 포함하지 않는다. 따라서 중앙대 모든 자료의 완전 공개를 주장하지 않는다.
+운영 사전/사후 행 해시 비교: math_evaluations 13, math_attempts 69, essay_evaluations 0, credit_accounts 303, credit_grants 315, credit_transactions 412 보존. 다른 41개 대학 Catalog 결과와 변경 함수 4개의 ACL 보존. 결제·환불 원장 변경 없음.
 
-## 운영 승인 범위
+기존 TEST 증거를 재사용했다: 69문항 Worker 입력·20회차 Catalog·일반 TEST PDF20·기존 회귀30 PASS. 운영 WEB 데이터 병합 회귀86 PASS. 아래 공개 범위 한도 수정 집중 회귀47 PASS. Next production build와 Pages Functions compile PASS. 기존 비LAB 배포 자산1,826개 보존.
 
-[후보와 원복 계획](../supabase/candidates/task20_chungang_connection_20261107/README.md): 기존20시험 수학69문항의 Package·공식 비공개 지면 입력·문제PDF20개·Catalog/평가권한·WEB 데이터/scope 연결. 신규 Registry 생성 없음. 기존 인문/상경·다른 대학·평가·History·이용권·결제·APP 산출물 보존.
+## 공개 범위 한도 오류 및 복구
 
-승인 후 운영 적용 및 일반 사용자 WEB의 PDF→답안 작성→첨삭 진입을 확인한다. 운영 평가/Provider 호출은 하지 않는다. 원복은 신규 진입·PDF권한 추가분을 닫고 직전 함수/WEB을 복원하며 생성된 기록을 삭제하지 않는다. SQL은 함수 해시가 변하면 중단한다.
+첫 WEB 배포(9b5c229, 391da810-068f-4389-a280-d7a7013c9292) 후 일반 사용자 검증에서 공개 시험262개가 기존 parser 한도256개를 넘어 첨삭 가능 상태 조회가 실패했다. 즉시 직전 정상 WEB(270e517f-34af-4485-af9e-b839381031b8)로 복원했다. DB·기존 기록은 유지했다.
 
-Claude 배너의 실제 공개 대학·시험 목록은 운영 적용 후에만 갱신한다. 현재 문서는 **공개 후보**이며 홍보용 공개 완료 목록이 아니다.
+공통 `MAX_PUBLIC_EXAMS`를512로 맞추고 exam/public-service-status 요청 검증에도 동일 상한을 적용했다. 잘못된 ID·중복·513개 초과 거부는 유지한다. 경계/회귀47개를 통과한 뒤 재배포하고 위20회차 실제 사용자 검증을 완료했다. 단순 오류 문구 숨김이나 무조건 버튼 활성화가 아니다.
 
-## 시험별 후보
+- 최종 운영 소스: `391ed0bcff58174c7d604d00aabc5da6058f270d`
+- 운영 배포: `ce3e336c-5ccb-4f1b-b833-06234ac125c1` (canonical success)
+- 운영 URL: https://lab.legendstudy.com/essay-lab/universities/cau/
+- 적용 증거: [production-postflight.json](../supabase/candidates/task20_chungang_connection_20261107/production-postflight.json), [일반 사용자 WEB](../supabase/candidates/task20_chungang_connection_20261107/production-ordinary-user-web.json)
 
-|시험|수학 연결|보류|
+## 남은 범위와 원복
+
+과학 선택 Q4 11문항은 별도 작업이다. 기존 감사상 미등록·공통/선택 매핑 미확정 2027 후보4시험도 이번 범위에 포함하지 않았다. 따라서 중앙대 모든 자료 또는 전체 TASK20 PASS를 의미하지 않는다. 승인된 수학 서비스 연결만 완료했으며 실제 품질은 Owner·사용자가 검수한다.
+
+원복: 이번 scope 추가분의 신규 진입을 닫고 직전 WEB·함수를 복원하고 신규 문제 PDF 정책만 제거한다. 기존 평가·Package·History·이용권은 삭제하지 않는다. 후속 변경이 있으면 전체 덮어쓰기를 하지 말고 이번 추가분만 분리한다. [SQL·원복](../supabase/candidates/task20_chungang_connection_20261107/README.md).
+
+[Claude 배너용 실제 공개 목록](task20-chungang-claude-banner-20261107.md). 다음 대학 진행은 Owner 승인 대기.
+
+## 운영 연결 시험
+
+|시험|공개 수학|보류|
 |---|---:|---|
 |중앙대학교 2021학년도 모의논술 자연계열|3|과학 선택 Q4|
 |중앙대학교 2021학년도 수시 논술 자연계열 1회차|3|과학 선택 Q4|
