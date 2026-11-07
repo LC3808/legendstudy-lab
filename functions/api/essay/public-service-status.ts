@@ -2,7 +2,7 @@ import {betaExpansionCandidates,betaExpansionFor,expansionMathMatches,type BetaE
 import {onRequestGet as mathAvailability} from './availability';
 import {commerceTestExam,commerceTestScope,examLaunchHold} from '../../../src/lib/essay-runtime/launch-policy';
 import partialEvidence from '../../../src/data/essay-partial-exam-release-evidence.json';
-import {publicExamScope} from '../../../src/lib/essay-runtime/public-exam-scope';
+import {publicExamScope,MAX_PUBLIC_EXAMS} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {publicCatalog} from '../../../src/lib/essay-runtime/public-discovery';
@@ -24,7 +24,7 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
   // TEST uses its exact reviewed exam, never the Production public allowlist.
   const raw=test?'':(env.ESSAY_PUBLIC_EXAMS??'').trim(),scope=raw?publicExamScope(raw):[];
   if(raw&&!scope.length)throw Error('INVALID_PUBLIC_SCOPE');
-  if(scope.length>256||!scope.every(uuid)||new Set(scope).size!==scope.length)throw Error('INVALID_PUBLIC_SCOPE');
+  if(scope.length>MAX_PUBLIC_EXAMS||!scope.every(uuid)||new Set(scope).size!==scope.length)throw Error('INVALID_PUBLIC_SCOPE');
   const transport=serverTransport(env),subject=await transport.subject(token,!test);
   const enabled=env.ESSAY_EXAM_RUNTIME_ENABLED==='true'||(test&&env.ESSAY_COMMERCE_RUNTIME_TEST_ENABLED==='true');
   const expansion=test?[]:betaExpansionCandidates.filter(e=>betaExpansionFor(request.url,env,e.examId));

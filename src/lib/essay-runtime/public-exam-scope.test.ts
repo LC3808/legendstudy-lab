@@ -7,3 +7,8 @@ describe('exact UUID scope encoding',()=>{
  it.each(['uuid64:','uuid64:*','uuid64:AAAA','uuid64:!!!!'])('fails closed for malformed input %s',raw=>expect(publicExamScope(raw)).toEqual([]));
  it('rejects duplicates and excess scope',()=>{expect(publicExamScope(encode([ids[0],ids[0]]))).toEqual([]);expect(publicExamScope(encode(Array(257).fill(ids[0])))).toEqual([]);});
 });
+
+const scopeIds=(n:number)=>Array.from({length:n},(_,i)=>`00000000-0000-4000-8000-${i.toString(16).padStart(12,'0')}`);
+const packedScope=(ids:string[])=>'uuid64:'+Buffer.from(ids.map(id=>id.replaceAll('-','')).join(''),'hex').toString('base64');
+it.each([262,512])('accepts exact expanded scope of %i exams',n=>{const ids=scopeIds(n);expect(publicExamScope(packedScope(ids))).toEqual(ids);expect(publicExamScope(ids.join(','))).toEqual(ids);});
+it('still rejects 513 distinct IDs in both representations',()=>{const ids=scopeIds(513);expect(publicExamScope(packedScope(ids))).toEqual([]);expect(publicExamScope(ids.join(','))).toEqual([]);});

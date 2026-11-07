@@ -1,7 +1,7 @@
 import {betaExpansionFor,expansionMathMatches,type BetaExpansionEnvironment} from '../../../src/lib/essay-runtime/beta-expansion';
 import {onRequestGet as mathAvailability} from './availability';
 import {commerceTestScope,commerceTestExam,examLaunchHold} from '../../../src/lib/essay-runtime/launch-policy';
-import {publicExamScope} from '../../../src/lib/essay-runtime/public-exam-scope';
+import {publicExamScope,MAX_PUBLIC_EXAMS} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
@@ -21,7 +21,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const input=JSON.parse(new TextDecoder().decode(await boundedBody(request,1048576))) as Record<string,unknown>;
   if(env.ESSAY_EXAM_RUNTIME_ENABLED!=='true'&&!commerceTestScope(request.url,env,input.examId))return reply({code:'EVALUATION_UNAVAILABLE'},503);
   const publicExams=publicExamScope(env.ESSAY_PUBLIC_EXAMS);
-  const publicRelease=publicExams.length<=256&&publicExams.every(uuid)&&uuid(input.examId)&&publicExams.includes(input.examId);
+  const publicRelease=publicExams.length<=MAX_PUBLIC_EXAMS&&publicExams.every(uuid)&&uuid(input.examId)&&publicExams.includes(input.examId);
   const transport=serverTransport(env),subject=await transport.subject(token,publicRelease);
   const expansion=betaExpansionFor(request.url,env,input.examId);
   if(input.action==='availability'&&publicExams.length>0&&!publicRelease&&!expansion&&!commerceTestScope(request.url,env,input.examId))return reply({ready:false,questionIds:[],mathQuestions:{},code:'ACCESS_DENIED'});
