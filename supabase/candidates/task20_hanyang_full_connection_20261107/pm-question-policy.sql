@@ -1,0 +1,1 @@
+create policy task20_hanyang_2024_pm1_question_pdf on storage.objects for select to authenticated using (bucket_id='essay-material-originals' and name in ('26137b73f541b0d3e0bca9e62d0c677af4117384a8a606911b17cf4a4ae0d699.pdf') and (select public.account_service_allowed()));

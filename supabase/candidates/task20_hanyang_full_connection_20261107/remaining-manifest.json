@@ -1,0 +1,1199 @@
+[
+  {
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오전",
+    "exam_id": "ec06c1af-0efc-5477-80b9-ab25b3f938b7",
+    "question_id": "b3a3bd52-22fe-5e99-bccd-47b8b3a1c92b",
+    "leaf_id": "30f04d40-1c56-5944-a120-a4681dab57b8",
+    "source_roles": {
+      "intent": {
+        "file": "2021학년도 한양대 논술_자연(오전) 출제의도.pdf",
+        "sha256": "20e16d4a4d21bcf7bab51180bdab767f1e6b37c79667fd9ed5cebac7441eccf1",
+        "pages": [
+          1
+        ]
+      },
+      "rubric": {
+        "file": "2021학년도 한양대 논술_자연(오전) 출제의도.pdf",
+        "sha256": "20e16d4a4d21bcf7bab51180bdab767f1e6b37c79667fd9ed5cebac7441eccf1",
+        "pages": [
+          1
+        ]
+      },
+      "problem": {
+        "file": "2021학년도 한양대 논술_자연(오전) 문제 .pdf",
+        "sha256": "9cd98af229e53497b72de5770dc3c2fbd5b04e14297adc7fb6ef8b71ab080556",
+        "pages": [
+          2
+        ]
+      },
+      "solution": {
+        "file": "2021학년도 한양대 논술_자연(오전) 예시답안.pdf",
+        "sha256": "be181a9a732efa54a6b242a691825237b0c8f17062aea9efd2812994f4309775",
+        "pages": [
+          1
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "79fd10a773bbc306c69037da1467136518ddb899cd96cc0094d6b5044e4e4b40"
+  },
+  {
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오전",
+    "exam_id": "ec06c1af-0efc-5477-80b9-ab25b3f938b7",
+    "question_id": "b8996668-aa53-57d8-b5b4-aeb6c21316c2",
+    "leaf_id": "01c6a7dd-b613-5ed0-8aee-722367866df7",
+    "source_roles": {
+      "intent": {
+        "file": "2021학년도 한양대 논술_자연(오전) 출제의도.pdf",
+        "sha256": "20e16d4a4d21bcf7bab51180bdab767f1e6b37c79667fd9ed5cebac7441eccf1",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2021학년도 한양대 논술_자연(오전) 출제의도.pdf",
+        "sha256": "20e16d4a4d21bcf7bab51180bdab767f1e6b37c79667fd9ed5cebac7441eccf1",
+        "pages": [
+          2
+        ]
+      },
+      "problem": {
+        "file": "2021학년도 한양대 논술_자연(오전) 문제 .pdf",
+        "sha256": "9cd98af229e53497b72de5770dc3c2fbd5b04e14297adc7fb6ef8b71ab080556",
+        "pages": [
+          3
+        ]
+      },
+      "solution": {
+        "file": "2021학년도 한양대 논술_자연(오전) 예시답안.pdf",
+        "sha256": "be181a9a732efa54a6b242a691825237b0c8f17062aea9efd2812994f4309775",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "23d1734eef453c5739c0ea362ce6b2e07cdfc8aa60972f4c244ce9ea3b0c9ebd"
+  },
+  {
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오후1",
+    "exam_id": "2d4f01c3-6a94-5010-84a5-ba8c410d5aa3",
+    "question_id": "874836e9-a580-515d-bc42-3ab756f8cf34",
+    "leaf_id": "0da7c83c-0d6f-5544-9e51-c7f0d4a06cc2",
+    "source_roles": {
+      "problem": {
+        "file": "2021학년도 한양대 논술_자연(오후1) 문제.pdf",
+        "sha256": "30046d8ac82d1576ff02d9001416608ef07ff1e123018b6376e345acd72817cb",
+        "pages": [
+          2
+        ]
+      },
+      "intent": {
+        "file": "2021학년도 한양대 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "b3a43b0fe5708545be93eea105f00c54a98a5365a8987e07b28d319a34d1d902",
+        "pages": [
+          1
+        ]
+      },
+      "rubric": {
+        "file": "2021학년도 한양대 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "b3a43b0fe5708545be93eea105f00c54a98a5365a8987e07b28d319a34d1d902",
+        "pages": [
+          1
+        ]
+      },
+      "solution": {
+        "file": "2021학년도 한양대 논술_자연(오후1) 예시답안.pdf",
+        "sha256": "cf561f43df24a78af3f0ea7110062d847b4566e7b36e549572ccb55c0fa58c8e",
+        "pages": [
+          1
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "6fa43a5240d044a28cac74b2a45559a36c7143d1169f50c5f271866bf541617c"
+  },
+  {
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오후1",
+    "exam_id": "2d4f01c3-6a94-5010-84a5-ba8c410d5aa3",
+    "question_id": "6e979b95-fe10-5119-88fa-1696107a3d4d",
+    "leaf_id": "2c52f064-616b-50f5-ac92-7c05ea8b2680",
+    "source_roles": {
+      "problem": {
+        "file": "2021학년도 한양대 논술_자연(오후1) 문제.pdf",
+        "sha256": "30046d8ac82d1576ff02d9001416608ef07ff1e123018b6376e345acd72817cb",
+        "pages": [
+          3
+        ]
+      },
+      "intent": {
+        "file": "2021학년도 한양대 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "b3a43b0fe5708545be93eea105f00c54a98a5365a8987e07b28d319a34d1d902",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2021학년도 한양대 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "b3a43b0fe5708545be93eea105f00c54a98a5365a8987e07b28d319a34d1d902",
+        "pages": [
+          2
+        ]
+      },
+      "solution": {
+        "file": "2021학년도 한양대 논술_자연(오후1) 예시답안.pdf",
+        "sha256": "cf561f43df24a78af3f0ea7110062d847b4566e7b36e549572ccb55c0fa58c8e",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 7,
+    "solution_steps": 3,
+    "package_sha256": "ac0f5b907214fa08c09bb43716d779dd7ff45ca2d8b2098c0ec9ba7580845a36"
+  },
+  {
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오후2",
+    "exam_id": "12fc2456-206b-5172-8a54-513056b4692f",
+    "question_id": "01d91911-db6f-5200-801d-495dee7d49dc",
+    "leaf_id": "3dc57772-fb44-5fd3-b34a-5ca03f3e1430",
+    "source_roles": {
+      "intent": {
+        "file": "2021학년도 한양대 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "986ec0bc47e16faad578dcbcd97855b4305fe830c08bbc1f115a8d0e486f69c8",
+        "pages": [
+          1
+        ]
+      },
+      "rubric": {
+        "file": "2021학년도 한양대 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "986ec0bc47e16faad578dcbcd97855b4305fe830c08bbc1f115a8d0e486f69c8",
+        "pages": [
+          1
+        ]
+      },
+      "solution": {
+        "file": "2021학년도 한양대 논술_자연(오후2) 예시답안.pdf",
+        "sha256": "ae3be847d27fda606f2c6b8437401801e767c5845ed4cafbc84803b515a64e6b",
+        "pages": [
+          1
+        ]
+      },
+      "problem": {
+        "file": "2021학년도 한양대 논술_자연(오후2) 문제.pdf",
+        "sha256": "bca50d48b97b88e3a86c85b75a400393f30b23068647884c22dd1d0da6b1af70",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "3fcefc4460b439b4566963be3852f0acd6e6bfedc611c3c4d083876c443cb365"
+  },
+  {
+    "exam": "한양대학교 2021학년도 수시 논술 자연계열 오후2",
+    "exam_id": "12fc2456-206b-5172-8a54-513056b4692f",
+    "question_id": "53addccd-3258-5adc-8f9f-05e64978b483",
+    "leaf_id": "0a2ef554-e041-58e1-a551-8fb03b1702a9",
+    "source_roles": {
+      "intent": {
+        "file": "2021학년도 한양대 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "986ec0bc47e16faad578dcbcd97855b4305fe830c08bbc1f115a8d0e486f69c8",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2021학년도 한양대 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "986ec0bc47e16faad578dcbcd97855b4305fe830c08bbc1f115a8d0e486f69c8",
+        "pages": [
+          2
+        ]
+      },
+      "solution": {
+        "file": "2021학년도 한양대 논술_자연(오후2) 예시답안.pdf",
+        "sha256": "ae3be847d27fda606f2c6b8437401801e767c5845ed4cafbc84803b515a64e6b",
+        "pages": [
+          2,
+          3
+        ]
+      },
+      "problem": {
+        "file": "2021학년도 한양대 논술_자연(오후2) 문제.pdf",
+        "sha256": "bca50d48b97b88e3a86c85b75a400393f30b23068647884c22dd1d0da6b1af70",
+        "pages": [
+          3
+        ]
+      }
+    },
+    "criteria": 5,
+    "solution_steps": 3,
+    "package_sha256": "a6504bde7e551cb28e5370da0689fb6fb2534bd64c2bd72ad3049cd878211e68"
+  },
+  {
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오전",
+    "exam_id": "b8fc4b28-b54c-5af1-ab01-e7a191978a93",
+    "question_id": "c90e737b-550b-587f-92ca-300417e1f8a6",
+    "leaf_id": "214ba2cf-bbbd-5e65-8612-f08b66a48b04",
+    "source_roles": {
+      "solution": {
+        "file": "2022학년도 한양대 논술_자연(오전) 예시답안.pdf",
+        "sha256": "6a1558e40ffd06682cc120c2dc54b5213e3bc58bcc77d71a09c696bf8ee56517",
+        "pages": [
+          1
+        ]
+      },
+      "problem": {
+        "file": "2022학년도 한양대 논술_자연(오전) 문제.pdf",
+        "sha256": "ec02b49db6fce65674c8a762262aac979dd45b6fcf3815e7bd947e908a8c85c7",
+        "pages": [
+          2
+        ]
+      },
+      "intent": {
+        "file": "2022학년도 한양대 논술_자연(오전) 출제의도.pdf",
+        "sha256": "ede35448ec5649c40efd93b9401735e4754fc824aa0fb24c962fe3b2809f3cac",
+        "pages": [
+          1
+        ]
+      },
+      "rubric": {
+        "file": "2022학년도 한양대 논술_자연(오전) 출제의도.pdf",
+        "sha256": "ede35448ec5649c40efd93b9401735e4754fc824aa0fb24c962fe3b2809f3cac",
+        "pages": [
+          1
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "1bc0099fa1db27aaffaa594de5133faaa39a2aba0feae6a6b56048a4a2323668"
+  },
+  {
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오전",
+    "exam_id": "b8fc4b28-b54c-5af1-ab01-e7a191978a93",
+    "question_id": "2f4ec822-48cd-5807-a8ef-9a06fbe7ab7e",
+    "leaf_id": "71f0249e-a0ac-597b-9dae-da3071f41975",
+    "source_roles": {
+      "solution": {
+        "file": "2022학년도 한양대 논술_자연(오전) 예시답안.pdf",
+        "sha256": "6a1558e40ffd06682cc120c2dc54b5213e3bc58bcc77d71a09c696bf8ee56517",
+        "pages": [
+          2
+        ]
+      },
+      "problem": {
+        "file": "2022학년도 한양대 논술_자연(오전) 문제.pdf",
+        "sha256": "ec02b49db6fce65674c8a762262aac979dd45b6fcf3815e7bd947e908a8c85c7",
+        "pages": [
+          3
+        ]
+      },
+      "intent": {
+        "file": "2022학년도 한양대 논술_자연(오전) 출제의도.pdf",
+        "sha256": "ede35448ec5649c40efd93b9401735e4754fc824aa0fb24c962fe3b2809f3cac",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2022학년도 한양대 논술_자연(오전) 출제의도.pdf",
+        "sha256": "ede35448ec5649c40efd93b9401735e4754fc824aa0fb24c962fe3b2809f3cac",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 7,
+    "solution_steps": 3,
+    "package_sha256": "17e3c3e27203bc36188b5f1999e2b97a3d033854bb7e43417cf8f83f8dcf0942"
+  },
+  {
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오후1",
+    "exam_id": "6d59d592-045f-5a07-ab47-6d2b9b1c6080",
+    "question_id": "013b0b0f-d761-518f-9ae4-f2298e147033",
+    "leaf_id": "7d6df64a-298a-5c8c-b7c4-463d842a8d23",
+    "source_roles": {
+      "solution": {
+        "file": "2022학년도 한양대 논술_자연(오후1) 예시답안.pdf",
+        "sha256": "09d01f76312cde6a200c61152cf424833119a744e846576bb0e992eb0a365b6a",
+        "pages": [
+          1
+        ]
+      },
+      "problem": {
+        "file": "2022학년도 한양대 논술_자연(오후1) 문제.pdf",
+        "sha256": "3dbb6f4dfcb5422a836de4fed2b470c2a967fd191182a24acb49ff9bd7ddb480",
+        "pages": [
+          2
+        ]
+      },
+      "intent": {
+        "file": "2022학년도 한양대 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "8eb4820e0e1df9c8ea1b9d73b74fc1a2522503bd504e7ccef947743162c074d9",
+        "pages": [
+          1
+        ]
+      },
+      "rubric": {
+        "file": "2022학년도 한양대 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "8eb4820e0e1df9c8ea1b9d73b74fc1a2522503bd504e7ccef947743162c074d9",
+        "pages": [
+          1
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "d29ff1e9e7aca77c83dafeef227a2b6ade5cc730230f13311d5b7f7115cd33c8"
+  },
+  {
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오후1",
+    "exam_id": "6d59d592-045f-5a07-ab47-6d2b9b1c6080",
+    "question_id": "55c0531f-2f94-5611-baac-901f0fe2dd81",
+    "leaf_id": "bcbbdd60-3593-56c5-a798-573c00b7f0d3",
+    "source_roles": {
+      "solution": {
+        "file": "2022학년도 한양대 논술_자연(오후1) 예시답안.pdf",
+        "sha256": "09d01f76312cde6a200c61152cf424833119a744e846576bb0e992eb0a365b6a",
+        "pages": [
+          2
+        ]
+      },
+      "problem": {
+        "file": "2022학년도 한양대 논술_자연(오후1) 문제.pdf",
+        "sha256": "3dbb6f4dfcb5422a836de4fed2b470c2a967fd191182a24acb49ff9bd7ddb480",
+        "pages": [
+          3
+        ]
+      },
+      "intent": {
+        "file": "2022학년도 한양대 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "8eb4820e0e1df9c8ea1b9d73b74fc1a2522503bd504e7ccef947743162c074d9",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2022학년도 한양대 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "8eb4820e0e1df9c8ea1b9d73b74fc1a2522503bd504e7ccef947743162c074d9",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "dcd2d01bb97f521d94a10a753f5dcf2e865f84b5587eb6a301d641e9dfc870e7"
+  },
+  {
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오후2",
+    "exam_id": "c51e9d2b-2141-582d-8fef-39aa3569146a",
+    "question_id": "255633aa-cabd-5a44-9139-0d3405a67767",
+    "leaf_id": "68988545-0975-5e99-8a12-c14aa9ecd1e3",
+    "source_roles": {
+      "intent": {
+        "file": "2022학년도 한양대 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "a9e2fd2deff07a3f639c41f22bdd6f3d5dbd54760509de6a8955fccf1478893e",
+        "pages": [
+          1
+        ]
+      },
+      "rubric": {
+        "file": "2022학년도 한양대 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "a9e2fd2deff07a3f639c41f22bdd6f3d5dbd54760509de6a8955fccf1478893e",
+        "pages": [
+          1
+        ]
+      },
+      "problem": {
+        "file": "2022학년도 한양대 논술_자연(오후2) 문제.pdf",
+        "sha256": "e8b7cb32409b8668726337a73db22d7aea7aaa2f78420f7983338dca8cb53ac2",
+        "pages": [
+          2
+        ]
+      },
+      "solution": {
+        "file": "2022학년도 한양대 논술_자연(오후2) 예시답안.pdf",
+        "sha256": "fe84e9f4e1f2e6dcd359411013c779791bcbbd219124491a964cf67ba8303132",
+        "pages": [
+          1
+        ]
+      }
+    },
+    "criteria": 7,
+    "solution_steps": 3,
+    "package_sha256": "b932bfb215e3ab75523f485ab6741b7cf77cf52feb1720f259d4fe376a81661a"
+  },
+  {
+    "exam": "한양대학교 2022학년도 수시 논술 자연계열 오후2",
+    "exam_id": "c51e9d2b-2141-582d-8fef-39aa3569146a",
+    "question_id": "5e319c4c-d9de-5163-9165-f525b067740e",
+    "leaf_id": "fc66db06-8c5e-5886-9cc9-ac0653fddd01",
+    "source_roles": {
+      "intent": {
+        "file": "2022학년도 한양대 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "a9e2fd2deff07a3f639c41f22bdd6f3d5dbd54760509de6a8955fccf1478893e",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2022학년도 한양대 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "a9e2fd2deff07a3f639c41f22bdd6f3d5dbd54760509de6a8955fccf1478893e",
+        "pages": [
+          2
+        ]
+      },
+      "problem": {
+        "file": "2022학년도 한양대 논술_자연(오후2) 문제.pdf",
+        "sha256": "e8b7cb32409b8668726337a73db22d7aea7aaa2f78420f7983338dca8cb53ac2",
+        "pages": [
+          3
+        ]
+      },
+      "solution": {
+        "file": "2022학년도 한양대 논술_자연(오후2) 예시답안.pdf",
+        "sha256": "fe84e9f4e1f2e6dcd359411013c779791bcbbd219124491a964cf67ba8303132",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "c9b646dc4f257c7c621ac0f964ef158bbbd860381d405535ba955130f68e29e0"
+  },
+  {
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오전",
+    "exam_id": "913dc1fb-b97a-585a-a3bc-42403307833c",
+    "question_id": "6f066e94-839e-5e81-a171-27d9f7f3f3cf",
+    "leaf_id": "5191b890-24e7-5987-8605-fe5ce34dab16",
+    "source_roles": {
+      "problem": {
+        "file": "2023학년도 한양대 수시 논술_자연(오전) 문제.pdf",
+        "sha256": "4a30ce166416ee3bcfe4cc6398903335a8db51ca15aaecd2109015f8e91356e4",
+        "pages": [
+          2
+        ]
+      },
+      "intent": {
+        "file": "2023학년도 한양대 수시 논술_자연(오전) 출제의도.pdf",
+        "sha256": "be71007839dda4d224074d1df1d75b9b6be70b706368da2c6591cfbcfd675557",
+        "pages": [
+          1
+        ]
+      },
+      "rubric": {
+        "file": "2023학년도 한양대 수시 논술_자연(오전) 출제의도.pdf",
+        "sha256": "be71007839dda4d224074d1df1d75b9b6be70b706368da2c6591cfbcfd675557",
+        "pages": [
+          1
+        ]
+      },
+      "solution": {
+        "file": "2023학년도 한양대 수시 논술_자연(오전) 예시답안.pdf",
+        "sha256": "e6c11143b3d70eaa680aa971af47622d1b0314d748bbf72bbebd66c03ec63c0b",
+        "pages": [
+          1
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "9310befa4a2d15c47be6c89881083d113019af934b11f0f7d15418ddb26095ee"
+  },
+  {
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오전",
+    "exam_id": "913dc1fb-b97a-585a-a3bc-42403307833c",
+    "question_id": "b26a1148-0581-50db-a663-38f68e6c935e",
+    "leaf_id": "d56ed7e0-7fa2-5a67-890a-c84a7f57e5cc",
+    "source_roles": {
+      "problem": {
+        "file": "2023학년도 한양대 수시 논술_자연(오전) 문제.pdf",
+        "sha256": "4a30ce166416ee3bcfe4cc6398903335a8db51ca15aaecd2109015f8e91356e4",
+        "pages": [
+          3
+        ]
+      },
+      "intent": {
+        "file": "2023학년도 한양대 수시 논술_자연(오전) 출제의도.pdf",
+        "sha256": "be71007839dda4d224074d1df1d75b9b6be70b706368da2c6591cfbcfd675557",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2023학년도 한양대 수시 논술_자연(오전) 출제의도.pdf",
+        "sha256": "be71007839dda4d224074d1df1d75b9b6be70b706368da2c6591cfbcfd675557",
+        "pages": [
+          2
+        ]
+      },
+      "solution": {
+        "file": "2023학년도 한양대 수시 논술_자연(오전) 예시답안.pdf",
+        "sha256": "e6c11143b3d70eaa680aa971af47622d1b0314d748bbf72bbebd66c03ec63c0b",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 7,
+    "solution_steps": 3,
+    "package_sha256": "d1328f28ad7a4dad4905ce9e627762c3634c26a47d156560fe6247d0f0349aa4"
+  },
+  {
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오후1",
+    "exam_id": "7a837ee4-ef07-5885-8d06-d20ff241ebc6",
+    "question_id": "8c8dd3e7-c0f3-5615-a83a-66d72393ccf2",
+    "leaf_id": "9d5f2464-5bc5-5b7b-bf34-5278cb44f244",
+    "source_roles": {
+      "problem": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후1) 문제.pdf",
+        "sha256": "9bc9340a35b12720692b7739072fa126c4b6b0887e916b713b93952922856a68",
+        "pages": [
+          2
+        ]
+      },
+      "solution": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후1) 예시답안.pdf",
+        "sha256": "ad6d39b6d1aa8946a55e209960f3a4c7debfafb747327ab13d573f5ed3d604c7",
+        "pages": [
+          1,
+          2
+        ]
+      },
+      "intent": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "f5f59b3600d790da218ebebdaa84c02dff244494770a0c764f7be3105fc78b80",
+        "pages": [
+          1
+        ]
+      },
+      "rubric": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "f5f59b3600d790da218ebebdaa84c02dff244494770a0c764f7be3105fc78b80",
+        "pages": [
+          1
+        ]
+      }
+    },
+    "criteria": 7,
+    "solution_steps": 3,
+    "package_sha256": "b64ae1ca1e056839c587c027db86257311fad2b81269d85d31d7cac407f24fe2"
+  },
+  {
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오후1",
+    "exam_id": "7a837ee4-ef07-5885-8d06-d20ff241ebc6",
+    "question_id": "d66eff2e-b88c-5fba-8d36-c9a1bad36f8e",
+    "leaf_id": "1db9c975-1c3f-5b3a-bd25-c98fd9376e44",
+    "source_roles": {
+      "problem": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후1) 문제.pdf",
+        "sha256": "9bc9340a35b12720692b7739072fa126c4b6b0887e916b713b93952922856a68",
+        "pages": [
+          3
+        ]
+      },
+      "solution": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후1) 예시답안.pdf",
+        "sha256": "ad6d39b6d1aa8946a55e209960f3a4c7debfafb747327ab13d573f5ed3d604c7",
+        "pages": [
+          3
+        ]
+      },
+      "intent": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "f5f59b3600d790da218ebebdaa84c02dff244494770a0c764f7be3105fc78b80",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후1) 출제의도.pdf",
+        "sha256": "f5f59b3600d790da218ebebdaa84c02dff244494770a0c764f7be3105fc78b80",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "90dd40df5c0f49c6eed6831633f25de27f91122595b7719327a0ca303df9cd2e"
+  },
+  {
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오후2",
+    "exam_id": "77f27f9e-7ef9-5184-8fb1-607c68cc03d2",
+    "question_id": "0c1c239e-61ae-57d4-895a-67657b95f8ed",
+    "leaf_id": "2ca58a65-d7e0-5c81-b521-f01dc91bd99b",
+    "source_roles": {
+      "problem": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후2) 문제.pdf",
+        "sha256": "0ae73464edec2dbe0cd85a99898b4a88d8291a098344e3ca953f8b1373a72c21",
+        "pages": [
+          2
+        ]
+      },
+      "intent": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "3dc5fa9592a2e2e26fc6eae362548ec939a735ab84d3782786fa48bcf8aee136",
+        "pages": [
+          1
+        ]
+      },
+      "rubric": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "3dc5fa9592a2e2e26fc6eae362548ec939a735ab84d3782786fa48bcf8aee136",
+        "pages": [
+          1
+        ]
+      },
+      "solution": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후2) 예시답안.pdf",
+        "sha256": "744957736062b40019ceaa7f25ebceafbc8451a90e9919bab6682ab83887e867",
+        "pages": [
+          1
+        ]
+      }
+    },
+    "criteria": 5,
+    "solution_steps": 3,
+    "package_sha256": "53b40687fdc1f14bd24ad80d9fe6dbf4f79c1eaca9406d0942f70f91917306f2"
+  },
+  {
+    "exam": "한양대학교 2023학년도 수시 논술 자연계열 오후2",
+    "exam_id": "77f27f9e-7ef9-5184-8fb1-607c68cc03d2",
+    "question_id": "ca384700-2ee9-5e4c-81c0-19ed72c561e5",
+    "leaf_id": "cc7a94e7-bf90-50d0-a230-5b8d3ffa9d88",
+    "source_roles": {
+      "problem": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후2) 문제.pdf",
+        "sha256": "0ae73464edec2dbe0cd85a99898b4a88d8291a098344e3ca953f8b1373a72c21",
+        "pages": [
+          3
+        ]
+      },
+      "intent": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "3dc5fa9592a2e2e26fc6eae362548ec939a735ab84d3782786fa48bcf8aee136",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후2) 출제의도.pdf",
+        "sha256": "3dc5fa9592a2e2e26fc6eae362548ec939a735ab84d3782786fa48bcf8aee136",
+        "pages": [
+          2
+        ]
+      },
+      "solution": {
+        "file": "2023학년도 한양대 수시 논술_자연(오후2) 예시답안.pdf",
+        "sha256": "744957736062b40019ceaa7f25ebceafbc8451a90e9919bab6682ab83887e867",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "88bc4f207108ce7579aa114b8ed176fc8e5403193ba5aa34da44cbe9816f7cff"
+  },
+  {
+    "exam": "한양대학교 2024학년도 수시 논술 자연계열 오후2",
+    "exam_id": "f62c49c7-39ca-5405-9969-93ee88972bdd",
+    "question_id": "1fdb3284-5d82-52c8-a78b-15c51654fdf4",
+    "leaf_id": "97a920a4-d8ba-5b1f-84ec-6de14d788848",
+    "source_roles": {
+      "intent": {
+        "file": "2024학년도 한양대 수시 논술_자연열(오후2) 출제의도,평가지침.pdf",
+        "sha256": "6300cc36c671ae693a5a15da60b3ce6aa573a4adfa77e831b7681c37402d128b",
+        "pages": [
+          1
+        ]
+      },
+      "rubric": {
+        "file": "2024학년도 한양대 수시 논술_자연열(오후2) 출제의도,평가지침.pdf",
+        "sha256": "6300cc36c671ae693a5a15da60b3ce6aa573a4adfa77e831b7681c37402d128b",
+        "pages": [
+          1
+        ]
+      },
+      "problem": {
+        "file": "2024학년도 한양대 수시 논술_자연계(오후2) 문제.pdf",
+        "sha256": "b162332366fdfa5a08628752944c1fb790eb5ef2281d25bbf26c192407a904a6",
+        "pages": [
+          2
+        ]
+      },
+      "solution": {
+        "file": "한양대학교 2025학년도 논술가이드북.pdf",
+        "sha256": "6de905abebcc25734b21abe4a939ebf1bb00ea605633195439b5e4c260a82a20",
+        "pages": [
+          36,
+          37
+        ]
+      }
+    },
+    "criteria": 7,
+    "solution_steps": 3,
+    "package_sha256": "fbc71f8e38666f09dd0325c9db246dc5054d297185e481c9a6a1ab2fb6271926"
+  },
+  {
+    "exam": "한양대학교 2024학년도 수시 논술 자연계열 오후2",
+    "exam_id": "f62c49c7-39ca-5405-9969-93ee88972bdd",
+    "question_id": "93895a05-897a-534e-ba1a-ced2aaa08722",
+    "leaf_id": "b53af2c1-db5b-5820-b1a9-41479c118695",
+    "source_roles": {
+      "intent": {
+        "file": "2024학년도 한양대 수시 논술_자연열(오후2) 출제의도,평가지침.pdf",
+        "sha256": "6300cc36c671ae693a5a15da60b3ce6aa573a4adfa77e831b7681c37402d128b",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2024학년도 한양대 수시 논술_자연열(오후2) 출제의도,평가지침.pdf",
+        "sha256": "6300cc36c671ae693a5a15da60b3ce6aa573a4adfa77e831b7681c37402d128b",
+        "pages": [
+          2
+        ]
+      },
+      "problem": {
+        "file": "2024학년도 한양대 수시 논술_자연계(오후2) 문제.pdf",
+        "sha256": "b162332366fdfa5a08628752944c1fb790eb5ef2281d25bbf26c192407a904a6",
+        "pages": [
+          3
+        ]
+      },
+      "solution": {
+        "file": "한양대학교 2025학년도 논술가이드북.pdf",
+        "sha256": "6de905abebcc25734b21abe4a939ebf1bb00ea605633195439b5e4c260a82a20",
+        "pages": [
+          38,
+          39
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "41dc9a060992bab56407183b2013dc0efc6cebb84349cb9fecac04d265141911"
+  },
+  {
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오전",
+    "exam_id": "2c20b87a-0594-5a1e-80ae-30bc72087152",
+    "question_id": "1db56206-6ba2-57ad-bdcb-1841913576ed",
+    "leaf_id": "eebc0593-89f0-583d-84ab-40f2614613ff",
+    "source_roles": {
+      "problem": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오전) 문제.pdf",
+        "sha256": "1ff24d1cc92ab4f445c8c72814aa02f2ba81cedd914d62123ab4e01ff1a579a1",
+        "pages": [
+          2
+        ]
+      },
+      "intent": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오전) 해설,답안,평가기준.pdf",
+        "sha256": "ef201ceacbe6e4b831241f8e1814f2c796935968424183a2c990519bd977b2c6",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오전) 해설,답안,평가기준.pdf",
+        "sha256": "ef201ceacbe6e4b831241f8e1814f2c796935968424183a2c990519bd977b2c6",
+        "pages": [
+          3
+        ]
+      },
+      "solution": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오전) 해설,답안,평가기준.pdf",
+        "sha256": "ef201ceacbe6e4b831241f8e1814f2c796935968424183a2c990519bd977b2c6",
+        "pages": [
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "2b680e2fc2ab7ac1ce5ad424217a3dc9add2806016f38fc7ba5a26d3cc4ddf11"
+  },
+  {
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오전",
+    "exam_id": "2c20b87a-0594-5a1e-80ae-30bc72087152",
+    "question_id": "275b11d7-73ba-5ac2-b0a0-4d169e5b8194",
+    "leaf_id": "15ead5c1-bd2c-5478-b04b-a155b0d12976",
+    "source_roles": {
+      "problem": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오전) 문제.pdf",
+        "sha256": "1ff24d1cc92ab4f445c8c72814aa02f2ba81cedd914d62123ab4e01ff1a579a1",
+        "pages": [
+          3
+        ]
+      },
+      "intent": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오전) 해설,답안,평가기준.pdf",
+        "sha256": "ef201ceacbe6e4b831241f8e1814f2c796935968424183a2c990519bd977b2c6",
+        "pages": [
+          6
+        ]
+      },
+      "rubric": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오전) 해설,답안,평가기준.pdf",
+        "sha256": "ef201ceacbe6e4b831241f8e1814f2c796935968424183a2c990519bd977b2c6",
+        "pages": [
+          8
+        ]
+      },
+      "solution": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오전) 해설,답안,평가기준.pdf",
+        "sha256": "ef201ceacbe6e4b831241f8e1814f2c796935968424183a2c990519bd977b2c6",
+        "pages": [
+          8,
+          9
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "223aa0a732c78e07bd80e6de5c78f09a8bb1db1692e061f680f92ec168d07ec5"
+  },
+  {
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오후1",
+    "exam_id": "c4c633bf-8edb-536a-8a7b-89f9ab64921e",
+    "question_id": "19344c31-bcc7-510b-bdf6-c6654a881362",
+    "leaf_id": "ac24797e-8b60-5860-9302-9b2911f05fd7",
+    "source_roles": {
+      "intent": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "8f31109d76f8c15e8fa453d49ea85ed64b915e19c9d1cc8623330e2f65b06462",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "8f31109d76f8c15e8fa453d49ea85ed64b915e19c9d1cc8623330e2f65b06462",
+        "pages": [
+          4,
+          5
+        ]
+      },
+      "solution": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "8f31109d76f8c15e8fa453d49ea85ed64b915e19c9d1cc8623330e2f65b06462",
+        "pages": [
+          5,
+          6,
+          7
+        ]
+      },
+      "problem": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후1) 문제.pdf",
+        "sha256": "e8d23ce79729233b17b59ad56c944de23a8a45d5d58ed98b5f526f2d66b0198d",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "b3098e1c95f034d8deccaf421dd78fbe49ab50562bce0950e14d80e3286edc9e"
+  },
+  {
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오후1",
+    "exam_id": "c4c633bf-8edb-536a-8a7b-89f9ab64921e",
+    "question_id": "34fae3c6-7419-519f-b5b0-9e3edcc81ad5",
+    "leaf_id": "98041eaa-b40c-53d1-b295-67e946bb59eb",
+    "source_roles": {
+      "intent": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "8f31109d76f8c15e8fa453d49ea85ed64b915e19c9d1cc8623330e2f65b06462",
+        "pages": [
+          9
+        ]
+      },
+      "rubric": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "8f31109d76f8c15e8fa453d49ea85ed64b915e19c9d1cc8623330e2f65b06462",
+        "pages": [
+          10
+        ]
+      },
+      "solution": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "8f31109d76f8c15e8fa453d49ea85ed64b915e19c9d1cc8623330e2f65b06462",
+        "pages": [
+          10,
+          11,
+          12
+        ]
+      },
+      "problem": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후1) 문제.pdf",
+        "sha256": "e8d23ce79729233b17b59ad56c944de23a8a45d5d58ed98b5f526f2d66b0198d",
+        "pages": [
+          3
+        ]
+      }
+    },
+    "criteria": 7,
+    "solution_steps": 3,
+    "package_sha256": "3e2bf39da56380e3557a16e438ffeeb04be8b0cecb6cd94caee02ef790287c0e"
+  },
+  {
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오후2",
+    "exam_id": "26703113-7ecb-5632-b3a3-7185fdd9bb0a",
+    "question_id": "f1825b95-2e4f-50c8-a295-32772ff88460",
+    "leaf_id": "c4d55464-cd19-58cc-8e91-d400610d1438",
+    "source_roles": {
+      "intent": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "1b432b28433ed46cc392f16a44f6fb99b162d7c36b2171331b270c6c961aed2a",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "1b432b28433ed46cc392f16a44f6fb99b162d7c36b2171331b270c6c961aed2a",
+        "pages": [
+          4
+        ]
+      },
+      "solution": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "1b432b28433ed46cc392f16a44f6fb99b162d7c36b2171331b270c6c961aed2a",
+        "pages": [
+          4,
+          5
+        ]
+      },
+      "problem": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후2) 문제.pdf",
+        "sha256": "dbbff9f2986382bcf8ed6bfd5b31f384ab63292708c64237540192d6229cc60b",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "db5972c73a54e7cee635ef7c9ab8d04bce5dbb93c30d688fa97df98a30540446"
+  },
+  {
+    "exam": "한양대학교 2025학년도 수시 논술 자연계열 오후2",
+    "exam_id": "26703113-7ecb-5632-b3a3-7185fdd9bb0a",
+    "question_id": "d0326e70-d047-58c2-9e13-f5d3ea9e186b",
+    "leaf_id": "acbb934e-c7a2-5785-a9fc-a2772a1a7cbe",
+    "source_roles": {
+      "intent": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "1b432b28433ed46cc392f16a44f6fb99b162d7c36b2171331b270c6c961aed2a",
+        "pages": [
+          7
+        ]
+      },
+      "rubric": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "1b432b28433ed46cc392f16a44f6fb99b162d7c36b2171331b270c6c961aed2a",
+        "pages": [
+          8,
+          9
+        ]
+      },
+      "solution": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "1b432b28433ed46cc392f16a44f6fb99b162d7c36b2171331b270c6c961aed2a",
+        "pages": [
+          9,
+          10,
+          11
+        ]
+      },
+      "problem": {
+        "file": "2025학년도 한양대 수시 논술_자연계열(오후2) 문제.pdf",
+        "sha256": "dbbff9f2986382bcf8ed6bfd5b31f384ab63292708c64237540192d6229cc60b",
+        "pages": [
+          3
+        ]
+      }
+    },
+    "criteria": 8,
+    "solution_steps": 3,
+    "package_sha256": "1c99092fa320e52b2258197eb020fd0ea4fd0562bb59a62eeb30eb668c75861b"
+  },
+  {
+    "exam": "한양대학교 2026학년도 수시 논술 자연계열 오후1",
+    "exam_id": "fff2d3d1-5b69-5da9-8a67-53c9658896a4",
+    "question_id": "60f8ba5f-39b1-5e05-a85d-c0ff8e075fd9",
+    "leaf_id": "d3c1fc13-a2cf-586a-a768-7b6938bbb13b",
+    "source_roles": {
+      "intent": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "2a494059a2337651d52ce9f38cff2a131461f30044a033ea99d941e55af2b04f",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "2a494059a2337651d52ce9f38cff2a131461f30044a033ea99d941e55af2b04f",
+        "pages": [
+          3,
+          4
+        ]
+      },
+      "solution": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "2a494059a2337651d52ce9f38cff2a131461f30044a033ea99d941e55af2b04f",
+        "pages": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "problem": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후1) 문제.pdf",
+        "sha256": "7943a1e4f2b44ef6e226c768caeed17ce6a9e35998dbae6809fcec8250d3888f",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 7,
+    "solution_steps": 3,
+    "package_sha256": "87490496d0088ec3f6c99cae2b3d7991e20b3789ba4ccb152846c809233d808c"
+  },
+  {
+    "exam": "한양대학교 2026학년도 수시 논술 자연계열 오후1",
+    "exam_id": "fff2d3d1-5b69-5da9-8a67-53c9658896a4",
+    "question_id": "3d1f5787-0291-5603-9aa1-d6d7b8ec97d1",
+    "leaf_id": "0a1ffdc6-51c3-5df3-9dcc-645088443e89",
+    "source_roles": {
+      "intent": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "2a494059a2337651d52ce9f38cff2a131461f30044a033ea99d941e55af2b04f",
+        "pages": [
+          9
+        ]
+      },
+      "rubric": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "2a494059a2337651d52ce9f38cff2a131461f30044a033ea99d941e55af2b04f",
+        "pages": [
+          10
+        ]
+      },
+      "solution": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후1) 해설,답안,평가기준.pdf",
+        "sha256": "2a494059a2337651d52ce9f38cff2a131461f30044a033ea99d941e55af2b04f",
+        "pages": [
+          10,
+          11,
+          12
+        ]
+      },
+      "problem": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후1) 문제.pdf",
+        "sha256": "7943a1e4f2b44ef6e226c768caeed17ce6a9e35998dbae6809fcec8250d3888f",
+        "pages": [
+          3
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "d44e7fd58595924d6417fbffc112c9330ec428badcde4801b7e0e6410ca7b77c"
+  },
+  {
+    "exam": "한양대학교 2026학년도 수시 논술 자연계열 오후2",
+    "exam_id": "92e250d2-e074-5e84-8b8b-60c335aa2cde",
+    "question_id": "5150df7b-4935-5cde-bb4c-bf8fca1fa27b",
+    "leaf_id": "2005fbe2-ab24-540d-8fd2-5e2325aab1d9",
+    "source_roles": {
+      "intent": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "22c73f7d12a4e8638226b0f3759ff5f5aac0bb61ea819856d0a8ff19d0b360af",
+        "pages": [
+          2
+        ]
+      },
+      "rubric": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "22c73f7d12a4e8638226b0f3759ff5f5aac0bb61ea819856d0a8ff19d0b360af",
+        "pages": [
+          3,
+          4
+        ]
+      },
+      "solution": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "22c73f7d12a4e8638226b0f3759ff5f5aac0bb61ea819856d0a8ff19d0b360af",
+        "pages": [
+          4,
+          5
+        ]
+      },
+      "problem": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후2) 문제.pdf",
+        "sha256": "8b83f2aca1bffe3330048d3a16ca1a1d185c832f1ecf282a998bdc8d28144151",
+        "pages": [
+          2
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "538d3e2ba2a379b74c3c033259b29a7df4e2ca5b89b149f799fe107e5025e60d"
+  },
+  {
+    "exam": "한양대학교 2026학년도 수시 논술 자연계열 오후2",
+    "exam_id": "92e250d2-e074-5e84-8b8b-60c335aa2cde",
+    "question_id": "c39394ed-4df2-5a0e-9484-f09e2a28d8ff",
+    "leaf_id": "1354113d-306d-5910-88d0-10ed0cbf2cdb",
+    "source_roles": {
+      "intent": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "22c73f7d12a4e8638226b0f3759ff5f5aac0bb61ea819856d0a8ff19d0b360af",
+        "pages": [
+          7
+        ]
+      },
+      "rubric": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "22c73f7d12a4e8638226b0f3759ff5f5aac0bb61ea819856d0a8ff19d0b360af",
+        "pages": [
+          8,
+          9
+        ]
+      },
+      "solution": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후2) 해설,답안,평가기준.pdf",
+        "sha256": "22c73f7d12a4e8638226b0f3759ff5f5aac0bb61ea819856d0a8ff19d0b360af",
+        "pages": [
+          9,
+          10,
+          11
+        ]
+      },
+      "problem": {
+        "file": "2026학년도 한양대 수시 논술_자연계열(오후2) 문제.pdf",
+        "sha256": "8b83f2aca1bffe3330048d3a16ca1a1d185c832f1ecf282a998bdc8d28144151",
+        "pages": [
+          3
+        ]
+      }
+    },
+    "criteria": 6,
+    "solution_steps": 3,
+    "package_sha256": "3a10c8c96985b99f037841b2f793910f0f6f8017ccb2c158131178f67ca0b5f8"
+  }
+]
