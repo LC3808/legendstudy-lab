@@ -137,7 +137,13 @@ const statusLabels:Record<string,string>={student:'재학생',retaker:'N수·검
 export function AdminMembersView() {
  const [draft,setDraft]=useState<MemberFilters>(defaultMemberFilters);
  const [filters,setFilters]=useState<MemberFilters>(defaultMemberFilters);
- const [offset,setOffset]=useState(0);const [selected,setSelected]=useState<string|null>(null);
+ const [offset,setOffset]=useState(0);
+ // Deep link from the dashboard "상세" button: /admin/members/#member=<accountId>
+ // preselects that member so the existing detail panel (which fetches on its own)
+ // opens straight away, without reimplementing the 360 view on the dashboard. This
+ // subtree mounts only after AdminGate resolves (client-only), so reading the hash
+ // in the initializer is safe and needs no effect.
+ const [selected,setSelected]=useState<string|null>(()=>{if(typeof window==='undefined')return null;const match=/[#&]member=([^&]+)/.exec(window.location.hash);if(!match)return null;try{return decodeURIComponent(match[1]);}catch{return match[1];}});
  const [schoolQuery,setSchoolQuery]=useState('');const [schools,setSchools]=useState<SchoolOption[]>([]);
  const [schoolLabel,setSchoolLabel]=useState('');const [schoolBusy,setSchoolBusy]=useState(false);const [hint,setHint]=useState('');
  const {state,reload}=useAdminQuery<MemberDirectory>(client=>client.listMembers(filters,{limit:PAGE_LIMIT,offset}),JSON.stringify([filters,offset]));

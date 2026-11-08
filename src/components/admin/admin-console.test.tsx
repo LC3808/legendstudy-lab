@@ -239,8 +239,10 @@ describe("AdminDashboardView", () => {
   it("renders observed metrics and marks an uninstalled subsystem", async () => {
     setSession("authenticated", okOperator);
     render(<AdminDashboardView />);
-    expect(await screen.findByText("전체 회원")).toBeInTheDocument();
-    expect(screen.getByText("12")).toBeInTheDocument();
+    // The headline KPI strip and the 회원 section both surface the member total,
+    // so "전체 회원" / "12" now appear in the summary and in the detail.
+    expect((await screen.findAllByText("전체 회원")).length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText("12").length).toBeGreaterThanOrEqual(2);
     expect(screen.getAllByText("미설치").length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText(/RUNTIME_OFF/)).toBeInTheDocument();
     expect(screen.getByText(/LIVE_OFF/)).toBeInTheDocument();
