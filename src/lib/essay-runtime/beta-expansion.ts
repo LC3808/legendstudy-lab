@@ -1,6 +1,6 @@
 import manifest from '../../data/essay-beta-expansion.json';
 import {publicExamScope} from './public-exam-scope';
-export type BetaExpansion = {examId:string;universityId:string;questionIds:string[];packageDigest:string;label:string;mode:string;mathQuestions:Record<string,string>};
+export type BetaExpansion = {examId:string;universityId:string;questionIds:string[];catalogQuestionIds?:string[];packageDigest:string;label:string;mode:string;mathQuestions:Record<string,string>};
 export type BetaExpansionEnvironment = {ESSAY_BETA_EXPANSION_EXAMS?:string;ESSAY_PUBLIC_EXAMS?:string;MATH_PROJECT_REF?:string;MATH_SUPABASE_URL?:string;MATH_ORIGIN?:string};
 export const betaExpansionCandidates:BetaExpansion[]=manifest.exams.map(e=>({...e,mathQuestions:Object.fromEntries(Object.entries(e.mathQuestions).filter((entry):entry is [string,string]=>typeof entry[1]==='string'))}));
 /** Metadata never activates a route. Exact Production project, public policy and

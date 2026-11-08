@@ -43,7 +43,11 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
     if(!Array.isArray(rows))throw Error('INVALID_CATALOG');
     for(const candidate of candidates.filter(e=>e.universityId===universityId)){
      const row=rows.find(r=>r.examId===candidate.examId);
-     if(!row||row.universityId!==universityId||!Array.isArray(row.questions)||new Set(row.questions.map((q:{id:string})=>q.id)).size!==row.questions.length||new Set(candidate.questionIds).size!==candidate.questionIds.length||!candidate.questionIds.every(id=>row.questions.some((q:{id:string})=>q.id===id))||(!candidate.partial&&row.questions.length!==candidate.questionIds.length))throw Error('WHOLE_EXAM_CHANGED');
+     const declaredCatalog='catalogQuestionIds' in candidate?candidate.catalogQuestionIds as string[]|undefined:undefined;
+     // Only pinned Owner-approved partial releases may contain additional catalog questions.
+     const expectedQuestions=declaredCatalog??candidate.questionIds;
+     if(declaredCatalog&&(!declaredCatalog.length||new Set(declaredCatalog).size!==declaredCatalog.length||!candidate.questionIds.every(id=>declaredCatalog.includes(id))))throw Error('INVALID_PARTIAL_CATALOG');
+     if(!row||row.universityId!==universityId||!Array.isArray(row.questions)||new Set(row.questions.map((q:{id:string})=>q.id)).size!==row.questions.length||new Set(candidate.questionIds).size!==candidate.questionIds.length||!candidate.questionIds.every(id=>row.questions.some((q:{id:string})=>q.id===id))||(!candidate.partial&&(row.questions.length!==expectedQuestions.length||!expectedQuestions.every(id=>row.questions.some((q:{id:string})=>q.id===id)))))throw Error('WHOLE_EXAM_CHANGED');
      const expanded=expansion.find(e=>e.examId===candidate.examId);
      if(expanded&&Object.keys(expanded.mathQuestions).length>0&&(!math?.checked||math.types?.math!==true||!expansionMathMatches(expanded,math.mathQuestions)))continue;
      // Standalone Math uses its canonical source/profile/catalog admission; the

@@ -68,3 +68,19 @@ it('adds complete registered natural exams only after explicit rollout and live 
  expect((await(await send(config)).json()).exams).toEqual([]);
  expect(m.worker).not.toHaveBeenCalled();
 });
+
+it.each(betaExpansionCandidates.filter(e=>e.catalogQuestionIds))('keeps approved partial Math release $examId available without exposing Q4',async e=>{
+ const config={MATH_PROJECT_REF:'stlhijzpjfgwwdgunlsd',ESSAY_PUBLIC_EXAMS:e.examId,ESSAY_BETA_EXPANSION_EXAMS:e.examId};
+ // Production Chung-Ang identity; keep the unrelated fixture intact.
+ const discovery=await import('./public-discovery');
+ discovery.publicCatalog.universities.push({sourceUniversityId:'cau',universityId:e.universityId} as never);
+ const mathRows=Object.entries(e.mathQuestions).map(([questionId,leafId])=>({examId:e.examId,questionId,leafId}));
+ m.math.mockImplementation(async()=>Response.json({checked:true,types:{math:true},mathQuestions:mathRows}));
+ let ids=e.catalogQuestionIds!;
+ m.rpcRaw.mockImplementation(async name=>name==='essay_exam_session_ready'?'exam-session-v1':[{examId:e.examId,universityId:e.universityId,questions:ids.map(id=>({id}))}]);
+ const response=await send(config);expect(response.status).toBe(200);
+ expect((await response.json()).exams).toEqual([{examId:e.examId,universityId:e.universityId,questionIds:e.questionIds}]);
+ ids=[...e.catalogQuestionIds!,q];expect((await send(config)).status).toBe(503);
+ ids=e.catalogQuestionIds!.slice(1);expect((await send(config)).status).toBe(503);
+ expect(m.worker).not.toHaveBeenCalled();
+});
