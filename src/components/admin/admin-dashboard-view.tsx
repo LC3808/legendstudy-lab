@@ -1,4 +1,6 @@
 "use client";
+import Link from "next/link";
+
 import { SchoolDistribution } from "./school-distribution";
 
 import {
@@ -10,6 +12,11 @@ import {
 } from "@/lib/admin/format";
 import type { AdminDashboard, AdminSupportMetrics } from "@/lib/admin/contract";
 import { formatDateTime, formatDuration } from "@/lib/admin/format";
+import {
+  defaultMemberFilters,
+  directorySchoolLabel,
+  type MemberDirectory,
+} from "@/lib/admin/members";
 
 import { AdminErrorPanel, AdminLoading, useAdminQuery } from "./admin-surface";
 
@@ -19,6 +26,44 @@ function Metric({ label, value, note }: { label: string; value: string; note?: s
       <p className="admin-metric__label">{label}</p>
       <p className="admin-metric__value">{value}</p>
       {note ? <p className="admin-metric__note">{note}</p> : null}
+    </div>
+  );
+}
+
+function Kpi({
+  label,
+  value,
+  note,
+  tone,
+}: {
+  label: string;
+  value: string;
+  note?: string;
+  tone?: "ok" | "warn" | "info";
+}) {
+  return (
+    <div className={`admin-kpi${tone ? ` admin-kpi--${tone}` : ""}`}>
+      <p className="admin-kpi__label">{label}</p>
+      <p className="admin-kpi__value">{value}</p>
+      {note ? <p className="admin-kpi__note">{note}</p> : null}
+    </div>
+  );
+}
+
+/**
+ * Headline figures shown before the detailed sections. Every value is read from
+ * the same `dashboard()` payload as the sections below, so the strip adds no
+ * query and can never drift from the detail. The support queue has its own
+ * query and stays in its own section.
+ */
+function KpiStrip({ data }: { data: AdminDashboard }) {
+  return (
+    <div className="admin-kpis">
+      <Kpi label="전체 회원" value={formatNumber(data.members.total)} note="분모: 가입 완료 회원" />
+      <Kpi label="최근 7일 가입" value={formatNumber(data.members.new7d)} note={`오늘 ${formatNumber(data.members.newToday)}`} tone="ok" />
+      <Kpi label="최근 30일 활성" value={formatNumber(data.members.active30d)} note="학습 기록 기준" tone="info" />
+      <Kpi label="논술 평가 완료" value={formatNumber(data.essay.evaluationCompleted)} note={`실패 ${formatNumber(data.essay.evaluationFailed)}`} />
+      <Kpi label="사용 가능 Credit" value={formatCredit(data.credit.spendable)} note="단위: Credit" />
     </div>
   );
 }
@@ -99,6 +144,97 @@ function SupportSection() {
   );
 }
 
+const academicStatusLabel: Record<string, string> = {
+  student: "재학생",
+  retaker: "N수·검정고시 등",
+  other: "기타",
+};
+
+/** How many of the most recent signups the dashboard lists. */
+const RECENT_MEMBER_LIMIT = 8;
+
+/**
+ * The most recent signups, shown so an operator reads new-member status without
+ * leaving the dashboard. This reuses the members directory RPC through
+ * `listMembers` (sorted newest-first) — no new query shape, no new SQL — and the
+ * columns match the 회원 console. "상세" deep-links to that console with the
+ * member preselected, so the full 360 detail is never duplicated here.
+ */
+function RecentMembers() {
+  const { state, reload } = useAdminQuery<MemberDirectory>(
+    (client) =>
+      client.listMembers(
+        { ...defaultMemberFilters, sort: "newest" },
+        { limit: RECENT_MEMBER_LIMIT, offset: 0 },
+      ),
+    `recent-members:${RECENT_MEMBER_LIMIT}`,
+  );
+
+  if (state.status === "loading")
+    return <AdminLoading label="최근 가입 회원을 불러오는 중입니다" />;
+  if (state.status === "error") return <AdminErrorPanel kind={state.kind} onRetry={reload} />;
+
+  const { items, total } = state.data;
+
+  return (
+    <Section
+      title="최근 가입 회원"
+      note={`전체 ${formatNumber(total)}명 기준 · 가입 최근순 ${formatNumber(items.length)}명`}
+    >
+      {items.length === 0 ? (
+        <p className="admin-muted">표시할 신규 회원이 없습니다.</p>
+      ) : (
+        <div className="admin-table-scroll" tabIndex={0} role="region" aria-label="최근 가입 회원 목록">
+          <table className="admin-table admin-table--recent">
+            <thead>
+              <tr>
+                {["이메일", "학교", "학년", "현재 상태", "희망 전공", "닉네임", "가입일시", "상세"].map(
+                  (head) => (
+                    <th scope="col" key={head}>
+                      {head}
+                    </th>
+                  ),
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((member) => (
+                <tr key={member.accountId}>
+                  <td>{member.email ?? "이메일 미등록"}</td>
+                  <td>{directorySchoolLabel(member)}</td>
+                  <td>{member.grade ? `${member.grade}학년` : "미입력"}</td>
+                  <td>
+                    {member.academicStatus
+                      ? academicStatusLabel[member.academicStatus] ?? member.academicStatus
+                      : "미설정"}
+                  </td>
+                  <td>{member.major ?? "미설정"}</td>
+                  <td>{member.displayName ?? "미설정"}</td>
+                  <td>{formatDateTime(member.createdAt)}</td>
+                  <td>
+                    <Link
+                      className="button button--outline button--small"
+                      href={`/admin/members/#member=${member.accountId}`}
+                      aria-label={`${member.displayName || member.email || "회원"} 상세 보기`}
+                    >
+                      상세
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <p className="admin-muted">
+        <Link className="text-link" href="/admin/members/">
+          회원 전체 목록 열기 →
+        </Link>
+      </p>
+    </Section>
+  );
+}
+
 export function AdminDashboardView() {
   const { state, reload } = useAdminQuery<AdminDashboard>((client) => client.dashboard(), "dashboard");
 
@@ -110,6 +246,7 @@ export function AdminDashboardView() {
 
   return (
     <div className="admin-stack">
+      <KpiStrip data={data} />
       <Section title="회원">
         <div className="admin-metrics">
           <Metric label="전체 회원" value={formatNumber(data.members.total)} />
@@ -119,6 +256,8 @@ export function AdminDashboardView() {
           <Metric label="최근 30일 활성" value={formatNumber(data.members.active30d)} note="학습 기록 기준" />
         </div>
       </Section>
+
+      <RecentMembers />
 
       <Section title="프로필">
         <div className="admin-split">

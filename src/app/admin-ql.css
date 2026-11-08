@@ -624,3 +624,108 @@
   overflow-wrap: anywhere;
   min-width: 0;
 }
+
+/* ==========================================================================
+   ADMIN THEME — teal / blue-gray SaaS layer (Owner-approved 2026-11-07).
+   A re-skin of the operations console only. The palette tokens are overridden
+   on `.admin-page`, so the public product palette and the separate `/ql`
+   surface keep their own colours. LAB is light-only, so this layer is too.
+   No markup contract, data flow, RPC or permission boundary changes — every
+   rule is presentation. Later rules win on equal specificity, so the reviewed
+   overflow/accessibility rules above are preserved and only restyled here.
+   ========================================================================== */
+.admin-page {
+  /* teal accent replaces the product orange, scoped to the console */
+  --accent: #117a6f;
+  --accent-dark: #0b5952;
+  --accent-soft: #e2efec;
+  /* cool blue-gray neutrals: less flat white, clearer separation */
+  --surface-muted: #eef3f3;
+  --line: rgba(17, 58, 53, 0.14);
+  --line-strong: rgba(17, 58, 53, 0.24);
+  --admin-canvas: #e9eff0;
+  --admin-shadow: 0 1px 2px rgba(16, 40, 48, 0.06), 0 1px 1px rgba(16, 40, 48, 0.04);
+  /* semantic colours are kept separate from the accent hue */
+  --admin-ok: #1f7a5c;     --admin-ok-bg: #e2f1ea;
+  --admin-warn: #9a6b12;   --admin-warn-bg: #f6ecd4;
+  --admin-danger: #a9453a; --admin-danger-bg: #f4e2df;
+  --admin-info: #3a6b82;   --admin-info-bg: #e2edf2;
+
+  /* the console reads as one tinted surface; white cards sit on top of it */
+  background: var(--admin-canvas);
+  border-radius: var(--radius-lg);
+  padding-inline: clamp(0.85rem, 2vw, 1.4rem);
+}
+
+/* Sidebar as a white card on the tinted canvas, teal active state. */
+.admin-page .admin-nav { background: var(--surface); box-shadow: var(--admin-shadow); }
+.admin-page .admin-nav__brand { color: var(--accent-dark); }
+.admin-page .admin-nav__link:hover { background: var(--surface-muted); }
+.admin-page .admin-nav__link--active {
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  box-shadow: inset 3px 0 0 var(--accent-dark);
+}
+
+/* KPI summary strip — the headline figures, read before the detail below. */
+.admin-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr));
+  gap: 0.7rem;
+  margin: 0 0 0.25rem;
+  min-width: 0;
+}
+.admin-kpi {
+  position: relative;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 0.95rem 0.85rem 1.05rem;
+  box-shadow: var(--admin-shadow);
+  overflow: hidden;
+}
+.admin-kpi::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--accent);
+}
+.admin-kpi--ok::before { background: var(--admin-ok); }
+.admin-kpi--warn::before { background: var(--admin-warn); }
+.admin-kpi--info::before { background: var(--admin-info); }
+.admin-kpi__label { margin: 0; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em; color: var(--ink-muted); overflow-wrap: anywhere; }
+.admin-kpi__value { margin: 0.4rem 0 0; font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; color: var(--ink-strong); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.admin-kpi__note { margin: 0.3rem 0 0; font-size: 0.72rem; color: var(--ink-muted); line-height: 1.5; overflow-wrap: anywhere; }
+
+/* Each dashboard section becomes a discrete card (dashboard uses .admin-stack).
+   No markup change: the existing <section class="admin-section"> is restyled. */
+.admin-page .admin-stack { gap: 1rem; }
+.admin-page .admin-stack .admin-section {
+  border-top: 0;
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--admin-shadow);
+}
+.admin-page .admin-stack .admin-section h2 { font-size: 1rem; }
+.admin-page .admin-stack .admin-subhead { margin-top: 0.75rem; }
+
+/* Metric tiles: slightly denser, cool fill, on the section card. */
+.admin-page .admin-metric { background: var(--surface-muted); border-color: var(--line); }
+.admin-page .admin-metric__value { font-size: 1.3rem; }
+
+/* Table header gets a cool fill and reads as a header band. */
+.admin-page .admin-table th {
+  background: var(--surface-muted);
+  padding-block: 0.5rem;
+  text-transform: uppercase;
+}
+.admin-page .admin-table tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--surface-muted) 55%, white); }
+
+@media (max-width: 480px) {
+  /* keep the headline strip readable rather than a single tall column */
+  .admin-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
