@@ -51,8 +51,26 @@ Boundary 감사: `BOUNDARY_AUDIT=FAIL` — "checkout must not narrate the test e
 - TypeScript ✅ · ESLint ✅(사전 존재 warning 1건, 무관) · 프로덕션 빌드 ✅(공개 키 임베드 확인)
 - 신규 테스트/boundary 실패 0건.
 
-## 다음
+## 운영 배포 완료 (2026-11-08)
 
-Owner 최종 배포 승인 시: 최신 canonical 재확인 → `material-sync-admin-preserved.mjs`
-오버레이 `--apply`(baseline = `dc2190df` 아티팩트) → `/admin/`·`/admin/members/` 검증 →
-배포 ID·SHA 기록. 원복: 직전 canonical `e2ea3191`로 재승격(프런트엔드 전용, DB 원복 불필요).
+Owner 최종 승인 후 `material-sync-admin-preserved.mjs` 오버레이 `--apply` 실행
+(baseline = 현재 운영 canonical `dc2190df` 배포 아티팩트, Worker/라우팅 재사용).
+
+| 항목 | 값 |
+| --- | --- |
+| 새 운영 배포 ID | **`ecbb9d8d`** (`ecbb9d8d-79f1-4985-8e11-33f5d364eb62`) |
+| 배포 소스 SHA | `be3c9fe` |
+| 직전 canonical (원복 대상) | `dc2190df` |
+| 프리뷰 URL | https://ecbb9d8d.legendstudy-lab.pages.dev |
+| 운영 URL | https://lab.legendstudy.com |
+
+배포 후 검증:
+
+- 라이브 canonical = `ecbb9d8d` (source `be3c9fe`) — 승격 확인.
+- `/admin/` HTTP 200, `/admin/members/` HTTP 200 — 새 teal CSS 청크 반영, "운영 콘솔" 정상.
+- 보존: 홈 200 · `/notices/`(비관리자) 200 · `/robots.txt` 200 — Worker·라우팅·비관리자 페이지 정상.
+- 오버레이 off-scope 변경 0건, `existingFunctionsPreserved: true`.
+
+**원복:** 직전 canonical `dc2190df`로 재승격(CF Pages rollback). 프런트엔드 전용 → DB 원복 불필요.
+
+**최종 종료 판정:** Owner가 실제 관리자 화면을 직접 확인 후 결정.
