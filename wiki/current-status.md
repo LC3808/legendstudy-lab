@@ -1,5 +1,7 @@
 # WEB current integration status
 
+2026-11-08 긴급: [대학42 상태 복구·1618 APP67 검수·일일 갱신 후속](emergency-status-material-sync-20261108.md). Functions918661c/Pages e2ea3191 운영 PASS. 자료 수정 Owner PASS. 일일 자동 경로는 별도 후보·승인 대기. 아래 이전 배포는 당시 기록이다.
+
 As of 2026-11-04, the reviewed Math/commerce/social connection is deployed to [production WEB](https://lab.legendstudy.com), with exact server scopes. Code/deployment verification is complete; authenticated production user/Provider E2E and quality acceptance are reported separately by the coordinating release task.
 
 - Current photo-input/History follow-up deployment `98c8e200-b8e2-41c0-83b3-8c96f42d36fe`, source `0cc53505ed3aac856a19089af9c6bafe2d31ba08`. Its API bundle was recompiled for the reviewed confirmed-photo input adapter; the prior display fix remains included. The underlying activation deployment was `2a794c31-217b-42d6-81a6-d2ae79d873e7` / `45bd519`. The preceding compatible HOLD deployment allowed the release lead to apply and verify four guarded DB increments before activation.

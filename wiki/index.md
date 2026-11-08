@@ -1,3 +1,5 @@
+[11/8 긴급 대학 상태·자료 복구 및 자동 갱신 후속](emergency-status-material-sync-20261108.md)
+
 # WEB implementation handoff index
 
 The APP repository `wiki/` remains the canonical Unified Wiki. This index only routes WEB implementation evidence; it does not define separate product policies.
