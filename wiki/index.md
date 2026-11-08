@@ -1,3 +1,4 @@
+[학습자료72h·관리자 갱신 후보](material-sync-admin-20261108.md)
 [11/8 긴급 대학 상태·자료 복구 및 자동 갱신 후속](emergency-status-material-sync-20261108.md)
 
 # WEB implementation handoff index

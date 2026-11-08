@@ -1,3 +1,5 @@
+2026-11-08: [자료 동기화 관리자 후보](material-sync-admin-20261108.md). UI·TEST·빌드 완료, 추가 운영 승인 대기.
+
 # WEB current integration status
 
 2026-11-08 긴급: [대학42 상태 복구·1618 APP67 검수·일일 갱신 후속](emergency-status-material-sync-20261108.md). Functions918661c/Pages e2ea3191 운영 PASS. 자료 수정 Owner PASS. 일일 자동 경로는 별도 후보·승인 대기. 아래 이전 배포는 당시 기록이다.

@@ -21,6 +21,7 @@ import { adminErrorCopy, adminErrorKind, type AdminErrorKind } from "@/lib/admin
  */
 
 export type AdminNavKey =
+  | "material-sync"
   | "data"
   | "analytics"
   | "dashboard"

@@ -1,3 +1,7 @@
+## 2026-11-08 — 자료 동기화 관리자 후보
+
+기존 AdminSurface에72시간/수동 요청·상태/변경 집계 구현. UI21검사·빌드 PASS. 기존 콘솔4fixture실패 baseline 동일. 추가 SQL/WEB 승인 대기. [상세](material-sync-admin-20261108.md).
+
 ## 2026-11-08 — 긴급 복구
 
 [대학 공통503 원인·운영 배포·대표6경로·생활과 윤리 수정](emergency-status-material-sync-20261108.md).84검사 PASS/42카드 정상. Owner APP67 두PDF 표시·열람 PASS. 자동 갱신은 구현 후보/운영 승인 대기.
