@@ -779,3 +779,21 @@
 .admin-bars--schools li { grid-template-columns: minmax(0, 42%) minmax(0, 1fr) 3ch; }
 .admin-bars--schools .admin-bars__label { line-height: 1.4; }
 .admin-bars--schools .admin-bars__count { text-align: right; }
+
+/* ==========================================================================
+   Admin shell accent unified with the operations dashboard (Owner directive
+   2026-11-08, A안). The console body already uses a teal / blue-gray theme
+   (member-dashboard.css); only the shell still inherited the product orange
+   `--accent`. Overriding the accent tokens — and only those — on `.admin-page`
+   recolours the sidebar, shell, shared buttons and accent rules to match, with
+   no change to markup, components, RPCs, Worker/Functions or routing. Semantic
+   status / warning / error colours (--green, --gold, --danger, --warning) and
+   the navy `--ink` active state are left untouched, so state meaning is kept.
+   The teal values mirror the dashboard palette (#227b83 / #287f80). `/ql` is a
+   separate route outside `.admin-page`, so its own styling is unaffected.
+   ========================================================================== */
+.admin-page {
+  --accent: #227b83;
+  --accent-dark: #1b5f66;
+  --accent-soft: #e3efed;
+}
