@@ -115,3 +115,12 @@
 
 ### Owner 승인 이력
 - 2026-11-09: admin_study_by_school RPC 신설·권한·검증 **승인·적용**. 관리자 프런트 배포는 미승인(별도). Phase 2 프런트 개발 착수 승인(운영 변경 없음). Phase 2/3 운영 RPC·테이블·권한·배포는 각각 별도 승인.
+
+## 12. Phase 1 관리자 프런트 운영 배포 (2026-11-09)
+
+- **배포 ID `52883c4a`** / 소스 `f1d7100`. 직전 canonical(롤백 대상) `e363d279`.
+- 배포 전 범위 확인: 라이브(11b8b53) 대비 SRC 변경은 **`admin-data-page.tsx` 1파일(공부시간 분석 페이지)뿐**, functions/public 0변경, 범위 밖 변경 없음. (학생 랭킹·친구 초대·인증/권한·RPC/DB 스키마 변경 **미포함**.)
+- 검증: TS·ESLint·빌드 ✅, 관리자 테스트 7 failed/202 passed(기준선 동일·신규 0), 선별 dry-run off-scope 0·Functions 보존.
+- 배포 후(익명/빌드 레벨): canonical 승격 ✅, `/admin/`·`/admin/data/study/`·`/admin/members/`·비관리자 200 ✅, 운영 빌드에 `admin_study_by_school` 호출 코드 포함 ✅.
+- **NOT TESTED (operator 로그인 필요)**: 관리자 RPC 호출 성공 수치, 실제 학교별 가입자/활성 기록자/총시간/평균/TOP 표시, NEIS 학교명, 미등록 그룹, 기간·학년 필터 동작. → Owner operator 계정 확인 필요.
+- 다음 승인 필요: Phase 2 학생용 RPC/프런트(운영 변경 수반 시), Phase 3 초대 토큰·이벤트·APP.
