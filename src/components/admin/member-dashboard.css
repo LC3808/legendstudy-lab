@@ -32,6 +32,11 @@
 .focus-kpi--danger .focus-kpi__v{color:#9d3f35}
 .focus-kpi__n{font-size:11px;color:#89a0a7;margin:3px 0 0;overflow-wrap:anywhere}
 .focus-kpi__wait{font-size:14px;color:#89a0a7;font-weight:500}
+.focus-kpi--link{text-decoration:none;color:inherit;display:block;cursor:pointer;transition:box-shadow .12s,border-color .12s}
+.focus-kpi--link:hover{border-color:#1f7a7f;box-shadow:0 2px 8px rgba(20,50,58,.12)}
+.focus-kpi--link:focus-visible{outline:2px solid #176b87;outline-offset:2px}
+.focus-kpi__go{float:right;color:#9bb0b6;font-weight:700}
+.focus-kpi--link:hover .focus-kpi__go{color:#1f7a7f}
 
 /* -- operational alert strip -- */
 .focus-alert{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#f7ecd3;border:1px solid #e4d5ad;border-radius:9px;padding:8px 13px;font-size:13px;color:#8a5e0d}

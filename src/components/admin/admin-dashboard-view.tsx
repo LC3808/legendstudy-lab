@@ -6,9 +6,9 @@ import {analyticsWindow} from '@/lib/admin/analytics';
 import {AdminPeriodFilter} from './admin-period-filter';
 import type {AdminPeriod} from '@/lib/admin/period';
 import {formatStudyTime} from '@/lib/admin/study-time';
-import {formatDateTime,accountStateLabel} from '@/lib/admin/format';
+import {formatDateTime,accountStateLabel,formatCount} from '@/lib/admin/format';
 import {useAdminQuery,useSupportRefresh,AdminErrorPanel} from './admin-surface';
-import type {AdminSupportMetrics} from '@/lib/admin/contract';
+import type {AdminSupportMetrics,AdminDashboard} from '@/lib/admin/contract';
 import {defaultMemberFilters,directorySchoolLabel,type MemberDirectory} from '@/lib/admin/members';
 import {AdminSchoolName} from './admin-school-name';
 import './member-dashboard.css';
@@ -30,12 +30,14 @@ const gradeNames:Record<string,string>={'1':'고1','2':'고2','3':'고3',retaker
 // Headline KPI tile. Values are passed in from the dashboard's existing reads
 // (admin_member_composition / admin_dashboard_study / admin_learning_analytics /
 // supportMetrics) — this component never fetches or fabricates a metric.
-function KpiTile({label,value,note,tone}:{label:string;value:React.ReactNode;note?:string;tone?:'ok'|'warn'|'danger'|'info'}){
- return <div className={`focus-kpi${tone?` focus-kpi--${tone}`:''}`}>
-  <p className="focus-kpi__l">{label}</p>
+function KpiTile({label,value,note,tone,href}:{label:string;value:React.ReactNode;note?:string;tone?:'ok'|'warn'|'danger'|'info';href?:string}){
+ const cls=`focus-kpi${tone?` focus-kpi--${tone}`:''}${href?' focus-kpi--link':''}`;
+ const body=<>
+  <p className="focus-kpi__l">{label}{href?<span className="focus-kpi__go" aria-hidden="true">→</span>:null}</p>
   <p className="focus-kpi__v">{value}</p>
   {note?<p className="focus-kpi__n">{note}</p>:null}
- </div>;
+ </>;
+ return href?<Link className={cls} href={href}>{body}</Link>:<div className={cls}>{body}</div>;
 }
 const kpiNum=(n:number|null|undefined)=>n===null||n===undefined?<span className="focus-kpi__wait">집계 중</span>:n.toLocaleString('ko-KR');
 
@@ -92,17 +94,20 @@ export function AdminDashboardView(){
  const study=useReadReport<Study>('admin_dashboard_study',range??{p_from:'invalid',p_to:'invalid'},refresh);
  const learning=useReadReport<Learning>('admin_learning_analytics',range??{p_from:'invalid',p_to:'invalid'},refresh);
  const support=useAdminQuery<AdminSupportMetrics>(c=>c.supportMetrics(),'dashboard-support');useSupportRefresh(support.reload);
+ const overview=useAdminQuery<AdminDashboard>(c=>c.dashboard(),'dashboard-overview');
  const selected=grade==='all'?study.data?.total:study.data?.grades.find(g=>g.grade===grade);
  const state=(r:{error?:boolean;data?:unknown})=>r.error?<p role="alert">조회 실패 · 새로고침해 주세요.</p>:!r.data?<p role="status">집계 중…</p>:null;
  const sup=support.state.status==='ready'?support.state.data:null;
+ const ov=overview.state.status==='ready'?overview.state.data:null;
+ const wait=<span className="focus-kpi__wait">집계 중</span>;
  return <div className="focused-admin">
  <section className="focus-kpis" aria-label="핵심 지표 요약">
-  <KpiTile label="전체 가입 계정" value={kpiNum(members.data?.accounts)} note={memberPeriod==='all'?'전체 회원':'선택 기간 가입'}/>
-  <KpiTile label="공부 기록 회원" value={kpiNum(members.data?.active)} tone="ok" note="최근 30일 활성"/>
-  <KpiTile label="미처리 문의" value={sup?kpiNum(sup.open):<span className="focus-kpi__wait">집계 중</span>} tone={sup&&sup.open>0?'warn':undefined} note="1:1 문의 대기"/>
-  <KpiTile label="총 공부시간" value={study.data?formatStudyTime(study.data.total.ms):<span className="focus-kpi__wait">집계 중</span>} note="선택 기간 · 시간/분"/>
-  <KpiTile label="희망 대학 등록 학생" value={kpiNum(learning.data?.metrics.targets)} tone="info" note="선택 기간"/>
-  <KpiTile label="알림 발송 실패" value={sup?kpiNum(sup.failedDeliveries):<span className="focus-kpi__wait">집계 중</span>} tone={sup&&sup.failedDeliveries>0?'danger':undefined} note="재발송 대기 포함"/>
+  <KpiTile label="전체 가입 수" value={kpiNum(members.data?.accounts)} href="/admin/members/" note={memberPeriod==='all'?'전체 회원 · 회원 현황':'선택 기간 가입 · 회원 현황'}/>
+  <KpiTile label="총 공부 시간" value={study.data?formatStudyTime(study.data.total.ms):wait} href="/admin/data/study/" note="선택 기간 · 시간/분 · 공부 현황"/>
+  <KpiTile label="첨삭권 사용" value={ov?kpiNum(ov.credit.consumedTotal):wait} href="/admin/credit/" note="누적 첨삭권(Credit) 사용"/>
+  <KpiTile label="희망 대학 등록 학생" value={kpiNum(learning.data?.metrics.targets)} tone="info" href="/admin/data/learning/" note="선택 기간 · 입시 분석"/>
+  <KpiTile label="결제 주문 수" value={ov?formatCount(ov.payment.orders):wait} href="/admin/payment/" note={ov&&!ov.payment.installed?'결제 모듈 미설치':'누적 주문 · 결제'}/>
+  <KpiTile label="미처리 문의" value={sup?kpiNum(sup.open):wait} tone={sup&&sup.open>0?'warn':undefined} href="/admin/inquiries/" note="1:1 문의 대기"/>
  </section>
  {sup&&(sup.open>0||sup.failedDeliveries>0)?<div className="focus-alert" role="status">
   <strong>운영 주의</strong>
