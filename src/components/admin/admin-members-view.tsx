@@ -214,8 +214,8 @@ export function AdminMembersView() {
       const open=selected===m.accountId;
       return <Fragment key={m.accountId}>
        <tr className={open?'admin-member-row admin-member-row--open':'admin-member-row'}>
-        <td>{m.email??'이메일 미등록'}</td>
-        <td>{accountStateLabel(m.accountState).label}</td>
+        <td className="admin-cell-email">{m.email??'이메일 미등록'}</td>
+        <td>{(()=>{const s=accountStateLabel(m.accountState);return <span className={`admin-chip admin-chip--${s.tone}`}>{s.label}</span>;})()}</td>
         <td>{m.schoolState==='unresolved'&&m.schoolOfficeCode&&m.schoolCode?<AdminSchoolName office={m.schoolOfficeCode} school={m.schoolCode}/>:directorySchoolLabel(m)||'—'}</td>
         <td>{m.grade?`${m.grade}학년`:'—'}</td><td>{m.academicStatus?statusLabels[m.academicStatus]:'—'}</td>
         <td>{m.major??'—'}</td><td>{m.displayName??'—'}</td><td>{formatDateTime(m.createdAt)}</td>

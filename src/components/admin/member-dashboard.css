@@ -10,3 +10,51 @@
 .focused-admin .usage-rankings__title {text-align:left}
 .usage-rankings th:first-child {width:54px}
 .usage-rankings th:last-child {width:96px}
+
+/* ==========================================================================
+   Admin UX refresh (Owner directive 2026-11-09, 1st pass): headline KPI band,
+   operational alerts, member table readability and account-state chips. Teal /
+   blue-gray palette kept; layout and hierarchy only. No data, RPC or contract
+   change — the dashboard KPIs read the existing admin_* query results.
+   ========================================================================== */
+
+/* -- dashboard headline KPIs -- */
+.focus-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.focus-kpi{position:relative;background:#fff;border:1px solid #cddbd9;border-radius:9px;padding:10px 12px 10px 14px;box-shadow:0 1px 2px #20374712;overflow:hidden;min-width:0}
+.focus-kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#287f80}
+.focus-kpi--ok::before{background:#1f7a5c}
+.focus-kpi--warn::before{background:#95660f}
+.focus-kpi--danger::before{background:#ab453a}
+.focus-kpi--info::before{background:#39697f}
+.focus-kpi__l{font-size:12px;font-weight:600;color:#4c646c;margin:0;overflow-wrap:anywhere}
+.focus-kpi__v{font-size:23px;font-weight:700;color:#163b4a;line-height:1.15;margin:5px 0 0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.focus-kpi--warn .focus-kpi__v{color:#8a5e0d}
+.focus-kpi--danger .focus-kpi__v{color:#9d3f35}
+.focus-kpi__n{font-size:11px;color:#89a0a7;margin:3px 0 0;overflow-wrap:anywhere}
+.focus-kpi__wait{font-size:14px;color:#89a0a7;font-weight:500}
+
+/* -- operational alert strip -- */
+.focus-alert{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#f7ecd3;border:1px solid #e4d5ad;border-radius:9px;padding:8px 13px;font-size:13px;color:#8a5e0d}
+.focus-alert strong{color:#6f4d0c}
+.focus-alert__pill{background:#fff;border:1px solid #e4d5ad;border-radius:999px;padding:2px 10px;font-weight:600}
+.focus-alert__pill--danger{color:#9d3f35;border-color:#ecc6c0}
+.focus-alert__meta{color:#8a7a52;font-size:12px}
+
+/* -- shared status chips (also used in member table) -- */
+.admin-chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;line-height:1.5;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.admin-chip--normal{background:#e4f1ea;color:#1f7a5c}
+.admin-chip--pending{background:#f7ecd3;color:#8a5e0d}
+.admin-chip--danger{background:#f5e2df;color:#9d3f35}
+
+/* -- member directory: cleaner filter stack + readable table -- */
+.member-directory .admin-filters{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+.member-directory .admin-search__label{align-self:flex-start;margin:0}
+.member-directory .admin-filters__row{display:flex;gap:10px;flex-wrap:wrap}
+.member-directory .admin-table--members th,
+.member-directory .admin-table--members td{text-align:left;border-left:0;border-right:0;padding:10px 12px;vertical-align:middle}
+.member-directory .admin-table--members thead th{position:sticky;top:0;z-index:1;background:#dce9e8;color:#23424b;font-weight:700;white-space:nowrap}
+.member-directory .admin-table--members tbody tr:hover>td{background:#e2efed}
+.member-directory .admin-cell-email{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;font-size:12.5px;color:#173540}
+
+@media(max-width:1100px){.focus-kpis{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.focus-kpis{grid-template-columns:repeat(2,1fr)}}
