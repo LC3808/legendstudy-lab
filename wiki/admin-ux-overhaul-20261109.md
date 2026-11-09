@@ -86,3 +86,9 @@ dry-run off-scope 0, Functions/라우팅 보존, 신규 회귀 0. 배포 후 can
 희망 대학 등록 학생 · 결제 주문 수(payment.orders) · 미처리 문의(끝). 각 타일에 상세 페이지 링크.
 공부 기록 회원·알림 발송 실패는 타일에서 제외(발송 실패는 경고 스트립 유지). 첨삭권·결제는 기존
 admin_dashboard RPC 실데이터. 커밋 987bb08, 배포 347d5bf7(원복 대상 10b4be69). 신규 회귀 0.
+
+### 후속 — 상단 KPI 기간 선택 + 첨삭권·결제 기간 집계 (2026-11-09)
+
+KPI 행에 '지표 기간' 선택기 추가(fe8afbe). 첨삭권 사용·결제 건수는 누적 admin_dashboard
+대신 기간형 admin_release_report(credit_used, paid)로 교체(11b8b53) → 미처리 문의 외 5개
+KPI가 선택 기간 기준으로 집계. 신규 백엔드 없음. 배포 e363d279(원복 대상 347d5bf7). 신규 회귀 0.
