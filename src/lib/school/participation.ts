@@ -10,10 +10,13 @@ export type SchoolCard =
   | {
       hasSchool:true;
       officeCode:string; schoolCode:string;
-      registeredUsers:number;   // 학교를 등록한 유효 가입 학생 수
+      registeredUsers:number;   // 학교를 등록한 유효 가입 학생 수 (1명부터 공개)
       activeUsers7d:number;      // 최근 7일 공부시간 기록자 수
-      weekMs:number;            // 이번 주 총 공부시간(ms)
-      rank:number|null;         // 이번 주 총공부시간 전국 순위 (표본 부족 시 null)
+      minRecorders:number;      // 공개 소표본 하한(기록자 수)
+      weekRecorders:number;     // 이번 주 공부시간 기록자 수
+      recordersNeeded:number;   // 랭킹 공개까지 더 필요한 기록자 수 (0이면 공개 기준 충족)
+      weekMs:number|null;       // 이번 주 총 공부시간(ms). 기록자 < minRecorders면 null(랭킹 잠금)
+      rank:number|null;         // 이번 주 총공부시간 전국 순위 (잠금 시 null)
       asOf:string;
     };
 
@@ -48,7 +51,9 @@ export function parseSchoolCard(raw:unknown):SchoolCard{
     hasSchool:true,
     officeCode:str(r.office_code), schoolCode:str(r.school_code),
     registeredUsers:num(r.registered_users), activeUsers7d:num(r.active_users_7d),
-    weekMs:num(r.week_ms), rank:nnum(r.rank), asOf:str(r.as_of),
+    minRecorders:num(r.min_recorders), weekRecorders:num(r.week_recorders),
+    recordersNeeded:num(r.recorders_needed),
+    weekMs:nnum(r.week_ms), rank:nnum(r.rank), asOf:str(r.as_of),
   };
 }
 

@@ -87,8 +87,13 @@ begin
       where e.office = v_office and e.school = v_school
         and s.include_in_study_total and s.ended_at > v_now - interval '7 days'
     ),
-    'week_ms', coalesce((select ms from by_school where office = v_office and school = v_school), 0),
+    'min_recorders', v_min_recorders,
+    -- 이번 주 기록자 수(본인 학교). 소표본 안내(랭킹 잠금/필요 인원)에 사용. 카운트만 공개.
+    'week_recorders', coalesce((select active_users from by_school where office = v_office and school = v_school), 0),
+    -- 총공부시간/순위는 기록자 하한 이상에서만 공개. 미만이면 null(랭킹 잠금) → 프런트는 "곧 열려요" 안내.
+    'week_ms', (select case when active_users >= v_min_recorders then ms else null end from by_school where office = v_office and school = v_school),
     'rank', (select rnk from ranked where office = v_office and school = v_school),
+    'recorders_needed', greatest(0, v_min_recorders - coalesce((select active_users from by_school where office = v_office and school = v_school), 0)),
     'as_of', statement_timestamp()
   ) into result;
   return result;
@@ -161,9 +166,9 @@ begin
            coalesce(r.registered_users,0) registered_users,
            coalesce(a.active_users,0) active_users, coalesce(a.ms,0) ms,
            case when coalesce(a.active_users,0)>0 then a.ms/a.active_users else 0 end avg_ms,
-           -- 공개 가드: 기록자 하한 미만 학교의 시간 지표는 null(개인 노출 방지). 집계용 ms/avg_ms는 위에 유지.
+           -- 공개 가드(API 반환 단계 마스킹): 총시간은 기록자 < p_min_recorders(3), 평균은 기록자 < p_min_users(5)면 null.
            case when coalesce(a.active_users,0)>=p_min_recorders then a.ms else null end pub_ms,
-           case when coalesce(a.active_users,0)>=p_min_recorders then (a.ms/a.active_users) else null end pub_avg
+           case when coalesce(a.active_users,0)>=p_min_users then (a.ms/a.active_users) else null end pub_avg
     from reg r full join act a using (office, school)
   ),
   -- 지표별 자격 필터 + 순위. total은 기록자 하한 이상만 공개.

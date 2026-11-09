@@ -2,19 +2,23 @@ import {expect, it, describe} from 'vitest';
 import {parseSchoolCard, parseSchoolRanking} from './participation';
 
 describe('parseSchoolCard', () => {
-  it('parses a school-present card', () => {
+  it('parses an open-ranking card (recorders >= threshold)', () => {
     const card = parseSchoolCard({
       version:'student-school-card-v1', has_school:true,
       office_code:'B10', school_code:'7010001', registered_users:12,
-      active_users_7d:5, week_ms:3600000, rank:42, as_of:'2026-11-09T00:00:00Z',
+      active_users_7d:5, min_recorders:3, week_recorders:5, recorders_needed:0,
+      week_ms:3600000, rank:42, as_of:'2026-11-09T00:00:00Z',
     });
     expect(card.hasSchool).toBe(true);
-    if(card.hasSchool){ expect(card.registeredUsers).toBe(12); expect(card.weekMs).toBe(3600000); expect(card.rank).toBe(42); }
+    if(card.hasSchool){ expect(card.registeredUsers).toBe(12); expect(card.weekMs).toBe(3600000); expect(card.rank).toBe(42); expect(card.recordersNeeded).toBe(0); }
   });
-  it('parses a no-school card and a null rank', () => {
+  it('parses a locked card: null week_ms/rank + recorders_needed', () => {
+    const c = parseSchoolCard({version:'student-school-card-v1', has_school:true, office_code:'B10', school_code:'x', registered_users:2, active_users_7d:1, min_recorders:3, week_recorders:1, recorders_needed:2, week_ms:null, rank:null, as_of:'t'});
+    expect(c.hasSchool).toBe(true);
+    if(c.hasSchool){ expect(c.weekMs).toBeNull(); expect(c.rank).toBeNull(); expect(c.recordersNeeded).toBe(2); expect(c.weekRecorders).toBe(1); }
+  });
+  it('parses a no-school card', () => {
     expect(parseSchoolCard({version:'student-school-card-v1', has_school:false}).hasSchool).toBe(false);
-    const c = parseSchoolCard({version:'student-school-card-v1', has_school:true, office_code:'B10', school_code:'x', registered_users:1, active_users_7d:0, week_ms:0, rank:null, as_of:'t'});
-    if(c.hasSchool) expect(c.rank).toBeNull();
   });
   it('rejects a wrong version or malformed payload', () => {
     expect(()=>parseSchoolCard({version:'other'})).toThrow('MALFORMED');

@@ -60,20 +60,26 @@ export function SchoolParticipationCard({card,loading}:{card:SchoolCard|null;loa
   </section>;
 
   const tier=cardTier(card.registeredUsers);
+  // 랭킹 공개(기록자 하한 충족)는 weekMs로 판별 — 미만이면 API가 null을 반환(랭킹 잠금).
+  const rankingOpen=card.weekMs!=null;
   return <section className="school-card">
     <h2>🏫 <SchoolName office={card.officeCode} school={card.schoolCode}/> 참여 현황</h2>
     <dl className="school-card__stats">
       <div><dt>우리 학교 참여 학생</dt><dd>{card.registeredUsers.toLocaleString('ko-KR')}명</dd></div>
       <div><dt>최근 7일 공부 기록자</dt><dd>{card.activeUsers7d.toLocaleString('ko-KR')}명</dd></div>
-      <div><dt>이번 주 총 공부시간</dt><dd>{formatStudyTime(card.weekMs)}</dd></div>
-      <div><dt>우리 학교 순위</dt><dd>{card.rank!=null?`전국 ${card.rank.toLocaleString('ko-KR')}위`:'집계 준비 중'}</dd></div>
+      {rankingOpen&&<div><dt>이번 주 총 공부시간</dt><dd>{formatStudyTime(card.weekMs)}</dd></div>}
+      {rankingOpen&&<div><dt>우리 학교 순위</dt><dd>{card.rank!=null?`전국 ${card.rank.toLocaleString('ko-KR')}위`:'집계 준비 중'}</dd></div>}
     </dl>
-    {tier==='invite'&&<p className="school-card__message">지금 우리 학교에서 레전드스터디+로 공부하는 친구는 <strong>{card.registeredUsers}명</strong>이에요. 친구를 초대해 함께 공부시간을 기록하고 우리 학교 순위를 만들어 보세요!</p>}
-    {tier==='grow'&&<p className="school-card__message">우리 학교 친구 <strong>{card.registeredUsers}명</strong>이 함께하고 있어요. 더 많은 친구가 모이면 학교 순위가 올라가요. 함께할 친구를 초대해 보세요!</p>}
-    {tier==='compete'&&<p className="school-card__message">우리 학교 친구 <strong>{card.registeredUsers}명</strong>이 공부시간을 기록하고 있어요. 이번 주 공부시간을 늘려 우리 학교 순위를 끌어올려 보세요!</p>}
+    {!rankingOpen&&<div className="school-card__locked">
+      <p className="school-card__locked-title">🔓 우리 학교 공부시간 랭킹이 곧 열려요!</p>
+      <p className="school-card__message">친구들과 함께 공부시간을 기록하면 우리 학교의 공부시간 랭킹이 공개됩니다.</p>
+      {card.recordersNeeded>0&&<p className="school-card__message"><strong>{card.recordersNeeded}명</strong>이 더 공부시간을 기록하면 우리 학교 랭킹이 공개됩니다.</p>}
+    </div>}
+    {rankingOpen&&tier!=='compete'&&<p className="school-card__message">우리 학교 친구 <strong>{card.registeredUsers}명</strong>이 함께하고 있어요. 더 많은 친구가 모이면 학교 순위가 올라가요. 함께할 친구를 초대해 보세요!</p>}
+    {rankingOpen&&tier==='compete'&&<p className="school-card__message">우리 학교 친구 <strong>{card.registeredUsers}명</strong>이 공부시간을 기록하고 있어요. 이번 주 공부시간을 늘려 우리 학교 순위를 끌어올려 보세요!</p>}
     <div className="school-card__actions">
       <SchoolInviteButton schoolName={undefined}/>
-      <a className="button button--outline" href="#school-ranking">학교 랭킹 보기</a>
+      {rankingOpen&&<a className="button button--outline" href="#school-ranking">학교 랭킹 보기</a>}
     </div>
   </section>;
 }
