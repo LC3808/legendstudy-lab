@@ -1805,3 +1805,27 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 .beta-onboarding p {margin:.75rem 0;line-height:1.65;overflow-wrap:anywhere;}
 .beta-onboarding label {display:flex;align-items:center;gap:.5rem;margin-top:1rem;}
 .beta-onboarding .my-actions {display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.5rem;margin-top:1rem;}
+
+/* 우리 학교 공부 경쟁 (/school) */
+.school-view {display:flex;flex-direction:column;gap:1.25rem;}
+.school-card {border:1px solid var(--line-strong);border-radius:16px;background:var(--surface);padding:1.25rem;display:flex;flex-direction:column;gap:1rem;}
+.school-card h2 {font-size:1.15rem;font-weight:700;margin:0;}
+.school-card__stats {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin:0;}
+.school-card__stats div {border:1px solid var(--line);border-radius:12px;background:var(--surface-muted);padding:.75rem;}
+.school-card__stats dt {font-size:.82rem;color:var(--muted);margin:0 0 .35rem;}
+.school-card__stats dd {font-size:1.2rem;font-weight:700;margin:0;}
+.school-card__message {margin:0;line-height:1.6;}
+.school-card__actions {display:flex;flex-wrap:wrap;gap:.5rem;}
+.school-rank {border:1px solid var(--line-strong);border-radius:16px;background:var(--surface);padding:1.25rem;display:flex;flex-direction:column;gap:.85rem;}
+.school-rank h2 {font-size:1.15rem;font-weight:700;margin:0;}
+.school-rank__controls {display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;}
+.school-rank__tabs {display:flex;flex-wrap:wrap;gap:.4rem;}
+.school-rank__period {display:flex;align-items:center;gap:.4rem;font-size:.9rem;}
+.school-rank__period select {padding:.35rem .5rem;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface);}
+.school-rank__table {width:100%;border-collapse:collapse;font-size:.92rem;}
+.school-rank__table th,.school-rank__table td {text-align:left;padding:.55rem .5rem;border-bottom:1px solid var(--line);}
+.school-rank__table th {font-size:.82rem;color:var(--muted);font-weight:600;}
+.school-rank__row--mine {background:var(--surface-muted);font-weight:600;}
+.school-rank__badge {color:var(--muted);font-weight:500;font-size:.82rem;}
+.school-rank__gap td {text-align:center;color:var(--muted);padding:.3rem;}
+@media (max-width:520px){.school-card__stats {grid-template-columns:1fr;}}

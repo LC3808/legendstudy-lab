@@ -124,3 +124,40 @@
 - 배포 후(익명/빌드 레벨): canonical 승격 ✅, `/admin/`·`/admin/data/study/`·`/admin/members/`·비관리자 200 ✅, 운영 빌드에 `admin_study_by_school` 호출 코드 포함 ✅.
 - **NOT TESTED (operator 로그인 필요)**: 관리자 RPC 호출 성공 수치, 실제 학교별 가입자/활성 기록자/총시간/평균/TOP 표시, NEIS 학교명, 미등록 그룹, 기간·학년 필터 동작. → Owner operator 계정 확인 필요.
 - 다음 승인 필요: Phase 2 학생용 RPC/프런트(운영 변경 수반 시), Phase 3 초대 토큰·이벤트·APP.
+
+## 13. Phase 2 학생용 WEB 구현 (2026-11-09, 운영 변경 없음)
+
+학생용 학교별 학습 경쟁 기능 WEB 1차 구현. **운영 DB 변경·운영 배포·인증/권한 변경·기존 관리자 기능 수정 없음.** 학생 화면은 관리자 RPC를 직접 호출하지 않으며, 전용 학생 RPC(초안, 미적용)를 통해서만 데이터를 읽는다. 데이터 부재 시 가짜 수치 대신 "준비 중"·빈 상태를 표시한다.
+
+### 구현한 화면/컴포넌트
+- `/school` 라우트(`src/app/school/page.tsx`) — 로그인 가드(`OwnerArea`, 비로그인 시 로그인 유도).
+- **우리 학교 참여 현황 카드**(`SchoolParticipationCard`) — 가입 학생 수 / 최근 7일 기록자 / 이번 주 총공부시간 / 우리 학교 순위. 임계값 메시지: 1~4명 친구 초대 중심 · 5~19명 참여 확대 · 20명+ 순위 경쟁.
+- **학교별 TOP 랭킹**(`SchoolRankingPanel`) — 지표 탭(총공부시간/1인당 평균/가입 학생 수) · 기간(이번 주/지난 주/최근 30일) · TOP10 + 우리 학교 하이라이트 + 주변 순위. 평균 지표 최소 표본 5.
+- **친구 초대 UX**(`SchoolInviteButton`) — `navigator.share` + 클립보드 폴백. 초대 토큰/트래킹 주입 지점(`buildUrl`/`onShared`) 모듈화. **가짜 초대 통계 없음.**
+- `SchoolName` — 공개 NEIS 프록시(`resolveSchoolName`) 재사용(공개 학교 식별자만), 조회 중/확인 불가 상태 표기.
+
+### 변경 파일
+- 신규: `src/lib/school/participation.ts`(+`.test.ts`), `src/components/school/{invite-button,school-name,school-view}.tsx`, `src/app/school/page.tsx`, `supabase/candidates/student_school/{install,test}.sql`.
+- 수정(추가 전용): `src/app/globals.css`(school 섹션 스타일). **관리자 소스·RPC·인증 무변경.**
+
+### 신규 데이터 타입(계약)
+- `SchoolCard`(has_school 분기), `SchoolRankRow`, `SchoolRanking`, `SchoolRankMetric`('total'|'average'|'registered'), `SchoolRankPeriod`('week'|'last_week'|'month'). 버전 가드(`student-school-card-v1`/`student-school-ranking-v1`) + 엄격 파서, RPC 부재/오류 시 `null` 반환(가드).
+
+### 학생용 RPC 설계(초안 — 미적용)
+- `student_school_card()` — `auth.uid()`의 프로필 학교 기준(임의 학교코드 전달 불가). 반환: registered_users, active_users_7d, week_ms(KST 주), rank(주간 총시간, 표본 없으면 null).
+- `student_school_ranking(p_period,p_metric,p_min_users=5)` — 학교 단위 집계만. top10/my_school/around/school_count. 평균 지표 min 표본 가드.
+- 공통: SECURITY DEFINER, search_path='', 8s timeout, `account_private.allowed(auth.uid())` 게이트(**admin_operator 아님**), anon/public EXECUTE 회수·authenticated 부여. 집계 기준은 `admin_study_by_school`와 동일(active_segments range_agg 중복제거) → 수치 정합.
+- 후보 SQL: `supabase/candidates/student_school/install.sql`, 읽기전용 검증: `.../test.sql`.
+
+### 테스트 결과
+- 신규 파서 테스트 6/6 통과. TS(`tsc --noEmit`) 0 오류, ESLint 0 오류(신규 파일).
+- 전체 스위트: 8 failed / 1899 passed — **8건은 Phase 2 제외 상태에서도 동일하게 실패**하는 기존 admin/materials 기준선(materials.test, admin-console/analytics/dashboard-focus). Phase 2 신규 회귀 0.
+
+### 실제 데이터 연동에 필요한 작업(Owner 승인 필요)
+1. `student_school_card`/`student_school_ranking` 운영 적용 전 격리 검증: `test.sql` 정합성, 운영 규모 statement time, `get_advisors` 신규 권고 0.
+2. **운영 `apply_migration` 승인**(학생 RPC 신설). 적용 전까지 `/school`은 "준비 중"·빈 상태.
+3. 학생용 WEB 운영 배포(선별 overlay) 승인.
+4. Flutter APP 네이티브 구현(동일 Backend, WebView 금지)은 WEB 승인·검증 후.
+
+### Phase 3 연계(미착수)
+- 초대 토큰(불투명)·GA4 이벤트·어트리뷰션 — 승인 후 테이블/이벤트 신설. 초대 버튼은 주입 지점만 마련.
