@@ -289,3 +289,40 @@ Owner 승인으로 학생용 RPC 2종을 운영 DB(`stlhijzpjfgwwdgunlsd`)에 �
 1. **학생용 WEB 운영 배포(선별 overlay)** — 별도 Owner 승인(이번 승인 제외). 배포 전까지 운영 WEB에는 `/school` 미노출.
 2. 로그인 세션 기반 적용 후 최종 검증(관리자 operator 또는 학생 계정).
 3. Flutter APP 네이티브, 친구 초대 토큰 테이블/이벤트(Phase 3) — 각각 별도 승인.
+
+## 17. 학생용 /school WEB 운영 배포 (2026-11-09, Owner 승인)
+
+Owner 승인으로 `/school` 학생용 WEB를 **선별 오버레이**로 운영 배포. 운영 적용된 학생 RPC 2종 사용. 기존 운영/관리자/Functions 보존.
+
+### 17.1 배포 결과
+- **운영 배포 ID `dfa50be9`** (dfa50be9-07a8-45fc-8522-02552f767370) / 소스 커밋 `23bad0e`.
+- **롤백 대상 `52883c4a`** (직전 canonical = Phase 1 admin deploy). CF Pages 롤백으로 즉시 복귀 가능.
+- 1차 시도 `1c3dd849`는 워커 번들 포맷 오류로 deploy 스테이지 실패(운영 무영향, canonical 미승격) → 워커 재생성 후 재배포 성공.
+
+### 17.2 선별 범위 (dry-run = apply 동일)
+- 변경 파일 **16건**: `/school/*` 5(index.html/txt, __next._full/_tree/__PAGE__) + 신규 content-hash `/_next/static` 11. **범위 밖 변경 0건**(오버레이 가드 통과).
+- 자산 2423 → 2439. Functions 라우트 24개 보존. `_headers`/`_redirects`/`_routes.json` 베이스라인 재사용.
+
+### 17.3 Worker/Functions 처리 (중요)
+- 배포는 새 Pages deployment를 생성하므로 워커를 포함해야 함. 운영 canonical의 **정확한 워커 번들은 CF API로 다운로드 불가**하고 로컬 백업(.local)도 정리됨.
+- `functions/`·`cloudflare/` 소스는 f1d7100(=52883c4a 소스) 이후 **무변경**(최근 변경 918661c가 f1d7100에 포함, 학생 커밋은 미접촉). 따라서 `wrangler pages functions build functions --outdir`로 **동일 소스에서 워커 재컴파일** → 동작 보존(바이트 동일 아님, 소스 동일).
+- 재컴파일 워커 24라우트(kakao/essay/math/payments/owner-review/ga4/middleware) 정상. 배포 후 `/api/essay/*` **401(인증 요구, 404/500 아님)** → 워커 라우팅 정상 동작 확인.
+
+### 17.4 배포 전 검증 (전 항목 통과)
+운영소스(f1d7100)↔브랜치(23bad0e)=학생 기능만 추가 · 선별 변경 16 · 범위 밖 0 · 관리자 보존 · Worker/Functions 보존(소스 동일 재컴파일) · TS 0 · ESLint 0 · 프로덕션 빌드 성공 · 테스트 기준선 유지(학교 8/8, 기존 8 failed 불변) · 롤백 52883c4a 확보.
+
+### 17.5 배포 후 검증 (익명/빌드 레벨)
+- canonical `dfa50be9` 승격 ✅. `lab.legendstudy.com/school/` 200 ✅. `/`·`/admin/`·`/pricing/` 200(기존 보존) ✅.
+- `/school` HTML 제목 "우리 학교 공부 경쟁" 노출, 로그인 가드는 클라이언트 렌더.
+- 운영 빌드 JS 청크에 `student_school_ranking` 호출 코드 포함 ✅.
+- Functions 익명 호출 401(동작) ✅.
+
+### 17.6 실제 로그인 학생 계정 검증 — NOT TESTED
+실제 로그인 세션 없음. 다음 전부 NOT TESTED: 학생 RPC 호출 성공, 본인 학교 자동 인식, 학교명 표시, 가입 학생 수, 최근 7일 기록자, 소규모 잠금 메시지(N명 더), 친구 초대/공유 링크, 학교별 랭킹, 학교 미등록 처리. → Owner 또는 실학생 계정 확인 필요.
+
+### 17.7 회귀·롤백
+- 신규 회귀 0(기존 admin/materials 8 failed = Phase 2 이전 기준선). RPC·기존 페이지·Functions 무변경.
+- 롤백: canonical을 `52883c4a`로 복귀(즉시). 필요 시 CF Pages rollback.
+
+### 17.8 Phase 3 연계 (미구현 유지)
+이번 배포는 친구 초대 UX(공유 버튼)까지. 초대 토큰/가입 전환·학교 확인·첫 공부시간·7일 유지율 추적은 **미구현**. 초기 추천인 보상 미도입. Phase 3 별도 개발·승인.
