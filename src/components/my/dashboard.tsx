@@ -6,6 +6,7 @@ import {ReturnNavigation} from './return-navigation';
 import {LabCards} from './lab-cards';
 import {ApplicationsPanel, type ApplicationSeed} from './applications';
 import {StudySummaryPanel} from './study-summary';
+import {SchoolStudyEntry} from './school-entry';
 import { ProfileHeaderView } from './profile-header';
 import { EssayGrowthCard } from './essay-growth';
 import { useState, useEffect, useRef, type FormEvent, type ReactNode } from 'react';
@@ -28,6 +29,7 @@ export function MyDashboard(){
    <section className="my-section" aria-labelledby="my-labs-title"><h2 id="my-labs-title">LAB</h2><LabCards /></section>
    <section className="my-section" aria-labelledby="my-growth-title"><h2 id="my-growth-title">나의 성장</h2><EssayGrowthCard compact /></section>
    <section className="my-section" aria-labelledby="my-study-title"><h2 id="my-study-title">나의 학습 시간</h2><StudySummaryPanel /></section>
+   <SchoolStudyEntry/>
    <section className="my-section my-section--last" aria-labelledby="my-account-title"><h2 id="my-account-title">계정 및 지원</h2>
     <div className="my-links"><Link className="button button--outline button--small" href="/account/settings/">계정 설정</Link><Link className="button button--outline button--small" href="/support/">고객센터</Link></div>
    </section>

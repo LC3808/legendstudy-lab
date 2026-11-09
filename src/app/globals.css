@@ -1831,3 +1831,4 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 @media (max-width:520px){.school-card__stats {grid-template-columns:1fr;}}
 .school-card__locked {border:1px dashed var(--line-strong);border-radius:12px;background:var(--surface-muted);padding:1rem;display:flex;flex-direction:column;gap:.4rem;}
 .school-card__locked-title {font-weight:700;margin:0;}
+.my-school-entry__desc {margin:0 0 .85rem;line-height:1.6;color:var(--muted);}
