@@ -45,3 +45,23 @@ Preview(`*.pages.dev`)는 `auth-config.ts`의 보안 가드레일로 운영 Supa
 
 Owner가 `https://lab.legendstudy.com/admin/`·`/admin/members/`에 운영자 계정으로 로그인해
 KPI 6종·경고 스트립·회원 상태 칩·검색/필터·기존 상세(Student360·Credit·학습 기록)를 직접 확인.
+
+## 추가 배포 — 최근 가입 회원 목록 (2026-11-09)
+
+대시보드 "회원과 학생 구성" 하단에 **최근 가입 회원 목록(5명씩 페이지네이션)**을 추가.
+회원 탭과 동일 열(이메일·계정상태 칩·학교·학년·현재상태·희망전공·닉네임·가입일·상세),
+기존 `listMembers` RPC 재사용(실데이터, 신규 쿼리/계약 없음).
+
+| 항목 | 값 |
+| --- | --- |
+| UI 커밋 | `8101db7` |
+| 새 운영 배포 ID | **`dcbcca82`** (`dcbcca82-f2c3-4bc4-8583-8704e2e95f0a`) |
+| 직전 canonical (원복 대상) | `64646bb7` |
+
+- 안전: `b7c07d7`(직전 운영 소스) ∈ `8101db7` 이력(덮어쓰기 없음), `functions/`·`public/` 0변경,
+  dry-run off-scope **0건**, Worker/Functions/라우팅 보존.
+- 검증: TypeScript·ESLint·빌드 ✅. 관리자 테스트 7 failed/202 passed = 기존 동일, **신규 회귀 0**
+  (초기 오류-상태 "다시 시도" 버튼 중복 1건은 인라인 오류 문구로 교체해 해소).
+- 배포 후: 라이브 canonical `dcbcca82`(source 8101db7), `/admin/`·비관리자 페이지 200,
+  신규 CSS(`dash-recent__table`·`dash-recent__pager`) 운영 반영 확인.
+- 원복: 직전 canonical `64646bb7`로 재승격.
