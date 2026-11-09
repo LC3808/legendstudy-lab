@@ -161,3 +161,50 @@
 
 ### Phase 3 연계(미착수)
 - 초대 토큰(불투명)·GA4 이벤트·어트리뷰션 — 승인 후 테이블/이벤트 신설. 초대 버튼은 주입 지점만 마련.
+
+## 14. Phase 2 학생용 RPC 격리 검증 (2026-11-09, 읽기 전용 · 운영 변경 없음)
+
+후보 `student_school_card()` / `student_school_ranking()`를 운영 DB(`stlhijzpjfgwwdgunlsd`)에서 **읽기 전용**으로 검증. RPC 생성·권한·배포 없음. 검증 중 발견한 공개 소표본 노출 결함을 후보 SQL·계약·UI에 반영(미적용).
+
+### 14.1 집계 정합성 (관리자 기준과 동일)
+- 30일 창: 전체 기록자 22 = 재검 22, 총시간 99,936,369ms = 재검 99,936,369ms → **관리자 검증 수치와 완전 일치**. 학교합+미등록=전체 ✅ (중복 제거/range_agg 동일).
+- KST 주간 경계: `date_trunc('week', now() AT TIME ZONE 'Asia/Seoul')` = 2026-11-08 15:00Z = **2026-11-09 00:00 KST(월)** ✅.
+- 이번 주 창: 총시간 재검 일치, 미등록 0 ✅.
+- 학교 미등록(office/school null) 사용자는 집계에서 분리(미등록 294명·주간 활동 0) ✅.
+- 평균 지표(active≥5) 현재 자격 학교 0 → **빈 결과(가짜 없음)** 정상.
+
+### 14.2 접근 권한 · 보안
+- MCP 역할 = `postgres`, `auth.uid()` null, `admin_operator()` = false.
+- 관리자 RPC는 postgres 역할로도 **차단(42501)** → 게이트 견고. 학생 RPC도 `auth.uid() is null → insufficient_privilege`로 비로그인/무JWT 차단(동일 경로).
+- 카드 학교 범위는 `auth.uid()` 프로필 기준 → **임의 학교코드 조회 불가**.
+- 반환은 학교 단위 집계만(office/school 공개식별자 + 집계 수치), 개인 식별/행 데이터 없음.
+- `SECURITY DEFINER` + `search_path=''` + `statement_timeout 8s` + anon/public EXECUTE 회수 설계 확인(후보, 미적용).
+
+### 14.3 소표본 공개 정책 — **결함 발견 및 수정**
+- **발견**: 현재 활동 학교 12곳이 **전부 기록자 1명**(2~4명 0곳, 5명+ 0곳). 후보 원안(`total` active≥1)은 학교 총시간 = 개인 공부시간을 그대로 공개(최상위 77,903,899ms ≈ 21.6h = 1인). API payload는 지표와 무관하게 모든 학교 ms를 반환 → `registered` 탭에서도 1인 학교 ms 유출.
+- **정책 구분(관리자≠학생 공개)**: 관리자 통계는 소규모 누락 금지(전수). 학생 **공개** 통계는 k-익명성 적용.
+- **수정(후보 SQL)**: `p_min_recorders`(기본 3, 하한 2) 도입.
+  - `total` 순위: 기록자 ≥ p_min_recorders 학교만 공개.
+  - 어떤 지표에서든 기록자 < p_min_recorders 학교의 `ms`/`avg_ms`는 **null로 마스킹**(`pub_ms`/`pub_avg`). 집계용 원본은 내부 유지.
+  - 카드 전국 `rank`도 기록자 ≥ p_min_recorders 모집단에서만 부여(미달 시 null="집계 준비 중").
+  - `average`는 기존 active≥5 유지, `registered`는 Owner 승인대로 registered≥1 유지(수치=가입 수만).
+- **검증(수정 후, 읽기전용)**: total 자격 0·avg 자격 0(빈 결과), registered 120곳(수만), 활동 1인 학교 12곳 ms 전부 null, 1~2인 학교 ms 전부 숨김(`all_small_hidden=true`) → **개인 시간 미유출 확인**.
+- **Owner 결정 필요**: 공개 총시간 기준 기록자 하한 값(제안 3, 평균과 일치시키려면 5). `registered` 하한(현 1, 선택적 2) 유지/변경.
+- **잔여 고려**: 카드의 `week_ms`는 본인 학교 집계라 항상 표시(본인 소속). 학교에 기록자가 "본인 아닌 1명"뿐일 때 그 1명의 시간이 소속원에게 보일 여지 → 낮은 위험(학교 총시간 기능 취지), 필요 시 카드에도 동일 하한 적용 옵션.
+
+### 14.4 성능 (읽기 전용 EXPLAIN ANALYZE, 30일 랭킹)
+- 실행 8.8ms / 계획 2.7ms(현 규모). 지배 비용 = `profiles` **Seq Scan + `account_private.allowed(id)` 필터**(2,614/2,627 buffers). `study_sessions`는 소형 seq scan, range_agg/정렬 미미.
+- 확장 리스크: (1) `allowed()` per-row 비용(프로필 증가 시 선형) — 후보는 `eligible as materialized`로 1회 평가(관리자와 공유), (2) 전역 시간범위 `study_sessions` 스캔(ended_at/started_at 단독 인덱스 없음, 관리자와 동일). 둘 다 **기존 관리자 RPC와 동일 특성**.
+- 권고: 학생 공개 엔드포인트는 호출 빈도가 높을 수 있으므로 **사전 집계/캐싱**(주기 갱신 MV 또는 학교 주간 합계 캐시 테이블) 트래픽 증가 전 도입 검토. 현 지연은 출시 규모에서 충분.
+
+### 14.5 프런트 계약 검증
+- `SchoolParticipationCard`↔`student_school_card`: 필드 일치, rank null→"집계 준비 중", 임계값(1~4/5~19/20+) 정상.
+- `SchoolRankingPanel`↔`student_school_ranking`: 기간/지표/정렬/우리학교 하이라이트/주변, ms null→"비공개", 빈/미존재/오류/미등록/소표본 상태 모두 가짜값 없음. 클라이언트는 period/metric/min_users 전달, `p_min_recorders` 서버 기본 3.
+- `SchoolInviteButton`/`SchoolName`: RPC 비의존(공유·공개 프록시).
+- 신규 파서 테스트 7/7, TS 0, ESLint 0.
+
+### 14.6 운영 적용 시 예상 영향 / Owner 승인 필요
+1. 신규 함수 2개 생성(기존 테이블·데이터·RPC·권한 **무변경**), authenticated EXECUTE 부여·anon/public 회수. 읽기 전용 집계(쓰기 없음).
+2. 적용 전: `test.sql` 정합성 재확인, 운영 규모 statement time, `get_advisors` 신규 권고 0 확인.
+3. **승인 필요**: (a) 학생 RPC 운영 `apply_migration`, (b) 공개 소표본 하한값 확정(3 vs 5), (c) 학생 WEB 운영 배포(선별), (d) 캐싱/사전집계 도입 여부, (e) Flutter APP 착수(WEB 검증 후).
+- 운영 DB 변경·배포는 수행하지 않음. 검증은 전부 읽기 전용(EXPLAIN 포함).

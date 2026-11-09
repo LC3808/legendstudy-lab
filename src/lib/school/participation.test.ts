@@ -33,6 +33,16 @@ describe('parseSchoolRanking', () => {
     expect(r.metric).toBe('total'); expect(r.top).toHaveLength(2);
     expect(r.mySchool?.rank).toBe(2); expect(r.schoolCount).toBe(3);
   });
+  it('accepts suppressed ms/avg_ms (below public min-recorder threshold)', () => {
+    const r = parseSchoolRanking({
+      version:'student-school-ranking-v1', metric:'registered', period:'week', min_users:5, min_recorders:3,
+      school_count:1, as_of:'t', my_school:null, around:[],
+      top:[{office_code:'B10', school_code:'s', registered_users:2, active_users:1, ms:null, avg_ms:null, rank:1}],
+    });
+    expect(r.top[0].ms).toBeNull();
+    expect(r.top[0].avgMs).toBeNull();
+    expect(r.top[0].registeredUsers).toBe(2);
+  });
   it('accepts a null my_school', () => {
     const r = parseSchoolRanking({version:'student-school-ranking-v1', metric:'average', period:'month', min_users:5, school_count:0, as_of:'t', top:[], around:[], my_school:null});
     expect(r.mySchool).toBeNull();

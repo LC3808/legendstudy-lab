@@ -79,7 +79,7 @@ export function SchoolParticipationCard({card,loading}:{card:SchoolCard|null;loa
 }
 
 const METRICS:{key:SchoolRankMetric;label:string;note:string}[]=[
-  {key:'total',label:'총 공부시간',note:'공부 기록이 있는 학교'},
+  {key:'total',label:'총 공부시간',note:'기록자 3명 이상 학교 (개인 공부시간 보호)'},
   {key:'average',label:'1인당 평균',note:'기록자 5명 이상 학교'},
   {key:'registered',label:'가입 학생 수',note:'가입 학생이 있는 학교'},
 ];
@@ -90,8 +90,8 @@ const PERIODS:{key:SchoolRankPeriod;label:string}[]=[
 ];
 
 function metricValue(row:SchoolRankRow,metric:SchoolRankMetric):string{
-  if(metric==='total')return formatStudyTime(row.ms);
-  if(metric==='average')return `${formatStudyTime(row.avgMs)} / 인`;
+  if(metric==='total')return row.ms==null?'비공개':formatStudyTime(row.ms);
+  if(metric==='average')return row.avgMs==null?'비공개':`${formatStudyTime(row.avgMs)} / 인`;
   return `${row.registeredUsers.toLocaleString('ko-KR')}명`;
 }
 

@@ -21,7 +21,9 @@ export type SchoolRankMetric = 'total' | 'average' | 'registered';
 export type SchoolRankPeriod = 'week' | 'last_week' | 'month';
 export type SchoolRankRow = {
   officeCode:string; schoolCode:string;
-  registeredUsers:number; activeUsers:number; ms:number; avgMs:number; rank:number;
+  registeredUsers:number; activeUsers:number;
+  // ms/avgMs are null for schools below the public min-recorder threshold (k-anonymity).
+  ms:number|null; avgMs:number|null; rank:number;
 };
 export type SchoolRanking = {
   metric:SchoolRankMetric; period:SchoolRankPeriod; minUsers:number; schoolCount:number;
@@ -35,7 +37,7 @@ function str(v:unknown):string{ if(typeof v!=='string') throw new Error('MALFORM
 
 function parseRow(v:unknown):SchoolRankRow{
   const r=obj(v);
-  return {officeCode:str(r.office_code), schoolCode:str(r.school_code), registeredUsers:num(r.registered_users), activeUsers:num(r.active_users), ms:num(r.ms), avgMs:num(r.avg_ms), rank:num(r.rank)};
+  return {officeCode:str(r.office_code), schoolCode:str(r.school_code), registeredUsers:num(r.registered_users), activeUsers:num(r.active_users), ms:nnum(r.ms), avgMs:nnum(r.avg_ms), rank:num(r.rank)};
 }
 
 export function parseSchoolCard(raw:unknown):SchoolCard{
