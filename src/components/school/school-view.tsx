@@ -26,16 +26,16 @@ function useSchoolCard():Load<SchoolCard>{
   return {...state,reload:useCallback(()=>setVersion(v=>v+1),[])};
 }
 
-function useSchoolRanking(metric:SchoolRankMetric,period:SchoolRankPeriod,minUsers:number):Load<SchoolRanking>{
+function useSchoolRanking(metric:SchoolRankMetric,period:SchoolRankPeriod):Load<SchoolRanking>{
   const {client,user,status}=useAuth();
   const [version,setVersion]=useState(0);
   const [state,setState]=useState<{data:SchoolRanking|null;loading:boolean}>({data:null,loading:true});
   useEffect(()=>{
     if(status!=='authenticated'||!client||!user)return;
     let active=true;
-    void readSchoolRanking(client,metric,period,minUsers).then(d=>{if(active)setState({data:d,loading:false});});
+    void readSchoolRanking(client,metric,period).then(d=>{if(active)setState({data:d,loading:false});});
     return()=>{active=false;};
-  },[client,user,status,metric,period,minUsers,version]);
+  },[client,user,status,metric,period,version]);
   return {...state,reload:useCallback(()=>setVersion(v=>v+1),[])};
 }
 
@@ -113,7 +113,7 @@ function RankRow({row,metric,mine}:{row:SchoolRankRow;metric:SchoolRankMetric;mi
 export function SchoolRankingPanel(){
   const [metric,setMetric]=useState<SchoolRankMetric>('total');
   const [period,setPeriod]=useState<SchoolRankPeriod>('week');
-  const {data,loading}=useSchoolRanking(metric,period,5);
+  const {data,loading}=useSchoolRanking(metric,period);
   const activeMetric=METRICS.find(m=>m.key===metric)!;
   const mySchoolInTop=data?.mySchool&&data.top.some(r=>r.officeCode===data.mySchool!.officeCode&&r.schoolCode===data.mySchool!.schoolCode);
   return <section className="school-rank" id="school-ranking" aria-labelledby="school-rank-title">

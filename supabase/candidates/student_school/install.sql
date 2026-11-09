@@ -102,17 +102,14 @@ end $function$;
 -- ---------------------------------------------------------------------------
 -- 학교별 TOP 랭킹 — 기간/지표별 학교 리더보드(학교 단위 집계만).
 -- p_period: 'week' | 'last_week' | 'month'
--- p_metric: 'total'(총시간, active>=p_min_recorders) | 'average'(1인당 평균, active>=p_min_users) | 'registered'(가입 수, registered>=1)
--- p_min_users: 평균 지표 최소 표본(기본 5).
--- p_min_recorders: 공개 소표본 가드. 기록자 N명 미만 학교는 공개 총시간 순위에서 제외하고,
---   어떤 지표에서든 반환 ms/avg_ms를 null로 가린다(개인 공부시간 노출 방지). 기본 3.
+-- p_metric: 'total'(총시간, 기록자>=3) | 'average'(1인당 평균, 기록자>=5) | 'registered'(가입 수, registered>=1)
+-- 공개 기준은 서버 상수로 고정(v_min_recorders=3, v_min_users=5). 클라이언트가 기준을 낮출 수
+-- 있는 입력 파라미터는 두지 않는다(우회 방지). 기준 미달 학교의 ms/avg_ms는 반환 단계에서 null.
 -- 반환: top[10], my_school(or null), around(내 학교 주변), school_count.
 -- ---------------------------------------------------------------------------
 create or replace function public.student_school_ranking(
   p_period text default 'week',
-  p_metric text default 'total',
-  p_min_users int default 5,
-  p_min_recorders int default 3
+  p_metric text default 'total'
 )
 returns jsonb
 language plpgsql
@@ -125,13 +122,13 @@ declare
   v_office text; v_school text;
   v_from timestamptz; v_to timestamptz := now();
   v_week_start timestamptz;
+  v_min_recorders constant int := 3;  -- 서버 강제: 총시간 공개 최소 기록자
+  v_min_users     constant int := 5;  -- 서버 강제: 평균 공개 최소 기록자
   result jsonb;
 begin
   if v_uid is null or not account_private.allowed(v_uid) then raise insufficient_privilege; end if;
   if p_period not in ('week','last_week','month') then raise sqlstate 'PT422' using message='INVALID_PERIOD'; end if;
   if p_metric not in ('total','average','registered') then raise sqlstate 'PT422' using message='INVALID_METRIC'; end if;
-  if p_min_users is null or p_min_users < 1 then p_min_users := 1; end if;
-  if p_min_recorders is null or p_min_recorders < 2 then p_min_recorders := 2; end if;  -- 공개 하한: 1명(개인 노출) 불가
 
   v_week_start := (date_trunc('week', (v_to at time zone 'Asia/Seoul')) at time zone 'Asia/Seoul');
   if p_period = 'week' then v_from := v_week_start;
@@ -166,9 +163,9 @@ begin
            coalesce(r.registered_users,0) registered_users,
            coalesce(a.active_users,0) active_users, coalesce(a.ms,0) ms,
            case when coalesce(a.active_users,0)>0 then a.ms/a.active_users else 0 end avg_ms,
-           -- 공개 가드(API 반환 단계 마스킹): 총시간은 기록자 < p_min_recorders(3), 평균은 기록자 < p_min_users(5)면 null.
-           case when coalesce(a.active_users,0)>=p_min_recorders then a.ms else null end pub_ms,
-           case when coalesce(a.active_users,0)>=p_min_users then (a.ms/a.active_users) else null end pub_avg
+           -- 공개 가드(API 반환 단계 마스킹): 총시간은 기록자 < v_min_recorders(3), 평균은 기록자 < v_min_users(5)면 null.
+           case when coalesce(a.active_users,0)>=v_min_recorders then a.ms else null end pub_ms,
+           case when coalesce(a.active_users,0)>=v_min_users then (a.ms/a.active_users) else null end pub_avg
     from reg r full join act a using (office, school)
   ),
   -- 지표별 자격 필터 + 순위. total은 기록자 하한 이상만 공개.
@@ -178,14 +175,14 @@ begin
         when 'average' then avg_ms
         else registered_users::bigint end sort_key
     from by_school
-    where (p_metric='total' and active_users>=p_min_recorders)
-       or (p_metric='average' and active_users>=p_min_users)
+    where (p_metric='total' and active_users>=v_min_recorders)
+       or (p_metric='average' and active_users>=v_min_users)
        or (p_metric='registered' and registered_users>=1)
   ),
   ranked as (select *, rank() over (order by sort_key desc, office, school) rnk from qualified)
   select jsonb_build_object(
     'version','student-school-ranking-v1',
-    'metric', p_metric, 'period', p_period, 'min_users', p_min_users, 'min_recorders', p_min_recorders,
+    'metric', p_metric, 'period', p_period, 'min_users', v_min_users, 'min_recorders', v_min_recorders,
     'as_of', statement_timestamp(),
     'school_count', (select count(*) from qualified),
     'top', coalesce((select jsonb_agg(row_json order by rnk) from (
@@ -202,6 +199,6 @@ begin
 end $function$;
 
 revoke all on function public.student_school_card() from public, anon;
-revoke all on function public.student_school_ranking(text,text,int,int) from public, anon;
+revoke all on function public.student_school_ranking(text,text) from public, anon;
 grant execute on function public.student_school_card() to authenticated;
-grant execute on function public.student_school_ranking(text,text,int,int) to authenticated;
+grant execute on function public.student_school_ranking(text,text) to authenticated;

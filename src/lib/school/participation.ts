@@ -79,7 +79,9 @@ export async function readSchoolCard(client:SupabaseClient):Promise<SchoolCard|n
   try{ const {data,error}=await client.rpc('student_school_card'); if(error) return null; return parseSchoolCard(data); }
   catch{ return null; }
 }
-export async function readSchoolRanking(client:SupabaseClient, metric:SchoolRankMetric, period:SchoolRankPeriod, minUsers=5):Promise<SchoolRanking|null>{
-  try{ const {data,error}=await client.rpc('student_school_ranking',{p_period:period,p_metric:metric,p_min_users:minUsers}); if(error) return null; return parseSchoolRanking(data); }
+// Public thresholds (3 recorders / 5 for average) are enforced server-side and are
+// NOT client parameters, so the call cannot lower them.
+export async function readSchoolRanking(client:SupabaseClient, metric:SchoolRankMetric, period:SchoolRankPeriod):Promise<SchoolRanking|null>{
+  try{ const {data,error}=await client.rpc('student_school_ranking',{p_period:period,p_metric:metric}); if(error) return null; return parseSchoolRanking(data); }
   catch{ return null; }
 }

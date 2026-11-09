@@ -251,3 +251,41 @@ Owner가 학생용 공개 기준을 확정. 후보 SQL·데이터 계약·WEB UI
 - 후보 SQL `supabase/candidates/student_school/{install,test}.sql` 최종본. 적용 전 `test.sql` 정합성·statement time·`get_advisors` 신규 권고 0 재확인.
 - 승인 대기: (a) 학생 RPC `apply_migration`, (b) 학생 WEB 선별 배포. 이후 Flutter APP.
 - 본 단계까지 운영 DB 변경·배포 없음(검증 전부 읽기 전용). Codex 없이 Claude Code 단독 수행.
+
+## 16. 학생용 RPC 운영 적용 (2026-11-09, Owner 승인)
+
+Owner 승인으로 학생용 RPC 2종을 운영 DB(`stlhijzpjfgwwdgunlsd`)에 적용. **기존 테이블·관리자 RPC·인증 정책 무변경, 학생 WEB 배포·APP·초대 토큰 테이블은 승인 제외(미실행).**
+
+### 16.1 적용된 migration
+- `20261109123602_student_school_v1` — `student_school_card()`, `student_school_ranking(p_period,p_metric)` 신설(쓰기 없음, 읽기 전용 집계).
+
+### 16.2 공개 기준 서버 강제 (우회 불가)
+- 기준을 **서버 상수로 고정**: `v_min_recorders=3`(총시간), `v_min_users=5`(평균). 클라이언트가 낮출 수 있는 `p_min_users`/`p_min_recorders` **입력 파라미터 제거**.
+- 검증: `student_school_ranking('week','total',1,1)` 호출 → **42883 (함수 없음)** → 파라미터로 기준 우회 불가 확인.
+- 총시간<3·평균<5 학교의 `ms`/`avg_ms`는 **API 반환 단계에서 null**(모든 metric 공통 `pub_ms`/`pub_avg` 마스킹). 정렬 키는 공개 지표만 사용 → 간접 노출 없음. 비공개 학교는 total 랭킹 자체에서 제외, 카드 rank null.
+
+### 16.3 함수 정의·권한 (적용 후 확인)
+- 둘 다 `SECURITY DEFINER`, `volatile=stable`, `search_path=''`, `statement_timeout=8s`.
+- ACL: `authenticated=X`, `service_role=X`, `postgres=X` — **anon/public EXECUTE 없음(회수됨)** ✅.
+- `student_school_card()` 인자 없음, `student_school_ranking(p_period text, p_metric text)` 2개 — 최소 기준 파라미터 미노출 ✅.
+
+### 16.4 보안·접근 검증 (적용 후)
+- 비로그인/무JWT(`auth.uid()` null) 호출: card·ranking **모두 42501 차단** ✅.
+- 유효하지 않은 계정(`account_private.allowed=false`): 동일 게이트 경로로 42501 (로그인 계정별 실호출은 NOT TESTED).
+- 신규 보안 권고: 적용 전후 동일(5건, 카테고리·건수 불변). 학생 RPC는 기존 `authenticated_security_definer_function_executable` WARN에 포함 — 관리자 RPC와 동일 설계 패턴(함수 내부 auth 게이트), **신규 권고 유형 없음** ✅.
+
+### 16.5 실제 데이터 정합성 (적용 후, 읽기 전용)
+- 30일: schools+미등록=전체 `ms_consistent=true`, 22명 / 99,972,863ms(관리자와 동일 기준, 창 경과로 §14 대비 소폭 증가) ✅.
+- 현재 기록자 3명 이상 학교 0곳 → 공개 총시간 랭킹 빈 상태(정책대로, 개인 노출 0). 평균 랭킹도 빈 상태(기록자 5+ 0곳).
+
+### 16.6 NOT TESTED (실제 로그인 세션 필요)
+- 일반 로그인 사용자 성공 호출 반환값(카드 수치·랭킹 행), 학교 미등록 사용자 `has_school:false` 실호출, 특정 유효하지 않은 계정 실차단, 기간(week/last_week/month)·metric별 실제 반환.
+- 집계 로직 자체는 §14·§15 읽기 전용 인라인 등가 검증 완료(관리자 일치, KST 경계, 밴드 매트릭스). 실사용자 경로만 미검.
+
+### 16.7 신규 회귀
+- 앱 테스트(학교 파서 8/8), TS 0, ESLint 0. 기존 admin/materials 8 failed는 Phase 2 이전부터의 기준선(신규 0). RPC 적용은 기존 객체 무변경.
+
+### 16.8 다음 승인 필요 사항
+1. **학생용 WEB 운영 배포(선별 overlay)** — 별도 Owner 승인(이번 승인 제외). 배포 전까지 운영 WEB에는 `/school` 미노출.
+2. 로그인 세션 기반 적용 후 최종 검증(관리자 operator 또는 학생 계정).
+3. Flutter APP 네이티브, 친구 초대 토큰 테이블/이벤트(Phase 3) — 각각 별도 승인.
