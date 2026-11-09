@@ -65,3 +65,17 @@ KPI 6종·경고 스트립·회원 상태 칩·검색/필터·기존 상세(Stud
 - 배포 후: 라이브 canonical `dcbcca82`(source 8101db7), `/admin/`·비관리자 페이지 200,
   신규 CSS(`dash-recent__table`·`dash-recent__pager`) 운영 반영 확인.
 - 원복: 직전 canonical `64646bb7`로 재승격.
+
+### 후속 수정 — 학교명 표시 (2026-11-09)
+
+최근 가입 회원 표의 학교 열이 미해결 학교에 "학교명 확인 필요"로 표시되던 것을,
+회원 탭과 동일하게 `AdminSchoolName`(NEIS 조회)로 resolve하도록 수정.
+
+| 항목 | 값 |
+| --- | --- |
+| 커밋 | `49716bd` |
+| 새 운영 배포 ID | **`10b4be69`** |
+| 직전 canonical (원복 대상) | `dcbcca82` |
+
+dry-run off-scope 0, Functions/라우팅 보존, 신규 회귀 0. 배포 후 canonical `10b4be69`
+(source 49716bd), `/admin/`·비관리자 페이지 200.
