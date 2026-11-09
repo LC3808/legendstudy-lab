@@ -10,6 +10,7 @@ import {formatDateTime,accountStateLabel} from '@/lib/admin/format';
 import {useAdminQuery,useSupportRefresh,AdminErrorPanel} from './admin-surface';
 import type {AdminSupportMetrics} from '@/lib/admin/contract';
 import {defaultMemberFilters,directorySchoolLabel,type MemberDirectory} from '@/lib/admin/members';
+import {AdminSchoolName} from './admin-school-name';
 import './member-dashboard.css';
 import {SchoolDistribution} from './school-distribution';
 import {DashboardUsageRankings} from './dashboard-usage-rankings';
@@ -64,7 +65,7 @@ function RecentSignups(){
       {state.data.items.map(m=>{const s=accountStateLabel(m.accountState);return <tr key={m.accountId}>
        <td className="admin-cell-email">{m.email??'이메일 미등록'}</td>
        <td><span className={`admin-chip admin-chip--${s.tone}`}>{s.label}</span></td>
-       <td>{directorySchoolLabel(m)||'—'}</td>
+       <td>{m.schoolState==='unresolved'&&m.schoolOfficeCode&&m.schoolCode?<AdminSchoolName office={m.schoolOfficeCode} school={m.schoolCode}/>:directorySchoolLabel(m)||'—'}</td>
        <td>{m.grade?`${m.grade}학년`:'—'}</td>
        <td>{m.academicStatus?recentStatusLabels[m.academicStatus]:'—'}</td>
        <td>{m.major??'—'}</td>
