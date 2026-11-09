@@ -6,9 +6,10 @@ import {analyticsWindow} from '@/lib/admin/analytics';
 import {AdminPeriodFilter} from './admin-period-filter';
 import type {AdminPeriod} from '@/lib/admin/period';
 import {formatStudyTime} from '@/lib/admin/study-time';
-import {formatDateTime} from '@/lib/admin/format';
+import {formatDateTime,accountStateLabel} from '@/lib/admin/format';
 import {useAdminQuery,useSupportRefresh,AdminErrorPanel} from './admin-surface';
 import type {AdminSupportMetrics} from '@/lib/admin/contract';
+import {defaultMemberFilters,directorySchoolLabel,type MemberDirectory} from '@/lib/admin/members';
 import './member-dashboard.css';
 import {SchoolDistribution} from './school-distribution';
 import {DashboardUsageRankings} from './dashboard-usage-rankings';
@@ -36,6 +37,51 @@ function KpiTile({label,value,note,tone}:{label:string;value:React.ReactNode;not
  </div>;
 }
 const kpiNum=(n:number|null|undefined)=>n===null||n===undefined?<span className="focus-kpi__wait">집계 중</span>:n.toLocaleString('ko-KR');
+
+const recentStatusLabels:Record<string,string>={student:'재학생',retaker:'N수·검정고시 등',other:'기타'};
+const RECENT_PAGE_SIZE=5;
+/**
+ * Recent signups shown under the member composition section. Reuses the same
+ * `listMembers` directory RPC as the 회원 tab (newest-first, 5 per page), so it
+ * reads real data only and adds no new query or contract.
+ */
+function RecentSignups(){
+ const [offset,setOffset]=useState(0);
+ const {state}=useAdminQuery<MemberDirectory>(
+  c=>c.listMembers({...defaultMemberFilters,sort:'newest'},{limit:RECENT_PAGE_SIZE,offset}),
+  `dashboard-recent-signups:${offset}`,
+ );
+ const columns=['이메일','계정 상태','학교','학년','현재 상태','희망 전공','닉네임','가입일','상세'];
+ return <div className="dash-recent">
+  <div className="dash-recent__head"><h3>최근 가입 회원</h3>
+   {state.status==='ready'?<span className="focus-note">전체 {state.data.total.toLocaleString('ko-KR')}명 · 최근 가입순 · {RECENT_PAGE_SIZE}명씩</span>:null}</div>
+  {state.status==='loading'?<p className="focus-note" role="status">최근 가입 회원을 불러오는 중…</p>
+   :state.status==='error'?<p className="focus-note" role="alert">최근 가입 회원 조회 실패 · 새로고침해 주세요.</p>
+   :state.data.items.length===0?<p className="focus-note">표시할 회원이 없습니다.</p>
+   :<>
+    <div className="admin-table-scroll" tabIndex={0} role="region" aria-label="최근 가입 회원 목록">
+     <table className="dash-recent__table"><thead><tr>{columns.map(h=><th scope="col" key={h}>{h}</th>)}</tr></thead><tbody>
+      {state.data.items.map(m=>{const s=accountStateLabel(m.accountState);return <tr key={m.accountId}>
+       <td className="admin-cell-email">{m.email??'이메일 미등록'}</td>
+       <td><span className={`admin-chip admin-chip--${s.tone}`}>{s.label}</span></td>
+       <td>{directorySchoolLabel(m)||'—'}</td>
+       <td>{m.grade?`${m.grade}학년`:'—'}</td>
+       <td>{m.academicStatus?recentStatusLabels[m.academicStatus]:'—'}</td>
+       <td>{m.major??'—'}</td>
+       <td>{m.displayName??'—'}</td>
+       <td>{formatDateTime(m.createdAt)}</td>
+       <td><Link className="button button--outline button--small" href="/admin/members/">상세</Link></td>
+      </tr>;})}
+     </tbody></table>
+    </div>
+    <nav className="dash-recent__pager" aria-label="최근 가입 회원 페이지">
+     <button type="button" disabled={offset===0} onClick={()=>setOffset(Math.max(0,offset-RECENT_PAGE_SIZE))}>이전</button>
+     <span>{Math.floor(offset/RECENT_PAGE_SIZE)+1} / {Math.max(1,Math.ceil(state.data.filteredTotal/RECENT_PAGE_SIZE))} 페이지</span>
+     <button type="button" disabled={offset+RECENT_PAGE_SIZE>=state.data.filteredTotal} onClick={()=>setOffset(offset+RECENT_PAGE_SIZE)}>다음</button>
+    </nav>
+   </>}
+ </div>;
+}
 
 export function AdminDashboardView(){
  const [memberPeriod,setMemberPeriod]=useState<AdminPeriod>('all'),[mf,setMf]=useState(''),[mt,setMt]=useState('');
@@ -65,6 +111,7 @@ export function AdminDashboardView(){
  </div>:null}
  <FocusSection title="회원과 학생 구성" href="/admin/members/"><AdminPeriodFilter period={memberPeriod} from={mf} to={mt} onChange={(p,f,t)=>{setMemberPeriod(p);setMf(f);setMt(t);}}/><p className="focus-note">{memberPeriod==='all'?'전체 가입 회원의 현재 프로필 · 활동 회원은 최근 30일':'선택 기간 가입 회원의 현재 프로필 · 활동 회원은 이 가입자 중 선택 기간 공부 기록 보유자'} · 한국 날짜 기준</p>
  {!membersRange?<p role="alert">400일 이내의 올바른 기간을 선택하세요.</p>:state(members)}{membersRange&&members.data&&<><dl className="focus-metrics"><CompactMetric label={memberPeriod==='all'?'전체 가입 계정':'기간 내 가입 계정'} value={members.data.accounts}/><CompactMetric label="공부 기록 회원" value={members.data.active}/><CompactMetric label="프로필 보유" value={members.data.profiles} note={`미작성 ${members.data.accounts-members.data.profiles}명`}/><CompactMetric label="학교 입력 회원" value={members.data.school_members} note={`프로필 중 미입력 ${members.data.profiles-members.data.school_members}명`}/></dl><div className="focus-split"><div><h3>학년 분포</h3><Bars rows={[...members.data.grades].sort((a,b)=>["고1","고2","고3","N수·검정고시 등","미입력"].indexOf(a.label)-["고1","고2","고3","N수·검정고시 등","미입력"].indexOf(b.label))}/></div><div><h3>학교 분포 · 상위 20</h3><SchoolDistribution rows={members.data.schools.map(s=>({key:s.school_code,officeCode:s.office_code,count:s.count}))} unsetCount={null}/></div></div></>}
+ <RecentSignups/>
  </FocusSection>
  <div className="focus-toolbar"><div><strong>학습·입시·운영 집계 기간</strong><small>기록 시각 기준 · KST</small></div><AdminPeriodFilter allowAll={false} period={period} from={from} to={to} onChange={(p,f,t)=>{setPeriod(p);setFrom(f);setTo(t);setGrade('all');}}/><button onClick={()=>{setRefresh(n=>n+1);support.reload();}}>새로고침</button></div>
  {!range?<p role="alert">전체 대신 400일 이내 기간을 선택해 주세요.</p>:<>

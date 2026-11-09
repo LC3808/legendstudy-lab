@@ -58,3 +58,16 @@
 
 @media(max-width:1100px){.focus-kpis{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){.focus-kpis{grid-template-columns:repeat(2,1fr)}}
+
+/* -- recent signups under member composition (5 per page, reuses listMembers) -- */
+.dash-recent{border-top:1px solid #9db0b2;padding-top:14px;margin-top:4px;display:grid;gap:10px}
+.dash-recent__head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.dash-recent__head h3{font-size:15px;margin:0;color:#163b4a}
+.dash-recent__table{min-width:760px}
+.dash-recent__table th,.dash-recent__table td{text-align:left;border-left:0;border-right:0;padding:8px 10px;white-space:nowrap;vertical-align:middle}
+.dash-recent__table thead th{background:#dce9e8;color:#23424b;font-weight:700}
+.dash-recent__table tbody tr:hover>td{background:#e2efed}
+.dash-recent__pager{display:flex;align-items:center;gap:10px;justify-content:center}
+.dash-recent__pager button{background:#fff;border:1px solid #9aacac;border-radius:6px;padding:5px 12px;font:inherit;font-size:12px;color:#234c59;cursor:pointer}
+.dash-recent__pager button:disabled{opacity:.5;cursor:default}
+.dash-recent__pager span{font-size:12px;color:#4c646c;font-variant-numeric:tabular-nums}
