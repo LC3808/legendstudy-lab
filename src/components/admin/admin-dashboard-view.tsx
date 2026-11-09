@@ -6,9 +6,10 @@ import {analyticsWindow} from '@/lib/admin/analytics';
 import {AdminPeriodFilter} from './admin-period-filter';
 import type {AdminPeriod} from '@/lib/admin/period';
 import {formatStudyTime} from '@/lib/admin/study-time';
-import {formatDateTime,accountStateLabel,formatCount} from '@/lib/admin/format';
+import {formatDateTime,accountStateLabel} from '@/lib/admin/format';
 import {useAdminQuery,useSupportRefresh,AdminErrorPanel} from './admin-surface';
-import type {AdminSupportMetrics,AdminDashboard} from '@/lib/admin/contract';
+import type {AdminSupportMetrics} from '@/lib/admin/contract';
+import type {ReleaseReport} from '@/lib/admin/release-report';
 import {defaultMemberFilters,directorySchoolLabel,type MemberDirectory} from '@/lib/admin/members';
 import {AdminSchoolName} from './admin-school-name';
 import './member-dashboard.css';
@@ -101,11 +102,13 @@ export function AdminDashboardView(){
  const kStudy=useReadReport<Study>('admin_dashboard_study',kpiRange??{p_from:'invalid',p_to:'invalid'},refresh);
  const kLearning=useReadReport<Learning>('admin_learning_analytics',kpiRange??{p_from:'invalid',p_to:'invalid'},refresh);
  const support=useAdminQuery<AdminSupportMetrics>(c=>c.supportMetrics(),'dashboard-support');useSupportRefresh(support.reload);
- const overview=useAdminQuery<AdminDashboard>(c=>c.dashboard(),'dashboard-overview');
+ // Period-scoped operations report (existing admin_release_report RPC): gives
+ // 이용권 사용(credit_used) and 결제 완료 건수(paid) for the selected KPI period.
+ const kRelease=useAdminQuery<ReleaseReport>(kpiRange?c=>c.releaseReport({kind:'dashboard',from:kpiRange.p_from??null,to:kpiRange.p_to??null,category:'all',state:'all',quantity:null,offset:0,limit:5}):null,`dashboard-kpi-release:${JSON.stringify(kpiRange)}`);
  const selected=grade==='all'?study.data?.total:study.data?.grades.find(g=>g.grade===grade);
  const state=(r:{error?:boolean;data?:unknown})=>r.error?<p role="alert">조회 실패 · 새로고침해 주세요.</p>:!r.data?<p role="status">집계 중…</p>:null;
  const sup=support.state.status==='ready'?support.state.data:null;
- const ov=overview.state.status==='ready'?overview.state.data:null;
+ const rel=kRelease.state.status==='ready'?kRelease.state.data:null;
  const wait=<span className="focus-kpi__wait">집계 중</span>;
  const kpiLabel=kpiPeriod==='all'?'전체 기간':'선택 기간';
  return <div className="focused-admin">
@@ -113,15 +116,15 @@ export function AdminDashboardView(){
   <div className="focus-kpis-head">
    <span className="focus-kpis-head__t">상단 지표 기간</span>
    <AdminPeriodFilter period={kpiPeriod} from={kpf} to={kpt} onChange={(p,f,t)=>{setKpiPeriod(p);setKpf(f);setKpt(t);}}/>
-   <span className="focus-note">가입·공부시간·희망대학은 선택 기간 기준 · 첨삭권·결제는 누적, 문의는 현재</span>
+   <span className="focus-note">가입·공부시간·첨삭권·결제·희망대학은 선택 기간 기준 · 문의는 현재 대기</span>
   </div>
   {!kpiRange?<p className="focus-note" role="alert">전체 대신 400일 이내 기간을 선택해 주세요.</p>:null}
   <div className="focus-kpis">
    <KpiTile label="전체 가입 수" value={kpiNum(kMembers.data?.accounts)} href="/admin/members/" note={`${kpiLabel} 가입 · 회원 현황`}/>
    <KpiTile label="총 공부 시간" value={kStudy.data?formatStudyTime(kStudy.data.total.ms):wait} href="/admin/data/study/" note={`${kpiLabel} · 시간/분 · 공부 현황`}/>
-   <KpiTile label="첨삭권 사용" value={ov?kpiNum(ov.credit.consumedTotal):wait} href="/admin/credit/" note="누적(전체) · 첨삭권 Credit"/>
+   <KpiTile label="첨삭권 사용" value={rel?kpiNum(rel.credit_used??null):wait} href="/admin/credit/" note={`${kpiLabel} · 이용권 사용`}/>
    <KpiTile label="희망 대학 등록 학생" value={kpiNum(kLearning.data?.metrics.targets)} tone="info" href="/admin/data/learning/" note={`${kpiLabel} · 입시 분석`}/>
-   <KpiTile label="결제 주문 수" value={ov?formatCount(ov.payment.orders):wait} href="/admin/payment/" note={ov&&!ov.payment.installed?'결제 모듈 미설치':'누적(전체) · 결제'}/>
+   <KpiTile label="결제 주문 수" value={rel?kpiNum(rel.paid.reduce((s,p)=>s+p.count,0)):wait} href="/admin/payment/" note={`${kpiLabel} · 결제 완료 건수`}/>
    <KpiTile label="미처리 문의" value={sup?kpiNum(sup.open):wait} tone={sup&&sup.open>0?'warn':undefined} href="/admin/inquiries/" note="현재 대기"/>
   </div>
  </section>
