@@ -93,6 +93,13 @@ export function AdminDashboardView(){
  const members=useReadReport<Composition>('admin_member_composition',membersRange??{p_from:'invalid',p_to:'invalid'},refresh);
  const study=useReadReport<Study>('admin_dashboard_study',range??{p_from:'invalid',p_to:'invalid'},refresh);
  const learning=useReadReport<Learning>('admin_learning_analytics',range??{p_from:'invalid',p_to:'invalid'},refresh);
+ // Period-scoped reads for the headline KPI row (own 기간 selector). Same RPCs as
+ // the sections below, just at the KPI period, so the top numbers sort by 기간.
+ const [kpiPeriod,setKpiPeriod]=useState<AdminPeriod>('d30'),[kpf,setKpf]=useState(''),[kpt,setKpt]=useState('');
+ const kpiRange=useMemo(()=>kpiPeriod==='all'?{p_from:null,p_to:null}:analyticsWindow(kpiPeriod,kpf,kpt,now),[kpiPeriod,kpf,kpt,now]);
+ const kMembers=useReadReport<Composition>('admin_member_composition',kpiRange??{p_from:'invalid',p_to:'invalid'},refresh);
+ const kStudy=useReadReport<Study>('admin_dashboard_study',kpiRange??{p_from:'invalid',p_to:'invalid'},refresh);
+ const kLearning=useReadReport<Learning>('admin_learning_analytics',kpiRange??{p_from:'invalid',p_to:'invalid'},refresh);
  const support=useAdminQuery<AdminSupportMetrics>(c=>c.supportMetrics(),'dashboard-support');useSupportRefresh(support.reload);
  const overview=useAdminQuery<AdminDashboard>(c=>c.dashboard(),'dashboard-overview');
  const selected=grade==='all'?study.data?.total:study.data?.grades.find(g=>g.grade===grade);
@@ -100,14 +107,23 @@ export function AdminDashboardView(){
  const sup=support.state.status==='ready'?support.state.data:null;
  const ov=overview.state.status==='ready'?overview.state.data:null;
  const wait=<span className="focus-kpi__wait">집계 중</span>;
+ const kpiLabel=kpiPeriod==='all'?'전체 기간':'선택 기간';
  return <div className="focused-admin">
- <section className="focus-kpis" aria-label="핵심 지표 요약">
-  <KpiTile label="전체 가입 수" value={kpiNum(members.data?.accounts)} href="/admin/members/" note={memberPeriod==='all'?'전체 회원 · 회원 현황':'선택 기간 가입 · 회원 현황'}/>
-  <KpiTile label="총 공부 시간" value={study.data?formatStudyTime(study.data.total.ms):wait} href="/admin/data/study/" note="선택 기간 · 시간/분 · 공부 현황"/>
-  <KpiTile label="첨삭권 사용" value={ov?kpiNum(ov.credit.consumedTotal):wait} href="/admin/credit/" note="누적 첨삭권(Credit) 사용"/>
-  <KpiTile label="희망 대학 등록 학생" value={kpiNum(learning.data?.metrics.targets)} tone="info" href="/admin/data/learning/" note="선택 기간 · 입시 분석"/>
-  <KpiTile label="결제 주문 수" value={ov?formatCount(ov.payment.orders):wait} href="/admin/payment/" note={ov&&!ov.payment.installed?'결제 모듈 미설치':'누적 주문 · 결제'}/>
-  <KpiTile label="미처리 문의" value={sup?kpiNum(sup.open):wait} tone={sup&&sup.open>0?'warn':undefined} href="/admin/inquiries/" note="1:1 문의 대기"/>
+ <section className="focus-kpis-wrap" aria-label="핵심 지표 요약">
+  <div className="focus-kpis-head">
+   <span className="focus-kpis-head__t">상단 지표 기간</span>
+   <AdminPeriodFilter period={kpiPeriod} from={kpf} to={kpt} onChange={(p,f,t)=>{setKpiPeriod(p);setKpf(f);setKpt(t);}}/>
+   <span className="focus-note">가입·공부시간·희망대학은 선택 기간 기준 · 첨삭권·결제는 누적, 문의는 현재</span>
+  </div>
+  {!kpiRange?<p className="focus-note" role="alert">전체 대신 400일 이내 기간을 선택해 주세요.</p>:null}
+  <div className="focus-kpis">
+   <KpiTile label="전체 가입 수" value={kpiNum(kMembers.data?.accounts)} href="/admin/members/" note={`${kpiLabel} 가입 · 회원 현황`}/>
+   <KpiTile label="총 공부 시간" value={kStudy.data?formatStudyTime(kStudy.data.total.ms):wait} href="/admin/data/study/" note={`${kpiLabel} · 시간/분 · 공부 현황`}/>
+   <KpiTile label="첨삭권 사용" value={ov?kpiNum(ov.credit.consumedTotal):wait} href="/admin/credit/" note="누적(전체) · 첨삭권 Credit"/>
+   <KpiTile label="희망 대학 등록 학생" value={kpiNum(kLearning.data?.metrics.targets)} tone="info" href="/admin/data/learning/" note={`${kpiLabel} · 입시 분석`}/>
+   <KpiTile label="결제 주문 수" value={ov?formatCount(ov.payment.orders):wait} href="/admin/payment/" note={ov&&!ov.payment.installed?'결제 모듈 미설치':'누적(전체) · 결제'}/>
+   <KpiTile label="미처리 문의" value={sup?kpiNum(sup.open):wait} tone={sup&&sup.open>0?'warn':undefined} href="/admin/inquiries/" note="현재 대기"/>
+  </div>
  </section>
  {sup&&(sup.open>0||sup.failedDeliveries>0)?<div className="focus-alert" role="status">
   <strong>운영 주의</strong>
