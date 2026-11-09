@@ -73,3 +73,45 @@
 
 ## 10. Claude Code 실행 지시
 이 문서를 상위 Growth 요구사항으로 삼는다. 현재 관리자 학교별 통계만으로 완료 처리하지 않는다. 우선 실제 브랜치/커밋과 운영 반영 여부를 검증하고 Phase 1 잔여 작업 및 Phase 2·3의 DB/API·WEB/APP·이벤트별 구체적 구현 계획을 제출한다. 계획만으로 Phase 2·3 운영 변경을 실행하지 않는다.
+
+## 11. 실행 상태 · 승인 이력 (2026-11-09 업데이트)
+
+### Phase별 구현 상태
+- **Phase 1 (P0) 관리자 학교별 분석**: 프런트 구현 완료(`d9fa201` 학년별, `9de80ca` 학교별+후보 SQL). **운영 RPC `admin_study_by_school` 적용 완료**(마이그레이션 `admin_study_by_school_v1`). **관리자 프런트 운영 배포는 미실행(별도 승인 대기)**.
+- **Phase 2 (P1) 학생용 카드·랭킹**: 설계 확정, 구현 미착수(운영 변경 없는 프런트부터 착수 승인됨).
+- **Phase 3 (P1) 친구 초대·전환**: 통합 설계 확정, 미착수.
+- **Phase 4 (P2/P3)**: 배지·목표·성적대별 — 후순위.
+
+### 운영 반영 상태
+- 라이브 Pages canonical: `e363d279`(상단 KPI까지). d9fa201/9de80ca(공부시간·학교별 프런트)는 **미배포**.
+- 운영 DB: `admin_study_by_school` 함수 **신설 적용됨**. 기존 테이블·RPC·데이터·인증 **무변경**.
+
+### 신규 RPC — admin_study_by_school(p_from,p_to,p_grade,p_min_users)
+- SECURITY DEFINER, search_path='', statement_timeout 8s, `admin_operator()`+`account_private.allowed()` 게이트, anon/public EXECUTE 회수, authenticated 부여.
+- 반환: `registered_users`(유효 가입자)·`active_users`(기간 기록자)·`ms`·`avg_ms` 학교별 + `unregistered` + `total`. 집계 기준은 `admin_dashboard_study`와 동일(active_segments range_agg 중복제거).
+- 후보/검증 SQL: `supabase/candidates/admin_study_by_school/{install.sql,test.sql}`.
+
+### 학생용 API 설계(요약, 미구현)
+- `student_school_card`, `student_school_ranking` — 관리자 RPC와 분리, 학교 단위 집계만, 소표본 공개 가드, 개인 기록 비공개. 집계 로직은 Phase 1과 공유.
+
+### WEB/APP 범위
+- WEB(React) 우선 → APP(Flutter Native UI, 동일 Backend, WebView 금지). 기존 학습 기능·라우팅 보존.
+
+### 초대 기능·이벤트 설계(요약, 미구현)
+- 불투명 초대 토큰(URL에 내부 식별자 노출 금지), 학교는 가입자 최종 확인.
+- GA4: school_card_view/ranking_view/invite_click/share/link_open/signup/first_study. 중복 제거·어트리뷰션 기간 명시.
+
+### 테스트 결과(Phase 1 RPC 적용)
+- 함수 존재 ✅ · SECURITY DEFINER ✅ · grants(anon/public 회수, authenticated/postgres/service_role) ✅
+- **비operator 호출 차단**: MCP(비operator) 호출 → `42501 insufficient_privilege` ✅ (일반/비로그인 차단)
+- **집계 정합성**(읽기 전용 30일): 학교합+미등록=전체 — users 22=22, ms 99,936,369=99,936,369 ✅ (대시보드 일치)
+- 신규 보안 권고 없음(기존 admin_dashboard_study와 동일 패턴). 관리자 테스트 7 failed/202 passed = 기존 기준선, 신규 회귀 0.
+- operator 호출 성공 수치는 프런트 배포(별도 승인) 또는 Owner 로그인으로 최종 확인.
+
+### 다음 개발 단계
+1. 관리자 학교별 프런트 **운영 배포 승인** → 배포 → operator 화면 검증.
+2. Phase 2 학생용 WEB(카드·랭킹) 구현(운영 변경 없음) + 학생 API 설계 상세화(승인 후 RPC 신설).
+3. Phase 3 초대 토큰·이벤트(승인 후 테이블/이벤트 신설).
+
+### Owner 승인 이력
+- 2026-11-09: admin_study_by_school RPC 신설·권한·검증 **승인·적용**. 관리자 프런트 배포는 미승인(별도). Phase 2 프런트 개발 착수 승인(운영 변경 없음). Phase 2/3 운영 RPC·테이블·권한·배포는 각각 별도 승인.
