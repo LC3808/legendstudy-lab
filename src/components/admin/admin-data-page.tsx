@@ -12,6 +12,41 @@ import {analyticsWindow} from '@/lib/admin/analytics';
 import type {AdminPeriod} from '@/lib/admin/period';
 import {parseLearningAnalytics,learningMetrics,learningDefinitions,type LearningAnalytics} from '@/lib/admin/learning-analytics';
 
+const studyGradeNames:Record<string,string>={'1':'고1','2':'고2','3':'고3',retaker:'N수·검정고시 등',unknown:'미입력'};
+type StudyData={total:{users:number;ms:number};grades:{grade:string;users:number;ms:number}[]};
+
+/**
+ * 공부 시간 분석 — core study-time surface. Uses the existing admin_dashboard_study
+ * RPC (total + per-grade) so the page shows the 학년별 breakdown, not just two
+ * totals. 학교별/성적대별 need their own server aggregates (see the roadmap
+ * panels); they are not faked here.
+ */
+function StudyAnalysis(){
+ const {client,user}=useAuth();
+ const [period,setPeriod]=useState<AdminPeriod>('d30');const [from,setFrom]=useState('');const [to,setTo]=useState('');const [now,setNow]=useState(()=>new Date());const [grade,setGrade]=useState('all');
+ const window=useMemo(()=>analyticsWindow(period,from,to,now),[period,from,to,now]);
+ const key=JSON.stringify([user?.id,window,now]);
+ const [result,setResult]=useState<{key:string;data?:StudyData;error?:AdminErrorKind}|null>(null);
+ useEffect(()=>{let active=true;if(!client||!user||!window)return;void Promise.resolve(client.rpc('admin_dashboard_study',window)).then(({data,error})=>{if(error)throw mapRpcError(error);if(active)setResult({key,data:data as StudyData});}).catch(error=>{if(active)setResult({key,error:adminErrorKind(error)});});return()=>{active=false;};},[client,user,key,window]);
+ const current=result?.key===key?result:null;
+ const data=current?.data;
+ const selected=data?(grade==='all'?data.total:data.grades.find(g=>g.grade===grade)):undefined;
+ return <div className="admin-stack">
+  <form onSubmit={e=>{e.preventDefault();setNow(new Date());}} className="analytics-filter"><label>집계 기간 (KST)<select value={period} onChange={e=>setPeriod(e.target.value as AdminPeriod)}><option value="today">오늘</option><option value="d7">최근 7일</option><option value="d30">최근 30일</option><option value="custom">사용자 지정 (최대 400일)</option></select></label>{period==='custom'&&<><label>시작일<input type="date" value={from} onChange={e=>setFrom(e.target.value)}/></label><label>종료일<input type="date" value={to} onChange={e=>setTo(e.target.value)}/></label></>}<label>학년<select value={grade} onChange={e=>setGrade(e.target.value)}><option value="all">전체 기록자</option>{data?.grades.map(g=><option key={g.grade} value={g.grade}>{studyGradeNames[g.grade]??g.grade}</option>)}</select></label><button type="submit">조회</button></form>
+  {!window?<AdminPanel title="올바른 기간을 선택해 주세요"/>:!current?<AdminLoading/>:current.error?<AdminErrorPanel kind={current.error}/>:data?<>
+   <p className="admin-muted">출처: Supabase 학습 원장 · 앱 공부 타이머 + 학습 합산 · 한국 날짜 기준</p>
+   <div className="admin-metrics">
+    <div className="admin-metric"><p className="admin-metric__label">{grade==='all'?'전체 공부 시간':`${studyGradeNames[grade]??grade} 공부 시간`}</p><p className="admin-metric__value">{formatStudyTime(selected?.ms)}</p></div>
+    <div className="admin-metric"><p className="admin-metric__label">기록자 1인당 평균</p><p className="admin-metric__value">{formatStudyTime(selected?selected.users?selected.ms/selected.users:0:null)}</p></div>
+    <div className="admin-metric"><p className="admin-metric__label">공부 기록자</p><p className="admin-metric__value">{selected?.users??0}명</p></div>
+   </div>
+   <AdminPanel title="학년별 공부 시간"><div className="admin-table-scroll"><table className="admin-table"><thead><tr><th scope="col">학년</th><th scope="col">기록자</th><th scope="col">공부 시간</th><th scope="col">1인당 평균</th></tr></thead><tbody>{[...data.grades].sort((a,b)=>['1','2','3','retaker','unknown'].indexOf(a.grade)-['1','2','3','retaker','unknown'].indexOf(b.grade)).map(g=><tr key={g.grade}><td>{studyGradeNames[g.grade]??g.grade}</td><td>{g.users}명</td><td>{formatStudyTime(g.ms)}</td><td>{formatStudyTime(g.users?g.ms/g.users:0)}</td></tr>)}</tbody></table></div><p className="admin-muted">완료·동기화된 실제 활동 구간만 합산합니다. 일시정지 등 중복 시간은 제외하며, 학년은 현재 프로필 기준입니다. 미기록 공부는 포함하지 않습니다.</p></AdminPanel>
+  </>:null}
+  <AdminPanel title="학교별 공부 시간 · TOP 학교 (준비 중)"><p>학교별 합산 공부 시간과 TOP 학교 랭킹은 전용 서버 집계(<code>admin_study_by_school</code> RPC)가 필요합니다. 학습 원장을 학교 단위로 묶는 집계 함수를 연결하면 이 자리에 학교별 표·랭킹이 표시됩니다. (운영 SQL 신설 — 승인 후 연결)</p></AdminPanel>
+  <AdminPanel title="성적대별 공부 시간 — 내신·모의고사 (데이터 연동 후)"><p>내신 등급대별·모의고사 등급대별 평균 공부 시간은 성적 데이터가 연동되면 제공합니다. 현재 성적 데이터는 미연동 상태입니다(<Link href="/admin/data/scores/">성적·학습 분석 — NOT_IMPLEMENTED</Link>). 연동 후 「내신 N등급대 주당 평균 공부시간」 같은 통계와, 학생 자극용 메시지(배지·주간 목표) 기준값으로 사용할 수 있습니다.</p></AdminPanel>
+  <AdminPanel title="집계 해석"><p>동기화 완료·학습 합산 대상 구간만 집계합니다. 동일 학생의 겹치는 시간은 합치고 선택 기간 경계에서 자릅니다. 미기록은 공부하지 않았다는 뜻이 아닙니다. 개인별 기록은 권한이 확인된 회원 상세에서 확인하세요.</p><Link href="/admin/members/">회원 상세 / Student 360</Link></AdminPanel>
+ </div>;
+}
 function Learning({section}:{section:string}){
  const {client,user}=useAuth();const [period,setPeriod]=useState<AdminPeriod>('d30');const [from,setFrom]=useState('');const [to,setTo]=useState('');const [now,setNow]=useState(()=>new Date());
  const window=useMemo(()=>analyticsWindow(period,from,to,now),[period,from,to,now]);
@@ -46,5 +81,6 @@ export function AdminDataPage({section}:{section:string}){
  if(section==='samples')return <AdminPanel title="기존 첨삭 품질 검수"><p>원본 답안과 평가 결과는 기존 검수 전용 권한으로 조회합니다. 일반 운영자 권한을 품질 열람 권한으로 확대하지 않습니다.</p><Link href="/ql/">실제 답안·재첨삭 비교 검수 →</Link><p><Link href="/ql/">품질 판정 기록 →</Link></p></AdminPanel>;
  if(section==='scores')return <AdminPanel title="성적·학습 분석 — NOT_IMPLEMENTED"><p>Student 360의 academic_performance는 현재 null 계약입니다. 개인 연습 점수를 공식 성적으로 환산하지 않습니다. 비교 가능한 성적 집계와 별도 권한·조회 감사 계약이 필요합니다.</p></AdminPanel>;
  if(section==='verification')return <AdminPanel title="베타 검증 — NOT_TESTED"><p>자동 테스트 결과와 실제 사용자 평가 E2E는 다릅니다. TEST Gateway·Provider 승인·실기기 검수를 완료하기 전에는 출시 PASS로 표시하지 않습니다.</p><Link href="/admin/beta/">베타 설정 확인</Link><p><Link href="/admin/beta/failures/">실패·복구 기록 확인</Link></p></AdminPanel>;
+ if(section==='study')return <StudyAnalysis/>;
  return <Learning section={section}/>;
 }
