@@ -350,3 +350,10 @@ Owner 승인으로 `/school` 학생용 WEB를 **선별 오버레이**로 운영 
 
 ### 18.5 배포
 프런트 전용 변경. 운영 배포는 §17과 동일한 선별 오버레이(이번엔 `/account`+공유 static 범위)로 진행하되 **Owner 승인 후**. 미승인 상태 — 미배포.
+
+### 18.6 마이페이지 진입 경로 운영 배포 (2026-11-10, Owner 승인)
+- **운영 배포 ID `aaa350d6`** / 소스 `0e8f8f5`. **롤백 대상 `dfa50be9`**(직전 canonical = /school 배포).
+- 선별 오버레이(inScope `/account/`): `/account/*` 20페이지 재오버레이(공유 CSS 변경으로 하위 페이지 HTML 포함) + 신규 static 5. **범위 밖 변경 0건**. 범위 밖 페이지는 기존 CSS 유지(신규 규칙 미사용이라 무영향). Functions 24 보존(소스 동일 재컴파일).
+- 배포 후(익명/빌드): canonical `aaa350d6` 승격 ✅. `/account/`·`/account/settings/`·`/school/`·`/`·`/pricing/`·`/admin/` 200 ✅. `/api/essay/*` 401(동작) ✅.
+- NOT TESTED(실로그인): 마이페이지에서 "우리 학교 공부시간" 메뉴 시각 표시·탭 이동(클라이언트 렌더·auth 게이트). 진입 코드 운영 번들 포함 확인됨.
+- 신규 회귀 0. 롤백: canonical `dfa50be9` 복귀.
