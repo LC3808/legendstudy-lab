@@ -663,3 +663,24 @@ GA4 운영 연결, 관리자 Growth UI, Flutter 딥링크(흐름 C deferred deep
 ### 28.4 운영 적용/배포 대기
 - 후보 `supabase/candidates/admissions_analytics/{install,test}.sql`. 적용 시 `admin_admissions_analytics` apply + 관리자 대시보드 WEB 배포 동반 필요. 승인 필요. 기존 `admin_learning_analytics`·인기자료·KPI 타일 불변.
 - 참고: 실제 지원 입력 유도 온보딩은 코덱스가 별도 담당. 합격 발표 알림은 `student_application_events`(accepted/rejected/registered 등) 기반 확장 가능(차기).
+
+## 29. 관리자 대시보드 입시 개편 운영 반영 — RPC 적용 + /admin 배포 (2026-11-10, Owner 승인)
+
+Owner 승인으로 `admin_admissions_analytics` 적용 + 관리자 대시보드 `/admin` 선별 배포. 기존 `admin_learning_analytics` 불변.
+
+### 29.1 적용 migration
+- `admin_admissions_analytics_v1` — 신규 RPC(희망 대학/전공 vs 실제 지원 분리 집계). **기존 객체 무변경**. 롤백본 `rollback.sql`(drop function).
+
+### 29.2 RPC 검증 (배포 전)
+- 비operator 호출 **42501 차단**, SECURITY DEFINER, `search_path=''`, 8s, authenticated 전용(anon/public 회수). 보안 권고 신규 카테고리 0(기존 admin RPC 동일 패턴).
+- 집계 수치는 operator 세션 필요라 **NOT TESTED**(인라인 읽기전용으로 희망 229/133·전공 178명·지원 0.3% 검증 완료, 함수 본문 동일).
+
+### 29.3 WEB 배포
+- **배포 ID `49aa7647`** / 소스 `7c195a1`. **롤백 대상 `8243116d`**. 선별 오버레이(`/admin` 전용): `/admin/*` 150페이지 + static 5, **범위 밖 변경 0건**(공개/학생 페이지 무변경). Functions 24 보존.
+
+### 29.4 배포 후 검증 (익명/빌드)
+- canonical `49aa7647` 승격. `/admin`·`/admin/data/learning`·`/school`·`/account`·`/`·`/invite`·`/pricing` 전부 200. Functions 401(동작). 운영 admin 번들에 `admin_admissions_analytics` 호출 코드 포함.
+- NOT TESTED(operator 로그인): 실제 대시보드 두 패널 렌더·수치(희망 대학·전공 TOP·1지망, 실제 지원 입력률·전형 분포).
+
+### 29.5 롤백
+- WEB canonical `8243116d` 복귀. RPC `rollback.sql`(신규 함수 drop, 기존 기능 무영향). 신규 회귀 0(기존 8 failed 기준선).
