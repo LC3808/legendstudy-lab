@@ -39,7 +39,7 @@ describe('parseSchoolRanking', () => {
   });
   it('accepts suppressed ms/avg_ms (below public min-recorder threshold)', () => {
     const r = parseSchoolRanking({
-      version:'student-school-ranking-v1', metric:'registered', period:'week', min_users:5, min_recorders:3,
+      version:'student-school-ranking-v1', metric:'participation', period:'week', min_users:3, min_recorders:3,
       school_count:1, as_of:'t', my_school:null, around:[],
       top:[{office_code:'B10', school_code:'s', registered_users:2, active_users:1, ms:null, avg_ms:null, rank:1}],
     });
@@ -47,18 +47,21 @@ describe('parseSchoolRanking', () => {
     expect(r.top[0].avgMs).toBeNull();
     expect(r.top[0].registeredUsers).toBe(2);
   });
-  it('accepts a masked (null) registered count for other schools; own school keeps the real value', () => {
+  it('participation metric: masks both registered and active for other schools; own school keeps real values', () => {
     const r = parseSchoolRanking({
-      version:'student-school-ranking-v1', metric:'registered', period:'week', min_users:3, min_recorders:3,
-      school_count:2, as_of:'t', my_school:{office_code:'B10', school_code:'mine', registered_users:3, active_users:3, ms:null, avg_ms:null, rank:2},
+      version:'student-school-ranking-v1', metric:'participation', period:'week', min_users:3, min_recorders:3,
+      school_count:2, as_of:'t', my_school:{office_code:'B10', school_code:'mine', registered_users:35, active_users:12, ms:null, avg_ms:null, rank:3},
       top:[
-        {office_code:'B10', school_code:'other', registered_users:null, active_users:4, ms:null, avg_ms:null, rank:1},
-        {office_code:'B10', school_code:'mine', registered_users:3, active_users:3, ms:null, avg_ms:null, rank:2},
+        {office_code:'B10', school_code:'other', registered_users:null, active_users:null, ms:null, avg_ms:null, rank:1},
+        {office_code:'B10', school_code:'mine', registered_users:35, active_users:12, ms:null, avg_ms:null, rank:3},
       ], around:[],
     });
+    expect(r.metric).toBe('participation');
     expect(r.top[0].registeredUsers).toBeNull();   // other school masked, not 0
-    expect(r.top[1].registeredUsers).toBe(3);      // own school real value
-    expect(r.mySchool?.registeredUsers).toBe(3);
+    expect(r.top[0].activeUsers).toBeNull();        // participation count also masked
+    expect(r.top[1].registeredUsers).toBe(35);      // own school real values
+    expect(r.top[1].activeUsers).toBe(12);
+    expect(r.mySchool?.rank).toBe(3);               // tie-aware rank (may differ from row index)
   });
   it('accepts a null my_school', () => {
     const r = parseSchoolRanking({version:'student-school-ranking-v1', metric:'average', period:'month', min_users:3, school_count:0, as_of:'t', top:[], around:[], my_school:null});

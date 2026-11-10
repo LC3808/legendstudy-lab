@@ -20,14 +20,17 @@ export type SchoolCard =
       asOf:string;
     };
 
-export type SchoolRankMetric = 'total' | 'average' | 'registered';
+export type SchoolRankMetric = 'total' | 'average' | 'participation';
 export type SchoolRankPeriod = 'week' | 'last_week' | 'month';
 export type SchoolRankRow = {
   officeCode:string; schoolCode:string;
-  // registeredUsers is null for schools other than the caller's own (privacy); null ≠ 0.
-  registeredUsers:number|null; activeUsers:number;
+  // registeredUsers (가입) and activeUsers (참여) are null for schools other than the
+  // caller's own school (privacy); null ≠ 0.
+  registeredUsers:number|null; activeUsers:number|null;
   // ms/avgMs are null for schools below the public min-recorder threshold (k-anonymity).
-  ms:number|null; avgMs:number|null; rank:number;
+  ms:number|null; avgMs:number|null;
+  // rank is the tie-aware rank number (ties share a number); not the display row index.
+  rank:number;
 };
 export type SchoolRanking = {
   metric:SchoolRankMetric; period:SchoolRankPeriod; minUsers:number; schoolCount:number;
@@ -41,7 +44,7 @@ function str(v:unknown):string{ if(typeof v!=='string') throw new Error('MALFORM
 
 function parseRow(v:unknown):SchoolRankRow{
   const r=obj(v);
-  return {officeCode:str(r.office_code), schoolCode:str(r.school_code), registeredUsers:nnum(r.registered_users), activeUsers:num(r.active_users), ms:nnum(r.ms), avgMs:nnum(r.avg_ms), rank:num(r.rank)};
+  return {officeCode:str(r.office_code), schoolCode:str(r.school_code), registeredUsers:nnum(r.registered_users), activeUsers:nnum(r.active_users), ms:nnum(r.ms), avgMs:nnum(r.avg_ms), rank:num(r.rank)};
 }
 
 export function parseSchoolCard(raw:unknown):SchoolCard{
@@ -62,7 +65,7 @@ export function parseSchoolRanking(raw:unknown):SchoolRanking{
   const r=obj(raw);
   if(r.version!=='student-school-ranking-v1') throw new Error('MALFORMED');
   const metric=str(r.metric) as SchoolRankMetric;
-  if(!['total','average','registered'].includes(metric)) throw new Error('MALFORMED');
+  if(!['total','average','participation'].includes(metric)) throw new Error('MALFORMED');
   const period=str(r.period) as SchoolRankPeriod;
   if(!['week','last_week','month'].includes(period)) throw new Error('MALFORMED');
   if(!Array.isArray(r.top)||!Array.isArray(r.around)) throw new Error('MALFORMED');

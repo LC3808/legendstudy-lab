@@ -87,30 +87,32 @@ export function SchoolParticipationCard({card,loading}:{card:SchoolCard|null;loa
 const METRICS:{key:SchoolRankMetric;label:string;note:string}[]=[
   {key:'total',label:'총 공부시간',note:'기록자 3명 이상 학교 (개인 공부시간 보호)'},
   {key:'average',label:'1인당 평균',note:'기록자 3명 이상 학교 (개인 공부시간 보호)'},
-  {key:'registered',label:'가입 학생 수',note:'가입 학생이 있는 학교 (다른 학교 인원은 비공개)'},
+  {key:'participation',label:'참여 학생 수',note:'기간 내 공부시간을 기록한 학생 수 (다른 학교 인원은 비공개)'},
 ];
-/** 다른 학교의 가입 학생 수는 비공개(null) — 0명이 아니라 ** 로 표시. */
+/** 다른 학교의 가입·참여 학생 수는 비공개(null) — 0명이 아니라 ** 로 표시. */
 const MASK='**';
+function countLabel(v:number|null):string{ return v==null?MASK:`${v.toLocaleString('ko-KR')}명`; }
+/** 보조 컬럼: 참여 탭에서는 가입 학생 수를, 그 외 탭에서는 참여 학생 수를 보여 숫자 중복을 피한다. */
+function secondaryOf(metric:SchoolRankMetric){ return metric==='participation'?'가입 학생 수':'참여 학생 수'; }
+function secondaryValue(row:SchoolRankRow,metric:SchoolRankMetric):number|null{ return metric==='participation'?row.registeredUsers:row.activeUsers; }
 const PERIODS:{key:SchoolRankPeriod;label:string}[]=[
   {key:'week',label:'이번 주'},
   {key:'last_week',label:'지난 주'},
   {key:'month',label:'최근 30일'},
 ];
 
-function registeredLabel(v:number|null):string{ return v==null?MASK:`${v.toLocaleString('ko-KR')}명`; }
-
 function metricValue(row:SchoolRankRow,metric:SchoolRankMetric):string{
   if(metric==='total')return row.ms==null?'비공개':formatStudyTime(row.ms);
   if(metric==='average')return row.avgMs==null?'비공개':`${formatStudyTime(row.avgMs)} / 인`;
-  return registeredLabel(row.registeredUsers);
+  return countLabel(row.activeUsers); // 참여 학생 수 = 기간 내 기록자
 }
 
 function RankRow({row,metric,mine}:{row:SchoolRankRow;metric:SchoolRankMetric;mine:boolean}){
   return <tr className={mine?'school-rank__row school-rank__row--mine':'school-rank__row'}>
     <td data-label="순위">{row.rank.toLocaleString('ko-KR')}</td>
     <td data-label="학교"><SchoolName office={row.officeCode} school={row.schoolCode}/>{mine&&<span className="school-rank__badge"> · 우리 학교</span>}</td>
-    <td data-label="기록">{metricValue(row,metric)}</td>
-    <td data-label="참여">{registeredLabel(row.registeredUsers)} · 기록 {row.activeUsers.toLocaleString('ko-KR')}명</td>
+    <td data-label={METRICS.find(m=>m.key===metric)!.label}>{metricValue(row,metric)}</td>
+    <td data-label={secondaryOf(metric)}>{countLabel(secondaryValue(row,metric))}</td>
   </tr>;
 }
 
@@ -137,7 +139,7 @@ export function SchoolRankingPanel(){
     {!loading&&!data&&<PreparingNote>학교별 랭킹은 준비 중이에요. 잠시 후 다시 확인해 주세요.</PreparingNote>}
     {data&&data.top.length===0&&<p className="focus-note">아직 집계된 학교가 없어요.</p>}
     {data&&data.top.length>0&&<table className="school-rank__table"><caption className="sr-only">{activeMetric.label} 기준 학교 랭킹</caption>
-      <thead><tr><th scope="col">순위</th><th scope="col">학교</th><th scope="col">{activeMetric.label}</th><th scope="col">참여</th></tr></thead>
+      <thead><tr><th scope="col">순위</th><th scope="col">학교</th><th scope="col">{activeMetric.label}</th><th scope="col">{secondaryOf(metric)}</th></tr></thead>
       <tbody>
         {data.top.map(r=><RankRow key={`${r.officeCode}-${r.schoolCode}`} row={r} metric={metric} mine={!!data.mySchool&&r.officeCode===data.mySchool.officeCode&&r.schoolCode===data.mySchool.schoolCode}/>)}
         {data.mySchool&&!mySchoolInTop&&<>

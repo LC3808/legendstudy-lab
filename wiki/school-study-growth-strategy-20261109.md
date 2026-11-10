@@ -418,3 +418,33 @@ Owner 승인으로 RPC v2 적용 + `/school`·`/account` 선별 재배포. 기�
 ### 20.5 회귀·롤백·호환성
 - 신규 회귀 0(파서 29/29, TS 0, ESLint 0, 빌드 통과; 기존 admin/materials 8 failed 기준선).
 - 롤백: WEB은 canonical `aaa350d6` 복귀, RPC는 `rollback_v1.sql` 재적용. v2 WEB↔v2 RPC 계약 일치(registeredUsers nullable·시간 null 처리). v1 WEB↔v2 RPC도 안전(과거 UI는 number 기대였으나 현재 배포는 v2 UI이므로 불일치 없음; 롤백 시 WEB·RPC 동반 롤백 권장).
+
+## 21. 참여 학생 수 랭킹 전환 + TOP10/주변 순위 + 학생 수 전면 비공개 (2026-11-10, 구현 완료 · 운영 적용/배포 대기)
+
+운영 `/school` 개선: 3번째 지표를 **가입 학생 수 → 참여 학생 수(기간 내 실제 기록자)**로 전환. **운영 RPC·배포 변경 없음(후보/프런트만).** 적용·배포는 Owner 별도 승인.
+
+### 21.1 랭킹 지표 변경 (PART B)
+- 탭: 총 공부시간 / 1인당 평균 / **참여 학생 수**. 참여 학생 수 = 선택 기간 내 유효 공부시간을 1회 이상 기록한 고유 사용자 수(`active_users`, 중복 제거·include_in_study_total·유효계정·학교 등록자). 가입만 한 학생은 제외.
+- 후보 RPC `student_school_ranking`: `p_metric='participation'`(및 과도기 별칭 `registered`) → 정렬값 `active_users`, 자격 `active>=1`(0명 제외). 기존 시그니처 유지, 우회 파라미터 없음.
+
+### 21.2 학생 수 전면 비공개 (PART C)
+- 본인 학교만 `registered_users`·`active_users` 실제값, **다른 학교는 둘 다 null**(`pub_registered`·`pub_active`). 순위(rnk)는 서버에서 실제값으로 산출하고 반환 수치만 마스킹 — 원본 학생 수를 클라이언트에 전달하지 않음(정렬 키·메타 포함 미노출).
+- 화면: 다른 학교 학생 수 `**`. 참여 탭 보조 컬럼은 '가입 학생 수', 그 외 탭은 '참여 학생 수'로 구성해 숫자 중복 방지.
+
+### 21.3 TOP10 + 우리 학교 주변 순위 (PART D)
+- `rnk`=동률 공동 순위(rank, 동률 같은 번호), `ord`=안정 표시 순서(row_number, 동률은 학교 코드). 둘을 분리.
+- TOP10 = `ord<=10`(표시 순서), 각 행 순위는 `rnk`. 주변 = 우리 학교가 TOP10 밖(`m_ord>10`)일 때만 `ord` 기준 앞뒤 2행, **TOP10과 중복(ord<=10) 제외**. 서버 계산(클라이언트 재계산 없음).
+
+### 21.4 공개 기준 유지 (PART E)
+총공부시간·1인당 평균 모두 기록자 3명 이상 공개(미달 null) 유지. 소규모 잠금 안내·친구 초대 유지. 참여 학생 수 랭킹은 1명부터 참여(총시간/평균 3명 기준과 구분).
+
+### 21.5 계약/파서 (PART F)
+`SchoolRankMetric` 'registered'→'participation'. `SchoolRankRow.activeUsers`·`registeredUsers` 모두 `number|null`(다른 학교 null, 0 아님→`**`). `rank`는 동률 반영 번호(표시 행 번호와 구분).
+
+### 21.6 검증 (읽기 전용)
+- 참여 랭킹(실데이터 30d): 참여 학교 **12곳**(active≥1; registered 기준 128곳과 구분됨), TOP 10 캡, 전원 동률 → **공동 1위(distinct rnk=1)**·ord 1..12. 본인 학교만 가입·참여 수 반환(각 1곳), 나머지 null.
+- 주변 순위(own ord=12 강제): around=ord 11·12(둘 다 rnk 1), **TOP10(ord≤10) 제외 확인**. 동률 시 순위 번호 비연속 확인.
+- 파서 29/29, TS 0, ESLint 0, 빌드 통과.
+
+### 21.7 운영 적용/배포 대기
+- 후보 SQL만 수정(운영 RPC는 v2=registered 기준). 적용 시 **RPC 교체 + /school·/account WEB 재배포 동반 필요**(과도기: v2 UI가 active=null을 못 받으면 가드로 "준비 중" 표시 — 크래시 없음). 승인 필요: RPC v3 apply + WEB 재배포. 롤백: WEB canonical `4257db26`, RPC `rollback_v1.sql`(또는 v2 재적용).
