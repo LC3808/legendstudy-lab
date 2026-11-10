@@ -694,3 +694,30 @@ BM 논의(합격=최강 소셜 프루프 레버)에 따라 관리자 대시보�
 - 검증(읽기전용): 현 지원 2건(stage_pass 1·submitted 1, 최종합격 0, 이벤트 1) 정상 집계. 발표 시즌/코덱스 온보딩 후 데이터 축적 시 활성. TS0·ESLint0·빌드 OK, 전체 8 failed=기존 기준선(신규 회귀 0).
 - BM 활용: "사용자 N명 합격" 소셜 프루프, 대학/전형별 합격률 → 타게팅·전환·초대 루프 결합. 향후 내신·모의 연결 시 "합격 예측" 유료 기능의 기반.
 - 후보 `supabase/candidates/admission_outcomes/{install,test}.sql`. 적용 시 RPC apply + /admin 배포 동반(Owner 승인). 롤백: drop function.
+
+## 31. 입시 성과(합격 현황) 운영 반영 — Owner 보완 반영 + RPC 적용 + /admin 배포 (2026-11-10)
+
+Owner 보완 확정 반영 후 `admin_admission_outcomes` 적용 + `/admin` 배포. 기존 테이블·RPC 불변.
+
+### 31.1 Owner 보완(확정 반영)
+- **합격 이력 보존**: 최종합격 = 미대체 accepted/additional_acceptance **EXISTS**(현재 상태만 안 봄). 등록/미등록 이후에도 합격 보존. 지원 건당 1회(중복 방지). 1단계 합격은 최종합격 미포함.
+- **두 합격률**: A 지원 건 합격률=최종합격÷(최종합격+불합격), B 학생 합격 경험률=최종합격경험학생÷결과입력학생. **분모 0 → '집계 전'**(0% 아님). 결과 미입력 제외.
+- **자기신고 안내**: "학생이 직접 입력한 입시 결과를 기준으로 집계합니다." UI 명시, 검증 합격과 혼합 안 함.
+
+### 31.2 migration / RPC 검증
+- `admin_admission_outcomes_v1`(신규, 기존 불변). 롤백본 `rollback.sql`(drop).
+- 비operator **42501 차단**, SECURITY DEFINER, `search_path=''`, authenticated 전용(anon/public 회수). 기존 admin_learning_analytics·admin_admissions_analytics 유지 확인. 보안 권고 신규 카테고리 0.
+- 동작(롤백 tx): accepted→registered여도 **has_accept 보존**·건당 1회, 현 데이터 합격률 null(집계 전). 학생/지원 분모 분리 확인.
+
+### 31.3 WEB 배포
+- **배포 ID `c94a93e7`** / 소스 `843f23d`. **롤백 대상 `49aa7647`**. 선별 오버레이(/admin): `/admin/*` 150 + static 5, **범위 밖 0**(공개/학생 무변경), Functions 24 보존.
+
+### 31.4 배포 후 검증
+- canonical `c94a93e7` 승격. `/admin`·`/school`·`/account`·`/`·`/invite`·`/pricing` 200, Functions 401. 운영 admin 번들에 `admin_admission_outcomes`·'입시 성과' 포함.
+- NOT TESTED(operator): 실제 패널 렌더·합격/추가합격 집계·1단계 별도·불합격/등록/미등록·두 합격률·합격 대학/전형 TOP·데이터 없음 상태·기존 희망/실제지원 패널 유지.
+
+### 31.5 집계 수치(읽기전용, 현재)
+지원 2건·최종합격 0·1단계만 1·확정 0 → 두 합격률 '집계 전'. 발표 시즌/온보딩 후 축적.
+
+### 31.6 롤백
+WEB canonical `49aa7647`. RPC `rollback.sql`(drop, 기존 무영향). 신규 회귀 0(전체 8 failed 기준선).
