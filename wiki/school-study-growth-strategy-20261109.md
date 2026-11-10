@@ -721,3 +721,14 @@ Owner 보완 확정 반영 후 `admin_admission_outcomes` 적용 + `/admin` 배�
 
 ### 31.6 롤백
 WEB canonical `49aa7647`. RPC `rollback.sql`(drop, 기존 무영향). 신규 회귀 0(전체 8 failed 기준선).
+
+## 32. 관리자 상세(/admin/data/learning) 개별 지원 목록 — 누가·어디에 지원 (2026-11-10, 구현 완료 · 운영 적용/배포 대기)
+
+상세 페이지가 구 집계(대상/학생수/기록수)만 보여줘, 개별 지원(누가·어디에·전형·상태)을 추가. **운영 변경/배포 없음(후보 RPC+UI). 기존 객체 불변.**
+
+- 신규 후보 RPC `admin_applications_list(p_offset)`(미적용): 지원 로스터 — 학생명·학교(office/school)·대학·학과·전형구분·전형명·학년도·현재 상태(미대체 최신 이벤트)·ever_accepted(합격 이력 보존). operator 전용(개인 식별 포함 → 엄격 게이트), SECURITY DEFINER, search_path='', 25/페이지, 기간 필터 없음(로스터=전체).
+- UI `ApplicationsRoster`: `/admin/data/learning`·`/admin/data/applications` 섹션에 추가. 학생·학교(AdminSchoolName)·대학·학과·전형·학년도·상태 표 + 페이지네이션. RPC 미적용 시 '준비 중'.
+- 읽기전용 검증: 현재 2건 로스터 정상 — 작성자 "관리자"(operator 테스트), 서울대 경영 수시 학교장추천(1단계합격)·연세대 경영 수시 논술(제출). → 앞선 "실데이터 아님(운영자 테스트)" 재확인.
+- TS0·ESLint0·빌드 OK, 전체 admin 테스트 7 failed=기존 기준선(신규 회귀 0).
+- 참고: 입시 데이터는 희소·입력 분산이라 로스터는 기간 필터 없이 전체. (대시보드 집계는 기간 기준.) 운영자/스태프 데이터가 섞일 수 있음(차기 집계 제외 검토).
+- 후보 `supabase/candidates/admin_applications_list/{install,test}.sql`. 적용 시 RPC apply + /admin 배포 동반(Owner 승인). 롤백: drop function.

@@ -12,6 +12,7 @@ import {analyticsWindow} from '@/lib/admin/analytics';
 import type {AdminPeriod} from '@/lib/admin/period';
 import {parseLearningAnalytics,learningMetrics,learningDefinitions,type LearningAnalytics} from '@/lib/admin/learning-analytics';
 import {AdminSchoolName} from './admin-school-name';
+import {ApplicationsRoster} from './admin-applications-roster';
 
 const studyGradeNames:Record<string,string>={'1':'고1','2':'고2','3':'고3',retaker:'N수·검정고시 등',unknown:'미입력'};
 type StudyData={total:{users:number;ms:number};grades:{grade:string;users:number;ms:number}[]};
@@ -99,6 +100,7 @@ function Learning({section}:{section:string}){
  <p>기록이 있는 모든 학생을 집계합니다. 0은 기록 없음, 미확인은 조회값 없음입니다.</p>
  <div className="admin-metrics">{Object.entries(learningMetrics).filter(([k])=>section!=='study'||k.startsWith('study_')).map(([k,label])=><div className="admin-metric" key={k}><p>{label}</p><strong>{k==='study_ms'?formatStudyTime(current.data!.metrics.study_ms):current.data!.metrics[k as keyof typeof learningMetrics]?.toLocaleString()??'미확인'}</strong></div>)}</div>
  {kinds.map(kind=><AdminPanel key={kind} title={learningDefinitions[kind as keyof typeof learningDefinitions]}>{current.data!.rows.filter(r=>r.kind===kind).length?<AdminDataTable id={'learning-'+kind} rows={current.data!.rows.filter(r=>r.kind===kind)} rowKey={r=>r.label} scope="서버에서 반환한 집계 행만 검색·정렬합니다. 기록이 있는 모든 집단을 표시합니다." columns={[{key:'label',label:'대상',value:r=>r.label},{key:'users',label:'고유 학생 수',value:r=>r.users},{key:'records',label:'기록 수',value:r=>r.records}]}/>:<p>선택 기간에 기록이 없습니다.</p>}</AdminPanel>)}
+   {(section==='learning'||section==='applications')&&<ApplicationsRoster/>}
  {section==='insights'&&<AdminPanel title="인사이트 DRAFT 미리보기"><p>자동 노출 OFF · 저장·승인 원장 연결 전에는 미리보기만 제공합니다.</p>{current.data.rows.filter(r=>r.kind==='saved').slice(0,1).map(r=><p key={r.label}>선택 기간에 현재 남아 있는 저장 기록 기준, {r.users}명의 학생이 「{r.label}」 자료를 저장했습니다.</p>)}<p>기간: {current.data.from} ~ {current.data.to} · 전체 기록 집계 · 조회 시각과 출처는 위와 동일합니다.</p></AdminPanel>}
  </>:null}
  <AdminPanel title="집계 해석"><p>{learningDefinitions.study}</p><p>성적 분포·인과 분석·희망 대학 변경 추이·검색 횟수는 기존 데이터만으로 복원하지 않습니다. 개인별 기록은 권한이 확인된 회원 상세에서 확인하세요.</p><Link href="/admin/members/">회원 상세 / Student 360</Link></AdminPanel>
