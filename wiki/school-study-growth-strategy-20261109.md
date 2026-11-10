@@ -684,3 +684,13 @@ Owner 승인으로 `admin_admissions_analytics` 적용 + 관리자 대시보드 
 
 ### 29.5 롤백
 - WEB canonical `8243116d` 복귀. RPC `rollback.sql`(신규 함수 drop, 기존 기능 무영향). 신규 회귀 0(기존 8 failed 기준선).
+
+## 30. 입시 성과(합격 현황) 집계 — 마케팅/BM 소셜 프루프 (2026-11-10, 구현 완료 · 운영 적용/배포 대기)
+
+BM 논의(합격=최강 소셜 프루프 레버)에 따라 관리자 대시보드에 합격 현황 집계 추가. **운영 변경/배포 없음(후보 RPC+UI). 기존 객체 불변.**
+
+- 신규 후보 RPC `admin_admission_outcomes(p_from,p_to)`(미적용): 지원별 "현재 상태"(created/details_changed 제외 + 미대체 최신 이벤트 = 기존 latest_event 동일 기준)로 최종합격(accepted+additional)·1단계합격·불합격·등록·미등록·진행, 합격률(최종합격÷(합격+불합격)), 합격 대학/전형 TOP. 개인 식별 없이 집계만. admin_operator 게이트.
+- UI: '입시 성과 · 합격 현황' FocusSection 추가(기존 패널 유지). 발표 전/데이터 없음 상태 안내, 자기신고 명시.
+- 검증(읽기전용): 현 지원 2건(stage_pass 1·submitted 1, 최종합격 0, 이벤트 1) 정상 집계. 발표 시즌/코덱스 온보딩 후 데이터 축적 시 활성. TS0·ESLint0·빌드 OK, 전체 8 failed=기존 기준선(신규 회귀 0).
+- BM 활용: "사용자 N명 합격" 소셜 프루프, 대학/전형별 합격률 → 타게팅·전환·초대 루프 결합. 향후 내신·모의 연결 시 "합격 예측" 유료 기능의 기반.
+- 후보 `supabase/candidates/admission_outcomes/{install,test}.sql`. 적용 시 RPC apply + /admin 배포 동반(Owner 승인). 롤백: drop function.
