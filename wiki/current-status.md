@@ -1,3 +1,4 @@
+2026-11-10: [Codex 인수인계 — 학습·입시 기능 최종 보고](codex-handoff-learning-admissions-20261111.md). WEB canonical `9788a7ca`(git `0eefc7d`) 기준. 희망(직접insert)/실제지원(RPC·이벤트소싱)/합격이력보존/학교순위/초대퍼널/개별지원로스터 운영 적용 완료, 실사용 E2E·운영자 세션은 미검증. 내일 Codex 작업 A–F 연결점 포함. 운영 변경 없음.
 2026-11-08: [자료 동기화 관리자 후보](material-sync-admin-20261108.md). UI·TEST·빌드 완료, 추가 운영 승인 대기.
 
 # WEB current integration status
