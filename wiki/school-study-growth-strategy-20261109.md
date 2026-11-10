@@ -388,3 +388,33 @@ Owner 승인으로 `/school` 학생용 WEB를 **선별 오버레이**로 운영 
 - **운영 RPC 미적용**: 후보 `supabase/candidates/student_school/install.sql`만 수정. 라이브 RPC는 평균 5명·가입수 미마스킹 상태 → **UI와 함께 적용·배포 필요**(순서: RPC apply → WEB deploy). UI만 먼저 배포 금지(라이브 RPC가 다른 학교 가입수 실제 반환).
 - 승인 필요: (a) 학생 RPC 재적용(`student_school_v2`), (b) `/school`+`/account` WEB 재배포.
 - 롤백: RPC는 직전 정의, WEB는 직전 canonical(`aaa350d6`).
+
+## 20. 공부 순위 개선 운영 반영 — RPC v2 + WEB 재배포 (2026-11-10, Owner 승인)
+
+Owner 승인으로 RPC v2 적용 + `/school`·`/account` 선별 재배포. 기존 관리자 RPC·테이블·인증 무변경.
+
+### 20.1 적용된 migration
+- `student_school_v2` — `student_school_ranking(p_period,p_metric)` 교체: 총시간·평균 모두 기록자 3+, 다른 학교 `registered_users` null 마스킹(본인 학교만 실제값). `student_school_card()`는 v1과 동일(미변경). 시그니처·권한 유지.
+- v1 롤백본 보존: `supabase/candidates/student_school/rollback_v1.sql`(create-or-replace, 평균 5·마스킹 없음).
+
+### 20.2 RPC 적용 후 검증 (WEB 배포 전)
+- 정의: 평균 상수 3(`avg_is_3`), `pub_registered` 포함, 시그니처 `(p_period, p_metric)` 유지.
+- 권한: authenticated/service_role/postgres=X, **anon/public 회수** 유지.
+- 차단: 비로그인/무JWT card·ranking 모두 42501. 4-인자 우회 호출 42883(파라미터 없음).
+- 공개 기준: 밴드(합성) 0/1/2 비공개·3/4/5+ 공개 — **평균 3명에서 공개** 확인.
+- 가입자 마스킹(실데이터 30d): registered 순위 128곳 중 **가입 수 반환 1곳(본인)**·나머지 null. 다른 학교 가입자 수 API 응답 미포함 확인.
+- 정합성: 30d `ms_consistent`=true(관리자 집계 일치). 기록자 1~2명 ms/avg 유출 0.
+- 보안 권고: 적용 전후 동일(5건, 신규 0).
+
+### 20.3 WEB 선별 재배포
+- **배포 ID `4257db26`** / 소스 `9813b22`. **롤백 대상 `aaa350d6`**.
+- 선별 오버레이: `/school/*` 5 + `/account/*` 20 + 신규 static 6, **범위 밖 변경 0건**. Functions 24 보존(소스 동일 재컴파일). Worker/라우팅/headers/redirects 보존.
+
+### 20.4 배포 후 검증 (익명/빌드 레벨)
+- canonical `4257db26` 승격 ✅. `/school/`·`/account/`·`/`·`/admin/`·`/pricing/` 200 ✅. `/api/essay/*` 401(동작) ✅.
+- 라이브 `/school` 제목 "우리 학교 공부 순위" ✅. 하단 집계 안내 문구 번들 포함 ✅.
+- NOT TESTED(실로그인): 카드 간격 24px 시각 확인, 다른 학교 가입자 '**' 표시, 본인 학교 실제값, 평균 3명 공개 표시, 랭킹/친구 초대/마이페이지 메뉴명, 모바일 레이아웃.
+
+### 20.5 회귀·롤백·호환성
+- 신규 회귀 0(파서 29/29, TS 0, ESLint 0, 빌드 통과; 기존 admin/materials 8 failed 기준선).
+- 롤백: WEB은 canonical `aaa350d6` 복귀, RPC는 `rollback_v1.sql` 재적용. v2 WEB↔v2 RPC 계약 일치(registeredUsers nullable·시간 null 처리). v1 WEB↔v2 RPC도 안전(과거 UI는 number 기대였으나 현재 배포는 v2 UI이므로 불일치 없음; 롤백 시 WEB·RPC 동반 롤백 권장).
