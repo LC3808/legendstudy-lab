@@ -493,3 +493,27 @@ Owner 승인으로 RPC v3 적용 + `/school` 선별 재배포. `/account`는 변
 
 ### 23.3 운영 적용/배포 대기
 - 후보 SQL만 수정(운영은 v3=week/last_week/month). 적용 시 **RPC v4(기간 all 추가) + /school WEB 재배포 동반 필요**. 승인 필요. 롤백: WEB canonical `6a5e2466`, RPC `rollback_v2.sql`(v2) 또는 v3 재적용.
+
+## 24. 참여 탭 기본화 + 전체 기간 운영 반영 — RPC v4 + /school 재배포 (2026-11-10, Owner 승인)
+
+Owner 승인으로 RPC v4(기간 all 추가) 적용 + `/school` 재배포. `/account` 변경 없어 미배포. 관리자·DB 테이블 무변경.
+
+### 24.1 백업 + migration
+- v3 롤백본 보존: `supabase/candidates/student_school/rollback_v3.sql`(participation·all 없음). v1/v2와 구분.
+- `student_school_v4` — `student_school_ranking`에 `p_period='all'`(from 1970) 추가. 그 외 v3와 동일(participation·마스킹·rnk/ord·TOP10/주변). 카드·시그니처 미변경.
+
+### 24.2 RPC 검증 (배포 전)
+- 정의: 기간 목록 `week/last_week/month/all` 포함, all-time from 1970 포함, 시그니처 유지, authenticated 전용(anon/public 회수).
+- 차단: 비로그인 42501. 보안 권고: 시그니처·권한 v3와 동일한 body-only 변경 → 신규 없음.
+
+### 24.3 WEB 배포
+- **배포 ID `4986657a`** / 소스 `b56af2a`. **롤백 대상 `6a5e2466`**.
+- 선별 오버레이(`/school` 전용): `/school/*` 5 + 신규 static 4, **범위 밖 변경 0건**. `/account` 미변경. Functions 24 보존.
+- 변경: 3번째 탭명 "참여 학생 수 Top 학교"(컬럼 머리글 '참여 학생 수' 유지), 기본 탭=참여, 기본 기간=전체 기간, '전체 기간' 옵션 신설.
+
+### 24.4 배포 후 검증 (익명/빌드)
+- canonical `4986657a` 승격. `/school/`·`/account/`·`/`·`/admin/`·`/pricing/` 200. `/api/essay/*` 401(동작). 번들에 "참여 학생 수 Top 학교"·"전체 기간" 포함.
+- NOT TESTED(실로그인): 기본 진입 시 참여·전체 기간 선택 상태, 전체 기간 집계 표시, 탭명 노출.
+
+### 24.5 롤백·호환성
+- WEB canonical `6a5e2466`, RPC `rollback_v3.sql`(v3) 또는 v2. v4 RPC는 기간만 추가라 v3 WEB와도 하위호환(기존 기간 동작 동일). 신규 회귀 0.
