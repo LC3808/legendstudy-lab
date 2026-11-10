@@ -63,6 +63,10 @@ describe('parseSchoolRanking', () => {
     expect(r.top[1].activeUsers).toBe(12);
     expect(r.mySchool?.rank).toBe(3);               // tie-aware rank (may differ from row index)
   });
+  it('accepts the all-time period', () => {
+    const r = parseSchoolRanking({version:'student-school-ranking-v1', metric:'participation', period:'all', min_users:3, school_count:0, as_of:'t', top:[], around:[], my_school:null});
+    expect(r.period).toBe('all');
+  });
   it('accepts a null my_school', () => {
     const r = parseSchoolRanking({version:'student-school-ranking-v1', metric:'average', period:'month', min_users:3, school_count:0, as_of:'t', top:[], around:[], my_school:null});
     expect(r.mySchool).toBeNull();

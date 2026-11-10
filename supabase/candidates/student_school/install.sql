@@ -101,7 +101,7 @@ end $function$;
 
 -- ---------------------------------------------------------------------------
 -- 학교별 TOP 랭킹 — 기간/지표별 학교 리더보드(학교 단위 집계만).
--- p_period: 'week' | 'last_week' | 'month'
+-- p_period: 'week' | 'last_week' | 'month' | 'all'(전체 기간)
 -- p_metric: 'total'(총시간, 기록자>=3) | 'average'(1인당 평균, 기록자>=3) | 'participation'(참여 학생 수=기간 내 기록자, active>=1)
 --   ('registered'는 'participation' 과도기 별칭 — 동일하게 active_users 기준).
 -- 공개 기준은 서버 상수로 고정(총시간·평균 모두 기록자>=3). 우회 입력 파라미터 없음.
@@ -130,14 +130,15 @@ declare
   result jsonb;
 begin
   if v_uid is null or not account_private.allowed(v_uid) then raise insufficient_privilege; end if;
-  if p_period not in ('week','last_week','month') then raise sqlstate 'PT422' using message='INVALID_PERIOD'; end if;
+  if p_period not in ('week','last_week','month','all') then raise sqlstate 'PT422' using message='INVALID_PERIOD'; end if;
   -- 'registered'는 'participation'(참여 학생 수) 별칭으로 과도기 호환 허용. 둘 다 active_users 기준.
   if p_metric not in ('total','average','participation','registered') then raise sqlstate 'PT422' using message='INVALID_METRIC'; end if;
 
   v_week_start := (date_trunc('week', (v_to at time zone 'Asia/Seoul')) at time zone 'Asia/Seoul');
   if p_period = 'week' then v_from := v_week_start;
   elsif p_period = 'last_week' then v_from := v_week_start - interval '7 days'; v_to := v_week_start;
-  else v_from := v_to - interval '30 days';
+  elsif p_period = 'month' then v_from := v_to - interval '30 days';
+  else v_from := '1970-01-01T00:00:00Z'::timestamptz;  -- 'all' 전체 기간(서비스 시작 이후 전체)
   end if;
 
   select neis_office_code, neis_school_code into v_office, v_school

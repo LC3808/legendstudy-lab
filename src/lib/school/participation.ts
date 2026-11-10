@@ -21,7 +21,7 @@ export type SchoolCard =
     };
 
 export type SchoolRankMetric = 'total' | 'average' | 'participation';
-export type SchoolRankPeriod = 'week' | 'last_week' | 'month';
+export type SchoolRankPeriod = 'week' | 'last_week' | 'month' | 'all';
 export type SchoolRankRow = {
   officeCode:string; schoolCode:string;
   // registeredUsers (가입) and activeUsers (참여) are null for schools other than the
@@ -67,7 +67,7 @@ export function parseSchoolRanking(raw:unknown):SchoolRanking{
   const metric=str(r.metric) as SchoolRankMetric;
   if(!['total','average','participation'].includes(metric)) throw new Error('MALFORMED');
   const period=str(r.period) as SchoolRankPeriod;
-  if(!['week','last_week','month'].includes(period)) throw new Error('MALFORMED');
+  if(!['week','last_week','month','all'].includes(period)) throw new Error('MALFORMED');
   if(!Array.isArray(r.top)||!Array.isArray(r.around)) throw new Error('MALFORMED');
   return {
     metric, period, minUsers:num(r.min_users), schoolCount:num(r.school_count),

@@ -476,3 +476,20 @@ Owner 승인으로 RPC v3 적용 + `/school` 선별 재배포. `/account`는 변
 ### 22.5 회귀·롤백·호환성
 - 신규 회귀 0(파서 29/29, TS0, ESLint0, 빌드 OK; 기존 admin/materials 8 failed 기준선).
 - 롤백: WEB canonical `4257db26` 복귀, RPC `rollback_v2.sql` 재적용(v2). v3 WEB↔v3 RPC 계약 일치(active nullable). 롤백 시 WEB·RPC 동반 권장.
+
+## 23. 참여 탭 기본화 + 전체 기간 기본 + 탭명 변경 (2026-11-10, 구현 완료 · 운영 적용/배포 대기)
+
+실로그인 화면 확인 후 Owner 피드백 반영. **후보 RPC+프런트만, 운영 변경/배포 없음.**
+
+### 23.1 변경
+- 3번째 탭 이름 **"참여 학생 수" → "참여 학생 수 Top 학교"**(탭 라벨만; 표 컬럼 머리글은 '참여 학생 수' 유지).
+- 기본 선택 탭 = **참여 학생 수(participation)**, 기본 기간 = **전체 기간**.
+- 기간 옵션에 **'전체 기간'(all)** 신설(맨 앞). 후보 RPC `student_school_ranking`에 `p_period='all'` 추가(from=1970-01-01, 서비스 시작 이후 전체). week/last_week/month 유지. 시그니처·카드 미변경.
+- 계약 `SchoolRankPeriod`에 'all' 추가, 파서 허용.
+
+### 23.2 검증(읽기 전용)
+- 전체 기간 집계(from 1970): 참여 학교 12곳·최대 2명·총 13행(30d=12곳·최대 1명·12행) — 더 넓은 창 정상 집계 확인. SQL 오류 없음.
+- 파서 29/29, TS 0, ESLint 0, 빌드(기록 중). 기존 탭/마스킹/공동순위 로직 불변.
+
+### 23.3 운영 적용/배포 대기
+- 후보 SQL만 수정(운영은 v3=week/last_week/month). 적용 시 **RPC v4(기간 all 추가) + /school WEB 재배포 동반 필요**. 승인 필요. 롤백: WEB canonical `6a5e2466`, RPC `rollback_v2.sql`(v2) 또는 v3 재적용.

@@ -84,11 +84,13 @@ export function SchoolParticipationCard({card,loading}:{card:SchoolCard|null;loa
   </section>;
 }
 
-const METRICS:{key:SchoolRankMetric;label:string;note:string}[]=[
+// label = 탭 이름, col = 표(컬럼) 머리글(생략 시 label). 참여 탭은 'Top 학교'를 강조하되 컬럼은 '참여 학생 수'.
+const METRICS:{key:SchoolRankMetric;label:string;col?:string;note:string}[]=[
   {key:'total',label:'총 공부시간',note:'기록자 3명 이상 학교 (개인 공부시간 보호)'},
   {key:'average',label:'1인당 평균',note:'기록자 3명 이상 학교 (개인 공부시간 보호)'},
-  {key:'participation',label:'참여 학생 수',note:'기간 내 공부시간을 기록한 학생 수 (다른 학교 인원은 비공개)'},
+  {key:'participation',label:'참여 학생 수 Top 학교',col:'참여 학생 수',note:'기간 내 공부시간을 기록한 학생 수 (다른 학교 인원은 비공개)'},
 ];
+function metricCol(metric:SchoolRankMetric):string{ const m=METRICS.find(x=>x.key===metric)!; return m.col??m.label; }
 /** 다른 학교의 가입·참여 학생 수는 비공개(null) — 0명이 아니라 ** 로 표시. */
 const MASK='**';
 function countLabel(v:number|null):string{ return v==null?MASK:`${v.toLocaleString('ko-KR')}명`; }
@@ -96,6 +98,7 @@ function countLabel(v:number|null):string{ return v==null?MASK:`${v.toLocaleStri
 function secondaryOf(metric:SchoolRankMetric){ return metric==='participation'?'가입 학생 수':'참여 학생 수'; }
 function secondaryValue(row:SchoolRankRow,metric:SchoolRankMetric):number|null{ return metric==='participation'?row.registeredUsers:row.activeUsers; }
 const PERIODS:{key:SchoolRankPeriod;label:string}[]=[
+  {key:'all',label:'전체 기간'},
   {key:'week',label:'이번 주'},
   {key:'last_week',label:'지난 주'},
   {key:'month',label:'최근 30일'},
@@ -111,14 +114,14 @@ function RankRow({row,metric,mine}:{row:SchoolRankRow;metric:SchoolRankMetric;mi
   return <tr className={mine?'school-rank__row school-rank__row--mine':'school-rank__row'}>
     <td data-label="순위">{row.rank.toLocaleString('ko-KR')}</td>
     <td data-label="학교"><SchoolName office={row.officeCode} school={row.schoolCode}/>{mine&&<span className="school-rank__badge"> · 우리 학교</span>}</td>
-    <td data-label={METRICS.find(m=>m.key===metric)!.label}>{metricValue(row,metric)}</td>
+    <td data-label={metricCol(metric)}>{metricValue(row,metric)}</td>
     <td data-label={secondaryOf(metric)}>{countLabel(secondaryValue(row,metric))}</td>
   </tr>;
 }
 
 export function SchoolRankingPanel(){
-  const [metric,setMetric]=useState<SchoolRankMetric>('total');
-  const [period,setPeriod]=useState<SchoolRankPeriod>('week');
+  const [metric,setMetric]=useState<SchoolRankMetric>('participation');
+  const [period,setPeriod]=useState<SchoolRankPeriod>('all');
   const {data,loading}=useSchoolRanking(metric,period);
   const activeMetric=METRICS.find(m=>m.key===metric)!;
   const mySchoolInTop=data?.mySchool&&data.top.some(r=>r.officeCode===data.mySchool!.officeCode&&r.schoolCode===data.mySchool!.schoolCode);
@@ -139,7 +142,7 @@ export function SchoolRankingPanel(){
     {!loading&&!data&&<PreparingNote>학교별 랭킹은 준비 중이에요. 잠시 후 다시 확인해 주세요.</PreparingNote>}
     {data&&data.top.length===0&&<p className="focus-note">아직 집계된 학교가 없어요.</p>}
     {data&&data.top.length>0&&<table className="school-rank__table"><caption className="sr-only">{activeMetric.label} 기준 학교 랭킹</caption>
-      <thead><tr><th scope="col">순위</th><th scope="col">학교</th><th scope="col">{activeMetric.label}</th><th scope="col">{secondaryOf(metric)}</th></tr></thead>
+      <thead><tr><th scope="col">순위</th><th scope="col">학교</th><th scope="col">{metricCol(metric)}</th><th scope="col">{secondaryOf(metric)}</th></tr></thead>
       <tbody>
         {data.top.map(r=><RankRow key={`${r.officeCode}-${r.schoolCode}`} row={r} metric={metric} mine={!!data.mySchool&&r.officeCode===data.mySchool.officeCode&&r.schoolCode===data.mySchool.schoolCode}/>)}
         {data.mySchool&&!mySchoolInTop&&<>
