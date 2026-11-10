@@ -5,7 +5,8 @@ import {useAuth} from '@/components/auth-context';
 import {OwnerArea} from '@/components/my/owner-data';
 import {formatStudyTime} from '@/lib/admin/study-time';
 import {SchoolName} from './school-name';
-import {SchoolInviteButton} from './invite-button';
+import {SchoolInviteConnected} from '@/components/invite/school-invite-connected';
+import {InviteAttributionPrompt} from '@/components/invite/invite-attribution';
 import {
   readSchoolCard,readSchoolRanking,
   type SchoolCard,type SchoolRanking,type SchoolRankMetric,type SchoolRankPeriod,type SchoolRankRow,
@@ -78,7 +79,7 @@ export function SchoolParticipationCard({card,loading}:{card:SchoolCard|null;loa
     {rankingOpen&&tier!=='compete'&&<p className="school-card__message">우리 학교 친구 <strong>{card.registeredUsers}명</strong>이 함께하고 있어요. 더 많은 친구가 모이면 학교 순위가 올라가요. 함께할 친구를 초대해 보세요!</p>}
     {rankingOpen&&tier==='compete'&&<p className="school-card__message">우리 학교 친구 <strong>{card.registeredUsers}명</strong>이 공부시간을 기록하고 있어요. 이번 주 공부시간을 늘려 우리 학교 순위를 끌어올려 보세요!</p>}
     <div className="school-card__actions">
-      <SchoolInviteButton schoolName={undefined}/>
+      <SchoolInviteConnected schoolName={undefined}/>
       {rankingOpen&&<a className="button button--outline" href="#school-ranking">학교 랭킹 보기</a>}
     </div>
   </section>;
@@ -161,6 +162,7 @@ export function SchoolView(){
     <header className="my-head"><h1>우리 학교 공부 순위</h1></header>
     <OwnerArea path="/school/">
       <div className="school-view__stack">
+        <InviteAttributionPrompt/>
         <SchoolParticipationCard card={card.data} loading={card.loading}/>
         <SchoolRankingPanel/>
         <p className="school-view__source">레전드스터디+의 학습 시간을 기준으로 집계돼요</p>

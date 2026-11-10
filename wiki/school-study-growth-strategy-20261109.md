@@ -517,3 +517,59 @@ Owner 승인으로 RPC v4(기간 all 추가) 적용 + `/school` 재배포. `/acc
 
 ### 24.5 롤백·호환성
 - WEB canonical `6a5e2466`, RPC `rollback_v3.sql`(v3) 또는 v2. v4 RPC는 기간만 추가라 v3 WEB와도 하위호환(기존 기간 동작 동일). 신규 회귀 0.
+
+## 25. Phase 3 친구 초대·가입 전환·첫 학습·D7 유지 추적 (2026-11-10, 설계·구현 완료 · 운영 적용/배포 대기)
+
+초대가 실제 신규 가입·학습 활성화로 이어지는지 측정하는 Growth 시스템. **운영 DB·RPC·인증·배포 변경 없음(후보 SQL + 프런트 구현 + 테스트 + 설계만).** 운영 적용·배포는 Owner 별도 승인.
+
+### 25.1 기존 시스템 분석(교차 검증)
+- 기존 invite/referral/campaign 테이블 **없음**(클린). 가입=Supabase Auth(`signUp`/OAuth) + `profiles` 트리거(`account_lifecycle_*`,`essay_signup_credit`) → **signup_at=profiles.created_at**.
+- 공부시간: `study_sessions.include_in_study_total` + `active_segments`(end>start) — 기존 정책 재사용(신규 집계 안 함).
+- 분석: `analyticsEvents`(GA4 미러) + `logAnalytics`. **GA4는 `NEXT_PUBLIC_ANALYTICS_ENABLED` 게이트인데 운영 env에 없음 → GA4 미연결(이벤트 전송 off)**. 설계만 반영, 실제 전송은 NOT TESTED.
+- 정적 export라 `/invite/[token]` 서버 라우트 불가 → `/invite?t=<token>` 클라이언트 토큰 처리.
+
+### 25.2 신규 DB 테이블·인덱스(후보, 미적용)
+`supabase/candidates/invite_growth/install.sql`
+- `invite_tokens`(token_hash unique, inviter_user_id, office/school_code, campaign, created/expires/revoked_at) — **raw 토큰 비저장, sha256 해시만**. idx(inviter,created),(office,school).
+- `invite_visits`(invite_token_id, visitor_hash, source, visited_at, unique(token,visitor)) — 방문자=클라이언트 난수 해시(개인정보 아님), 중복 1행.
+- `invite_attributions`(invite_token_id, invited_user_id **unique**, signup_at, school_confirmed_at, first_study_at, d7_retained_at, d7_evaluated_at) — 신규 가입자 1회 귀속.
+- 3개 테이블 RLS enable, 직접 접근 정책 없음(기본 거부) → 모든 접근은 SECURITY DEFINER RPC 경유.
+
+### 25.3 신규 RPC/API(후보, 미적용)
+- `invite_create(campaign)` — 로그인 발급, raw 토큰 1회 반환(서버 해시 저장), 초대자 학교 스냅샷.
+- `invite_lookup(token)` — anon 허용, 유효성+학교코드만(초대자 신원 비노출).
+- `invite_record_visit(token,visitor,source)` — anon 허용, 중복 제거.
+- `invite_attribute_signup(token)` — 본인, 자기초대/기존회원/중복 차단, 7일 귀속.
+- `invite_mark_school_confirmed()` / `invite_refresh_milestones()`(첫 학습·D7 멱등 갱신) / `invite_my_performance()`(초대자 본인 집계) / `admin_invite_growth(from,to)`(operator, 전체+학교별+전환율·D7율).
+- 권한: 생성/귀속/성과/관리자=authenticated, 조회/방문=anon+authenticated. 토큰은 권한 부여 수단 아님.
+
+### 25.4 귀속·전환 로직
+- 초대 기반 가입: 토큰 방문 후 신규 계정 생성(signup_at ≥ token.created_at, 가입 7일 이내), 기존 회원·자기 가입 제외, invited_user 1회.
+- 첫 학습: 가입 이후 최초 유효 공부시간(>0) 세션 시각. 타이머 실행/화면 방문만으로 인정 안 함.
+- D7: 가입 D0(KST)+7일째 날짜에 유효 공부시간 존재 시 유지. 관찰 기간 미도래(아직 D7 안 지남)면 미평가(d7_evaluated_at null)→유지율 분모 제외.
+
+### 25.5 WEB 구현(가드/휴면 — RPC 미적용 시 현행 동작)
+- `/invite` 랜딩(`src/app/invite/page.tsx`+`invite-landing.tsx`): 토큰 조회→초대 학교명 표시/일반 초대/만료·무효 폴백, 방문 기록, 토큰 보관(가입 후 귀속).
+- `SchoolInviteConnected`: 토큰 생성 후 초대 URL 주입(캐시), RPC 부재 시 기존 공개 랜딩 URL 폴백(무회귀). 공유 이벤트.
+- `InviteAttributionPrompt`(/school 상단): 로그인+보관 토큰 시 귀속→학교 확인 카드(사용자 확인 후 설정, 자동확정 금지).
+- 데이터 계약 `src/lib/invite/contract.ts`(파서+가드 래퍼+visitorId+pending token). 테스트 7/7.
+
+### 25.6 GA4 이벤트 설계
+`school_invite_click/share/link_open/signup/school_confirmed/first_study/d7_retained` + param `campaign` 추가(`analyticsEvents`). first_study/d7는 서버 마일스톤 기반(클라 전송은 로그인 세션에서). **GA4 운영 미연결 → 실제 전송 NOT TESTED.**
+
+### 25.7 Flutter APP 연동(설계만)
+- 앱 링크(Universal/App Links)로 `/invite?t=` 수신 → 동일 Backend RPC 호출. 네이티브 UI 유지(WebView 금지).
+- 미설치→설치 후 토큰 복원(deferred deep link)은 플랫폼별 지원 확인 필요 — **미지원 시 구현 완료로 보고하지 않음**(현재 미구현).
+
+### 25.8 보안·중복 방지
+외부 URL raw 토큰만(내부 UUID/이메일 비노출), 추측난이 128bit, 서버 유효성 검증, 자기초대 차단, invited_user unique(중복 귀속 금지), visit unique(중복 방문 금지), 개인 학습기록 비공개, 기존 RLS/인증 보존, 관리자 operator 게이트. 토큰=식별용(권한 아님).
+
+### 25.9 검증·테스트
+- 읽기전용: 토큰/해시 패턴 OK, 첫 학습 탐지(실유저 signup→first_study 정상), D7 경계(KST signup+7일) 정상, invite* 테이블 충돌 0.
+- 파서 7/7, 전체 학교 파서 29/29, TS 0, ESLint 0, 빌드(기록 중). 기존 /school·공부시간 기능 보존.
+
+### 25.10 운영 적용 필요 / Owner 승인 요청
+1. 후보 스키마+RPC 운영 `apply_migration`(invite_tokens/visits/attributions + RPC 8종). 적용 전 `test.sql`·`get_advisors` 신규 권고 0.
+2. `/school`+`/invite` WEB 재배포(연결 버튼·랜딩·귀속 활성화).
+3. GA4 운영 연결(`NEXT_PUBLIC_ANALYTICS_ENABLED`) — 미연결 상태.
+4. 관리자 Growth 분석 화면(이번 미구현, admin_invite_growth RPC만 설계) · Flutter 딥링크 — 각 별도 승인.

@@ -1835,3 +1835,10 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 .school-card__locked {border:1px dashed var(--line-strong);border-radius:12px;background:var(--surface-muted);padding:1rem;display:flex;flex-direction:column;gap:.4rem;}
 .school-card__locked-title {font-weight:700;margin:0;}
 .my-school-entry__desc {margin:0 0 .85rem;line-height:1.6;color:var(--muted);}
+/* 친구 초대 (Phase 3) */
+.invite-landing {display:flex;flex-direction:column;gap:24px;}
+.invite-card {border:1px solid var(--line-strong);border-radius:16px;background:var(--surface);padding:1.5rem;display:flex;flex-direction:column;gap:1rem;}
+.invite-card h1 {font-size:1.2rem;font-weight:700;line-height:1.45;margin:0;}
+.invite-card p {margin:0;line-height:1.65;}
+.invite-card__actions {display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.25rem;}
+.invite-confirm {border-style:dashed;}
