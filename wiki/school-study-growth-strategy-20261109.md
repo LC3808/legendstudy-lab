@@ -448,3 +448,31 @@ Owner 승인으로 RPC v2 적용 + `/school`·`/account` 선별 재배포. 기�
 
 ### 21.7 운영 적용/배포 대기
 - 후보 SQL만 수정(운영 RPC는 v2=registered 기준). 적용 시 **RPC 교체 + /school·/account WEB 재배포 동반 필요**(과도기: v2 UI가 active=null을 못 받으면 가드로 "준비 중" 표시 — 크래시 없음). 승인 필요: RPC v3 apply + WEB 재배포. 롤백: WEB canonical `4257db26`, RPC `rollback_v1.sql`(또는 v2 재적용).
+
+## 22. 참여 학생 수 랭킹 v3 운영 반영 — RPC v3 + /school 재배포 (2026-11-10, Owner 승인)
+
+Owner 승인으로 RPC v3 적용 + `/school` 선별 재배포. `/account`는 변경 없어 미배포(검증). 관리자 기능·DB 테이블 무변경.
+
+### 22.1 v2 백업 + 적용 migration
+- v2 롤백본 보존: `supabase/candidates/student_school/rollback_v2.sql`(평균3·registered 기준·가입수만 마스킹). v1(`rollback_v1.sql`)과 구분.
+- `student_school_v3` — `student_school_ranking` 교체: participation(active 기준) 지표, 다른 학교 registered·active 모두 null, rnk/ord 분리, TOP10+주변(ord). 카드 미변경, 시그니처 유지.
+
+### 22.2 RPC 적용 후 검증 (WEB 배포 전)
+- 정의: 시그니처 `(p_period,p_metric)`, participation 정렬(`active_users`), `pub_active` 마스킹, `rank`+`row_number` 모두 포함. 권한 authenticated 전용(anon/public 회수).
+- 차단: 비로그인 card·ranking 42501(인증 게이트가 metric 검증보다 선행).
+- 참여 집계: 참여 학교 **13곳**, 참여 0명 학교 **116곳 제외**, 1명 이상 포함. 중복 제거(distinct user).
+- 마스킹: 본인 학교만 가입·참여 수 반환(각 1곳), 다른 학교 둘 다 null.
+- 공동 순위: TOP10 내 distinct rnk 2(동률 발생), rnk=공동순위·ord=표시순서 분리 동작.
+- 총시간/평균 3명 기준 유지. 보안 권고 적용 전후 동일(5건, 신규 0).
+
+### 22.3 WEB 배포
+- **배포 ID `6a5e2466`** / 소스 `34938a1`. **롤백 대상 `4257db26`**.
+- 선별 오버레이(`/school` 전용): `/school/*` 5 + 신규 static 4, **범위 밖 변경 0건**. `/account` 변경 없음 확인(미배포). Functions 24 보존(소스 동일 재컴파일).
+
+### 22.4 배포 후 검증 (익명/빌드 레벨)
+- canonical `6a5e2466` 승격 ✅. `/school/`·`/account/`·`/`·`/admin/`·`/pricing/` 200 ✅. `/api/essay/*` 401(동작) ✅. 운영 번들에 "참여 학생 수" 탭 포함 ✅.
+- NOT TESTED(실로그인): 참여 학생 수 탭 표시, 다른 학교 '**', 본인 학교 실제값, 공동 순위 표시, TOP10/주변 순위, 기간 선택, 친구 초대, 마이페이지 진입.
+
+### 22.5 회귀·롤백·호환성
+- 신규 회귀 0(파서 29/29, TS0, ESLint0, 빌드 OK; 기존 admin/materials 8 failed 기준선).
+- 롤백: WEB canonical `4257db26` 복귀, RPC `rollback_v2.sql` 재적용(v2). v3 WEB↔v3 RPC 계약 일치(active nullable). 롤백 시 WEB·RPC 동반 권장.
