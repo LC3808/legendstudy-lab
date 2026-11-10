@@ -608,3 +608,34 @@ Owner 최종 검증 승인에 따른 보완. **운영 DB·배포·권한 변경 
 ### 26.9 운영 적용 시 위험 요소 / Owner 승인 필요
 - 위험: (a) 신규 테이블/RPC 적용(기존 객체 무변경이나 DDL), (b) anon 실행 권한 2종(lookup/visit) — 응답 최소화·토큰 검증으로 완화, (c) GA4 미연결 상태 전송 없음, (d) 관리자 집계 study_sessions 재계산 비용(소규모 OK). 롤백: 신규 객체 drop(기존 영향 없음).
 - 승인 필요: ① 스키마+RPC(9종) apply(+`get_advisors` 0 확인), ② `/school`·`/invite`·루트 레이아웃 WEB 배포, ③ GA4 연결, ④ 관리자 Growth 화면·Flutter 딥링크(별도).
+
+## 27. Phase 3 운영 적용 — 스키마+RPC 적용 + 전역 WEB 배포 (2026-11-10, Owner 승인)
+
+Owner 승인으로 초대 추적 스키마+RPC 적용 + Phase 3 WEB 운영 배포. GA4 연결·Flutter·관리자 UI는 제외.
+
+### 27.1 적용 migration / 신규 객체
+- `invite_growth_v1` — 신규 테이블 3(`invite_tokens`·`invite_visits`·`invite_attributions`) + RPC 9종. **기존 테이블·RPC 무변경**. 롤백본 `rollback.sql`(신규 객체 drop만).
+
+### 27.2 RPC 검증 (WEB 배포 전, 게이트 통과)
+- 구조: 신규 테이블 3·RLS 전부 on(직접 접근 정책 없음=기본 거부, RPC 경유), 9 RPC 전부 SECURITY DEFINER·`search_path=''`, anon 실행은 `invite_lookup`·`invite_record_visit` 2종만, unexpected 0.
+- 동작(롤백 트랜잭션, 데이터 미잔존): self_invite→self_invite, 기존 계정→**not_new_signup**(가입 시점=profiles.created_at 사용), 만료→expired, 폐기→revoked, 비정상 토큰→invalid, 유효 lookup 반환키=`campaign,has_school,office_code,school_code,valid,version`(**회원·학습·초대자 신원 미포함**). 중복 귀속=invited_user unique+already로 차단.
+- 보안 권고: 적용 전후 동일(5건, 신규 카테고리 0). 초대 객체는 기존 `rls_enabled_no_policy`(RPC 전용 설계)·`*_security_definer_*` 범주에 포함.
+- **NOT TESTED**: 실제 신규 계정 가입→귀속 happy-path(attributed:ok)는 실가입 필요.
+
+### 27.3 전역 Watcher 배포 방식 (§3)
+- 루트 레이아웃에 `InviteAttributionWatcher` 추가 → **앱 전역 변경**(선별 /school 오버레이 불가). `git diff b56af2a(운영 소스)..842f9c6`가 **Phase 3 파일만** 변경 확인 → 기존 페이지 변화는 공유 레이아웃/CSS 청크 참조뿐(내용 회귀 없음).
+- **전체 사이트 오버레이**(worker/Functions/headers/routes 베이스라인 보존): dry-run 변경 797·추가 19(/invite 5+청크)·**드롭된 기존 페이지 0**·Functions 24 보존.
+
+### 27.4 운영 배포
+- **배포 ID `8243116d`** / 소스 `842f9c6`. **롤백 대상 `4986657a`**. Functions/Worker 바이트 보존(동일 소스 재컴파일).
+
+### 27.5 배포 후 검증 (익명/빌드)
+- canonical `8243116d` 승격. `/invite`·`/school`·`/account`·`/`·`/admin`·`/pricing`·`/signup`·`/login`·`/essay-lab`·`/math` **전부 200**. Functions essay 401·payments 403(동작). `/invite` 랜딩 서빙.
+- **NOT TESTED(실로그인/실가입)**: 초대 생성·복사·방문기록·신규가입 귀속·기존회원 제외·학교 확인·첫학습/D7 실동작·공유 링크. 관리자 집계는 DB 기반 동작(실데이터 축적 후 확인).
+
+### 27.6 모니터링·롤백
+- 모니터링: 초대 생성/방문/귀속 오류, 중복 귀속, 기존회원 오분류, 비정상 방문 급증. GA4 미연결에도 `admin_invite_growth` DB 집계 동작.
+- 롤백: WEB canonical `4986657a` 복귀. DB는 **실제 초대 데이터 생성 후 무조건 drop 금지** — 기존 기능 복구 우선·데이터 보존 확인 후 `rollback.sql`. 신규 객체 drop은 기존 기능 무영향.
+
+### 27.7 후속(승인 제외)
+GA4 운영 연결, 관리자 Growth UI, Flutter 딥링크(흐름 C deferred deep link=NOT IMPLEMENTED), 실가입 end-to-end 귀속 검증.
