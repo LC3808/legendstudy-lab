@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import "./fonts-nanum-gothic.css";
 import "./globals.css";
 import { AuthProvider } from "@/components/auth-context";
+import { InviteAttributionWatcher } from "@/components/invite/invite-attribution-watcher";
 import { SiteShell } from "@/components/site-shell";
 import { brand } from "@/lib/brand";
 
@@ -22,7 +23,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="ko">
       <body>
-        <Suspense fallback={null}><AnalyticsCollection /></Suspense><AuthProvider>{process.env.NEXT_PUBLIC_SHARED_TEST_ENABLED === "true" && <aside role="note" style={{padding: 12, background: "#fff3d6", color: "#1c2948", textAlign: "center"}}>{process.env.NEXT_PUBLIC_COMMERCE_TEST_ENABLED === 'true' ? '상경·사회 첨삭 비공개 검수 · TEST 계정 전용 · 결제 불가' : '공통 TEST 환경 · 운영 계정과 데이터 분리 · 실제 평가 승인 대기 · 결제 불가'}</aside>}{process.env.NEXT_PUBLIC_LOCAL_QA_ENABLED === "true" && <aside role="note" style={{padding: 12, background: "#fff3d6", color: "#1c2948", textAlign: "center"}}>격리 검수 환경 · 합성 데이터 · 운영 평가 및 결제 불가</aside>}<SiteShell>{children}</SiteShell></AuthProvider>
+        <Suspense fallback={null}><AnalyticsCollection /></Suspense><AuthProvider>{process.env.NEXT_PUBLIC_SHARED_TEST_ENABLED === "true" && <aside role="note" style={{padding: 12, background: "#fff3d6", color: "#1c2948", textAlign: "center"}}>{process.env.NEXT_PUBLIC_COMMERCE_TEST_ENABLED === 'true' ? '상경·사회 첨삭 비공개 검수 · TEST 계정 전용 · 결제 불가' : '공통 TEST 환경 · 운영 계정과 데이터 분리 · 실제 평가 승인 대기 · 결제 불가'}</aside>}{process.env.NEXT_PUBLIC_LOCAL_QA_ENABLED === "true" && <aside role="note" style={{padding: 12, background: "#fff3d6", color: "#1c2948", textAlign: "center"}}>격리 검수 환경 · 합성 데이터 · 운영 평가 및 결제 불가</aside>}<InviteAttributionWatcher /><SiteShell>{children}</SiteShell></AuthProvider>
       </body>
     </html>
   );

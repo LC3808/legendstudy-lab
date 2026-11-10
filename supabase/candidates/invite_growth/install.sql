@@ -168,6 +168,10 @@ declare v_uid uuid := auth.uid(); v_attr public.invite_attributions; v_first tim
   return jsonb_build_object('version','invite-ms-v1','ok',true);
 end $fn$;
 
+-- 공통: 귀속자별 첫 학습/D7을 study_sessions에서 "실시간" 재계산한다(저장 컬럼 비의존).
+--   → 특정 페이지 방문 없이도 집계 정확, 기록 삭제·수정 시 즉시 정합. 저장 컬럼(first_study_at,
+--   d7_retained_at)은 선택적 캐시일 뿐 집계의 근거가 아니다. D7은 관찰 기간(가입+7일 KST) 도래분만 분모.
+
 -- 7) 내 초대 성과(초대자 본인). 집계 수치만. 피초대자 개인정보/개인 학습기록 비공개.
 create or replace function public.invite_my_performance()
 returns jsonb language plpgsql security definer set search_path to '' set statement_timeout to '8s' as $fn$
@@ -175,17 +179,24 @@ declare v_uid uuid := auth.uid(); result jsonb; begin
   if v_uid is null or not account_private.allowed(v_uid) then raise insufficient_privilege; end if;
   with my as (select id from public.invite_tokens where inviter_user_id = v_uid),
   v as (select count(distinct iv.visitor_hash) visits from public.invite_visits iv where iv.invite_token_id in (select id from my)),
-  a as (select count(*) signups, count(*) filter (where first_study_at is not null) first_study,
-               count(*) filter (where d7_retained_at is not null) d7
-        from public.invite_attributions where invite_token_id in (select id from my))
+  at as (select a.invited_user_id, a.signup_at from public.invite_attributions a where a.invite_token_id in (select id from my)),
+  ms as (select at.*,
+      exists(select 1 from public.study_sessions s where s.user_id=at.invited_user_id and s.include_in_study_total and s.started_at>=at.signup_at
+        and exists(select 1 from jsonb_array_elements(s.active_segments) g where (g->>1)::bigint>(g->>0)::bigint)) first_study,
+      ((date_trunc('day',(at.signup_at at time zone 'Asia/Seoul'))+interval '7 days') at time zone 'Asia/Seoul') d7_start from at),
+  ms2 as (select *, now()>=d7_start+interval '1 day' d7_obs,
+      case when now()>=d7_start+interval '1 day' then exists(select 1 from public.study_sessions s where s.user_id=invited_user_id and s.include_in_study_total and s.started_at>=d7_start and s.started_at<d7_start+interval '1 day'
+        and exists(select 1 from jsonb_array_elements(s.active_segments) g where (g->>1)::bigint>(g->>0)::bigint)) else false end d7_ret from ms)
   select jsonb_build_object('version','invite-perf-v1',
     'tokens',(select count(*) from my),'visits',(select visits from v),
-    'signups',(select signups from a),'first_study',(select first_study from a),'d7_retained',(select d7 from a)
-  ) into result;
-  return result;
+    'signups',(select count(*) from ms2),
+    'first_study',(select count(*) filter (where first_study) from ms2),
+    'd7_eligible',(select count(*) filter (where d7_obs) from ms2),
+    'd7_retained',(select count(*) filter (where d7_ret) from ms2)
+  ) into result; return result;
 end $fn$;
 
--- 8) 관리자 초대 성과 집계(관리자 전용). 전체 Growth 지표 + 학교별.
+-- 8) 관리자 초대 성과 집계(관리자 전용). 전체 + 학교별. 첫 학습·D7 실시간 재계산(저장 컬럼 비의존).
 create or replace function public.admin_invite_growth(p_from timestamptz, p_to timestamptz)
 returns jsonb language plpgsql security definer set search_path to '' set statement_timeout to '8s' as $fn$
 declare result jsonb; begin
@@ -193,31 +204,47 @@ declare result jsonb; begin
   if p_from is null or p_to is null or p_to <= p_from then raise sqlstate 'PT422' using message='INVALID_PERIOD'; end if;
   with tk as (select * from public.invite_tokens where created_at >= p_from and created_at < p_to),
   vis as (select count(distinct visitor_hash) c from public.invite_visits where invite_token_id in (select id from tk)),
-  at as (select * from public.invite_attributions where invite_token_id in (select id from tk)),
+  at as (select a.invited_user_id, a.signup_at, t.id token_id from public.invite_attributions a join tk t on t.id = a.invite_token_id),
+  ms as (select at.*,
+      exists(select 1 from public.study_sessions s where s.user_id=at.invited_user_id and s.include_in_study_total and s.started_at>=at.signup_at
+        and exists(select 1 from jsonb_array_elements(s.active_segments) g where (g->>1)::bigint>(g->>0)::bigint)) first_study,
+      ((date_trunc('day',(at.signup_at at time zone 'Asia/Seoul'))+interval '7 days') at time zone 'Asia/Seoul') d7_start from at),
+  ms2 as (select *, now()>=d7_start+interval '1 day' d7_obs,
+      case when now()>=d7_start+interval '1 day' then exists(select 1 from public.study_sessions s where s.user_id=invited_user_id and s.include_in_study_total and s.started_at>=d7_start and s.started_at<d7_start+interval '1 day'
+        and exists(select 1 from jsonb_array_elements(s.active_segments) g where (g->>1)::bigint>(g->>0)::bigint)) else false end d7_ret from ms),
   byschool as (
-    select t.office_code, t.school_code,
-      count(distinct t.id) tokens,
-      count(a.id) signups,
-      count(a.id) filter (where a.first_study_at is not null) first_study,
-      count(a.id) filter (where a.d7_retained_at is not null) d7
-    from tk t left join at a on a.invite_token_id = t.id
+    select t.office_code, t.school_code, count(distinct t.id) tokens,
+      count(m.invited_user_id) signups,
+      count(*) filter (where m.first_study) first_study,
+      count(*) filter (where m.d7_ret) d7
+    from tk t left join ms2 m on m.token_id = t.id
     group by t.office_code, t.school_code)
   select jsonb_build_object('version','admin-invite-growth-v1','as_of',statement_timestamp(),
     'tokens',(select count(*) from tk),'visits',(select c from vis),
-    'signups',(select count(*) from at),
-    'first_study',(select count(*) filter (where first_study_at is not null) from at),
-    'first_study_rate', case when (select count(*) from at)>0 then round(100.0*(select count(*) filter (where first_study_at is not null) from at)/(select count(*) from at),1) else 0 end,
-    'd7_retained',(select count(*) filter (where d7_retained_at is not null) from at),
-    'd7_rate', case when (select count(*) filter (where d7_evaluated_at is not null) from at)>0 then round(100.0*(select count(*) filter (where d7_retained_at is not null) from at)/(select count(*) filter (where d7_evaluated_at is not null) from at),1) else 0 end,
+    'signups',(select count(*) from ms2),
+    'first_study',(select count(*) filter (where first_study) from ms2),
+    'first_study_rate', case when (select count(*) from ms2)>0 then round(100.0*(select count(*) filter (where first_study) from ms2)/(select count(*) from ms2),1) else 0 end,
+    'd7_eligible',(select count(*) filter (where d7_obs) from ms2),
+    'd7_retained',(select count(*) filter (where d7_ret) from ms2),
+    'd7_rate', case when (select count(*) filter (where d7_obs) from ms2)>0 then round(100.0*(select count(*) filter (where d7_ret) from ms2)/(select count(*) filter (where d7_obs) from ms2),1) else 0 end,
     'schools', coalesce((select jsonb_agg(jsonb_build_object('office_code',office_code,'school_code',school_code,'tokens',tokens,'signups',signups,'first_study',first_study,'d7',d7) order by signups desc) from byschool),'[]'::jsonb)
-  ) into result;
-  return result;
+  ) into result; return result;
 end $fn$;
 
--- 권한: 생성/귀속/성과는 authenticated. 조회/방문 기록은 anon도 허용(링크 랜딩). 관리자 집계는 authenticated(내부 operator 게이트).
+-- 9) 내 초대 토큰 폐기(본인). 폐기 후 lookup/visit/attribute 모두 거부. 멱등.
+create or replace function public.invite_revoke_mine()
+returns jsonb language plpgsql security definer set search_path to '' set statement_timeout to '5s' as $fn$
+declare v_uid uuid := auth.uid(); v_n int; begin
+  if v_uid is null or not account_private.allowed(v_uid) then raise insufficient_privilege; end if;
+  update public.invite_tokens set revoked_at = now() where inviter_user_id = v_uid and revoked_at is null;
+  get diagnostics v_n = row_count;
+  return jsonb_build_object('version','invite-revoke-v1','revoked', v_n);
+end $fn$;
+
+-- 권한: 생성/귀속/성과/폐기는 authenticated. 조회/방문 기록은 anon도 허용(링크 랜딩). 관리자 집계는 authenticated(내부 operator 게이트).
 revoke all on function public.invite_create(text), public.invite_attribute_signup(text), public.invite_mark_school_confirmed(),
-  public.invite_refresh_milestones(), public.invite_my_performance(), public.admin_invite_growth(timestamptz,timestamptz) from public, anon;
+  public.invite_refresh_milestones(), public.invite_my_performance(), public.invite_revoke_mine(), public.admin_invite_growth(timestamptz,timestamptz) from public, anon;
 grant execute on function public.invite_create(text), public.invite_attribute_signup(text), public.invite_mark_school_confirmed(),
-  public.invite_refresh_milestones(), public.invite_my_performance(), public.admin_invite_growth(timestamptz,timestamptz) to authenticated;
+  public.invite_refresh_milestones(), public.invite_my_performance(), public.invite_revoke_mine(), public.admin_invite_growth(timestamptz,timestamptz) to authenticated;
 revoke all on function public.invite_lookup(text), public.invite_record_visit(text,text,text) from public;
 grant execute on function public.invite_lookup(text), public.invite_record_visit(text,text,text) to anon, authenticated;

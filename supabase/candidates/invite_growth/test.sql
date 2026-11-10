@@ -19,3 +19,17 @@ select (date_trunc('day',(signup_at at time zone 'Asia/Seoul'))+interval '7 days
 -- 4) Schema conflict: confirm no existing invite* tables (expect empty).
 select string_agg(table_name,', ') as existing_invite_tables
 from information_schema.tables where table_schema='public' and table_name ~* 'invite';
+
+-- 5) 비로그인 RPC 응답 최소화·보안 (적용 후 실행 시나리오; 여기서는 설계 불변식만 명시):
+--    invite_lookup: 반환은 {valid, office_code, school_code, has_school, campaign}뿐 — 초대자 신원/회원/학습 데이터 미포함.
+--    invite_record_visit: 반환은 {recorded}뿐. 둘 다 p_token은 ^[0-9a-f]{64}$ 정규식 검증(동적 SQL 없음=SQLi 불가).
+--    토큰 대량 조회: 64-hex=128bit → 열거 불가. 만료/폐기 토큰은 lookup/visit/attribute 모두 거부.
+-- 6) 첫 학습/D7 실시간 재계산 정합(적용 후): 아래는 저장 컬럼 없이 study_sessions만으로 집계됨을 보이는 읽기전용 예시.
+with at as (select p.id invited_user_id, p.created_at signup_at from public.profiles p
+            where p.id in (select user_id from public.study_sessions where include_in_study_total group by user_id order by count(*) desc limit 5)),
+ms as (select at.*,
+    exists(select 1 from public.study_sessions s where s.user_id=at.invited_user_id and s.include_in_study_total and s.started_at>=at.signup_at
+      and exists(select 1 from jsonb_array_elements(s.active_segments) g where (g->>1)::bigint>(g->>0)::bigint)) first_study,
+    ((date_trunc('day',(at.signup_at at time zone 'Asia/Seoul'))+interval '7 days') at time zone 'Asia/Seoul') d7_start from at),
+ms2 as (select *, now()>=d7_start+interval '1 day' d7_obs from ms)
+select count(*) signups, count(*) filter (where first_study) first_study, count(*) filter (where d7_obs) d7_eligible from ms2;

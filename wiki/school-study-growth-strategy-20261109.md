@@ -573,3 +573,38 @@ Owner 승인으로 RPC v4(기간 all 추가) 적용 + `/school` 재배포. `/acc
 2. `/school`+`/invite` WEB 재배포(연결 버튼·랜딩·귀속 활성화).
 3. GA4 운영 연결(`NEXT_PUBLIC_ANALYTICS_ENABLED`) — 미연결 상태.
 4. 관리자 Growth 분석 화면(이번 미구현, admin_invite_growth RPC만 설계) · Flutter 딥링크 — 각 별도 승인.
+
+## 26. Phase 3 운영 적용 전 최종 검증·보완 (2026-11-10, 운영 변경 없음)
+
+Owner 최종 검증 승인에 따른 보완. **운영 DB·배포·권한 변경 없음(후보 SQL·프런트 수정만).**
+
+### 26.1 가입 전환 귀속 구조 (§2)
+- 귀속을 **/school 비의존**으로 전환: `InviteAttributionWatcher`를 **루트 레이아웃(AuthProvider 내부)에 전역 마운트** → 로그인 후 **어느 페이지에서도** `invite_attribute_signup` 실행(누락 방지). 인증 시스템 자체는 미변경(기존 Supabase Auth 완료 흐름에서 보관 토큰 복원).
+- 학교 확인 UI(`InviteAttributionPrompt`)는 성장 페이지(/school)에 유지하되, 귀속과 분리 — watcher가 세션스토리지로 학교코드를 전달하면 카드가 표시(사용자 확인 후 설정, 자동확정 금지).
+
+### 26.2 첫 학습·D7 집계 (§3)
+- `invite_my_performance`·`admin_invite_growth`를 **저장 컬럼 비의존·study_sessions 실시간 재계산**으로 재작성 → 특정 페이지 방문 없이 서버에서 정확 집계, **기록 삭제·수정 즉시 정합**. 저장 컬럼(first_study_at/d7_retained_at)은 선택적 캐시.
+- D7은 관찰 기간(가입+7일 KST) 도래분만 분모(`d7_eligible`), 미도래 제외. 읽기전용 검증: 5건 중 first_study 5(100%), d7_eligible 2(미도래 3 제외), 로직 정상.
+
+### 26.3 비로그인 RPC 보안 (§4)
+- `invite_lookup`/`invite_record_visit`: anon 허용, `search_path=''`, SECURITY DEFINER, p_token `^[0-9a-f]{64}$` 정규식 검증(동적 SQL 없음=SQLi 불가), 만료/폐기/부재 토큰 거부.
+- 응답 최소화: lookup={valid, office/school_code, has_school, campaign}, visit={recorded}뿐 — **회원·학습·초대자 신원 데이터 미포함**. 토큰 128bit→대량 열거 불가. 방문 중복은 unique(token,visitor)로 1행.
+
+### 26.4 토큰 정책 (§5)
+- 128bit 난수, **sha256 해시만 저장**(raw 미저장), 만료 90일, 폐기(`revoked_at` + 신규 `invite_revoke_mine()` RPC). 자기초대 차단(귀속 단계), 동일 사용자 중복 토큰은 **클라이언트 디바이스 캐시**로 완화(해시 전용이라 서버 재발급 불가=의도된 보안 트레이드오프). 토큰은 권한 부여 수단 아님.
+
+### 26.5 WEB 가입 흐름 (§6)
+- A 비로그인 신규(링크→랜딩→가입→학교 확인→학습): 구현. B 기존 회원(로그인→기존 판정→전환 제외): 구현(attribute가 신규 가입 조건 미충족 시 제외). D 학교 미등록(학교 선택→학습): 구현(학교 확인 카드/`/account`). **C 앱 미설치→설치 후 복원: NOT IMPLEMENTED**(deferred deep link 플랫폼 지원 확인 필요).
+
+### 26.6 관리자 Growth 집계 (§7)
+- `admin_invite_growth`가 GA4 미연결에도 **DB만으로** 방문/가입/첫학습/첫학습률/D7유지율/학교별 산출(실시간 재계산). GA4는 보조.
+
+### 26.7 성능·비용 (§8)
+- 증가량: tokens≈초대자×디바이스, visits≈unique(token,visitor)(중복 1행), attributions≈신규 가입. 인덱스: inviter/created, office/school, visits(token), attributions(token)+invited_user unique. 집계는 study_sessions 재계산이라 호출 빈도 높은 관리자 뷰는 향후 사전 집계/캐시 검토(현재 소규모 충분). 방문 저장 단순화 옵션: visitor 해시 미보관·토큰별 카운트만(단 중복 제거 정밀도↓) — 제안만, 현행은 정밀 중복 제거 유지.
+
+### 26.8 테스트·회귀
+- 파서 36/36(초대 contract 포함)·TS0·ESLint0·빌드(기록 중). 기존 학교 순위 29/29 보존. RPC 시나리오(생성/방문/가입/자기초대/만료/폐기/비로그인/권한우회/삭제정합)는 적용 후 실행 — `test.sql`에 설계·읽기전용 검증 포함.
+
+### 26.9 운영 적용 시 위험 요소 / Owner 승인 필요
+- 위험: (a) 신규 테이블/RPC 적용(기존 객체 무변경이나 DDL), (b) anon 실행 권한 2종(lookup/visit) — 응답 최소화·토큰 검증으로 완화, (c) GA4 미연결 상태 전송 없음, (d) 관리자 집계 study_sessions 재계산 비용(소규모 OK). 롤백: 신규 객체 drop(기존 영향 없음).
+- 승인 필요: ① 스키마+RPC(9종) apply(+`get_advisors` 0 확인), ② `/school`·`/invite`·루트 레이아웃 WEB 배포, ③ GA4 연결, ④ 관리자 Growth 화면·Flutter 딥링크(별도).

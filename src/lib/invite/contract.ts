@@ -9,7 +9,7 @@ export type InviteLookup =
   | {valid:false; reason:'invalid'|'not_found'|'revoked'|'expired'|'error'}
   | {valid:true; officeCode:string|null; schoolCode:string|null; hasSchool:boolean; campaign:string};
 export type InviteAttribution = {attributed:boolean; reason:string; officeCode?:string|null; schoolCode?:string|null; hasSchool?:boolean};
-export type InvitePerformance = {tokens:number; visits:number; signups:number; firstStudy:number; d7Retained:number};
+export type InvitePerformance = {tokens:number; visits:number; signups:number; firstStudy:number; d7Eligible:number; d7Retained:number};
 
 function obj(v:unknown):Record<string,unknown>{ if(!v||typeof v!=='object'||Array.isArray(v)) throw new Error('MALFORMED'); return v as Record<string,unknown>; }
 function num(v:unknown):number{ if(typeof v!=='number'||!Number.isFinite(v)) throw new Error('MALFORMED'); return v; }
@@ -26,7 +26,7 @@ export function parseInviteLookup(raw:unknown):InviteLookup{
 }
 export function parseInvitePerformance(raw:unknown):InvitePerformance{
   const r=obj(raw);
-  return {tokens:num(r.tokens), visits:num(r.visits), signups:num(r.signups), firstStudy:num(r.first_study), d7Retained:num(r.d7_retained)};
+  return {tokens:num(r.tokens), visits:num(r.visits), signups:num(r.signups), firstStudy:num(r.first_study), d7Eligible:num(r.d7_eligible), d7Retained:num(r.d7_retained)};
 }
 
 /** Opaque per-device visitor id (random, not PII) for visit dedup. Stored in localStorage. */
@@ -45,6 +45,16 @@ const PENDING_KEY='ls_invite_pending_token';
 export function rememberPendingInvite(token:string){ try{ if(isInviteToken(token)) globalThis.localStorage?.setItem(PENDING_KEY,token); }catch{/* ignore */} }
 export function readPendingInvite():string|null{ try{ const t=globalThis.localStorage?.getItem(PENDING_KEY); return isInviteToken(t)?t:null; }catch{ return null; } }
 export function clearPendingInvite(){ try{ globalThis.localStorage?.removeItem(PENDING_KEY); }catch{/* ignore */} }
+
+// Hand-off between the app-wide attribution watcher (runs on any page after login) and the
+// school-confirm card (shown on growth pages). Only public school codes, no PII.
+const CONFIRM_KEY='ls_invite_school_confirm';
+export function rememberSchoolConfirm(office:string,school:string){ try{ globalThis.sessionStorage?.setItem(CONFIRM_KEY,JSON.stringify({office,school})); }catch{/* ignore */} }
+export function readSchoolConfirm():{office:string;school:string}|null{
+  try{ const raw=globalThis.sessionStorage?.getItem(CONFIRM_KEY); if(!raw) return null; const v=JSON.parse(raw);
+    return typeof v?.office==='string'&&typeof v?.school==='string'?{office:v.office,school:v.school}:null; }catch{ return null; }
+}
+export function clearSchoolConfirm(){ try{ globalThis.sessionStorage?.removeItem(CONFIRM_KEY); }catch{/* ignore */} }
 
 /** Public landing base; the full invite URL carries only the opaque token. */
 export const INVITE_ORIGIN='https://lab.legendstudy.com';

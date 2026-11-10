@@ -35,12 +35,12 @@ describe('parseInviteLookup', () => {
 });
 
 describe('parseInvitePerformance', () => {
-  it('parses the inviter performance counts', () => {
-    const p = parseInvitePerformance({version:'invite-perf-v1', tokens:3, visits:10, signups:4, first_study:2, d7_retained:1});
-    expect(p).toEqual({tokens:3, visits:10, signups:4, firstStudy:2, d7Retained:1});
+  it('parses the inviter performance counts incl. d7 eligibility denominator', () => {
+    const p = parseInvitePerformance({version:'invite-perf-v1', tokens:3, visits:10, signups:4, first_study:2, d7_eligible:3, d7_retained:1});
+    expect(p).toEqual({tokens:3, visits:10, signups:4, firstStudy:2, d7Eligible:3, d7Retained:1});
   });
   it('rejects malformed payloads', () => {
-    expect(()=>parseInvitePerformance({tokens:'x', visits:0, signups:0, first_study:0, d7_retained:0})).toThrow('MALFORMED');
+    expect(()=>parseInvitePerformance({tokens:'x', visits:0, signups:0, first_study:0, d7_eligible:0, d7_retained:0})).toThrow('MALFORMED');
     expect(()=>parseInvitePerformance(null)).toThrow('MALFORMED');
   });
 });
