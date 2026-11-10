@@ -86,19 +86,23 @@ export function SchoolParticipationCard({card,loading}:{card:SchoolCard|null;loa
 
 const METRICS:{key:SchoolRankMetric;label:string;note:string}[]=[
   {key:'total',label:'총 공부시간',note:'기록자 3명 이상 학교 (개인 공부시간 보호)'},
-  {key:'average',label:'1인당 평균',note:'기록자 5명 이상 학교'},
-  {key:'registered',label:'가입 학생 수',note:'가입 학생이 있는 학교'},
+  {key:'average',label:'1인당 평균',note:'기록자 3명 이상 학교 (개인 공부시간 보호)'},
+  {key:'registered',label:'가입 학생 수',note:'가입 학생이 있는 학교 (다른 학교 인원은 비공개)'},
 ];
+/** 다른 학교의 가입 학생 수는 비공개(null) — 0명이 아니라 ** 로 표시. */
+const MASK='**';
 const PERIODS:{key:SchoolRankPeriod;label:string}[]=[
   {key:'week',label:'이번 주'},
   {key:'last_week',label:'지난 주'},
   {key:'month',label:'최근 30일'},
 ];
 
+function registeredLabel(v:number|null):string{ return v==null?MASK:`${v.toLocaleString('ko-KR')}명`; }
+
 function metricValue(row:SchoolRankRow,metric:SchoolRankMetric):string{
   if(metric==='total')return row.ms==null?'비공개':formatStudyTime(row.ms);
   if(metric==='average')return row.avgMs==null?'비공개':`${formatStudyTime(row.avgMs)} / 인`;
-  return `${row.registeredUsers.toLocaleString('ko-KR')}명`;
+  return registeredLabel(row.registeredUsers);
 }
 
 function RankRow({row,metric,mine}:{row:SchoolRankRow;metric:SchoolRankMetric;mine:boolean}){
@@ -106,7 +110,7 @@ function RankRow({row,metric,mine}:{row:SchoolRankRow;metric:SchoolRankMetric;mi
     <td data-label="순위">{row.rank.toLocaleString('ko-KR')}</td>
     <td data-label="학교"><SchoolName office={row.officeCode} school={row.schoolCode}/>{mine&&<span className="school-rank__badge"> · 우리 학교</span>}</td>
     <td data-label="기록">{metricValue(row,metric)}</td>
-    <td data-label="참여">{row.registeredUsers.toLocaleString('ko-KR')}명 · 기록 {row.activeUsers.toLocaleString('ko-KR')}명</td>
+    <td data-label="참여">{registeredLabel(row.registeredUsers)} · 기록 {row.activeUsers.toLocaleString('ko-KR')}명</td>
   </tr>;
 }
 
@@ -117,7 +121,7 @@ export function SchoolRankingPanel(){
   const activeMetric=METRICS.find(m=>m.key===metric)!;
   const mySchoolInTop=data?.mySchool&&data.top.some(r=>r.officeCode===data.mySchool!.officeCode&&r.schoolCode===data.mySchool!.schoolCode);
   return <section className="school-rank" id="school-ranking" aria-labelledby="school-rank-title">
-    <h2 id="school-rank-title">🏆 학교별 TOP 랭킹</h2>
+    <h2 id="school-rank-title">🏆 학교별 공부 순위</h2>
     <div className="school-rank__controls">
       <div className="school-rank__tabs" role="tablist" aria-label="랭킹 기준">
         {METRICS.map(m=><button key={m.key} type="button" role="tab" aria-selected={m.key===metric} className={m.key===metric?'button button--small button--primary':'button button--small button--outline'} onClick={()=>setMetric(m.key)}>{m.label}</button>)}
@@ -149,10 +153,13 @@ export function SchoolRankingPanel(){
 export function SchoolView(){
   const card=useSchoolCard();
   return <div className="my-dashboard content-wrap content-wrap--detail school-view">
-    <header className="my-head"><h1>우리 학교 공부 경쟁</h1></header>
+    <header className="my-head"><h1>우리 학교 공부 순위</h1></header>
     <OwnerArea path="/school/">
-      <SchoolParticipationCard card={card.data} loading={card.loading}/>
-      <SchoolRankingPanel/>
+      <div className="school-view__stack">
+        <SchoolParticipationCard card={card.data} loading={card.loading}/>
+        <SchoolRankingPanel/>
+        <p className="school-view__source">레전드스터디+의 학습 시간을 기준으로 집계돼요</p>
+      </div>
     </OwnerArea>
   </div>;
 }

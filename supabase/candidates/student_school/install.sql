@@ -102,9 +102,10 @@ end $function$;
 -- ---------------------------------------------------------------------------
 -- 학교별 TOP 랭킹 — 기간/지표별 학교 리더보드(학교 단위 집계만).
 -- p_period: 'week' | 'last_week' | 'month'
--- p_metric: 'total'(총시간, 기록자>=3) | 'average'(1인당 평균, 기록자>=5) | 'registered'(가입 수, registered>=1)
--- 공개 기준은 서버 상수로 고정(v_min_recorders=3, v_min_users=5). 클라이언트가 기준을 낮출 수
+-- p_metric: 'total'(총시간, 기록자>=3) | 'average'(1인당 평균, 기록자>=3) | 'registered'(가입 수, registered>=1)
+-- 공개 기준은 서버 상수로 고정(총시간·평균 모두 기록자>=3). 클라이언트가 기준을 낮출 수
 -- 있는 입력 파라미터는 두지 않는다(우회 방지). 기준 미달 학교의 ms/avg_ms는 반환 단계에서 null.
+-- 가입 학생 수(registered_users)는 본인 학교만 실제 값, 다른 학교는 null로 반환(순위는 유지).
 -- 반환: top[10], my_school(or null), around(내 학교 주변), school_count.
 -- ---------------------------------------------------------------------------
 create or replace function public.student_school_ranking(
@@ -123,7 +124,7 @@ declare
   v_from timestamptz; v_to timestamptz := now();
   v_week_start timestamptz;
   v_min_recorders constant int := 3;  -- 서버 강제: 총시간 공개 최소 기록자
-  v_min_users     constant int := 5;  -- 서버 강제: 평균 공개 최소 기록자
+  v_min_users     constant int := 3;  -- 서버 강제: 평균 공개 최소 기록자(2026-11-10 5→3 통일)
   result jsonb;
 begin
   if v_uid is null or not account_private.allowed(v_uid) then raise insufficient_privilege; end if;
@@ -163,9 +164,12 @@ begin
            coalesce(r.registered_users,0) registered_users,
            coalesce(a.active_users,0) active_users, coalesce(a.ms,0) ms,
            case when coalesce(a.active_users,0)>0 then a.ms/a.active_users else 0 end avg_ms,
-           -- 공개 가드(API 반환 단계 마스킹): 총시간은 기록자 < v_min_recorders(3), 평균은 기록자 < v_min_users(5)면 null.
+           -- 공개 가드(API 반환 단계 마스킹): 총시간/평균 모두 기록자 < 3이면 null(2026-11-10 통일).
            case when coalesce(a.active_users,0)>=v_min_recorders then a.ms else null end pub_ms,
-           case when coalesce(a.active_users,0)>=v_min_users then (a.ms/a.active_users) else null end pub_avg
+           case when coalesce(a.active_users,0)>=v_min_users then (a.ms/a.active_users) else null end pub_avg,
+           -- 가입 학생 수 비공개: 본인 학교만 실제 값, 다른 학교는 null(순위는 실제값으로 산출, 반환만 마스킹).
+           case when coalesce(r.office,a.office)=v_office and coalesce(r.school,a.school)=v_school
+                then coalesce(r.registered_users,0) else null end pub_registered
     from reg r full join act a using (office, school)
   ),
   -- 지표별 자격 필터 + 순위. total은 기록자 하한 이상만 공개.
@@ -186,11 +190,11 @@ begin
     'as_of', statement_timestamp(),
     'school_count', (select count(*) from qualified),
     'top', coalesce((select jsonb_agg(row_json order by rnk) from (
-        select rnk, jsonb_build_object('office_code',office,'school_code',school,'registered_users',registered_users,'active_users',active_users,'ms',pub_ms,'avg_ms',pub_avg,'rank',rnk) row_json
+        select rnk, jsonb_build_object('office_code',office,'school_code',school,'registered_users',pub_registered,'active_users',active_users,'ms',pub_ms,'avg_ms',pub_avg,'rank',rnk) row_json
         from ranked where rnk <= 10) t), '[]'::jsonb),
-    'my_school', (select jsonb_build_object('office_code',office,'school_code',school,'registered_users',registered_users,'active_users',active_users,'ms',pub_ms,'avg_ms',pub_avg,'rank',rnk)
+    'my_school', (select jsonb_build_object('office_code',office,'school_code',school,'registered_users',pub_registered,'active_users',active_users,'ms',pub_ms,'avg_ms',pub_avg,'rank',rnk)
                   from ranked where office = v_office and school = v_school),
-    'around', coalesce((select jsonb_agg(jsonb_build_object('office_code',office,'school_code',school,'registered_users',registered_users,'active_users',active_users,'ms',pub_ms,'avg_ms',pub_avg,'rank',rnk) order by rnk)
+    'around', coalesce((select jsonb_agg(jsonb_build_object('office_code',office,'school_code',school,'registered_users',pub_registered,'active_users',active_users,'ms',pub_ms,'avg_ms',pub_avg,'rank',rnk) order by rnk)
                   from ranked where rnk between
                     (select rnk from ranked where office = v_office and school = v_school) - 2 and
                     (select rnk from ranked where office = v_office and school = v_school) + 2), '[]'::jsonb)

@@ -357,3 +357,34 @@ Owner 승인으로 `/school` 학생용 WEB를 **선별 오버레이**로 운영 
 - 배포 후(익명/빌드): canonical `aaa350d6` 승격 ✅. `/account/`·`/account/settings/`·`/school/`·`/`·`/pricing/`·`/admin/` 200 ✅. `/api/essay/*` 401(동작) ✅.
 - NOT TESTED(실로그인): 마이페이지에서 "우리 학교 공부시간" 메뉴 시각 표시·탭 이동(클라이언트 렌더·auth 게이트). 진입 코드 운영 번들 포함 확인됨.
 - 신규 회귀 0. 롤백: canonical `dfa50be9` 복귀.
+
+## 19. 학교별 공부 순위 개선 — UI/UX + 공개 정책 통일 (2026-11-10, 구현 완료 · 운영 적용/배포 대기)
+
+운영 중인 `/school`을 개선. **운영 RPC·DB·인증·배포 변경 없음(후보/프런트만).** 운영 적용·배포는 Owner 별도 승인.
+
+### 19.1 UI/UX (PART A)
+- 페이지 제목 "우리 학교 공부 경쟁" → **"우리 학교 공부 순위"**. 하단 섹션 "학교별 TOP 랭킹" → **"학교별 공부 순위"**. 마이페이지 메뉴 "우리 학교 공부시간" → **"우리 학교 공부 순위"**(라우팅 `/account`·`/school` 유지).
+- 페이지 최하단 보조 문구 추가: "레전드스터디+의 학습 시간을 기준으로 집계돼요"(작은 회색 텍스트, 아이콘·강조 없음).
+- 참여 카드 ↔ 순위 카드 간격 **24px**(`.school-view__stack` flex gap, PC·태블릿·모바일 공통). 기존 `.school-view` gap은 OwnerArea 래퍼 때문에 카드 사이에 적용되지 않던 문제를 stack 래퍼로 해결. 다른 페이지 카드 간격 무영향.
+
+### 19.2 공개 정책 통일 (PART B, 후보 RPC)
+- **평균 공개 기준 5명 → 3명 폐지·통일**: 총공부시간·평균 모두 기록자 3명 이상 공개(`v_min_users` 5→3). 서버 상수 고정, 클라이언트 우회 파라미터 없음(기존 2-인자 시그니처 유지).
+- **다른 학교 가입 학생 수 비공개**: `student_school_ranking`이 본인 학교만 `registered_users` 실제 값, 다른 학교는 **null 반환**(`pub_registered`). 순위 산출은 실제값 사용, 반환만 마스킹. 다른 필드로도 미노출.
+- 기록자 3명 미만 학교: 총시간·평균·해당 순위 모두 null(간접 추정 불가 — 미달 학교는 total/avg 순위 제외, registered 순위는 count만 마스킹).
+
+### 19.3 계약/파서 (PART D)
+- `SchoolRankRow.registeredUsers: number|null`(다른 학교 null, 0 아님) — 파서 `nnum`. 화면에서 null은 **`**`**로 표시(0명 오인 방지). `ms`/`avgMs` 기존 nullable 유지.
+- 카드(`SchoolCard`)는 본인 학교라 `registeredUsers` 실제 값 유지(변경 없음).
+
+### 19.4 소규모 Growth UX (PART C) — 유지
+가입 1~2명도 카드·초대 정상 표시. 기록자 3명 미만 잠금 안내("곧 열려요! N명이 더…")·친구 초대(OS 공유+클립보드 폴백) 기존 동작 유지.
+
+### 19.5 검증 (읽기 전용)
+- 밴드(합성): 기록자 0/1/2 총시간·평균 비공개, 3/4/5+ 공개 → **평균이 3명에서 공개** 확인. `pub_registered`는 본인 학교만.
+- 실데이터 30d 후보 쿼리 실행(무변경): registered 자격 128곳 중 **가입 수 노출 1곳(본인 학교)**·나머지 null, 기록자 1~2명 ms/avg 유출 0, 평균 3+ 공개 로직 정상(현재 3+ 학교 0곳이라 빈 결과).
+- 파서 테스트 29/29, TS 0, ESLint 0, 프로덕션 빌드(기록 중).
+
+### 19.6 운영 적용/배포 대기 (PART F)
+- **운영 RPC 미적용**: 후보 `supabase/candidates/student_school/install.sql`만 수정. 라이브 RPC는 평균 5명·가입수 미마스킹 상태 → **UI와 함께 적용·배포 필요**(순서: RPC apply → WEB deploy). UI만 먼저 배포 금지(라이브 RPC가 다른 학교 가입수 실제 반환).
+- 승인 필요: (a) 학생 RPC 재적용(`student_school_v2`), (b) `/school`+`/account` WEB 재배포.
+- 롤백: RPC는 직전 정의, WEB는 직전 canonical(`aaa350d6`).

@@ -47,8 +47,21 @@ describe('parseSchoolRanking', () => {
     expect(r.top[0].avgMs).toBeNull();
     expect(r.top[0].registeredUsers).toBe(2);
   });
+  it('accepts a masked (null) registered count for other schools; own school keeps the real value', () => {
+    const r = parseSchoolRanking({
+      version:'student-school-ranking-v1', metric:'registered', period:'week', min_users:3, min_recorders:3,
+      school_count:2, as_of:'t', my_school:{office_code:'B10', school_code:'mine', registered_users:3, active_users:3, ms:null, avg_ms:null, rank:2},
+      top:[
+        {office_code:'B10', school_code:'other', registered_users:null, active_users:4, ms:null, avg_ms:null, rank:1},
+        {office_code:'B10', school_code:'mine', registered_users:3, active_users:3, ms:null, avg_ms:null, rank:2},
+      ], around:[],
+    });
+    expect(r.top[0].registeredUsers).toBeNull();   // other school masked, not 0
+    expect(r.top[1].registeredUsers).toBe(3);      // own school real value
+    expect(r.mySchool?.registeredUsers).toBe(3);
+  });
   it('accepts a null my_school', () => {
-    const r = parseSchoolRanking({version:'student-school-ranking-v1', metric:'average', period:'month', min_users:5, school_count:0, as_of:'t', top:[], around:[], my_school:null});
+    const r = parseSchoolRanking({version:'student-school-ranking-v1', metric:'average', period:'month', min_users:3, school_count:0, as_of:'t', top:[], around:[], my_school:null});
     expect(r.mySchool).toBeNull();
   });
   it('rejects bad metric/period/shape', () => {

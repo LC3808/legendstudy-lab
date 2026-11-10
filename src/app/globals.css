@@ -1807,7 +1807,10 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 .beta-onboarding .my-actions {display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.5rem;margin-top:1rem;}
 
 /* 우리 학교 공부 경쟁 (/school) */
-.school-view {display:flex;flex-direction:column;gap:1.25rem;}
+.school-view {display:flex;flex-direction:column;gap:24px;}
+/* 참여 현황 카드 ↔ 학교별 순위 카드 간격 24px (PC·태블릿·모바일 공통) */
+.school-view__stack {display:flex;flex-direction:column;gap:24px;}
+.school-view__source {margin:0;font-size:.8rem;color:var(--muted);}
 .school-card {border:1px solid var(--line-strong);border-radius:16px;background:var(--surface);padding:1.25rem;display:flex;flex-direction:column;gap:1rem;}
 .school-card h2 {font-size:1.15rem;font-weight:700;margin:0;}
 .school-card__stats {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin:0;}
