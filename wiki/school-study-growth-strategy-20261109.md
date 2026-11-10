@@ -732,3 +732,14 @@ WEB canonical `49aa7647`. RPC `rollback.sql`(drop, 기존 무영향). 신규 회
 - TS0·ESLint0·빌드 OK, 전체 admin 테스트 7 failed=기존 기준선(신규 회귀 0).
 - 참고: 입시 데이터는 희소·입력 분산이라 로스터는 기간 필터 없이 전체. (대시보드 집계는 기간 기준.) 운영자/스태프 데이터가 섞일 수 있음(차기 집계 제외 검토).
 - 후보 `supabase/candidates/admin_applications_list/{install,test}.sql`. 적용 시 RPC apply + /admin 배포 동반(Owner 승인). 롤백: drop function.
+
+## 33. 개별 지원 목록 운영 적용 + /admin 선별 재배포 (2026-11-10, 적용·배포 완료)
+
+§32 후보를 Owner 승인("적용+배포 승인") 하에 운영 반영. 신규 RPC 1개 추가 + /admin 선별 오버레이 배포. 기존 객체/함수 불변.
+
+- **RPC apply**: 마이그레이션 `admin_applications_list_v1` 적용. 검증 — SECURITY DEFINER=true, `search_path=''`, `statement_timeout=8s`, owner postgres, ACL=authenticated/service_role/postgres(anon·public revoke). 비operator 호출 `42501 insufficient_privilege` 차단 확인. advisor 신규 카테고리 0(기존 `authenticated_security_definer_function_executable` 범주 — 모든 operator RPC 공통, 내부 `admin_operator()` 게이트).
+- **WEB 배포**: 배포 커밋 `0eefc7d`(이전 canonical `c94a93e7`=git 843f23d). 코드 diff = `admin-applications-roster.tsx`(신규) + `admin-data-page.tsx`(2줄), 둘 다 /admin 범위. public/·functions/ 변경 0.
+- 선별 오버레이(`admin-preserved.mjs`): inScope=/admin/*. dry-run offScope=0, adminPagesChanged=150, sharedStaticAdded=4, addedAssets=124, functionsRoutes=24(보존), preservedOtherPageBodies=true. Worker는 `wrangler pages functions build --output-config-path`로 재컴파일(functions/ 불변).
+- 신규 canonical `9788a7ca`(commit 0eefc7d), files 2487→2491.
+- 사후 검증: lab.legendstudy.com / `/school` `/pricing` `/admin` `/admin/data/learning/` `/admin/data/applications/` 최종 200, Functions `/api/essay/service-status`·`/api/admin/ga4` 401(게이트 정상), 라이브 admin 번들에 `admin_applications_list` 문자열 확인.
+- 롤백: WEB → canonical `c94a93e7` 재승격. RPC → `supabase/candidates/admin_applications_list/rollback.sql`(drop function, 기존 무영향).
