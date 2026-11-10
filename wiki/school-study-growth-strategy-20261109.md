@@ -639,3 +639,27 @@ Owner 승인으로 초대 추적 스키마+RPC 적용 + Phase 3 WEB 운영 배�
 
 ### 27.7 후속(승인 제외)
 GA4 운영 연결, 관리자 Growth UI, Flutter 딥링크(흐름 C deferred deep link=NOT IMPLEMENTED), 실가입 end-to-end 귀속 검증.
+
+## 28. 관리자 대시보드 '학습·입시 종합 현황' 개편 — 희망/실제지원 분리 (2026-11-10, 구현 완료 · 운영 적용/배포 대기)
+
+학생 입시 데이터(희망 대학·전공·실제 지원·전형)를 세분화. **운영 변경/배포 없음(후보 RPC+UI). 기존 `admin_learning_analytics` 미변경.**
+
+### 28.1 문제(검증)
+- 기존 카드는 희망/실제지원을 "학생수/기록수" 단일 틀로 표시. 근거: `student_target_universities`는 `UNIQUE(user_id,university_id,admission_year)` → 대학별 **학생수==기록수(중복 컬럼)**. 두 수가 갈라지는 건 전체 평균(229÷133=1.72개교)뿐.
+- `student_applications`는 dedup UNIQUE 없음 → 한 학생이 같은 대학에 복수 전형/학과 지원 가능 → **기록수≫학생수가 정상**. 희망과 같은 틀로 보면 안 됨.
+
+### 28.2 개편(후보)
+- 신규 RPC `admin_admissions_analytics(p_from,p_to)`(후보, 미적용) — 기존 RPC 불변. 희망/실제지원을 **서로 다른 축**으로 반환:
+  - 희망: students·records·avg_per_student·major_students, 대학 TOP(학생수·**1지망(priority=1)**), **희망 전공 TOP**(profiles.intended_major, 현재 스냅샷).
+  - 실제 지원(고3+N수): eligible·students·records·**coverage_pct**·avg_per_student, 지원 대학 TOP(**지원수·학생수 분리**), **전형구분 분포**.
+- UI: 단일 '학습·입시 종합 현황' → **'희망 대학·전공 현황' + '실제 지원 현황·고3·N수' 2개 패널**. 대학별 중복 "기록 수" 제거, 희망 전공 분포(Bars) 신설, 실제 지원은 지원수/학생수·전형 분리.
+- 권한: admin_operator 게이트, SECURITY DEFINER, search_path='' (기존 관리자 RPC와 동일 패턴).
+
+### 28.3 읽기전용 검증
+- 희망 229건/133명·평균 1.72개교·1지망 130, 대학별 학생수==기록수 확인. **희망 전공 178명/8분류(사회·상경37·공학36·인문30·의약24·예체능18…)** — 기존 대시보드에 없던 축.
+- 실제 지원 대상(고3+N수) 318명 중 입력 1명(0.3%)·2건. 전형 '수시'. 복수지원 구조 반영.
+- TS 0·ESLint 0·빌드(기록중). 전체 스위트 8 failed=기존 기준선(신규 회귀 0, dashboard-focus 실패는 기존 release-report mock 이슈로 본 변경과 무관).
+
+### 28.4 운영 적용/배포 대기
+- 후보 `supabase/candidates/admissions_analytics/{install,test}.sql`. 적용 시 `admin_admissions_analytics` apply + 관리자 대시보드 WEB 배포 동반 필요. 승인 필요. 기존 `admin_learning_analytics`·인기자료·KPI 타일 불변.
+- 참고: 실제 지원 입력 유도 온보딩은 코덱스가 별도 담당. 합격 발표 알림은 `student_application_events`(accepted/rejected/registered 등) 기반 확장 가능(차기).
