@@ -1,3 +1,5 @@
+2026-11-11 22:43 KST: [작업05-D 운영 적용](admin-withdrawal-production-20261111.md) — 공부시간 전체기간 및 탈퇴 조회2RPC 적용·운영 검증 PASS. WEB 배포/E2E 진행 중. 아래 05-B/C 미적용 표기는 당시 기록.
+
 2026-11-11: [작업05-C — 공부시간 전체 기간 계약 수정 후보](admin-study-period-contract-20261111.md) · 후보 검증 완료, 운영 승인 대기.
 
 2026-11-11: [작업05-B — 조건부 RPC 승인·사전 검사 중단 근거](admin-withdrawal-rpc-preflight-20261111.md) · 운영 SQL/WEB 미적용.
