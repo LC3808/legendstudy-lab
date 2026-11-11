@@ -162,3 +162,5 @@ Reviewed History/rewrite exact-ID resolution (`4fc3952`) and confirmed-photo Pro
 [작업05 — Claude 관리자 인수·탈퇴 관리 후보](admin-withdrawal-management-20261111.md) 작성. Claude 원본 보존, 원격d4ceb2a에서 전용 branch. 실제 운영 source0eefc7d 확인. 목록 제외가 아니라 가입일순 발견성+기존상세 subject gate가 원인. 신규 read RPC2개·기존회원내 탭·최소집계 구현. 신규35 PASS/격리DB·TS·Lint·build PASS, 기존7회귀실패 그대로. 운영 SQL/배포/APP/삭제/원장 변경 없음.
 
 - 2026-11-12 [건국대 자연 공개 연결 준비](konkuk-public-20261112.md):6시험24문항, 운영 소스 보존·관련381 PASS. 적용 전.
+
+- 2026-11-12 02:37 KST: [건국 신규24문항 공개](konkuk-public-20261112.md), Pages802acf70/source96bb290. 기존4·비논술2049정적자산·설정/라우팅 보존. 실제Provider0, 신규 공개/계약검증과 Owner 품질검수 분리.
