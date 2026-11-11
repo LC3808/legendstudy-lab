@@ -4350,6 +4350,236 @@
           "accountDraftReady": false
         }
       ]
+    },
+    {
+      "key": "source:kyunghee-2026-admission-medical",
+      "dbExamId": "0b5b9aea-e23f-5644-84df-5e5f6f5a2782",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
+      "sourceUniversityId": "kyunghee",
+      "year": 2026,
+      "kind": "admission",
+      "track": "의·약학계",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "0a1dd63471909d68e2e495e76da930f3140c7e5983689a78ff6ee61d0949b6ad"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kyunghee-2026-admission-medical:q수학 Ⅰ",
+          "dbQuestionId": "ec20faaf-5f4b-5675-8798-aa52a80c2fd6",
+          "label": "논제 수학 Ⅰ",
+          "sourceLocator": "2026학년도 경의대 수시 논술_의약학 문제,해설.pdf PDF 9쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2026-admission-medical:q수학 Ⅱ",
+          "dbQuestionId": "8bc7d2fa-8147-5354-857f-1baa46d84355",
+          "label": "논제 수학 Ⅱ",
+          "sourceLocator": "2026학년도 경의대 수시 논술_의약학 문제,해설.pdf PDF 12쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2026-admission-medical:q물리 Ⅲ",
+          "dbQuestionId": "7873aab1-1245-52c4-919e-0cc2888e70bd",
+          "label": "논제 물리 Ⅲ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2026-admission-medical:q물리 Ⅳ",
+          "dbQuestionId": "dc618430-fc97-5868-ad1d-cc168ed0cf13",
+          "label": "논제 물리 Ⅳ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2026-admission-medical:q화학 Ⅲ",
+          "dbQuestionId": "a3d0ca59-1ac8-534c-b30a-74da00810686",
+          "label": "논제 화학 Ⅲ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2026-admission-medical:q화학 Ⅳ",
+          "dbQuestionId": "24a038de-b10a-5f62-af31-4214d12c093a",
+          "label": "논제 화학 Ⅳ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2026-admission-medical:q생명과학 Ⅲ",
+          "dbQuestionId": "f67348c2-6c17-550d-a806-64bcfde64af9",
+          "label": "논제 생명과학 Ⅲ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2026-admission-medical:q생명과학 Ⅳ",
+          "dbQuestionId": "213cc62c-629a-580b-b83c-9846024db47d",
+          "label": "논제 생명과학 Ⅳ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kyunghee-2027-mock-natural",
+      "dbExamId": "6e289e0f-e5b9-5f47-8de6-4d9fb58cdb3f",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
+      "sourceUniversityId": "kyunghee",
+      "year": 2027,
+      "kind": "mock",
+      "track": "자연계",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "649215748e0228a4d24adaee7961537ef08045c6cf8d845946e347ee2c6d81d7",
+        "d9f5497e5dc7ae859ffb23a462d17642de870375912288be1491040676161a45"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kyunghee-2027-mock-natural:qⅠ",
+          "dbQuestionId": "d09383a2-bbe1-5dbf-b08d-dd730062c506",
+          "label": "논제 Ⅰ",
+          "sourceLocator": "2027학년도 경희대 모의논술_자연계 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2027-mock-natural:qⅡ",
+          "dbQuestionId": "1dc8ec21-0d5c-5129-afef-6c6109215d4b",
+          "label": "논제 Ⅱ",
+          "sourceLocator": "2027학년도 경희대 모의논술_자연계 문제.pdf PDF 2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2027-mock-natural:qⅢ",
+          "dbQuestionId": "0f1ef133-918b-566c-9a4a-024952ef78e8",
+          "label": "논제 Ⅲ",
+          "sourceLocator": "2027학년도 경희대 모의논술_자연계 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kyunghee-2027-mock-medical",
+      "dbExamId": "c71cb668-d9c6-52a9-b771-c48c3efd7dc3",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
+      "sourceUniversityId": "kyunghee",
+      "year": 2027,
+      "kind": "mock",
+      "track": "의·약학계",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "410a913e05eea641a420a79df6fc887ec705edd850b04aef1f984fec38770527",
+        "65cf968450deb342090834cab743a15426efd41dc62184be108a9e379c57ab5c"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kyunghee-2027-mock-medical:q수학 Ⅰ",
+          "dbQuestionId": "694acb0a-4226-5a21-a340-377d3ea166d7",
+          "label": "논제 수학 Ⅰ",
+          "sourceLocator": "2027학년도 경희대 모의논술_의약학(수학) 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2027-mock-medical:q수학 Ⅱ",
+          "dbQuestionId": "a4b76128-9a35-56cd-ad08-e4032eac6296",
+          "label": "논제 수학 Ⅱ",
+          "sourceLocator": "2027학년도 경희대 모의논술_의약학(수학) 문제.pdf PDF 2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2027-mock-medical:q물리 Ⅲ",
+          "dbQuestionId": "ae3aa413-1fdf-5274-a0a6-4c4f59c5af8a",
+          "label": "논제 물리 Ⅲ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2027-mock-medical:q물리 Ⅳ",
+          "dbQuestionId": "2eece199-d608-5e4d-90f3-8b188543b851",
+          "label": "논제 물리 Ⅳ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2027-mock-medical:q화학 Ⅲ",
+          "dbQuestionId": "04321068-ec5c-528d-b211-b5c6d4e44894",
+          "label": "논제 화학 Ⅲ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2027-mock-medical:q화학 Ⅳ",
+          "dbQuestionId": "22f61110-4d80-5faa-be59-fab0855fa0cf",
+          "label": "논제 화학 Ⅳ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2027-mock-medical:q생명과학 Ⅲ",
+          "dbQuestionId": "fed0bf52-4242-52e9-9a1e-6a35d8f309ca",
+          "label": "논제 생명과학 Ⅲ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kyunghee-2027-mock-medical:q생명과학 Ⅳ",
+          "dbQuestionId": "fc09f3ae-3aa8-501d-8a82-05f8449b2140",
+          "label": "논제 생명과학 Ⅳ",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
     }
   ]
 }

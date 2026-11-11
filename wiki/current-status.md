@@ -42,3 +42,5 @@ App usage follow-up: [WEB rankings and APP collection handoff](admin-app-usage-r
 - 2026-11-07 [중앙대 자연 수학 20시험·69문항 연결 후보](task20-chungang-connection-20261107.md): TEST 근거·Catalog·PDF 계약 검증 완료, 운영 승인 대기. 과학Q4 11문항 Owner 보류.
 
 - 2026-11-12 [건국대 자연 공개 완료](konkuk-public-20261112.md): 신규6시험24문항 PUBLISHED, 기존4보존. Pages802acf70/source96bb290, 공개API·일반계정·PDF6개 PASS. 실제AI 품질 검수는 Owner 통합 단계.
+
+- 2026-11-12 [경희3시험7문항 공개 준비](kyunghee-public-20261112.md): 기존 부분공개 계약 재사용, 운영 반영 전.

@@ -1,0 +1,74 @@
+{
+  "exams": [
+    {
+      "completeExam": false,
+      "examId": "0b5b9aea-e23f-5644-84df-5e5f6f5a2782",
+      "label": "경희대학교 2026 의·약학계",
+      "mathQuestions": {
+        "8bc7d2fa-8147-5354-857f-1baa46d84355": "ac4eacec-9f71-5061-8ede-fb5d13f0ef28",
+        "ec20faaf-5f4b-5675-8798-aa52a80c2fd6": "3c00e597-1197-5180-9e1e-764cbebb324c"
+      },
+      "mode": "math",
+      "packageDigest": "fabbdc69597a1f639a9f4d8ebebbd1724dcb6b1d94148703fa204d00217e301b",
+      "questionIds": [
+        "ec20faaf-5f4b-5675-8798-aa52a80c2fd6",
+        "8bc7d2fa-8147-5354-857f-1baa46d84355"
+      ],
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
+      "catalogQuestionIds": [
+        "ec20faaf-5f4b-5675-8798-aa52a80c2fd6",
+        "8bc7d2fa-8147-5354-857f-1baa46d84355",
+        "7873aab1-1245-52c4-919e-0cc2888e70bd",
+        "dc618430-fc97-5868-ad1d-cc168ed0cf13",
+        "a3d0ca59-1ac8-534c-b30a-74da00810686",
+        "24a038de-b10a-5f62-af31-4214d12c093a",
+        "f67348c2-6c17-550d-a806-64bcfde64af9",
+        "213cc62c-629a-580b-b83c-9846024db47d"
+      ]
+    },
+    {
+      "completeExam": true,
+      "examId": "6e289e0f-e5b9-5f47-8de6-4d9fb58cdb3f",
+      "label": "경희대학교 2027 자연계",
+      "mathQuestions": {
+        "0f1ef133-918b-566c-9a4a-024952ef78e8": "de5473e3-fc93-5d6b-b831-5b2fa8839bdc",
+        "1dc8ec21-0d5c-5129-afef-6c6109215d4b": "3ca32881-ec0f-5bbd-8925-400857b7fc89",
+        "d09383a2-bbe1-5dbf-b08d-dd730062c506": "3d04e9e2-4a30-5324-94bc-3d8451c6059f"
+      },
+      "mode": "math",
+      "packageDigest": "1aa84804fe03b13e7b0a9af99f072eb54e5556e1a9be7877861a9916fdb9380f",
+      "questionIds": [
+        "d09383a2-bbe1-5dbf-b08d-dd730062c506",
+        "1dc8ec21-0d5c-5129-afef-6c6109215d4b",
+        "0f1ef133-918b-566c-9a4a-024952ef78e8"
+      ],
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d"
+    },
+    {
+      "completeExam": false,
+      "examId": "c71cb668-d9c6-52a9-b771-c48c3efd7dc3",
+      "label": "경희대학교 2027 의·약학계",
+      "mathQuestions": {
+        "694acb0a-4226-5a21-a340-377d3ea166d7": "a44dbcc5-ae56-5539-9a6b-220370058f91",
+        "a4b76128-9a35-56cd-ad08-e4032eac6296": "aebce05f-9b64-55f7-92f2-f4f7bb70e8c4"
+      },
+      "mode": "math",
+      "packageDigest": "ea00304d76c1147ca58ea897db606a955222854bf5de1a0c36060b70f9aae2d6",
+      "questionIds": [
+        "694acb0a-4226-5a21-a340-377d3ea166d7",
+        "a4b76128-9a35-56cd-ad08-e4032eac6296"
+      ],
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
+      "catalogQuestionIds": [
+        "694acb0a-4226-5a21-a340-377d3ea166d7",
+        "a4b76128-9a35-56cd-ad08-e4032eac6296",
+        "ae3aa413-1fdf-5274-a0a6-4c4f59c5af8a",
+        "2eece199-d608-5e4d-90f3-8b188543b851",
+        "04321068-ec5c-528d-b211-b5c6d4e44894",
+        "22f61110-4d80-5faa-be59-fab0855fa0cf",
+        "fed0bf52-4242-52e9-9a1e-6a35d8f309ca",
+        "fc09f3ae-3aa8-501d-8a82-05f8449b2140"
+      ]
+    }
+  ]
+}

@@ -164,3 +164,5 @@ Reviewed History/rewrite exact-ID resolution (`4fc3952`) and confirmed-photo Pro
 - 2026-11-12 [건국대 자연 공개 연결 준비](konkuk-public-20261112.md):6시험24문항, 운영 소스 보존·관련381 PASS. 적용 전.
 
 - 2026-11-12 02:37 KST: [건국 신규24문항 공개](konkuk-public-20261112.md), Pages802acf70/source96bb290. 기존4·비논술2049정적자산·설정/라우팅 보존. 실제Provider0, 신규 공개/계약검증과 Owner 품질검수 분리.
+
+- 2026-11-12 [경희3시험7문항 공개 준비](kyunghee-public-20261112.md): 기존 부분공개 계약 재사용, 운영 반영 전.
