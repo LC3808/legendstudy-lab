@@ -92,3 +92,8 @@ admin_dashboard RPC 실데이터. 커밋 987bb08, 배포 347d5bf7(원복 대상 
 KPI 행에 '지표 기간' 선택기 추가(fe8afbe). 첨삭권 사용·결제 건수는 누적 admin_dashboard
 대신 기간형 admin_release_report(credit_used, paid)로 교체(11b8b53) → 미처리 문의 외 5개
 KPI가 선택 기간 기준으로 집계. 신규 백엔드 없음. 배포 e363d279(원복 대상 347d5bf7). 신규 회귀 0.
+
+
+## Codex 작업05 인수 — 2026-11-11
+
+[작업05 — Claude 관리자 인수·탈퇴 관리 후보](admin-withdrawal-management-20261111.md)에서 후속 변경·후보SQL·권한/데이터 정의·검증·금요일 재인수 절차를 확인한다. 원본Claude브랜치는보존했고, 새회원탈퇴관리만별도Codex브랜치로작성했다. 운영미적용. 기존7테스트와checkout경계실패도인수보고에명시했다.

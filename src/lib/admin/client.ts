@@ -1,3 +1,4 @@
+import {parseWithdrawalList,parseWithdrawalDetail,type WithdrawalFilters,type WithdrawalList,type WithdrawalDetail} from './withdrawals';
 import {parseCreditMembers,type CreditMembers,type CreditMemberSort} from './credit-members';
 import {parseMobilePurchases,type MobilePurchases} from './mobile-purchases';
 import {parseLearningSummary,type LearningSummary} from './learning-summary';
@@ -45,6 +46,8 @@ import { AdminError, mapRpcError } from "./errors";
  * credential is introduced and finance-only functions remain inaccessible.
  */
 export interface AdminClient {
+  withdrawals(filters:WithdrawalFilters,options?:AdminPageOptions & {cursor?:import("./withdrawals").WithdrawalCursor|null}):Promise<WithdrawalList>;
+  withdrawalDetail(requestId:string):Promise<WithdrawalDetail>;
   creditMembers(query:string,sort:CreditMemberSort,limit:number,offset:number):Promise<CreditMembers>;
   mobilePurchases(from:string|null,to:string|null,quantity:number|null):Promise<MobilePurchases>;
   learningSummary(subject?:string):Promise<LearningSummary>;
@@ -232,6 +235,20 @@ export function createAdminClient(client: AdminRpcClient): AdminClient {
         p_account_state:filters.accountState||null,p_academic_status:filters.academicStatus||null,p_grade:filters.grade?Number(filters.grade):null,
         p_office:filters.office||null,p_school:filters.school||null,p_school_unset:filters.schoolUnset,
       }));
+    },
+
+    async withdrawals(filters:WithdrawalFilters,options:AdminPageOptions & {cursor?:import("./withdrawals").WithdrawalCursor|null}={}):Promise<WithdrawalList> {
+      await requireSession();
+      const offset=options.offset??0;
+      if(filters.query.length>36 || !Number.isSafeInteger(offset) || offset<0) throw new AdminError('INVALID_REQUEST');
+      return parseWithdrawalList(await callRpc('admin_withdrawal_list',{p_query:filters.query.trim(),p_status:filters.status,p_sort:filters.sort,p_limit:clampLimit(options.limit),p_offset:offset,p_cursor:options.cursor??null}));
+    },
+    async withdrawalDetail(requestId:string):Promise<WithdrawalDetail> {
+      await requireSession();
+      if(!/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(requestId)) throw new AdminError('INVALID_REQUEST');
+      const detail=parseWithdrawalDetail(await callRpc('admin_withdrawal_detail',{p_request_id:requestId}));
+      if(detail.request_id!==requestId) throw new AdminError('MALFORMED_RESPONSE');
+      return detail;
     },
 
     async student360(accountId: string): Promise<Student360> {

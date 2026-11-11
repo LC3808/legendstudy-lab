@@ -145,3 +145,8 @@ Live Inha2027 History exposed static-registry-only identity lookup and absent Ma
 ## 2026-11-04 — Live photo-input and History integration follow-up
 
 Reviewed History/rewrite exact-ID resolution (`4fc3952`) and confirmed-photo Provider input (`0cc5350`) deployed together to Pages `98c8e200-b8e2-41c0-83b3-8c96f42d36fe`. Full1,734 PASS/four existing SKIP, TS/lint/build/Functions/boundaries PASS; unchanged Pages settings and46 environment bindings verified. Actual production Inha2027 History, same-exam free-rewrite entry and confirmed text loading now PASS. Fresh-photo free-rewrite assessment and quality remain separately recorded by the release lead. Prior held result/data preserved; deployment itself invoked no Provider or DB mutation. [Detailed receipt](math-commerce-release-integration-20261103.md#combined-photo-input-and-history-deployment).
+
+
+## 2026-11-11 — Task05 withdrawal management candidate
+
+[작업05 — Claude 관리자 인수·탈퇴 관리 후보](admin-withdrawal-management-20261111.md) 작성. Claude 원본 보존, 원격d4ceb2a에서 전용 branch. 실제 운영 source0eefc7d 확인. 목록 제외가 아니라 가입일순 발견성+기존상세 subject gate가 원인. 신규 read RPC2개·기존회원내 탭·최소집계 구현. 신규35 PASS/격리DB·TS·Lint·build PASS, 기존7회귀실패 그대로. 운영 SQL/배포/APP/삭제/원장 변경 없음.

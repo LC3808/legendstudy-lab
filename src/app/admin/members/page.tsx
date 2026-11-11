@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { AdminMembersView } from "@/components/admin/admin-members-view";
+import { AdminMembersWorkspace } from "@/components/admin/admin-withdrawals-view";
 import { AdminSurface } from "@/components/admin/admin-surface";
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export default function AdminMembersPage() {
       title="회원 관리"
       lead="회원을 검색하고 학교·학년·계정 상태별로 확인하세요."
     >
-      <AdminMembersView />
+      <AdminMembersWorkspace />
     </AdminSurface>
   );
 }
