@@ -175,8 +175,12 @@ Node22사용. 해당checkout node_modules는 Claude와 공유하지 않는 로�
 | 17 테스트/빌드 | 신규35 PASS, 격리 DB·TS·변경Lint·Next build PASS |
 | 18 운영 필요 | 신규 조회 RPC2개 + 회원관리 WEB 범위 배포, Owner 승인 필요 |
 | 19 미완료 | 기존 공통 검사 실패 정리, 운영 E2E·고활동 부하·실사용 검수 |
-| 20 Git | 본 문서를 포함한 작업 커밋 및 후속 인수 기록 참조 |
+| 20 Git | 구현·SQL·검사·문서 커밋 `1562a0a` (기준d4ceb2a). 후속 문서 커밋은 코드 변경 없음 |
 | 21 Wiki | index/current-status/log/Claude 문서 상호 링크 |
 | 22 재인수 | §9, 후보 README의 단계별 적용·차단·원복 |
 
 문서 검증: 신규 문서·후보 README의 로컬 링크26개 및 index/current-status/log/Claude 역링크 PASS, current-status 6,940bytes. canonical APP의 `python3 tool/check_wiki_handoff.py`도 읽기 전용 실행하여 PASS(3,072 links, status11,958bytes). APP 파일은 변경하지 않았다.
+
+## Git 검수 기록
+
+구현 커밋: `1562a0a` — `feat(admin): add read-only withdrawal management candidate`. 새 브랜치에만 로컬 커밋했으며 push/Claude 병합/운영 배포는 하지 않았다. 마지막 빌드 후 TypeScript·신규35검사·SQL검증/원복을 순차 확인했다. 이번 후속 문서 커밋은 이 SHA와 인수 상태만 기록한다.
