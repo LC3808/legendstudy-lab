@@ -44,3 +44,5 @@ App usage follow-up: [WEB rankings and APP collection handoff](admin-app-usage-r
 - 2026-11-12 [건국대 자연 공개 완료](konkuk-public-20261112.md): 신규6시험24문항 PUBLISHED, 기존4보존. Pages802acf70/source96bb290, 공개API·일반계정·PDF6개 PASS. 실제AI 품질 검수는 Owner 통합 단계.
 
 - 2026-11-12 [경희3시험7문항 공개 완료](kyunghee-public-20261112.md): Pages532977a6/source2f585c0, 기존3/건국28/2166자산 보존. 과학12 평가진입 제외, 실제AI0.
+
+- 2026-11-12: 다음 성균관15문항은 기존PDF RIGHTS_HOLD 유지. 원본 이용조건/표시승인 미확인·운영PDF4/5·일반조회0. 신규변경 없음. 상세는 APP wiki/essay-sungkyunkwan-rights-hold-20261112.md.
