@@ -5,7 +5,7 @@ import source from '@/data/essay-source-registry.json';
 it('APP and WEB receive the same existing source keys and question metadata',async()=>{
  const response=await onRequestGet();const data=await response.json();
  expect(data.exams).toEqual(source.exams);expect(data.universities).toHaveLength(21);
- expect(data.exams.flatMap((e:{questions:unknown[]})=>e.questions)).toHaveLength(269);
+ expect(data.exams.flatMap((e:{questions:unknown[]})=>e.questions)).toHaveLength(289);
  expect(data.exams.every((e:{evaluationReady:boolean})=>!e.evaluationReady)).toBe(true);
 });
 
@@ -30,12 +30,13 @@ const subject='00000000-0000-4000-8000-000000000001';
 const workerFixture=[btoa(JSON.stringify({alg:'ES256'})).replace(/=/g,''),btoa(JSON.stringify({role:'essay_worker',exp:Math.floor(Date.now()/1000)+3600})).replace(/=/g,''),'fixture'].join('.');
 const privateEnv={MATH_SUPABASE_URL:legendStudySupabaseUrl,MATH_PROJECT_REF:'stlhijzpjfgwwdgunlsd',MATH_SUPABASE_PUBLISHABLE_KEY:'sb_publishable_test',MATH_ALLOWED_SUBJECTS:subject,MATH_ORIGIN:'https://lab.legendstudy.com',ESSAY_REGISTRY_WORKER_JWT:workerFixture};
 it('private registry authenticates the existing allowlist and never enables drafting or evaluation',async()=>{
- const exam=source.exams[0];
+ const index=source.exams.findIndex(e=>e.dbExamId===null&&e.questions[0].dbQuestionId===null);expect(index).toBeGreaterThanOrEqual(0);
+ const exam=source.exams[index];
  const row={id:subject,essay_exam_id:subject,question_key:exam.questions[0].key,metadata_version:'source-registration-v1',is_published:false,essay_exams:{university_id:exam.universityId,admission_year:exam.year,exam_kind:exam.kind}};
  const request=vi.fn().mockResolvedValueOnce(Response.json({id:subject})).mockResolvedValueOnce(Response.json([row]));vi.stubGlobal('fetch',request);
  const r=await onRequestPost({request:new Request('https://lab.legendstudy.com/api/essay/catalog',{method:'POST',headers:{Authorization:'Bearer student'}}),env:privateEnv});
  expect(r.status).toBe(200);expect(r.headers.get('cache-control')).toContain('no-store');
- const data=await r.json();expect(data.registration).toEqual({registeredQuestions:1});expect(data.exams[0].questions[0]).toMatchObject({dbQuestionId:subject,accountDraftReady:false});expect(data.exams[0].evaluationReady).toBe(false);
+ const data=await r.json();expect(data.registration).toEqual({registeredQuestions:1});expect(data.exams[index].questions[0]).toMatchObject({dbQuestionId:subject,accountDraftReady:false});expect(data.exams[index].evaluationReady).toBe(false);
  expect(request.mock.calls[0][1].headers.Authorization).toBe('Bearer student');
  expect(request.mock.calls[1][1].headers.Authorization).toBe(`Bearer ${workerFixture}`);
  expect(JSON.parse(request.mock.calls[1][1].body)).toEqual({p_subject:subject});

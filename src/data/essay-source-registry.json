@@ -133,7 +133,7 @@
   "exams": [
     {
       "key": "source:9c09906aaa7579e85ab9390c2ee1ff3434dfb53362699ce390c489bf9a0fbba3",
-      "dbExamId": null,
+      "dbExamId": "321dfcff-62eb-564d-a40a-b683cf721316",
       "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
       "sourceUniversityId": "konkuk",
       "year": 2026,
@@ -142,42 +142,47 @@
       "session": null,
       "campus": null,
       "verification": "VERIFIED",
-      "verificationScope": "exam_identity_and_question_labels",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
       "sourceHashes": [
-        "8ba12305eb94d1d4bb8e03b8db1040edf990307c40c0a12e7a4334262d47101d"
+        "8ba12305eb94d1d4bb8e03b8db1040edf990307c40c0a12e7a4334262d47101d",
+        "b7ca545cd9b4390d90b6718b069c7914519a4651d241bbaf59c3bcab3ddd3aa7"
       ],
       "questions": [
         {
           "key": "source:9c09906aaa7579e85ab9390c2ee1ff3434dfb53362699ce390c489bf9a0fbba3:1",
-          "dbQuestionId": null,
+          "dbQuestionId": "f8e90b86-1a36-533d-a8c1-9847e1dd4014",
           "label": "문제 1",
-          "sourceLocator": null,
+          "sourceLocator": "2026학년도 건국대 모의논술_자연 문제.pdf PDF 1쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         },
         {
           "key": "source:9c09906aaa7579e85ab9390c2ee1ff3434dfb53362699ce390c489bf9a0fbba3:2",
-          "dbQuestionId": null,
+          "dbQuestionId": "4ec222eb-b5be-5a50-b2c6-883fd359b31d",
           "label": "문제 2",
-          "sourceLocator": null,
+          "sourceLocator": "2026학년도 건국대 모의논술_자연 문제.pdf PDF 1,2쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         },
         {
           "key": "source:9c09906aaa7579e85ab9390c2ee1ff3434dfb53362699ce390c489bf9a0fbba3:3",
-          "dbQuestionId": null,
+          "dbQuestionId": "b3a88056-a671-57ea-9a59-03cf1fb322ff",
           "label": "문제 3",
-          "sourceLocator": null,
+          "sourceLocator": "2026학년도 건국대 모의논술_자연 문제.pdf PDF 2쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         },
         {
           "key": "source:9c09906aaa7579e85ab9390c2ee1ff3434dfb53362699ce390c489bf9a0fbba3:4",
-          "dbQuestionId": null,
+          "dbQuestionId": "011b01a5-3714-5aab-821d-b459979df5e2",
           "label": "문제 4",
-          "sourceLocator": null,
+          "sourceLocator": "2026학년도 건국대 모의논술_자연 문제.pdf PDF 3쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         }
       ],
       "evaluationReady": false
@@ -4067,6 +4072,284 @@
         }
       ],
       "evaluationReady": false
+    },
+    {
+      "key": "source:konkuk-2024-admission-natural-b",
+      "dbExamId": "168f2eb0-34be-5015-bf42-db002faa9868",
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
+      "sourceUniversityId": "konkuk",
+      "year": 2024,
+      "kind": "admission",
+      "track": "자연 B",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "3091cead00f006094d78b187bf19a3889bff38200318afe6473543766087b5fe"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:konkuk-2024-admission-natural-b:q1",
+          "dbQuestionId": "28f34ddb-5de8-5d3d-8ae1-9578bd879174",
+          "label": "문제 1",
+          "sourceLocator": "2024학년도 건국대 논술_ 자연계B 문제,답안.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2024-admission-natural-b:q2",
+          "dbQuestionId": "488c350e-9c3f-5eba-96ef-01960ede29b6",
+          "label": "문제 2",
+          "sourceLocator": "2024학년도 건국대 논술_ 자연계B 문제,답안.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2024-admission-natural-b:q3",
+          "dbQuestionId": "beb96180-87b8-5877-94fe-1d8cce9db925",
+          "label": "문제 3",
+          "sourceLocator": "2024학년도 건국대 논술_ 자연계B 문제,답안.pdf PDF 2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2024-admission-natural-b:q4",
+          "dbQuestionId": "59855528-951c-516d-b4cf-721a086253bb",
+          "label": "문제 4",
+          "sourceLocator": "2024학년도 건국대 논술_ 자연계B 문제,답안.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:konkuk-2024-admission-natural-a",
+      "dbExamId": "9288300f-76c8-5321-8c28-2ed4f2587ef3",
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
+      "sourceUniversityId": "konkuk",
+      "year": 2024,
+      "kind": "admission",
+      "track": "자연 A",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "2b97aa8264cc4b455f0c77d232bc8d39b6b792982ee3269c307e8f698fb9dd01"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:konkuk-2024-admission-natural-a:q1",
+          "dbQuestionId": "2837c76a-7fd1-51d3-9d89-567524e6d00a",
+          "label": "문제 1",
+          "sourceLocator": "2024학년도 건국대 논술_ 자연계A 문제,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2024-admission-natural-a:q2",
+          "dbQuestionId": "7c74e44d-375d-5f9c-83c2-60b8fc06977f",
+          "label": "문제 2",
+          "sourceLocator": "2024학년도 건국대 논술_ 자연계A 문제,답안.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2024-admission-natural-a:q3",
+          "dbQuestionId": "1dcae52c-5937-5d83-854f-f77c0ede42d4",
+          "label": "문제 3",
+          "sourceLocator": "2024학년도 건국대 논술_ 자연계A 문제,답안.pdf PDF 2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2024-admission-natural-a:q4",
+          "dbQuestionId": "09140d75-579d-5570-bf90-7228c99478a6",
+          "label": "문제 4",
+          "sourceLocator": "2024학년도 건국대 논술_ 자연계A 문제,답안.pdf PDF 3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:konkuk-2024-mock-natural",
+      "dbExamId": "529fc5f3-79b3-5ff4-8ef2-4a5ce843c7b8",
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
+      "sourceUniversityId": "konkuk",
+      "year": 2024,
+      "kind": "mock",
+      "track": "자연",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "0c4ae83f59a1242fd7aa38660355fe55e55d9285ac07c7ae202260d0d779c9f4",
+        "1a5fd346cb1c6256e828755897a914bd49bef8a0a7185ed862ad142ef266ffd4"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:konkuk-2024-mock-natural:q1",
+          "dbQuestionId": "3df812ba-7ac3-5737-a50e-3db7e6a2c733",
+          "label": "문제 1",
+          "sourceLocator": "2024학년도 건국대 모의논술_자연계 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2024-mock-natural:q2",
+          "dbQuestionId": "404cfc21-77d6-55da-9ba6-84198a1b3a01",
+          "label": "문제 2",
+          "sourceLocator": "2024학년도 건국대 모의논술_자연계 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2024-mock-natural:q3",
+          "dbQuestionId": "84f6b941-8aae-5663-a6db-ac0c2e17fedf",
+          "label": "문제 3",
+          "sourceLocator": "2024학년도 건국대 모의논술_자연계 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2024-mock-natural:q4",
+          "dbQuestionId": "d685fdad-23c9-56bf-8f68-a372cdf3edfa",
+          "label": "문제 4",
+          "sourceLocator": "2024학년도 건국대 모의논술_자연계 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:konkuk-2025-mock-natural",
+      "dbExamId": "56402c57-6ecc-5e20-96d8-26a5fbeb957b",
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
+      "sourceUniversityId": "konkuk",
+      "year": 2025,
+      "kind": "mock",
+      "track": "자연",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "515cf294b195db540d3e7fb9dabd0a60aa809878d05c02bc6db6b23ae710522c",
+        "85972661a0d5dc58e9ae790855c72e24d2052e31ec72f4d02a25b6068e2fbdf4"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:konkuk-2025-mock-natural:q1",
+          "dbQuestionId": "cfa4839f-c292-5a95-b8b0-e408aa1df009",
+          "label": "문제 1",
+          "sourceLocator": "2025학년도 건국대 모의논술_자연계 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2025-mock-natural:q2",
+          "dbQuestionId": "707f9eea-3bcc-581e-b50e-4a5fccbdca7e",
+          "label": "문제 2",
+          "sourceLocator": "2025학년도 건국대 모의논술_자연계 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2025-mock-natural:q3",
+          "dbQuestionId": "ddae2f2e-bbc6-5769-b779-bd9b997ab202",
+          "label": "문제 3",
+          "sourceLocator": "2025학년도 건국대 모의논술_자연계 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2025-mock-natural:q4",
+          "dbQuestionId": "982a78ca-012f-5683-bd31-4f00bdf711e2",
+          "label": "문제 4",
+          "sourceLocator": "2025학년도 건국대 모의논술_자연계 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:konkuk-2025-admission-natural",
+      "dbExamId": "b628acde-5861-5f14-8d35-31da62259867",
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
+      "sourceUniversityId": "konkuk",
+      "year": 2025,
+      "kind": "admission",
+      "track": "자연",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "1ece830fc331ec6886cda395b0b16d5767ce3ce0ef6c0e919dd528ba82f0e93c",
+        "30856a544e9f0820dffa0904212c310d13bcbd4f2d7c18484531806b51568e60"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:konkuk-2025-admission-natural:q1",
+          "dbQuestionId": "a42806ac-63c2-5fd5-a383-ca3c5df4468a",
+          "label": "문제 1",
+          "sourceLocator": "2025학년도 건국대 논술_자연계 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2025-admission-natural:q2",
+          "dbQuestionId": "47d0af04-d836-5c5a-9cfa-4a5c4c986597",
+          "label": "문제 2",
+          "sourceLocator": "2025학년도 건국대 논술_자연계 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2025-admission-natural:q3",
+          "dbQuestionId": "48937249-a641-5425-bffd-acaf096190a4",
+          "label": "문제 3",
+          "sourceLocator": "2025학년도 건국대 논술_자연계 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:konkuk-2025-admission-natural:q4",
+          "dbQuestionId": "1bee0815-02e0-502a-b4ac-5090bfb69212",
+          "label": "문제 4",
+          "sourceLocator": "2025학년도 건국대 논술_자연계 문제.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
     }
   ]
 }

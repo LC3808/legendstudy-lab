@@ -2,7 +2,9 @@ import {it,expect} from 'vitest';
 import registry from '@/data/essay-source-registry.json';
 import {connectPublishedQuestions} from './canonical-catalog';
 import type {SourceExam} from './source-registry';
-const exam=registry.exams[0] as SourceExam;
+const source=registry.exams[0] as SourceExam;
+// Test an unbound fixture independently of which production exam sorts first.
+const exam={...source,dbExamId:null,questions:source.questions.map(q=>({...q,dbQuestionId:null}))};
 const id='00000000-0000-4000-8000-000000000001';
 const row={id,essay_exam_id:id,question_key:exam.questions[0].key,metadata_version:'source-registration-v1',essay_exams:{university_id:exam.universityId,admission_year:exam.year,exam_kind:exam.kind}};
 it('adds canonical IDs without altering source identity or enabling evaluation',()=>{

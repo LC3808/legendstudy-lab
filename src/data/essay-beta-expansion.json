@@ -1547,6 +1547,126 @@
         "98e1918c-4eec-562b-af07-22b3dcf204a9",
         "77a6d30a-cc13-5e9b-95cc-fa6db3c56fd3"
       ]
+    },
+    {
+      "completeExam": true,
+      "examId": "168f2eb0-34be-5015-bf42-db002faa9868",
+      "label": "건국대학교 2024 자연 B",
+      "mathQuestions": {
+        "28f34ddb-5de8-5d3d-8ae1-9578bd879174": "a41cab90-213f-59aa-9c92-9b77ae6e95cb",
+        "488c350e-9c3f-5eba-96ef-01960ede29b6": "fb4c1641-7e5e-54bf-bb67-c7901cb094dd",
+        "59855528-951c-516d-b4cf-721a086253bb": "f989feba-f014-5c5b-beec-b8cf2cc8fb39",
+        "beb96180-87b8-5877-94fe-1d8cce9db925": "cc567fe8-6a48-5d55-9f4c-6b850ef11f0c"
+      },
+      "mode": "math",
+      "packageDigest": "0fa9f8ce89c0251d952d5dd877cf14bad8d75e3fa899b5497de8a99d10c0a0dd",
+      "questionIds": [
+        "28f34ddb-5de8-5d3d-8ae1-9578bd879174",
+        "488c350e-9c3f-5eba-96ef-01960ede29b6",
+        "beb96180-87b8-5877-94fe-1d8cce9db925",
+        "59855528-951c-516d-b4cf-721a086253bb"
+      ],
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c"
+    },
+    {
+      "completeExam": true,
+      "examId": "9288300f-76c8-5321-8c28-2ed4f2587ef3",
+      "label": "건국대학교 2024 자연 A",
+      "mathQuestions": {
+        "09140d75-579d-5570-bf90-7228c99478a6": "b53a1368-8d6f-5a24-a957-3e3b5074db5b",
+        "1dcae52c-5937-5d83-854f-f77c0ede42d4": "6556b977-f2cd-5e01-a3f6-6359d0ad3178",
+        "2837c76a-7fd1-51d3-9d89-567524e6d00a": "a46a15f5-446b-59ba-8c9d-c0f2e39d194c",
+        "7c74e44d-375d-5f9c-83c2-60b8fc06977f": "14451865-b2b7-544b-908f-ab1de714690d"
+      },
+      "mode": "math",
+      "packageDigest": "4bb6cf7e0c24846518e345d053028c7414ab0c55db5adf462fdb574d053cc87f",
+      "questionIds": [
+        "2837c76a-7fd1-51d3-9d89-567524e6d00a",
+        "7c74e44d-375d-5f9c-83c2-60b8fc06977f",
+        "1dcae52c-5937-5d83-854f-f77c0ede42d4",
+        "09140d75-579d-5570-bf90-7228c99478a6"
+      ],
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c"
+    },
+    {
+      "completeExam": true,
+      "examId": "321dfcff-62eb-564d-a40a-b683cf721316",
+      "label": "건국대학교 2026 자연",
+      "mathQuestions": {
+        "011b01a5-3714-5aab-821d-b459979df5e2": "17e48ce1-4876-51a4-8c83-dce98de36a6a",
+        "4ec222eb-b5be-5a50-b2c6-883fd359b31d": "7a8b78e8-7132-5959-8f85-9dbdf37201ef",
+        "b3a88056-a671-57ea-9a59-03cf1fb322ff": "eda6f2e5-4246-5127-bf90-9d0a8323d0fb",
+        "f8e90b86-1a36-533d-a8c1-9847e1dd4014": "87df6788-19a6-5fe0-8855-508afe59fb70"
+      },
+      "mode": "math",
+      "packageDigest": "8204aa2b83d5e59a58954f049074c235c5c1e4d0503ac9f4e7506a19f6acb8e9",
+      "questionIds": [
+        "f8e90b86-1a36-533d-a8c1-9847e1dd4014",
+        "4ec222eb-b5be-5a50-b2c6-883fd359b31d",
+        "b3a88056-a671-57ea-9a59-03cf1fb322ff",
+        "011b01a5-3714-5aab-821d-b459979df5e2"
+      ],
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c"
+    },
+    {
+      "completeExam": true,
+      "examId": "529fc5f3-79b3-5ff4-8ef2-4a5ce843c7b8",
+      "label": "건국대학교 2024 자연",
+      "mathQuestions": {
+        "3df812ba-7ac3-5737-a50e-3db7e6a2c733": "b8e11e62-ca37-5e81-a0b3-2eda70136465",
+        "404cfc21-77d6-55da-9ba6-84198a1b3a01": "47da9563-5d18-55d1-a541-29796e7d16a0",
+        "84f6b941-8aae-5663-a6db-ac0c2e17fedf": "92b76920-4e1e-5f53-b43c-d8174aaf6ddc",
+        "d685fdad-23c9-56bf-8f68-a372cdf3edfa": "54fc60e4-e0e2-5b24-aa15-5ea737140f47"
+      },
+      "mode": "math",
+      "packageDigest": "11ecd256932473cadc884f520566e200072c0a48315ec4913cc3c21b3df28a32",
+      "questionIds": [
+        "3df812ba-7ac3-5737-a50e-3db7e6a2c733",
+        "404cfc21-77d6-55da-9ba6-84198a1b3a01",
+        "84f6b941-8aae-5663-a6db-ac0c2e17fedf",
+        "d685fdad-23c9-56bf-8f68-a372cdf3edfa"
+      ],
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c"
+    },
+    {
+      "completeExam": true,
+      "examId": "56402c57-6ecc-5e20-96d8-26a5fbeb957b",
+      "label": "건국대학교 2025 자연",
+      "mathQuestions": {
+        "707f9eea-3bcc-581e-b50e-4a5fccbdca7e": "be75562e-e3d7-51f2-b1a7-0a2b8b5467dd",
+        "982a78ca-012f-5683-bd31-4f00bdf711e2": "0784ba96-7248-51eb-84f4-dbb15a5b0723",
+        "cfa4839f-c292-5a95-b8b0-e408aa1df009": "7f075986-b0fa-5d57-a428-1548bad12ee4",
+        "ddae2f2e-bbc6-5769-b779-bd9b997ab202": "414cbed4-5aab-5989-b725-9649c72cf31c"
+      },
+      "mode": "math",
+      "packageDigest": "0c4acf6249de4701b293181b562b5ec9c894458d3b428d4d5677e0e64167571c",
+      "questionIds": [
+        "cfa4839f-c292-5a95-b8b0-e408aa1df009",
+        "707f9eea-3bcc-581e-b50e-4a5fccbdca7e",
+        "ddae2f2e-bbc6-5769-b779-bd9b997ab202",
+        "982a78ca-012f-5683-bd31-4f00bdf711e2"
+      ],
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c"
+    },
+    {
+      "completeExam": true,
+      "examId": "b628acde-5861-5f14-8d35-31da62259867",
+      "label": "건국대학교 2025 자연",
+      "mathQuestions": {
+        "1bee0815-02e0-502a-b4ac-5090bfb69212": "a10ff564-a20a-51f9-a5d3-501a3dc93fe8",
+        "47d0af04-d836-5c5a-9cfa-4a5c4c986597": "74b6e267-98ec-5751-88f2-182b33289210",
+        "48937249-a641-5425-bffd-acaf096190a4": "8eeb7450-ddb7-5c66-afcd-cd5793fa8b4b",
+        "a42806ac-63c2-5fd5-a383-ca3c5df4468a": "5cafb19e-fd73-53dc-be81-f00ca2c42584"
+      },
+      "mode": "math",
+      "packageDigest": "7c0b85c5cf3753f72c1d748c0f07aea4e7dd638e4645268338a2a253f86fb0c5",
+      "questionIds": [
+        "a42806ac-63c2-5fd5-a383-ca3c5df4468a",
+        "47d0af04-d836-5c5a-9cfa-4a5c4c986597",
+        "48937249-a641-5425-bffd-acaf096190a4",
+        "1bee0815-02e0-502a-b4ac-5090bfb69212"
+      ],
+      "universityId": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c"
     }
   ]
 }
