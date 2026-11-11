@@ -1,3 +1,7 @@
+## 2026-11-11 — 작업05-B 운영 RPC 사전 검사
+
+신규2조회 RPC 조건부 승인 후 기존7실패/checkout 경계 실패 재현. 추가 운영 읽기 검사에서 대시보드 전체기간 NULL 요청이 기존 RPC의 PT422로 거절되는 API 계약 결함 발견. Owner 지시3-C에 따라 적용 중단. 기존 메타데이터·계정 상태·탈퇴 요청 보존 대조, 신규35검사·격리DB/원복 PASS. 운영 SQL·Migration·WEB 실행0. [근거·분류·재개 계획](admin-withdrawal-rpc-preflight-20261111.md).
+
 ## 2026-11-08 — 자료 동기화 관리자 후보
 
 기존 AdminSurface에72시간/수동 요청·상태/변경 집계 구현. UI21검사·빌드 PASS. 기존 콘솔4fixture실패 baseline 동일. 추가 SQL/WEB 승인 대기. [상세](material-sync-admin-20261108.md).

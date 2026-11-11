@@ -1,3 +1,5 @@
+2026-11-11: [작업05-B — 조건부 RPC 승인·사전 검사 중단 근거](admin-withdrawal-rpc-preflight-20261111.md) · 운영 SQL/WEB 미적용.
+
 2026-11-11: [작업05 — Claude 관리자 인수·탈퇴 관리 후보](admin-withdrawal-management-20261111.md) · 운영 미적용/승인 대기.
 
 [2026-11-11 Codex 인수인계 — 학습·입시 기능 최종 보고](codex-handoff-learning-admissions-20261111.md)

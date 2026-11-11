@@ -1,3 +1,5 @@
+2026-11-11 21:14 KST: [작업05-B — 탈퇴 조회 RPC 사전 검사](admin-withdrawal-rpc-preflight-20261111.md) — 신규2RPC 조건부 승인 확인. 기존7실패 재현·신규35 PASS·격리DB PASS. 기존 대시보드 전체기간(NULL)→운영 공부시간 RPC PT422 계약 결함 확인으로 지시3-C에 따라 **적용 중단**. SQL/Migration/WEB 적용0, 신규RPC 미설치. 기존함수286·테이블권한127·RLS정책120·관리자명단·계정상태550·탈퇴요청3 전후동일. 최근30일/기존회원조회 정상. C해소 후 운영검증 재개; WEB승인 요청은 그 이후.
+
 2026-11-11: [작업05 — Claude 관리자 인수·탈퇴 관리 후보](admin-withdrawal-management-20261111.md) — 별도 Codex 브랜치에서 목록/KPI/최소 활동상세·후보 read RPC2개 구현. 운영 대기3건 SELECT 대조, 신규35테스트·격리DB·TS·변경Lint·build PASS. 기존 관리자7실패/boundary실패 유지, 신규회귀0. 운영 SQL·WEB·Claude 병합 미실행. 최신 canonical 실조회9788a7ca(source0eefc7d); 과거 아래 배포들은 역사적 기록. 다음: 공통검증 정리·Owner승인·운영E2E.
 
 2026-11-10: [Codex 인수인계 — 학습·입시 기능 최종 보고](codex-handoff-learning-admissions-20261111.md). WEB canonical `9788a7ca`(git `0eefc7d`) 기준. 희망(직접insert)/실제지원(RPC·이벤트소싱)/합격이력보존/학교순위/초대퍼널/개별지원로스터 운영 적용 완료, 실사용 E2E·운영자 세션은 미검증. 내일 Codex 작업 A–F 연결점 포함. 운영 변경 없음.
