@@ -1,3 +1,5 @@
+2026-11-11: [작업05-C — 공부시간 전체 기간 계약 수정 후보](admin-study-period-contract-20261111.md) · 후보 검증 완료, 운영 승인 대기.
+
 2026-11-11: [작업05-B — 조건부 RPC 승인·사전 검사 중단 근거](admin-withdrawal-rpc-preflight-20261111.md) · 운영 SQL/WEB 미적용.
 
 2026-11-11: [작업05 — Claude 관리자 인수·탈퇴 관리 후보](admin-withdrawal-management-20261111.md) · 운영 미적용/승인 대기.

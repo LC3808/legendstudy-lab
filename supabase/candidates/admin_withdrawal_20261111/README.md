@@ -1,6 +1,6 @@
 # Task 05 — administrator withdrawal read boundary (candidate)
 
-Status: **NOT APPLIED / NOT DEPLOYED**. TASK05-B Owner approved only the two new read RPCs, conditional on preflight. Preflight found an existing dashboard API contract mismatch; application stopped under the Owner's section 3-C condition. WEB remains unapproved. See [TASK05-B evidence and resumption steps](../../../wiki/admin-withdrawal-rpc-preflight-20261111.md). This is the existing member console, not a deletion executor.
+Status: **NOT APPLIED / NOT DEPLOYED**. TASK05-B Owner approved only the two new read RPCs, conditional on preflight. Preflight found an existing dashboard API contract mismatch; application stopped under the Owner's section 3-C condition. TASK05-C has since prepared a [period-contract fix candidate](../../../wiki/admin-study-period-contract-20261111.md); its validation is complete, but renewed Owner approval is required before any production application resumes. WEB remains unapproved. See [TASK05-B evidence and resumption steps](../../../wiki/admin-withdrawal-rpc-preflight-20261111.md). This is the existing member console, not a deletion executor.
 
 ## Scope and dependencies
 
