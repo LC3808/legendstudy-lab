@@ -1,6 +1,7 @@
 /** TASK05-D approved admin overlay; preserve live non-admin assets and unchanged API source. */
 import fs from 'node:fs';
 import path from 'node:path';
+import {isDeepStrictEqual} from 'node:util';
 import {createRequire} from 'node:module';
 import {execFileSync} from 'node:child_process';
 const [backup,baseline]=process.argv.slice(2);
@@ -39,7 +40,7 @@ for(const f of walk(path.join(process.cwd(),'out'))){
 }
 for(const [u,key] of Object.entries(previous.files))if(!inScope(u)&&manifest[u]!==key)throw Error('Out-of-scope baseline changed: '+u);
 const compiled=read('route-config.json');
-if(JSON.stringify(compiled)!==JSON.stringify(JSON.parse(read('functions.json').config)))throw Error('Functions routing drift');
+if(!isDeepStrictEqual(compiled,JSON.parse(read('functions.json').config)))throw Error('Functions routing drift');
 const headers=fs.readFileSync(path.join(baseline,'public/_headers'),'utf8');
 const redirects=fs.readFileSync(path.join(baseline,'public/_redirects'),'utf8');
 const routes=JSON.parse(fs.readFileSync(path.join(baseline,'public/_routes.json'),'utf8'));
