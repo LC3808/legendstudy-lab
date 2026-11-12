@@ -1867,6 +1867,113 @@
         "d36e5405-2436-5f9c-a734-bceb1d3b188c"
       ],
       "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada"
+    },
+    {
+      "completeExam": true,
+      "examId": "1e754392-59da-5daa-80ec-58225c188eee",
+      "label": "숭실대학교 2025 자연계열",
+      "mathQuestions": {
+        "17d687d8-0a2d-59a9-ac9f-f5c0d4c273ed": "01fc691e-77d1-56d5-981a-c0e39a8be9ff",
+        "918203f8-f289-5fbd-add7-6fb464767f2f": "ce1e7474-4221-52c7-877f-1de6b47b2124",
+        "a183ac01-316d-54c2-9d22-1552540abc44": "434aa7f9-0a54-5ca5-b000-fe4db4b8dc31",
+        "b01f7a32-bc0e-5980-9190-14c15376de8a": "919ecc75-465f-53b0-a817-86aea05973c2"
+      },
+      "mode": "math",
+      "packageDigest": "c73e9e8b0431996231467722aec1c0f262dfa21cddff7732ed2054894a593ada",
+      "questionIds": [
+        "b01f7a32-bc0e-5980-9190-14c15376de8a",
+        "918203f8-f289-5fbd-add7-6fb464767f2f",
+        "a183ac01-316d-54c2-9d22-1552540abc44",
+        "17d687d8-0a2d-59a9-ac9f-f5c0d4c273ed"
+      ],
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb"
+    },
+    {
+      "completeExam": true,
+      "examId": "2825efbe-25c9-5881-94bb-3c46f542e7ce",
+      "label": "숭실대학교 2026 자연계열",
+      "mathQuestions": {
+        "753b737b-4b38-53e8-ac84-aa1200c823bc": "6aaa4d34-36a6-541f-a3c8-649addc69b4c",
+        "7c888400-a224-5f31-b289-7882b01fd75f": "cbf169dd-9f2d-5222-ad69-e14b83462dcb",
+        "8e725482-0731-52e2-a5bc-f985976e9689": "0eb1d07b-f015-5e4f-8cb5-1a7168ee53f9",
+        "d758749d-1b70-56c3-a4bd-8f8deae44a7b": "2ee023f8-ce83-58a0-8e8f-a73f230826db"
+      },
+      "mode": "math",
+      "packageDigest": "055e6a889c169ce31a3c4e911036511a44a90e070c720bb886aea33c1375aa90",
+      "questionIds": [
+        "d758749d-1b70-56c3-a4bd-8f8deae44a7b",
+        "8e725482-0731-52e2-a5bc-f985976e9689",
+        "753b737b-4b38-53e8-ac84-aa1200c823bc",
+        "7c888400-a224-5f31-b289-7882b01fd75f"
+      ],
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb"
+    },
+    {
+      "completeExam": true,
+      "examId": "34bf13e8-76b8-534a-8d87-12b2cd92e6f2",
+      "label": "숭실대학교 2027 자연계열",
+      "mathQuestions": {
+        "3f29026e-f974-5355-bf90-e8c02cf369c9": "3e1bc938-7f52-5411-b822-b30a86ac6ff3",
+        "54949986-9666-5bc3-ae0c-45e521c68c89": "368a116b-4944-5c7f-96ac-e57c16b9dc08",
+        "8d70db7f-98ac-5f4f-a20a-0d0fd06b6e0e": "50668eac-8458-5527-aee7-ef2cbb510a9d",
+        "bfcfaecc-ddd8-5a05-9e0c-cba14493104b": "90f3e497-0441-5565-846a-4958addc5b34"
+      },
+      "mode": "math",
+      "packageDigest": "f14cee27f4bb8e6b7fe193ac3ba711376a8a28b56a8b0021e6bafc601091c2aa",
+      "questionIds": [
+        "3f29026e-f974-5355-bf90-e8c02cf369c9",
+        "bfcfaecc-ddd8-5a05-9e0c-cba14493104b",
+        "54949986-9666-5bc3-ae0c-45e521c68c89",
+        "8d70db7f-98ac-5f4f-a20a-0d0fd06b6e0e"
+      ],
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb"
+    },
+    {
+      "completeExam": true,
+      "examId": "44c4905f-c774-589e-9ad5-83507d15befe",
+      "label": "숭실대학교 2025 자연계열",
+      "mathQuestions": {
+        "30fe8e8a-3a9d-5857-a2ae-1a12f1d93be0": "6202c6e9-e857-5f85-b27d-ed5ba4fa83dc",
+        "d15a72e9-14fc-532d-aa28-a29669a83534": "74326e4a-3a2a-5adc-a83b-db5613660f49",
+        "da0e3b82-0a26-5f4c-ab08-4d273160dcf6": "6350ceb2-bde6-51f3-88b3-9f6fc0eb0bc0",
+        "f96695e2-7c6d-504c-8f50-a82b0d04fbda": "0b19668d-ed1d-5f79-a5c5-ed7deaf5694f"
+      },
+      "mode": "math",
+      "packageDigest": "8bf46874c4a82752fff35b74e3654c9cf64a82b6445864706dce64b6fd4109f9",
+      "questionIds": [
+        "d15a72e9-14fc-532d-aa28-a29669a83534",
+        "da0e3b82-0a26-5f4c-ab08-4d273160dcf6",
+        "30fe8e8a-3a9d-5857-a2ae-1a12f1d93be0",
+        "f96695e2-7c6d-504c-8f50-a82b0d04fbda"
+      ],
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb"
+    },
+    {
+      "completeExam": false,
+      "examId": "fb89bcfe-ed40-5bc2-8a91-db9e935a5d43",
+      "label": "숭실대학교 2024 자연계열",
+      "mathQuestions": {
+        "7c3fb259-ee90-55dc-bc1a-765d0358d030": "d127a211-755f-5b8c-af56-f01b7c93fed1",
+        "acb61559-3e3c-53fe-9bf6-75c9ac48da58": "835196f0-6b45-5d49-bf99-bb5d8602019e",
+        "ca641fbc-126d-58d3-85ee-cd6a50613d23": "96f27e22-75e7-54f1-ae15-a2689d66f56c"
+      },
+      "mode": "math",
+      "packageDigest": "005eb1b733154ad97dd102ca3c6ff3d30589241f9f89ae6b4c77bab1d3dd9875",
+      "questionIds": [
+        "ca641fbc-126d-58d3-85ee-cd6a50613d23",
+        "acb61559-3e3c-53fe-9bf6-75c9ac48da58",
+        "7c3fb259-ee90-55dc-bc1a-765d0358d030"
+      ],
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb",
+      "excludedQuestions": {
+        "815bc344-cdbb-5b7f-82c1-dc528de46f51": "OFFICIAL_POINTS_MISMATCH_OWNER_REVIEW"
+      },
+      "catalogQuestionIds": [
+        "ca641fbc-126d-58d3-85ee-cd6a50613d23",
+        "815bc344-cdbb-5b7f-82c1-dc528de46f51",
+        "acb61559-3e3c-53fe-9bf6-75c9ac48da58",
+        "7c3fb259-ee90-55dc-bc1a-765d0358d030"
+      ]
     }
   ]
 }

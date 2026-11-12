@@ -4850,6 +4850,282 @@
           "accountDraftReady": false
         }
       ]
+    },
+    {
+      "key": "source:soongsil-2025-admission-natural",
+      "dbExamId": "1e754392-59da-5daa-80ec-58225c188eee",
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb",
+      "sourceUniversityId": "soongsil",
+      "year": 2025,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "de44f1c12a25d79178d13ba6bdc158ebd6211f9585db58d89238adb6dc5ec666"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:soongsil-2025-admission-natural:q1",
+          "dbQuestionId": "b01f7a32-bc0e-5980-9190-14c15376de8a",
+          "label": "문제 1",
+          "sourceLocator": "soongsil-2025-official.private.pdf PDF 51쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2025-admission-natural:q2",
+          "dbQuestionId": "918203f8-f289-5fbd-add7-6fb464767f2f",
+          "label": "문제 2",
+          "sourceLocator": "soongsil-2025-official.private.pdf PDF 55쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2025-admission-natural:q3",
+          "dbQuestionId": "a183ac01-316d-54c2-9d22-1552540abc44",
+          "label": "문제 3",
+          "sourceLocator": "soongsil-2025-official.private.pdf PDF 60,61쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2025-admission-natural:q4",
+          "dbQuestionId": "17d687d8-0a2d-59a9-ac9f-f5c0d4c273ed",
+          "label": "문제 4",
+          "sourceLocator": "soongsil-2025-official.private.pdf PDF 65쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:soongsil-2026-admission-natural",
+      "dbExamId": "2825efbe-25c9-5881-94bb-3c46f542e7ce",
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb",
+      "sourceUniversityId": "soongsil",
+      "year": 2026,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "306784d117f71e434d3415016a47f350a28f2aaba286cbad411490035999545b"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:soongsil-2026-admission-natural:q1",
+          "dbQuestionId": "d758749d-1b70-56c3-a4bd-8f8deae44a7b",
+          "label": "문제 1",
+          "sourceLocator": "2026학년도 숭실대 수시 논술_자연 문제,해설,답안.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2026-admission-natural:q2",
+          "dbQuestionId": "8e725482-0731-52e2-a5bc-f985976e9689",
+          "label": "문제 2",
+          "sourceLocator": "2026학년도 숭실대 수시 논술_자연 문제,해설,답안.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2026-admission-natural:q3",
+          "dbQuestionId": "753b737b-4b38-53e8-ac84-aa1200c823bc",
+          "label": "문제 3",
+          "sourceLocator": "2026학년도 숭실대 수시 논술_자연 문제,해설,답안.pdf PDF 8쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2026-admission-natural:q4",
+          "dbQuestionId": "7c888400-a224-5f31-b289-7882b01fd75f",
+          "label": "문제 4",
+          "sourceLocator": "2026학년도 숭실대 수시 논술_자연 문제,해설,답안.pdf PDF 11쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:soongsil-2027-mock-natural",
+      "dbExamId": "34bf13e8-76b8-534a-8d87-12b2cd92e6f2",
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb",
+      "sourceUniversityId": "soongsil",
+      "year": 2027,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "ab22770133e2c166748dcdc9c13c90d023e30021d96a406190048a5032f14776"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:soongsil-2027-mock-natural:q1",
+          "dbQuestionId": "3f29026e-f974-5355-bf90-e8c02cf369c9",
+          "label": "문제 1",
+          "sourceLocator": "2027학년도 숭실대 모의 논술_자연 문제,해설,답안.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2027-mock-natural:q2",
+          "dbQuestionId": "bfcfaecc-ddd8-5a05-9e0c-cba14493104b",
+          "label": "문제 2",
+          "sourceLocator": "2027학년도 숭실대 모의 논술_자연 문제,해설,답안.pdf PDF 6쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2027-mock-natural:q3",
+          "dbQuestionId": "54949986-9666-5bc3-ae0c-45e521c68c89",
+          "label": "문제 3",
+          "sourceLocator": "2027학년도 숭실대 모의 논술_자연 문제,해설,답안.pdf PDF 8쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2027-mock-natural:q4",
+          "dbQuestionId": "8d70db7f-98ac-5f4f-a20a-0d0fd06b6e0e",
+          "label": "문제 4",
+          "sourceLocator": "2027학년도 숭실대 모의 논술_자연 문제,해설,답안.pdf PDF 11쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:soongsil-2025-mock-natural",
+      "dbExamId": "44c4905f-c774-589e-9ad5-83507d15befe",
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb",
+      "sourceUniversityId": "soongsil",
+      "year": 2025,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "be75d72875038b5f24743186d86dcd300435ef39a7d5b4eba422ca611ea8da77"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:soongsil-2025-mock-natural:q1",
+          "dbQuestionId": "d15a72e9-14fc-532d-aa28-a29669a83534",
+          "label": "문제 1",
+          "sourceLocator": "2025학년도 숭실대 모의 논술_자연 문제,해설,답안.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2025-mock-natural:q2",
+          "dbQuestionId": "da0e3b82-0a26-5f4c-ab08-4d273160dcf6",
+          "label": "문제 2",
+          "sourceLocator": "2025학년도 숭실대 모의 논술_자연 문제,해설,답안.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2025-mock-natural:q3",
+          "dbQuestionId": "30fe8e8a-3a9d-5857-a2ae-1a12f1d93be0",
+          "label": "문제 3",
+          "sourceLocator": "2025학년도 숭실대 모의 논술_자연 문제,해설,답안.pdf PDF 7쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2025-mock-natural:q4",
+          "dbQuestionId": "f96695e2-7c6d-504c-8f50-a82b0d04fbda",
+          "label": "문제 4",
+          "sourceLocator": "2025학년도 숭실대 모의 논술_자연 문제,해설,답안.pdf PDF 10쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:soongsil-2024-admission-natural",
+      "dbExamId": "fb89bcfe-ed40-5bc2-8a91-db9e935a5d43",
+      "universityId": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb",
+      "sourceUniversityId": "soongsil",
+      "year": 2024,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "278719cdc6c8710af471f044f11c48497d854fbed8dcf322dfa9557ef940b50c",
+        "ec70db336d7bae25d2e413302d1a1c4b0eeba60208ae47e87612425f1a52cc05"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:soongsil-2024-admission-natural:q1",
+          "dbQuestionId": "ca641fbc-126d-58d3-85ee-cd6a50613d23",
+          "label": "문제 1",
+          "sourceLocator": "2024학년도 숭실대 수시 논술_자연 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2024-admission-natural:q2",
+          "dbQuestionId": "815bc344-cdbb-5b7f-82c1-dc528de46f51",
+          "label": "문제 2",
+          "sourceLocator": "2024학년도 숭실대 수시 논술_자연 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2024-admission-natural:q3",
+          "dbQuestionId": "acb61559-3e3c-53fe-9bf6-75c9ac48da58",
+          "label": "문제 3",
+          "sourceLocator": "2024학년도 숭실대 수시 논술_자연 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:soongsil-2024-admission-natural:q4",
+          "dbQuestionId": "7c3fb259-ee90-55dc-bc1a-765d0358d030",
+          "label": "문제 4",
+          "sourceLocator": "2024학년도 숭실대 수시 논술_자연 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
     }
   ]
 }

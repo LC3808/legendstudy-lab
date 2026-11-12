@@ -11,15 +11,15 @@ describe('explicit existing Registry expansion',()=>{
   expect(betaExpansionFor('https://preview.example',env,candidate.examId)).toBeUndefined();
  });
  it('pins every complete question and official PDF without adding the TEST-only natural exam',()=>{
-  expect(betaExpansionCandidates).toHaveLength(110);
+  expect(betaExpansionCandidates).toHaveLength(115);
   for(const excluded of ['b98fd0c9-8a84-5747-a35c-25755312aede','a6667288-75ad-50d4-b237-d2a08e2bff8b','942c1c43-914f-5b99-9a30-e6474c363f6f'])expect(betaExpansionCandidates.some(e=>e.examId===excluded)).toBe(false);
-  expect(betaExpansionCandidates.filter(e=>e.mode==='math')).toHaveLength(83);
+  expect(betaExpansionCandidates.filter(e=>e.mode==='math')).toHaveLength(88);
   expect(betaExpansionCandidates.filter(e=>e.mode==='mixed')).toHaveLength(26);
   expect(betaExpansionCandidates.filter(e=>e.mode==='essay').map(e=>e.examId)).toEqual(['1862463a-bf97-580a-ad33-694375db5d50']);
-  expect(new Set(betaExpansionCandidates.map(e=>e.universityId)).size).toBe(8);
+  expect(new Set(betaExpansionCandidates.map(e=>e.universityId)).size).toBe(9);
   expect(new Set(betaExpansionCandidates.map(e=>e.examId)).size).toBe(betaExpansionCandidates.length);
-  expect(betaExpansionCandidates.reduce((n,e)=>n+e.questionIds.length,0)).toBe(296);
-  expect(betaExpansionCandidates.flatMap(e=>Object.values(e.mathQuestions))).toHaveLength(257);
+  expect(betaExpansionCandidates.reduce((n,e)=>n+e.questionIds.length,0)).toBe(315);
+  expect(betaExpansionCandidates.flatMap(e=>Object.values(e.mathQuestions))).toHaveLength(276);
   for(const e of betaExpansionCandidates){
    expect(new Set(e.questionIds).size).toBe(e.questionIds.length);
    expect(Object.keys(e.mathQuestions).every(q=>e.questionIds.includes(q))).toBe(true);
@@ -36,4 +36,14 @@ describe('explicit existing Registry expansion',()=>{
   expect(expansionMathMatches(candidate,[...rows,rows[0]])).toBe(false);
   expect(expansionMathMatches(candidate,rows.map(r=>({...r,leafId:'other'})))).toBe(false);
  });
+});
+
+
+it('admits Soongsil 2024 Q1 Q3 Q4 while preserving the full Registry and holding Q2',()=>{
+ const e=betaExpansionCandidates.find(e=>e.examId==='fb89bcfe-ed40-5bc2-8a91-db9e935a5d43')!;
+ const hold='815bc344-cdbb-5b7f-82c1-dc528de46f51';
+ expect(e.catalogQuestionIds).toHaveLength(4);expect(e.catalogQuestionIds).toContain(hold);
+ expect(e.questionIds).toHaveLength(3);expect(e.questionIds).not.toContain(hold);
+ expect(e.mathQuestions[hold]).toBeUndefined();
+ expect(expansionMathMatches(e,Object.entries(e.mathQuestions).map(([questionId,leafId])=>({examId:e.examId,questionId,leafId})))).toBe(true);
 });
