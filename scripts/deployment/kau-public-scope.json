@@ -1,0 +1,73 @@
+{
+  "exams": [
+    {
+      "completeExam": false,
+      "examId": "51d7f36d-a011-5279-8c5d-f731b2900af3",
+      "label": "한국항공대학교 2024 이학계열",
+      "mathQuestions": {
+        "ed096a20-52a7-5f27-a71b-4c7c2401cdc9": "2a5f8c6d-f076-517e-af42-3da22e7da820"
+      },
+      "mode": "math",
+      "packageDigest": "b13190f215b185602ed52ac38d8b278c4c5fd950328320b2423b76d0b1b99fc7",
+      "questionIds": [
+        "ed096a20-52a7-5f27-a71b-4c7c2401cdc9"
+      ],
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
+      "catalogQuestionIds": [
+        "2476c8dc-a8e4-599a-8cf2-1ffdddbb6f06",
+        "ed096a20-52a7-5f27-a71b-4c7c2401cdc9"
+      ],
+      "excludedQuestions": {
+        "2476c8dc-a8e4-599a-8cf2-1ffdddbb6f06": "OFFICIAL_SOURCE_MISMATCH_HOLD"
+      }
+    },
+    {
+      "completeExam": true,
+      "examId": "3005e0cd-0a3b-5f8c-98ed-ae4a6736f0af",
+      "label": "한국항공대학교 2025 공학계열",
+      "mathQuestions": {
+        "ebd76ca2-dbb4-5c0f-a203-4c77650e8a77": "dde4effa-358f-5a69-871a-d09cb460bc50",
+        "ff6226fc-32ac-5903-ab0f-b1560803efbb": "8b167c8f-4def-5747-9fea-c27b63880ff9"
+      },
+      "mode": "math",
+      "packageDigest": "9c168b4e3d01e98fe58fa9e4f7adf38d55235e06c7de25d2b3be58cdbe3bfa8d",
+      "questionIds": [
+        "ff6226fc-32ac-5903-ab0f-b1560803efbb",
+        "ebd76ca2-dbb4-5c0f-a203-4c77650e8a77"
+      ],
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445"
+    },
+    {
+      "completeExam": true,
+      "examId": "85a8468d-2141-52b1-9d70-3bcf6f340f8e",
+      "label": "한국항공대학교 2025 이학계열",
+      "mathQuestions": {
+        "8744f2ad-02c4-51d4-83de-6d5ab245cec5": "b085d5df-212f-576b-a0b7-8ee3c21f36c2",
+        "fccb2d75-d4e6-54ec-b0fe-f3eced268b36": "2b478cd7-6c71-5a29-b4f4-1ec3aecec712"
+      },
+      "mode": "math",
+      "packageDigest": "c71b932340d4023d6d4b8720a3e9c2bcc0559ca83c1daaa89c1a68c7680f4e56",
+      "questionIds": [
+        "8744f2ad-02c4-51d4-83de-6d5ab245cec5",
+        "fccb2d75-d4e6-54ec-b0fe-f3eced268b36"
+      ],
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445"
+    },
+    {
+      "completeExam": true,
+      "examId": "6815943a-42c1-5eae-b711-449ac403b9fb",
+      "label": "한국항공대학교 2026 공학계열",
+      "mathQuestions": {
+        "6eaec5d3-4786-55a2-8dc6-a457edd5b16b": "3ae7907d-32a4-519a-898c-ea65ac73de6b",
+        "d3909209-b5ee-50ce-b5cb-5cbbb8e0a65a": "cab98973-6c96-5ea1-ae62-1131b498ab9c"
+      },
+      "mode": "math",
+      "packageDigest": "1b7c204a77c4d35c6bcf4e956496f4b831fc9282fb9598c057827ebe605f45a1",
+      "questionIds": [
+        "d3909209-b5ee-50ce-b5cb-5cbbb8e0a65a",
+        "6eaec5d3-4786-55a2-8dc6-a457edd5b16b"
+      ],
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445"
+    }
+  ]
+}

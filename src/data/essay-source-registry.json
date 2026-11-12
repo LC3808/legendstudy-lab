@@ -6832,6 +6832,154 @@
           "accountDraftReady": false
         }
       ]
+    },
+    {
+      "key": "source:kau-2024-admission-science",
+      "dbExamId": "51d7f36d-a011-5279-8c5d-f731b2900af3",
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
+      "sourceUniversityId": "kau",
+      "year": 2024,
+      "kind": "admission",
+      "track": "이학계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "f07121c91e7d2a7c937f0c32e08d635f45446f950f7e6b48912976d5213f6b6d"
+      ],
+      "questions": [
+        {
+          "key": "source:kau-2024-admission-science:q1",
+          "dbQuestionId": "2476c8dc-a8e4-599a-8cf2-1ffdddbb6f06",
+          "label": "문제 1",
+          "sourceLocator": "한국항공대/2024학년도 한국항공대 수시 논술_이학계열 문제,해설,답안.pdf PDF 1,2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kau-2024-admission-science:q2",
+          "dbQuestionId": "ed096a20-52a7-5f27-a71b-4c7c2401cdc9",
+          "label": "문제 2",
+          "sourceLocator": "한국항공대/2024학년도 한국항공대 수시 논술_이학계열 문제,해설,답안.pdf PDF 10,11쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:kau-2025-admission-engineering",
+      "dbExamId": "3005e0cd-0a3b-5f8c-98ed-ae4a6736f0af",
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
+      "sourceUniversityId": "kau",
+      "year": 2025,
+      "kind": "admission",
+      "track": "공학계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "f805468fb8f089c6f692e256fbaf63c11d0401610bde869fd9e3fdfb47931f62"
+      ],
+      "questions": [
+        {
+          "key": "source:kau-2025-admission-engineering:q1",
+          "dbQuestionId": "ff6226fc-32ac-5903-ab0f-b1560803efbb",
+          "label": "문제 1",
+          "sourceLocator": "한국항공대/2025학년도 한국항공대 수시 논술_공학계열 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kau-2025-admission-engineering:q2",
+          "dbQuestionId": "ebd76ca2-dbb4-5c0f-a203-4c77650e8a77",
+          "label": "문제 2",
+          "sourceLocator": "한국항공대/2025학년도 한국항공대 수시 논술_공학계열 문제,해설,답안.pdf PDF 10,11쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:kau-2025-admission-science",
+      "dbExamId": "85a8468d-2141-52b1-9d70-3bcf6f340f8e",
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
+      "sourceUniversityId": "kau",
+      "year": 2025,
+      "kind": "admission",
+      "track": "이학계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "4fb7305ecc36be6c1d62268b8e0608d92ae0f4c4c398f373d0476df189076367"
+      ],
+      "questions": [
+        {
+          "key": "source:kau-2025-admission-science:q1",
+          "dbQuestionId": "8744f2ad-02c4-51d4-83de-6d5ab245cec5",
+          "label": "문제 1",
+          "sourceLocator": "한국항공대/2025학년도 한국항공대 수시 논술_이학계열 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kau-2025-admission-science:q2",
+          "dbQuestionId": "fccb2d75-d4e6-54ec-b0fe-f3eced268b36",
+          "label": "문제 2",
+          "sourceLocator": "한국항공대/2025학년도 한국항공대 수시 논술_이학계열 문제,해설,답안.pdf PDF 9,10쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:kau-2026-admission-engineering",
+      "dbExamId": "6815943a-42c1-5eae-b711-449ac403b9fb",
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
+      "sourceUniversityId": "kau",
+      "year": 2026,
+      "kind": "admission",
+      "track": "공학계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "b27088461cf6b5fbd54b8a2c493664eb4b8b481c55d14d09974f47482b639082"
+      ],
+      "questions": [
+        {
+          "key": "source:kau-2026-admission-engineering:q1",
+          "dbQuestionId": "d3909209-b5ee-50ce-b5cb-5cbbb8e0a65a",
+          "label": "문제 1",
+          "sourceLocator": "한국항공대/2026학년도 한국항공대 수시 논술_공학계열 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kau-2026-admission-engineering:q2",
+          "dbQuestionId": "6eaec5d3-4786-55a2-8dc6-a457edd5b16b",
+          "label": "문제 2",
+          "sourceLocator": "한국항공대/2026학년도 한국항공대 수시 논술_공학계열 문제,해설,답안.pdf PDF 12,13쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
     }
   ]
 }
