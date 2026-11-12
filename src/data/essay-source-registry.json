@@ -259,7 +259,7 @@
     },
     {
       "key": "source:a31bdaa7716d4150af88cd0cbd85f34745dd283f5c0b072b26f0f5c0b007f5b7",
-      "dbExamId": null,
+      "dbExamId": "c47c6ed4-a3fc-5758-b773-9d7ce4762725",
       "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
       "sourceUniversityId": "kyunghee",
       "year": 2022,
@@ -275,7 +275,7 @@
       "questions": [
         {
           "key": "source:a31bdaa7716d4150af88cd0cbd85f34745dd283f5c0b072b26f0f5c0b007f5b7:1",
-          "dbQuestionId": null,
+          "dbQuestionId": "f7733560-15d9-530e-aaae-6d04da444d51",
           "label": "문제 1",
           "sourceLocator": null,
           "lengthLabel": null,
@@ -283,7 +283,7 @@
         },
         {
           "key": "source:a31bdaa7716d4150af88cd0cbd85f34745dd283f5c0b072b26f0f5c0b007f5b7:2",
-          "dbQuestionId": null,
+          "dbQuestionId": "f1ae8fd9-d4cb-5fb5-944b-9283e77cd59d",
           "label": "문제 2",
           "sourceLocator": null,
           "lengthLabel": null,
@@ -291,7 +291,7 @@
         },
         {
           "key": "source:a31bdaa7716d4150af88cd0cbd85f34745dd283f5c0b072b26f0f5c0b007f5b7:3",
-          "dbQuestionId": null,
+          "dbQuestionId": "8d2b2a5b-38e1-5c2a-a7c4-92396a2eeeb5",
           "label": "문제 3",
           "sourceLocator": null,
           "lengthLabel": null,
@@ -299,7 +299,7 @@
         },
         {
           "key": "source:a31bdaa7716d4150af88cd0cbd85f34745dd283f5c0b072b26f0f5c0b007f5b7:4",
-          "dbQuestionId": null,
+          "dbQuestionId": "c6b54603-e483-5a5d-b4c3-d4044b40a0d2",
           "label": "문제 4",
           "sourceLocator": null,
           "lengthLabel": null,

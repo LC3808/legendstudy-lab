@@ -3266,6 +3266,26 @@
         "5536426a-fee4-5a28-b905-c7c169b7f7a0"
       ],
       "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95"
+    },
+    {
+      "completeExam": true,
+      "examId": "c47c6ed4-a3fc-5758-b773-9d7ce4762725",
+      "label": "경희대학교 2022 모의 자연계",
+      "mathQuestions": {
+        "f7733560-15d9-530e-aaae-6d04da444d51": "dd2e938b-4ea0-57cf-88b3-9b6cc867a3c2",
+        "f1ae8fd9-d4cb-5fb5-944b-9283e77cd59d": "1f5ccb52-641a-5d7c-869a-21007978e885",
+        "8d2b2a5b-38e1-5c2a-a7c4-92396a2eeeb5": "86afdfc6-3179-525b-9db2-cc0bf5b7c068",
+        "c6b54603-e483-5a5d-b4c3-d4044b40a0d2": "761143c8-67d3-56a4-8da2-6063d560e144"
+      },
+      "mode": "math",
+      "packageDigest": "d92c2de80d8354657dd4e47a6161cbd14610b463c410855a43cd430496a4b85c",
+      "questionIds": [
+        "f7733560-15d9-530e-aaae-6d04da444d51",
+        "f1ae8fd9-d4cb-5fb5-944b-9283e77cd59d",
+        "8d2b2a5b-38e1-5c2a-a7c4-92396a2eeeb5",
+        "c6b54603-e483-5a5d-b4c3-d4044b40a0d2"
+      ],
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d"
     }
   ]
 }
