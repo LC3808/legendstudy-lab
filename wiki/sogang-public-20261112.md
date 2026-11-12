@@ -1,6 +1,6 @@
 # 서강대 자연·수리 9시험·11문항 운영 공개 · 2026-11-12
 
-상태: **적용 전 검증 PASS / 아직 PUBLISHED 아님**. Owner의 서강대 공개 지시 범위이며 AI 첨삭 품질 검수는 전체 대학 이후 Owner가 수행한다. Provider 호출0.
+상태: **PUBLISHED — 아래 운영 적용 확정 참조**. Owner의 서강대 공개 지시 범위이며 AI 첨삭 품질 검수는 전체 대학 이후 Owner가 수행한다. Provider 호출0.
 
 ## 선행 대학 결정
 
@@ -30,4 +30,28 @@
 3. 보존 배포기로 논술경로만 공개. 공식PDF/일반계정DBROLE catalog/input/기존결과·재첨삭 계약 확인. 사용자 답안·결과·Credit 기록을 만들거나 변경하지 않음.
 4. 문제가 있으면 새WEB범위 닫기→검증된 rollback-admission.sql로11leaf만차단. 기존답안/결과/자료는 보존. 새PDF 정책만회수하는 rollback-storage.sql 준비. 기존PDF삭제/덮어쓰기 없음. 운영드리프트시 자동원복 중단 후 범위 재평가.
 
-운영 실행 결과와 최종 HEAD는 후속 기록에서 확정한다. 전체10대학 완료가 아니다. 다음 순서 숭실→숙명여대→동국→광운→서울여대, 한국항공7DRAFT 별도공개 잔여/HOLD5 및 중앙과학11HOLD 유지.
+운영 적용 결과는 아래 확정 기록을 따른다. 전체10대학 완료가 아니다. 다음 순서 숭실→숙명여대→동국→광운→서울여대, 한국항공7DRAFT 별도공개 잔여/HOLD5 및 중앙과학11HOLD 유지.
+
+## 운영 적용 확정 — PUBLISHED
+
+완료 확인 **2026-11-12 12:43 KST**. 서강대 **9시험11문항 운영 연결/공개11, 미공개0**. Owner 승인 범위 내에서 전체 대상만 공개했다. 공식원문 재다운로드는 입학처 응답 불가로 성공 주장하지 않으며, 기존 보관 공식자료 SHA/물리페이지/픽셀 대조로 Q2 누락을 해결했다.
+
+|항목|실제 결과|
+|---|---|
+|DB 연결|150행 신규,44개 ACTIVE,기존2함수 허용목록만11leaf 추가|
+|Migration|20261112034047_sogang_complete_q2_pdf_read / 20261112034210_sogang_11_math_public_release|
+|원본/문제PDF|기존8파일 원격SHA PASS,교정1파일 원격SHA PASS,기존3페이지 파일 보존|
+|일반사용자 권한|authenticated 실제계정 역할에서 전체257/new11 catalog 및 기존 history 조회 PASS. anon 차단,탈퇴대기3 차단. 삭제중은 실제대상 없어서 격리검증 PASS/운영 실제계정 NOT TESTED|
+|정책 보존|기존269개 RLS 정책 내용 일치;정확한 새PDF1개 SELECT 정책만 추가|
+|기존 데이터|DRAFT전후20개 보존집계 일치;활성화후2허용목록 외19집계 일치. 나머지 함수/변경함수ACL은 원자적SQL 내부에서 보존 확인|
+|공개 WEB|0e5f4280-19b1-4660-b75f-d2d6f39a3fa4,배포소스6bf20e66eacbe16eedfe8a4dd19672bb4d2c2c6a|
+|공개 조회|/essay-lab 및/catalog HTTP200,서강9시험11Registry ID 일치. /student-pdfs 비로그인401 정상|
+|기존 서비스|비논술2169자산 동일,기존Secrets/Preview/Functions 라우팅 동일. 공개범위3개만 확장|
+|제출·결과·재첨삭|11개 모두 격리 실제DB RPC+Mock Worker 계약 PASS. 운영 사용자 답안/첨삭/Credit 생성·변경0,Provider 호출0|
+|UI|실제 브라우저 및 iPhone/Android NOT TESTED. 공개 결과를 실제AI 품질 검수로 해석하지 않음|
+|회귀|WEB414 PASS/1 SKIP,타입/린트/build/Functions PASS. APP PDF5+기존흐름25 PASS/4 SKIP|
+|복구|신규 공개 범위 회수→허용목록11개 원복→필요시 새PDF정책만 회수. 기존답안/결과/파일 보존. 실행 필요 없어 미실행|
+
+[DB 적용 영수증](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/sogang_public_20261112/production-receipt.json), [배포/HTTP 영수증](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/sogang_public_20261112/web-production-receipt.json), [Storage 권한 결과](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/sogang_public_20261112/storage-production-verification.json), [테스트 결과](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/sogang_public_20261112/checks-summary.json).
+
+Git: WEB 공개소스6bf20e6, APP SQL/사전기록084129f. 후속 기록 커밋은 이 문서의 Git log에 남긴다. 성균관15 RIGHTS_HOLD는 유지,이용허락 확보 후만재개. 다음 대학은숭실대. 전체10개대학 완료아님.
