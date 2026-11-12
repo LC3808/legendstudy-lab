@@ -1,0 +1,25 @@
+{
+  "exams": [
+    {
+      "completeExam": true,
+      "examId": "324dbf82-b4bc-5607-977b-2cf512812212",
+      "label": "동국대학교 2026 자연계열",
+      "mathQuestions": {
+        "49ea9aaa-1c46-51e7-b148-a03aef20ae4e": "645d7b6a-2c7a-5a0e-9d34-0eead5c142e5"
+      },
+      "mode": "math",
+      "packageDigest": "90f235c873491fd7002974347e9761d44be5fd400d34b07268a7b72908174d18",
+      "questionIds": [
+        "49ea9aaa-1c46-51e7-b148-a03aef20ae4e",
+        "67388db9-9a5d-54a3-ace4-5ab35375105f",
+        "73f883bd-0e9d-51b3-a043-4c41f64544b1"
+      ],
+      "universityId": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
+      "catalogQuestionIds": [
+        "49ea9aaa-1c46-51e7-b148-a03aef20ae4e",
+        "67388db9-9a5d-54a3-ace4-5ab35375105f",
+        "73f883bd-0e9d-51b3-a043-4c41f64544b1"
+      ]
+    }
+  ]
+}

@@ -18,8 +18,8 @@ describe('explicit existing Registry expansion',()=>{
   expect(betaExpansionCandidates.filter(e=>e.mode==='essay').map(e=>e.examId)).toEqual(['1862463a-bf97-580a-ad33-694375db5d50']);
   expect(new Set(betaExpansionCandidates.map(e=>e.universityId)).size).toBe(13);
   expect(new Set(betaExpansionCandidates.map(e=>e.examId)).size).toBe(betaExpansionCandidates.length);
-  expect(betaExpansionCandidates.reduce((n,e)=>n+e.questionIds.length,0)).toBe(431);
-  expect(betaExpansionCandidates.flatMap(e=>Object.values(e.mathQuestions))).toHaveLength(392);
+  expect(betaExpansionCandidates.reduce((n,e)=>n+e.questionIds.length,0)).toBe(432);
+  expect(betaExpansionCandidates.flatMap(e=>Object.values(e.mathQuestions))).toHaveLength(393);
   for(const e of betaExpansionCandidates){
    expect(new Set(e.questionIds).size).toBe(e.questionIds.length);
    expect(Object.keys(e.mathQuestions).every(q=>e.questionIds.includes(q))).toBe(true);
@@ -48,12 +48,12 @@ it('admits Soongsil 2024 Q1 Q3 Q4 while preserving the full Registry and holding
  expect(expansionMathMatches(e,Object.entries(e.mathQuestions).map(([questionId,leafId])=>({examId:e.examId,questionId,leafId})))).toBe(true);
 });
 
-it('admits Dongguk 2026 mock Q2/Q3 while Q1 awaits the official corrected evidence',()=>{
+it('admits Dongguk 2026 mock Q1 only after the official corrected evidence connection',()=>{
  const e=betaExpansionCandidates.find(e=>e.examId==='324dbf82-b4bc-5607-977b-2cf512812212')!;
  const hold='49ea9aaa-1c46-51e7-b148-a03aef20ae4e';
  expect(e.catalogQuestionIds).toHaveLength(3);expect(e.catalogQuestionIds).toContain(hold);
- expect(e.questionIds).toHaveLength(2);expect(e.questionIds).not.toContain(hold);
- expect(e.mathQuestions[hold]).toBeUndefined();
+ expect(e.questionIds).toHaveLength(3);expect(e.questionIds).toContain(hold);
+ expect(e.mathQuestions[hold]).toBe('645d7b6a-2c7a-5a0e-9d34-0eead5c142e5');
  expect(expansionMathMatches(e,Object.entries(e.mathQuestions).map(([questionId,leafId])=>({examId:e.examId,questionId,leafId})))).toBe(true);
 });
 
