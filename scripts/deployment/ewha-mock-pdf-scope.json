@@ -1,0 +1,46 @@
+{
+  "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+  "excludedMockQuestionIds": [],
+  "exams": [
+    {
+      "examId": "759dc80b-540b-535c-8ca5-e8f8c1bceb91",
+      "solutionSha256": "0fc74bf801f1382d3e8c2ee73187e7d4c8d24a8aa0ba5643a6d4f68c73a381af",
+      "problemSha256": "ee6ae3b46e247f68ea26232e769137c03b443f9531aa30ab6844bb7756059dfa"
+    },
+    {
+      "examId": "be108151-16e2-556e-b645-ace485c48624",
+      "solutionSha256": "32b36c6543be3bbf3228de4498084ca392d6129080d58614acaff562da1531a9",
+      "problemSha256": "fec0960eb236ae7e786070f8953ad605d603fe14779dc85dade8a2255626af6e"
+    },
+    {
+      "examId": "c15360f1-571e-5fa4-8314-dde3022f9594",
+      "solutionSha256": "d7851f74db8a18c1bfaea8fc7b0585a5ad43a3dca84a348f490bf804c7f9d020",
+      "problemSha256": "f0700c5dd3dffe58b45ffe6a5bf06c47914248406c0450909d645f26ab3c6f24"
+    },
+    {
+      "examId": "b459d8b0-db7f-5198-a8ce-dc25fd799729",
+      "solutionSha256": "837dc85d0dad41b2906ef7907729d807e25b61180633cba371b3445ff3aef0d5",
+      "problemSha256": "3f13fe7a3510506d633e81f84387ff0227986a9d56c5be2d090491e9341f2ab9"
+    },
+    {
+      "examId": "24e1ae27-fb31-591a-b3fc-6f73e92a2564",
+      "solutionSha256": "0deae16c0da93b5e087b7c89051330eca4644bf8c48199c84d23108120c2ca54",
+      "problemSha256": "c29e06329b1586fc34efa28bd5442a4ba4883c300b5738092f6553ce732c5a64"
+    },
+    {
+      "examId": "7b20c77f-3e34-5b8d-9da9-26e976b14230",
+      "solutionSha256": "caeb8b1d15404e63c033fb3f5e3bc14784efe767c65f299b3e8de4418d09a80d",
+      "problemSha256": "a5f02580b5aecc2ede32b6fa92b3251d8f525b95d4a6b2bfa40f2d7e7575238d"
+    },
+    {
+      "examId": "466a360a-5814-55cf-91cb-69c99ba2e081",
+      "solutionSha256": "bdde6323962f173228ee4a6dfb8a633e31d14d48356a20999b0e34499751ecb8",
+      "problemSha256": "0458b13daf1e095ec8ab113a018f3cf76a0f6c6ce8777943ed406c0b000f966c"
+    },
+    {
+      "examId": "7d0b2102-0239-5529-95ec-7d0e93d05ef8",
+      "solutionSha256": "294c5fdf3b7cb3b8ab20e0971e5f72d1c3e72ad31db93e519d15b9e8ebdb3df1",
+      "problemSha256": "f5c0eea95d97b7b497d3fa4635d198a57cc343f3cdf592b2940f60fa149746b8"
+    }
+  ]
+}
