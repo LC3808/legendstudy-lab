@@ -72,3 +72,5 @@ Q1 HOLD해제는공식수정본근거의정상렌더·기준/Worker연결 재검
 [웹공개범위 원복정보](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/dongguk_public_20261112/web-rollback.json)와 [첨삭진입 차단SQL](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/dongguk_public_20261112/rollback-admission.sql)을준비했다. 기존입력/결과/PDF삭제없음,원복드리프트가드·격리검증PASS. 운영원복0회. 최초직접DB호스트DNS실패는운영변경전발생했고,기존프로젝트세션풀러로연결해해결했다.
 
 Git WEB배포소스 `e7575f0`,APP사전검증 `ae6ebad`. 최종Wiki/증빙커밋은이문서를포함하는커밋과완료보고HEAD를참조한다. [최종영수증](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/dongguk_public_20261112/final-release.json) · [운영DB검증](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/dongguk_public_20261112/production-receipt.json) · [공개배포검증](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/dongguk_public_20261112/web-production-receipt.json).
+
+Owner후속확인: 동국20문항공개완료,2026모의Q1 HOLD유지. 광운21시험42문항공개연결진행승인.

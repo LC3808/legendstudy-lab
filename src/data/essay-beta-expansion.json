@@ -2383,6 +2383,342 @@
         "e494e7c5-b83e-5863-9aba-bc4da33d41b2"
       ],
       "universityId": "cd1ba908-2b5f-4063-a111-2da53d7d358b"
+    },
+    {
+      "completeExam": true,
+      "examId": "10ade245-4c6a-552b-beae-5dc7af3b75bd",
+      "label": "광운대학교 2024 자연계열",
+      "mathQuestions": {
+        "337de419-bd66-5177-9a86-ae9d947fc3dd": "2998b167-7167-5a7c-aeb3-dd78d5f8e508",
+        "dae06914-3342-5f0d-a58d-baedcce87b10": "cbb50794-073a-5b6c-a2db-613e65759e7c"
+      },
+      "mode": "math",
+      "packageDigest": "4193d0645979f991b09497571138e9b310cdbf1c6f32b809f3807dfa6d03b74a",
+      "questionIds": [
+        "337de419-bd66-5177-9a86-ae9d947fc3dd",
+        "dae06914-3342-5f0d-a58d-baedcce87b10"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "1705c7d2-e11d-570f-9a4a-d220d0600acd",
+      "label": "광운대학교 2025 자연계열",
+      "mathQuestions": {
+        "509cae03-b726-5ebc-a9c9-ee9e45197358": "b083fe29-c8a2-5315-9389-295b14318c0c",
+        "b2b7413e-097c-5b8e-b69b-57ee1f66f41e": "2179f700-cec6-591f-a8d5-4ca40f3678b0"
+      },
+      "mode": "math",
+      "packageDigest": "19908ec8579fb75c7b14129a049fd0771612deeef23e0d1316d4a05d7567a4c4",
+      "questionIds": [
+        "b2b7413e-097c-5b8e-b69b-57ee1f66f41e",
+        "509cae03-b726-5ebc-a9c9-ee9e45197358"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "18902739-69fc-53c8-a9a7-6bf620c9008b",
+      "label": "광운대학교 2022 자연계열",
+      "mathQuestions": {
+        "026319f4-90fb-5acd-b5e3-ec5c9788f46c": "100b59ef-4b66-5d93-9013-ab20e59bdb21",
+        "e6498a07-6b1c-5c1b-bf0d-5c5a5d6bc762": "b8889567-b790-5ef5-ac40-ad41dc8f12bf"
+      },
+      "mode": "math",
+      "packageDigest": "86537c9e66b9ac371cad99c8887409b92622d5eacea5ef1d8754eb7964e8553d",
+      "questionIds": [
+        "e6498a07-6b1c-5c1b-bf0d-5c5a5d6bc762",
+        "026319f4-90fb-5acd-b5e3-ec5c9788f46c"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "1a3a3532-8fa1-5d33-917c-e99d441e1788",
+      "label": "광운대학교 2022 자연계열",
+      "mathQuestions": {
+        "00d92017-166a-5722-a3d0-95de2c20b735": "cd83a6ad-8d78-5250-a894-3997623efa91",
+        "3f726a45-322f-5d6b-8bb7-9791c9413552": "6f2f0a0a-0549-5506-b938-3a294e7ae904"
+      },
+      "mode": "math",
+      "packageDigest": "c2b2f35d5cbf86996fe603edff891183d8618f5f2bb1f5e2437cbf5a899ed569",
+      "questionIds": [
+        "3f726a45-322f-5d6b-8bb7-9791c9413552",
+        "00d92017-166a-5722-a3d0-95de2c20b735"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "1e66b782-4e74-5fd4-b36d-032991875522",
+      "label": "광운대학교 2026 자연계열",
+      "mathQuestions": {
+        "c571234a-dd0c-5617-8142-6c84b2e46c21": "8e103e92-4fab-5f49-a163-e035c294f9a5",
+        "e72b96c2-1286-5fb9-a02c-431cbccd8daa": "7729574c-0cc5-5124-81d0-c8fdfc067f2b"
+      },
+      "mode": "math",
+      "packageDigest": "44ee68de642d842f445ead16b8d769124f47ac6e36f8ec0f045e9fafc74f7a7d",
+      "questionIds": [
+        "c571234a-dd0c-5617-8142-6c84b2e46c21",
+        "e72b96c2-1286-5fb9-a02c-431cbccd8daa"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "3368bb8c-eaf7-5c8f-9e50-aa86c3eb36a1",
+      "label": "광운대학교 2023 자연계열",
+      "mathQuestions": {
+        "5cfb4b28-41c1-5141-ab52-c3e1190e7ea8": "d2f29f2c-3e31-5012-9716-7a51919f4e90",
+        "93170547-b42e-5cb2-a3f5-b5598268b01e": "0ccdbf0a-9b02-52f1-994b-bad940bcf0c9"
+      },
+      "mode": "math",
+      "packageDigest": "3f6054292d349a4263a02cb33ba7c6001005a24167042acf9dda53e95f40de52",
+      "questionIds": [
+        "93170547-b42e-5cb2-a3f5-b5598268b01e",
+        "5cfb4b28-41c1-5141-ab52-c3e1190e7ea8"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "44eba80d-09ed-5e8c-a988-01e90c78ffd4",
+      "label": "광운대학교 2026 자연계열",
+      "mathQuestions": {
+        "5239e2e4-c412-547a-ab9b-6a73185d434c": "b8b83b97-e1c4-5a3d-9141-8dbb75b724c0",
+        "9c7f45ca-aaff-5045-b175-b9a7477b3e02": "03a77f79-ed41-51c0-91d0-d0de438fcd27"
+      },
+      "mode": "math",
+      "packageDigest": "1d9a4a9b394fb92132b1e9bffed7d7d0ec7844f5dcba59df8da840af6a291d14",
+      "questionIds": [
+        "9c7f45ca-aaff-5045-b175-b9a7477b3e02",
+        "5239e2e4-c412-547a-ab9b-6a73185d434c"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "45febe31-1b94-5648-a081-e335f82e81a4",
+      "label": "광운대학교 2026 자연계열",
+      "mathQuestions": {
+        "16add21e-e6f3-52fa-ae14-173581498ed8": "0dddada5-0c2f-5bb7-ae6f-5929ae4017d5",
+        "c6fd30bf-fc87-551f-bd0b-fb2474b789a8": "53edeaf0-3bac-5608-8dc4-de22d51dbca6"
+      },
+      "mode": "math",
+      "packageDigest": "05c2c1a09455409bd46bc3f0fb075a031421facf5dfbd12a30b45c93ad8e2428",
+      "questionIds": [
+        "16add21e-e6f3-52fa-ae14-173581498ed8",
+        "c6fd30bf-fc87-551f-bd0b-fb2474b789a8"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "5ebc33d1-1097-5ed4-b521-6b9a25d13eaf",
+      "label": "광운대학교 2023 자연계열",
+      "mathQuestions": {
+        "2b3ef3be-03b0-59da-b76d-7b5befa5ec78": "77080e3c-b798-5084-95aa-df72922eb0d1",
+        "b6b37529-d6e2-51fa-afdc-aa6331cc863c": "76a7e34e-018d-56a8-867b-e2dd490ef32e"
+      },
+      "mode": "math",
+      "packageDigest": "e13e44ace8995e5470801783ca00d71c5c47e2d404d07c172036b52e6c9e4b0b",
+      "questionIds": [
+        "b6b37529-d6e2-51fa-afdc-aa6331cc863c",
+        "2b3ef3be-03b0-59da-b76d-7b5befa5ec78"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "6f01f238-622d-5a85-9a04-8bb5a7b9759d",
+      "label": "광운대학교 2027 자연계열",
+      "mathQuestions": {
+        "b23b4bae-a23e-5e1a-b0d0-b0e04a163c3e": "5f736500-d497-5cfd-af8d-bdd8151c9666",
+        "cc580066-bed4-5fda-8eb6-cab0d26500b7": "1e7af2bb-b599-56ef-abd4-3d089bf79ba1"
+      },
+      "mode": "math",
+      "packageDigest": "812116cc55d402380e82c7155f0bb1569e70ddefe0812a5c34a00d880bdf8549",
+      "questionIds": [
+        "cc580066-bed4-5fda-8eb6-cab0d26500b7",
+        "b23b4bae-a23e-5e1a-b0d0-b0e04a163c3e"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "76b32d03-e941-51e0-9355-46c139a0617a",
+      "label": "광운대학교 2022 자연계열",
+      "mathQuestions": {
+        "49a092ef-9d72-5cbc-8079-45fba6009481": "2e54df27-aa6f-5277-83af-746ff2508a37",
+        "ae1d6f23-34da-5692-b9f0-254deb64a31f": "362859b1-1b01-5e6d-a63e-920015ef1472"
+      },
+      "mode": "math",
+      "packageDigest": "7839162a3b3e68e4622ff8abcd2292f1a37a31d34998d78279bf25ea1f5ccd10",
+      "questionIds": [
+        "49a092ef-9d72-5cbc-8079-45fba6009481",
+        "ae1d6f23-34da-5692-b9f0-254deb64a31f"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "91802b60-96bf-5cb6-abef-d1c1a738ae6f",
+      "label": "광운대학교 2025 자연계열",
+      "mathQuestions": {
+        "936a3c4f-3b00-5373-8ec7-2847e7104fdc": "7b8c4960-59e7-5ae9-9ded-9b42c7aef258",
+        "cb3c7480-69fa-5549-b400-978ff7abcd07": "d329eee8-2428-5737-b27a-b903c6720cff"
+      },
+      "mode": "math",
+      "packageDigest": "2b53b582aa9d27ec920433a84fd68e16d1a3be88659370cd4c6516e4f17ce9b2",
+      "questionIds": [
+        "936a3c4f-3b00-5373-8ec7-2847e7104fdc",
+        "cb3c7480-69fa-5549-b400-978ff7abcd07"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "a2a9d777-2237-50c2-af89-a617b88c5bff",
+      "label": "광운대학교 2023 자연계열",
+      "mathQuestions": {
+        "91f6574f-33e4-5290-868c-41d8683d768b": "2955a7de-e4ee-532a-81e1-8af14bef48c4",
+        "d86a8455-0ff3-51b8-b2b1-34812738c7dd": "8403f505-277c-5ad1-80f0-f9685dbb282e"
+      },
+      "mode": "math",
+      "packageDigest": "4964757631023bc76d84961c499b5155cca87d7374341c7e9a74ab341aa965c0",
+      "questionIds": [
+        "d86a8455-0ff3-51b8-b2b1-34812738c7dd",
+        "91f6574f-33e4-5290-868c-41d8683d768b"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "a68fa7e1-b701-5c7b-95ae-cfc46850614f",
+      "label": "광운대학교 2021 자연계열",
+      "mathQuestions": {
+        "73049dcd-32fc-5898-960d-9cf323ebad03": "533efa66-6352-51ba-ac15-2e7634a5384e",
+        "e726d1b0-7b57-5c23-be37-ba9526d06699": "43312ae9-8b57-5d8f-99e9-42bde7fd4266"
+      },
+      "mode": "math",
+      "packageDigest": "4497fea14b2d052a1195d6716bd38f065e5d2b8dfba20bc28c37160637ac5a64",
+      "questionIds": [
+        "73049dcd-32fc-5898-960d-9cf323ebad03",
+        "e726d1b0-7b57-5c23-be37-ba9526d06699"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "b1e3505a-359e-5122-bf42-32b1cb49a174",
+      "label": "광운대학교 2025 자연계열",
+      "mathQuestions": {
+        "62d7ce0e-d9ec-546c-8693-05c4eaf0a1b2": "a10dc77a-e16e-5d2b-8015-82c6d3e393ba",
+        "737d6f29-1a45-5f9d-b66a-ccb4e85956ef": "6509edac-3f23-50cd-a644-8d56eb5bf11e"
+      },
+      "mode": "math",
+      "packageDigest": "23b1c9095414b786c3aee4d9c3a4e20f38ca4b88b2733f633861a97444413952",
+      "questionIds": [
+        "737d6f29-1a45-5f9d-b66a-ccb4e85956ef",
+        "62d7ce0e-d9ec-546c-8693-05c4eaf0a1b2"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "baceb638-55ee-5d78-8ff4-93dad7832914",
+      "label": "광운대학교 2024 자연계열",
+      "mathQuestions": {
+        "73d55396-a0fb-5624-a026-1fd4b2495652": "1f93536a-61fe-5168-a649-b307a7237770",
+        "8a45444a-7396-51ff-a91b-626b50c1d870": "d8258901-18b6-5507-b6bd-87bf978742a4"
+      },
+      "mode": "math",
+      "packageDigest": "68aa9eb507795e26e3f193d9f7c163cdccd07614854c8f9089f9d8f6069a8224",
+      "questionIds": [
+        "73d55396-a0fb-5624-a026-1fd4b2495652",
+        "8a45444a-7396-51ff-a91b-626b50c1d870"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "c435f96e-0ce0-5603-ac22-c0984662eb98",
+      "label": "광운대학교 2021 자연계열",
+      "mathQuestions": {
+        "33e00250-a7ea-5ef3-9476-6b229786403d": "eef1fef6-5b71-5798-95e6-d6eb0739b48b",
+        "4599e32a-b895-527e-82b6-89e1b3b29b58": "c03f1cd0-0d73-5b34-803f-abb87f28e29f"
+      },
+      "mode": "math",
+      "packageDigest": "c0ebeecfceeacf43dc5683688ccb058d5313b46cdd898620fe7805676043a71a",
+      "questionIds": [
+        "4599e32a-b895-527e-82b6-89e1b3b29b58",
+        "33e00250-a7ea-5ef3-9476-6b229786403d"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "cb4dc5d6-df44-519d-82b4-64833a13304e",
+      "label": "광운대학교 2021 자연계열",
+      "mathQuestions": {
+        "d59307f4-5c54-57d1-a2b2-0aceed1ba8db": "ad93de6b-a60d-5ae3-888e-b41b421b2d3b",
+        "e12393db-b081-5764-aa96-cd0aef47bd47": "d9dc4a16-438b-5b1a-9310-72bf32e990c7"
+      },
+      "mode": "math",
+      "packageDigest": "c8ee1a55cfcc503c03df0564749f676d5aa22eebabdc8c295267e6cbb891a248",
+      "questionIds": [
+        "d59307f4-5c54-57d1-a2b2-0aceed1ba8db",
+        "e12393db-b081-5764-aa96-cd0aef47bd47"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "d2abfee2-2412-5630-9af8-a858116b6759",
+      "label": "광운대학교 2024 자연계열",
+      "mathQuestions": {
+        "468aa8e4-f4bf-5b4c-89b5-38c1e7ad0080": "dcb251dc-1541-59a0-8c02-f850fffcf996",
+        "a791224e-ce1a-55b7-af8c-13908adfed64": "94da79d5-59c3-5cf0-bb20-1e09d8687f80"
+      },
+      "mode": "math",
+      "packageDigest": "e15039b15a517cf3388ce8d78677bfefce306c6ecad84fd035bbabf14f096d04",
+      "questionIds": [
+        "a791224e-ce1a-55b7-af8c-13908adfed64",
+        "468aa8e4-f4bf-5b4c-89b5-38c1e7ad0080"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "de78b082-d9b1-5234-8bb9-d7f7543294db",
+      "label": "광운대학교 2022 자연계열",
+      "mathQuestions": {
+        "6d4cdfca-66f5-57e9-8a8d-e33396476237": "7102ff74-8014-56c9-b6b8-e7a1454afb9b",
+        "ec9efc78-c763-5162-85cd-07aa47c6b6eb": "f213bb3a-fb9a-5e66-98aa-21caf02b909e"
+      },
+      "mode": "math",
+      "packageDigest": "e88fb14ead1a0a058b8b5a206b094ebb37c1a6ff57620c17e9c49ecfa431f21e",
+      "questionIds": [
+        "ec9efc78-c763-5162-85cd-07aa47c6b6eb",
+        "6d4cdfca-66f5-57e9-8a8d-e33396476237"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "eb9c551a-dd29-5454-9a55-8b58a2bb432d",
+      "label": "광운대학교 2021 자연계열",
+      "mathQuestions": {
+        "03b9cb57-b91b-5080-8766-19ec23db5d97": "3d441c21-da93-516d-946d-a53cc8fb8f5e",
+        "dae3b5e6-c2f0-53bf-aef6-c524442d7e65": "6a278801-a9e8-52c4-b95d-c1c2c48642c7"
+      },
+      "mode": "math",
+      "packageDigest": "adf09f3b5e85f3dfc020591fb9f236917751aaef6310baecceab7e0c605e3672",
+      "questionIds": [
+        "03b9cb57-b91b-5080-8766-19ec23db5d97",
+        "dae3b5e6-c2f0-53bf-aef6-c524442d7e65"
+      ],
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
     }
   ]
 }

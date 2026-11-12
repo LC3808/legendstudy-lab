@@ -3412,7 +3412,7 @@
     },
     {
       "key": "source:c7e6913eb84947386beefc4f659617957e11758f174117897f3ceda635081996",
-      "dbExamId": null,
+      "dbExamId": "76b32d03-e941-51e0-9355-46c139a0617a",
       "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
       "sourceUniversityId": "kwangwoon",
       "year": 2022,
@@ -3421,27 +3421,29 @@
       "session": null,
       "campus": null,
       "verification": "VERIFIED",
-      "verificationScope": "exam_identity_and_question_labels",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
       "sourceHashes": [
-        "e9a3c7b39452c68a9b5d8855454df0a7be5b2995b101cff1acc9ef5f1402bedc",
-        "8fb5f2c380ec4ab7ec72f01befb28231fbb9597c33c7394524ad1034d9b82f9d"
+        "8fb5f2c380ec4ab7ec72f01befb28231fbb9597c33c7394524ad1034d9b82f9d",
+        "e9a3c7b39452c68a9b5d8855454df0a7be5b2995b101cff1acc9ef5f1402bedc"
       ],
       "questions": [
         {
           "key": "source:c7e6913eb84947386beefc4f659617957e11758f174117897f3ceda635081996:1",
-          "dbQuestionId": null,
+          "dbQuestionId": "49a092ef-9d72-5cbc-8079-45fba6009481",
           "label": "문제 1",
-          "sourceLocator": "문제 1 자료 PDF 1쪽",
+          "sourceLocator": "2022학년도 광운대 모의논술_자연1 문제,예시답안.pdf PDF 1,2쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         },
         {
           "key": "source:c7e6913eb84947386beefc4f659617957e11758f174117897f3ceda635081996:2",
-          "dbQuestionId": null,
+          "dbQuestionId": "ae1d6f23-34da-5692-b9f0-254deb64a31f",
           "label": "문제 2",
-          "sourceLocator": "문제 2 자료 PDF 1쪽",
+          "sourceLocator": "2022학년도 광운대 모의논술_자연2 문제,예시답안.pdf PDF 1쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         }
       ],
       "evaluationReady": false
@@ -6035,6 +6037,750 @@
           "dbQuestionId": "6f4ac3f6-da5b-538c-a2f4-8376a942512e",
           "label": "문제 3",
           "sourceLocator": "2026학년도 동국대 수시 논술_자연계 문제,해설,답안.pdf PDF 12,13쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2024-mock-natural-single",
+      "dbExamId": "10ade245-4c6a-552b-beae-5dc7af3b75bd",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2024,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "083e9de84d429c9d555734ea53064e8a4f321dedb0d11fd7806435e0f5ee8de2",
+        "0f67a0c004ffdc26d666bc4076115916fb85d80c00f58a50394652ff52825029"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2024-mock-natural-single:q1",
+          "dbQuestionId": "337de419-bd66-5177-9a86-ae9d947fc3dd",
+          "label": "문제 1",
+          "sourceLocator": "2024학년도 광운대 모의논술_자연1 문제,예시답안.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2024-mock-natural-single:q2",
+          "dbQuestionId": "dae06914-3342-5f0d-a58d-baedcce87b10",
+          "label": "문제 2",
+          "sourceLocator": "2024학년도 광운대 모의논술_자연2 문제,예시답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2025-admission-natural-session-2",
+      "dbExamId": "1705c7d2-e11d-570f-9a4a-d220d0600acd",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2025,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "2교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "b80ac66a95a19c4fa092c42472b1284c7bd7597107397bfd37d745595fa2ad90"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2025-admission-natural-session-2:q1",
+          "dbQuestionId": "b2b7413e-097c-5b8e-b69b-57ee1f66f41e",
+          "label": "문제 1",
+          "sourceLocator": "2025학년도 광운대 수시 논술_자연계2 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2025-admission-natural-session-2:q2",
+          "dbQuestionId": "509cae03-b726-5ebc-a9c9-ee9e45197358",
+          "label": "문제 2",
+          "sourceLocator": "2025학년도 광운대 수시 논술_자연계2 문제,해설,답안.pdf PDF 8,9쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2022-admission-natural-session-3",
+      "dbExamId": "18902739-69fc-53c8-a9a7-6bf620c9008b",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2022,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "3교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "0cdcb1ffe970dccb53f3f19143e4b7e4cd47a9557927c11b86974021271d5013"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2022-admission-natural-session-3:q1",
+          "dbQuestionId": "e6498a07-6b1c-5c1b-bf0d-5c5a5d6bc762",
+          "label": "문제 1",
+          "sourceLocator": "2022학년도 광운대 논술_자연(3교시) 문제,예시답안.pdf PDF 2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2022-admission-natural-session-3:q2",
+          "dbQuestionId": "026319f4-90fb-5acd-b5e3-ec5c9788f46c",
+          "label": "문제 2",
+          "sourceLocator": "2022학년도 광운대 논술_자연(3교시) 문제,예시답안.pdf PDF 4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2022-admission-natural-session-2",
+      "dbExamId": "1a3a3532-8fa1-5d33-917c-e99d441e1788",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2022,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "2교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "945b98444a0466c0357d1bbaeee46b7580c9f4c12e6ad3c410e7c09676941508"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2022-admission-natural-session-2:q1",
+          "dbQuestionId": "3f726a45-322f-5d6b-8bb7-9791c9413552",
+          "label": "문제 1",
+          "sourceLocator": "2022학년도 광운대 논술_자연(2교시) 문제,예시답안.pdf PDF 2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2022-admission-natural-session-2:q2",
+          "dbQuestionId": "00d92017-166a-5722-a3d0-95de2c20b735",
+          "label": "문제 2",
+          "sourceLocator": "2022학년도 광운대 논술_자연(2교시) 문제,예시답안.pdf PDF 4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2026-mock-natural-single",
+      "dbExamId": "1e66b782-4e74-5fd4-b36d-032991875522",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2026,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "8d8b0ae4631b8a39b330c52e82f97a4b26c48448beaed7a2b6426cc02343a402"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2026-mock-natural-single:q1",
+          "dbQuestionId": "c571234a-dd0c-5617-8142-6c84b2e46c21",
+          "label": "문제 1",
+          "sourceLocator": "2026학년도 광운대 모의논술_자연계 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2026-mock-natural-single:q2",
+          "dbQuestionId": "e72b96c2-1286-5fb9-a02c-431cbccd8daa",
+          "label": "문제 2",
+          "sourceLocator": "2026학년도 광운대 모의논술_자연계 문제,해설,답안.pdf PDF 8,9쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2023-mock-natural-single",
+      "dbExamId": "3368bb8c-eaf7-5c8f-9e50-aa86c3eb36a1",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2023,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "99155c6167b8de5eb36b4b435486200075bfedbf77603b590ba2ca261ef5e966",
+        "c2905d38bb7d5ecf648d01465e0dbce9af572f963ea9c0fe9bb04cff2ad14c9f"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2023-mock-natural-single:q1",
+          "dbQuestionId": "93170547-b42e-5cb2-a3f5-b5598268b01e",
+          "label": "문제 1",
+          "sourceLocator": "2023학년도 광운대 모의논술_자연1 문제,예시답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2023-mock-natural-single:q2",
+          "dbQuestionId": "5cfb4b28-41c1-5141-ab52-c3e1190e7ea8",
+          "label": "문제 2",
+          "sourceLocator": "2023학년도 광운대 모의논술_자연2 문제,예시답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2026-admission-natural-session-1",
+      "dbExamId": "44eba80d-09ed-5e8c-a988-01e90c78ffd4",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2026,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "1교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "4e0fae27bc0723fceafc29b1fce707adf94fae82446b3264c017af8f526d81f6"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2026-admission-natural-session-1:q1",
+          "dbQuestionId": "9c7f45ca-aaff-5045-b175-b9a7477b3e02",
+          "label": "문제 1",
+          "sourceLocator": "2026학년도 광운대 수시 논술_자연계1 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2026-admission-natural-session-1:q2",
+          "dbQuestionId": "5239e2e4-c412-547a-ab9b-6a73185d434c",
+          "label": "문제 2",
+          "sourceLocator": "2026학년도 광운대 수시 논술_자연계1 문제,해설,답안.pdf PDF 10,11쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2026-admission-natural-session-2",
+      "dbExamId": "45febe31-1b94-5648-a081-e335f82e81a4",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2026,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "2교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "639c116cc3c8ddbc6679ec30ae00c11138be8cf7acd766b9025395643ae51d84"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2026-admission-natural-session-2:q1",
+          "dbQuestionId": "16add21e-e6f3-52fa-ae14-173581498ed8",
+          "label": "문제 1",
+          "sourceLocator": "2026학년도 광운대 수시 논술_자연계2 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2026-admission-natural-session-2:q2",
+          "dbQuestionId": "c6fd30bf-fc87-551f-bd0b-fb2474b789a8",
+          "label": "문제 2",
+          "sourceLocator": "2026학년도 광운대 수시 논술_자연계2 문제,해설,답안.pdf PDF 8,9쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2023-admission-natural-session-2",
+      "dbExamId": "5ebc33d1-1097-5ed4-b521-6b9a25d13eaf",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2023,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "2교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "63c55afa5423a4e5c130c4561d6592464fb839c4f71322964ba49d9208c5f5f5"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2023-admission-natural-session-2:q1",
+          "dbQuestionId": "b6b37529-d6e2-51fa-afdc-aa6331cc863c",
+          "label": "문제 1",
+          "sourceLocator": "2023학년도 광운대 논술_자연(2교시) 문제,예시답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2023-admission-natural-session-2:q2",
+          "dbQuestionId": "2b3ef3be-03b0-59da-b76d-7b5befa5ec78",
+          "label": "문제 2",
+          "sourceLocator": "2023학년도 광운대 논술_자연(2교시) 문제,예시답안.pdf PDF 11,12쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2027-mock-natural-single",
+      "dbExamId": "6f01f238-622d-5a85-9a04-8bb5a7b9759d",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2027,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "bb491add0733d8b1b79483a664f9eda7b32a833614d3d62e04398ee734db4bd5"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2027-mock-natural-single:q1",
+          "dbQuestionId": "cc580066-bed4-5fda-8eb6-cab0d26500b7",
+          "label": "문제 1",
+          "sourceLocator": "2027학년도 광운대 모의논술_자연계 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2027-mock-natural-single:q2",
+          "dbQuestionId": "b23b4bae-a23e-5e1a-b0d0-b0e04a163c3e",
+          "label": "문제 2",
+          "sourceLocator": "2027학년도 광운대 모의논술_자연계 문제,해설,답안.pdf PDF 7,8쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2025-mock-natural-single",
+      "dbExamId": "91802b60-96bf-5cb6-abef-d1c1a738ae6f",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2025,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "2957f5bd52c8d2565c73ba5009934d4c414701e5d0a0bec29aff63e4f4e10fc3",
+        "3e4530211e4738b0907689602f37471c76c98f8fded599831074d291c5723767"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2025-mock-natural-single:q1",
+          "dbQuestionId": "936a3c4f-3b00-5373-8ec7-2847e7104fdc",
+          "label": "문제 1",
+          "sourceLocator": "2025학년도 광운대 모의논술_자연(1번) 문제,답안.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2025-mock-natural-single:q2",
+          "dbQuestionId": "cb3c7480-69fa-5549-b400-978ff7abcd07",
+          "label": "문제 2",
+          "sourceLocator": "2025학년도 광운대 모의논술_자연(2번) 문제,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2023-admission-natural-session-1",
+      "dbExamId": "a2a9d777-2237-50c2-af89-a617b88c5bff",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2023,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "1교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "509f1c4315c58ce5d40324919bceb1f632ee1fe317a9c193f531966b356a5278"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2023-admission-natural-session-1:q1",
+          "dbQuestionId": "d86a8455-0ff3-51b8-b2b1-34812738c7dd",
+          "label": "문제 1",
+          "sourceLocator": "2023학년도 광운대 논술_자연(1교시) 문제,예시답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2023-admission-natural-session-1:q2",
+          "dbQuestionId": "91f6574f-33e4-5290-868c-41d8683d768b",
+          "label": "문제 2",
+          "sourceLocator": "2023학년도 광운대 논술_자연(1교시) 문제,예시답안.pdf PDF 9,10쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2021-admission-natural-session-2",
+      "dbExamId": "a68fa7e1-b701-5c7b-95ae-cfc46850614f",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2021,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "2교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "f33ebbdcd16a608cf7adcfedf6bcaecb3d761445a76cde89731011220578d058"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2021-admission-natural-session-2:q1",
+          "dbQuestionId": "73049dcd-32fc-5898-960d-9cf323ebad03",
+          "label": "문제 1",
+          "sourceLocator": "2021학년도 광운대 논술_자연(2교시) 문제,예시답안.pdf PDF 2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2021-admission-natural-session-2:q2",
+          "dbQuestionId": "e726d1b0-7b57-5c23-be37-ba9526d06699",
+          "label": "문제 2",
+          "sourceLocator": "2021학년도 광운대 논술_자연(2교시) 문제,예시답안.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2025-admission-natural-session-1",
+      "dbExamId": "b1e3505a-359e-5122-bf42-32b1cb49a174",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2025,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "1교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "7ef898fe52fbc87aba6ea9a95e8522b502b37e59320792880d25d270c0020ebe"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2025-admission-natural-session-1:q1",
+          "dbQuestionId": "737d6f29-1a45-5f9d-b66a-ccb4e85956ef",
+          "label": "문제 1",
+          "sourceLocator": "2025학년도 광운대 수시 논술_자연계1 문제,해설,답안.pdf PDF 1,2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2025-admission-natural-session-1:q2",
+          "dbQuestionId": "62d7ce0e-d9ec-546c-8693-05c4eaf0a1b2",
+          "label": "문제 2",
+          "sourceLocator": "2025학년도 광운대 수시 논술_자연계1 문제,해설,답안.pdf PDF 15,16쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2024-admission-natural-session-2",
+      "dbExamId": "baceb638-55ee-5d78-8ff4-93dad7832914",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2024,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "2교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "4999d8ab2dee14cce0dbb40b026b67de6871c5a18c71fd29ea10ef8449d2a94f"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2024-admission-natural-session-2:q1",
+          "dbQuestionId": "73d55396-a0fb-5624-a026-1fd4b2495652",
+          "label": "문제 1",
+          "sourceLocator": "2024학년도 광운대 논술_자연(2교시) 문제,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2024-admission-natural-session-2:q2",
+          "dbQuestionId": "8a45444a-7396-51ff-a91b-626b50c1d870",
+          "label": "문제 2",
+          "sourceLocator": "2024학년도 광운대 논술_자연(2교시) 문제,답안.pdf PDF 8,9쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2021-admission-natural-session-1",
+      "dbExamId": "c435f96e-0ce0-5603-ac22-c0984662eb98",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2021,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "1교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "1eb14384264917de9abe166883cbb58d001b36c8803356c8074eed9117a3c9bb"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2021-admission-natural-session-1:q1",
+          "dbQuestionId": "4599e32a-b895-527e-82b6-89e1b3b29b58",
+          "label": "문제 1",
+          "sourceLocator": "2021학년도 광운대 논술_자연(1교시) 문제,예시답안.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2021-admission-natural-session-1:q2",
+          "dbQuestionId": "33e00250-a7ea-5ef3-9476-6b229786403d",
+          "label": "문제 2",
+          "sourceLocator": "2021학년도 광운대 논술_자연(1교시) 문제,예시답안.pdf PDF 3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2021-mock-natural-single",
+      "dbExamId": "cb4dc5d6-df44-519d-82b4-64833a13304e",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2021,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "27003aaad741d91aa79623a4847eba3ab425d52c01a40a792741fadb86f9dada",
+        "7bbf5ea64f4e5a3f927453ee5602f1d71c1559ba51c1e8cb81b560b1986c43e4"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2021-mock-natural-single:q1",
+          "dbQuestionId": "d59307f4-5c54-57d1-a2b2-0aceed1ba8db",
+          "label": "문제 1",
+          "sourceLocator": "2021학년도 광운대 모의논술_자연1 문제,예시답안.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2021-mock-natural-single:q2",
+          "dbQuestionId": "e12393db-b081-5764-aa96-cd0aef47bd47",
+          "label": "문제 2",
+          "sourceLocator": "2021학년도 광운대 모의논술_자연2 문제,예시답안.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2024-admission-natural-session-1",
+      "dbExamId": "d2abfee2-2412-5630-9af8-a858116b6759",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2024,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "1교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "aa0c9b66dca0d4ed4412a6288d19b1a4e5c07088f0596e164fc38ef1130bc84b"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2024-admission-natural-session-1:q1",
+          "dbQuestionId": "a791224e-ce1a-55b7-af8c-13908adfed64",
+          "label": "문제 1",
+          "sourceLocator": "2024학년도 광운대 논술_자연(1교시) 문제,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2024-admission-natural-session-1:q2",
+          "dbQuestionId": "468aa8e4-f4bf-5b4c-89b5-38c1e7ad0080",
+          "label": "문제 2",
+          "sourceLocator": "2024학년도 광운대 논술_자연(1교시) 문제,답안.pdf PDF 10,11쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2022-admission-natural-session-1",
+      "dbExamId": "de78b082-d9b1-5234-8bb9-d7f7543294db",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2022,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "1교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "85901a237b51d6e4288816e3bb8c1f2405ade5f65ad898f6ef2fdaeb23537b39"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2022-admission-natural-session-1:q1",
+          "dbQuestionId": "ec9efc78-c763-5162-85cd-07aa47c6b6eb",
+          "label": "문제 1",
+          "sourceLocator": "2022학년도 광운대 논술_자연(1교시) 문제,예시답안.pdf PDF 2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2022-admission-natural-session-1:q2",
+          "dbQuestionId": "6d4cdfca-66f5-57e9-8a8d-e33396476237",
+          "label": "문제 2",
+          "sourceLocator": "2022학년도 광운대 논술_자연(1교시) 문제,예시답안.pdf PDF 4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:kwangwoon-2021-admission-natural-session-3",
+      "dbExamId": "eb9c551a-dd29-5454-9a55-8b58a2bb432d",
+      "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a",
+      "sourceUniversityId": "kwangwoon",
+      "year": 2021,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "3교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "c5b3707ff12e073501a5c32edd13d6b229e81be0bd757574d5faff791785519b"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:kwangwoon-2021-admission-natural-session-3:q1",
+          "dbQuestionId": "03b9cb57-b91b-5080-8766-19ec23db5d97",
+          "label": "문제 1",
+          "sourceLocator": "2021학년도 광운대 논술_자연(3교시) 문제,예시답안.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:kwangwoon-2021-admission-natural-session-3:q2",
+          "dbQuestionId": "dae3b5e6-c2f0-53bf-aef6-c524442d7e65",
+          "label": "문제 2",
+          "sourceLocator": "2021학년도 광운대 논술_자연(3교시) 문제,예시답안.pdf PDF 3,4쪽",
           "lengthLabel": null,
           "inputMode": "image",
           "accountDraftReady": false

@@ -21,9 +21,9 @@ it('connects only the reviewed Hanyang question-only original without enabling e
 it('serves only explicitly approved current mappings and keeps pending mappings closed',async()=>{
  const {default:catalog}=await import('@/data/essay-student-pdf-candidates.json');
  const {studentPdfForExam}=await import('./student-asset');
- expect(new Set(catalog.questions.map(q=>q.questionId)).size).toBe(1043);
+ expect(new Set(catalog.questions.map(q=>q.questionId)).size).toBe(1085);
  const approved=catalog.questions.filter(q=>q.storageRead==='APPROVED');
- expect(approved).toHaveLength(1028);expect(new Set(approved.map(q=>q.assetId)).size).toBe(367);
+ expect(approved).toHaveLength(1070);expect(new Set(approved.map(q=>q.assetId)).size).toBe(388);
  for(const q of catalog.questions){
   const pdf=studentPdfForExam(q.examId,q.questionId);
   if(q.storageRead==='APPROVED'){expect(q.verification).toBe('VERIFIED');expect(q.studentDisplay).toBe('APPROVED');expect(pdf?.startPage).toBe(q.startPage);expect(pdf?.assetId).toBe(q.assetId);}
