@@ -3264,7 +3264,7 @@
     },
     {
       "key": "source:fb119b1708e9b646bdf7134283d8e03572367eca2afc893a9869495984f0bd81",
-      "dbExamId": null,
+      "dbExamId": "c15360f1-571e-5fa4-8314-dde3022f9594",
       "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
       "sourceUniversityId": "ewha",
       "year": 2024,
@@ -3280,7 +3280,7 @@
       "questions": [
         {
           "key": "source:fb119b1708e9b646bdf7134283d8e03572367eca2afc893a9869495984f0bd81:1",
-          "dbQuestionId": null,
+          "dbQuestionId": "f32f7b67-6fcf-52ab-b6b7-06074712c702",
           "label": "문제 1",
           "sourceLocator": null,
           "lengthLabel": null,
@@ -3288,7 +3288,7 @@
         },
         {
           "key": "source:fb119b1708e9b646bdf7134283d8e03572367eca2afc893a9869495984f0bd81:2",
-          "dbQuestionId": null,
+          "dbQuestionId": "4a432fdf-d601-5230-b045-d2123c614773",
           "label": "문제 2",
           "sourceLocator": null,
           "lengthLabel": null,
@@ -3296,7 +3296,7 @@
         },
         {
           "key": "source:fb119b1708e9b646bdf7134283d8e03572367eca2afc893a9869495984f0bd81:3",
-          "dbQuestionId": null,
+          "dbQuestionId": "e7362b80-3f05-5d84-8768-826ab7136233",
           "label": "문제 3",
           "sourceLocator": null,
           "lengthLabel": null,
@@ -7961,6 +7961,335 @@
           "dbQuestionId": "7a284ad9-ad2b-5a52-b2e4-3233dbb9fb20",
           "label": "문제 3",
           "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_자연계열2 문제.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:7f6db8eab2da997f47f1b49b8a665486d3273b719f9a31f415837fe800bc5d2b",
+      "dbExamId": "759dc80b-540b-535c-8ca5-e8f8c1bceb91",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2024,
+      "kind": "mock",
+      "track": "인문계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "ee6ae3b46e247f68ea26232e769137c03b443f9531aa30ab6844bb7756059dfa",
+        "0fc74bf801f1382d3e8c2ee73187e7d4c8d24a8aa0ba5643a6d4f68c73a381af"
+      ],
+      "questions": [
+        {
+          "key": "source:7f6db8eab2da997f47f1b49b8a665486d3273b719f9a31f415837fe800bc5d2b:1",
+          "dbQuestionId": "94c31452-c9b0-556a-8913-195a75d2e8e4",
+          "label": "문제 1",
+          "sourceLocator": "2024학년도 이화여대 모의논술_인문1 문제.pdf PDF 2,3,4,5",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:7f6db8eab2da997f47f1b49b8a665486d3273b719f9a31f415837fe800bc5d2b:2",
+          "dbQuestionId": "2c872e03-d340-55fc-b9bc-af9eed8036f9",
+          "label": "문제 2",
+          "sourceLocator": "2024학년도 이화여대 모의논술_인문1 문제.pdf PDF 2,3,4,5",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:7f6db8eab2da997f47f1b49b8a665486d3273b719f9a31f415837fe800bc5d2b:3",
+          "dbQuestionId": "00f573ab-8f33-5d8f-adff-e52a1ec7b109",
+          "label": "문제 3",
+          "sourceLocator": "2024학년도 이화여대 모의논술_인문1 문제.pdf PDF 2,3,4,5",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:c4aa2c136a7e829a035ea5067f34f4b1d0dccf3f1f72339f6326994b3117819b",
+      "dbExamId": "be108151-16e2-556e-b645-ace485c48624",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2024,
+      "kind": "mock",
+      "track": "인문계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "fec0960eb236ae7e786070f8953ad605d603fe14779dc85dade8a2255626af6e",
+        "32b36c6543be3bbf3228de4498084ca392d6129080d58614acaff562da1531a9"
+      ],
+      "questions": [
+        {
+          "key": "source:c4aa2c136a7e829a035ea5067f34f4b1d0dccf3f1f72339f6326994b3117819b:1",
+          "dbQuestionId": "62b7a0db-99fe-5689-9276-a67d3c8ab3bc",
+          "label": "문제 1",
+          "sourceLocator": "2024학년도 이화여대 모의논술_인문2 문제.pdf PDF 2,3,4,5",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:c4aa2c136a7e829a035ea5067f34f4b1d0dccf3f1f72339f6326994b3117819b:2",
+          "dbQuestionId": "af222aca-ad72-5c76-b499-2378b11d0b9c",
+          "label": "문제 2",
+          "sourceLocator": "2024학년도 이화여대 모의논술_인문2 문제.pdf PDF 2,3,4,5",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:c4aa2c136a7e829a035ea5067f34f4b1d0dccf3f1f72339f6326994b3117819b:3",
+          "dbQuestionId": "f277d7fe-a76b-531b-aab4-49b025d98dcb",
+          "label": "문제 3",
+          "sourceLocator": "2024학년도 이화여대 모의논술_인문2 문제.pdf PDF 2,3,4,5",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:0f48381e822a6946a65493422f8c893dde77d9142534f76aff681bb21375a62f",
+      "dbExamId": "b459d8b0-db7f-5198-a8ce-dc25fd799729",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2024,
+      "kind": "mock",
+      "track": "자연계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "3f13fe7a3510506d633e81f84387ff0227986a9d56c5be2d090491e9341f2ab9",
+        "837dc85d0dad41b2906ef7907729d807e25b61180633cba371b3445ff3aef0d5"
+      ],
+      "questions": [
+        {
+          "key": "source:0f48381e822a6946a65493422f8c893dde77d9142534f76aff681bb21375a62f:1",
+          "dbQuestionId": "7a712a56-2c56-593d-8c6c-740f8b265cb3",
+          "label": "문제 1",
+          "sourceLocator": "2024학년도 이화여대 모의논술_자연2 문제.pdf PDF 2",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:0f48381e822a6946a65493422f8c893dde77d9142534f76aff681bb21375a62f:2",
+          "dbQuestionId": "086eab54-62a6-5b20-969b-d45410e37a39",
+          "label": "문제 2",
+          "sourceLocator": "2024학년도 이화여대 모의논술_자연2 문제.pdf PDF 2",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:0f48381e822a6946a65493422f8c893dde77d9142534f76aff681bb21375a62f:3",
+          "dbQuestionId": "a03c2ee5-d6a9-5aff-90ba-c53562dd0b29",
+          "label": "문제 3",
+          "sourceLocator": "2024학년도 이화여대 모의논술_자연2 문제.pdf PDF 2",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:63d180d22b43439f39c5362a95382b9edd82914c7c194da0b9324cfea9d40dec",
+      "dbExamId": "24e1ae27-fb31-591a-b3fc-6f73e92a2564",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2027,
+      "kind": "mock",
+      "track": "인문계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "c29e06329b1586fc34efa28bd5442a4ba4883c300b5738092f6553ce732c5a64",
+        "0deae16c0da93b5e087b7c89051330eca4644bf8c48199c84d23108120c2ca54"
+      ],
+      "questions": [
+        {
+          "key": "source:63d180d22b43439f39c5362a95382b9edd82914c7c194da0b9324cfea9d40dec:1",
+          "dbQuestionId": "d1dd1f8b-d467-5423-b837-9ffa9bc2db44",
+          "label": "문제 1",
+          "sourceLocator": "2027학년도 이화여대 모의논술_인문계열1 문제.pdf PDF 2,3,4",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:63d180d22b43439f39c5362a95382b9edd82914c7c194da0b9324cfea9d40dec:2",
+          "dbQuestionId": "013c4f5b-6f34-507d-867b-ab83bd5eb15a",
+          "label": "문제 2",
+          "sourceLocator": "2027학년도 이화여대 모의논술_인문계열1 문제.pdf PDF 2,3,4",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:63d180d22b43439f39c5362a95382b9edd82914c7c194da0b9324cfea9d40dec:3",
+          "dbQuestionId": "7b7a4c73-b85c-5e66-a25a-7110a6a5ee21",
+          "label": "문제 3",
+          "sourceLocator": "2027학년도 이화여대 모의논술_인문계열1 문제.pdf PDF 2,3,4",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:20c64e5ad34c68eb07f3fd6e33a9a98da9af2f1225a2f790270e5269fbdf0c65",
+      "dbExamId": "7b20c77f-3e34-5b8d-9da9-26e976b14230",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2027,
+      "kind": "mock",
+      "track": "인문계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "a5f02580b5aecc2ede32b6fa92b3251d8f525b95d4a6b2bfa40f2d7e7575238d",
+        "caeb8b1d15404e63c033fb3f5e3bc14784efe767c65f299b3e8de4418d09a80d"
+      ],
+      "questions": [
+        {
+          "key": "source:20c64e5ad34c68eb07f3fd6e33a9a98da9af2f1225a2f790270e5269fbdf0c65:1",
+          "dbQuestionId": "c618b344-7e18-52c8-bc57-ee41c722d58e",
+          "label": "문제 1",
+          "sourceLocator": "2027학년도 이화여대 모의논술_인문계열2 문제.pdf PDF 2,3,4",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:20c64e5ad34c68eb07f3fd6e33a9a98da9af2f1225a2f790270e5269fbdf0c65:2",
+          "dbQuestionId": "c008580f-85ee-5149-96d7-ed316b107324",
+          "label": "문제 2",
+          "sourceLocator": "2027학년도 이화여대 모의논술_인문계열2 문제.pdf PDF 2,3,4",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:20c64e5ad34c68eb07f3fd6e33a9a98da9af2f1225a2f790270e5269fbdf0c65:3",
+          "dbQuestionId": "11a0783b-c5b8-5bb8-b45c-b2268e4517cc",
+          "label": "문제 3",
+          "sourceLocator": "2027학년도 이화여대 모의논술_인문계열2 문제.pdf PDF 2,3,4",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:33c6978f3244396f0845b61482ade9d8805ebb21918efde9daa3d47c3c36e300",
+      "dbExamId": "466a360a-5814-55cf-91cb-69c99ba2e081",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2027,
+      "kind": "mock",
+      "track": "자연계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "0458b13daf1e095ec8ab113a018f3cf76a0f6c6ce8777943ed406c0b000f966c",
+        "bdde6323962f173228ee4a6dfb8a633e31d14d48356a20999b0e34499751ecb8"
+      ],
+      "questions": [
+        {
+          "key": "source:33c6978f3244396f0845b61482ade9d8805ebb21918efde9daa3d47c3c36e300:1",
+          "dbQuestionId": "8b4f615f-98ab-592f-9762-4c9920036bc7",
+          "label": "문제 1",
+          "sourceLocator": "2027학년도 이화여대 모의논술_자연계열1 문제.pdf PDF 2",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:33c6978f3244396f0845b61482ade9d8805ebb21918efde9daa3d47c3c36e300:2",
+          "dbQuestionId": "09223a1e-ebab-5f67-b0cf-6730053c53da",
+          "label": "문제 2",
+          "sourceLocator": "2027학년도 이화여대 모의논술_자연계열1 문제.pdf PDF 3",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:33c6978f3244396f0845b61482ade9d8805ebb21918efde9daa3d47c3c36e300:3",
+          "dbQuestionId": "8290cd10-8235-5597-a9b0-e2d4ba7d886e",
+          "label": "문제 3",
+          "sourceLocator": "2027학년도 이화여대 모의논술_자연계열1 문제.pdf PDF 4",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:eabd4209a8f8a8b1850ca629a7f6a5e6f9fa1baab4c9768c64004f7cfb47ccf5",
+      "dbExamId": "7d0b2102-0239-5529-95ec-7d0e93d05ef8",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2027,
+      "kind": "mock",
+      "track": "자연계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "f5c0eea95d97b7b497d3fa4635d198a57cc343f3cdf592b2940f60fa149746b8",
+        "294c5fdf3b7cb3b8ab20e0971e5f72d1c3e72ad31db93e519d15b9e8ebdb3df1"
+      ],
+      "questions": [
+        {
+          "key": "source:eabd4209a8f8a8b1850ca629a7f6a5e6f9fa1baab4c9768c64004f7cfb47ccf5:1",
+          "dbQuestionId": "afe3a716-f643-5571-9b12-0227d3bb0297",
+          "label": "문제 1",
+          "sourceLocator": "2027학년도 이화여대 모의논술_자연계열2 문제.pdf PDF 2",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:eabd4209a8f8a8b1850ca629a7f6a5e6f9fa1baab4c9768c64004f7cfb47ccf5:2",
+          "dbQuestionId": "0496fa8f-cc1a-57a1-8daf-748e68c98f80",
+          "label": "문제 2",
+          "sourceLocator": "2027학년도 이화여대 모의논술_자연계열2 문제.pdf PDF 3",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:eabd4209a8f8a8b1850ca629a7f6a5e6f9fa1baab4c9768c64004f7cfb47ccf5:3",
+          "dbQuestionId": "5536426a-fee4-5a28-b905-c7c169b7f7a0",
+          "label": "문제 3",
+          "sourceLocator": "2027학년도 이화여대 모의논술_자연계열2 문제.pdf PDF 4",
           "lengthLabel": null,
           "inputMode": "image",
           "accountDraftReady": false

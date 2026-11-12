@@ -11,16 +11,16 @@ describe('explicit existing Registry expansion',()=>{
   expect(betaExpansionFor('https://preview.example',env,candidate.examId)).toBeUndefined();
  });
  it('pins every complete question and official PDF without adding the TEST-only natural exam',()=>{
-  expect(betaExpansionCandidates).toHaveLength(185);
+  expect(betaExpansionCandidates).toHaveLength(193);
   for(const excluded of ['b98fd0c9-8a84-5747-a35c-25755312aede','a6667288-75ad-50d4-b237-d2a08e2bff8b','942c1c43-914f-5b99-9a30-e6474c363f6f'])expect(betaExpansionCandidates.some(e=>e.examId===excluded)).toBe(false);
-  expect(betaExpansionCandidates.filter(e=>e.mode==='math')).toHaveLength(146);
+  expect(betaExpansionCandidates.filter(e=>e.mode==='math')).toHaveLength(150);
   expect(betaExpansionCandidates.filter(e=>e.mode==='mixed')).toHaveLength(26);
-  expect(betaExpansionCandidates.filter(e=>e.mode==='essay')).toHaveLength(13);
+  expect(betaExpansionCandidates.filter(e=>e.mode==='essay')).toHaveLength(17);
   expect(betaExpansionCandidates.filter(e=>e.mode==='essay').map(e=>e.examId)).toContain('1862463a-bf97-580a-ad33-694375db5d50');
   expect(new Set(betaExpansionCandidates.map(e=>e.universityId)).size).toBe(14);
   expect(new Set(betaExpansionCandidates.map(e=>e.examId)).size).toBe(betaExpansionCandidates.length);
-  expect(betaExpansionCandidates.reduce((n,e)=>n+e.questionIds.length,0)).toBe(495);
-  expect(betaExpansionCandidates.flatMap(e=>Object.values(e.mathQuestions))).toHaveLength(420);
+  expect(betaExpansionCandidates.reduce((n,e)=>n+e.questionIds.length,0)).toBe(519);
+  expect(betaExpansionCandidates.flatMap(e=>Object.values(e.mathQuestions))).toHaveLength(432);
   for(const e of betaExpansionCandidates){
    expect(new Set(e.questionIds).size).toBe(e.questionIds.length);
    expect(Object.keys(e.mathQuestions).every(q=>e.questionIds.includes(q))).toBe(true);

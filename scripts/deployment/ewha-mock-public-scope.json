@@ -1,0 +1,132 @@
+{
+  "exams": [
+    {
+      "completeExam": true,
+      "examId": "759dc80b-540b-535c-8ca5-e8f8c1bceb91",
+      "label": "이화여자대학교 2024 모의 인문계열Ⅰ",
+      "mathQuestions": {},
+      "mode": "essay",
+      "packageDigest": "bec9c17caf1c00fd67ec4b313a921e375fd7ec1ea5d528bc648015ad01642ac9",
+      "questionIds": [
+        "94c31452-c9b0-556a-8913-195a75d2e8e4",
+        "2c872e03-d340-55fc-b9bc-af9eed8036f9",
+        "00f573ab-8f33-5d8f-adff-e52a1ec7b109"
+      ],
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95"
+    },
+    {
+      "completeExam": true,
+      "examId": "be108151-16e2-556e-b645-ace485c48624",
+      "label": "이화여자대학교 2024 모의 인문계열Ⅱ",
+      "mathQuestions": {},
+      "mode": "essay",
+      "packageDigest": "6cfe7aeff6e3dbd037563efeaf8783e007a09b52dd1f01312b089503a6d8f011",
+      "questionIds": [
+        "62b7a0db-99fe-5689-9276-a67d3c8ab3bc",
+        "af222aca-ad72-5c76-b499-2378b11d0b9c",
+        "f277d7fe-a76b-531b-aab4-49b025d98dcb"
+      ],
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95"
+    },
+    {
+      "completeExam": true,
+      "examId": "c15360f1-571e-5fa4-8314-dde3022f9594",
+      "label": "이화여자대학교 2024 모의 자연계열Ⅰ",
+      "mathQuestions": {
+        "f32f7b67-6fcf-52ab-b6b7-06074712c702": "e08fa839-0f46-5275-ab19-fe660078eb5b",
+        "4a432fdf-d601-5230-b045-d2123c614773": "0bea8abd-73bb-50e8-a23f-41a593dcb69b",
+        "e7362b80-3f05-5d84-8768-826ab7136233": "be8e6872-1031-5c1e-b3e9-6fa796afa687"
+      },
+      "mode": "math",
+      "packageDigest": "23dd4d99c38b8eb9f29849e2f170620139db15f78ec2edbc6a253ac0e9e32696",
+      "questionIds": [
+        "f32f7b67-6fcf-52ab-b6b7-06074712c702",
+        "4a432fdf-d601-5230-b045-d2123c614773",
+        "e7362b80-3f05-5d84-8768-826ab7136233"
+      ],
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95"
+    },
+    {
+      "completeExam": true,
+      "examId": "b459d8b0-db7f-5198-a8ce-dc25fd799729",
+      "label": "이화여자대학교 2024 모의 자연계열Ⅱ",
+      "mathQuestions": {
+        "7a712a56-2c56-593d-8c6c-740f8b265cb3": "d28da4e4-86fb-5700-84b2-1566db3bb8ba",
+        "086eab54-62a6-5b20-969b-d45410e37a39": "523220f5-273d-5ee3-b432-3957c67f6cf7",
+        "a03c2ee5-d6a9-5aff-90ba-c53562dd0b29": "6203b58a-a9bb-5336-81da-609578f16aa4"
+      },
+      "mode": "math",
+      "packageDigest": "9bf51111877daed68eebae5b1f1cb3912884b4ef3379f1dffc8050ad488e3ddd",
+      "questionIds": [
+        "7a712a56-2c56-593d-8c6c-740f8b265cb3",
+        "086eab54-62a6-5b20-969b-d45410e37a39",
+        "a03c2ee5-d6a9-5aff-90ba-c53562dd0b29"
+      ],
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95"
+    },
+    {
+      "completeExam": true,
+      "examId": "24e1ae27-fb31-591a-b3fc-6f73e92a2564",
+      "label": "이화여자대학교 2027 모의 인문계열Ⅰ",
+      "mathQuestions": {},
+      "mode": "essay",
+      "packageDigest": "456dac8ff183d13190d16ef929978fc4ebb01e54a2a65f979ab4e3d5b8641e7b",
+      "questionIds": [
+        "d1dd1f8b-d467-5423-b837-9ffa9bc2db44",
+        "013c4f5b-6f34-507d-867b-ab83bd5eb15a",
+        "7b7a4c73-b85c-5e66-a25a-7110a6a5ee21"
+      ],
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95"
+    },
+    {
+      "completeExam": true,
+      "examId": "7b20c77f-3e34-5b8d-9da9-26e976b14230",
+      "label": "이화여자대학교 2027 모의 인문계열Ⅱ",
+      "mathQuestions": {},
+      "mode": "essay",
+      "packageDigest": "c6b844d47554cfaaaf696ff8d75f48d76aae4dbc0ac598f83339717b6f84a69e",
+      "questionIds": [
+        "c618b344-7e18-52c8-bc57-ee41c722d58e",
+        "c008580f-85ee-5149-96d7-ed316b107324",
+        "11a0783b-c5b8-5bb8-b45c-b2268e4517cc"
+      ],
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95"
+    },
+    {
+      "completeExam": true,
+      "examId": "466a360a-5814-55cf-91cb-69c99ba2e081",
+      "label": "이화여자대학교 2027 모의 자연계열Ⅰ",
+      "mathQuestions": {
+        "8b4f615f-98ab-592f-9762-4c9920036bc7": "bd0c42bd-c3a6-57df-87da-9f1ccf7b4460",
+        "09223a1e-ebab-5f67-b0cf-6730053c53da": "a3f5ec15-cd2c-5752-9d67-cd26143a8501",
+        "8290cd10-8235-5597-a9b0-e2d4ba7d886e": "56963d7a-66c5-5137-a152-758c89337bd6"
+      },
+      "mode": "math",
+      "packageDigest": "807a603b1b0493ce8d784c511d324c1baf669704bc6dfbf928bbbe4713988382",
+      "questionIds": [
+        "8b4f615f-98ab-592f-9762-4c9920036bc7",
+        "09223a1e-ebab-5f67-b0cf-6730053c53da",
+        "8290cd10-8235-5597-a9b0-e2d4ba7d886e"
+      ],
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95"
+    },
+    {
+      "completeExam": true,
+      "examId": "7d0b2102-0239-5529-95ec-7d0e93d05ef8",
+      "label": "이화여자대학교 2027 모의 자연계열Ⅱ",
+      "mathQuestions": {
+        "afe3a716-f643-5571-9b12-0227d3bb0297": "d53201ae-6b98-56b1-b1b3-4227c2d66308",
+        "0496fa8f-cc1a-57a1-8daf-748e68c98f80": "65828b94-5168-5966-8ea4-470d06b93107",
+        "5536426a-fee4-5a28-b905-c7c169b7f7a0": "4bd75a66-e980-5de0-937a-87494c584bfe"
+      },
+      "mode": "math",
+      "packageDigest": "87305524d7b1f5f59bcb2024a73f8522563c1c14a69c4024c2cdd56804eb9b27",
+      "questionIds": [
+        "afe3a716-f643-5571-9b12-0227d3bb0297",
+        "0496fa8f-cc1a-57a1-8daf-748e68c98f80",
+        "5536426a-fee4-5a28-b905-c7c169b7f7a0"
+      ],
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95"
+    }
+  ]
+}

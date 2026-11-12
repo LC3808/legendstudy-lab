@@ -11,7 +11,7 @@ describe('Ewha official admission 21 exams / 63 questions',()=>{
   expect(scope.exams).toHaveLength(21);expect(scope.exams.flatMap(e=>e.questionIds)).toHaveLength(63);
   expect(scope.excludedMockExamIds).toHaveLength(8);expect(scope.excludedMockQuestionIds).toHaveLength(24);
   const university=sources.exams.filter(e=>e.sourceUniversityId==='ewha');
-  expect(university).toHaveLength(22);
+  expect(university).toHaveLength(29);
   for(const exam of scope.exams){
    const matches=university.filter(e=>e.dbExamId===exam.examId);expect(matches).toHaveLength(1);
    const source=matches[0];expect(source.universityId).toBe(scope.universityId);expect(source.kind).toBe('admission');expect(source.year).toBe(exam.year);expect(source.track).toBe(exam.track);
@@ -19,11 +19,11 @@ describe('Ewha official admission 21 exams / 63 questions',()=>{
    expect(source.questions.map(q=>q.inputMode)).toEqual(Array(3).fill(exam.mode==='math'?'image':'text'));
    expect(source.sourceHashes).toEqual([exam.problemSha256,exam.solutionSha256]);
   }
-  expect(university.filter(e=>e.kind==='mock')).toEqual(scope.preservedSourceMetadata);
+  for(const old of scope.preservedSourceMetadata){const current=university.find(e=>e.key===old.key)!;expect(current.sourceHashes).toEqual(old.sourceHashes);expect(current.questions.map(q=>q.key)).toEqual(old.questions.map(q=>q.key));}
   expect(scope.existingMockExamIds).toEqual(['c15360f1-571e-5fa4-8314-dde3022f9594']);
  });
  it('admits the exact Math 27 and Essay 36 through existing activation gates',()=>{
-  const candidates=betaExpansionCandidates.filter(e=>e.universityId===scope.universityId);
+  const candidates=betaExpansionCandidates.filter(e=>scope.exams.some(x=>x.examId===e.examId));
   expect(candidates).toHaveLength(21);expect(candidates.filter(e=>e.mode==='math').flatMap(e=>e.questionIds)).toHaveLength(27);expect(candidates.filter(e=>e.mode==='essay').flatMap(e=>e.questionIds)).toHaveLength(36);
   for(const exam of scope.exams){
    const entry=betaExpansionFor(origin,env,exam.examId)!;expect(entry).toBeDefined();expect(entry.questionIds).toEqual(exam.questionIds);expect(entry.mode).toBe(exam.mode);expect(entry.packageDigest).toMatch(/^[a-f0-9]{64}$/);
