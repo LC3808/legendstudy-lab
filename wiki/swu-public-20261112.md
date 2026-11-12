@@ -1,6 +1,6 @@
 # 서울여자대학교 자연계열 공개 연결 — 2026-11-12
 
-상태: 운영 적용 전 검증 완료. 최종 적용 결과는 후속 기록을 따른다.
+상태: **수리 1시험·3문항 PUBLISHED / 과학 6문항 NOT READY**. 아래 사전 검증과 최종 운영 결과를 구분한다.
 
 광운대 21시험·42문항 공개 완료, 신규 HOLD 0 및 기존 데이터·권한·Credit 보존을 Owner가 확인했다. 광운대는 DONE이다. 이번 서울여대 범위는 4시험·9문항 중 **2026 수리 1시험·3문항** 공개이며, **2023–2025 과학 3시험·6문항**은 NOT READY로 분리한다.
 
@@ -41,3 +41,28 @@
 7. 생성한 평가 기준이나 추정치를 공식 사실로 저장하지 않는다. 공식 근거와 연결 검증의 한계를 남긴다.
 
 문제 발생 시 새 WEB 공개 범위와 Math 3문항 허용 목록만 이전 상태로 돌린다. 공식 자료·사용자 답안·결과·Credit 이력은 보존한다. 함수·배포 지문이 달라지면 자동 원복을 중단한다. 기존 광운대 및 다른 대학 공개와 HOLD는 유지한다.
+
+## 최종 운영 결과 — 수리 3문항 PUBLISHED
+
+**2026-11-12T15:39:30.340185+09:00**, 2026학년도 수리 1시험·3문항 운영 연결·사용자 공개 완료. 서울여대 전체 4시험·9문항 중 과학 6문항은 NOT READY로 남는다.
+
+- Migration: `20261112063650_swu_3_math_public_release`. 신규 36행·12개 상태 연결, 기존 내부 함수 허용 목록 2개만 변경. 신규 RPC·목록 함수·Storage 정책 변경은 0건이다.
+- 사전 **119**, 적재 후 **121**, 활성화 **9** 검사 PASS. 적재 전후 20개 비교 항목 동일, 활성화 후 19개 불변 항목과 변경 함수 owner/ACL 보존을 확인했다.
+- 일반 계정 역할의 Math 목록은 382→385이며 기존 382문항이 동일하다. 신규 3문항의 Registry 매핑·평가 기준·Worker 공식 자료 및 기록 조회를 확인했다. 과학 6문항의 Registry·상태·Math/Worker 미연결은 그대로다.
+- 42개 대학 목록을 anon/authenticated 역할 각각에서 대조해 모두 동일했다. 기존 RLS 272개·권한·사용자 답안·평가·Credit 이력을 보존했다. 보안 advisor는 관측 시각만 제외한 전체 내용이 동일하며 신규 항목은 0건이다.
+- WEB 배포 `f77c44b8-1bd0-4d8c-84d2-8663f850efa2`, 소스 `ecd8200be89bf229ec5c5c55bd2fe14d840b1d82`. 기존 비논술 2,186자산, API 소스·라우팅·Secrets·Preview 설정을 보존했다. 실제 공개 API에서 대상 1시험·3문항을 확인했다.
+- 기존 승인 PDF 1파일을 그대로 사용했다. 다운로드 SHA·공식 Q1–Q3 지면·일반 계정 역할 읽기 권한 PASS. 새 파일 업로드는 0건이다.
+
+### 실제 UI와 검증 경계
+
+실제 비로그인 브라우저에서 자연계열 4회차와 2026 Q1·Q2·Q3의 정확한 Registry 및 사진·수식 답안 입력 영역을 확인했다. 2025 과학의 기존 등록 정보·텍스트 초안 영역도 남아 있으며, 이는 과학 첨삭 공개 완료를 뜻하지 않는다. 과학 3시험은 WEB 공개 첨삭 범위와 Math 허용 목록에서 제외돼 있다.
+
+브라우저 검증은 **PARTIAL**이다. 로그인 후 PDF 렌더링·실제 제출·결과·재작성·재첨삭과 iPhone/Android 실기기는 **NOT TESTED**다. 격리 Mock 계약 PASS를 실제 AI 품질 검수와 구분한다. Provider 호출과 운영 검수 답안 생성은 모두 0건이다.
+
+원복은 격리 검증 및 절차 준비 상태이며 실제 운영에서는 실행하지 않았다. APP 빌드·스토어 제출·릴리스 병합도 없다.
+
+[최종 영수증](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/swu_public_20261112/final-release.json) · [운영 보존 검증](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/swu_public_20261112/production-receipt.json) · [WEB 공개 결과](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/swu_public_20261112/web-production-receipt.json) · [원복 범위](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/swu_public_20261112/web-rollback.json).
+
+APP 사전 검증 Git: `0c48899`. 배포 WEB Git은 위 SHA다. 최종 Wiki·증빙 커밋은 이 문서를 포함한 커밋과 완료 보고의 HEAD를 참조한다.
+
+전체 자연·수리 확장은 [통합 공개 현황](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/wiki/essay-natural-publication-summary-20261112.md)과 [Owner 통합 검수 목록](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/wiki/essay-natural-owner-review-20261112.md)으로 인계한다.
