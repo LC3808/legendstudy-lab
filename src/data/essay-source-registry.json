@@ -6980,6 +6980,993 @@
         }
       ],
       "evaluationReady": false
+    },
+    {
+      "key": "source:75dc33f24063a437ea418641a1a8fd0fae8b20a247c1f1f4c086b800dcfd5408",
+      "dbExamId": "14dbab04-aff0-592d-9c6a-3de8b91b2161",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2021,
+      "kind": "admission",
+      "track": "인문계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "2b1eca967ca222ecc567d0bafab1537ec19727f584735a6d16da6816daafa5f8",
+        "3f81a073613966e8cedb6b8e7bd62a705b8028d8e4a565ab71c3b9dcdd5ae11d"
+      ],
+      "questions": [
+        {
+          "key": "source:75dc33f24063a437ea418641a1a8fd0fae8b20a247c1f1f4c086b800dcfd5408:1",
+          "dbQuestionId": "a3f81b77-66d3-5c8a-b1e3-467ef66f805d",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2021학년도 이화여대 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:75dc33f24063a437ea418641a1a8fd0fae8b20a247c1f1f4c086b800dcfd5408:2",
+          "dbQuestionId": "c270ac98-e714-5ad1-a1c4-ca4abad1e66f",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2021학년도 이화여대 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:75dc33f24063a437ea418641a1a8fd0fae8b20a247c1f1f4c086b800dcfd5408:3",
+          "dbQuestionId": "24247179-408e-5cc7-ba58-c2cc0da80ad6",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2021학년도 이화여대 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:287e98f62228505e6e3600676bca0c5c1bc5b509d56a0a86186e010865d273ce",
+      "dbExamId": "bceb58d6-b237-5b62-86a0-dd7bb7f248bb",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2021,
+      "kind": "admission",
+      "track": "인문계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "c7ad3a4da5ab95f21af36b4a19a4c1199df43728d94301fde85d064ea09cdac2",
+        "a358107fa0bd00ff0d8125a4d68c3fbdff5e2e89a05f622e9bd3f5a87c750a9f"
+      ],
+      "questions": [
+        {
+          "key": "source:287e98f62228505e6e3600676bca0c5c1bc5b509d56a0a86186e010865d273ce:1",
+          "dbQuestionId": "804a1395-aa4e-5e99-b063-41539b84816f",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2021학년도 이화여대 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:287e98f62228505e6e3600676bca0c5c1bc5b509d56a0a86186e010865d273ce:2",
+          "dbQuestionId": "45570974-3ed0-560f-90d9-457451aacef1",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2021학년도 이화여대 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:287e98f62228505e6e3600676bca0c5c1bc5b509d56a0a86186e010865d273ce:3",
+          "dbQuestionId": "dd6cfcdd-13f6-5be3-9f82-a1d0971757fb",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2021학년도 이화여대 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:be18acfda317d84b81197293ae010ae5d5d16dab23e61388704fa8dc13b87e43",
+      "dbExamId": "2d10f32f-4e2c-5889-9f4a-289bb6cecf29",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2021,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "104687f5018623d61db75e932f7c582f1fa873a361613e9eb8984021dff64522",
+        "742ebdcda290227af55211182fe55a74d06160a9f57d4be3496448c02b696e72"
+      ],
+      "questions": [
+        {
+          "key": "source:be18acfda317d84b81197293ae010ae5d5d16dab23e61388704fa8dc13b87e43:1",
+          "dbQuestionId": "33d29aa2-74e7-5371-aa07-3b37db2efe03",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2021학년도 이화여대 논술_자연계열 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:be18acfda317d84b81197293ae010ae5d5d16dab23e61388704fa8dc13b87e43:2",
+          "dbQuestionId": "8fbd492b-d987-5428-9746-b7a3220ae666",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2021학년도 이화여대 논술_자연계열 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:be18acfda317d84b81197293ae010ae5d5d16dab23e61388704fa8dc13b87e43:3",
+          "dbQuestionId": "137dd7ee-52c9-5397-86ef-1a425bb10068",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2021학년도 이화여대 논술_자연계열 문제.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:ed23828981c70282b69e8ed9fbe8f0d23bbfa525b759eef1046c31f7ee8f8c70",
+      "dbExamId": "643a3669-4a68-5440-aa7e-4eb96df875dd",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2022,
+      "kind": "admission",
+      "track": "인문계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "e5d614083b9005439e0d7dc8f83117b3f4064d2eca78b7b7d0ab825638848b88",
+        "bee82082dae473ec3e9a15923458217b81b7c6db734ee75ee8ed36e68818d175"
+      ],
+      "questions": [
+        {
+          "key": "source:ed23828981c70282b69e8ed9fbe8f0d23bbfa525b759eef1046c31f7ee8f8c70:1",
+          "dbQuestionId": "8bf983bc-161e-5c1f-9e04-d65fac976957",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2022학년도 이화여대 논술_인문계열1 문제.pdf PDF 2,3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:ed23828981c70282b69e8ed9fbe8f0d23bbfa525b759eef1046c31f7ee8f8c70:2",
+          "dbQuestionId": "5f1909eb-4ce9-529c-a313-858a6b950d40",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2022학년도 이화여대 논술_인문계열1 문제.pdf PDF 2,3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:ed23828981c70282b69e8ed9fbe8f0d23bbfa525b759eef1046c31f7ee8f8c70:3",
+          "dbQuestionId": "38f06e63-454b-5ba5-8b27-53aea0a5e743",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2022학년도 이화여대 논술_인문계열1 문제.pdf PDF 2,3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:600b49cc58f32ba380c949ad86af23a81c6461a0c5cb2de5e0bdeeb353ce3d6b",
+      "dbExamId": "dc67a4fe-3e62-5b89-bee1-fa6d1ea31591",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2022,
+      "kind": "admission",
+      "track": "인문계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "339b9ecf28064493aff99973ffea907fc4f09c406ff79777c157f7dcc1c39a1b",
+        "4e8b4b308c1cf8ef60a3f18e0f065b1266c0065e61511404dfc2d70d1d4a4ebb"
+      ],
+      "questions": [
+        {
+          "key": "source:600b49cc58f32ba380c949ad86af23a81c6461a0c5cb2de5e0bdeeb353ce3d6b:1",
+          "dbQuestionId": "20199b13-0f84-5577-9aeb-05a3570a665d",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2022학년도 이화여대 논술_인문계열2 문제.pdf PDF 2,3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:600b49cc58f32ba380c949ad86af23a81c6461a0c5cb2de5e0bdeeb353ce3d6b:2",
+          "dbQuestionId": "6e236ad7-9e3f-5fc2-ae27-d30c4e374aa6",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2022학년도 이화여대 논술_인문계열2 문제.pdf PDF 2,3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:600b49cc58f32ba380c949ad86af23a81c6461a0c5cb2de5e0bdeeb353ce3d6b:3",
+          "dbQuestionId": "c758ac5b-583b-53f4-bb4a-d2f97c20122a",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2022학년도 이화여대 논술_인문계열2 문제.pdf PDF 2,3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:908ef29647fa3f1b06dcc2161ec336731bfc774a9ec27c414405e8ce8a190655",
+      "dbExamId": "ec8491a2-b96d-5e0f-9e93-b63a95f9bf33",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2022,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "f32a5c8d98e646c63af03b7d9b31212bb330f216e9f429fd965f02aec3517649",
+        "9743449288d1dc8b898f9a10f63cf701d83570d8890a9c9ceaa572542e1f2fdd"
+      ],
+      "questions": [
+        {
+          "key": "source:908ef29647fa3f1b06dcc2161ec336731bfc774a9ec27c414405e8ce8a190655:1",
+          "dbQuestionId": "4175af50-4d8e-526a-a4a3-66d807db98d9",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2022학년도 이화여대 논술_자연계열 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:908ef29647fa3f1b06dcc2161ec336731bfc774a9ec27c414405e8ce8a190655:2",
+          "dbQuestionId": "5c033e24-26c6-569b-8b8b-ea32f2a9cb0a",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2022학년도 이화여대 논술_자연계열 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:908ef29647fa3f1b06dcc2161ec336731bfc774a9ec27c414405e8ce8a190655:3",
+          "dbQuestionId": "1a4cea43-493b-5283-819d-7392dc0c0641",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2022학년도 이화여대 논술_자연계열 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:90faee8e1680b114648315a26db8915b48bc3ccfcc2d5c955e4aba39ef7e7be7",
+      "dbExamId": "e57a30ce-2c9d-540b-83aa-8a6d4ee22526",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2023,
+      "kind": "admission",
+      "track": "인문계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "a05ee31e407504f6e308bdc0b736a24d71c8d99bc912392a9de3000f4b95928b",
+        "a90caafb5ede729d7b79bc62c9370fdd2270658d6d7982319855bc1956912bc5"
+      ],
+      "questions": [
+        {
+          "key": "source:90faee8e1680b114648315a26db8915b48bc3ccfcc2d5c955e4aba39ef7e7be7:1",
+          "dbQuestionId": "a77f8d3e-eba0-585f-95d0-cffd334d5e85",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2023학년도 이화여대 논술_인문계열1 문제.pdf PDF 3,4,5,6쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:90faee8e1680b114648315a26db8915b48bc3ccfcc2d5c955e4aba39ef7e7be7:2",
+          "dbQuestionId": "2328c990-17a8-5bba-a3f7-1cf76d39446e",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2023학년도 이화여대 논술_인문계열1 문제.pdf PDF 3,4,5,6쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:90faee8e1680b114648315a26db8915b48bc3ccfcc2d5c955e4aba39ef7e7be7:3",
+          "dbQuestionId": "032232ce-74fb-5341-b519-b855327e432c",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2023학년도 이화여대 논술_인문계열1 문제.pdf PDF 3,4,5,6쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:42b0646c25dfdee5db3b40d9206f75cfdca58753038d394410c1f05595957e4d",
+      "dbExamId": "6a83e460-dde4-587c-9a27-3ad84c005610",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2023,
+      "kind": "admission",
+      "track": "인문계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "91c3be977c7da371aad75ff98b3d781f3c136f7dd6e37c10a1ef6ba2fb309001",
+        "fe44fdf81802bb74ca997a0662c39c566e33832f4aa1dcca4a898c1c8e37069b"
+      ],
+      "questions": [
+        {
+          "key": "source:42b0646c25dfdee5db3b40d9206f75cfdca58753038d394410c1f05595957e4d:1",
+          "dbQuestionId": "b1ec0438-ff6c-5e04-a65b-7b028b26ecee",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2023학년도 이화여대 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:42b0646c25dfdee5db3b40d9206f75cfdca58753038d394410c1f05595957e4d:2",
+          "dbQuestionId": "14b4faa7-80c5-5cf3-9799-449fbd80eb31",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2023학년도 이화여대 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:42b0646c25dfdee5db3b40d9206f75cfdca58753038d394410c1f05595957e4d:3",
+          "dbQuestionId": "6f94fee9-1260-571c-8dfc-27475c55e763",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2023학년도 이화여대 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:35199d0e45ec263788973072f112df477ef27742868555eb5a099365eb0216a2",
+      "dbExamId": "b4c9f56b-556a-5a5a-932f-2f1933459e20",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2023,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "7090a647f86765f510064f4108854fb915ee24569f09591670f0dd31bfe43026",
+        "46b0da709224045798ba340e68e022050f98582f61f16ed68bf34aa6192c7e4b"
+      ],
+      "questions": [
+        {
+          "key": "source:35199d0e45ec263788973072f112df477ef27742868555eb5a099365eb0216a2:1",
+          "dbQuestionId": "68e70a3d-5489-5993-b04c-b0ff67ee1aae",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2023학년도 이화여대 논술_자연계열 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:35199d0e45ec263788973072f112df477ef27742868555eb5a099365eb0216a2:2",
+          "dbQuestionId": "fe653bd3-6766-5ed1-9775-66c1daeecc65",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2023학년도 이화여대 논술_자연계열 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:35199d0e45ec263788973072f112df477ef27742868555eb5a099365eb0216a2:3",
+          "dbQuestionId": "421c7697-8d23-569c-89f5-60998fa8c235",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2023학년도 이화여대 논술_자연계열 문제.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:c775069d719ea216d63a64a00c4d710bb6a54a4ae8906ecff88830c047d19f7a",
+      "dbExamId": "af986ccc-3580-541b-95fb-4a2cbb02ea1c",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2024,
+      "kind": "admission",
+      "track": "인문계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "0ae894a300d6331d1f349db967299e1e781a66b75a487caa5c01af4c1a722cd3",
+        "e954bb88f708880887ec7b94933e080a0e8d68e9948bce241d9d1873d15f844f"
+      ],
+      "questions": [
+        {
+          "key": "source:c775069d719ea216d63a64a00c4d710bb6a54a4ae8906ecff88830c047d19f7a:1",
+          "dbQuestionId": "ca2a5c2a-3c64-5628-adcb-7c03983c43fc",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:c775069d719ea216d63a64a00c4d710bb6a54a4ae8906ecff88830c047d19f7a:2",
+          "dbQuestionId": "b343806e-5923-5fe0-9dfc-8d4dce672a3d",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:c775069d719ea216d63a64a00c4d710bb6a54a4ae8906ecff88830c047d19f7a:3",
+          "dbQuestionId": "2bee8642-4c58-53e6-b7cc-b1567a845dab",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:b1025192bd6b20139e749a643ff8b1c70193d8a0f4576e6e15d9ca10d7705e0b",
+      "dbExamId": "c7eb6525-ab80-5013-bac5-5c0628567263",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2024,
+      "kind": "admission",
+      "track": "인문계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "b1ada3da85433375bac309a28d7286fc7552868da7b8a58726ee969415d6ed44",
+        "61aefe456e31e36debd90fd15b74cfe2125f05a6b3fc0670e19d9f5db9f1bdbc"
+      ],
+      "questions": [
+        {
+          "key": "source:b1025192bd6b20139e749a643ff8b1c70193d8a0f4576e6e15d9ca10d7705e0b:1",
+          "dbQuestionId": "fca48c2d-1331-5163-ac2b-5499a877e0b4",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:b1025192bd6b20139e749a643ff8b1c70193d8a0f4576e6e15d9ca10d7705e0b:2",
+          "dbQuestionId": "488a8a66-c6d9-517a-b412-42b4eeb9c726",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:b1025192bd6b20139e749a643ff8b1c70193d8a0f4576e6e15d9ca10d7705e0b:3",
+          "dbQuestionId": "b93285e4-42c9-559f-a396-020197e1225c",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:03ab856aac4c05b9e8563d63a0bc6219eee94979b4ad561366bb674dd57fc596",
+      "dbExamId": "81855888-e7f7-578d-93e5-f6e70e224dab",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2024,
+      "kind": "admission",
+      "track": "자연계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "1be81f39d2843be0a32b8bd4a611adc1d71469f062a29a9ef256881e760f2a93",
+        "2524f06fa41d9f0aaae9487aa9c5cc654eae29d228afd6888fb1a9a1de372e46"
+      ],
+      "questions": [
+        {
+          "key": "source:03ab856aac4c05b9e8563d63a0bc6219eee94979b4ad561366bb674dd57fc596:1",
+          "dbQuestionId": "b5f33551-2e8b-568f-a7ad-a136943b41a6",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_자연계열1 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:03ab856aac4c05b9e8563d63a0bc6219eee94979b4ad561366bb674dd57fc596:2",
+          "dbQuestionId": "057806e0-0466-552e-8119-471a4de1644e",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_자연계열1 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:03ab856aac4c05b9e8563d63a0bc6219eee94979b4ad561366bb674dd57fc596:3",
+          "dbQuestionId": "af38d7fa-00fe-5c01-b1c5-74735c5029fd",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_자연계열1 문제.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:0a8e8017bff52168c5a5938c01b9f0bbbe2dd2f3b8cc8bfc4e389372de38203d",
+      "dbExamId": "24391507-6a12-5e32-aa3f-337343ccb02e",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2024,
+      "kind": "admission",
+      "track": "자연계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "1f095178815c31bd71c72e1b5b80ca9066925dbaa301bbd277b8565a4c23e452",
+        "7113760f01605ed91ed2b671d81c48e796cc94684216e6b7371e22c6dc2c5e30"
+      ],
+      "questions": [
+        {
+          "key": "source:0a8e8017bff52168c5a5938c01b9f0bbbe2dd2f3b8cc8bfc4e389372de38203d:1",
+          "dbQuestionId": "1929c64c-945c-5f62-b75e-8582fc95f96d",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_자연계열2 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:0a8e8017bff52168c5a5938c01b9f0bbbe2dd2f3b8cc8bfc4e389372de38203d:2",
+          "dbQuestionId": "38d506c7-0940-5b3e-a7ba-a93347af4f55",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_자연계열2 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:0a8e8017bff52168c5a5938c01b9f0bbbe2dd2f3b8cc8bfc4e389372de38203d:3",
+          "dbQuestionId": "6ce80c40-bcdb-5a88-b82e-211c73f136f0",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2024학년도 이화여대 수시 논술_자연계열2 문제.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:ad8968bf7517e7d2d7b4e1583834a1e7006da546fec77335e72a7a175176c2e3",
+      "dbExamId": "c9eb2d4f-25c2-5bc0-a307-e324764286cd",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2025,
+      "kind": "admission",
+      "track": "인문계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "f38c1c87e9e53b8d69a859f18653d0e3ec1dae8cec307ed6831c482c8a3df7ae",
+        "0ec70589f4c0973635558bb3efe04b1551e25397e4265e33ffa860dd49f9e032"
+      ],
+      "questions": [
+        {
+          "key": "source:ad8968bf7517e7d2d7b4e1583834a1e7006da546fec77335e72a7a175176c2e3:1",
+          "dbQuestionId": "96037bbc-e01a-58b2-9d09-35a95463d824",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:ad8968bf7517e7d2d7b4e1583834a1e7006da546fec77335e72a7a175176c2e3:2",
+          "dbQuestionId": "1b147811-5ee1-500a-96a9-d4f0525dfc6e",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:ad8968bf7517e7d2d7b4e1583834a1e7006da546fec77335e72a7a175176c2e3:3",
+          "dbQuestionId": "681a08e4-3e69-50e3-9aea-cb5c8b597491",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:f4d16a3529b82cf70579351b35795d81b56c82e3f033c721867759eee2e5a65c",
+      "dbExamId": "99364190-42b9-5cd2-8ca8-22e9c430f238",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2025,
+      "kind": "admission",
+      "track": "인문계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "f974f09e265f0db415966e2993883ee8dc8b307ff38b2cdd9a190e73b6b40793",
+        "2083de85285a98340a2fe1a2b5aebd1a0e029aee208955d29f36130936a01d2b"
+      ],
+      "questions": [
+        {
+          "key": "source:f4d16a3529b82cf70579351b35795d81b56c82e3f033c721867759eee2e5a65c:1",
+          "dbQuestionId": "54f9083d-1011-518c-b05b-8ba354a2cbc7",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:f4d16a3529b82cf70579351b35795d81b56c82e3f033c721867759eee2e5a65c:2",
+          "dbQuestionId": "646595a0-cdda-533f-b71a-dfb2a6238698",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:f4d16a3529b82cf70579351b35795d81b56c82e3f033c721867759eee2e5a65c:3",
+          "dbQuestionId": "5f8ff271-a702-54cd-bcb0-c7a73b74e842",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:ad76cba6563ee0d9514a2aeb7b2fcbe5353894f2f63dad2633ce40479bb291f8",
+      "dbExamId": "445b836b-09f3-5e8e-b815-264295e04c72",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2025,
+      "kind": "admission",
+      "track": "자연계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "a053335bd059c25e0aea302b82c05cf14bbfb07bb571c234331fc42a7bca52c5",
+        "b9296bbf9fd5edc74fb7adc4bdcde9bd6bfb944d2521536189c0d07c6745adef"
+      ],
+      "questions": [
+        {
+          "key": "source:ad76cba6563ee0d9514a2aeb7b2fcbe5353894f2f63dad2633ce40479bb291f8:1",
+          "dbQuestionId": "f803c21c-fd99-583f-9352-4d46a7e28f5d",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_자연계열1 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:ad76cba6563ee0d9514a2aeb7b2fcbe5353894f2f63dad2633ce40479bb291f8:2",
+          "dbQuestionId": "0c6c120c-5c57-554e-9db0-e80c748f8606",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_자연계열1 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:ad76cba6563ee0d9514a2aeb7b2fcbe5353894f2f63dad2633ce40479bb291f8:3",
+          "dbQuestionId": "a89165b4-aab1-5872-b5c5-7f2d2a53ad6a",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_자연계열1 문제.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:79a3e6ec770b49bed6e5d137a150d3982c5573f1c280388e1ad7ef30d392db98",
+      "dbExamId": "905eeb7c-b915-5396-b381-ce13aa47a732",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2025,
+      "kind": "admission",
+      "track": "자연계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "334f4f6ef04704f6443fa7a017747607cce5fdff1b41ce10b432021338a0c8f8",
+        "0e7f9640c715cbb6558ac4a4eab1c2b7d30a648a0b94ca31cb21923adb6acd1e"
+      ],
+      "questions": [
+        {
+          "key": "source:79a3e6ec770b49bed6e5d137a150d3982c5573f1c280388e1ad7ef30d392db98:1",
+          "dbQuestionId": "bfc65baf-c043-5c83-895a-45abc7ba75ec",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_자연계열2 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:79a3e6ec770b49bed6e5d137a150d3982c5573f1c280388e1ad7ef30d392db98:2",
+          "dbQuestionId": "f4c37039-c04c-5668-942d-f7f2e799ffe0",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_자연계열2 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:79a3e6ec770b49bed6e5d137a150d3982c5573f1c280388e1ad7ef30d392db98:3",
+          "dbQuestionId": "39b695a0-d710-58a3-9dc0-e56d56f80a90",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2025학년도 이화여대 수시 논술_자연계열2 문제.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:03f1b9a5afba2582f7f11b792d828e62ab2c7388b9653a5c2e05909d9d63e63a",
+      "dbExamId": "9d291a8c-c5fb-5abf-961f-3081b052509e",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2026,
+      "kind": "admission",
+      "track": "인문계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "aae4f0ab38da6e1808154014e084d683980702887d663c0b9ee4076e974de3d9",
+        "a538b88a603d44b9401c12e1db5a614a3d24dd0ee12089247c595853848ce141"
+      ],
+      "questions": [
+        {
+          "key": "source:03f1b9a5afba2582f7f11b792d828e62ab2c7388b9653a5c2e05909d9d63e63a:1",
+          "dbQuestionId": "01548f9f-ba89-5d45-a299-4b3d57deda05",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:03f1b9a5afba2582f7f11b792d828e62ab2c7388b9653a5c2e05909d9d63e63a:2",
+          "dbQuestionId": "c37f722a-6a22-5530-9645-8fb9d72e95c0",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:03f1b9a5afba2582f7f11b792d828e62ab2c7388b9653a5c2e05909d9d63e63a:3",
+          "dbQuestionId": "9fa84b5c-2e42-5155-9c48-8e22eae75d0a",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_인문계열1 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:80c0fd290932ba72f0cb74570bd2adf2093fb3a840e5a1224817f75d097b63f1",
+      "dbExamId": "1ca30c16-af49-5310-b95c-2513d847b362",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2026,
+      "kind": "admission",
+      "track": "인문계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "eef683099cafa3d1ca8a4de16cfad5bbd1ad66eacbcc905bfdff7e140f43ca59",
+        "25ffcd727f6fec06fe4aa31f86e250fc09572b605fd45933fa51dae0c9494f1c"
+      ],
+      "questions": [
+        {
+          "key": "source:80c0fd290932ba72f0cb74570bd2adf2093fb3a840e5a1224817f75d097b63f1:1",
+          "dbQuestionId": "decaa8e0-c1e0-5b36-85eb-cec132afa146",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:80c0fd290932ba72f0cb74570bd2adf2093fb3a840e5a1224817f75d097b63f1:2",
+          "dbQuestionId": "2a5528b9-c958-5709-9121-8af06cdf7c03",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:80c0fd290932ba72f0cb74570bd2adf2093fb3a840e5a1224817f75d097b63f1:3",
+          "dbQuestionId": "479f196f-f20b-57ff-972e-bded92c84be0",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_인문계열2 문제.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "text",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:e8fa283853c1f36d8c759b4693370f350b577f4c0ac9f99a727b954c094211cf",
+      "dbExamId": "28d0625d-312c-52eb-b162-057569b9b783",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2026,
+      "kind": "admission",
+      "track": "자연계열Ⅰ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "1b4a08e94c7b14042382f4a594c98b10bc7d86bf19f9787bb030e61833a4fb51",
+        "a35deed47305bae7b32326a7aed2285e69e18da4c09cc86e419a70ef3ddcc7de"
+      ],
+      "questions": [
+        {
+          "key": "source:e8fa283853c1f36d8c759b4693370f350b577f4c0ac9f99a727b954c094211cf:1",
+          "dbQuestionId": "91b2e60e-6083-56a9-8b2a-54484ae7c3ca",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_자연계열1 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:e8fa283853c1f36d8c759b4693370f350b577f4c0ac9f99a727b954c094211cf:2",
+          "dbQuestionId": "5a744ec3-db17-5fa1-af37-781943d80dfc",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_자연계열1 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:e8fa283853c1f36d8c759b4693370f350b577f4c0ac9f99a727b954c094211cf:3",
+          "dbQuestionId": "37900fcd-70a5-5f68-ba4e-9bee0f475494",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_자연계열1 문제.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:46946372e4c5fd24f364909e138f3e54307c66378ad9c4475d07d0f284226d97",
+      "dbExamId": "9b828531-7201-582e-98f7-23df50f412d9",
+      "universityId": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
+      "sourceUniversityId": "ewha",
+      "year": 2026,
+      "kind": "admission",
+      "track": "자연계열Ⅱ",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "2da18389ca27eae1b040eab013c055042f846380181283b54cd8e0ce6a0326c6",
+        "d511741d3889474cc80af421bef8b91c76aefc752c7953bc696d97957a7b1e73"
+      ],
+      "questions": [
+        {
+          "key": "source:46946372e4c5fd24f364909e138f3e54307c66378ad9c4475d07d0f284226d97:1",
+          "dbQuestionId": "b62baf8d-067d-5729-8c47-4ed5622f69d5",
+          "label": "문제 1",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_자연계열2 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:46946372e4c5fd24f364909e138f3e54307c66378ad9c4475d07d0f284226d97:2",
+          "dbQuestionId": "11b661bf-677c-5b08-802f-91658c0987ac",
+          "label": "문제 2",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_자연계열2 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:46946372e4c5fd24f364909e138f3e54307c66378ad9c4475d07d0f284226d97:3",
+          "dbQuestionId": "7a284ad9-ad2b-5a52-b2e4-3233dbb9fb20",
+          "label": "문제 3",
+          "sourceLocator": "이화여대/2026학년도 이화여대 수시 논술_자연계열2 문제.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
     }
   ]
 }
