@@ -4580,6 +4580,276 @@
           "accountDraftReady": false
         }
       ]
+    },
+    {
+      "key": "source:sogang-2023-mock-natural-2",
+      "dbExamId": "1f52095a-2950-5e59-8302-9801c111dac2",
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "sourceUniversityId": "sogang",
+      "year": 2023,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": "2차",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "26d395f0f0b4d952c06ec96208e82b5888ee6226da31dea9926c4ea922d43aaf"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sogang-2023-mock-natural-2:q1",
+          "dbQuestionId": "38855473-99d1-5b4d-8dd1-3af5c22b2102",
+          "label": "문제 1",
+          "sourceLocator": "2023학년도 서강대 모의논술2차_자연계열 문제,예시답안.pdf PDF 3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sogang-2026-admission-sg06",
+      "dbExamId": "237f04f0-00d2-5cc5-ad60-f319abaafe22",
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "sourceUniversityId": "sogang",
+      "year": 2026,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "1차",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "c5679055cc96c58e4a8655ee72f5c77ba8b6a6100a1a51f4021de2af67fc3dc9"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sogang-2026-admission-sg06:q1",
+          "dbQuestionId": "b16130e9-da51-5356-83d3-7ad3719c3a37",
+          "label": "문제 1",
+          "sourceLocator": "2026학년도 서강대 수시 논술_자연1 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sogang-2026-admission-sg06:q2",
+          "dbQuestionId": "c1d581a5-d7d4-5414-8f14-47d6452d6712",
+          "label": "문제 2",
+          "sourceLocator": "2026학년도 서강대 수시 논술_자연1 문제,해설,답안.pdf PDF 7쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sogang-2025-mock-natural-1",
+      "dbExamId": "24af7fab-5708-59b6-bf61-aaad03e99d37",
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "sourceUniversityId": "sogang",
+      "year": 2025,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": "1차",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "e0ac24d4e473422d738ac193085aed534bde8761f0e308b649badaa1d3d36f0a"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sogang-2025-mock-natural-1:q1",
+          "dbQuestionId": "3b96a9ab-3629-5e4d-bec3-475928fa4a74",
+          "label": "문제 1",
+          "sourceLocator": "2025학년도 서강대 모의논술_자연계열 문제,답안.pdf PDF 3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sogang-2027-mock-sg10",
+      "dbExamId": "6dbdaf3c-0188-56e7-9507-d828e8803ac9",
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "sourceUniversityId": "sogang",
+      "year": 2027,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "a9b911fa8466eac69ce5888126ccf07786427d29fe8361cd13acad19295339e8"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sogang-2027-mock-sg10:q1",
+          "dbQuestionId": "885fffa4-6922-5326-98fd-f0fb455c3dd9",
+          "label": "문제 1",
+          "sourceLocator": "2027학년도 서강대 모의논술_자연계 문제,해설,답안.pdf PDF 3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sogang-2024-mock-natural-1",
+      "dbExamId": "71833056-873e-5bc3-8238-2f32792776ef",
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "sourceUniversityId": "sogang",
+      "year": 2024,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": "1차",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "6d2a730e7332e59e08591fb777d531bcae5faae2535536f43655901f80cd1234"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sogang-2024-mock-natural-1:q1",
+          "dbQuestionId": "e24c5c6c-c0ad-5723-a15c-61f5b2322044",
+          "label": "문제 1",
+          "sourceLocator": "2024학년도 서강대 모의논술1차_자연계열 문제,예시답안.pdf PDF 3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sogang-2025-mock-natural-2",
+      "dbExamId": "b271fd77-2fdd-5aab-b654-6e6d309ba8a2",
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "sourceUniversityId": "sogang",
+      "year": 2025,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": "2차",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "b5097deb1ea87ab28f673c94b6c4e4e0b371b94239264bae783d607b49ed83a1"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sogang-2025-mock-natural-2:q1",
+          "dbQuestionId": "d74b47b8-87a1-587b-ae7d-623d08ccdb08",
+          "label": "문제 1",
+          "sourceLocator": "2025학년도 서강대 모의논술2차_자연계열 문제, 답안.pdf PDF 3,4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sogang-2026-admission-sg07",
+      "dbExamId": "e08ff787-f4d4-5da9-8922-d78d2c45f443",
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "sourceUniversityId": "sogang",
+      "year": 2026,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "2차",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "8aeef5e82c2520b9060dae037c5eb8a24fecb9893b392a99eab7c56c2c93fce8"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sogang-2026-admission-sg07:q1",
+          "dbQuestionId": "d79c31c0-4d95-54df-87bf-132082d25ea7",
+          "label": "문제 1",
+          "sourceLocator": "2026학년도 서강대 수시 논술_자연2 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sogang-2026-admission-sg07:q2",
+          "dbQuestionId": "cf5f3f9a-66e1-5e52-881a-6dad8ed84eb8",
+          "label": "문제 2",
+          "sourceLocator": "2026학년도 서강대 수시 논술_자연2 문제,해설,답안.pdf PDF 6,7쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sogang-2023-mock-natural-1",
+      "dbExamId": "e57cfa3e-072a-5c64-ac14-e3b0118d4e7c",
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "sourceUniversityId": "sogang",
+      "year": 2023,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": "1차",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "a4ce1a7b724b0302a68e4e31ef2b43ed5bcaae9ff86f117db2c972e8e9800e46"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sogang-2023-mock-natural-1:q1",
+          "dbQuestionId": "fa0bd742-0c3c-5981-8525-e19976f67f7b",
+          "label": "문제 1",
+          "sourceLocator": "2023학년도 서강대 모의논술1차_자연계열 문제,예시답안.pdf PDF 3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sogang-2026-mock-sg03",
+      "dbExamId": "e7f8e4a3-5bdd-546a-b703-9cd274f581c1",
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
+      "sourceUniversityId": "sogang",
+      "year": 2026,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": "1차",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "856c19d7353082742b10245ae1c3230d352cc6fdb97df846864f0ba5b5c5945e"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sogang-2026-mock-sg03:q1",
+          "dbQuestionId": "d36e5405-2436-5f9c-a734-bceb1d3b188c",
+          "label": "문제 1",
+          "sourceLocator": "2026학년도 서강대 모의논술_자연계 문제,해설,답안.pdf PDF 3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
     }
   ]
 }

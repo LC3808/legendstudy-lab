@@ -1,0 +1,134 @@
+{
+  "exams": [
+    {
+      "completeExam": true,
+      "examId": "1f52095a-2950-5e59-8302-9801c111dac2",
+      "label": "서강대학교 2023 자연계열",
+      "mathQuestions": {
+        "38855473-99d1-5b4d-8dd1-3af5c22b2102": "6e31140f-d119-5ca5-961e-6b9874024153"
+      },
+      "mode": "math",
+      "packageDigest": "cd32a8346ec284d12bf803d7059bc8e53e68fab3bf7520f6764def8d29dcb504",
+      "questionIds": [
+        "38855473-99d1-5b4d-8dd1-3af5c22b2102"
+      ],
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada"
+    },
+    {
+      "completeExam": true,
+      "examId": "237f04f0-00d2-5cc5-ad60-f319abaafe22",
+      "label": "서강대학교 2026 자연계열",
+      "mathQuestions": {
+        "b16130e9-da51-5356-83d3-7ad3719c3a37": "01bb740b-4516-5483-9925-db4dd6dd2876",
+        "c1d581a5-d7d4-5414-8f14-47d6452d6712": "64b83a5a-f526-5640-b535-33131e774502"
+      },
+      "mode": "math",
+      "packageDigest": "a46ef01516358893b49dce1b325a397cb5d40948420a5447e5b8ddc1775df062",
+      "questionIds": [
+        "b16130e9-da51-5356-83d3-7ad3719c3a37",
+        "c1d581a5-d7d4-5414-8f14-47d6452d6712"
+      ],
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada"
+    },
+    {
+      "completeExam": true,
+      "examId": "24af7fab-5708-59b6-bf61-aaad03e99d37",
+      "label": "서강대학교 2025 자연계열",
+      "mathQuestions": {
+        "3b96a9ab-3629-5e4d-bec3-475928fa4a74": "04f642a7-2ad4-5790-a817-098a3c4fe5b5"
+      },
+      "mode": "math",
+      "packageDigest": "ce81a7e4811e5537674304aef73acf7df790c4657e4d0380e82f9c65a953e0b4",
+      "questionIds": [
+        "3b96a9ab-3629-5e4d-bec3-475928fa4a74"
+      ],
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada"
+    },
+    {
+      "completeExam": true,
+      "examId": "6dbdaf3c-0188-56e7-9507-d828e8803ac9",
+      "label": "서강대학교 2027 자연계열",
+      "mathQuestions": {
+        "885fffa4-6922-5326-98fd-f0fb455c3dd9": "ad3894b0-f8d8-527e-8277-eca2465698dd"
+      },
+      "mode": "math",
+      "packageDigest": "b2ef2e2cd2cafc56e0a57a06a9a4b6c3574ea5f4c1acc3d369a3f8fa2f985a81",
+      "questionIds": [
+        "885fffa4-6922-5326-98fd-f0fb455c3dd9"
+      ],
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada"
+    },
+    {
+      "completeExam": true,
+      "examId": "71833056-873e-5bc3-8238-2f32792776ef",
+      "label": "서강대학교 2024 자연계열",
+      "mathQuestions": {
+        "e24c5c6c-c0ad-5723-a15c-61f5b2322044": "5094b23a-822c-5703-a2d1-c530c87c0017"
+      },
+      "mode": "math",
+      "packageDigest": "278c71e0617df502bc8496975f8f48ba5c9d0b9d78303b635bbe124f49dfe02f",
+      "questionIds": [
+        "e24c5c6c-c0ad-5723-a15c-61f5b2322044"
+      ],
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada"
+    },
+    {
+      "completeExam": true,
+      "examId": "b271fd77-2fdd-5aab-b654-6e6d309ba8a2",
+      "label": "서강대학교 2025 자연계열",
+      "mathQuestions": {
+        "d74b47b8-87a1-587b-ae7d-623d08ccdb08": "60702f3d-7e62-5e12-ad76-f25cceb5a402"
+      },
+      "mode": "math",
+      "packageDigest": "c74cd24d8afe4b5559eaae91a1034f466eabecb1fc0da36f7114a5cbaa77631e",
+      "questionIds": [
+        "d74b47b8-87a1-587b-ae7d-623d08ccdb08"
+      ],
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada"
+    },
+    {
+      "completeExam": true,
+      "examId": "e08ff787-f4d4-5da9-8922-d78d2c45f443",
+      "label": "서강대학교 2026 자연계열",
+      "mathQuestions": {
+        "cf5f3f9a-66e1-5e52-881a-6dad8ed84eb8": "94b0bbe1-49ce-5714-9129-4c484c11b985",
+        "d79c31c0-4d95-54df-87bf-132082d25ea7": "d67124eb-9f3f-5b52-8764-0467e854ea4a"
+      },
+      "mode": "math",
+      "packageDigest": "3d2e2ab562ce3f3afc395fa2c7c84f70464f68b3482e460e186c0a9b703b69b4",
+      "questionIds": [
+        "d79c31c0-4d95-54df-87bf-132082d25ea7",
+        "cf5f3f9a-66e1-5e52-881a-6dad8ed84eb8"
+      ],
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada"
+    },
+    {
+      "completeExam": true,
+      "examId": "e57cfa3e-072a-5c64-ac14-e3b0118d4e7c",
+      "label": "서강대학교 2023 자연계열",
+      "mathQuestions": {
+        "fa0bd742-0c3c-5981-8525-e19976f67f7b": "87a6a1ad-9f1e-56d3-82b8-a74023d7f854"
+      },
+      "mode": "math",
+      "packageDigest": "f5036bf4c89573e4c63ea8c1bbc70655699b8a2600267bd87ccbefe844b97dc4",
+      "questionIds": [
+        "fa0bd742-0c3c-5981-8525-e19976f67f7b"
+      ],
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada"
+    },
+    {
+      "completeExam": true,
+      "examId": "e7f8e4a3-5bdd-546a-b703-9cd274f581c1",
+      "label": "서강대학교 2026 자연계열",
+      "mathQuestions": {
+        "d36e5405-2436-5f9c-a734-bceb1d3b188c": "f1b9d9cf-8240-5c40-af25-745394268d82"
+      },
+      "mode": "math",
+      "packageDigest": "2986f30b81c9c19a6bd9796c70852f8030b1d9bf3737b4cade04ea8e31d74d0b",
+      "questionIds": [
+        "d36e5405-2436-5f9c-a734-bceb1d3b188c"
+      ],
+      "universityId": "816c1cb8-b54d-4f05-ae64-e82abfec0ada"
+    }
+  ]
+}

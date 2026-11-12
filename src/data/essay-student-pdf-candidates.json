@@ -3022,24 +3022,24 @@
       "storageRead": "APPROVED"
     },
     {
+      "assetId": "2bbadaf676cb022a98e4b81ea527332940b7862a95d95c38ff392c665ef8bc5a",
       "examId": "e08ff787-f4d4-5da9-8922-d78d2c45f443",
+      "pageCount": 4,
       "questionId": "d79c31c0-4d95-54df-87bf-132082d25ea7",
-      "assetId": "da2dabb259b03f409743ff6a9bd6dfc4dc190f58d57759895027c87c7f5c21dd",
-      "pageCount": 3,
       "startPage": 1,
-      "verification": "VERIFIED",
+      "storageRead": "APPROVED",
       "studentDisplay": "APPROVED",
-      "storageRead": "APPROVED"
+      "verification": "VERIFIED"
     },
     {
+      "assetId": "2bbadaf676cb022a98e4b81ea527332940b7862a95d95c38ff392c665ef8bc5a",
       "examId": "e08ff787-f4d4-5da9-8922-d78d2c45f443",
+      "pageCount": 4,
       "questionId": "cf5f3f9a-66e1-5e52-881a-6dad8ed84eb8",
-      "assetId": "da2dabb259b03f409743ff6a9bd6dfc4dc190f58d57759895027c87c7f5c21dd",
-      "pageCount": 3,
       "startPage": 3,
-      "verification": "VERIFIED",
+      "storageRead": "APPROVED",
       "studentDisplay": "APPROVED",
-      "storageRead": "APPROVED"
+      "verification": "VERIFIED"
     },
     {
       "examId": "6dbdaf3c-0188-56e7-9507-d828e8803ac9",
