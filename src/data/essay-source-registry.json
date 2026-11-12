@@ -5126,6 +5126,722 @@
           "accountDraftReady": false
         }
       ]
+    },
+    {
+      "key": "source:sookmyung-2026-mock-pharmacy-single",
+      "dbExamId": "11ac8d4a-c8e4-5184-ac2a-8d622722cdcf",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2026,
+      "kind": "mock",
+      "track": "자연계열(약학부)",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "8ae2b2b03c2dbf28b7d34256f37e168d0452257e2a9f4023fc4c4beadd1f37cb",
+        "ad8675b7d9c80ec8936db307b902d88548105116c69c5472d204f383e9a1e977"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2026-mock-pharmacy-single:q1",
+          "dbQuestionId": "56206981-3f89-5739-a3bb-ee3e6a6248e1",
+          "label": "문항 1",
+          "sourceLocator": "2026학년도 숙명여대 모의논술_약학부 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2026-mock-pharmacy-single:q2",
+          "dbQuestionId": "3776f1e9-7286-5995-be20-225ad60fdbf3",
+          "label": "문항 2",
+          "sourceLocator": "2026학년도 숙명여대 모의논술_약학부 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2026-mock-pharmacy-single:q3",
+          "dbQuestionId": "9eb9138b-980c-5f92-8142-e3010c1adfd0",
+          "label": "문항 3",
+          "sourceLocator": "2026학년도 숙명여대 모의논술_약학부 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2021-mock-natural-single",
+      "dbExamId": "39493cde-f3ca-558d-9aab-7d3c5d7b871a",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2021,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "07d429aedc0f6cf7a25d1ace966cc5154e42e1d13ae07a0af6921374ace3fc33",
+        "29638b6b163d93581cf2113f5a9c869b43482074e4c13af71da60ff286158ef2"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2021-mock-natural-single:q1",
+          "dbQuestionId": "27cb0371-2c9f-5c35-a207-a7762d8d93d5",
+          "label": "문항 1",
+          "sourceLocator": "2021학년도 숙명여대 모의논술_자연계 문제.pdf PDF 1,2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2022-admission-natural-single",
+      "dbExamId": "3ebbbb28-afad-514d-a294-a50fabbdd917",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2022,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "2f5a198b552b63114c4de05b50241eaa34e40ba1b3dad15385020bf8d07726ca",
+        "6ea4dffd625f2d107ec48c6c0748b8bba9e170456203a16768ce4a3497604b71"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2022-admission-natural-single:q1",
+          "dbQuestionId": "b944a252-a747-5048-a19a-308cfc2e5c30",
+          "label": "문항 1",
+          "sourceLocator": "2022학년도 숙명여대 논술_자연계 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2022-admission-natural-single:q2",
+          "dbQuestionId": "a7763fd9-db6e-5541-adc5-59bf3b45d38c",
+          "label": "문항 2",
+          "sourceLocator": "2022학년도 숙명여대 논술_자연계 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2022-admission-natural-single:q3",
+          "dbQuestionId": "271aea88-776b-5cc2-9e35-95bf38047fb8",
+          "label": "문항 3",
+          "sourceLocator": "2022학년도 숙명여대 논술_자연계 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2025-mock-pharmacy-single",
+      "dbExamId": "4835da12-452e-57c3-b134-9dbea8f821bb",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2025,
+      "kind": "mock",
+      "track": "자연계열(약학부)",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "b9d93ed6501756bef3417151880ea4a6e245c0a5337c7381e6fbde5b5744d045",
+        "dd770c3252ddd4ed410a7cd9f7a363363daf518b8e17815632ed844d508dc8a0"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2025-mock-pharmacy-single:q1",
+          "dbQuestionId": "1e8b4d61-0a53-59ae-a7b2-c387cc5676ea",
+          "label": "문항 1",
+          "sourceLocator": "2025학년도 숙명여대 모의논술_약학부 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2025-mock-pharmacy-single:q2",
+          "dbQuestionId": "173f1ee4-18e1-5b97-9974-888925c91e4b",
+          "label": "문항 2",
+          "sourceLocator": "2025학년도 숙명여대 모의논술_약학부 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2025-mock-pharmacy-single:q3",
+          "dbQuestionId": "48c5d506-38a1-5c26-9590-16d82c8e297e",
+          "label": "문항 3",
+          "sourceLocator": "2025학년도 숙명여대 모의논술_약학부 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2023-mock-natural-single",
+      "dbExamId": "4c582db3-d518-57f9-b3b1-56c257aca2e5",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2023,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "28c06f68852bf22a169f1263da48d1b8f03dac81baada27158ba53daffb6f119",
+        "6660841dad5db7a4c88794c7f4c00f864c8f420ca5095955356006d793865b26"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2023-mock-natural-single:q1",
+          "dbQuestionId": "8746b128-64ef-5656-935b-29b6a7b4ed03",
+          "label": "문항 1",
+          "sourceLocator": "2023학년도 숙명여대 모의논술_자연계열 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2023-mock-natural-single:q2",
+          "dbQuestionId": "c656f4b4-c255-56fc-936c-89e4ab2b18a9",
+          "label": "문항 2",
+          "sourceLocator": "2023학년도 숙명여대 모의논술_자연계열 문제.pdf PDF 2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2023-mock-natural-single:q3",
+          "dbQuestionId": "523b6663-f918-5c29-aa6e-14e3e296b198",
+          "label": "문항 3",
+          "sourceLocator": "2023학년도 숙명여대 모의논술_자연계열 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2024-admission-natural-single",
+      "dbExamId": "4eb4266c-f109-540a-880b-4044730b4474",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2024,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "88f5a00e35239dac3e72e15304e9afd12c5eca21d19a9f7c6f8f8f830d289a53",
+        "cb318f1068c7e4481e218247cae6a79f9064e40328caf9b5861becc85aa0fcf8"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2024-admission-natural-single:q1",
+          "dbQuestionId": "6fb0c914-efe2-57b2-bb8f-eddee79ea858",
+          "label": "문항 1",
+          "sourceLocator": "2024학년도 숙명여대 수시 논술_자연 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2024-admission-natural-single:q2",
+          "dbQuestionId": "342f6175-9755-5b85-b5f3-915b5a1f0880",
+          "label": "문항 2",
+          "sourceLocator": "2024학년도 숙명여대 수시 논술_자연 문제.pdf PDF 2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2024-admission-natural-single:q3",
+          "dbQuestionId": "0b6409e5-0456-5965-b3ae-840d37c59b52",
+          "label": "문항 3",
+          "sourceLocator": "2024학년도 숙명여대 수시 논술_자연 문제.pdf PDF 4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2022-mock-natural-single",
+      "dbExamId": "55b45df4-d873-5c4b-9dcb-6741c0197298",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2022,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "745087d65a4d7e6ca9e61dc703512e3ff60395b9d4c166a8b0e75e026155fa99",
+        "ea2b063f17e6fb46928caf42b03577a8845422e88640c41f9f35a735eac46f45"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2022-mock-natural-single:q1",
+          "dbQuestionId": "285a4076-66e1-579e-90c1-39fdcbc55571",
+          "label": "문항 1",
+          "sourceLocator": "2022학년도 숙명여대 모의논술_자연계 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2022-mock-natural-single:q2",
+          "dbQuestionId": "0bb0e263-5de8-50ee-b61f-32668b504e47",
+          "label": "문항 2",
+          "sourceLocator": "2022학년도 숙명여대 모의논술_자연계 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2022-mock-natural-single:q3",
+          "dbQuestionId": "dd5889bb-a785-5039-b511-e81e041da071",
+          "label": "문항 3",
+          "sourceLocator": "2022학년도 숙명여대 모의논술_자연계 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2025-admission-pharmacy-single",
+      "dbExamId": "6aa5f389-5cf0-5a35-84e7-ba74bb13557f",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2025,
+      "kind": "admission",
+      "track": "자연계열(약학부)",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "7e5dab3941a465c168abc5130fd2e150dcb8d3a21f64cd0621864ea6018a8a17",
+        "f344dd96408f9ae7eb41f84f29954773db08ca30f1eef0776b4e4dea5c624d38"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2025-admission-pharmacy-single:q1",
+          "dbQuestionId": "32b555e0-c382-5e37-ae36-89776d945d3b",
+          "label": "문항 1",
+          "sourceLocator": "2025학년도 숙명여대 수시 논술_약학부 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2025-admission-pharmacy-single:q2",
+          "dbQuestionId": "ac4280ba-0b6b-5546-8a58-a696e6bf53a8",
+          "label": "문항 2",
+          "sourceLocator": "2025학년도 숙명여대 수시 논술_약학부 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2025-admission-pharmacy-single:q3",
+          "dbQuestionId": "ace8ee6a-8b7e-526f-884a-18ae936b0fe7",
+          "label": "문항 3",
+          "sourceLocator": "2025학년도 숙명여대 수시 논술_약학부 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2024-mock-natural-single",
+      "dbExamId": "6bc75b10-b63f-52cd-b74f-44ddacfb90e9",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2024,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "092b799aa1a0db32cd903d9e3a24b2c8045021897bedaca75d923287a58b0bf4",
+        "bab12a1c74dcc9955090f6a74ee45215f6895ba251eb9d5cba62ea8e5d7fc5bf"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2024-mock-natural-single:q1",
+          "dbQuestionId": "160867f9-bd9d-511b-b9f1-68e387ae8df3",
+          "label": "문항 1",
+          "sourceLocator": "2024학년도 숙명여대 모의논술_자연 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2024-mock-natural-single:q2",
+          "dbQuestionId": "fee14e99-2500-56d2-91b9-66341935a4a4",
+          "label": "문항 2",
+          "sourceLocator": "2024학년도 숙명여대 모의논술_자연 문제.pdf PDF 2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2024-mock-natural-single:q3",
+          "dbQuestionId": "bc37bc35-afbc-57a2-9a78-c34363b8d3ef",
+          "label": "문항 3",
+          "sourceLocator": "2024학년도 숙명여대 모의논술_자연 문제.pdf PDF 4,5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2026-mock-natural-single",
+      "dbExamId": "6be424d3-ffc6-56ed-bab5-5d86416d142e",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2026,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "eb7bad2e96a6185c6c858fadcd40ff54c76338e67b0a6139d4ab96c20ca70471",
+        "fac85fe0f0e77e1b9d09cf1f34781f44407e1fb5d2a9db33ea0a52861a3e436b"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2026-mock-natural-single:q1",
+          "dbQuestionId": "24b846d7-6e1f-5a9c-ac08-0cfb1d2058e3",
+          "label": "문항 1",
+          "sourceLocator": "2026학년도 숙명여대 모의논술_자연 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2026-mock-natural-single:q2",
+          "dbQuestionId": "1c279c86-167b-5873-a2ef-01efe77ac82d",
+          "label": "문항 2",
+          "sourceLocator": "2026학년도 숙명여대 모의논술_자연 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2026-mock-natural-single:q3",
+          "dbQuestionId": "b30e117f-6240-54a1-98ab-ab392e36f239",
+          "label": "문항 3",
+          "sourceLocator": "2026학년도 숙명여대 모의논술_자연 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2023-admission-natural-single",
+      "dbExamId": "6db119ec-58bd-5d5c-83ab-af33d192ffcc",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2023,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "bae94c24a888f10957534ac7f324454f5f9e0c9fef4b52bc5646f6e077ba8ddd",
+        "cdce504e68696d2da94f5fe59a35628f15b8c0abfb52a2b99ed20b7de09cbfc5"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2023-admission-natural-single:q1",
+          "dbQuestionId": "3d5b560d-3c20-59ec-b669-51d5e9a10e1f",
+          "label": "문항 1",
+          "sourceLocator": "2023학년도 숙명여대 논술_자연계 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2023-admission-natural-single:q2",
+          "dbQuestionId": "83c71d35-af92-5333-a82b-a703e87f8df7",
+          "label": "문항 2",
+          "sourceLocator": "2023학년도 숙명여대 논술_자연계 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2023-admission-natural-single:q3",
+          "dbQuestionId": "91c8ef90-168a-5505-936d-3939b9c88683",
+          "label": "문항 3",
+          "sourceLocator": "2023학년도 숙명여대 논술_자연계 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2027-mock-sm15",
+      "dbExamId": "7528297c-65f6-556d-9958-188ea5fad975",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2027,
+      "kind": "mock",
+      "track": "자연계열(약학부)",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "06c0a6b0769e08f5a9d5e63ea42dc705d53ada6df64fc5970d9b827865a23a8e",
+        "325319ca423b809adc58028552c43f458f1f099b4e6bc13c14d46ce62ee08a32"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2027-mock-sm15:q1",
+          "dbQuestionId": "6eaa7428-3686-51f6-8efb-0e5127e0d3d0",
+          "label": "문항 1 (소문항 1-1·1-2 포함)",
+          "sourceLocator": "2027학년도 숙명여대 모의논술_자연(약학부) 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2027-mock-sm15:q2",
+          "dbQuestionId": "256ebc83-09fb-5c47-9813-b9b67ca4155d",
+          "label": "문항 2 (소문항 2-1·2-2 포함)",
+          "sourceLocator": "2027학년도 숙명여대 모의논술_자연(약학부) 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2027-mock-sm15:q3",
+          "dbQuestionId": "47501a70-0d53-5377-8105-da806dac184c",
+          "label": "문항 3 (소문항 3-1·3-2 포함)",
+          "sourceLocator": "2027학년도 숙명여대 모의논술_자연(약학부) 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2025-admission-natural-single",
+      "dbExamId": "78dc85f3-f3c8-5c8b-98fc-ff96b87527ac",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2025,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "9df1870d41b0e2593b6dabc5f1bd7c1026f7171dd2a2bd364dfb8e47431c7d1d",
+        "cf984c0c1483c168df8c158d508c3680b39591ed2c5720f9966984eea93eb9d5"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2025-admission-natural-single:q1",
+          "dbQuestionId": "c1bce14d-1e5f-5c50-8a34-fff319499d49",
+          "label": "문항 1",
+          "sourceLocator": "2025학년도 숙명여대 수시 논술_자연 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2025-admission-natural-single:q2",
+          "dbQuestionId": "f90a2b99-3acc-52db-80dd-dd04ef64e077",
+          "label": "문항 2",
+          "sourceLocator": "2025학년도 숙명여대 수시 논술_자연 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2025-admission-natural-single:q3",
+          "dbQuestionId": "ef01787b-275b-5d1e-965a-34696816b83a",
+          "label": "문항 3",
+          "sourceLocator": "2025학년도 숙명여대 수시 논술_자연 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2027-mock-sm18",
+      "dbExamId": "deb21169-6937-5309-a9bb-c446bd6d4d5c",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2027,
+      "kind": "mock",
+      "track": "자연계열(일반)",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "257bfc4c32d0cc8f679f5a52b0fe6f02d0a864746def7a5e572e6345af1d867a",
+        "82f67c021ee792e70c02b853f63a810dda2b5b24cf269230cdecabccd60b05e5"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2027-mock-sm18:q1",
+          "dbQuestionId": "d7a1a8f4-8fba-5ece-9f20-946ece988ea5",
+          "label": "문항 1 (소문항 1-1·1-2 포함)",
+          "sourceLocator": "2027학년도 숙명여대 모의논술_자연(일반) 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2027-mock-sm18:q2",
+          "dbQuestionId": "1d25219b-a954-54e1-bfca-63d41fcca980",
+          "label": "문항 2 (소문항 2-1·2-2 포함)",
+          "sourceLocator": "2027학년도 숙명여대 모의논술_자연(일반) 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2027-mock-sm18:q3",
+          "dbQuestionId": "eb24d5aa-04a9-56a9-bc97-bf556c5bfb0e",
+          "label": "문항 3 (소문항 3-1·3-2 포함)",
+          "sourceLocator": "2027학년도 숙명여대 모의논술_자연(일반) 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2025-mock-natural-single",
+      "dbExamId": "f1f86385-3ee4-5af4-a836-e819bae455a6",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2025,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "013067cc2c11c82de44136a17712b97e0c326c0f0300185f90b0f580c2d33298",
+        "897847b7ee34d98a31640ae84ff7f1fc7254d2b316920fc13c854b7d67045474"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2025-mock-natural-single:q1",
+          "dbQuestionId": "6a4613da-4eb8-5e9b-a8db-fdfcb9e4eb9b",
+          "label": "문항 1",
+          "sourceLocator": "2025학년도 숙명여대 모의논술_자연 문제.pdf PDF 1쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2025-mock-natural-single:q2",
+          "dbQuestionId": "eb89752e-1fe4-5b24-be01-0a2dfd1bb728",
+          "label": "문항 2",
+          "sourceLocator": "2025학년도 숙명여대 모의논술_자연 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:sookmyung-2025-mock-natural-single:q3",
+          "dbQuestionId": "d18140c2-a0f8-53f7-af82-b236ad6e0a08",
+          "label": "문항 3",
+          "sourceLocator": "2025학년도 숙명여대 모의논술_자연 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:sookmyung-2021-admission-natural-single",
+      "dbExamId": "f2807bf1-7ffb-51b1-b062-41e7feb6f3a4",
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
+      "sourceUniversityId": "sookmyung",
+      "year": 2021,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "a628d35e24d559cb632fb33014819ddf75a7dae6d00dfd0b9f8135cc50da2a0b",
+        "f985c56ac47a2e0656cc0447183cf524c43b78b50b12103c28d9824cf2bcf785"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:sookmyung-2021-admission-natural-single:q1",
+          "dbQuestionId": "9290038b-accc-5b7a-914e-56b9bc2628a5",
+          "label": "문항 1",
+          "sourceLocator": "2021학년도 숙명여대 논술_자연계 문제.pdf PDF 1,2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
     }
   ]
 }

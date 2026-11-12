@@ -1974,6 +1974,286 @@
         "acb61559-3e3c-53fe-9bf6-75c9ac48da58",
         "7c3fb259-ee90-55dc-bc1a-765d0358d030"
       ]
+    },
+    {
+      "completeExam": true,
+      "examId": "11ac8d4a-c8e4-5184-ac2a-8d622722cdcf",
+      "label": "숙명여자대학교 2026 자연계열(약학부)",
+      "mathQuestions": {
+        "3776f1e9-7286-5995-be20-225ad60fdbf3": "68e2fd66-ec40-5857-91ed-158169ae8147",
+        "56206981-3f89-5739-a3bb-ee3e6a6248e1": "46deb8b5-2657-5a04-8b6b-3ade865a5c27",
+        "9eb9138b-980c-5f92-8142-e3010c1adfd0": "5acb4870-4402-520a-8d70-49b74650a0c2"
+      },
+      "mode": "math",
+      "packageDigest": "033506ff8be0d17ff16804217dc438484861b6223c658042240b9eb3005531b5",
+      "questionIds": [
+        "56206981-3f89-5739-a3bb-ee3e6a6248e1",
+        "3776f1e9-7286-5995-be20-225ad60fdbf3",
+        "9eb9138b-980c-5f92-8142-e3010c1adfd0"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "39493cde-f3ca-558d-9aab-7d3c5d7b871a",
+      "label": "숙명여자대학교 2021 자연계열",
+      "mathQuestions": {
+        "27cb0371-2c9f-5c35-a207-a7762d8d93d5": "25e3649f-4594-5b6f-b9f5-556897704488"
+      },
+      "mode": "math",
+      "packageDigest": "40b85901435a1ab34ae48ae4875c5f0e8f5746cb62a488bec2fd23fffd1cd63c",
+      "questionIds": [
+        "27cb0371-2c9f-5c35-a207-a7762d8d93d5"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "3ebbbb28-afad-514d-a294-a50fabbdd917",
+      "label": "숙명여자대학교 2022 자연계열",
+      "mathQuestions": {
+        "271aea88-776b-5cc2-9e35-95bf38047fb8": "f927b249-f2c6-5683-a2d8-97c221e83428",
+        "a7763fd9-db6e-5541-adc5-59bf3b45d38c": "e152239e-e815-5bf1-b417-affa329a29e1",
+        "b944a252-a747-5048-a19a-308cfc2e5c30": "2d6a522d-1429-5404-8859-be1dc01fe4b5"
+      },
+      "mode": "math",
+      "packageDigest": "b8714ca50ff6f96eb9cec59a85fb5e853e1e71408ab9d9f7c6c147461737a631",
+      "questionIds": [
+        "b944a252-a747-5048-a19a-308cfc2e5c30",
+        "a7763fd9-db6e-5541-adc5-59bf3b45d38c",
+        "271aea88-776b-5cc2-9e35-95bf38047fb8"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "4835da12-452e-57c3-b134-9dbea8f821bb",
+      "label": "숙명여자대학교 2025 자연계열(약학부)",
+      "mathQuestions": {
+        "173f1ee4-18e1-5b97-9974-888925c91e4b": "b1f44ea7-7d3f-5909-90e5-f34d52ea7c44",
+        "1e8b4d61-0a53-59ae-a7b2-c387cc5676ea": "1e879006-4f10-5e35-83c5-71da597e25fe",
+        "48c5d506-38a1-5c26-9590-16d82c8e297e": "94d34d2c-39db-593e-a057-9d01ff44c943"
+      },
+      "mode": "math",
+      "packageDigest": "21447380567c0f4389d68eea34346170050818c16f00103f5b565938f834938c",
+      "questionIds": [
+        "1e8b4d61-0a53-59ae-a7b2-c387cc5676ea",
+        "173f1ee4-18e1-5b97-9974-888925c91e4b",
+        "48c5d506-38a1-5c26-9590-16d82c8e297e"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "4c582db3-d518-57f9-b3b1-56c257aca2e5",
+      "label": "숙명여자대학교 2023 자연계열",
+      "mathQuestions": {
+        "523b6663-f918-5c29-aa6e-14e3e296b198": "5d8ab200-4e0e-570f-aee5-827d9f4595b1",
+        "8746b128-64ef-5656-935b-29b6a7b4ed03": "8010f85d-2877-5a78-915f-86483125aa65",
+        "c656f4b4-c255-56fc-936c-89e4ab2b18a9": "e1eae83a-ff90-5f09-8e23-ef2e919d2478"
+      },
+      "mode": "math",
+      "packageDigest": "36b8e9ce12da02546d714bc2b6d07493c3c8a462618550af1bc16087f89ee033",
+      "questionIds": [
+        "8746b128-64ef-5656-935b-29b6a7b4ed03",
+        "c656f4b4-c255-56fc-936c-89e4ab2b18a9",
+        "523b6663-f918-5c29-aa6e-14e3e296b198"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "4eb4266c-f109-540a-880b-4044730b4474",
+      "label": "숙명여자대학교 2024 자연계열",
+      "mathQuestions": {
+        "0b6409e5-0456-5965-b3ae-840d37c59b52": "cc5c9a98-a35d-5dcd-9e2f-43080400e2a9",
+        "342f6175-9755-5b85-b5f3-915b5a1f0880": "130d73e6-bd6c-586d-9646-d7e98bdecb33",
+        "6fb0c914-efe2-57b2-bb8f-eddee79ea858": "221293a5-c4a7-5a77-b7e2-efd411d58958"
+      },
+      "mode": "math",
+      "packageDigest": "676c24b8de6ae993c5fc82d754f8a302a6429badc1dbb9382112c6b0a3b58b55",
+      "questionIds": [
+        "6fb0c914-efe2-57b2-bb8f-eddee79ea858",
+        "342f6175-9755-5b85-b5f3-915b5a1f0880",
+        "0b6409e5-0456-5965-b3ae-840d37c59b52"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "55b45df4-d873-5c4b-9dcb-6741c0197298",
+      "label": "숙명여자대학교 2022 자연계열",
+      "mathQuestions": {
+        "0bb0e263-5de8-50ee-b61f-32668b504e47": "42a5c117-650b-544e-9d73-7245d95bdc61",
+        "285a4076-66e1-579e-90c1-39fdcbc55571": "4022fa8d-566e-5327-a1e5-6738fa61252e",
+        "dd5889bb-a785-5039-b511-e81e041da071": "caf3796f-7113-5cca-9d4b-a1dc8b68388b"
+      },
+      "mode": "math",
+      "packageDigest": "ddab444c22d975a5c52640fc2cfc5cdbfb00ec8ec2906406f524611777782db1",
+      "questionIds": [
+        "285a4076-66e1-579e-90c1-39fdcbc55571",
+        "0bb0e263-5de8-50ee-b61f-32668b504e47",
+        "dd5889bb-a785-5039-b511-e81e041da071"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "6aa5f389-5cf0-5a35-84e7-ba74bb13557f",
+      "label": "숙명여자대학교 2025 자연계열(약학부)",
+      "mathQuestions": {
+        "32b555e0-c382-5e37-ae36-89776d945d3b": "cc469db7-ff87-5278-a8b0-37cd9385a56e",
+        "ac4280ba-0b6b-5546-8a58-a696e6bf53a8": "2e667685-c789-586c-ac9f-aed3eee3845f",
+        "ace8ee6a-8b7e-526f-884a-18ae936b0fe7": "5d7e2d00-49cc-57ad-95b1-af93d782959b"
+      },
+      "mode": "math",
+      "packageDigest": "ce5580e6566cc0adebe3e14571d0e71c1fd4adb6a4916ed91e437618ac3a0648",
+      "questionIds": [
+        "32b555e0-c382-5e37-ae36-89776d945d3b",
+        "ac4280ba-0b6b-5546-8a58-a696e6bf53a8",
+        "ace8ee6a-8b7e-526f-884a-18ae936b0fe7"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "6bc75b10-b63f-52cd-b74f-44ddacfb90e9",
+      "label": "숙명여자대학교 2024 자연계열",
+      "mathQuestions": {
+        "160867f9-bd9d-511b-b9f1-68e387ae8df3": "47eaa432-a80a-570b-ae6c-37415f55fc5f",
+        "bc37bc35-afbc-57a2-9a78-c34363b8d3ef": "6df420fd-2a4f-525d-98a6-8f8d230b08b9",
+        "fee14e99-2500-56d2-91b9-66341935a4a4": "7144e333-f0c0-55ce-ab91-9d0403f2ce9a"
+      },
+      "mode": "math",
+      "packageDigest": "56649cec1d79fb846288fbf1a2da64acfc3466050671969a0723b119b775e90f",
+      "questionIds": [
+        "160867f9-bd9d-511b-b9f1-68e387ae8df3",
+        "fee14e99-2500-56d2-91b9-66341935a4a4",
+        "bc37bc35-afbc-57a2-9a78-c34363b8d3ef"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "6be424d3-ffc6-56ed-bab5-5d86416d142e",
+      "label": "숙명여자대학교 2026 자연계열",
+      "mathQuestions": {
+        "1c279c86-167b-5873-a2ef-01efe77ac82d": "93d66a65-83ae-5a33-9bae-fce792a87d2a",
+        "24b846d7-6e1f-5a9c-ac08-0cfb1d2058e3": "6d2b16b6-eefd-53d4-8d8a-69acd1991161",
+        "b30e117f-6240-54a1-98ab-ab392e36f239": "b5c4f6de-5e9b-524e-bab4-30f934f25cd8"
+      },
+      "mode": "math",
+      "packageDigest": "ccdbbcc93c2fd1c9220a183e90932944b1c042018bed142648825e5a2d56c0f2",
+      "questionIds": [
+        "24b846d7-6e1f-5a9c-ac08-0cfb1d2058e3",
+        "1c279c86-167b-5873-a2ef-01efe77ac82d",
+        "b30e117f-6240-54a1-98ab-ab392e36f239"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "6db119ec-58bd-5d5c-83ab-af33d192ffcc",
+      "label": "숙명여자대학교 2023 자연계열",
+      "mathQuestions": {
+        "3d5b560d-3c20-59ec-b669-51d5e9a10e1f": "5a2af938-266e-53ab-9def-c85704feba80",
+        "83c71d35-af92-5333-a82b-a703e87f8df7": "d2115e7d-245f-53bd-9f1d-e7afc561e651",
+        "91c8ef90-168a-5505-936d-3939b9c88683": "9426c666-10d2-5445-b044-8b80cebd06e0"
+      },
+      "mode": "math",
+      "packageDigest": "6f320b6e27f291e18ebcf5c75c8d75223b8f43a87d16a4c2bb76c88ce858602d",
+      "questionIds": [
+        "3d5b560d-3c20-59ec-b669-51d5e9a10e1f",
+        "83c71d35-af92-5333-a82b-a703e87f8df7",
+        "91c8ef90-168a-5505-936d-3939b9c88683"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "7528297c-65f6-556d-9958-188ea5fad975",
+      "label": "숙명여자대학교 2027 자연계열(약학부)",
+      "mathQuestions": {
+        "256ebc83-09fb-5c47-9813-b9b67ca4155d": "d5113f74-9d17-53c4-a42e-d4dd11991488",
+        "47501a70-0d53-5377-8105-da806dac184c": "c88df412-b440-564f-9742-f4c2ad08935d",
+        "6eaa7428-3686-51f6-8efb-0e5127e0d3d0": "dae3aa11-2ea8-57f0-b651-1af813632e4a"
+      },
+      "mode": "math",
+      "packageDigest": "4324bae63d96a1c61ae18e81a8a4e28af03c85493b3f0cd7112e26cc317d9d41",
+      "questionIds": [
+        "6eaa7428-3686-51f6-8efb-0e5127e0d3d0",
+        "256ebc83-09fb-5c47-9813-b9b67ca4155d",
+        "47501a70-0d53-5377-8105-da806dac184c"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "78dc85f3-f3c8-5c8b-98fc-ff96b87527ac",
+      "label": "숙명여자대학교 2025 자연계열",
+      "mathQuestions": {
+        "c1bce14d-1e5f-5c50-8a34-fff319499d49": "745d5a42-de2f-5435-9df7-da49e7cdf193",
+        "ef01787b-275b-5d1e-965a-34696816b83a": "9739c42b-ce6d-52ca-9261-2bfb53647cef",
+        "f90a2b99-3acc-52db-80dd-dd04ef64e077": "283b394c-bf01-51d2-8200-5dca8ef81b82"
+      },
+      "mode": "math",
+      "packageDigest": "4a5f5ca2d976a78bb79b98abb213afbe6ca72c00d3f136d428275fa4da7b4abc",
+      "questionIds": [
+        "c1bce14d-1e5f-5c50-8a34-fff319499d49",
+        "f90a2b99-3acc-52db-80dd-dd04ef64e077",
+        "ef01787b-275b-5d1e-965a-34696816b83a"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "deb21169-6937-5309-a9bb-c446bd6d4d5c",
+      "label": "숙명여자대학교 2027 자연계열(일반)",
+      "mathQuestions": {
+        "1d25219b-a954-54e1-bfca-63d41fcca980": "a44bf62b-adb2-5b4e-bd85-ab39099ae7f4",
+        "d7a1a8f4-8fba-5ece-9f20-946ece988ea5": "0e69ce6e-be5f-5c52-9b8d-bc98602487a1",
+        "eb24d5aa-04a9-56a9-bc97-bf556c5bfb0e": "136502c8-7b47-5fd7-93f7-2c2262c12930"
+      },
+      "mode": "math",
+      "packageDigest": "f2cbbe0d9c06ad49be00f698a91f52a96557853b938b71829ba0512ebebd53b4",
+      "questionIds": [
+        "d7a1a8f4-8fba-5ece-9f20-946ece988ea5",
+        "1d25219b-a954-54e1-bfca-63d41fcca980",
+        "eb24d5aa-04a9-56a9-bc97-bf556c5bfb0e"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "f1f86385-3ee4-5af4-a836-e819bae455a6",
+      "label": "숙명여자대학교 2025 자연계열",
+      "mathQuestions": {
+        "6a4613da-4eb8-5e9b-a8db-fdfcb9e4eb9b": "c994f4dd-f24a-5faf-9131-402c6da90565",
+        "d18140c2-a0f8-53f7-af82-b236ad6e0a08": "044c5f33-3828-522c-8bc0-9b423f992f54",
+        "eb89752e-1fe4-5b24-be01-0a2dfd1bb728": "43fbeba7-879f-5429-957f-59a3927646bb"
+      },
+      "mode": "math",
+      "packageDigest": "e409e806b3f3513de4d8668005e836c52ed27e36669bdb74139434932a181d31",
+      "questionIds": [
+        "6a4613da-4eb8-5e9b-a8db-fdfcb9e4eb9b",
+        "eb89752e-1fe4-5b24-be01-0a2dfd1bb728",
+        "d18140c2-a0f8-53f7-af82-b236ad6e0a08"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
+    },
+    {
+      "completeExam": true,
+      "examId": "f2807bf1-7ffb-51b1-b062-41e7feb6f3a4",
+      "label": "숙명여자대학교 2021 자연계열",
+      "mathQuestions": {
+        "9290038b-accc-5b7a-914e-56b9bc2628a5": "3359361a-a9ca-57f6-8368-b68fbba361ff"
+      },
+      "mode": "math",
+      "packageDigest": "9fc5bc78c28c49abcc04c36a153bc44fa02a4b9363260ac630918df439036339",
+      "questionIds": [
+        "9290038b-accc-5b7a-914e-56b9bc2628a5"
+      ],
+      "universityId": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b"
     }
   ]
 }
