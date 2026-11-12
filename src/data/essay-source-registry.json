@@ -6786,6 +6786,52 @@
           "accountDraftReady": false
         }
       ]
+    },
+    {
+      "key": "source:swu-2026-admission-natural",
+      "dbExamId": "3643b295-3b63-5b77-bd1b-d3ce68de4885",
+      "universityId": "eba1d65c-5bb6-5454-afd4-82a18c57262a",
+      "sourceUniversityId": "swu",
+      "year": 2026,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "오후반",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "dab3001dd275226a8d092a0cfe8236b1a74fbf48956b24bfa1abfec951555767"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:swu-2026-admission-natural:q1",
+          "dbQuestionId": "ee907ec5-88f2-5097-83be-9b8c9a03ec93",
+          "label": "문제 1",
+          "sourceLocator": "2026학년도 서울여대 논술_자연계열 문제,해설,답안.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:swu-2026-admission-natural:q2",
+          "dbQuestionId": "6c7d310f-d055-595c-8aa5-49d901b19f36",
+          "label": "문제 2",
+          "sourceLocator": "2026학년도 서울여대 논술_자연계열 문제,해설,답안.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:swu-2026-admission-natural:q3",
+          "dbQuestionId": "318473c0-46ea-55e7-ab06-53520ea2373f",
+          "label": "문제 3",
+          "sourceLocator": "2026학년도 서울여대 논술_자연계열 문제,해설,답안.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
     }
   ]
 }

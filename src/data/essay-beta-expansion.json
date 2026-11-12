@@ -2719,6 +2719,24 @@
         "dae3b5e6-c2f0-53bf-aef6-c524442d7e65"
       ],
       "universityId": "3d35489f-2e90-47b8-af1b-48928ee2269a"
+    },
+    {
+      "completeExam": true,
+      "examId": "3643b295-3b63-5b77-bd1b-d3ce68de4885",
+      "label": "서울여자대학교 2026 자연계열",
+      "mathQuestions": {
+        "318473c0-46ea-55e7-ab06-53520ea2373f": "edb40a2a-9f42-5170-8e8a-ea1c7c696669",
+        "6c7d310f-d055-595c-8aa5-49d901b19f36": "98dd8662-3976-5884-9bfc-945dcc19c59b",
+        "ee907ec5-88f2-5097-83be-9b8c9a03ec93": "65e9cdb8-20c3-5d5f-82a2-884142070d98"
+      },
+      "mode": "math",
+      "packageDigest": "bc2fef9dce81e23c6e2dc879e4831b0e7e844aa3c9d4a3830ff2fecd35d64d37",
+      "questionIds": [
+        "ee907ec5-88f2-5097-83be-9b8c9a03ec93",
+        "6c7d310f-d055-595c-8aa5-49d901b19f36",
+        "318473c0-46ea-55e7-ab06-53520ea2373f"
+      ],
+      "universityId": "eba1d65c-5bb6-5454-afd4-82a18c57262a"
     }
   ]
 }

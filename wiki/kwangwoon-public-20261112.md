@@ -103,3 +103,5 @@ APP 사전 검증 커밋: `9a4e511`. 배포 WEB 소스는 위에 기록했다. �
 - [브라우저 관측 범위](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/kwangwoon_public_20261112/browser-verification.json)
 - [보안 검사](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/kwangwoon_public_20261112/security-advisors.json)
 - [WEB 원복 범위](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/kwangwoon_public_20261112/web-rollback.json)
+
+Owner 후속 확인: 21시험·42문항 공개 및 기존 데이터·권한·Credit 보존 확인. **광운대 DONE**, 다음 서울여대 공개 작업으로 인계했다.
