@@ -1,5 +1,7 @@
 # 통합 검수241·잔여67 인계
 
+> 최신 운영 상태: [이화 모의24 공개 완료](ewha-mock-public-20261112.md). 전체265공개·43잔여. 아래67잔여 기록은 이전 상태다.
+
 공개241/잔여67/전체308 유지. 이화21시험63문항 DONE. 신규운영쓰기·공개·Provider·배포0.
 
 Canonical APP Wiki: `wiki/essay-remaining-67-owner-review-20261112.md`, 문항별 목록 `wiki/essay-owner-review-241-20261112.md`, 증거 `supabase/candidates/review_remaining_67_20261112/`.
