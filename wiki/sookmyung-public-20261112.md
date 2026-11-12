@@ -72,3 +72,5 @@ Git: WEB 배포소스 `cf59c6207cdcd287993aa7949aa3e74d341670cf`, APP 사전검�
 [최종 영수증](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/sookmyung_public_20261112/final-release.json) · [운영 목록 검증](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/sookmyung_public_20261112/browse-production-verification.json) · [WEB 공개 검증](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/sookmyung_public_20261112/web-production-receipt.json) · [목록 적용 SQL](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/sookmyung_public_20261112/browse-open.sql) · [목록 롤백](/Users/woojinchang/.codex/worktrees/app-ga4-usage-20261105/legendstudy-service-app-20261022/supabase/candidates/sookmyung_public_20261112/browse-rollback.sql).
 
 최종 APP/SQL 증빙 커밋: `bb0e4eeda24862b67b374dee6acd8a350bbc5f17`. 최종 목록 검증 SQL도 운영 SELECT에서 PASS했다.
+
+Owner 후속 확인: 숙명16시험44문항 **DONE**, 기존6문항·사용자기록 보존. 다음 동국 운영 연결·공개 승인.

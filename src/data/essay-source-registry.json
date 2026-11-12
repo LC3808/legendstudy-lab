@@ -1092,7 +1092,7 @@
     },
     {
       "key": "source:7b3fccadc441925527d7d66cd5fa0a71118dc763bbb4a40950c279660a5ef899",
-      "dbExamId": null,
+      "dbExamId": "f5f512ab-79d1-50f9-8d79-039393226b00",
       "universityId": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
       "sourceUniversityId": "dongguk",
       "year": 2023,
@@ -1101,41 +1101,45 @@
       "session": null,
       "campus": null,
       "verification": "VERIFIED",
-      "verificationScope": "exam_identity_and_question_labels",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
       "sourceHashes": [
+        "7061f59e3f987adaa1d85d3a364350286d915c439255d9e4de10fe5f134b874a",
         "e09b3bddf31f5754b815737bb9f0941889adeac05fc521cee7ab42144836e476"
       ],
       "questions": [
         {
           "key": "source:7b3fccadc441925527d7d66cd5fa0a71118dc763bbb4a40950c279660a5ef899:1",
-          "dbQuestionId": null,
+          "dbQuestionId": "d0add313-5092-5acf-8882-065f29817c9b",
           "label": "문제 1",
-          "sourceLocator": null,
+          "sourceLocator": "2023학년도 동국대 모의논술_자연계열 문제.pdf PDF 2쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         },
         {
           "key": "source:7b3fccadc441925527d7d66cd5fa0a71118dc763bbb4a40950c279660a5ef899:2",
-          "dbQuestionId": null,
+          "dbQuestionId": "0e89f48c-26ca-5bb1-9b82-b55633783017",
           "label": "문제 2",
-          "sourceLocator": null,
+          "sourceLocator": "2023학년도 동국대 모의논술_자연계열 문제.pdf PDF 3쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         },
         {
           "key": "source:7b3fccadc441925527d7d66cd5fa0a71118dc763bbb4a40950c279660a5ef899:3",
-          "dbQuestionId": null,
+          "dbQuestionId": "e494e7c5-b83e-5863-9aba-bc4da33d41b2",
           "label": "문제 3",
-          "sourceLocator": null,
+          "sourceLocator": "2023학년도 동국대 모의논술_자연계열 문제.pdf PDF 4쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         }
       ],
       "evaluationReady": false
     },
     {
       "key": "source:16fff908b5d5ed4ebecec73fdb4281875845319a3eede448b64f9526be4d8be0",
-      "dbExamId": null,
+      "dbExamId": "3b9a5530-3362-5223-94f1-04922e6f5d11",
       "universityId": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
       "sourceUniversityId": "dongguk",
       "year": 2024,
@@ -1144,34 +1148,38 @@
       "session": null,
       "campus": null,
       "verification": "VERIFIED",
-      "verificationScope": "exam_identity_and_question_labels",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
       "sourceHashes": [
+        "62da9b6908a29f921124ef359e5f69fa14157e2315e2fe48d663c2983006453b",
         "ce912f581624e2d4afaa287055db01d9b813882ef680d0ae83e95b21beba2d30"
       ],
       "questions": [
         {
           "key": "source:16fff908b5d5ed4ebecec73fdb4281875845319a3eede448b64f9526be4d8be0:1",
-          "dbQuestionId": null,
+          "dbQuestionId": "30ad4db9-7bd2-586a-a5a4-088c31846fdf",
           "label": "문제 1",
-          "sourceLocator": null,
+          "sourceLocator": "2024학년도 동국대 모의논술(온)_자연계열 문제.pdf PDF 2쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         },
         {
           "key": "source:16fff908b5d5ed4ebecec73fdb4281875845319a3eede448b64f9526be4d8be0:2",
-          "dbQuestionId": null,
+          "dbQuestionId": "48836643-ef6b-5777-9b53-4a76342ec189",
           "label": "문제 2",
-          "sourceLocator": null,
+          "sourceLocator": "2024학년도 동국대 모의논술(온)_자연계열 문제.pdf PDF 3쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         },
         {
           "key": "source:16fff908b5d5ed4ebecec73fdb4281875845319a3eede448b64f9526be4d8be0:3",
-          "dbQuestionId": null,
+          "dbQuestionId": "dc2dd24c-f5c0-5f28-ab3b-8532fe2ad453",
           "label": "문제 3",
-          "sourceLocator": null,
+          "sourceLocator": "2024학년도 동국대 모의논술(온)_자연계열 문제.pdf PDF 4,5쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         }
       ],
       "evaluationReady": false
@@ -1264,7 +1272,7 @@
     },
     {
       "key": "source:1a2ca8e7f361b6f6ca3a7cf0f4899970362db2d8813b91f51dcb3710fab27397",
-      "dbExamId": null,
+      "dbExamId": "0fa138ec-e8a0-56a6-b241-4c883c86eacc",
       "universityId": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
       "sourceUniversityId": "dongguk",
       "year": 2022,
@@ -1273,34 +1281,38 @@
       "session": null,
       "campus": null,
       "verification": "VERIFIED",
-      "verificationScope": "exam_identity_and_question_labels",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
       "sourceHashes": [
+        "04827d4a29070e83af90576d1fefd4fd4fca95ed78a262752bc3f56b6f07f408",
         "699145eee319e823b01edc21dd97d2a9e38460117d173d979ba9458af25e73dd"
       ],
       "questions": [
         {
           "key": "source:1a2ca8e7f361b6f6ca3a7cf0f4899970362db2d8813b91f51dcb3710fab27397:1",
-          "dbQuestionId": null,
+          "dbQuestionId": "95fbb8a2-beda-58e0-a2fd-9d4e27827882",
           "label": "문제 1",
-          "sourceLocator": null,
+          "sourceLocator": "2022학년도 동국대 모의논술_자연계열 문제.pdf PDF 2쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         },
         {
           "key": "source:1a2ca8e7f361b6f6ca3a7cf0f4899970362db2d8813b91f51dcb3710fab27397:2",
-          "dbQuestionId": null,
+          "dbQuestionId": "1dbd7967-f712-5185-aa8e-3656349706a4",
           "label": "문제 2",
-          "sourceLocator": null,
+          "sourceLocator": "2022학년도 동국대 모의논술_자연계열 문제.pdf PDF 3,4쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         },
         {
           "key": "source:1a2ca8e7f361b6f6ca3a7cf0f4899970362db2d8813b91f51dcb3710fab27397:3",
-          "dbQuestionId": null,
+          "dbQuestionId": "30cd3e19-6dae-5cf1-ad83-1b45dbe87d51",
           "label": "문제 3",
-          "sourceLocator": null,
+          "sourceLocator": "2022학년도 동국대 모의논술_자연계열 문제.pdf PDF 5쪽",
           "lengthLabel": null,
-          "inputMode": "image"
+          "inputMode": "image",
+          "accountDraftReady": false
         }
       ],
       "evaluationReady": false
@@ -5837,6 +5849,192 @@
           "dbQuestionId": "9290038b-accc-5b7a-914e-56b9bc2628a5",
           "label": "문항 1",
           "sourceLocator": "2021학년도 숙명여대 논술_자연계 문제.pdf PDF 1,2,3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:dongguk-2026-mock-natural",
+      "dbExamId": "324dbf82-b4bc-5607-977b-2cf512812212",
+      "universityId": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
+      "sourceUniversityId": "dongguk",
+      "year": 2026,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": "서울",
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "12efd22c5adb0ad79c8556e738d57da8e3fb361a020f9fc88194e35d3150c9af",
+        "4a945d64bdb2338a2749db7f17b49cbea48712112cfaa4d07de1963ef22e2393"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:dongguk-2026-mock-natural:q1",
+          "dbQuestionId": "49ea9aaa-1c46-51e7-b148-a03aef20ae4e",
+          "label": "문제 1",
+          "sourceLocator": "2026학년도 동국대 모의논술_자연계 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:dongguk-2026-mock-natural:q2",
+          "dbQuestionId": "67388db9-9a5d-54a3-ace4-5ab35375105f",
+          "label": "문제 2",
+          "sourceLocator": "2026학년도 동국대 모의논술_자연계 문제.pdf PDF 3쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:dongguk-2026-mock-natural:q3",
+          "dbQuestionId": "73f883bd-0e9d-51b3-a043-4c41f64544b1",
+          "label": "문제 3",
+          "sourceLocator": "2026학년도 동국대 모의논술_자연계 문제.pdf PDF 4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:dongguk-2025-admission-natural",
+      "dbExamId": "627bbcc2-707c-5b4f-b3a7-d504c4dd5a4c",
+      "universityId": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
+      "sourceUniversityId": "dongguk",
+      "year": 2025,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": "서울",
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "a05aa64638a1b3db6d38378ab8f9345e927da16b444701793c4c1349b1e3321c"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:dongguk-2025-admission-natural:q1",
+          "dbQuestionId": "df83fa5c-fc88-570b-99b5-45f3c97f3647",
+          "label": "문제 1",
+          "sourceLocator": "2025학년도 동국대 수시 논술_자연계 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:dongguk-2025-admission-natural:q2",
+          "dbQuestionId": "f2172ac5-f197-5a4f-a2a8-2452f094b5d0",
+          "label": "문제 2",
+          "sourceLocator": "2025학년도 동국대 수시 논술_자연계 문제,해설,답안.pdf PDF 5,6쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:dongguk-2025-admission-natural:q3",
+          "dbQuestionId": "24571e32-f295-5c2e-b69a-51f5138dbf35",
+          "label": "문제 3",
+          "sourceLocator": "2025학년도 동국대 수시 논술_자연계 문제,해설,답안.pdf PDF 10,11쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:dongguk-2027-mock-natural",
+      "dbExamId": "81f8d0b3-6751-542e-913e-b4169a247de6",
+      "universityId": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
+      "sourceUniversityId": "dongguk",
+      "year": 2027,
+      "kind": "mock",
+      "track": "자연계열",
+      "session": null,
+      "campus": "서울",
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "07053e27f2bc1ade6d052e257542f72e43349af2808ab87813cdcb75b14cd73b",
+        "77cef7981c45592ced50d7491209f161697ff30a05769b1653cb912c4537c0fd"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:dongguk-2027-mock-natural:q1",
+          "dbQuestionId": "1e509ee9-7a77-5c64-b4b5-3553d853b35e",
+          "label": "문제 1",
+          "sourceLocator": "2027학년도 동국대 모의논술_자연계 문제.pdf PDF 2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:dongguk-2027-mock-natural:q2",
+          "dbQuestionId": "95c1ec51-efa3-5f34-996a-192e6080271b",
+          "label": "문제 2",
+          "sourceLocator": "2027학년도 동국대 모의논술_자연계 문제.pdf PDF 3,4쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:dongguk-2027-mock-natural:q3",
+          "dbQuestionId": "62d29f41-9b3b-5861-be1f-608133203bb3",
+          "label": "문제 3",
+          "sourceLocator": "2027학년도 동국대 모의논술_자연계 문제.pdf PDF 5쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        }
+      ]
+    },
+    {
+      "key": "source:dongguk-2026-admission-natural",
+      "dbExamId": "8871c481-f6e2-5f87-b3c8-45c042f6a775",
+      "universityId": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
+      "sourceUniversityId": "dongguk",
+      "year": 2026,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": null,
+      "campus": "서울",
+      "verification": "VERIFIED",
+      "verificationScope": "existing_registry_identity_and_official_page_mapping_not_publication",
+      "sourceHashes": [
+        "a0d70a8eb3e932b4cbf8df7d0e0c638be30ac41d9381bf9c631e69df220fb498"
+      ],
+      "evaluationReady": false,
+      "questions": [
+        {
+          "key": "source:dongguk-2026-admission-natural:q1",
+          "dbQuestionId": "b3c4b57d-b178-50ab-be64-3b939967fe82",
+          "label": "문제 1",
+          "sourceLocator": "2026학년도 동국대 수시 논술_자연계 문제,해설,답안.pdf PDF 1,2쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:dongguk-2026-admission-natural:q2",
+          "dbQuestionId": "0911229c-eb20-5831-a3a0-1a625a54489f",
+          "label": "문제 2",
+          "sourceLocator": "2026학년도 동국대 수시 논술_자연계 문제,해설,답안.pdf PDF 7,8쪽",
+          "lengthLabel": null,
+          "inputMode": "image",
+          "accountDraftReady": false
+        },
+        {
+          "key": "source:dongguk-2026-admission-natural:q3",
+          "dbQuestionId": "6f4ac3f6-da5b-538c-a2f4-8376a942512e",
+          "label": "문제 3",
+          "sourceLocator": "2026학년도 동국대 수시 논술_자연계 문제,해설,답안.pdf PDF 12,13쪽",
           "lengthLabel": null,
           "inputMode": "image",
           "accountDraftReady": false

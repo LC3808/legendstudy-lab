@@ -7,8 +7,9 @@ vi.mock('@/lib/source-image-draft',()=>({sourceImageDraft:vi.fn(async()=>null)})
 const identity=vi.hoisted(()=>({user:null as {id:string}|null}));
 vi.mock('./auth-context',()=>({useAuth:()=>({user:identity.user})}));
 beforeEach(()=>{cleanup();localStorage.clear();identity.user=null;});
+const selectSookmyungFixture=()=>{fireEvent.change(screen.getByLabelText('학년도·시험'),{target:{value:'2025:mock'}});fireEvent.change(screen.getByLabelText('계열'),{target:{value:'인문계열'}});};
 it('real Sookmyung four subquestions write/restore without a Provider or DB write',async()=>{
- const view=render(<SourceExamSelection sourceId="sookmyung"/>);
+ const view=render(<SourceExamSelection sourceId="sookmyung"/>);selectSookmyungFixture();
  expect(screen.getByLabelText('학년도·시험')).toHaveValue('2025:mock');
  await waitFor(()=>expect(screen.getByLabelText('문제 1-1 답안')).toBeEnabled());
  fireEvent.change(screen.getByLabelText('문제 1-1 답안'),{target:{value:'학생이 직접 쓴 답안'}});
@@ -17,16 +18,16 @@ it('real Sookmyung four subquestions write/restore without a Provider or DB writ
  expect(screen.getByLabelText('문제 1-1 답안')).toBeVisible(); // Manually opening another card preserves the first.
  fireEvent.click(screen.getByRole('button',{name:'접기 · 문제 2-2'}));
  expect(screen.getByLabelText('문제 1-1 답안')).toHaveValue('학생이 직접 쓴 답안');
- view.unmount();render(<SourceExamSelection sourceId="sookmyung"/>);
+ view.unmount();render(<SourceExamSelection sourceId="sookmyung"/>);selectSookmyungFixture();
  await waitFor(()=>expect(screen.getByLabelText('문제 1-1 답안')).toBeEnabled());
  expect(screen.getByLabelText('문제 1-1 답안')).toHaveValue('학생이 직접 쓴 답안');
  expect(screen.getByText('로그인 후 첨삭 가능 여부를 확인할 수 있습니다.')).toBeVisible();
 });
 it('account switch does not expose another draft and no implicit guest transfer',async()=>{
- const view=render(<SourceExamSelection sourceId="sookmyung"/>);
+ const view=render(<SourceExamSelection sourceId="sookmyung"/>);selectSookmyungFixture();
  await waitFor(()=>expect(screen.getByLabelText('문제 1-1 답안')).toBeEnabled());
  fireEvent.change(screen.getByLabelText('문제 1-1 답안'),{target:{value:'guest draft'}});
- identity.user={id:'account-a'};view.rerender(<SourceExamSelection sourceId="sookmyung"/>);
+ identity.user={id:'account-a'};view.rerender(<SourceExamSelection sourceId="sookmyung"/>);selectSookmyungFixture();
  expect(screen.getByLabelText('문제 1-1 답안')).toHaveValue('');
 });
 it('real catalog has separate admission/mock and resets dependent choices',()=>{
@@ -39,7 +40,7 @@ it('real catalog has separate admission/mock and resets dependent choices',()=>{
  expect(screen.queryByRole('button',{name:'접기 · 문제 1'})).toBeNull();
 });
 it('does not overwrite a newer draft saved in another tab',async()=>{
- render(<SourceExamSelection sourceId="sookmyung"/>);
+ render(<SourceExamSelection sourceId="sookmyung"/>);selectSookmyungFixture();
  const input=screen.getByLabelText('문제 1-1 답안');await waitFor(()=>expect(input).toBeEnabled());
  fireEvent.change(input,{target:{value:'first'}});
  const key=Object.keys(localStorage)[0];localStorage.setItem(key,'another tab');
@@ -50,7 +51,7 @@ it('does not overwrite a newer draft saved in another tab',async()=>{
 it('keeps an unsaved answer when changing selection is cancelled',async()=>{
  const fail=vi.spyOn(Storage.prototype,'setItem').mockImplementation(()=>{throw Error('quota');});
  const confirm=vi.spyOn(window,'confirm').mockReturnValue(false);
- render(<SourceExamSelection sourceId="sookmyung"/>);
+ render(<SourceExamSelection sourceId="sookmyung"/>);selectSookmyungFixture();
  const input=screen.getByLabelText('문제 1-1 답안');await waitFor(()=>expect(input).toBeEnabled());
  fireEvent.change(input,{target:{value:'not saved'}});
  fireEvent.change(screen.getByLabelText('학년도·시험'),{target:{value:''}});
@@ -59,7 +60,7 @@ it('keeps an unsaved answer when changing selection is cancelled',async()=>{
 });
 
 it('manual save opens the next unwritten card until the student chooses a panel',async()=>{
- render(<SourceExamSelection sourceId="sookmyung"/>);
+ render(<SourceExamSelection sourceId="sookmyung"/>);selectSookmyungFixture();
  const first=screen.getByLabelText('문제 1-1 답안');await waitFor(()=>expect(first).toBeEnabled());
  fireEvent.change(first,{target:{value:'저장할 답안'}});
  await waitFor(()=>expect(screen.getByRole('button',{name:'답안 저장'})).toBeEnabled());
