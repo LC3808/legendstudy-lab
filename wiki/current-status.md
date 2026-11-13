@@ -53,3 +53,5 @@ App usage follow-up: [WEB rankings and APP collection handoff](admin-app-usage-r
 - 2026-11-12 [경희3시험7문항 공개 완료](kyunghee-public-20261112.md): Pages532977a6/source2f585c0, 기존3/건국28/2166자산 보존. 과학12 평가진입 제외, 실제AI0.
 
 - 2026-11-12: 다음 성균관15문항은 기존PDF RIGHTS_HOLD 유지. 원본 이용조건/표시승인 미확인·운영PDF4/5·일반조회0. 신규변경 없음. 상세는 APP wiki/essay-sungkyunkwan-rights-hold-20261112.md.
+
+[대학 소식 연결](university-news-phase1-connected-20261113.md): API운영/Flutter구현, 29연결13미완료. 테스트17PASS·실기기NT.

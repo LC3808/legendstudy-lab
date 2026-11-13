@@ -171,3 +171,6 @@ Reviewed History/rewrite exact-ID resolution (`4fc3952`) and confirmed-photo Pro
 ## 2026-11-13 — 최종6 중 항공2 공개 / 공식 충돌4
 
 [최종 기록](essay-remaining6-resolution-20261113.md). 기존 HOLD의 원문 오독2건 해소, 운영29행/Math2 공개. 304공개·4잔여, 기존302 보존. WEB63PASS/build, APP15PASS4SKIP, 격리원복 PASS, Provider0. 전체 CLOSED 아님.
+
+
+2026-11-13: [대학 소식 연결](university-news-phase1-connected-20261113.md). 운영API42/52, Flutter16+운영파서1PASS. 신규DB0, UUID13/기기 후속.

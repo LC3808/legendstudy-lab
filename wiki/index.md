@@ -42,3 +42,5 @@ Canonical report: APP `wiki/app-math-commerce-integration-report-20261103.md`.
 - 2026-11-12 [경희3시험7문항 공개 준비](kyunghee-public-20261112.md): 기존 부분공개 계약 재사용, 운영 반영 전.
 
 - [항공2 공개·최종4 공식 충돌·통합304](essay-remaining6-resolution-20261113.md) — 2026-11-13, 전체308 확장은 PARTIAL.
+
+- [대학 소식 운영 API·Flutter 연결](university-news-phase1-connected-20261113.md) — 29연결/13미완료, 실기기NT.

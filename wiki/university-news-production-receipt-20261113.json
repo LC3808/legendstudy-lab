@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "deployment": "36a35910-39ca-4603-a3d1-be4298f0f2a5",
+  "source": "52b97d322269f0706d923b0d7a9219d273a2b9fa",
+  "universities": 42,
+  "offerings": 52,
+  "date_texts": 20,
+  "mapped": 29,
+  "static_assets_unchanged": true,
+  "settings_unchanged": true,
+  "db_writes": 0
+}
