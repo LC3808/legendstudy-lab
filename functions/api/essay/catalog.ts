@@ -1,3 +1,4 @@
+import {universityNewsCatalog} from '../../../src/lib/essay-runtime/university-news-catalog';
 import {task16gTest,task16gExam} from '../../../src/lib/essay-runtime/task16g-test-catalog';
 import registry from '../../../src/data/essay-source-registry.json';
 import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
@@ -19,7 +20,7 @@ export async function onRequestGet(context?:{env:MathEnvironment}){
    if(response.ok)exams=connectPublishedQuestions(exams,JSON.parse(new TextDecoder().decode(await boundedBody(response,524288))));
   }catch{/* Preserve source-only drafting; never infer canonical/evaluation readiness. */}
  }
- return Response.json({...registry,exams,universities:catalog.universities.filter(u=>registry.coverage.some(c=>c.sourceUniversityId===u.sourceUniversityId)).map(u=>({sourceUniversityId:u.sourceUniversityId,universityId:u.universityId,name:u.name,officialSourceUrl:u.researchSources?.map(s=>officialUrl(s.url)).find(Boolean)??u.offerings.flatMap(o=>o.sources).map(officialUrl).find(Boolean)??null}))},{headers:{'Cache-Control':'public, max-age=60','X-Content-Type-Options':'nosniff'}});
+ return Response.json({...registry,exams,universityNews:universityNewsCatalog(),universities:catalog.universities.filter(u=>registry.coverage.some(c=>c.sourceUniversityId===u.sourceUniversityId)).map(u=>({sourceUniversityId:u.sourceUniversityId,universityId:u.universityId,name:u.name,officialSourceUrl:u.researchSources?.map(s=>officialUrl(s.url)).find(Boolean)??u.offerings.flatMap(o=>o.sources).map(officialUrl).find(Boolean)??null}))},{headers:{'Cache-Control':'public, max-age=60','X-Content-Type-Options':'nosniff'}});
 }
 
 /** Private registration does not publish questions or authorize drafting/evaluation.
