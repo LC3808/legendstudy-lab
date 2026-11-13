@@ -1,0 +1,87 @@
+{
+  "exams": [
+    {
+      "completeExam": true,
+      "examId": "0b5b9aea-e23f-5644-84df-5e5f6f5a2782",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
+      "label": "경희대학교 2026학년도 수시 논술 의·약학계",
+      "mode": "science",
+      "packageDigest": "ffae03db4572befd2b8a80da20cf7d7e635a84f5091f3728ebbd906b2e8e1681",
+      "questionIds": [
+        "ec20faaf-5f4b-5675-8798-aa52a80c2fd6",
+        "8bc7d2fa-8147-5354-857f-1baa46d84355",
+        "7873aab1-1245-52c4-919e-0cc2888e70bd",
+        "dc618430-fc97-5868-ad1d-cc168ed0cf13",
+        "a3d0ca59-1ac8-534c-b30a-74da00810686",
+        "24a038de-b10a-5f62-af31-4214d12c093a",
+        "f67348c2-6c17-550d-a806-64bcfde64af9",
+        "213cc62c-629a-580b-b83c-9846024db47d"
+      ],
+      "mathQuestions": {
+        "ec20faaf-5f4b-5675-8798-aa52a80c2fd6": "3c00e597-1197-5180-9e1e-764cbebb324c",
+        "8bc7d2fa-8147-5354-857f-1baa46d84355": "ac4eacec-9f71-5061-8ede-fb5d13f0ef28"
+      }
+    },
+    {
+      "completeExam": true,
+      "examId": "a16f832e-20b1-5ee3-b3dc-9e0973e7483c",
+      "universityId": "eba1d65c-5bb6-5454-afd4-82a18c57262a",
+      "label": "서울여자대학교 2023학년도 수시 논술 자연계열 오후반",
+      "mode": "science",
+      "packageDigest": "25dc6c4465ceeeb9cd3a7cb63664bbf082790b1f6bbabfe0691ae892bf0b6c9e",
+      "questionIds": [
+        "dd144dfa-d36a-5393-a966-f4968b773485",
+        "b8a5061c-b06d-57c7-b2e1-8e41d248eb17"
+      ],
+      "mathQuestions": {}
+    },
+    {
+      "completeExam": true,
+      "examId": "c71cb668-d9c6-52a9-b771-c48c3efd7dc3",
+      "universityId": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
+      "label": "경희대학교 2027학년도 모의논술 의·약학계",
+      "mode": "science",
+      "packageDigest": "81e1bdb67d8b1838e1e9b6ac1e0ce6bbca45d399bb26d63aeb87cc53aaf5d876",
+      "questionIds": [
+        "694acb0a-4226-5a21-a340-377d3ea166d7",
+        "a4b76128-9a35-56cd-ad08-e4032eac6296",
+        "ae3aa413-1fdf-5274-a0a6-4c4f59c5af8a",
+        "2eece199-d608-5e4d-90f3-8b188543b851",
+        "04321068-ec5c-528d-b211-b5c6d4e44894",
+        "22f61110-4d80-5faa-be59-fab0855fa0cf",
+        "fed0bf52-4242-52e9-9a1e-6a35d8f309ca",
+        "fc09f3ae-3aa8-501d-8a82-05f8449b2140"
+      ],
+      "mathQuestions": {
+        "694acb0a-4226-5a21-a340-377d3ea166d7": "a44dbcc5-ae56-5539-9a6b-220370058f91",
+        "a4b76128-9a35-56cd-ad08-e4032eac6296": "aebce05f-9b64-55f7-92f2-f4f7bb70e8c4"
+      }
+    },
+    {
+      "completeExam": true,
+      "examId": "c7ffdcd0-54fe-5c84-9a12-3df64985d2bc",
+      "universityId": "eba1d65c-5bb6-5454-afd4-82a18c57262a",
+      "label": "서울여자대학교 2025학년도 수시 논술 자연계열 오후반",
+      "mode": "science",
+      "packageDigest": "a7189ad3037489ad9c4dbc1f50895fd30131292667c4d0b18e76f901af1221fa",
+      "questionIds": [
+        "137e2e86-6d84-5e88-a276-b0479e435556",
+        "44610023-7a33-50e6-9924-e06a57f78a84"
+      ],
+      "mathQuestions": {}
+    },
+    {
+      "completeExam": true,
+      "examId": "ebb3dead-13e3-5e19-993f-0a7459431aec",
+      "universityId": "eba1d65c-5bb6-5454-afd4-82a18c57262a",
+      "label": "서울여자대학교 2024학년도 수시 논술 자연계열 오후반",
+      "mode": "science",
+      "packageDigest": "8c9d124a9ace8eca1d8a74e3f846756288c1fbe796175b787ac261938db42008",
+      "questionIds": [
+        "8ba18b30-2a9a-5eba-a8ff-f3544ce67134",
+        "9bb9c3b5-9a18-52b5-a8fb-befbe86573c5"
+      ],
+      "mathQuestions": {}
+    }
+  ]
+}

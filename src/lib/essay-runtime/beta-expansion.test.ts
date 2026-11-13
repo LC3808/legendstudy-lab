@@ -11,15 +11,15 @@ describe('explicit existing Registry expansion',()=>{
   expect(betaExpansionFor('https://preview.example',env,candidate.examId)).toBeUndefined();
  });
  it('pins every complete question and official PDF without adding the TEST-only natural exam',()=>{
-  expect(betaExpansionCandidates).toHaveLength(194);
+  expect(betaExpansionCandidates).toHaveLength(197);
   for(const excluded of ['b98fd0c9-8a84-5747-a35c-25755312aede','a6667288-75ad-50d4-b237-d2a08e2bff8b','942c1c43-914f-5b99-9a30-e6474c363f6f'])expect(betaExpansionCandidates.some(e=>e.examId===excluded)).toBe(false);
-  expect(betaExpansionCandidates.filter(e=>e.mode==='math')).toHaveLength(151);
+  expect(betaExpansionCandidates.filter(e=>e.mode==='math')).toHaveLength(149);
   expect(betaExpansionCandidates.filter(e=>e.mode==='mixed')).toHaveLength(26);
   expect(betaExpansionCandidates.filter(e=>e.mode==='essay')).toHaveLength(17);
   expect(betaExpansionCandidates.filter(e=>e.mode==='essay').map(e=>e.examId)).toContain('1862463a-bf97-580a-ad33-694375db5d50');
   expect(new Set(betaExpansionCandidates.map(e=>e.universityId)).size).toBe(14);
   expect(new Set(betaExpansionCandidates.map(e=>e.examId)).size).toBe(betaExpansionCandidates.length);
-  expect(betaExpansionCandidates.reduce((n,e)=>n+e.questionIds.length,0)).toBe(523);
+  expect(betaExpansionCandidates.reduce((n,e)=>n+e.questionIds.length,0)).toBe(541);
   expect(betaExpansionCandidates.flatMap(e=>Object.values(e.mathQuestions))).toHaveLength(436);
   for(const e of betaExpansionCandidates){
    expect(new Set(e.questionIds).size).toBe(e.questionIds.length);
@@ -58,13 +58,14 @@ it('admits Dongguk 2026 mock Q1 only after the official corrected evidence conne
  expect(expansionMathMatches(e,Object.entries(e.mathQuestions).map(([questionId,leafId])=>({examId:e.examId,questionId,leafId})))).toBe(true);
 });
 
-it('connects SWU 2026 math only and keeps science outside quantitative admission',()=>{
+it('keeps SWU science in its explicit science route and outside quantitative admission',()=>{
  const e=betaExpansionCandidates.find(e=>e.examId==='3643b295-3b63-5b77-bd1b-d3ce68de4885')!;
  expect(e.mode).toBe('math'); expect(e.questionIds).toHaveLength(3);
  expect(expansionMathMatches(e,Object.entries(e.mathQuestions).map(([questionId,leafId])=>({examId:e.examId,questionId,leafId})))).toBe(true);
  for(const science of ['a16f832e-20b1-5ee3-b3dc-9e0973e7483c','ebb3dead-13e3-5e19-993f-0a7459431aec','c7ffdcd0-54fe-5c84-9a12-3df64985d2bc']){
-  expect(betaExpansionCandidates.some(x=>x.examId===science)).toBe(false);
-  expect(betaExpansionFor(origin,{...env,ESSAY_PUBLIC_EXAMS:science,ESSAY_BETA_EXPANSION_EXAMS:science},science)).toBeUndefined();
+  expect(betaExpansionCandidates.find(x=>x.examId===science)?.mode).toBe('science');
+  expect(betaExpansionCandidates.find(x=>x.examId===science)?.mathQuestions).toEqual({});
+  expect(betaExpansionFor(origin,{...env,ESSAY_PUBLIC_EXAMS:science,ESSAY_BETA_EXPANSION_EXAMS:science},science)?.mode).toBe('science');
  }
 });
 
@@ -82,4 +83,17 @@ it('admits only the seven KAU leaves, including a partial exam, while all five H
  const partial=entries.find(e=>e.catalogQuestionIds)!;
  expect(partial.catalogQuestionIds).toEqual(['2476c8dc-a8e4-599a-8cf2-1ffdddbb6f06','ed096a20-52a7-5f27-a71b-4c7c2401cdc9']);
  expect(partial.questionIds).toEqual(['ed096a20-52a7-5f27-a71b-4c7c2401cdc9']);
+});
+
+it('adds 18 explicit science questions while keeping four KHU Math leaf routes and PDF bindings',()=>{
+ const science=betaExpansionCandidates.filter(e=>e.mode==='science');
+ expect(science).toHaveLength(5);
+ expect(science.flatMap(e=>e.questionIds)).toHaveLength(22);
+ expect(science.flatMap(e=>Object.keys(e.mathQuestions))).toHaveLength(4);
+ for(const e of science){
+  expect(e.questionIds.every(q=>!!studentPdfForExam(e.examId,q))).toBe(true);
+  expect(betaExpansionFor(origin,{...env,ESSAY_PUBLIC_EXAMS:e.examId,ESSAY_BETA_EXPANSION_EXAMS:''},e.examId)).toBeUndefined();
+  const rows=Object.entries(e.mathQuestions).map(([questionId,leafId])=>({examId:e.examId,questionId,leafId}));
+  expect(expansionMathMatches(e,rows)).toBe(true);
+ }
 });

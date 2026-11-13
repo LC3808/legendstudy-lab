@@ -1,0 +1,6 @@
+-- Applied migration receipt only. Do not replay as a fresh installation.
+-- Runtime science18: 5 exam packages, 18 science + 4 existing Math entries.
+-- Private original source payload is retained in the production migration ledger.
+-- SQL SHA256: 67721e367ea77540a0d0a2fa9fbb9b437c1ed8f4d0336ee6d80809ca0961ecb6
+-- Existing reviews revision 1 preserved; two reviews advanced to revision 2.
+-- Existing RPC type gates extended only; no grants, RLS or Credit policy changes.

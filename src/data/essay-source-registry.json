@@ -4406,7 +4406,7 @@
           "label": "논제 물리 Ⅲ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         },
         {
@@ -4415,7 +4415,7 @@
           "label": "논제 물리 Ⅳ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         },
         {
@@ -4424,7 +4424,7 @@
           "label": "논제 화학 Ⅲ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         },
         {
@@ -4433,7 +4433,7 @@
           "label": "논제 화학 Ⅳ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         },
         {
@@ -4442,7 +4442,7 @@
           "label": "논제 생명과학 Ⅲ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         },
         {
@@ -4451,7 +4451,7 @@
           "label": "논제 생명과학 Ⅳ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         }
       ]
@@ -4545,7 +4545,7 @@
           "label": "논제 물리 Ⅲ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         },
         {
@@ -4554,7 +4554,7 @@
           "label": "논제 물리 Ⅳ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         },
         {
@@ -4563,7 +4563,7 @@
           "label": "논제 화학 Ⅲ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         },
         {
@@ -4572,7 +4572,7 @@
           "label": "논제 화학 Ⅳ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         },
         {
@@ -4581,7 +4581,7 @@
           "label": "논제 생명과학 Ⅲ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         },
         {
@@ -4590,7 +4590,7 @@
           "label": "논제 생명과학 Ⅳ",
           "sourceLocator": null,
           "lengthLabel": null,
-          "inputMode": "image",
+          "inputMode": "text",
           "accountDraftReady": false
         }
       ]
@@ -8293,6 +8293,112 @@
           "lengthLabel": null,
           "inputMode": "image",
           "accountDraftReady": false
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:swu-2023-admission-natural-pm",
+      "dbExamId": "a16f832e-20b1-5ee3-b3dc-9e0973e7483c",
+      "universityId": "eba1d65c-5bb6-5454-afd4-82a18c57262a",
+      "sourceUniversityId": "swu",
+      "year": 2023,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "오후반",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "exam_identity_and_question_labels",
+      "sourceHashes": [
+        "74e673dfc7908417531488dccc846d00ec5e53f60329cd156ee918bb3a6cd7e6"
+      ],
+      "questions": [
+        {
+          "key": "source:swu-2023-admission-natural-pm:q1",
+          "dbQuestionId": "dd144dfa-d36a-5393-a966-f4968b773485",
+          "label": "문제 1",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "text"
+        },
+        {
+          "key": "source:swu-2023-admission-natural-pm:q2",
+          "dbQuestionId": "b8a5061c-b06d-57c7-b2e1-8e41d248eb17",
+          "label": "문제 2",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "text"
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:swu-2025-admission-natural-pm",
+      "dbExamId": "c7ffdcd0-54fe-5c84-9a12-3df64985d2bc",
+      "universityId": "eba1d65c-5bb6-5454-afd4-82a18c57262a",
+      "sourceUniversityId": "swu",
+      "year": 2025,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "오후반",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "exam_identity_and_question_labels",
+      "sourceHashes": [
+        "cfaa64c82066c76420ffc36f52cac5bc888d9f61444bb1be0a215b6c266802d7",
+        "de7e0713043b7cd00e792474afdc323ade0533ac86cedecb368ce39ff1c8ba7d"
+      ],
+      "questions": [
+        {
+          "key": "source:swu-2025-admission-natural-pm:q1",
+          "dbQuestionId": "137e2e86-6d84-5e88-a276-b0479e435556",
+          "label": "문제 1",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "text"
+        },
+        {
+          "key": "source:swu-2025-admission-natural-pm:q2",
+          "dbQuestionId": "44610023-7a33-50e6-9924-e06a57f78a84",
+          "label": "문제 2",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "text"
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:swu-2024-admission-natural-pm",
+      "dbExamId": "ebb3dead-13e3-5e19-993f-0a7459431aec",
+      "universityId": "eba1d65c-5bb6-5454-afd4-82a18c57262a",
+      "sourceUniversityId": "swu",
+      "year": 2024,
+      "kind": "admission",
+      "track": "자연계열",
+      "session": "오후반",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "exam_identity_and_question_labels",
+      "sourceHashes": [
+        "7da7d5baacba25eb60ae8974f08918b4ae00e26520714feaa140618109c955e4"
+      ],
+      "questions": [
+        {
+          "key": "source:swu-2024-admission-natural-pm:q1",
+          "dbQuestionId": "8ba18b30-2a9a-5eba-a8ff-f3544ce67134",
+          "label": "문제 1",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "text"
+        },
+        {
+          "key": "source:swu-2024-admission-natural-pm:q2",
+          "dbQuestionId": "9bb9c3b5-9a18-52b5-a8fb-befbe86573c5",
+          "label": "문제 2",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "text"
         }
       ],
       "evaluationReady": false
