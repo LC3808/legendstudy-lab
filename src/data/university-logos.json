@@ -23,12 +23,12 @@
     "sha256": "93b49a1028cc7a0545bb33c15a94a445c569bf93a9c5b5719d46f63b47b6e4b1"
   },
   "knu": {
-    "src": "/university-logos/knu.png",
-    "sourcePage": "https://www.knu.ac.kr/wbbs/wbbs/main/main.action",
-    "sourceAsset": "https://www.knu.ac.kr/wbbs/assets/images/common/tablet_header_logo.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "47d1a89fdfebb601a8760a87a8488873e1be44b2d57a00c318d4ff36e6d0e9f7",
-    "darkSurface": true
+    "src": "/university-logos/knu-symbol.jpg",
+    "sourcePage": "https://www.knu.ac.kr/wbbs/wbbs/contents/index.action?menu_idx=194&menu_url=intro/about04",
+    "sourceAsset": "https://www.knu.ac.kr/wbbs/img/intro/ui_symbol01.jpg",
+    "verifiedAt": "2026-11-13",
+    "sha256": "607944a97b0e799c31038a2e598752c12329014ec05096646eddde466a4e8568",
+    "previousAsset": "/university-logos/knu.png"
   },
   "kyunghee": {
     "src": "/university-logos/kyunghee-symbol.png",
@@ -227,11 +227,12 @@
     "previousSourcePage": "https://www.hanyang.ac.kr/home"
   },
   "hongik": {
-    "src": "/university-logos/hongik.svg",
-    "sourcePage": "https://www.hongik.ac.kr/kr/index.do",
-    "sourceAsset": "https://www.hongik.ac.kr/_res/hongik/_share/etc/img-logo-on.svg",
-    "verifiedAt": "2026-10-11",
-    "sha256": "5bf980564f9b9f39d09f2057c6521a94eea165b8082266fc10b8923188d2d775"
+    "src": "/university-logos/hongik-symbol.png",
+    "sourcePage": "https://www.hongik.ac.kr/kr/introduction/school-mark.do",
+    "sourceAsset": "https://www.hongik.ac.kr/_res/hongik/kr/img/introduction/img-symbol@2x.png",
+    "verifiedAt": "2026-11-13",
+    "sha256": "db145a30195cf5e255d9ef5dfabeb26785e457783bfb1ec5f46affa02c8e9c7d",
+    "previousAsset": "/university-logos/hongik.svg"
   },
   "kangnam": {
     "src": "/university-logos/kangnam.png",
@@ -251,12 +252,12 @@
     "previousSourcePage": "https://ssu.ac.kr/%ea%b8%b0%ed%83%80%ec%84%9c%eb%b9%84%ec%8a%a4/total_search/"
   },
   "ewha": {
-    "src": "/university-logos/ewha.svg",
-    "sourcePage": "https://www.ewha.ac.kr/ewha/index.do",
-    "sourceAsset": "https://www.ewha.ac.kr/ewha/index.do#header-logo-wrap",
-    "verifiedAt": "2026-10-11",
-    "sha256": "ec8e477d0f2b5963d3d914fa287eeb3d2fd5d8e5e773bb58801de854f446c6ee",
-    "darkSurface": true
+    "src": "/university-logos/ewha-symbol.png",
+    "sourcePage": "https://www.ewha.ac.kr/ewha/intro/ui-si01.do",
+    "sourceAsset": "https://www.ewha.ac.kr/cms/fileDownload.do?path=%2F_res%2Fewha%2Fetc%2Fsymbol-mark.png",
+    "verifiedAt": "2026-11-13",
+    "sha256": "40bfaae5ec2ef265b2ff790ccad2c208a77e3455d9c851bc9a90faaee795355c",
+    "previousAsset": "/university-logos/ewha.svg"
   },
   "kwangwoon": {
     "src": "/university-logos/kwangwoon-symbol.png",
@@ -314,12 +315,12 @@
     "sha256": "15c776002e45b50f0f9373e8a4dcb9bc2dace49eb4fae073e5c8c0fab7a10c03"
   },
   "dankook": {
-    "src": "/university-logos/dankook.png",
-    "sourcePage": "https://www.dankook.ac.kr/web/kor/home",
-    "sourceAsset": "https://www.dankook.ac.kr/documents/d/global/dku_mix_white",
-    "verifiedAt": "2026-10-11",
-    "sha256": "0651b4c1d7390872cdf3a3412133154eea10d8336ef9e754791d9dfe52d1949c",
-    "darkSurface": true
+    "src": "/university-logos/dankook-symbol.jpg",
+    "sourcePage": "https://www.dankook.ac.kr/web/kor/dku_ui",
+    "sourceAsset": "https://www.dankook.ac.kr/documents/20118/58322/est_ui_int01.jpg/c2112d9f-ab77-68d3-8fd5-5f67ad8442b1?version=1.0&t=1757665607924",
+    "verifiedAt": "2026-11-13",
+    "sha256": "e0ee74546524cdfeba3994e487fb046080716dc8847f5a497a000d948d0e7ab3",
+    "previousAsset": "/university-logos/dankook.png"
   },
   "sogang": {
     "src": "/university-logos/sogang-symbol.png",

@@ -4,6 +4,7 @@ import {useEssayServiceStatus} from './use-essay-service-status';
 import Link from 'next/link';
 import {useEffect,useState,type CSSProperties} from 'react';
 import {universityEssayTheme} from '@/lib/essay-runtime/university-theme';
+import {isEssayDiscoveryUniversity} from '@/lib/essay-runtime/university-service-policy';
 import {filterCatalog,publicCatalog,campusLabel,isFeaturedUniversity} from '@/lib/essay-runtime/public-discovery';
 import './essay-service.css';
 import {sortCatalog,type CatalogSort} from '@/lib/essay-runtime/catalog-sorting';
@@ -22,7 +23,7 @@ export function UniversityDiscovery({essayFirst=false}:{essayFirst?:boolean}){
  }catch{/* session storage unavailable; start from defaults */}setRestored(true);});return()=>{active=false;};},[storeKey]);
  // Persist only after the restore pass completed, so the stored view is never clobbered by initial defaults (incl. StrictMode double-mount).
  useEffect(()=>{if(!restored)return;try{sessionStorage.setItem(storeKey,JSON.stringify({query,region,type,year,page,featured,sort,all}));}catch{/* ignore */}},[restored,storeKey,query,region,type,year,page,featured,sort,all]);
- const rows=sortCatalog(filterCatalog(query,essayFirst?'':region,essayFirst?'':type,essayFirst?'':year).filter(u=>!featured||isFeaturedUniversity(u)),sort).sort((a,b)=>{
+ const rows=sortCatalog(filterCatalog(query,essayFirst?'':region,essayFirst?'':type,essayFirst?'':year).filter(u=>isEssayDiscoveryUniversity(u.sourceUniversityId)&&(!featured||isFeaturedUniversity(u))),sort).sort((a,b)=>{
   // Owner display priority only; server readiness still controls each button.
   if(sort==='service'){
    const front=(id:string)=>id==='sogang'?0:id==='korea'?1:2;
@@ -34,7 +35,7 @@ export function UniversityDiscovery({essayFirst=false}:{essayFirst?:boolean}){
  const visible=all?rows:rows.slice(current*12,current*12+12);
  function change(set:(v:string)=>void,value:string){set(value);setPage(0);}
  return <section className={`essay-service university-discovery${essayFirst?' university-discovery--essay-first':''}`} aria-label="전국 대학 탐색">
- <div className="discovery-topline"><div><p className="university-eyebrow">{essayFirst?'UNIVERSITY SEARCH':'UNIVERSITY GUIDE'}</p><h2>{essayFirst?'대학 찾기':'나에게 맞는 대학 찾기'}</h2></div><div className="discovery-switch" aria-label="대학 목록 범위"><button type="button" aria-pressed={!featured} onClick={()=>{setFeatured(false);setPage(0);}}>전체 42개</button><button type="button" aria-pressed={featured} onClick={()=>{setFeatured(true);setPage(0);}}>주요 대학</button></div></div>
+ <div className="discovery-topline"><div><p className="university-eyebrow">{essayFirst?'UNIVERSITY SEARCH':'UNIVERSITY GUIDE'}</p><h2>{essayFirst?'대학 찾기':'나에게 맞는 대학 찾기'}</h2></div><div className="discovery-switch" aria-label="대학 목록 범위"><button type="button" aria-pressed={!featured} onClick={()=>{setFeatured(false);setPage(0);}}>전체 {publicCatalog.universities.filter(u=>isEssayDiscoveryUniversity(u.sourceUniversityId)).length}개</button><button type="button" aria-pressed={featured} onClick={()=>{setFeatured(true);setPage(0);}}>주요 대학</button></div></div>
  <div className="discovery-filters"><label>대학 검색<span className="university-search"><CatalogIcon kind="search"/><input type="search" placeholder="대학명을 검색해 보세요." value={query} onChange={e=>change(setQuery,e.target.value)}/></span></label>
  {!essayFirst&&<><label>지역<select value={region} onChange={e=>change(setRegion,e.target.value)}><option value="">전체</option>{['서울','경기·인천','기타 지역'].map(x=><option key={x}>{x}</option>)}</select></label>
  <label>논술 유형<select value={type} onChange={e=>change(setType,e.target.value)}><option value="">전체</option>{['인문','경제·경영','수리','과학','단답·약술형'].map(x=><option key={x}>{x}</option>)}</select></label>

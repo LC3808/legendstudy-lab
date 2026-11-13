@@ -15,11 +15,8 @@ function ScheduleRows({rows}:{rows:UniversitySchedule[]}){
 }
 export function UniversitySchedulePanel({university}:{university:CatalogUniversity}){
  const rows=universitySchedules(university),current=rows.filter(r=>r.academicYear===scheduleAcademicYear);
- const pastYears=[...new Set(rows.filter(r=>r.academicYear<scheduleAcademicYear).map(r=>r.academicYear))].sort((a,b)=>b-a);
- return <><details className="essay-schedule"><summary>{scheduleAcademicYear}학년도 논술 일정</summary>
+ return <details className="essay-schedule"><summary>{scheduleAcademicYear}학년도 논술 일정</summary>
   {!current.some(r=>r.date)&&<p>{scheduleAcademicYear}학년도 논술 일정이 아직 확인되지 않았습니다.</p>}
   {!!current.length&&<ScheduleRows rows={current}/>}
- </details><details className="essay-schedule"><summary>지난 논술 일정</summary>
-  {pastYears.length?pastYears.map(year=><section key={year}><h3>{year}학년도</h3><ScheduleRows rows={rows.filter(r=>r.academicYear===year)}/></section>):<p>확인된 지난 논술 일정이 없습니다.</p>}
- </details></>;
+ </details>;
 }

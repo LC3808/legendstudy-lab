@@ -41,3 +41,9 @@ it('uses the official multi-year KAU archive without exposing the source PDF',()
  render(<UniversityCatalogDetail university={catalogUniversity('kau')!}/>);
  expect(screen.getByRole('link',{name:/공식 논술 자료 확인/})).toHaveAttribute('href','https://ibhak.kau.ac.kr/admission/html/rolling/previous_in_exam.asp');
 });
+
+it('does not offer past schedule navigation after the Owner removal',()=>{
+ render(<UniversityCatalogDetail university={catalogUniversity('hufs')!}/>);
+ expect(screen.queryByText('지난 논술 일정')).toBeNull();
+ expect(screen.getByText('2027학년도 논술 일정')).toBeVisible();
+});

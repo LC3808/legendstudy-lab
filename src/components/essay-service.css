@@ -267,9 +267,9 @@
 .essay-first .university-discovery,.university-discovery {border:1px solid #171717;box-shadow:0 8px 24px rgba(15,23,42,.10);}
 
 /* Nov13: common card identity; execution readiness still comes from the server. */
-.university-discovery .university-card { background:#fff; border-color:#dce4ec; }
+.university-discovery .university-card { background:#fff; border:2px solid #242424; }
 .university-discovery .university-card:hover,
-.university-discovery .university-card:focus-within { border-color:var(--university-brand); }
+.university-discovery .university-card:focus-within { border-color:#111; }
 .university-discovery .university-card-top { min-height:64px; align-items:center; }
 .university-discovery .university-primary:not(:disabled) {
  background:var(--university-brand); border-color:var(--university-brand); color:var(--university-button-text);
