@@ -174,3 +174,5 @@ Reviewed History/rewrite exact-ID resolution (`4fc3952`) and confirmed-photo Pro
 
 
 2026-11-13: [대학 소식 연결](university-news-phase1-connected-20261113.md). 운영API42/52, Flutter16+운영파서1PASS. 신규DB0, UUID13/기기 후속.
+
+[개인화 UUID35·관리자 네 순위 페이지네이션 운영](personalization-phase2-release-20261113.md): 7대학 미연결, WEB17/APP17 PASS·실기기NT.

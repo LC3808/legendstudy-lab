@@ -44,3 +44,5 @@ Canonical report: APP `wiki/app-math-commerce-integration-report-20261103.md`.
 - [항공2 공개·최종4 공식 충돌·통합304](essay-remaining6-resolution-20261113.md) — 2026-11-13, 전체308 확장은 PARTIAL.
 
 - [대학 소식 운영 API·Flutter 연결](university-news-phase1-connected-20261113.md) — 29연결/13미완료, 실기기NT.
+
+[개인화 UUID35·관리자 네 순위 페이지네이션 운영](personalization-phase2-release-20261113.md): 7대학 미연결, WEB17/APP17 PASS·실기기NT.

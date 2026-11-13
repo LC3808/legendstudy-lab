@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "deployment": "4a0e7c79-36dd-4a92-90e9-a0816a3672f2",
+  "source": "214b6ad44a5c811e349fa6ccffc2dbe1676ab8e7",
+  "universities": 42,
+  "offerings": 52,
+  "date_texts": 20,
+  "mapped": 35,
+  "settings_unchanged": true,
+  "student_assets_preserved": true,
+  "admin_assets_changed": true,
+  "new_read_rpc": 1,
+  "user_data_writes": 0,
+  "web_tests": 17,
+  "flutter_tests": 17
+}

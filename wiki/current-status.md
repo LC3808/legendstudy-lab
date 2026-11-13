@@ -55,3 +55,5 @@ App usage follow-up: [WEB rankings and APP collection handoff](admin-app-usage-r
 - 2026-11-12: 다음 성균관15문항은 기존PDF RIGHTS_HOLD 유지. 원본 이용조건/표시승인 미확인·운영PDF4/5·일반조회0. 신규변경 없음. 상세는 APP wiki/essay-sungkyunkwan-rights-hold-20261112.md.
 
 [대학 소식 연결](university-news-phase1-connected-20261113.md): API운영/Flutter구현, 29연결13미완료. 테스트17PASS·실기기NT.
+
+[개인화 UUID35·관리자 네 순위 페이지네이션 운영](personalization-phase2-release-20261113.md): 7대학 미연결, WEB17/APP17 PASS·실기기NT.
