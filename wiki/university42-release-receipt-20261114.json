@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "deployment": "798de461-c684-428e-90dc-3d3489191cc2",
+  "source": "c9951785ce3096e693d145505f3a69173211191c",
+  "universities": 42,
+  "offerings": 52,
+  "date_texts": 20,
+  "mapped": 42,
+  "static_assets_unchanged": true,
+  "settings_unchanged": true,
+  "new_master_rows": 7,
+  "existing_user_rows_changed": 0,
+  "rollback_executed": false
+}
