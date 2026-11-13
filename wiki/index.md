@@ -1,3 +1,5 @@
+[2026-11-14 학생 MY 개편 설계 (Flutter, 코드 기반)](student-my-redesign-20261114.md)
+[2026-11-14 관리자 학습·입시 종합 현황 개편 설계 (WEB, 코드 기반)](admin-learning-admissions-overview-redesign-20261114.md)
 [2026-11-13 개인화·홈/MY/관리자 정보구조(IA) 개편 설계안](personalization-my-ux-ia-20261113.md)
 [2026-11-11 Codex 인수인계 — 학습·입시 기능 최종 보고](codex-handoff-learning-admissions-20261111.md)
 [학습자료72h·관리자 갱신 후보](material-sync-admin-20261108.md)
