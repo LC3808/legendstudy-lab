@@ -1,0 +1,38 @@
+{
+  "exams": [
+    {
+      "examId": "00355b1e-744d-553c-bba3-2483d4d57d42",
+      "label": "한국항공대 2024 공학계열",
+      "mathQuestions": {
+        "74e16370-a1be-57f9-b6c7-b2e035bfbb06": "6df6f2da-0744-54f5-83ae-f40ff03d210c"
+      },
+      "mode": "math",
+      "packageDigest": "7c0078265829c475473986343998b05c31dd75606cf85536bbc34c75c9223678",
+      "questionIds": [
+        "74e16370-a1be-57f9-b6c7-b2e035bfbb06"
+      ],
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
+      "catalogQuestionIds": [
+        "74e16370-a1be-57f9-b6c7-b2e035bfbb06",
+        "f0ae1ea0-6c50-5b7e-b42b-35f436849c6f"
+      ]
+    },
+    {
+      "examId": "3e312310-9393-5d7d-90d3-731aee13c360",
+      "label": "한국항공대 2026 이학계열",
+      "mathQuestions": {
+        "48512d94-959c-5a94-b985-7e1bd005c6b7": "b5c82f4d-fb81-5d04-b0b1-3af5369379f1"
+      },
+      "mode": "math",
+      "packageDigest": "b377b5a217112cc5b09c50d034c3cb4cb54078982d47badd3290ed36cbc91536",
+      "questionIds": [
+        "48512d94-959c-5a94-b985-7e1bd005c6b7"
+      ],
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
+      "catalogQuestionIds": [
+        "8c11754b-d3af-56bf-9b66-d72092468f70",
+        "48512d94-959c-5a94-b985-7e1bd005c6b7"
+      ]
+    }
+  ]
+}

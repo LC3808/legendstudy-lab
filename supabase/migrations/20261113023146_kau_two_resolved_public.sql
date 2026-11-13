@@ -1,0 +1,5 @@
+-- Applied migration receipt; do not replay as a fresh install.
+-- Exact private payload retained in the production migration ledger.
+-- KAU 2 existing exams / 2 resolved questions / 29 new rows.
+-- 2 existing Math allowlists expanded; Registry IDs and ACLs unchanged.
+-- SHA256 5467598b3fb7d462d4005d86c31620e62519f60dfc2168d455bd5d6a6d336f7f

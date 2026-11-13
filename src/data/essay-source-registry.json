@@ -8574,6 +8574,76 @@
         }
       ],
       "evaluationReady": false
+    },
+    {
+      "key": "source:kau-2024-admission-engineering",
+      "dbExamId": "00355b1e-744d-553c-bba3-2483d4d57d42",
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
+      "sourceUniversityId": "kau",
+      "year": 2024,
+      "kind": "admission",
+      "track": "공학계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "exam_identity_and_question_labels",
+      "sourceHashes": [
+        "01fc6ddc2224731af0ca68bb86a4ffe90eb7997c306a9d429513f7ad77fa3632"
+      ],
+      "questions": [
+        {
+          "key": "source:kau-2024-admission-engineering:q1",
+          "dbQuestionId": "74e16370-a1be-57f9-b6c7-b2e035bfbb06",
+          "label": "문제 1",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        },
+        {
+          "key": "source:kau-2024-admission-engineering:q2",
+          "dbQuestionId": "f0ae1ea0-6c50-5b7e-b42b-35f436849c6f",
+          "label": "문제 2",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:kau-2026-admission-science",
+      "dbExamId": "3e312310-9393-5d7d-90d3-731aee13c360",
+      "universityId": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
+      "sourceUniversityId": "kau",
+      "year": 2026,
+      "kind": "admission",
+      "track": "이학계열",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "exam_identity_and_question_labels",
+      "sourceHashes": [
+        "f72636d51947d4c25cd76de0f00c1c2eef7caaa512a355634010af6605f6512e"
+      ],
+      "questions": [
+        {
+          "key": "source:kau-2026-admission-science:q1",
+          "dbQuestionId": "8c11754b-d3af-56bf-9b66-d72092468f70",
+          "label": "문제 1",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        },
+        {
+          "key": "source:kau-2026-admission-science:q2",
+          "dbQuestionId": "48512d94-959c-5a94-b985-7e1bd005c6b7",
+          "label": "문제 2",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        }
+      ],
+      "evaluationReady": false
     }
   ]
 }

@@ -11,16 +11,16 @@ describe('explicit existing Registry expansion',()=>{
   expect(betaExpansionFor('https://preview.example',env,candidate.examId)).toBeUndefined();
  });
  it('pins every complete question and official PDF without adding the TEST-only natural exam',()=>{
-  expect(betaExpansionCandidates).toHaveLength(202);
+  expect(betaExpansionCandidates).toHaveLength(204);
   for(const excluded of ['b98fd0c9-8a84-5747-a35c-25755312aede','a6667288-75ad-50d4-b237-d2a08e2bff8b','942c1c43-914f-5b99-9a30-e6474c363f6f'])expect(betaExpansionCandidates.some(e=>e.examId===excluded)).toBe(false);
-  expect(betaExpansionCandidates.filter(e=>e.mode==='math')).toHaveLength(154);
+  expect(betaExpansionCandidates.filter(e=>e.mode==='math')).toHaveLength(156);
   expect(betaExpansionCandidates.filter(e=>e.mode==='mixed')).toHaveLength(26);
   expect(betaExpansionCandidates.filter(e=>e.mode==='essay')).toHaveLength(17);
   expect(betaExpansionCandidates.filter(e=>e.mode==='essay').map(e=>e.examId)).toContain('1862463a-bf97-580a-ad33-694375db5d50');
   expect(new Set(betaExpansionCandidates.map(e=>e.universityId)).size).toBe(15);
   expect(new Set(betaExpansionCandidates.map(e=>e.examId)).size).toBe(betaExpansionCandidates.length);
-  expect(betaExpansionCandidates.reduce((n,e)=>n+e.questionIds.length,0)).toBe(556);
-  expect(betaExpansionCandidates.flatMap(e=>Object.values(e.mathQuestions))).toHaveLength(451);
+  expect(betaExpansionCandidates.reduce((n,e)=>n+e.questionIds.length,0)).toBe(558);
+  expect(betaExpansionCandidates.flatMap(e=>Object.values(e.mathQuestions))).toHaveLength(453);
   for(const e of betaExpansionCandidates){
    expect(new Set(e.questionIds).size).toBe(e.questionIds.length);
    expect(Object.keys(e.mathQuestions).every(q=>e.questionIds.includes(q))).toBe(true);
@@ -70,10 +70,10 @@ it('keeps SWU science in its explicit science route and outside quantitative adm
 });
 
 
-it('admits only the seven KAU leaves, including a partial exam, while all five HOLD leaves stay closed',()=>{
+it('admits nine verified KAU leaves, including a partial exam, while three remaining HOLD leaves stay closed',()=>{
  const entries=betaExpansionCandidates.filter(e=>e.universityId==='881976e7-8e3d-53e3-8bd8-4ebe5d3a0445');
- expect(entries).toHaveLength(4); expect(entries.flatMap(e=>e.questionIds)).toHaveLength(7);
- const hold=['74e16370-a1be-57f9-b6c7-b2e035bfbb06','f0ae1ea0-6c50-5b7e-b42b-35f436849c6f','2476c8dc-a8e4-599a-8cf2-1ffdddbb6f06','8c11754b-d3af-56bf-9b66-d72092468f70','48512d94-959c-5a94-b985-7e1bd005c6b7'];
+ expect(entries).toHaveLength(6); expect(entries.flatMap(e=>e.questionIds)).toHaveLength(9);
+ const hold=['f0ae1ea0-6c50-5b7e-b42b-35f436849c6f','2476c8dc-a8e4-599a-8cf2-1ffdddbb6f06','8c11754b-d3af-56bf-9b66-d72092468f70'];
  for(const e of entries){
   const rows=Object.entries(e.mathQuestions).map(([questionId,leafId])=>({examId:e.examId,questionId,leafId}));
   expect(expansionMathMatches(e,rows)).toBe(true);
