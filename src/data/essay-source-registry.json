@@ -1405,7 +1405,7 @@
     },
     {
       "key": "source:dc5b3e812a60ed1766af528ef74ab3d70c6202097785d0199a714629306bbc9f",
-      "dbExamId": null,
+      "dbExamId": "ed5bcc6c-ee78-527c-94bc-c913414c846c",
       "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f",
       "sourceUniversityId": "skku",
       "year": 2023,
@@ -1421,7 +1421,7 @@
       "questions": [
         {
           "key": "source:dc5b3e812a60ed1766af528ef74ab3d70c6202097785d0199a714629306bbc9f:1",
-          "dbQuestionId": null,
+          "dbQuestionId": "1ce6e75d-2e6e-543c-b6a4-e1c41b95b0bb",
           "label": "문제 1",
           "sourceLocator": null,
           "lengthLabel": null,
@@ -1429,7 +1429,7 @@
         },
         {
           "key": "source:dc5b3e812a60ed1766af528ef74ab3d70c6202097785d0199a714629306bbc9f:2",
-          "dbQuestionId": null,
+          "dbQuestionId": "40cb9125-a195-5540-a650-60f0cc6f7518",
           "label": "문제 2",
           "sourceLocator": null,
           "lengthLabel": null,
@@ -1437,7 +1437,7 @@
         },
         {
           "key": "source:dc5b3e812a60ed1766af528ef74ab3d70c6202097785d0199a714629306bbc9f:3",
-          "dbQuestionId": null,
+          "dbQuestionId": "d0e47369-676a-5347-94f3-bb7a2dcd6814",
           "label": "문제 3",
           "sourceLocator": null,
           "lengthLabel": null,
@@ -8399,6 +8399,178 @@
           "sourceLocator": null,
           "lengthLabel": null,
           "inputMode": "text"
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:skku-2026-admission-sk05",
+      "dbExamId": "17a2b4c9-6070-51b4-8f96-5d347335b5d2",
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f",
+      "sourceUniversityId": "skku",
+      "year": 2026,
+      "kind": "admission",
+      "track": "수리형",
+      "session": "3교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "exam_identity_and_question_labels",
+      "sourceHashes": [
+        "494d52fb0c9dbee2f6e18b0f42bc55ba471af00e543eb63b04e19528941d5924"
+      ],
+      "questions": [
+        {
+          "key": "source:skku-2026-admission-sk05:q1",
+          "dbQuestionId": "8121b47e-4a8c-5767-b90c-90bde3327d74",
+          "label": "문제 1",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        },
+        {
+          "key": "source:skku-2026-admission-sk05:q2",
+          "dbQuestionId": "e8deaca8-512a-56d8-82fa-fa11993883bc",
+          "label": "문제 2",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        },
+        {
+          "key": "source:skku-2026-admission-sk05:q3",
+          "dbQuestionId": "b36ee18b-15cd-53bf-ba79-62bccf56510e",
+          "label": "문제 3",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:skku-2026-admission-sk03",
+      "dbExamId": "cfced8fe-2111-5ee2-9b81-b19dd1933d54",
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f",
+      "sourceUniversityId": "skku",
+      "year": 2026,
+      "kind": "admission",
+      "track": "수리형",
+      "session": "2교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "exam_identity_and_question_labels",
+      "sourceHashes": [
+        "b04a8dd35be34f8205e2d66527d415d08411b6570e70cd7970b5b2d5b481e1a4"
+      ],
+      "questions": [
+        {
+          "key": "source:skku-2026-admission-sk03:q1",
+          "dbQuestionId": "0ee85c19-7d9f-5186-8ff7-6f9353f21097",
+          "label": "문제 1",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        },
+        {
+          "key": "source:skku-2026-admission-sk03:q2",
+          "dbQuestionId": "8633896c-7611-5eeb-ae69-ab2672f1d867",
+          "label": "문제 2",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        },
+        {
+          "key": "source:skku-2026-admission-sk03:q3",
+          "dbQuestionId": "337b7c8a-1c15-5f67-b542-f82877aad6df",
+          "label": "문제 3",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:skku-2027-mock-sk12",
+      "dbExamId": "f4674c42-defb-57df-9356-611138d2be85",
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f",
+      "sourceUniversityId": "skku",
+      "year": 2027,
+      "kind": "mock",
+      "track": "수리형",
+      "session": null,
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "exam_identity_and_question_labels",
+      "sourceHashes": [
+        "0ff97ea1406202ab8236572e4ad6b1acd3024def73aa4a01423d8bec0fbcf2b8"
+      ],
+      "questions": [
+        {
+          "key": "source:skku-2027-mock-sk12:q1",
+          "dbQuestionId": "9ea7243c-f209-5341-a334-347cda833409",
+          "label": "문제 1",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        },
+        {
+          "key": "source:skku-2027-mock-sk12:q2",
+          "dbQuestionId": "c5fc0bc9-02a5-5298-904d-33c9b3c405eb",
+          "label": "문제 2",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        },
+        {
+          "key": "source:skku-2027-mock-sk12:q3",
+          "dbQuestionId": "fda4849f-0f49-5553-99bb-1c78985ab5cb",
+          "label": "문제 3",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        }
+      ],
+      "evaluationReady": false
+    },
+    {
+      "key": "source:skku-2026-admission-sk01",
+      "dbExamId": "fa908d5a-f3f9-5565-b11a-8fcaf8d0bc78",
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f",
+      "sourceUniversityId": "skku",
+      "year": 2026,
+      "kind": "admission",
+      "track": "수리형",
+      "session": "1교시",
+      "campus": null,
+      "verification": "VERIFIED",
+      "verificationScope": "exam_identity_and_question_labels",
+      "sourceHashes": [
+        "21cf7b5e88c8c66840f22b12a726061f0876422ab755f58491fe19c2a2d13908"
+      ],
+      "questions": [
+        {
+          "key": "source:skku-2026-admission-sk01:q1",
+          "dbQuestionId": "dcd032b7-e2e8-52d7-b3fe-ccb55e572a96",
+          "label": "문제 1",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        },
+        {
+          "key": "source:skku-2026-admission-sk01:q2",
+          "dbQuestionId": "8215d793-884f-5392-ba34-39b2c934c7db",
+          "label": "문제 2",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
+        },
+        {
+          "key": "source:skku-2026-admission-sk01:q3",
+          "dbQuestionId": "1bb7bbff-fdf4-5205-b779-ccb29e756479",
+          "label": "문제 3",
+          "sourceLocator": null,
+          "lengthLabel": null,
+          "inputMode": "image"
         }
       ],
       "evaluationReady": false

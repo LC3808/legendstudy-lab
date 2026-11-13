@@ -19,8 +19,8 @@ function decode(v){if(!v.startsWith('uuid64:'))return v.split(',').filter(Boolea
 const env=project.deployment_configs.production.env_vars,patch={},counts={};
 for(const name of ['ESSAY_PUBLIC_EXAMS','ESSAY_BETA_EXPANSION_EXAMS','MATH_PUBLIC_LEAVES']){
  if(env[name]?.type!=='plain_text')throw Error('Scope must be plaintext');
- const before=decode(env[name].value),extra=name==='MATH_PUBLIC_LEAVES'?additions.flatMap(e=>Object.values(e.mathQuestions)):additions.map(e=>e.examId);
- if(extra.some(id=>before.includes(id)))throw Error('Already applied or scope drift');
+ const before=decode(env[name].value),declared=name==='MATH_PUBLIC_LEAVES'?additions.flatMap(e=>Object.values(e.mathQuestions)):additions.map(e=>e.examId);
+ const existing=declared.filter(id=>before.includes(id));if(existing.length!==0&&existing.length!==declared.length)throw Error('Partial scope drift');const extra=declared.filter(id=>!before.includes(id));
  const after=[...before,...extra];if(after.length>512||new Set(after).size!==after.length)throw Error('Invalid expanded scope');
  patch[name]={type:'plain_text',value:name==='ESSAY_PUBLIC_EXAMS'?'uuid64:'+Buffer.concat(after.map(id=>Buffer.from(id.replaceAll('-',''),'hex'))).toString('base64'):after.join(',')};counts[name]=[before.length,after.length];
 }

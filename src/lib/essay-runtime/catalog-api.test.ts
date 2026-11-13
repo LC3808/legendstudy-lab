@@ -5,7 +5,7 @@ import source from '@/data/essay-source-registry.json';
 it('APP and WEB receive the same existing source keys and question metadata',async()=>{
  const response=await onRequestGet();const data=await response.json();
  expect(data.exams).toEqual(source.exams);expect(data.universities).toHaveLength(21);
- expect(data.exams.flatMap((e:{questions:unknown[]})=>e.questions)).toHaveLength(536);
+ expect(data.exams.flatMap((e:{questions:unknown[]})=>e.questions)).toHaveLength(548);
  expect(data.exams.every((e:{evaluationReady:boolean})=>!e.evaluationReady)).toBe(true);
 });
 
@@ -49,4 +49,12 @@ it('denies foreign origins, missing auth/configuration and unallowlisted subject
  }
  expect(request).not.toHaveBeenCalled();
  const r=await onRequestPost({request:new Request('https://lab.legendstudy.com/api/essay/catalog',{method:'POST',headers:{Authorization:'Bearer student'}}),env:privateEnv});expect(r.status).toBe(503);expect(request).toHaveBeenCalledTimes(1);
+});
+
+it('exposes all fifteen SKKU Registry identities through the shared public catalog',async()=>{
+ const ids=['17a2b4c9-6070-51b4-8f96-5d347335b5d2','cfced8fe-2111-5ee2-9b81-b19dd1933d54','ed5bcc6c-ee78-527c-94bc-c913414c846c','f4674c42-defb-57df-9356-611138d2be85','fa908d5a-f3f9-5565-b11a-8fcaf8d0bc78'];
+ const data=await (await onRequestGet()).json();const exams=data.exams.filter((e:{dbExamId:string})=>ids.includes(e.dbExamId));
+ expect(exams).toHaveLength(5);const questions=exams.flatMap((e:{questions:{dbQuestionId:string}[]})=>e.questions);
+ expect(questions).toHaveLength(15);expect(new Set(questions.map((q:{dbQuestionId:string})=>q.dbQuestionId)).size).toBe(15);
+ expect(questions.every((q:{dbQuestionId:string})=>!!q.dbQuestionId)).toBe(true);
 });
