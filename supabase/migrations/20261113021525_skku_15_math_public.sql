@@ -1,0 +1,5 @@
+-- Applied migration receipt; do not replay as a fresh install.
+-- Exact private source payload retained in production migration ledger.
+-- SKKU 5 exams / 15 questions / 243 rows; 2 existing Math admission functions expanded.
+-- Original problem PDFs: 5 exact objects, authenticated active accounts only.
+-- SHA256 f22ba79583903423960b059e6155d0d96caa728917e4828a6a71bf9349c8cbd8

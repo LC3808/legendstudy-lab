@@ -1697,9 +1697,9 @@
       "assetId": "21cf7b5e88c8c66840f22b12a726061f0876422ab755f58491fe19c2a2d13908",
       "pageCount": 4,
       "startPage": 2,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "fa908d5a-f3f9-5565-b11a-8fcaf8d0bc78",
@@ -1707,9 +1707,9 @@
       "assetId": "21cf7b5e88c8c66840f22b12a726061f0876422ab755f58491fe19c2a2d13908",
       "pageCount": 4,
       "startPage": 3,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "fa908d5a-f3f9-5565-b11a-8fcaf8d0bc78",
@@ -1717,9 +1717,9 @@
       "assetId": "21cf7b5e88c8c66840f22b12a726061f0876422ab755f58491fe19c2a2d13908",
       "pageCount": 4,
       "startPage": 4,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "cfced8fe-2111-5ee2-9b81-b19dd1933d54",
@@ -1727,9 +1727,9 @@
       "assetId": "b04a8dd35be34f8205e2d66527d415d08411b6570e70cd7970b5b2d5b481e1a4",
       "pageCount": 4,
       "startPage": 2,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "cfced8fe-2111-5ee2-9b81-b19dd1933d54",
@@ -1737,9 +1737,9 @@
       "assetId": "b04a8dd35be34f8205e2d66527d415d08411b6570e70cd7970b5b2d5b481e1a4",
       "pageCount": 4,
       "startPage": 3,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "cfced8fe-2111-5ee2-9b81-b19dd1933d54",
@@ -1747,9 +1747,9 @@
       "assetId": "b04a8dd35be34f8205e2d66527d415d08411b6570e70cd7970b5b2d5b481e1a4",
       "pageCount": 4,
       "startPage": 4,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "17a2b4c9-6070-51b4-8f96-5d347335b5d2",
@@ -1757,9 +1757,9 @@
       "assetId": "494d52fb0c9dbee2f6e18b0f42bc55ba471af00e543eb63b04e19528941d5924",
       "pageCount": 4,
       "startPage": 2,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "17a2b4c9-6070-51b4-8f96-5d347335b5d2",
@@ -1767,9 +1767,9 @@
       "assetId": "494d52fb0c9dbee2f6e18b0f42bc55ba471af00e543eb63b04e19528941d5924",
       "pageCount": 4,
       "startPage": 3,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "17a2b4c9-6070-51b4-8f96-5d347335b5d2",
@@ -1777,9 +1777,9 @@
       "assetId": "494d52fb0c9dbee2f6e18b0f42bc55ba471af00e543eb63b04e19528941d5924",
       "pageCount": 4,
       "startPage": 4,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "035e5d8d-e91f-5acd-a3a3-4d321bc9f067",
@@ -1847,9 +1847,9 @@
       "assetId": "0ff97ea1406202ab8236572e4ad6b1acd3024def73aa4a01423d8bec0fbcf2b8",
       "pageCount": 8,
       "startPage": 3,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "f4674c42-defb-57df-9356-611138d2be85",
@@ -1857,9 +1857,9 @@
       "assetId": "0ff97ea1406202ab8236572e4ad6b1acd3024def73aa4a01423d8bec0fbcf2b8",
       "pageCount": 8,
       "startPage": 4,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "f4674c42-defb-57df-9356-611138d2be85",
@@ -1867,9 +1867,9 @@
       "assetId": "0ff97ea1406202ab8236572e4ad6b1acd3024def73aa4a01423d8bec0fbcf2b8",
       "pageCount": 8,
       "startPage": 5,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "b318a98d-190d-5a6f-8961-7482e7a4ec58",
@@ -4407,9 +4407,9 @@
       "assetId": "75e9730711eab035b1cfcb08f9ea5ea0a1c455eed0b2ebf4b5601eaa7246410f",
       "pageCount": 6,
       "startPage": 2,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "ed5bcc6c-ee78-527c-94bc-c913414c846c",
@@ -4417,9 +4417,9 @@
       "assetId": "75e9730711eab035b1cfcb08f9ea5ea0a1c455eed0b2ebf4b5601eaa7246410f",
       "pageCount": 6,
       "startPage": 3,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "ed5bcc6c-ee78-527c-94bc-c913414c846c",
@@ -4427,9 +4427,9 @@
       "assetId": "75e9730711eab035b1cfcb08f9ea5ea0a1c455eed0b2ebf4b5601eaa7246410f",
       "pageCount": 6,
       "startPage": 4,
-      "verification": "VISUAL_REVIEWED",
-      "studentDisplay": "PENDING",
-      "storageRead": "PENDING"
+      "verification": "VERIFIED",
+      "studentDisplay": "APPROVED",
+      "storageRead": "APPROVED"
     },
     {
       "examId": "d4d3ad73-72c2-5bf8-9095-4e096facd9e8",

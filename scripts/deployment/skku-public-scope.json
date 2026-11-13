@@ -1,0 +1,94 @@
+{
+  "exams": [
+    {
+      "completeExam": true,
+      "examId": "fa908d5a-f3f9-5565-b11a-8fcaf8d0bc78",
+      "label": "성균관대학교 2026 수리형",
+      "mathQuestions": {
+        "1bb7bbff-fdf4-5205-b779-ccb29e756479": "689d9d1f-b6e4-5f33-ba36-f9d7eb89e4d6",
+        "8215d793-884f-5392-ba34-39b2c934c7db": "d4e4069f-e206-5f16-8985-0ff8c046bdb4",
+        "dcd032b7-e2e8-52d7-b3fe-ccb55e572a96": "a1964efc-20e9-56ab-bc31-60ad59459a9d"
+      },
+      "mode": "math",
+      "packageDigest": "bdbb3d7785b0856c3fb121d0374195443a0db79a9d7ee3d5429fac16ffdb22a0",
+      "questionIds": [
+        "dcd032b7-e2e8-52d7-b3fe-ccb55e572a96",
+        "8215d793-884f-5392-ba34-39b2c934c7db",
+        "1bb7bbff-fdf4-5205-b779-ccb29e756479"
+      ],
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    },
+    {
+      "completeExam": true,
+      "examId": "cfced8fe-2111-5ee2-9b81-b19dd1933d54",
+      "label": "성균관대학교 2026 수리형",
+      "mathQuestions": {
+        "0ee85c19-7d9f-5186-8ff7-6f9353f21097": "0d231f50-de03-560c-873c-134efbc68c42",
+        "337b7c8a-1c15-5f67-b542-f82877aad6df": "0f654b77-2150-5044-9d80-5c47327d1ba7",
+        "8633896c-7611-5eeb-ae69-ab2672f1d867": "5c37b05c-0ec6-5e58-904d-08e45a4c417f"
+      },
+      "mode": "math",
+      "packageDigest": "a8e71e6bf64803b22186b53e02b8bfb660272fa31975bbc41a120b25563fe657",
+      "questionIds": [
+        "0ee85c19-7d9f-5186-8ff7-6f9353f21097",
+        "8633896c-7611-5eeb-ae69-ab2672f1d867",
+        "337b7c8a-1c15-5f67-b542-f82877aad6df"
+      ],
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    },
+    {
+      "completeExam": true,
+      "examId": "17a2b4c9-6070-51b4-8f96-5d347335b5d2",
+      "label": "성균관대학교 2026 수리형",
+      "mathQuestions": {
+        "8121b47e-4a8c-5767-b90c-90bde3327d74": "69a3daeb-b8c3-5477-9090-34aa939968b9",
+        "b36ee18b-15cd-53bf-ba79-62bccf56510e": "1a4bc669-a066-50a9-ac7b-1b10247f29c2",
+        "e8deaca8-512a-56d8-82fa-fa11993883bc": "b2803c9d-928e-52fc-8368-4772710bddbc"
+      },
+      "mode": "math",
+      "packageDigest": "f6d17d3c8ceaf3dc012d4fa1f607c2c934862368497cd957f4238d76f2c4e0be",
+      "questionIds": [
+        "8121b47e-4a8c-5767-b90c-90bde3327d74",
+        "e8deaca8-512a-56d8-82fa-fa11993883bc",
+        "b36ee18b-15cd-53bf-ba79-62bccf56510e"
+      ],
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    },
+    {
+      "completeExam": true,
+      "examId": "ed5bcc6c-ee78-527c-94bc-c913414c846c",
+      "label": "성균관대학교 2023 자연계",
+      "mathQuestions": {
+        "1ce6e75d-2e6e-543c-b6a4-e1c41b95b0bb": "0420e042-25f6-5999-bcdf-813e3e811322",
+        "40cb9125-a195-5540-a650-60f0cc6f7518": "15647fe8-355e-527d-ac06-0b32bdde5ddb",
+        "d0e47369-676a-5347-94f3-bb7a2dcd6814": "6af156e6-a311-576f-a44f-1fe78551bc30"
+      },
+      "mode": "math",
+      "packageDigest": "c6c7837a4c33553a230a2a2e11c98a3b7f3900ac0bbe1c4a597bec7e4a3f82c2",
+      "questionIds": [
+        "1ce6e75d-2e6e-543c-b6a4-e1c41b95b0bb",
+        "40cb9125-a195-5540-a650-60f0cc6f7518",
+        "d0e47369-676a-5347-94f3-bb7a2dcd6814"
+      ],
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    },
+    {
+      "completeExam": true,
+      "examId": "f4674c42-defb-57df-9356-611138d2be85",
+      "label": "성균관대학교 2027 수리형",
+      "mathQuestions": {
+        "9ea7243c-f209-5341-a334-347cda833409": "b7de2d18-1977-57dc-8f26-1d5bace7d143",
+        "c5fc0bc9-02a5-5298-904d-33c9b3c405eb": "abca9e8e-b198-59d8-bff5-cf6877d38b96",
+        "fda4849f-0f49-5553-99bb-1c78985ab5cb": "130c075d-fe83-5141-a9c5-68be68871446"
+      },
+      "mode": "math",
+      "packageDigest": "00d3ae832a288e00352428b8fd5deb39c3957db0b9d00cccbc58db4c7afc58c9",
+      "questionIds": [
+        "9ea7243c-f209-5341-a334-347cda833409",
+        "c5fc0bc9-02a5-5298-904d-33c9b3c405eb",
+        "fda4849f-0f49-5553-99bb-1c78985ab5cb"
+      ],
+      "universityId": "4acee829-94d4-5f8a-b440-a72e423d439f"
+    }
+  ]
+}
