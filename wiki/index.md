@@ -1,3 +1,4 @@
+[2026-11-13 개인화·홈/MY/관리자 정보구조(IA) 개편 설계안](personalization-my-ux-ia-20261113.md)
 [2026-11-11 Codex 인수인계 — 학습·입시 기능 최종 보고](codex-handoff-learning-admissions-20261111.md)
 [학습자료72h·관리자 갱신 후보](material-sync-admin-20261108.md)
 [11/8 긴급 대학 상태·자료 복구 및 자동 갱신 후속](emergency-status-material-sync-20261108.md)
