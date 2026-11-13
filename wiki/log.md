@@ -166,3 +166,8 @@ Reviewed History/rewrite exact-ID resolution (`4fc3952`) and confirmed-photo Pro
 - 2026-11-12 02:37 KST: [건국 신규24문항 공개](konkuk-public-20261112.md), Pages802acf70/source96bb290. 기존4·비논술2049정적자산·설정/라우팅 보존. 실제Provider0, 신규 공개/계약검증과 Owner 품질검수 분리.
 
 - 2026-11-12 [경희3시험7문항 공개 완료](kyunghee-public-20261112.md): Pages532977a6/source2f585c0, 기존3/건국28/2166자산 보존. 과학12 평가진입 제외, 실제AI0.
+
+
+## 2026-11-13 — 최종6 중 항공2 공개 / 공식 충돌4
+
+[최종 기록](essay-remaining6-resolution-20261113.md). 기존 HOLD의 원문 오독2건 해소, 운영29행/Math2 공개. 304공개·4잔여, 기존302 보존. WEB63PASS/build, APP15PASS4SKIP, 격리원복 PASS, Provider0. 전체 CLOSED 아님.

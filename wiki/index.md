@@ -40,3 +40,5 @@ Canonical report: APP `wiki/app-math-commerce-integration-report-20261103.md`.
 - 2026-11-12 [건국대 자연 공개 연결 준비](konkuk-public-20261112.md):6시험24문항, 운영 소스 보존·관련381 PASS. 적용 전.
 
 - 2026-11-12 [경희3시험7문항 공개 준비](kyunghee-public-20261112.md): 기존 부분공개 계약 재사용, 운영 반영 전.
+
+- [항공2 공개·최종4 공식 충돌·통합304](essay-remaining6-resolution-20261113.md) — 2026-11-13, 전체308 확장은 PARTIAL.
