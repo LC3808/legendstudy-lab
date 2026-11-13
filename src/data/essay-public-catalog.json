@@ -882,7 +882,7 @@
     },
     {
       "sourceUniversityId": "dongduk",
-      "universityId": null,
+      "universityId": "550973d4-e672-4a5a-90f0-8f2ba5a95d55",
       "canonicalSlug": null,
       "name": "동덕여자대학교",
       "offerings": [
@@ -1157,7 +1157,7 @@
     },
     {
       "sourceUniversityId": "seokyeong",
-      "universityId": null,
+      "universityId": "62171755-3e5c-406d-9f87-4ee0df4c70de",
       "canonicalSlug": null,
       "name": "서경대학교",
       "offerings": [
@@ -1572,7 +1572,7 @@
     },
     {
       "sourceUniversityId": "suwon",
-      "universityId": null,
+      "universityId": "4e93f243-74e7-4f8e-b58b-fa537a39ddf8",
       "canonicalSlug": null,
       "name": "수원대학교",
       "offerings": [
@@ -1739,7 +1739,7 @@
     },
     {
       "sourceUniversityId": "shinhan",
-      "universityId": null,
+      "universityId": "7b8ae450-5e6e-49bc-a69c-272bd0214ddf",
       "canonicalSlug": null,
       "name": "신한대학교",
       "offerings": [
@@ -1951,7 +1951,7 @@
     },
     {
       "sourceUniversityId": "eulji",
-      "universityId": null,
+      "universityId": "8540780d-01e6-4361-8190-1768cf4cdbca",
       "canonicalSlug": null,
       "name": "을지대학교",
       "offerings": [
@@ -2247,7 +2247,7 @@
     },
     {
       "sourceUniversityId": "tukorea",
-      "universityId": null,
+      "universityId": "d25c9a74-4969-4143-872c-1c850338dd0b",
       "canonicalSlug": null,
       "name": "한국공학대학교",
       "offerings": [
@@ -2501,7 +2501,7 @@
     },
     {
       "sourceUniversityId": "hanshin",
-      "universityId": null,
+      "universityId": "cd20d37c-916a-4910-bb9c-6efb0bc67f67",
       "canonicalSlug": null,
       "name": "한신대학교",
       "offerings": [
