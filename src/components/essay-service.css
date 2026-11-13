@@ -277,3 +277,9 @@
 .university-discovery .university-primary:not(:disabled):hover { filter:brightness(.94); }
 .university-discovery .university-primary:focus-visible { outline:3px solid var(--university-brand); outline-offset:4px; }
 .university-discovery .university-logo { object-fit:contain; max-width:min(160px,100%); max-height:64px; }
+
+/* Official image bytes stay intact; the frame normalizes only surrounding whitespace. */
+.university-logo-frame--optical { position:relative; flex:none; height:auto; max-width:100%; overflow:hidden; background:#fff; }
+.university-logo-frame--optical .university-logo--optical { position:absolute; display:block; height:auto; max-height:none; max-width:none; padding:0; border-radius:0; object-fit:contain; }
+.university-discovery .university-card-top { min-height:72px; }
+.essay-brand-hero .university-logo-frame--optical .university-logo--optical { max-width:none; max-height:none; }

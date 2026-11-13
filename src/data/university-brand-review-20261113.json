@@ -1,0 +1,352 @@
+[
+  {
+    "id": "gachon",
+    "name": "가천대학교",
+    "logo": "/university-logos/gachon-official-v2.jpg",
+    "logoSource": "https://www.gachon.ac.kr/kor/807/subview.do",
+    "reviewPage": "https://www.gachon.ac.kr/kor/807/subview.do",
+    "primary": "#004E96",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "catholic",
+    "name": "가톨릭대학교",
+    "logo": "/university-logos/catholic.png",
+    "logoSource": "https://www.catholic.ac.kr/ko/index.do",
+    "reviewPage": "https://www.catholic.ac.kr/ko/about/signiture.do",
+    "primary": "#0C2E86",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "konkuk",
+    "name": "건국대학교",
+    "logo": "/university-logos/konkuk-official-v2.png",
+    "logoSource": "https://www.konkuk.ac.kr/konkuk/2109/subview.do",
+    "reviewPage": "https://www.konkuk.ac.kr/konkuk/2109/subview.do",
+    "primary": "#006239",
+    "status": "E_UNVERIFIED",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "kyonggi",
+    "name": "경기대학교",
+    "logo": "/university-logos/kyonggi-official-v2.svg",
+    "logoSource": "https://www.kyonggi.ac.kr/www/contents.do?key=5093",
+    "reviewPage": "https://www.kyonggi.ac.kr/www/contents.do?key=5093",
+    "primary": "#244A6A",
+    "status": "E_UNVERIFIED",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "knu",
+    "name": "경북대학교",
+    "logo": "/university-logos/knu-symbol.jpg",
+    "logoSource": "https://www.knu.ac.kr/wbbs/wbbs/contents/index.action?menu_idx=194&menu_url=intro/about04",
+    "reviewPage": "https://www.knu.ac.kr/wbbs/wbbs/contents/index.action?menu_idx=194&menu_url=intro/about04",
+    "primary": "#244A6A",
+    "status": "E_UNVERIFIED",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "kyunghee",
+    "name": "경희대학교",
+    "logo": "/university-logos/kyunghee-symbol.png",
+    "logoSource": null,
+    "reviewPage": "https://www.khu.ac.kr/kor/user/contents/view.do?menuNo=200033",
+    "primary": "#A40F16",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "korea",
+    "name": "고려대학교",
+    "logo": "/university-logos/korea-symbol.png",
+    "logoSource": null,
+    "reviewPage": "https://www.korea.ac.kr/ko/373/subview.do",
+    "primary": "#862633",
+    "status": "C_PANTONE_ONLY",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "kwangwoon",
+    "name": "광운대학교",
+    "logo": "/university-logos/kwangwoon-symbol.png",
+    "logoSource": null,
+    "reviewPage": "https://www.kw.ac.kr/ko/life/symbol01.jsp",
+    "primary": "#7D192D",
+    "status": "D_COLOR_NAME_ONLY",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "kookmin",
+    "name": "국민대학교",
+    "logo": "/university-logos/kookmin.png",
+    "logoSource": "https://www.kookmin.ac.kr/user/index.do",
+    "reviewPage": "https://www.kookmin.ac.kr/comm/menu/user/0a4f7cf187cc3164678352bc3f4575b3/content/index.do",
+    "primary": "#004F9F",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "dankook",
+    "name": "단국대학교",
+    "logo": "/university-logos/dankook-symbol.jpg",
+    "logoSource": "https://www.dankook.ac.kr/web/kor/dku_ui",
+    "reviewPage": "https://www.dankook.ac.kr/web/kor/dku_ui",
+    "primary": "#244A6A",
+    "status": "E_UNVERIFIED",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "duksung",
+    "name": "덕성여자대학교",
+    "logo": "/university-logos/duksung.png",
+    "logoSource": "https://www.duksung.ac.kr/main.do?isMaster=N&isLogined=N&viewPrefix=%2FWEB-INF%2Fjsp%2Fcms&urlRootPath=&siteResourcePath=%2Fsite%2Fduksung",
+    "reviewPage": "https://www.duksung.ac.kr/contents/contents.do?ciIdx=290&menuId=1199",
+    "primary": "#244A6A",
+    "status": "E_UNVERIFIED",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "dongguk",
+    "name": "동국대학교",
+    "logo": "/university-logos/dongguk-symbol.png",
+    "logoSource": null,
+    "reviewPage": "https://www.dongguk.edu/page/261",
+    "primary": "#EA5514",
+    "status": "E_UNVERIFIED",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "dongduk",
+    "name": "동덕여자대학교",
+    "logo": "/university-logos/dongduk-official-v2.png",
+    "logoSource": "https://www.dongduk.ac.kr/www/contents/kor-ui02.do",
+    "reviewPage": "https://www.dongduk.ac.kr/www/contents/kor-ui02.do",
+    "primary": "#244A6A",
+    "status": "E_UNVERIFIED",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "pnu",
+    "name": "부산대학교",
+    "logo": "/university-logos/pnu.png",
+    "logoSource": "https://www.pusan.ac.kr/kor/intro.do",
+    "reviewPage": "https://www.pusan.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN156",
+    "primary": "#005BAA",
+    "status": "A_OFFICIAL_HEX",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "syu",
+    "name": "삼육대학교",
+    "logo": "/university-logos/syu-official-v2.png",
+    "logoSource": "https://www.syu.ac.kr/about-sahmyook/symbols-ui/logo-ui/",
+    "reviewPage": "https://www.syu.ac.kr/about-sahmyook/symbols-ui/logo-ui/",
+    "primary": "#244A6A",
+    "status": "E_UNVERIFIED",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "sangmyung",
+    "name": "상명대학교",
+    "logo": "/university-logos/sangmyung.png",
+    "logoSource": "https://www.smu.ac.kr/kor/intro/uiLogo.do",
+    "reviewPage": "https://www.smu.ac.kr/kor/intro/uiColor.do",
+    "primary": "#0E207F",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "sogang",
+    "name": "서강대학교",
+    "logo": "/university-logos/sogang-symbol.png",
+    "logoSource": null,
+    "reviewPage": "http://www.sogang.ac.kr/intro/symbol/s_colorsystem.html",
+    "primary": "#A6192E",
+    "status": "C_PANTONE_ONLY",
+    "result": "공식 전용색상 본문에서 Sogang Cardinal 확인. 색상표 자산은 HTML 오류 응답; 숫자 미확정으로 기존 임시색 유지"
+  },
+  {
+    "id": "seoultech",
+    "name": "서울과학기술대학교",
+    "logo": "/university-logos/seoultech.svg",
+    "logoSource": "https://www.seoultech.ac.kr",
+    "reviewPage": "https://www.seoultech.ac.kr/intro/symbol/logo/symbol",
+    "primary": "#244A6A",
+    "status": "C_PANTONE_ONLY",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "uos",
+    "name": "서울시립대학교",
+    "logo": "/university-logos/uos-official-v2.png",
+    "logoSource": "https://www.uos.ac.kr/kor/html/auos/symbol/ui/ui.do?identified=anonymous",
+    "reviewPage": "https://www.uos.ac.kr/kor/html/auos/symbol/ui/ui3.do?identified=anonymous&",
+    "primary": "#004094",
+    "status": "A_OFFICIAL_HEX",
+    "result": "공식 Web HEX 적용; 동일 표 RGB와 불일치 기록"
+  },
+  {
+    "id": "swu",
+    "name": "서울여자대학교",
+    "logo": "/university-logos/swu-symbol.png",
+    "logoSource": null,
+    "reviewPage": "https://www.swu.ac.kr/swu/797/subview.do",
+    "primary": "#9E1A20",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "skku",
+    "name": "성균관대학교",
+    "logo": "/university-logos/skku-official-v2.jpg",
+    "logoSource": "https://www.skku.edu/skku/about/symbol/symbol_01.do",
+    "reviewPage": "https://www.skku.edu/skku/about/symbol/symbol_01.do",
+    "primary": "#072A60",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "sungshin",
+    "name": "성신여자대학교",
+    "logo": "/university-logos/sungshin-official-v2.png",
+    "logoSource": "https://www.sungshin.ac.kr/main_kor/10922/subview.do",
+    "reviewPage": "https://www.sungshin.ac.kr/main_kor/10922/subview.do",
+    "primary": "#244A6A",
+    "status": "E_UNVERIFIED",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "sejong",
+    "name": "세종대학교",
+    "logo": "/university-logos/sejong.png",
+    "logoSource": "https://www.sejong.ac.kr/kor/index.do",
+    "reviewPage": "https://pr.sejong.ac.kr/news/promotion/basic-element.do",
+    "primary": "#C3002F",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "sookmyung",
+    "name": "숙명여자대학교",
+    "logo": "/university-logos/sookmyung-official-v2.png",
+    "logoSource": "https://www.sookmyung.ac.kr/kr/intro/ui.do",
+    "reviewPage": "https://www.sookmyung.ac.kr/kr/intro/ui.do",
+    "primary": "#003087",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "soongsil",
+    "name": "숭실대학교",
+    "logo": "/university-logos/soongsil-symbol.png",
+    "logoSource": null,
+    "reviewPage": "https://ssu.ac.kr/학교소개/학교상징/ui/전용-색상/",
+    "primary": "#00587C",
+    "status": "C_PANTONE_ONLY",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "ajou",
+    "name": "아주대학교",
+    "logo": "/university-logos/ajou.png",
+    "logoSource": "https://www.ajou.ac.kr/kr/index.do",
+    "reviewPage": "http://www.ajou.ac.kr/kr/intro/uibasic01.do",
+    "primary": "#244A6A",
+    "status": "C_PANTONE_ONLY",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "yonsei",
+    "name": "연세대학교",
+    "logo": "/university-logos/yonsei-official-v2.png",
+    "logoSource": "https://designcenter.yonsei.ac.kr/designcenter/intro/symbol.do",
+    "reviewPage": "https://designcenter.yonsei.ac.kr/designcenter/design_con/signature_color.do",
+    "primary": "#003876",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "eulji",
+    "name": "을지대학교",
+    "logo": "/university-logos/eulji-official-v2.jpg",
+    "logoSource": "https://www.eulji.ac.kr/?menuno=3075",
+    "reviewPage": "https://www.eulji.ac.kr/?menuno=3075",
+    "primary": "#244A6A",
+    "status": "E_UNVERIFIED",
+    "result": "공식 UI 대조; 디지털 수치 미확정, 기존 임시 UI 색 유지"
+  },
+  {
+    "id": "ewha",
+    "name": "이화여자대학교",
+    "logo": "/university-logos/ewha-symbol.png",
+    "logoSource": "https://www.ewha.ac.kr/ewha/intro/ui-si01.do",
+    "reviewPage": "https://www.ewha.ac.kr/ewha/intro/ui-si04.do",
+    "primary": "#00462A",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "inha",
+    "name": "인하대학교",
+    "logo": "/university-logos/inha-symbol.png",
+    "logoSource": null,
+    "reviewPage": "https://www.inha.ac.kr/kr/1828/subview.do",
+    "primary": "#005BAC",
+    "status": "A_OFFICIAL_HEX",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "cau",
+    "name": "중앙대학교",
+    "logo": "/university-logos/cau-symbol.png",
+    "logoSource": null,
+    "reviewPage": "https://www.cau.ac.kr/cms/FR_CON/index.do?MENU_ID=230",
+    "primary": "#2155A4",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "hufs",
+    "name": "한국외국어대학교",
+    "logo": "/university-logos/hufs-official-v2.gif",
+    "logoSource": "https://www.hufs.ac.kr/hufs/11129/subview.do",
+    "reviewPage": "https://www.hufs.ac.kr/hufs/11129/subview.do",
+    "primary": "#146E7A",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "kau",
+    "name": "한국항공대학교",
+    "logo": "/university-logos/kau-official-v2.png",
+    "logoSource": "https://www.kau.ac.kr/intro/ui.php",
+    "reviewPage": "https://www.kau.ac.kr/intro/ui.php",
+    "primary": "#002870",
+    "status": "B_OFFICIAL_RGB",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "hanyang",
+    "name": "한양대학교",
+    "logo": "/university-logos/hanyang-official-v2.png",
+    "logoSource": "https://www.hanyang.ac.kr/web/www/symbol-logo",
+    "reviewPage": "https://www.hanyang.ac.kr/en/web/eng/colors-fonts",
+    "primary": "#1D2475",
+    "status": "A_OFFICIAL_HEX",
+    "result": "공식 디지털 수치 확인"
+  },
+  {
+    "id": "hongik",
+    "name": "홍익대학교",
+    "logo": "/university-logos/hongik-symbol.png",
+    "logoSource": "https://www.hongik.ac.kr/kr/introduction/school-mark.do",
+    "reviewPage": "https://www.hongik.ac.kr/kr/introduction/color.do",
+    "primary": "#1833DB",
+    "status": "A_OFFICIAL_HEX",
+    "result": "공식 교표 흑백 원본 유지·공식 웹 색상 JS 대조"
+  }
+]

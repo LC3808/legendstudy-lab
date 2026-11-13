@@ -26,3 +26,17 @@ it('records official or Owner-supplied provenance for each logo without changing
   expect(a.sha256).toMatch(/^[a-f0-9]{64}$/);expect(a.src).toMatch(/^\/university-logos\//);
  }
 });
+
+it('keeps optical framing within each original image and preserves its proportions',()=>{
+ for(const a of Object.values(assets)){
+  if(!('opticalBounds' in a))continue;
+  const b=a.opticalBounds;
+  expect(b.x).toBeGreaterThanOrEqual(0);expect(b.y).toBeGreaterThanOrEqual(0);
+  expect(b.x+b.contentWidth).toBeLessThanOrEqual(b.width);
+  expect(b.y+b.contentHeight).toBeLessThanOrEqual(b.height);
+  expect(b.contentWidth*b.contentHeight).toBeGreaterThan(0);
+ }
+ const {container}=render(<UniversityLogo university={catalogUniversity('uos')!}/>);
+ expect(container.querySelector('.university-logo-frame--optical')).not.toBeNull();
+ expect(container.querySelector('img')).toHaveAttribute('src','/university-logos/uos-official-v2.png');
+});

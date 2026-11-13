@@ -2,8 +2,14 @@ import Image from 'next/image';
 import logos from '@/data/university-logos.json';
 import type {CatalogUniversity,Offering} from '@/lib/essay-runtime/public-discovery';
 export function UniversityLogo({university:u,logoAsset}:{university:CatalogUniversity;logoAsset?:string|null}){
- const existing=(logos as Record<string,{src:string;darkSurface?:boolean;paddedWordmark?:boolean}>)[u.sourceUniversityId];
+ const existing=(logos as Record<string,{src:string;darkSurface?:boolean;paddedWordmark?:boolean;opticalBounds?:{width:number;height:number;x:number;y:number;contentWidth:number;contentHeight:number}}>)[u.sourceUniversityId];
  const asset=logoAsset?{...existing,src:logoAsset}:existing;
+ if(asset?.opticalBounds && (!logoAsset || logoAsset===existing?.src)){
+  const b=asset.opticalBounds;
+  return <span className="university-logo-frame university-logo-frame--optical" style={{width:`${Math.min(148,64*b.contentWidth/b.contentHeight)}px`,aspectRatio:`${b.contentWidth} / ${b.contentHeight}`}}>
+   <Image className="university-logo university-logo--optical" src={asset.src} alt={`${u.name} 로고`} width={b.width} height={b.height} unoptimized style={{width:`${100*b.width/b.contentWidth}%`,left:`${-100*b.x/b.contentWidth}%`,top:`${-100*b.y/b.contentHeight}%`}}/>
+  </span>;
+ }
  if(asset?.paddedWordmark)return <span className="university-logo-frame"><Image className="university-logo university-logo--padded" src={asset.src} alt={`${u.name} 로고`} width={518} height={97} unoptimized/></span>;
  return asset?<Image className="university-logo" data-dark-surface={asset.darkSurface||undefined} src={asset.src} alt={`${u.name} 로고`} width={112} height={56} unoptimized/>:<span className="university-monogram" aria-label={`${u.name} 로고 준비 중`}>{u.name.slice(0,1)}</span>;
 }

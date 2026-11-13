@@ -3,24 +3,31 @@
     "university_id": "a9e38cdc-9593-4c60-b8a6-698133f48518",
     "source_university_id": "gachon",
     "university_name": "가천대학교",
-    "logo_asset": "/university-logos/gachon.png",
-    "primary_color": "#244A6A",
+    "logo_asset": "/university-logos/gachon-official-v2.jpg",
+    "primary_color": "#004E96",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
-    "color_source": null,
-    "verification_status": "E_UNVERIFIED",
-    "color_usage": "temporary_ui",
-    "official_rgb": null,
+    "color_source": "https://www.gachon.ac.kr/kor/807/subview.do",
+    "verification_status": "B_OFFICIAL_RGB",
+    "color_usage": "official_accent",
+    "official_rgb": [
+      0,
+      78,
+      150
+    ],
     "official_pantone": null,
     "color_name": null,
-    "source_urls": [],
+    "source_urls": [
+      "https://www.gachon.ac.kr/kor/807/subview.do"
+    ],
     "manus_matched": false,
     "claude_matched": true,
     "manus_reported_codes": null,
     "claude_reported_hex": "미공개",
-    "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Claude 자료는 대학별 공식 URL이 없고 비공식 출처가 혼재하므로 공식값으로 승격하지 않는다."
+    "verified_at": "2026-11-13",
+    "notes": "2026-11-13 공식 UI 원문의 디지털 색상 재확인. 이미지 픽셀 추정/CMYK 변환 없이 명시된 값 적용.",
+    "reviewed_at": "2026-11-13"
   },
   "catholic": {
     "university_id": "c5850ef5-616e-4ebb-aeac-3f6a3e7c4d0a",
@@ -50,7 +57,8 @@
     "manus_reported_codes": "가대 Blue: #0C2E86\n가대 Gray: #60513A",
     "claude_reported_hex": "#042A87",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "kangnam": {
     "university_id": null,
@@ -79,7 +87,7 @@
     "university_id": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
     "source_university_id": "konkuk",
     "university_name": "건국대학교",
-    "logo_asset": "/university-logos/konkuk-symbol.png",
+    "logo_asset": "/university-logos/konkuk-official-v2.png",
     "primary_color": "#006239",
     "secondary_color": null,
     "background_color": "#FFFFFF",
@@ -105,13 +113,14 @@
       "decisionDate": "2026-11-06",
       "reusedAt": "2026-11-13",
       "note": "Owner-selected marketing palette; original official verification status retained."
-    }
+    },
+    "reviewed_at": "2026-11-13"
   },
   "kyonggi": {
     "university_id": "295f71b3-12da-4122-b743-f0c2c8bebe44",
     "source_university_id": "kyonggi",
     "university_name": "경기대학교",
-    "logo_asset": "/university-logos/kyonggi.png",
+    "logo_asset": "/university-logos/kyonggi-official-v2.svg",
     "primary_color": "#244A6A",
     "secondary_color": null,
     "background_color": "#FFFFFF",
@@ -130,7 +139,8 @@
     "manus_reported_codes": "미확인",
     "claude_reported_hex": "#003876",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "reviewed_at": "2026-11-13"
   },
   "knu": {
     "university_id": "72bc4be0-6e72-4c72-adc5-8ee54279f3bd",
@@ -153,7 +163,8 @@
     "manus_reported_codes": null,
     "claude_reported_hex": "미공개",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Claude 자료는 대학별 공식 URL이 없고 비공식 출처가 혼재하므로 공식값으로 승격하지 않는다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Claude 자료는 대학별 공식 URL이 없고 비공식 출처가 혼재하므로 공식값으로 승격하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "kyunghee": {
     "university_id": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
@@ -183,7 +194,8 @@
     "manus_reported_codes": "경희 레드: #A40F02\n경희 블루: #0D326F\n경희 골드: #C0A353",
     "claude_reported_hex": "#A40F16",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다. Manus #A40F02는 원문 B22와 불일치하여 #A40F16으로 정정. Claude 값은 일치."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다. Manus #A40F02는 원문 B22와 불일치하여 #A40F16으로 정정. Claude 값은 일치.",
+    "reviewed_at": "2026-11-13"
   },
   "korea": {
     "university_id": "a93ec9df-2096-4550-801f-07a25b9a437b",
@@ -216,7 +228,8 @@
       "decisionDate": "2026-11-06",
       "reusedAt": "2026-11-13",
       "note": "Owner-selected marketing palette; original official verification status retained."
-    }
+    },
+    "reviewed_at": "2026-11-13"
   },
   "kwangwoon": {
     "university_id": "3d35489f-2e90-47b8-af1b-48928ee2269a",
@@ -247,7 +260,8 @@
       "decisionDate": "2026-11-06",
       "reusedAt": "2026-11-13",
       "note": "Owner-selected marketing palette; original official verification status retained."
-    }
+    },
+    "reviewed_at": "2026-11-13"
   },
   "kookmin": {
     "university_id": "88aa2231-6a1c-47ee-a063-b168cdaf85ad",
@@ -276,7 +290,8 @@
     "manus_reported_codes": "KMU Blue: #004F9F",
     "claude_reported_hex": "#004F9E",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "dankook": {
     "university_id": "bdae801b-e46e-449f-9211-0a440f8eb78d",
@@ -302,7 +317,8 @@
     "manus_reported_codes": "미확인",
     "claude_reported_hex": null,
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "reviewed_at": "2026-11-13"
   },
   "duksung": {
     "university_id": null,
@@ -325,7 +341,8 @@
     "manus_reported_codes": null,
     "claude_reported_hex": "미공개",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Claude 자료는 대학별 공식 URL이 없고 비공식 출처가 혼재하므로 공식값으로 승격하지 않는다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Claude 자료는 대학별 공식 URL이 없고 비공식 출처가 혼재하므로 공식값으로 승격하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "dongguk": {
     "university_id": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
@@ -357,13 +374,14 @@
       "decisionDate": "2026-11-06",
       "reusedAt": "2026-11-13",
       "note": "Owner-selected marketing palette; original official verification status retained."
-    }
+    },
+    "reviewed_at": "2026-11-13"
   },
   "dongduk": {
     "university_id": null,
     "source_university_id": "dongduk",
     "university_name": "동덕여자대학교",
-    "logo_asset": "/university-logos/dongduk.png",
+    "logo_asset": "/university-logos/dongduk-official-v2.png",
     "primary_color": "#244A6A",
     "secondary_color": null,
     "background_color": "#FFFFFF",
@@ -380,7 +398,8 @@
     "manus_reported_codes": null,
     "claude_reported_hex": "미공개",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Claude 자료는 대학별 공식 URL이 없고 비공식 출처가 혼재하므로 공식값으로 승격하지 않는다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Claude 자료는 대학별 공식 URL이 없고 비공식 출처가 혼재하므로 공식값으로 승격하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "pnu": {
     "university_id": "08303fd3-ec87-4976-a9a9-547a1d52f996",
@@ -406,13 +425,14 @@
     "manus_reported_codes": "교색: #005BAA",
     "claude_reported_hex": "#005BAA",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "syu": {
     "university_id": null,
     "source_university_id": "syu",
     "university_name": "삼육대학교",
-    "logo_asset": "/university-logos/syu.png",
+    "logo_asset": "/university-logos/syu-official-v2.png",
     "primary_color": "#244A6A",
     "secondary_color": null,
     "background_color": "#FFFFFF",
@@ -429,30 +449,38 @@
     "manus_reported_codes": null,
     "claude_reported_hex": "#002C77",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Claude 자료는 대학별 공식 URL이 없고 비공식 출처가 혼재하므로 공식값으로 승격하지 않는다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Claude 자료는 대학별 공식 URL이 없고 비공식 출처가 혼재하므로 공식값으로 승격하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "sangmyung": {
     "university_id": null,
     "source_university_id": "sangmyung",
     "university_name": "상명대학교",
     "logo_asset": "/university-logos/sangmyung.png",
-    "primary_color": "#244A6A",
+    "primary_color": "#0E207F",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
-    "color_source": null,
-    "verification_status": "E_UNVERIFIED",
-    "color_usage": "temporary_ui",
-    "official_rgb": null,
+    "color_source": "https://www.smu.ac.kr/kor/intro/uiColor.do",
+    "verification_status": "B_OFFICIAL_RGB",
+    "color_usage": "official_accent",
+    "official_rgb": [
+      14,
+      32,
+      127
+    ],
     "official_pantone": null,
     "color_name": null,
-    "source_urls": [],
+    "source_urls": [
+      "https://www.smu.ac.kr/kor/intro/uiColor.do"
+    ],
     "manus_matched": false,
     "claude_matched": false,
     "manus_reported_codes": null,
     "claude_reported_hex": null,
-    "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "verified_at": "2026-11-13",
+    "notes": "2026-11-13 공식 UI 원문의 디지털 색상 재확인. 이미지 픽셀 추정/CMYK 변환 없이 명시된 값 적용.",
+    "reviewed_at": "2026-11-13"
   },
   "sogang": {
     "university_id": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
@@ -484,7 +512,8 @@
       "decisionDate": "2026-11-06",
       "reusedAt": "2026-11-13",
       "note": "Owner-selected marketing palette; original official verification status retained."
-    }
+    },
+    "reviewed_at": "2026-11-13"
   },
   "seokyeong": {
     "university_id": null,
@@ -532,20 +561,21 @@
     "manus_reported_codes": "서울과기대 블루: PANTONE 281C\n서울과기대 레드: PANTONE 1807C\n서울과기대 그레이: PANTONE 423C",
     "claude_reported_hex": "#00387F",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "reviewed_at": "2026-11-13"
   },
   "uos": {
     "university_id": "0598e08a-20d6-4814-9511-6abe22814355",
     "source_university_id": "uos",
     "university_name": "서울시립대학교",
-    "logo_asset": "/university-logos/uos.png",
-    "primary_color": "#244A6A",
+    "logo_asset": "/university-logos/uos-official-v2.png",
+    "primary_color": "#004094",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
     "color_source": "https://www.uos.ac.kr/kor/html/auos/symbol/ui/ui3.do?identified=anonymous&",
-    "verification_status": "E_UNVERIFIED",
-    "color_usage": "temporary_ui",
+    "verification_status": "A_OFFICIAL_HEX",
+    "color_usage": "official_accent",
     "official_rgb": null,
     "official_pantone": null,
     "color_name": null,
@@ -557,8 +587,9 @@
     "claude_matched": false,
     "manus_reported_codes": "미확인",
     "claude_reported_hex": null,
-    "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "verified_at": "2026-11-13",
+    "notes": "2026-11-13 공식 UI 원문의 디지털 색상 재확인. 색상표 HEX #004094를 우선. 같은 표 RGB R10 G77 B155와 불일치함을 보존.",
+    "reviewed_at": "2026-11-13"
   },
   "swu": {
     "university_id": "eba1d65c-5bb6-5454-afd4-82a18c57262a",
@@ -588,13 +619,14 @@
     "manus_reported_codes": "SWU 퍼플: #9E1A20\nSWU 블루: #101077\nSWU 옐로: #FFB300",
     "claude_reported_hex": "#9E3A35",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "skku": {
     "university_id": "4acee829-94d4-5f8a-b440-a72e423d439f",
     "source_university_id": "skku",
     "university_name": "성균관대학교",
-    "logo_asset": "/university-logos/skku-symbol.png",
+    "logo_asset": "/university-logos/skku-official-v2.jpg",
     "primary_color": "#072A60",
     "secondary_color": "#124532",
     "background_color": "#FFFFFF",
@@ -618,13 +650,14 @@
     "manus_reported_codes": "파란색: #072A60\n연두색: #8DC63F\n주황색: #FF6C0F\n짙은 녹색: #124532",
     "claude_reported_hex": "#072A60",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "sungshin": {
     "university_id": null,
     "source_university_id": "sungshin",
     "university_name": "성신여자대학교",
-    "logo_asset": "/university-logos/sungshin.jpg",
+    "logo_asset": "/university-logos/sungshin-official-v2.png",
     "primary_color": "#244A6A",
     "secondary_color": null,
     "background_color": "#FFFFFF",
@@ -641,7 +674,8 @@
     "manus_reported_codes": null,
     "claude_reported_hex": null,
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "reviewed_at": "2026-11-13"
   },
   "sejong": {
     "university_id": "447d2f79-fb0a-4a02-bce6-d214244b683d",
@@ -671,7 +705,8 @@
     "manus_reported_codes": "세종 크림슨 레드: #C3002F",
     "claude_reported_hex": "#C3002F",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "suwon": {
     "university_id": null,
@@ -700,7 +735,7 @@
     "university_id": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
     "source_university_id": "sookmyung",
     "university_name": "숙명여자대학교",
-    "logo_asset": "/university-logos/sookmyung-symbol.png",
+    "logo_asset": "/university-logos/sookmyung-official-v2.png",
     "primary_color": "#003087",
     "secondary_color": "#0072CE",
     "background_color": "#FFFFFF",
@@ -724,7 +759,8 @@
     "manus_reported_codes": "숙명 로열 블루: #003087\n숙명 로열 라이트 블루: #0072CE\n숙명 다크 그레이: #636569\n숙명 그레이: #97999B",
     "claude_reported_hex": "#003087",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "soongsil": {
     "university_id": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb",
@@ -756,7 +792,8 @@
       "decisionDate": "2026-11-06",
       "reusedAt": "2026-11-13",
       "note": "Owner-selected marketing palette; original official verification status retained."
-    }
+    },
+    "reviewed_at": "2026-11-13"
   },
   "shinhan": {
     "university_id": null,
@@ -805,13 +842,14 @@
     "manus_reported_codes": "AJOU BLUE: PANTONE 285\nAJOU GOLD: PANTONE 874",
     "claude_reported_hex": "#0072CE",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "reviewed_at": "2026-11-13"
   },
   "yonsei": {
     "university_id": "9076637b-d827-5bb6-8e4e-954bd2a05805",
     "source_university_id": "yonsei",
     "university_name": "연세대학교",
-    "logo_asset": "/university-logos/yonsei.png",
+    "logo_asset": "/university-logos/yonsei-official-v2.png",
     "primary_color": "#003876",
     "secondary_color": null,
     "background_color": "#FFFFFF",
@@ -836,13 +874,14 @@
     "manus_reported_codes": "미확인",
     "claude_reported_hex": null,
     "verified_at": "2026-11-13",
-    "notes": "공식 전용색상 페이지의 화면용 수치 확인. 연세 RGB는 HEX로 무손실 표기."
+    "notes": "공식 전용색상 페이지의 화면용 수치 확인. 연세 RGB는 HEX로 무손실 표기.",
+    "reviewed_at": "2026-11-13"
   },
   "eulji": {
     "university_id": null,
     "source_university_id": "eulji",
     "university_name": "을지대학교",
-    "logo_asset": "/university-logos/eulji.png",
+    "logo_asset": "/university-logos/eulji-official-v2.jpg",
     "primary_color": "#244A6A",
     "secondary_color": null,
     "background_color": "#FFFFFF",
@@ -859,7 +898,8 @@
     "manus_reported_codes": null,
     "claude_reported_hex": null,
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "reviewed_at": "2026-11-13"
   },
   "ewha": {
     "university_id": "fdc7e693-15a2-47fc-b080-4f14e9274d95",
@@ -890,7 +930,8 @@
     "manus_reported_codes": "이화그린: #00462A",
     "claude_reported_hex": "#00643E",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "inha": {
     "university_id": "e40f4b8f-8949-4726-a774-2b6f0e6d8939",
@@ -902,8 +943,8 @@
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
     "color_source": "https://www.inha.ac.kr/kr/1828/subview.do",
-    "verification_status": "E_UNVERIFIED",
-    "color_usage": "temporary_ui",
+    "verification_status": "A_OFFICIAL_HEX",
+    "color_usage": "official_accent",
     "official_rgb": null,
     "official_pantone": null,
     "color_name": null,
@@ -915,14 +956,15 @@
     "claude_matched": true,
     "manus_reported_codes": "하늘색: #00AFEC\n짙은 청색: #005BAC",
     "claude_reported_hex": "#005BAC",
-    "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Manus는 공식 HEX를 보고했으나 이번 원문 접근 실패(인하 연결 종료 / 건국 WAF)로 공식 적용 보류.",
+    "verified_at": "2026-11-13",
+    "notes": "2026-11-13 공식 UI 원문의 디지털 색상 재확인. 이미지 픽셀 추정/CMYK 변환 없이 명시된 값 적용.",
     "marketing_reference": {
       "asset": "assets/marketing/essay-lab-banner/essay-lab-banners-package.html",
       "decisionDate": "2026-11-06",
       "reusedAt": "2026-11-13",
       "note": "Owner-selected marketing palette; original official verification status retained."
-    }
+    },
+    "reviewed_at": "2026-11-13"
   },
   "cau": {
     "university_id": "ffad67a6-107f-47b7-a1cb-ab61687ffb9f",
@@ -951,7 +993,8 @@
     "manus_reported_codes": "청색: #2155A4",
     "claude_reported_hex": "#2155A4",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "tukorea": {
     "university_id": null,
@@ -1003,7 +1046,7 @@
     "university_id": "1fd29b0d-1141-4ff0-b1b3-c4f201854476",
     "source_university_id": "hufs",
     "university_name": "한국외국어대학교",
-    "logo_asset": "/university-logos/hufs-symbol.png",
+    "logo_asset": "/university-logos/hufs-official-v2.gif",
     "primary_color": "#146E7A",
     "secondary_color": "#DADAD3",
     "background_color": "#FFFFFF",
@@ -1027,13 +1070,14 @@
     "manus_reported_codes": "HUFS 그린: #146E7A\nHUFS 그레이: #DADAD3",
     "claude_reported_hex": "#002D56",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "kau": {
     "university_id": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
     "source_university_id": "kau",
     "university_name": "한국항공대학교",
-    "logo_asset": "/university-logos/kau-symbol.png",
+    "logo_asset": "/university-logos/kau-official-v2.png",
     "primary_color": "#002870",
     "secondary_color": null,
     "background_color": "#FFFFFF",
@@ -1058,7 +1102,8 @@
     "manus_reported_codes": "군청색: #002870",
     "claude_reported_hex": "#002970",
     "verified_at": "2026-10-26",
-    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다."
+    "notes": "공식 원문 숫자 대조 완료. UI primary/secondary 선택은 공식 팔레트 내 서비스 디자인 선택이며 대학의 색상 우선순위를 새로 정의하지 않는다.",
+    "reviewed_at": "2026-11-13"
   },
   "hanshin": {
     "university_id": null,
@@ -1087,14 +1132,14 @@
     "university_id": "1090e1be-174e-5042-abd3-ca929c6e26f8",
     "source_university_id": "hanyang",
     "university_name": "한양대학교",
-    "logo_asset": "/university-logos/hanyang-symbol.png",
+    "logo_asset": "/university-logos/hanyang-official-v2.png",
     "primary_color": "#1D2475",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
-    "color_source": "https://www.hanyang.ac.kr/web/eng/colors-fonts",
-    "verification_status": "D_COLOR_NAME_ONLY",
-    "color_usage": "temporary_ui",
+    "color_source": "https://www.hanyang.ac.kr/en/web/eng/colors-fonts",
+    "verification_status": "A_OFFICIAL_HEX",
+    "color_usage": "official_accent",
     "official_rgb": null,
     "official_pantone": null,
     "color_name": "Hanyang Blue",
@@ -1107,14 +1152,15 @@
     "claude_matched": true,
     "manus_reported_codes": "Hanyang Blue: HEX 미확인",
     "claude_reported_hex": "#0E4A84",
-    "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "verified_at": "2026-11-13",
+    "notes": "공식 색상표 Web 1D2475 직접 확인. 이미지 색상 픽셀에서 추정하지 않음.",
     "marketing_reference": {
       "asset": "assets/marketing/essay-lab-banner/essay-lab-banners-package.html",
       "decisionDate": "2026-11-06",
       "reusedAt": "2026-11-13",
       "note": "Owner-selected marketing palette; original official verification status retained."
-    }
+    },
+    "reviewed_at": "2026-11-13"
   },
   "hongik": {
     "university_id": "15f50d54-001d-49b9-836b-a5d9c76b9c0a",
@@ -1145,6 +1191,7 @@
     "manus_reported_codes": "미확인",
     "claude_reported_hex": null,
     "verified_at": "2026-11-13",
-    "notes": "공식 Primary Color Hongik Medium Blue HEX 확인."
+    "notes": "공식 Primary Color Hongik Medium Blue HEX 확인.",
+    "reviewed_at": "2026-11-13"
   }
 }
