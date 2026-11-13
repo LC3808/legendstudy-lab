@@ -1,3 +1,5 @@
+2026-11-13: [경희모의4·과학18 운영 공개 / 287공개21잔여](essay-khu-science-public-20261113.md). 기존 데이터·권한·Credit·비논술 기능 보존, Provider0.
+
 2026-11-11 22:43 KST: [작업05-D 운영 적용](admin-withdrawal-production-20261111.md) — 공부시간 전체기간 및 탈퇴 조회2RPC 적용·운영 검증 PASS. WEB 배포/E2E 진행 중. 아래 05-B/C 미적용 표기는 당시 기록.
 
 2026-11-11: [작업05-C — 관리자 공부시간 전체 기간 후보](admin-study-period-contract-20261111.md) — 기존 RPC1개에 NULL/NULL 전체 기록 지원 후보. 기존30일·구간 union·권한 유지, 다른 RPC 계약 변경 없음. UI6+탈퇴35 PASS, 격리 DB·원복·TS·Lint·build PASS. 실제 전체28명/205,102,629ms,30일27명/205,098,836ms 원천·독립 계산 일치. 기존 관리자6실패·checkout문구 실패 유지. SQL·탈퇴RPC·WEB 모두 미적용; Owner 새 승인 후 공부시간→탈퇴2RPC→운영검증→WEB 순서.
