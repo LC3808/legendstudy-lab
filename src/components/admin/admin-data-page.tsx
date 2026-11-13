@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import {AdminLearningRankings} from './admin-learning-rankings';
 import {formatStudyTime} from '@/lib/admin/study-time';
 import {AdminLearningHub} from './admin-learning-hub';
 import {AdminDataTable} from './admin-data-table';
@@ -99,7 +100,7 @@ function Learning({section}:{section:string}){
  <p>출처: Supabase 학습 원장 · 조회 시각 {new Date(current.data.as_of).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})} KST · {current.data.state}</p>
  <p>기록이 있는 모든 학생을 집계합니다. 0은 기록 없음, 미확인은 조회값 없음입니다.</p>
  <div className="admin-metrics">{Object.entries(learningMetrics).filter(([k])=>section!=='study'||k.startsWith('study_')).map(([k,label])=><div className="admin-metric" key={k}><p>{label}</p><strong>{k==='study_ms'?formatStudyTime(current.data!.metrics.study_ms):current.data!.metrics[k as keyof typeof learningMetrics]?.toLocaleString()??'미확인'}</strong></div>)}</div>
- {kinds.map(kind=><AdminPanel key={kind} title={learningDefinitions[kind as keyof typeof learningDefinitions]}>{current.data!.rows.filter(r=>r.kind===kind).length?<AdminDataTable id={'learning-'+kind} rows={current.data!.rows.filter(r=>r.kind===kind)} rowKey={r=>r.label} scope="서버에서 반환한 집계 행만 검색·정렬합니다. 기록이 있는 모든 집단을 표시합니다." columns={[{key:'label',label:'대상',value:r=>r.label},{key:'users',label:'고유 학생 수',value:r=>r.users},{key:'records',label:'기록 수',value:r=>r.records}]}/>:<p>선택 기간에 기록이 없습니다.</p>}</AdminPanel>)}
+ {kinds.map(kind=><AdminPanel key={kind} title={learningDefinitions[kind as keyof typeof learningDefinitions]}><AdminLearningRankings key={JSON.stringify([user?.id,window,kind])} kind={kind} range={window}/></AdminPanel>)}
    {(section==='learning'||section==='applications')&&<ApplicationsRoster/>}
  {section==='insights'&&<AdminPanel title="인사이트 DRAFT 미리보기"><p>자동 노출 OFF · 저장·승인 원장 연결 전에는 미리보기만 제공합니다.</p>{current.data.rows.filter(r=>r.kind==='saved').slice(0,1).map(r=><p key={r.label}>선택 기간에 현재 남아 있는 저장 기록 기준, {r.users}명의 학생이 「{r.label}」 자료를 저장했습니다.</p>)}<p>기간: {current.data.from} ~ {current.data.to} · 전체 기록 집계 · 조회 시각과 출처는 위와 동일합니다.</p></AdminPanel>}
  </>:null}

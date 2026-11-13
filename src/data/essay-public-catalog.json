@@ -109,7 +109,7 @@
     },
     {
       "sourceUniversityId": "kangnam",
-      "universityId": null,
+      "universityId": "35719d49-35d4-5abc-a8e7-2af3bf8dfcf1",
       "canonicalSlug": null,
       "name": "강남대학교",
       "offerings": [
@@ -766,7 +766,7 @@
     },
     {
       "sourceUniversityId": "duksung",
-      "universityId": null,
+      "universityId": "07a2b00d-dd61-5fd9-9ccc-2b9b22c3b5ef",
       "canonicalSlug": null,
       "name": "덕성여자대학교",
       "offerings": [
@@ -1003,7 +1003,7 @@
     },
     {
       "sourceUniversityId": "syu",
-      "universityId": null,
+      "universityId": "eeed8e73-3d9a-5b57-b7c9-77a574ed0713",
       "canonicalSlug": null,
       "name": "삼육대학교",
       "offerings": [
@@ -1047,7 +1047,7 @@
     },
     {
       "sourceUniversityId": "sangmyung",
-      "universityId": null,
+      "universityId": "d45dbe0e-984c-574d-8a3f-f92956fff5ff",
       "canonicalSlug": null,
       "name": "상명대학교",
       "offerings": [
@@ -1477,7 +1477,7 @@
     },
     {
       "sourceUniversityId": "sungshin",
-      "universityId": null,
+      "universityId": "666c6c34-b181-5b8e-8c74-b64d6373a1d7",
       "canonicalSlug": null,
       "name": "성신여자대학교",
       "offerings": [
@@ -2301,7 +2301,7 @@
     },
     {
       "sourceUniversityId": "koreatech",
-      "universityId": null,
+      "universityId": "9edd981f-362b-55b1-bedf-912197cd19d4",
       "canonicalSlug": null,
       "name": "한국기술교육대학교",
       "offerings": [

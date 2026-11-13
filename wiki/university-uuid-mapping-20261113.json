@@ -1,0 +1,20 @@
+{
+  "basis": "Existing active public.universities rows, exact canonical full university names uniquely matched; explicit reviewed source IDs, no fuzzy algorithm, no new UUID/row",
+  "mapping": {
+    "kangnam": "35719d49-35d4-5abc-a8e7-2af3bf8dfcf1",
+    "duksung": "07a2b00d-dd61-5fd9-9ccc-2b9b22c3b5ef",
+    "syu": "eeed8e73-3d9a-5b57-b7c9-77a574ed0713",
+    "sangmyung": "d45dbe0e-984c-574d-8a3f-f92956fff5ff",
+    "sungshin": "666c6c34-b181-5b8e-8c74-b64d6373a1d7",
+    "koreatech": "9edd981f-362b-55b1-bedf-912197cd19d4"
+  },
+  "unmapped": [
+    "dongduk",
+    "seokyeong",
+    "suwon",
+    "shinhan",
+    "eulji",
+    "tukorea",
+    "hanshin"
+  ]
+}
