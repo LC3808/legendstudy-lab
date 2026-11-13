@@ -122,7 +122,7 @@ export function EssayBetaCredit(){
   };
   return <>
     {error&&<aside role="status">베타 첨삭권을 확인하지 못했습니다. <button onClick={()=>setRetry(v=>v+1)}>다시 확인</button></aside>}
-    {state&&(state.active||state.status==='ended')&&<aside className="content-wrap essay-credit" aria-live="polite">
+    {state?.active&&<aside className="content-wrap essay-credit" aria-live="polite">
       <strong>{!state.active ? '베타 무료 첨삭 제공이 종료되었습니다.' : state.available>0 ? `오늘의 무료 첨삭 · ${state.available}회 남음` : '오늘의 무료 첨삭을 모두 사용했습니다.'}</strong>
       <p className="essay-credit__meta">{state.active ? `매일 00시(자정, 한국 시간) 갱신 · 이월 없음 · ${state.available===0 && Date.parse(state.expires_at)<Date.parse(state.ends_at)?'다음 이용: 내일 00:00 KST · ':''}${betaEndDate(state.ends_at)}까지` : '가입·구매 이용권은 기존 정책대로 이용할 수 있어요.'}</p>
       <a href={state.active && state.notice_id ? `/notices/${state.notice_id}` : '/notices'}>베타 공지 다시 보기</a>

@@ -1842,3 +1842,12 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 .invite-card p {margin:0;line-height:1.65;}
 .invite-card__actions {display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.25rem;}
 .invite-confirm {border-style:dashed;}
+
+/* Nov13 Essay LAB hero: retain the approved headline and native brand palette. */
+.essay-lab-page .page-intro {
+ position:relative; background:#f7f9fc; border:2px solid var(--ink);
+ border-left:5px solid var(--brand); box-shadow:0 6px 20px rgba(15,35,60,.06);
+ padding:clamp(1.25rem,3vw,2.5rem);
+}
+.essay-lab-page .essay-hero__label { color:var(--brand-text); font-weight:700; }
+.essay-lab-page .page-intro h1.essay-hero__headline { max-width:32em; line-height:1.4; word-break:keep-all; overflow-wrap:anywhere; }

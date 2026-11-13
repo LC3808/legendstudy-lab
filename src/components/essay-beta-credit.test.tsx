@@ -6,8 +6,8 @@ vi.mock('next/navigation',()=>({useRouter:()=>({push:vi.fn()})}));
 const m=vi.hoisted(()=>({rpc:vi.fn(),session:vi.fn(),subscribe:vi.fn()}));
 vi.mock('@/lib/browser-auth-client',()=>({getBrowserAuthClient:()=>({rpc:m.rpc,auth:{getSession:m.session,onAuthStateChange:m.subscribe}})}));
 const active={version:'essay-beta-credit-v2',active:true,grant_id:'fixture',day:'2026-10-27',available:1,status:'active',ends_at:'2026-11-10T15:00:00Z',campaign_id:'campaign',policy_version:'daily-v2',notice_seen:true,notice_id:'notice',expires_at:new Date(Date.now()+3600000).toISOString()};
-beforeEach(()=>{localStorage.clear();Object.defineProperty(HTMLDialogElement.prototype,'showModal',{configurable:true,value:function(this:HTMLDialogElement){this.open=true;}});m.rpc.mockReset();m.session.mockReset();m.session.mockResolvedValue({data:{session:{user:{id:'one'}}}});m.subscribe.mockReturnValue({data:{subscription:{unsubscribe:vi.fn()}}});});
-afterEach(cleanup);
+beforeEach(()=>{vi.spyOn(Date,'now').mockReturnValue(Date.parse('2026-11-01T00:00:00Z'));localStorage.clear();Object.defineProperty(HTMLDialogElement.prototype,'showModal',{configurable:true,value:function(this:HTMLDialogElement){this.open=true;}});m.rpc.mockReset();m.session.mockReset();m.session.mockResolvedValue({data:{session:{user:{id:'one'}}}});m.subscribe.mockReturnValue({data:{subscription:{unsubscribe:vi.fn()}}});});
+afterEach(()=>{cleanup();vi.restoreAllMocks();});
 it('does not claim when signed out',async()=>{m.session.mockResolvedValue({data:{session:null}});render(<EssayBetaCredit/>);await waitFor(()=>expect(m.session).toHaveBeenCalled());expect(m.rpc).not.toHaveBeenCalled();});
 it('uses server balance and refreshes shared credit after a grant',async()=>{m.rpc.mockResolvedValue({data:active});const listener=vi.fn();window.addEventListener('legendstudy:credit-refresh',listener);render(<EssayBetaCredit/>);await screen.findByText(/오늘의 무료 첨삭 · 1회 남음/);expect(m.rpc).toHaveBeenCalledTimes(1);expect(m.rpc).toHaveBeenCalledWith('essay_beta_daily_status_v2');expect(listener).not.toHaveBeenCalled();window.removeEventListener('legendstudy:credit-refresh',listener);});
 it('refreshes after spend without a notification loop',async()=>{m.rpc.mockResolvedValue({data:active});render(<EssayBetaCredit/>);await screen.findByText(/1회 남음$/);m.rpc.mockResolvedValue({data:{...active,available:0}});act(()=>window.dispatchEvent(new Event('legendstudy:credit-refresh')));await screen.findByText(/오늘의 무료 첨삭을 모두 사용했습니다/);expect(m.rpc).toHaveBeenCalledTimes(2);});
@@ -16,9 +16,9 @@ it('failure does not invent a grant',async()=>{m.rpc.mockResolvedValue({error:{c
 it('does not reveal an old account response',async()=>{m.session.mockResolvedValueOnce({data:{session:{user:{id:'one'}}}}).mockResolvedValue({data:{session:{user:{id:'two'}}}});m.rpc.mockResolvedValue({data:active});const {container}=render(<EssayBetaCredit/>);await waitFor(()=>expect(m.session).toHaveBeenCalledTimes(2));expect(container).toBeEmptyDOMElement();});
 it('rejects malformed or inflated balances',()=>{for(const available of [-1,2,3,1.5,'1'])expect(parseBetaCredit({...active,available})).toBeNull();expect(parseBetaCredit({...active,expires_at:'bad'})).toBeNull();});
 
-it('ended campaign is explicit, does not keep a midnight refresh',async()=>{
+it('ended campaign is hidden without changing the server policy',async()=>{
  m.rpc.mockResolvedValue({data:{version:'essay-beta-credit-v2',active:false,status:'ended',ends_at:active.ends_at}});
- render(<EssayBetaCredit/>);await screen.findByText('베타 무료 첨삭 제공이 종료되었습니다.');expect(m.rpc).toHaveBeenCalledTimes(1);
+ const {container}=render(<EssayBetaCredit/>);await waitFor(()=>expect(m.rpc).toHaveBeenCalledTimes(1));expect(container).toBeEmptyDOMElement();
 });
 it('start is read-only, hide preference does not hide the allowance',async()=>{
  m.rpc.mockResolvedValue({data:{...active,notice_seen:false}});

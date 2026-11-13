@@ -26,8 +26,9 @@ it('keeps an unmapped university honest without fake question choices',()=>{
 });
 it('uses verified schedule facts and distinguishes duration from unknown start time',()=>{
  render(<UniversityCatalogDetail university={catalogUniversity('skku')!}/>);
- expect(screen.getByText('2026-11-22')).toBeInTheDocument();
- expect(screen.getByText('100분')).toBeInTheDocument();
+ expect(screen.getByText('2026-11-22 (일)')).toBeInTheDocument();
+ expect(screen.getAllByText('100분')).toHaveLength(2);
+ expect(screen.getByText('2026-11-21 (토)')).toBeInTheDocument();
  expect(screen.queryByText('시작 시간')).toBeNull();
  expect(screen.queryByText('모집인원')).toBeNull();
 });

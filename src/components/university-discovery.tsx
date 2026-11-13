@@ -2,7 +2,8 @@
 import {useEssayServiceStatus} from './use-essay-service-status';
 
 import Link from 'next/link';
-import {useEffect,useState} from 'react';
+import {useEffect,useState,type CSSProperties} from 'react';
+import {universityEssayTheme} from '@/lib/essay-runtime/university-theme';
 import {filterCatalog,publicCatalog,campusLabel,isFeaturedUniversity} from '@/lib/essay-runtime/public-discovery';
 import './essay-service.css';
 import {sortCatalog,type CatalogSort} from '@/lib/essay-runtime/catalog-sorting';
@@ -40,7 +41,7 @@ export function UniversityDiscovery({essayFirst=false}:{essayFirst?:boolean}){
  <label>전형 학년도<select value={year} onChange={e=>change(setYear,e.target.value)}><option value="">전체</option>{[...new Set(publicCatalog.universities.flatMap(u=>u.offerings.map(o=>o.admissionYear)))].map(x=><option key={x}>{x}</option>)}</select></label></>}</div>
  <div className="discovery-result"><p role="status">{rows.length}개 대학{!essayFirst&&' · 전형 정보 기준'}</p><select aria-label="대학 정렬" value={sort} onChange={e=>{setSort(e.target.value as CatalogSort);setPage(0);}}><option value="service">서비스 가능 대학 우선</option><option value="applicants">지원자 수순</option><option value="competition">경쟁률순</option><option value="name">대학명순</option></select></div>
  {(sort==='applicants'||sort==='competition')&&<p className="catalog-sort-note">검증된 2027학년도 통계가 없는 대학은 서비스 우선순위를 적용합니다.</p>}
- <div className="discovery-grid">{visible.map(u=><article key={u.sourceUniversityId} className="university-card">
+ <div className="discovery-grid">{visible.map(u=><article key={u.sourceUniversityId} className="university-card" style={{'--university-brand':universityEssayTheme(u.sourceUniversityId).accent,'--university-button-text':universityEssayTheme(u.sourceUniversityId).buttonTextColor} as CSSProperties}>
  <div className="university-card-top"><UniversityLogo university={u}/>{!essayFirst&&<UniversityRegions offerings={u.offerings}/>}</div><div className="university-card-heading"><h3><Link href={`/essay-lab/universities/${u.sourceUniversityId}/`}>{u.name}</Link></h3></div>
  {!essayFirst&&<><div className="university-card-meta">{u.offerings.map(o=><p key={o.id}>{campusLabel(o.campus)} · {o.admissionYear}학년도</p>)}</div>
  <EssayTypeBadges types={u.offerings.flatMap(o=>o.types)}/>

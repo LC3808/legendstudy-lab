@@ -7,11 +7,13 @@
     "sha256": "08239cae91f487a4d9a08c53b4c86c4dac4f5176afdb5a83f6a5122b029c9d50"
   },
   "konkuk": {
-    "src": "/university-logos/konkuk.png",
-    "sourcePage": "https://admission.konkuk.ac.kr/admission/37981/subview.do",
-    "sourceAsset": "https://admission.konkuk.ac.kr/sites/admission/images/common/img-header-logo.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "40943910d8d6c06acb398faae554194e52f17443ff7ecff50d1081332adb9fe2"
+    "src": "/university-logos/konkuk-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "b027225a930a041c279969b9b01770f4125820873edbd9d96e7f87a74df0a01c",
+    "previousAsset": "/university-logos/konkuk.png",
+    "previousSourcePage": "https://admission.konkuk.ac.kr/admission/37981/subview.do"
   },
   "kyonggi": {
     "src": "/university-logos/kyonggi.png",
@@ -29,18 +31,22 @@
     "darkSurface": true
   },
   "kyunghee": {
-    "src": "/university-logos/kyunghee.png",
-    "sourcePage": "https://www.khu.ac.kr/kor/user/main/view.do",
-    "sourceAsset": "https://www.khu.ac.kr/cmmn/file/imageSrc.do?atchFileId=f25a4a11986440c5ab843d159d3bde78&fileSn=3",
-    "verifiedAt": "2026-10-11",
-    "sha256": "d850ebe49f34cbe251f1935b1d3127629f1b43b3c6f747449ecffce7d87e2f1b"
+    "src": "/university-logos/kyunghee-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "cf08f27f27a0d5e220100e22d7b56d108dd10cf2a1559a4e2f3e9be4fcbe311c",
+    "previousAsset": "/university-logos/kyunghee.png",
+    "previousSourcePage": "https://www.khu.ac.kr/kor/user/main/view.do"
   },
   "korea": {
-    "src": "/university-logos/korea.png",
-    "sourcePage": "https://www.korea.ac.kr/sites/ko/index.do",
-    "sourceAsset": "https://www.korea.ac.kr/sites/ko/images/common/logo_c.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "c10ea1604e9b6edb808acd6d8003397bcecca18a7df8b718a68f27a187e5a6be"
+    "src": "/university-logos/korea-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "b2729ed67128efd431299e17f0c568bcdd65ca4c519b1707d667517347b3d8cd",
+    "previousAsset": "/university-logos/korea.png",
+    "previousSourcePage": "https://www.korea.ac.kr/sites/ko/index.do"
   },
   "duksung": {
     "src": "/university-logos/duksung.png",
@@ -50,11 +56,13 @@
     "sha256": "0303a209c7d6ad994b9a70ea1d76e12b84099dd45cd2abdad500a4687f9a2783"
   },
   "dongguk": {
-    "src": "/university-logos/dongguk.png",
-    "sourcePage": "https://www.dongguk.edu/main",
-    "sourceAsset": "https://www.dongguk.edu/resources/images/site/common/header_logo_color.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "f123e2c705ee1c597c21a5c2b83762d0393b5791de2349a632685fc7c06dd538"
+    "src": "/university-logos/dongguk-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "022855e512dc2ea86a6314c3f2affd84f33847e2d8cdf91997131f50190b4563",
+    "previousAsset": "/university-logos/dongguk.png",
+    "previousSourcePage": "https://www.dongguk.edu/main"
   },
   "dongduk": {
     "src": "/university-logos/dongduk.png",
@@ -107,12 +115,13 @@
     "sha256": "31f56bfdff41a2510eb1922eb1a6232267d577ce8669eccdf1827672a98a9714"
   },
   "skku": {
-    "src": "/university-logos/skku.png",
-    "paddedWordmark": true,
-    "sourcePage": "https://www.skku.edu/skku/index.do",
-    "sourceAsset": "https://www.skku.edu/_res/skku//img/common/logo_o.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "d02d96d5701b9e78032a5740c9b990c9d5973489a680bc7d54bf69c391020b67"
+    "src": "/university-logos/skku-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "42e61f881a72b5aacd4c2943936d033af8c72089da4f12f3e5ee8b845d5636cb",
+    "previousAsset": "/university-logos/skku.png",
+    "previousSourcePage": "https://www.skku.edu/skku/index.do"
   },
   "sungshin": {
     "src": "/university-logos/sungshin.jpg",
@@ -136,12 +145,13 @@
     "sha256": "23e2cc3c3dd783d3be68f12b3e4e721cd735bbc826a6e4a94354e4567d496d17"
   },
   "sookmyung": {
-    "src": "/university-logos/sookmyung.svg",
-    "sourcePage": "https://www.sookmyung.ac.kr:443/kr/index.do",
-    "sourceAsset": "https://www.sookmyung.ac.kr:443/cms/etcResourceDown.do?site=%24cms%24PoZwFghgTgpkA&key=%24cms%24BYEwtANg9g5lYHcB0BnAbjIA",
-    "verifiedAt": "2026-10-11",
-    "sha256": "b0eae498bb7af7265a0225b29b47f42f8c05c8ede472f87cede453920c027321",
-    "darkSurface": true
+    "src": "/university-logos/sookmyung-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "62dbd88d48116768576ef670dc3010990b17bc13042ba89949a008bd2977dd38",
+    "previousAsset": "/university-logos/sookmyung.svg",
+    "previousSourcePage": "https://www.sookmyung.ac.kr:443/kr/index.do"
   },
   "shinhan": {
     "src": "/university-logos/shinhan.png",
@@ -166,11 +176,13 @@
     "darkSurface": true
   },
   "inha": {
-    "src": "/university-logos/inha.png",
-    "sourcePage": "https://www.inha.ac.kr/kr/index.do",
-    "sourceAsset": "https://www.inha.ac.kr/sites/kr/images/logo.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "b1a1e3e00d458cb865f12414934d1ae79184cd81786102a6a88eb7e25c624f9d"
+    "src": "/university-logos/inha-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "817631d58189085aa2619f16d0c3850b918b67c3dc24c4c61f36f1b399dd54cf",
+    "previousAsset": "/university-logos/inha.png",
+    "previousSourcePage": "https://www.inha.ac.kr/kr/index.do"
   },
   "tukorea": {
     "src": "/university-logos/tukorea.svg",
@@ -181,18 +193,22 @@
     "darkSurface": true
   },
   "hufs": {
-    "src": "/university-logos/hufs.png",
-    "sourcePage": "https://www.hufs.ac.kr/hufs/index.do",
-    "sourceAsset": "https://www.hufs.ac.kr/sites/hufs/images/common/logo-top-color.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "45b6612becf74542a373b171617bacbc90063021d938024c7530842c92029974"
+    "src": "/university-logos/hufs-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "f4d9d7f1819b3b96a1a3bf121b00927e806a611a6d29d554d1be434adc98dbfa",
+    "previousAsset": "/university-logos/hufs.png",
+    "previousSourcePage": "https://www.hufs.ac.kr/hufs/index.do"
   },
   "kau": {
-    "src": "/university-logos/kau.png",
-    "sourcePage": "https://kau.ac.kr/index/main.php",
-    "sourceAsset": "https://kau.ac.kr/images/main/logo_kau_on.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "d04df19c07b10a7bb9395456383c0392b79d0ca0ee5221100cc02c7db7f29c9d"
+    "src": "/university-logos/kau-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "c228b9619214fa1a38bd362cd08609008175c2142e3342dc63b3b2a7551984f9",
+    "previousAsset": "/university-logos/kau.png",
+    "previousSourcePage": "https://kau.ac.kr/index/main.php"
   },
   "hanshin": {
     "src": "/university-logos/hanshin.jpg",
@@ -202,12 +218,13 @@
     "sha256": "77e5ff23cacdaf68bc62f9b75fe3a4ae87216acd7f56072603fe26546982c46b"
   },
   "hanyang": {
-    "src": "/university-logos/hanyang.png",
-    "sourcePage": "https://www.hanyang.ac.kr/home",
-    "sourceAsset": "https://www.hanyang.ac.kr/o/hyu_homepage-theme/images/icons/logo_global.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "c0af1d2f2ecc05c8ad3432c7ff52a00d5c36e9abf97eb637150f69a7df2efd82",
-    "darkSurface": true
+    "src": "/university-logos/hanyang-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "a4fb2280fe56901b8f840bdde544e466781fcf2c238f377674fb8d6568090546",
+    "previousAsset": "/university-logos/hanyang.png",
+    "previousSourcePage": "https://www.hanyang.ac.kr/home"
   },
   "hongik": {
     "src": "/university-logos/hongik.svg",
@@ -225,11 +242,13 @@
     "darkSurface": true
   },
   "soongsil": {
-    "src": "/university-logos/soongsil.png",
-    "sourcePage": "https://ssu.ac.kr/%ea%b8%b0%ed%83%80%ec%84%9c%eb%b9%84%ec%8a%a4/total_search/",
-    "sourceAsset": "https://ssu.ac.kr/wp-content/themes/SSUMainSiteV2/assets/images/logo_dark.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "17613ce0cd5d15827f05538c36a046d7e7096fdefd22c6c84afb18bddc351ed5"
+    "src": "/university-logos/soongsil-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "68a2c57f8a470b43274c28fd3c679ba32971ceac10a341e45138bc404dda04fc",
+    "previousAsset": "/university-logos/soongsil.png",
+    "previousSourcePage": "https://ssu.ac.kr/%ea%b8%b0%ed%83%80%ec%84%9c%eb%b9%84%ec%8a%a4/total_search/"
   },
   "ewha": {
     "src": "/university-logos/ewha.svg",
@@ -240,11 +259,13 @@
     "darkSurface": true
   },
   "kwangwoon": {
-    "src": "/university-logos/kwangwoon.png",
-    "sourcePage": "https://www.kw.ac.kr/ko/",
-    "sourceAsset": "https://www.kw.ac.kr/ko/img/logo2.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "66140fbf8b165005e6f32cfee480f803fe948396edce013b72fdc06da4e37337"
+    "src": "/university-logos/kwangwoon-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "54a127acc840c0583a6ef87e2338328ee6a068eb8f774b3313116d27d2b3e17c",
+    "previousAsset": "/university-logos/kwangwoon.png",
+    "previousSourcePage": "https://www.kw.ac.kr/ko/"
   },
   "kookmin": {
     "src": "/university-logos/kookmin.png",
@@ -254,11 +275,13 @@
     "sha256": "312cebfaf74498a363c15c2caf78fc4f230e282e97f1f1373a84fd4c32d4eb53"
   },
   "swu": {
-    "src": "/university-logos/swu.png",
-    "sourcePage": "https://www.swu.ac.kr/swu/index.do",
-    "sourceAsset": "https://www.swu.ac.kr/sites/swu/images/common/logo_c.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "b56b422e54c8c1613da7c254cc2f5065d17d1672a8e37b593d69e814f87714b5"
+    "src": "/university-logos/swu-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "dfdeaae76d93de7bd26a9bbfe2fae6080be9a8f771b9e9b5bef671d26b1c0dea",
+    "previousAsset": "/university-logos/swu.png",
+    "previousSourcePage": "https://www.swu.ac.kr/swu/index.do"
   },
   "yonsei": {
     "src": "/university-logos/yonsei.png",
@@ -275,11 +298,13 @@
     "sha256": "f5d9c19a140a41116616a6998cb01da7f339d689fe32ff9638478a294c6286cd"
   },
   "cau": {
-    "src": "/university-logos/cau.png",
-    "sourcePage": "https://newchn.cau.ac.kr/cms/FR_CON/index.do?MENU_ID=220",
-    "sourceAsset": "https://newchn.cau.ac.kr/cau/img/chn/layout/logo.png",
-    "verifiedAt": "2026-10-11",
-    "sha256": "4d57b19cf23634116be377b70ceb037c82718fd8327a4ff97468d7040ef15d17"
+    "src": "/university-logos/cau-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "c3e7553c38d762882a27d2351a6fa948811e8032e7c093506d6c21d08946b77b",
+    "previousAsset": "/university-logos/cau.png",
+    "previousSourcePage": "https://newchn.cau.ac.kr/cms/FR_CON/index.do?MENU_ID=220"
   },
   "koreatech": {
     "src": "/university-logos/koreatech.png",
@@ -297,10 +322,12 @@
     "darkSurface": true
   },
   "sogang": {
-    "src": "/university-logos/sogang.jpeg",
-    "sourceKind": "owner-supplied",
-    "sourceFilename": "sogang.jpeg",
-    "receivedAt": "2026-10-12",
-    "sha256": "cb14e27355808e3fa6bc471409d77cca0f22dbec1bbda2f8b31ae17ce11cc7be"
+    "src": "/university-logos/sogang-symbol.png",
+    "sourceKind": "owner-marketing-reference",
+    "sourceFilename": "essay-lab-banners-package.html",
+    "receivedAt": "2026-11-13",
+    "sha256": "26144061b5728590df26f0d6b45503ced749d5d66be1194a7c4bde8b40c53a15",
+    "previousAsset": "/university-logos/sogang.jpeg",
+    "previousSourcePage": null
   }
 }

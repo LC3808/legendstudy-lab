@@ -21,6 +21,7 @@ it('records official or Owner-supplied provenance for each logo without changing
  for(const [id,a] of Object.entries(assets)){
   expect(publicCatalog.universities.some(u=>u.sourceUniversityId===id)).toBe(true);
   if('sourcePage' in a)expect(new URL(a.sourcePage).hostname).toMatch(/\.(ac\.kr|edu)$/);
+  else if(a.sourceKind==='owner-marketing-reference'){expect(a.sourceFilename).toBe('essay-lab-banners-package.html');expect(a.previousAsset).toMatch(/^\/university-logos\//);}
   else {expect(a.sourceKind).toBe('owner-supplied');expect(a.sourceFilename).toBe('sogang.jpeg');}
   expect(a.sha256).toMatch(/^[a-f0-9]{64}$/);expect(a.src).toMatch(/^\/university-logos\//);
  }

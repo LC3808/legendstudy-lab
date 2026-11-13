@@ -265,3 +265,15 @@
 .essay-math-hold-button {color:#6b7280;background:#eef0f3;border:1px solid #cbd5e1;white-space:normal;text-align:left;cursor:not-allowed;}
 .essay-math-hold-button:hover,.essay-math-hold-button:focus-visible,.essay-math-hold-button:active {border-color:#c62828;outline-color:#c62828;}
 .essay-first .university-discovery,.university-discovery {border:1px solid #171717;box-shadow:0 8px 24px rgba(15,23,42,.10);}
+
+/* Nov13: common card identity; execution readiness still comes from the server. */
+.university-discovery .university-card { background:#fff; border-color:#dce4ec; }
+.university-discovery .university-card:hover,
+.university-discovery .university-card:focus-within { border-color:var(--university-brand); }
+.university-discovery .university-card-top { min-height:64px; align-items:center; }
+.university-discovery .university-primary:not(:disabled) {
+ background:var(--university-brand); border-color:var(--university-brand); color:var(--university-button-text);
+}
+.university-discovery .university-primary:not(:disabled):hover { filter:brightness(.94); }
+.university-discovery .university-primary:focus-visible { outline:3px solid var(--university-brand); outline-offset:4px; }
+.university-discovery .university-logo { object-fit:contain; max-width:min(160px,100%); max-height:64px; }

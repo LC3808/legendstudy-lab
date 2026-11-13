@@ -79,8 +79,8 @@
     "university_id": "77fe30b2-f693-4612-a6d3-50e8be5c8f6c",
     "source_university_id": "konkuk",
     "university_name": "건국대학교",
-    "logo_asset": "/university-logos/konkuk.png",
-    "primary_color": "#006B3F",
+    "logo_asset": "/university-logos/konkuk-symbol.png",
+    "primary_color": "#006239",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
@@ -99,7 +99,13 @@
     "manus_reported_codes": "헤리티지 그린: #006239",
     "claude_reported_hex": "미공개",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Manus는 공식 HEX를 보고했으나 이번 원문 접근 실패(인하 연결 종료 / 건국 WAF)로 공식 적용 보류."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Manus는 공식 HEX를 보고했으나 이번 원문 접근 실패(인하 연결 종료 / 건국 WAF)로 공식 적용 보류.",
+    "marketing_reference": {
+      "asset": "assets/marketing/essay-lab-banner/essay-lab-banners-package.html",
+      "decisionDate": "2026-11-06",
+      "reusedAt": "2026-11-13",
+      "note": "Owner-selected marketing palette; original official verification status retained."
+    }
   },
   "kyonggi": {
     "university_id": "295f71b3-12da-4122-b743-f0c2c8bebe44",
@@ -153,7 +159,7 @@
     "university_id": "b401cc24-dd17-575e-8ac6-0fd8c9c8405d",
     "source_university_id": "kyunghee",
     "university_name": "경희대학교",
-    "logo_asset": "/university-logos/kyunghee.png",
+    "logo_asset": "/university-logos/kyunghee-symbol.png",
     "primary_color": "#A40F16",
     "secondary_color": "#0D326F",
     "background_color": "#FFFFFF",
@@ -183,8 +189,8 @@
     "university_id": "a93ec9df-2096-4550-801f-07a25b9a437b",
     "source_university_id": "korea",
     "university_name": "고려대학교",
-    "logo_asset": "/university-logos/korea.png",
-    "primary_color": "#8B0029",
+    "logo_asset": "/university-logos/korea-symbol.png",
+    "primary_color": "#862633",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
@@ -204,14 +210,20 @@
     "manus_reported_codes": "진홍색: PANTONE 202C",
     "claude_reported_hex": "#8B0029",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "marketing_reference": {
+      "asset": "assets/marketing/essay-lab-banner/essay-lab-banners-package.html",
+      "decisionDate": "2026-11-06",
+      "reusedAt": "2026-11-13",
+      "note": "Owner-selected marketing palette; original official verification status retained."
+    }
   },
   "kwangwoon": {
     "university_id": "3d35489f-2e90-47b8-af1b-48928ee2269a",
     "source_university_id": "kwangwoon",
     "university_name": "광운대학교",
-    "logo_asset": "/university-logos/kwangwoon.png",
-    "primary_color": "#244A6A",
+    "logo_asset": "/university-logos/kwangwoon-symbol.png",
+    "primary_color": "#7D192D",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
@@ -229,7 +241,13 @@
     "manus_reported_codes": "KwangWoon Brown: HEX 미확인",
     "claude_reported_hex": "#8A1601",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "marketing_reference": {
+      "asset": "assets/marketing/essay-lab-banner/essay-lab-banners-package.html",
+      "decisionDate": "2026-11-06",
+      "reusedAt": "2026-11-13",
+      "note": "Owner-selected marketing palette; original official verification status retained."
+    }
   },
   "kookmin": {
     "university_id": "88aa2231-6a1c-47ee-a063-b168cdaf85ad",
@@ -313,8 +331,8 @@
     "university_id": "cd1ba908-2b5f-4063-a111-2da53d7d358b",
     "source_university_id": "dongguk",
     "university_name": "동국대학교",
-    "logo_asset": "/university-logos/dongguk.png",
-    "primary_color": "#244A6A",
+    "logo_asset": "/university-logos/dongguk-symbol.png",
+    "primary_color": "#EA5514",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
@@ -333,7 +351,13 @@
     "manus_reported_codes": "전용색상: HEX 미확인",
     "claude_reported_hex": "#EB6120",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "marketing_reference": {
+      "asset": "assets/marketing/essay-lab-banner/essay-lab-banners-package.html",
+      "decisionDate": "2026-11-06",
+      "reusedAt": "2026-11-13",
+      "note": "Owner-selected marketing palette; original official verification status retained."
+    }
   },
   "dongduk": {
     "university_id": null,
@@ -434,8 +458,8 @@
     "university_id": "816c1cb8-b54d-4f05-ae64-e82abfec0ada",
     "source_university_id": "sogang",
     "university_name": "서강대학교",
-    "logo_asset": "/university-logos/sogang.jpeg",
-    "primary_color": "#9B1838",
+    "logo_asset": "/university-logos/sogang-symbol.png",
+    "primary_color": "#A6192E",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
@@ -454,7 +478,13 @@
     "manus_reported_codes": "서강 카디널: PANTONE 1805 C",
     "claude_reported_hex": "#B60005",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "marketing_reference": {
+      "asset": "assets/marketing/essay-lab-banner/essay-lab-banners-package.html",
+      "decisionDate": "2026-11-06",
+      "reusedAt": "2026-11-13",
+      "note": "Owner-selected marketing palette; original official verification status retained."
+    }
   },
   "seokyeong": {
     "university_id": null,
@@ -534,7 +564,7 @@
     "university_id": "eba1d65c-5bb6-5454-afd4-82a18c57262a",
     "source_university_id": "swu",
     "university_name": "서울여자대학교",
-    "logo_asset": "/university-logos/swu.png",
+    "logo_asset": "/university-logos/swu-symbol.png",
     "primary_color": "#9E1A20",
     "secondary_color": "#101077",
     "background_color": "#FFFFFF",
@@ -564,7 +594,7 @@
     "university_id": "4acee829-94d4-5f8a-b440-a72e423d439f",
     "source_university_id": "skku",
     "university_name": "성균관대학교",
-    "logo_asset": "/university-logos/skku.png",
+    "logo_asset": "/university-logos/skku-symbol.png",
     "primary_color": "#072A60",
     "secondary_color": "#124532",
     "background_color": "#FFFFFF",
@@ -670,7 +700,7 @@
     "university_id": "c4fa65ac-bbc6-5897-b4d8-f12f5a8f222b",
     "source_university_id": "sookmyung",
     "university_name": "숙명여자대학교",
-    "logo_asset": "/university-logos/sookmyung.svg",
+    "logo_asset": "/university-logos/sookmyung-symbol.png",
     "primary_color": "#003087",
     "secondary_color": "#0072CE",
     "background_color": "#FFFFFF",
@@ -700,8 +730,8 @@
     "university_id": "6ae1fd3f-22da-43f4-a796-1cfe960c5fcb",
     "source_university_id": "soongsil",
     "university_name": "숭실대학교",
-    "logo_asset": "/university-logos/soongsil.png",
-    "primary_color": "#244A6A",
+    "logo_asset": "/university-logos/soongsil-symbol.png",
+    "primary_color": "#00587C",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
@@ -720,7 +750,13 @@
     "manus_reported_codes": "Pantone 308: PANTONE 308\nPantone 3135: PANTONE 3135\nPantone 325: PANTONE 325",
     "claude_reported_hex": "미공개",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "marketing_reference": {
+      "asset": "assets/marketing/essay-lab-banner/essay-lab-banners-package.html",
+      "decisionDate": "2026-11-06",
+      "reusedAt": "2026-11-13",
+      "note": "Owner-selected marketing palette; original official verification status retained."
+    }
   },
   "shinhan": {
     "university_id": null,
@@ -776,17 +812,22 @@
     "source_university_id": "yonsei",
     "university_name": "연세대학교",
     "logo_asset": "/university-logos/yonsei.png",
-    "primary_color": "#244A6A",
+    "primary_color": "#003876",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
-    "color_source": "https://designcenter.yonsei.ac.kr/",
-    "verification_status": "E_UNVERIFIED",
-    "color_usage": "temporary_ui",
-    "official_rgb": null,
+    "color_source": "https://designcenter.yonsei.ac.kr/designcenter/design_con/signature_color.do",
+    "verification_status": "B_OFFICIAL_RGB",
+    "color_usage": "official_accent",
+    "official_rgb": [
+      0,
+      56,
+      118
+    ],
     "official_pantone": null,
     "color_name": null,
     "source_urls": [
+      "https://designcenter.yonsei.ac.kr/designcenter/design_con/signature_color.do",
       "https://designcenter.yonsei.ac.kr/",
       "https://www.yonsei.ac.kr/en_sc/1801/subview.do"
     ],
@@ -794,8 +835,8 @@
     "claude_matched": false,
     "manus_reported_codes": "미확인",
     "claude_reported_hex": null,
-    "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "verified_at": "2026-11-13",
+    "notes": "공식 전용색상 페이지의 화면용 수치 확인. 연세 RGB는 HEX로 무손실 표기."
   },
   "eulji": {
     "university_id": null,
@@ -855,7 +896,7 @@
     "university_id": "e40f4b8f-8949-4726-a774-2b6f0e6d8939",
     "source_university_id": "inha",
     "university_name": "인하대학교",
-    "logo_asset": "/university-logos/inha.png",
+    "logo_asset": "/university-logos/inha-symbol.png",
     "primary_color": "#005BAC",
     "secondary_color": null,
     "background_color": "#FFFFFF",
@@ -875,13 +916,19 @@
     "manus_reported_codes": "하늘색: #00AFEC\n짙은 청색: #005BAC",
     "claude_reported_hex": "#005BAC",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Manus는 공식 HEX를 보고했으나 이번 원문 접근 실패(인하 연결 종료 / 건국 WAF)로 공식 적용 보류."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Manus는 공식 HEX를 보고했으나 이번 원문 접근 실패(인하 연결 종료 / 건국 WAF)로 공식 적용 보류.",
+    "marketing_reference": {
+      "asset": "assets/marketing/essay-lab-banner/essay-lab-banners-package.html",
+      "decisionDate": "2026-11-06",
+      "reusedAt": "2026-11-13",
+      "note": "Owner-selected marketing palette; original official verification status retained."
+    }
   },
   "cau": {
     "university_id": "ffad67a6-107f-47b7-a1cb-ab61687ffb9f",
     "source_university_id": "cau",
     "university_name": "중앙대학교",
-    "logo_asset": "/university-logos/cau.png",
+    "logo_asset": "/university-logos/cau-symbol.png",
     "primary_color": "#2155A4",
     "secondary_color": "#666666",
     "background_color": "#FFFFFF",
@@ -956,7 +1003,7 @@
     "university_id": "1fd29b0d-1141-4ff0-b1b3-c4f201854476",
     "source_university_id": "hufs",
     "university_name": "한국외국어대학교",
-    "logo_asset": "/university-logos/hufs.png",
+    "logo_asset": "/university-logos/hufs-symbol.png",
     "primary_color": "#146E7A",
     "secondary_color": "#DADAD3",
     "background_color": "#FFFFFF",
@@ -986,7 +1033,7 @@
     "university_id": "881976e7-8e3d-53e3-8bd8-4ebe5d3a0445",
     "source_university_id": "kau",
     "university_name": "한국항공대학교",
-    "logo_asset": "/university-logos/kau.png",
+    "logo_asset": "/university-logos/kau-symbol.png",
     "primary_color": "#002870",
     "secondary_color": null,
     "background_color": "#FFFFFF",
@@ -1040,8 +1087,8 @@
     "university_id": "1090e1be-174e-5042-abd3-ca929c6e26f8",
     "source_university_id": "hanyang",
     "university_name": "한양대학교",
-    "logo_asset": "/university-logos/hanyang.png",
-    "primary_color": "#004483",
+    "logo_asset": "/university-logos/hanyang-symbol.png",
+    "primary_color": "#1D2475",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
@@ -1061,24 +1108,35 @@
     "manus_reported_codes": "Hanyang Blue: HEX 미확인",
     "claude_reported_hex": "#0E4A84",
     "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다.",
+    "marketing_reference": {
+      "asset": "assets/marketing/essay-lab-banner/essay-lab-banners-package.html",
+      "decisionDate": "2026-11-06",
+      "reusedAt": "2026-11-13",
+      "note": "Owner-selected marketing palette; original official verification status retained."
+    }
   },
   "hongik": {
     "university_id": "15f50d54-001d-49b9-836b-a5d9c76b9c0a",
     "source_university_id": "hongik",
     "university_name": "홍익대학교",
     "logo_asset": "/university-logos/hongik.svg",
-    "primary_color": "#244A6A",
+    "primary_color": "#1833DB",
     "secondary_color": null,
     "background_color": "#FFFFFF",
     "border_color": "#DCE4EC",
     "color_source": "https://www.hongik.ac.kr/kr/introduction/color.do",
-    "verification_status": "E_UNVERIFIED",
-    "color_usage": "temporary_ui",
-    "official_rgb": null,
+    "verification_status": "A_OFFICIAL_HEX",
+    "color_usage": "official_accent",
+    "official_rgb": [
+      24,
+      51,
+      219
+    ],
     "official_pantone": null,
     "color_name": null,
     "source_urls": [
+      "https://www.hongik.ac.kr/kr/introduction/color.do",
       "https://www.hongik.ac.kr/kr/introduction/color.do",
       "https://www.hongik.ac.kr/kr/introduction/school-mark.do"
     ],
@@ -1086,7 +1144,7 @@
     "claude_matched": false,
     "manus_reported_codes": "미확인",
     "claude_reported_hex": null,
-    "verified_at": null,
-    "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다."
+    "verified_at": "2026-11-13",
+    "notes": "공식 Primary Color Hongik Medium Blue HEX 확인."
   }
 }
