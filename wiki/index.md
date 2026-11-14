@@ -1,3 +1,5 @@
+2026-11-14: [LAB 관리자 요청순·회차·답안/결과·검수 연결](admin-lab-operations-20261114.md). SQL 운영 적용·원장 보존 PASS. WEB 배포/E2E 진행.
+
 2026-11-13: [성균관15 공개·302공개6잔여](essay-skku-public-20261113.md). 실제 운영HTTP/DB 검증 PASS, Provider0.
 
 2026-11-13: [경희모의4·과학18 운영 공개 / 287공개21잔여](essay-khu-science-public-20261113.md). 기존 데이터·권한·Credit·비논술 기능 보존, Provider0.

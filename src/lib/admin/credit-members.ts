@@ -1,6 +1,6 @@
 import {AdminError} from './errors';
-export type CreditMemberSort='balance_desc'|'balance_asc'|'granted_desc'|'used_desc'|'joined_desc';
-export interface CreditMember {account_id:string;email:string|null;summary:{spendable:number;reserved:number;paid:number;free:number;other:number};last_used_at:string|null}
+export type CreditMemberSort='requested_desc'|'completed_desc'|'balance_desc'|'balance_asc'|'granted_desc'|'used_desc'|'joined_desc';
+export interface CreditMember {account_id:string;email:string|null;summary:{spendable:number;reserved:number;paid:number;free:number;other:number};last_used_at:string|null;activity?:{requested:number;completed:number;last_requested_at:string|null;last_completed_at:string|null;latest_university:string|null}}
 export interface CreditMembers {total:number;limit:number;offset:number;items:CreditMember[]}
 export function parseCreditMembers(value:unknown):CreditMembers {
  const d=value as CreditMembers & {version:string};

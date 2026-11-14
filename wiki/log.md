@@ -1,3 +1,5 @@
+2026-11-14: [LAB 관리자 요청순·회차·답안/결과·검수 연결](admin-lab-operations-20261114.md). SQL 운영 적용·원장 보존 PASS. WEB 배포/E2E 진행.
+
 2026-11-11 22:43 KST: [작업05-D 운영 적용](admin-withdrawal-production-20261111.md) — 공부시간 전체기간 및 탈퇴 조회2RPC 적용·운영 검증 PASS. WEB 배포/E2E 진행 중. 아래 05-B/C 미적용 표기는 당시 기록.
 
 ## 2026-11-11 — 작업05-C

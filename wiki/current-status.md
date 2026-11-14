@@ -1,3 +1,5 @@
+2026-11-14: [LAB 관리자 요청순·회차·답안/결과·검수 연결](admin-lab-operations-20261114.md). SQL 운영 적용·원장 보존 PASS. WEB 배포/E2E 진행.
+
 2026-11-13: [성균관15 공개·302공개6잔여](essay-skku-public-20261113.md). 실제 운영HTTP/DB 검증 PASS, Provider0.
 
 [잔여6 처리](essay-remaining6-resolution-20261113.md): **304공개/4잔여/308**. 항공2 공개·항공3/숭실1 공식 충돌. 기존302/기록/권한/Credit 보존, Provider0. WEB63PASS/build·APP15PASS4SKIP; 실제로그인제출/기기/AI품질NT. 성균15·이화87 CLOSED, 전체 PARTIAL. 아래는 과거 이력.

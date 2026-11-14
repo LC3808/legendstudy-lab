@@ -67,7 +67,7 @@ function OperatorGateView({ auth }: { auth: ReturnType<typeof useAuth> }) {
     () => (auth.client ? createHumanReviewClient(auth.client) : null),
     [auth.client],
   );
-  const [source,setSource]=useState<"general"|"math"|"exam">("general");
+  const [source,setSource]=useState<"general"|"math"|"exam">(()=>typeof window!=="undefined"&&new URLSearchParams(window.location.search).has("run")?"exam":"general");
   const [gate, setGate] = useState<OperatorGate>("checking");
   const [errorKind, setErrorKind] = useState<QualityErrorKind | null>(null);
   const [reloadToken, setReloadToken] = useState(0);

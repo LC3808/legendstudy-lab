@@ -3,6 +3,7 @@ import {render,screen,cleanup} from '@testing-library/react';
 import {afterEach,describe,it,expect,vi} from 'vitest';
 const mocks=vi.hoisted(()=>({query:vi.fn()}));
 vi.mock('./admin-surface',async importOriginal=>({...await importOriginal<typeof import('./admin-surface')>(),useAdminQuery:mocks.query}));
+vi.mock('./admin-lab-operations',()=>({AdminLabOperations:()=>null}));
 vi.mock('./member-recent-activity',()=>({MemberRecentActivity:()=>null}));
 vi.mock('./member-university-activity',()=>({MemberUniversityActivity:()=>null}));
 import {AdminMemberDetailPanel} from './admin-members-view';

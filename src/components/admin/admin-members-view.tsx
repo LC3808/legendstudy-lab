@@ -1,4 +1,5 @@
 "use client";
+import {AdminLabOperations} from "./admin-lab-operations";
 
 import './member-dashboard.css';
 import {MemberRecentActivity} from './member-recent-activity';
@@ -114,7 +115,7 @@ export function AdminMemberDetailPanel({accountId,email=null}: {accountId: strin
   return <div className="member-detail-focus"><LegacyMemberDetailPanel accountId={accountId}/><div className="admin-detail">
     <section className="admin-detail__block"><Student360Panel accountId={accountId}/></section>
     <section className="admin-detail__block"><MemberRecentActivity accountId={accountId}/></section>
-    <section className="admin-detail__block"><MemberUniversityActivity accountId={accountId}/></section>
+    <section className="admin-detail__block"><MemberUniversityActivity accountId={accountId}/><AdminLabOperations key={accountId} accountId={accountId}/></section>
     <details className="admin-detail__block"><summary>이용권 잔액·기록</summary><AdminMemberCreditPanel key={accountId} accountId={accountId} email={email}/></details>
   </div></div>;
 }
