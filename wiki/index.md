@@ -1,3 +1,4 @@
+[2026-11-14 관리자 콘솔 PHASE 3 — 실제 화면 UX 검수·UI 개편 설계](admin-console-ux-review-20261114.md)
 [2026-11-14 관리자 IA 통합 설계 — 학습·입시 + 논술 LAB 운영·품질](admin-essay-operations-ia-20261114.md)
 [2026-11-14 논술 LAB 관리자 운영 콘솔 개편 설계 (WEB, 코드 기반)](essay-lab-admin-console-redesign-20261114.md)
 [2026-11-14 학생 MY 개편 설계 (Flutter, 코드 기반)](student-my-redesign-20261114.md)
