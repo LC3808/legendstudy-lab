@@ -1,6 +1,6 @@
 # 관리자 운영 콘솔 PHASE 2 — 2026-11-14
 
-상태: 운영 SQL 적용, WEB 배포·브라우저 검증 진행 중. 기존 [P0 구현](admin-lab-operations-20261114.md)은 재개발하지 않았다.
+상태: WEB/SQL 운영 적용 DONE. 실제 피드백 사례 왕복·Flutter 기기 검증은 NOT TESTED. 기존 [P0 구현](admin-lab-operations-20261114.md)은 재개발하지 않았다.
 
 설계 기준: [Claude 최종 3e84708](https://github.com/LC3808/legendstudy-lab/blob/3e84708/wiki/admin-essay-operations-ia-20261114.md). 이전 72cfdd6의 6그룹보다 최종 7그룹을 우선한다. 학생 MY·학습입시 설계는 해당 문서의 참조 링크를 따른다. 실제 운영 계약이 설계의 추정 상태보다 우선한다.
 
@@ -61,3 +61,27 @@
 최종 자동화: 전체1991 PASS/기존11 FAIL/기존1ERROR/5SKIP. 마지막 관련13파일74PASS, TypeScript·변경ESLint·정적빌드 PASS. Boundary 검사 예외 추가는 자동 승인 검토가 거절하여 적용하지 않았다. URL 조건을 새 URLSearchParams로 구성해 보안 검사 변경 없이 해결했다. 기존 checkout 테스트환경 문구 위반1개는 별도 기존 실패로 유지한다.
 
 브라우저 검증에서 구버전 /my/essays의 클라이언트 이동이 이전 결과 renderer를 유지하는 것을 발견했다. 직접 결과 로드는 코멘트 폼 정상. 기록→결과 이동을 보장하기 위해 배포 허용 범위를 /my/essays 하위로 일치시켰다. 그 외 학생/공개 자산 보존은 유지한다.
+
+
+## 최종 배포 및 실제 브라우저 검증
+
+- 최종 Pages: `9229b2c9-031b-4a4b-b128-8b3763a86d4f`, 배포 소스 `6c3df3f4d8c67fae8f2f84392bd5d9aa6f67f90d` (기능 구현 4fc8b57 + 기록/결과 자산 일치 보완).
+- 첫 PHASE 2 배포516db0f0에서 관리자 및 결과 화면 반영. 후속은 기록 화면5자산만 추가 교체. 두 배포 모두 기존 API worker SHA256 `a6d8dd9b1ee386cb672c7a002c3946b9e0d616120dc7a43057b7cd3e80fee98b`, 환경 설정·Functions routing 보존.
+- 원격 작업 브랜치 `codex/lab-admin-operations-20261114`로 push. Force push 없음. 이 문서의 마지막 기록 커밋은 배포 소스 이후 docs-only다.
+
+| 검증 | 실제 브라우저 | 자동화/DB | 상태 |
+|---|---|---|---|
+| A 7개 메뉴 영역 | 7개 그룹 및 기존 링크 확인 | 메뉴/라우트 회귀 PASS | DONE |
+| B 기존 URL | admin·credit·essay-runs·operations·essay-feedback·ql·my/essays·result 확인 | 정적 빌드/메뉴 링크 PASS, 나머지 전수 로그인 조회 미실행 | PARTIAL |
+| C 권한 분리 | 현재 로그인 관리자 겸 검수자 통과. 별도 일반관리자 세션은 미실행 | quality 게이트 회귀 PASS, 운영 일반회원 admin RPC 거부/anon·service 실행권한 없음 | PARTIAL |
+| D 이용권→회원→첨삭→품질 | 성균관대 베타 회원 UUID로 검색, 1/1 완료, 3/3 결과, 문제3 품질 화면까지 PASS | 기존 읽기 계약/정확ID 링크 PASS | DONE |
+| E 피드백→첨삭→품질 | 실제 피드백0건: 사례 왕복 NOT TESTED. 관리자 조회 정상0건 확인 | 합성 UI 링크·소유권/참조·운영 rollback 계약 PASS | PARTIAL |
+| F 성균관대 실결과 | 실제3문항 답안·AI 결과 및 당시 material 기준/근거 버전 확인. 품질 기록 저장 안함 | 회차/원장 해시 동일 | DONE |
+| G 학생 코멘트 | 본인 기록→결과→문항별 첨삭 탭에서 코멘트 폼 확인. 영속 제출 클릭 안함 | 운영 본인 회차 submit→조회→처리 후 rollback PASS | PARTIAL |
+| H 경고 상세 이동 | 현재 처리중1→한양대 오래된 미완료1 조회. 실패0/재시도1/신규피드백0 표시 확인 | 집계/미확인과0구분 PASS | DONE(지원 지표) |
+| I 기존 검색/정렬/페이지 | 이용권 UUID검색/최근요청순, 베타 필터→검수→뒤로가기에서 source=beta·선택회차 복원 PASS. 다중페이지 클릭은 이번 브라우저에서 미실행 | 서버25페이지/필터/기간/역할, 기존 정렬 회귀 PASS | PARTIAL |
+| J 기존 기록 보존 | 읽기 조회만 수행, 지급/재처리/검수저장 안함 | runs·credit_transactions 전체 해시 적용 전/최종 동일. SQL은 기존 답안/결과/결제/검수 수정문 없음 | DONE |
+
+최종 기준 데이터: runs 해시 `aff110441e9f941164e70694e2ad1d49`, ledger 해시 `b62e38bbaa1d4999ce716e91d16e7dfa`; 테스트 후 essay_context0/quality_judgments0. 실제 사용자 텍스트·이메일·원본 답안은 Wiki에 보관하지 않았다.
+
+제한: USER_REPORT 회차 저장계약 확장은 하지 않음. 장시간·결과누락·차감이상 통합 경고는 PARTIAL이며 기존 상세 진단으로 확인. Flutter 배포/기기, 별도 일반관리자 브라우저 세션, 실제 학생 피드백 사례 왕복 및 영속 제출은 NOT TESTED. DB 계약 검증을 브라우저 제출 완료로 간주하지 않는다.
