@@ -59,3 +59,5 @@
 운영 migration: `20261114140328_admin_lab_review_filters`, `20261114140655_essay_feedback_restore`. 적용·원복·격리 테스트는 각각 supabase/candidates 하위 동명 패키지 참조.
 
 최종 자동화: 전체1991 PASS/기존11 FAIL/기존1ERROR/5SKIP. 마지막 관련13파일74PASS, TypeScript·변경ESLint·정적빌드 PASS. Boundary 검사 예외 추가는 자동 승인 검토가 거절하여 적용하지 않았다. URL 조건을 새 URLSearchParams로 구성해 보안 검사 변경 없이 해결했다. 기존 checkout 테스트환경 문구 위반1개는 별도 기존 실패로 유지한다.
+
+브라우저 검증에서 구버전 /my/essays의 클라이언트 이동이 이전 결과 renderer를 유지하는 것을 발견했다. 직접 결과 로드는 코멘트 폼 정상. 기록→결과 이동을 보장하기 위해 배포 허용 범위를 /my/essays 하위로 일치시켰다. 그 외 학생/공개 자산 보존은 유지한다.

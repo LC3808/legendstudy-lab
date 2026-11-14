@@ -6,7 +6,7 @@ const project=read('project.private.json'),previous=read('files.private.json').r
 if(previous.id!==project.canonical_deployment.id||project.name!=='legendstudy-lab')throw Error('Invalid baseline');
 const require=createRequire(import.meta.url);const {hash}=require(process.env.WRANGLER_MODULE_ROOT+'/blake3-wasm');
 const manifest={...previous.files},assets=new Map(),changed=[];
-const scoped=u=>u.startsWith('/admin/')||u==='/admin.txt'||u.startsWith('/ql/')||u==='/ql.txt'||u.startsWith('/my/essays/result/')||u==='/my/essays/result.txt';
+const scoped=u=>u.startsWith('/admin/')||u==='/admin.txt'||u.startsWith('/ql/')||u==='/ql.txt'||u.startsWith('/my/essays/')||u==='/my/essays.txt';
 const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);
 for(const f of walk('out')){const u='/'+path.relative('out',f).split(path.sep).join('/');if(!scoped(u)&&!u.startsWith('/_next/static/'))continue;const b=fs.readFileSync(f),ext=path.extname(f).slice(1),key=hash(b.toString('base64')+ext).toString('hex').slice(0,32);if(u.startsWith('/_next/')&&manifest[u]&&manifest[u]!==key)throw Error('Shared asset collision '+u);if(manifest[u]===key)continue;manifest[u]=key;changed.push(u);assets.set(key,{key,value:b.toString('base64'),metadata:{contentType:({html:'text/html; charset=utf-8',txt:'text/plain; charset=utf-8',js:'application/javascript',css:'text/css',woff2:'font/woff2'})[ext]??'application/octet-stream'},base64:true});}
 for(const [u,h] of Object.entries(previous.files))if(!scoped(u)&&manifest[u]!==h)throw Error('Preservation failure '+u);
