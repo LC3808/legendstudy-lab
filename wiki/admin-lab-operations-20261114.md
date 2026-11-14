@@ -14,7 +14,7 @@ Owner 직접 위임으로 운영 적용 완료. 서버 관리자·활성계정 �
 
 TypeScript,변경 ESLint,production 설정 build PASS.
 전체1987 PASS/5 SKIP/11 FAIL + dashboard mock 오류1. 깨끗한62a3296의 같은 실패11/오류1 확인.
-신규 관리자5·회원 격리8·기존Credit7·Quality36 관련 PASS; 격리 PostgreSQL apply/rollback PASS.
+신규 관리자5·회원 격리2·기존Credit7·Quality36 관련 PASS; 격리 PostgreSQL apply/rollback PASS.
 전체 테스트가 모두 통과했다고 주장하지 않는다.
 
 운영 WEB 배포/E2E 진행 중. 기존 배포798de461/source c995178 보존.
@@ -26,3 +26,5 @@ Claude 계약: admin-lab-v1 목록(summary/items/universities,total,offset,limit
 admin-lab-detail-v1 상세(run,billing,ledger,calls,retries,diagnostics,children,reviewed_questions).
 결과 열람 이벤트는 미연결(null),베타는 daily_grants 연결,무료재첨삭은 included_revision/required0.
 기존 feedback 원장은 운영 존재하나 essay_feedback 전용 RPC는 미설치;신규 코멘트 원장 없음.
+
+운영 검수 후 보강: registry에 공식 문항 라벨이 없는 과거 기록은 문항 UUID로 구분한다. 공식 번호를 배열 순서로 추정하지 않는다. 검수 링크는 전체 탐색으로 이동하여 이전에 열린 /ql/ 탭의 클라이언트 탭 상태가 남지 않게 한다.

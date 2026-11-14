@@ -1,12 +1,13 @@
 'use client';
 import {useState} from 'react';
-import Link from 'next/link';
 import {useReadReport} from './admin-dashboard-view';
 import {formatDateTime} from '@/lib/admin/format';
 import {labState,labAlerts,type LabDetail,type LabList} from '@/lib/admin/lab-operations';
 import {examReports,examQuestionLabel} from '@/lib/my/exam-history';
 import {EvaluationReport} from '@/components/my/evaluation-report';
 import {QlStructuredValue} from '@/components/quality/quality-primitives';
+
+const questionLabel=(id:string)=>{const label=examQuestionLabel(id);return label==='문항별 첨삭'?`문항 ID ${id}`:label;};
 
 export function AdminLabOperations({accountId}:{accountId?:string}){
  const [offset,setOffset]=useState(0),[university,setUniversity]=useState(''),[status,setStatus]=useState(''),[source,setSource]=useState(''),[selected,setSelected]=useState<string|null>(null),[refresh,setRefresh]=useState(0);
@@ -40,8 +41,8 @@ export function AdminLabDetail({runId,onSelect}:{runId:string;onSelect:(id:strin
  <h4>처리 정보</h4>{d.calls.length?<ul>{d.calls.map(c=><li key={c.call_id}>{c.provider??'Provider 미기록'} / {c.model??'모델 미기록'} · {formatDateTime(c.called_at)} · {c.duration_seconds===null?'처리 시간 미기록':`${c.duration_seconds}초`} · {c.call_state??'상태 미기록'} · {c.cost_usd===null?'비용 미기록':`USD ${c.cost_usd} (${c.cost_status})`}</li>)}</ul>:<p>Provider·모델·비용 호출 기록 없음</p>}
  {d.retries.map(t=><p key={t.generation}>재처리 요청 {t.generation} · {formatDateTime(t.at)}</p>)}{d.diagnostics.map((x,i)=><p key={i}>기록된 오류: {x.stage??'단계 미기록'} / {x.code??'코드 미기록'}</p>)}
  {parseError&&<p role="alert">저장된 결과를 기존 결과 화면으로 표시하지 못했습니다. 문항별 원본을 아래에서 확인할 수 있습니다.</p>}
- {answers.map(a=><section key={a.questionId}><h4>{examQuestionLabel(a.questionId)} · {run.parent_id?'재작성 답안':'제출 답안'}</h4><p style={{whiteSpace:'pre-wrap'}}>{a.body??'텍스트 답안 없음'}</p><p>당시 기준 {a.rubricVersion??'미기록'} · 근거 {a.evidenceVersion??'미기록'}</p><Link href={`/ql/?run=${encodeURIComponent(runId)}&question=${encodeURIComponent(a.questionId)}`}>{d.reviewed_questions.includes(a.questionId)?'기존 품질 검수 이력 보기':'기존 품질 검수로 이동'}</Link></section>)}
- {reports.map(report=><EvaluationReport key={report.id} report={report} title={examQuestionLabel(report.id.split('/').at(-1)!)}/>)}
+ {answers.map(a=><section key={a.questionId}><h4>{questionLabel(a.questionId)} · {run.parent_id?'재작성 답안':'제출 답안'}</h4><p style={{whiteSpace:'pre-wrap'}}>{a.body??'텍스트 답안 없음'}</p><p>당시 기준 {a.rubricVersion??'미기록'} · 근거 {a.evidenceVersion??'미기록'}</p><a href={`/ql/?run=${encodeURIComponent(runId)}&question=${encodeURIComponent(a.questionId)}`}>{d.reviewed_questions.includes(a.questionId)?'기존 품질 검수 이력 보기':'기존 품질 검수로 이동'}</a></section>)}
+ {reports.map(report=><EvaluationReport key={report.id} report={report} title={questionLabel(report.id.split('/').at(-1)!)}/>)}
  <details><summary>저장된 문항별 평가·기준 원본 확인</summary><QlStructuredValue value={run.result}/></details>
  </section>;
 }
