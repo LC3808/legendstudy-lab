@@ -1,3 +1,4 @@
+import {nicknameError} from './nickname';
 import {formatUserCreditReason} from '@/lib/credit-display';
 import {lookupSchoolName} from '@/lib/admin/school';
 import type { SupabaseClient } from '@supabase/supabase-js';
@@ -109,7 +110,12 @@ export async function readMyProfile(client: SupabaseClient, owner: string): Prom
 
 export async function saveMyProfile(client: SupabaseClient, owner: string, profile: MyProfile) {
   const nickname=profile.display_name?.trim()||null;
-  if(nickname&&([...nickname].length>80||/[\u0000-\u001f\u007f]/.test(nickname)))throw new Error('INVALID_NICKNAME');
+  let nicknameChanged=false;
+  if(profile.display_name!==undefined){
+    const current=await readMyProfile(client,owner);
+    nicknameChanged=profile.display_name!==current.display_name;
+    if(nicknameChanged&&nicknameError(profile.display_name??''))throw new Error('INVALID_NICKNAME');
+  }
   const {neis_office_code:office,neis_school_code:school,academic_status:status,grade_level:grade}=profile;
   if ((office===null)!==(school===null) || [office,school].some(v=>v!==null&&(!v.trim()||v!==v.trim()||v.length>32))) throw new Error('INVALID_SCHOOL');
   if (status!==null&&!['student','retaker','other'].includes(status)) throw new Error('INVALID_STATUS');
@@ -117,6 +123,6 @@ export async function saveMyProfile(client: SupabaseClient, owner: string, profi
   await assertOwner(client,owner);
   if (office && school && !await lookupSchoolName(office,school,AbortSignal.timeout(15000))) throw new Error('INVALID_SCHOOL');
   await ensureOwnerProfile(client,owner);
-  checked(await client.from('profiles').update({...(profile.display_name!==undefined?{display_name:nickname}:{}),neis_office_code:office,neis_school_code:school,academic_status:status,grade_level:status==='student'||status===null?grade:null}).eq('id',owner).select('id').single());
+  checked(await client.from('profiles').update({...(nicknameChanged?{display_name:nickname}:{}),neis_office_code:office,neis_school_code:school,academic_status:status,grade_level:status==='student'||status===null?grade:null}).eq('id',owner).select('id').single());
   await assertOwner(client,owner);
 }

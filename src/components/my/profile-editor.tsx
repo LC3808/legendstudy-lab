@@ -1,4 +1,5 @@
 'use client';
+import {nicknameError,nicknameLength} from '@/lib/my/nickname';
 import {useState} from 'react';
 import {useAuth} from '@/components/auth-context';
 import {AdminSchoolName as SchoolName} from '@/components/admin/admin-school-name';
@@ -7,6 +8,7 @@ import {assertOwner,saveMyProfile,type MyProfile} from '@/lib/my/data';
 export function ProfileEditor({profile,reload,compact=false}:{profile:MyProfile;reload:()=>void;compact?:boolean}) {
  const {client,user}=useAuth();
  const [editing,setEditing]=useState(false),[draft,setDraft]=useState(profile),[query,setQuery]=useState(''),[results,setResults]=useState<SchoolOption[]>([]),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ const nameError=nicknameError(draft.display_name??'',profile.display_name);
  const labels:Record<string,string>={student:'재학생',retaker:'재수/N수생',other:'해당 없음'};
  const school=<SchoolName office={draft.neis_office_code} school={draft.neis_school_code}/>;
  async function run(action:()=>Promise<void>){if(!client||!user||busy)return;setBusy(true);setError('');try{await assertOwner(client,user.id);await action();await assertOwner(client,user.id);}catch{setError('처리하지 못했습니다. 잠시 후 다시 시도해 주세요.');}finally{setBusy(false);}}
@@ -23,11 +25,11 @@ export function ProfileEditor({profile,reload,compact=false}:{profile:MyProfile;
   </dl><button type="button" className="button button--outline button--small" onClick={()=>setEditing(true)}>학교·학년 변경</button></>;
  }
  return <div className="my-goals my-profile-edit">
- <label>닉네임<input aria-label="닉네임" value={draft.display_name??''} maxLength={160} disabled={busy} onChange={e=>setDraft({...draft,display_name:e.target.value})}/></label>
+ <label>닉네임<input aria-label="닉네임" value={draft.display_name??''} disabled={busy} onChange={e=>setDraft({...draft,display_name:e.target.value})}/></label><small>{nicknameLength(draft.display_name??'')} / 20자 · 기존 닉네임은 변경할 때만 제한을 적용합니다.</small>{nameError&&<p role="alert">{nameError}</p>}
  <form onSubmit={e=>{e.preventDefault();void run(async()=>{const rows=await searchSchools(query);await assertOwner(client!,user!.id);setResults(rows);if(!rows.length)setError('검색 결과가 없습니다.');});}}><label>학교 검색<input value={query} maxLength={100} disabled={busy} onChange={e=>setQuery(e.target.value)} placeholder="학교 이름을 검색해 주세요"/></label><button className="button button--outline" disabled={busy||!query.trim()}>검색</button></form>
  {results.length>0&&<ul className="my-search-results">{results.map(s=><li key={`${s.office}/${s.code}`}><span>{s.name}<small> · {s.address}</small></span><button className="button button--outline button--small" type="button" disabled={busy} onClick={()=>{setDraft({...draft,neis_office_code:s.office,neis_school_code:s.code});setResults([]);}}>선택</button></li>)}</ul>}
  <p>선택한 학교: {school}</p><button className="text-link" type="button" disabled={busy} onClick={()=>setDraft({...draft,neis_office_code:null,neis_school_code:null})}>학교 해당 없음</button>
- <form onSubmit={e=>{e.preventDefault();void run(async()=>{await saveMyProfile(client!,user!.id,draft);setEditing(false);reload();});}}>
+ <form onSubmit={e=>{e.preventDefault();void run(async()=>{if(nameError){setError(nameError);return;}await saveMyProfile(client!,user!.id,draft);setEditing(false);reload();});}}>
  <fieldset className="my-grade-options" disabled={busy}><legend>학년</legend>{[
  {value:'1',label:'1학년'},{value:'2',label:'2학년'},{value:'3',label:'3학년'},
  {value:'retaker',label:'재수/N수생'},{value:'other',label:'해당 없음'},

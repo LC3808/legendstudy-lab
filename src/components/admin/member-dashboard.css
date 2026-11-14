@@ -79,3 +79,5 @@
 .dash-recent__pager button{background:#fff;border:1px solid #9aacac;border-radius:6px;padding:5px 12px;font:inherit;font-size:12px;color:#234c59;cursor:pointer}
 .dash-recent__pager button:disabled{opacity:.5;cursor:default}
 .dash-recent__pager span{font-size:12px;color:#4c646c;font-variant-numeric:tabular-nums}
+
+.admin-nickname{display:block;max-width:12rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}

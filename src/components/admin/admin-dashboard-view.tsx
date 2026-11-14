@@ -84,7 +84,7 @@ function RecentSignups(){
        <td>{m.grade?`${m.grade}학년`:'—'}</td>
        <td>{m.academicStatus?recentStatusLabels[m.academicStatus]:'—'}</td>
        <td>{m.major??'—'}</td>
-       <td>{m.displayName??'—'}</td>
+       <td><span className="admin-nickname" title={m.displayName??undefined}>{m.displayName??'—'}</span></td>
        <td>{formatDateTime(m.createdAt)}</td>
        <td><Link className="button button--outline button--small" href="/admin/members/">상세</Link></td>
       </tr>;})}

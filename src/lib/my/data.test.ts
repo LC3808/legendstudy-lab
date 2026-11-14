@@ -93,3 +93,10 @@ it.each(['retaker','other','student'])('preserves independent school and status 
  const profile={neis_office_code:'J10',neis_school_code:'7530851',academic_status:status,grade_level:status==='student'?3:null};
  await saveMyProfile(client,'owner',profile);expect(q.update).toHaveBeenCalledWith(profile);
 });
+it('preserves an unchanged long nickname while saving other profile fields',async()=>{
+ const {saveMyProfile}=await import('./data');const {client,q}=fixture();const legacy='가'.repeat(80);
+ q.maybeSingle.mockResolvedValue({data:{display_name:legacy},error:null});
+ await saveMyProfile(client,'owner',{display_name:legacy,neis_office_code:null,neis_school_code:null,academic_status:'retaker',grade_level:null});
+ expect(q.update).toHaveBeenCalledWith({neis_office_code:null,neis_school_code:null,academic_status:'retaker',grade_level:null});
+ await expect(saveMyProfile(client,'owner',{display_name:'가'.repeat(21),neis_office_code:null,neis_school_code:null,academic_status:'retaker',grade_level:null})).rejects.toThrow('INVALID_NICKNAME');
+});

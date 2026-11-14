@@ -57,3 +57,13 @@ it('distinguishes a partial registered exam from the entire two-question exam',(
  rerender(<ExamResultLayout {...props} reports={[q1,q1]}/>);
  expect(screen.queryByText(/· 전체 문항 첨삭 완료/)).toBeNull();
 });
+
+it('admin read-only mode preserves result/answer navigation without student actions',()=>{
+ render(<ExamResultLayout row={row} run={{free_rewrite_available:true,continuous_cycles_supported:true}} reports={[report('run/a')]} previous={[]} readOnly/>);
+ expect(screen.queryByRole('button',{name:/재작성|추가 첨삭|다시 작성/})).toBeNull();
+ expect(screen.queryByRole('link',{name:/다른 논술|나의 첨삭/})).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:'문항별 첨삭 (1)'}));
+ expect(screen.queryByText('음성으로 듣기')).toBeNull();
+ expect(screen.queryByRole('button',{name:/피드백|의견 보내기/})).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:'제출 답안'}));expect(screen.getByText('저장된 답안')).toBeInTheDocument();
+});

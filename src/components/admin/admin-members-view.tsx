@@ -219,7 +219,7 @@ export function AdminMembersView() {
         <td>{(()=>{const s=accountStateLabel(m.accountState);return <span className={`admin-chip admin-chip--${s.tone}`}>{s.label}</span>;})()}</td>
         <td>{m.schoolState==='unresolved'&&m.schoolOfficeCode&&m.schoolCode?<AdminSchoolName office={m.schoolOfficeCode} school={m.schoolCode}/>:directorySchoolLabel(m)||'—'}</td>
         <td>{m.grade?`${m.grade}학년`:'—'}</td><td>{m.academicStatus?statusLabels[m.academicStatus]:'—'}</td>
-        <td>{m.major??'—'}</td><td>{m.displayName??'—'}</td><td>{formatDateTime(m.createdAt)}</td>
+        <td>{m.major??'—'}</td><td><span className="admin-nickname" title={m.displayName??undefined}>{m.displayName??'—'}</span></td><td>{formatDateTime(m.createdAt)}</td>
         <td><button type="button" className="button button--outline button--small" aria-label={`${m.displayName||m.email||'회원'} 상세 ${open?'닫기':'보기'}`} aria-expanded={open} onClick={()=>setSelected(open?null:m.accountId)}>{open?'닫기':'보기'}</button></td>
        </tr>
        {open?<tr className="admin-member-detail-row"><td colSpan={columns.length}><AdminMemberDetailPanel key={m.accountId} accountId={m.accountId} email={m.email}/></td></tr>:null}
