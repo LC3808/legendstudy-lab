@@ -29,11 +29,23 @@ Owner PHASE3 / Claude `331aae9`, 기존 WEB `a1fdcb2`, 운영 `9229b2c9` 기준.
 - WEB 집중 52 PASS; tsc/변경 ESLint/Next webpack production build PASS.
 - 전체 WEB 2,007 PASS / 기존 11 FAIL / 기존 1 ERROR / 5 SKIP. 기존7파일: catalog-demand-projection, catalog-demand, public-discovery, university-theme, materials 각1; admin-analytics2; admin-console4. admin-console의 mock study.total 누락 error 동일. 새 실패 없음.
 - boundary audit 기존 checkout test-environment 문구 실패 유지; 감사 규칙 변경 없음.
-- Flutter 집중 92 PASS, analyze PASS, Wiki handoff PASS. 스토어 제출/설치 없음.
+- Flutter 집중 93 PASS, analyze PASS, Wiki handoff PASS. 스토어 제출/설치 없음.
 - 격리 PG17: Unicode1,093/20·21/legacy unchanged INSERT·UPDATE/upsert/RLS/원복·재적용 PASS.
 - 운영 read-only: SKKU run `f5573d7a-a579-48eb-89b4-d7953c74f5f9` completed, 답안3/결과3; 비관리자 동일 RPC `42501 ADMIN_REQUIRED`.
 - 운영 사용자 닉네임 변경 제출: NOT TESTED (실데이터 보존); 합성 격리 DB/클라이언트 테스트로 검증.
-- 브라우저 및 배포: 진행 중, 확인 후 아래에 기록.
+- 실제 Chrome 운영 검증 PASS: 전체 KPI58/47/1/10/20/1, 베타 필터1/완료1, 페이지 offset25→50→25 및 조건 변경 초기화, 목록 복귀 시 베타조건 유지.
+- SKKU 상세 A/B/F 펼침·C/D/E 접힘 확인. 새 탭 실제 생성, 결과3/답안3 표시, 재작성·추가요청·음성생성·피드백 제출 버튼 없음. 390px 모바일 결과 확인.
+- 미완료 실제run에서 preview disabled 확인. 회원 닉네임 max-width192px/ellipsis/nowrap 및 전체 title 보존 확인.
+- 운영 `/account`에서 21한글 오류·20가족이모지 정상 counter 확인 후 **취소**, 사용자 프로필 저장 없음.
+- 팝업차단 안내는 자동화 PASS / 실제 브라우저 강제차단 시나리오 NOT TESTED. 비관리자 DB 차단 PASS / 별도 비관리자 로그인 브라우저 NOT TESTED.
+- 기존 이용권/피드백/quality 코드·RPC 유지 및 전체 회귀 실행. 이번 PHASE3에서 별도 `/ql` 검수 저장/피드백 제출/결제 동작은 NOT TESTED, 운영 원장 변경 없음.
+
+## 운영 배포와 Git
+
+최종 배포 `7ea8cef7-0104-42ac-bfc2-6d317d8d624f` success, source `4988cd86e08cbc930c0d881999ea06763090af67`.
+관리자·/ql·학생 결과·/account 본문/해당 RSC 자산만 반영. 마지막 배포5개 account 자산, 나머지2,705개 기존 자산 보존. 기존 worker SHA256 `a6d8dd9b1ee386cb672c7a002c3946b9e0d616120dc7a43057b7cd3e80fee98b`, API/functions/config 동일 검증.
+소스 브랜치 `codex/lab-admin-operations-20261114`, APP `codex/operations-commercial-20261113` Commit/Push. 운영 release rollback 기준9229b2c9와 중간c903da5d 비공개 백업 보존. 스토어 제출 없음.
+운영 DB 검증과 WEB 배포 DONE. Flutter 코드/테스트 DONE, 설치·스토어 배포 미수행.
 
 ## Unicode 출처
 
