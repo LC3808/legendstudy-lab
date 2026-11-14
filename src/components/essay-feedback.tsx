@@ -8,8 +8,8 @@ export const positiveReasons={accurate_diagnosis:'부족한 부분을 정확히 
 export const negativeReasons={inaccurate:'평가 정확성 부족',abstract:'추상적인 피드백',unsupported_claim:'실제 답안과 다른 지적',rubric_connection:'평가기준 연결 부족',slow:'긴 첨삭 시간',complex:'복잡한 이용 방법'};
 export const feedbackThanks='의견을 보내주셔서 감사합니다. 더 나은 논술 LAB을 만드는 데 활용하겠습니다.';
 export function feedbackReference(value?:string){return value&&/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}\/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(value)?value:undefined;}
-export function EssayFeedback({evaluationRef,bugOnly=false}:{evaluationRef?:string;bugOnly?:boolean}){
- if(process.env.NEXT_PUBLIC_ESSAY_FEEDBACK_V1_ENABLED!=='true')return null;
+export function EssayFeedback({evaluationRef,bugOnly=false,resultEnabled=false}:{evaluationRef?:string;bugOnly?:boolean;resultEnabled?:boolean}){
+ if(!resultEnabled&&process.env.NEXT_PUBLIC_ESSAY_FEEDBACK_V1_ENABLED!=='true')return null;
  return <ConnectedFeedback evaluationRef={evaluationRef} bugOnly={bugOnly}/>;
 }
 function ConnectedFeedback({evaluationRef,bugOnly}:{evaluationRef?:string;bugOnly:boolean}){

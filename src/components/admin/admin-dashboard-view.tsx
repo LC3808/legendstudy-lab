@@ -14,6 +14,7 @@ import {defaultMemberFilters,directorySchoolLabel,type MemberDirectory} from '@/
 import {AdminSchoolName} from './admin-school-name';
 import './member-dashboard.css';
 import {SchoolDistribution} from './school-distribution';
+import {AdminLabWarningStrip} from './admin-lab-warning-strip';
 import {DashboardUsageRankings} from './dashboard-usage-rankings';
 export function useReadReport<T>(name:string,args:Record<string,unknown>|null,refresh=0){
  const {client,user}=useAuth();const key=JSON.stringify([name,args,user?.id,refresh]);const [result,setResult]=useState<{key:string;data?:T;error?:boolean}>();
@@ -127,6 +128,7 @@ export function AdminDashboardView(){
  const kpiError=<span role="alert">조회 실패 · 새로고침해 주세요.</span>;
  const kpiLabel=kpiPeriod==='all'?'전체 기간':'선택 기간';
  return <div className="focused-admin">
+ <AdminLabWarningStrip/>
  <section className="focus-kpis-wrap" aria-label="핵심 지표 요약">
   <div className="focus-kpis-head">
    <span className="focus-kpis-head__t">상단 지표 기간</span>

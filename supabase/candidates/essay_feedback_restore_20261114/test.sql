@@ -1,0 +1,34 @@
+-- LOCAL FIXTURE ONLY. Requires baseline migrations and synthetic auth identities.
+begin;
+select set_config('test.actor','00000000-0000-4000-8000-000000000001',true);
+select set_config('test.admin','false',true);
+create temp table preserved as select md5(coalesce(jsonb_agg(to_jsonb(r))::text,'')) digest from essay_exam_private.runs r;
+set local role authenticated;
+do $$declare p jsonb=jsonb_build_object('request_key',gen_random_uuid(),'kind','quality','satisfaction','helpful','message','','platform','web','app_version','local-test'); f uuid; d jsonb;
+begin
+ f=public.essay_feedback_submit(p);
+ assert public.essay_feedback_submit(p)=f,'idempotency';
+ begin perform public.essay_feedback_submit(p||'{"message":"different"}');raise exception 'expected conflict';exception when others then assert sqlerrm='IDEMPOTENCY_CONFLICT',sqlerrm;end;
+ begin perform public.admin_essay_feedback();raise exception 'expected denied';exception when insufficient_privilege then null;end;
+ assert jsonb_array_length(public.essay_feedback_mine()->'rows')=1;
+ begin perform public.essay_feedback_submit(p||jsonb_build_object('request_key',gen_random_uuid(),'answer','sensitive'));raise exception 'expected privacy rejection';exception when others then assert sqlerrm='INVALID_INPUT',sqlerrm;end;
+ begin perform public.essay_feedback_submit(p||jsonb_build_object('request_key',gen_random_uuid(),'kind','bug','satisfaction',null,'category','ocr'));raise exception 'expected required description';exception when others then assert sqlerrm='INVALID_INPUT',sqlerrm;end;
+ perform set_config('test.actor','00000000-0000-4000-8000-000000000002',true);
+ assert jsonb_array_length(public.essay_feedback_mine()->'rows')=0,'isolation';
+ perform set_config('test.admin','true',true);
+ d=public.admin_essay_feedback(jsonb_build_object('id',f));
+ assert d->'stats'->>'positive'='1';
+ perform public.admin_essay_feedback_update(f,'resolved','checked',(d->'rows'->0->>'updated_at')::timestamptz);
+ d=public.admin_essay_feedback(jsonb_build_object('id',f));
+ assert d->'rows'->0->>'status'='resolved';
+ assert jsonb_array_length(d->'actions')=2;
+ perform set_config('test.actor','00000000-0000-4000-8000-000000000001',true);
+ for i in 1..9 loop perform public.essay_feedback_submit(p||jsonb_build_object('request_key',gen_random_uuid()));end loop;
+ begin perform public.essay_feedback_submit(p||jsonb_build_object('request_key',gen_random_uuid()));raise exception 'expected limit';exception when others then assert sqlerrm='RATE_LIMIT',sqlerrm;end;
+ assert public.essay_feedback_submit(p)=f,'replay remains allowed at limit';
+end$$;
+reset role;
+do $$begin assert (select digest from preserved)=(select md5(coalesce(jsonb_agg(to_jsonb(r))::text,'')) from essay_exam_private.runs r),'runs changed';end$$;
+set local role anon;
+do $$begin begin perform public.essay_feedback_mine();raise exception 'expected deny';exception when insufficient_privilege then null;end;end$$;
+rollback;

@@ -1,5 +1,7 @@
 'use client';
-import {useState} from 'react';
+import {useEffect,useState} from 'react';
+import {analyticsWindow} from '@/lib/admin/analytics';
+import {initialLabQuery,uuidValue} from '@/lib/admin/lab-navigation';
 import {useReadReport} from './admin-dashboard-view';
 import {formatDateTime} from '@/lib/admin/format';
 import {labState,labAlerts,type LabDetail,type LabList} from '@/lib/admin/lab-operations';
@@ -10,20 +12,29 @@ import {QlStructuredValue} from '@/components/quality/quality-primitives';
 const questionLabel=(id:string)=>{const label=examQuestionLabel(id);return label==='문항별 첨삭'?`문항 ID ${id}`:label;};
 
 export function AdminLabOperations({accountId}:{accountId?:string}){
- const [offset,setOffset]=useState(0),[university,setUniversity]=useState(''),[status,setStatus]=useState(''),[source,setSource]=useState(''),[selected,setSelected]=useState<string|null>(null),[refresh,setRefresh]=useState(0);
- const r=useReadReport<LabList>('admin_lab_runs',{p_user:accountId??null,p_university:university||null,p_exam:null,p_state:status||null,p_source:source||null,p_offset:offset},refresh);
+ const [initial]=useState(()=>accountId?new URLSearchParams():initialLabQuery());
+ const [offset,setOffset]=useState(()=>Math.min(100000,Math.max(0,Number(initial.get('offset'))||0))),[university,setUniversity]=useState(()=>uuidValue(initial.get('university'))??''),[status,setStatus]=useState(()=>['completed','failed','reserved'].includes(initial.get('state')??'')?initial.get('state')!:''),[source,setSource]=useState(()=>['beta','other'].includes(initial.get('source')??'')?initial.get('source')!:''),[selected,setSelected]=useState<string|null>(()=>uuidValue(initial.get('run'))),[refresh,setRefresh]=useState(0);
+ useEffect(()=>{if(accountId)return;const url=new URL(window.location.href);for(const [key,value] of Object.entries({offset:offset?String(offset):'',university,state:status,source,run:selected??''})){const remaining=Array.from(url.searchParams.entries()).filter(([name])=>name!==key);url.search=new URLSearchParams(remaining).toString();if(value)url.searchParams.set(key,value);}window.history.replaceState(window.history.state,'',url);},[accountId,offset,university,status,source,selected]);
+ const [exam,setExam]=useState(()=>uuidValue(initial.get('exam'))??''),[query,setQuery]=useState(()=>initial.get('query')??''),[draft,setDraft]=useState(query),[from,setFrom]=useState(()=>initial.get('from')??''),[to,setTo]=useState(()=>initial.get('to')??'');
+ const dates=from||to?analyticsWindow('custom',from,to):{p_from:null,p_to:null};
+ useEffect(()=>{if(accountId)return;const url=new URL(window.location.href);for(const [key,value] of Object.entries({exam,query,from,to})){const remaining=Array.from(url.searchParams.entries()).filter(([name])=>name!==key);url.search=new URLSearchParams(remaining).toString();if(value)url.searchParams.set(key,value);}window.history.replaceState(window.history.state,'',url);},[accountId,exam,query,from,to]);
+ const r=useReadReport<LabList>('admin_lab_runs_filtered',dates?{p_user:accountId??null,p_university:university||null,p_exam:exam||null,p_state:status||null,p_source:source||null,p_offset:offset,p_query:query,...dates}:null,refresh);
  const change=(set:(s:string)=>void,value:string)=>{set(value);setOffset(0);setSelected(null);};
  return <section className="admin-section"><h3>논술 LAB 이용 현황</h3><p>시험 회차 기준입니다. 이용권 거래·문항 수 및 이전 단일 문항 평가는 별도입니다.</p>
- <div className="admin-filters__row"><label>대학 <select value={university} onChange={e=>change(setUniversity,e.target.value)}><option value="">전체 대학</option>{r.data?.universities?.map(u=><option key={u.university_id} value={u.university_id}>{u.university}</option>)}</select></label>
+ <div className="admin-filters__row"><label>대학 <select value={university} onChange={e=>{change(setUniversity,e.target.value);setExam('');}}><option value="">전체 대학</option>{r.data?.universities?.map(u=><option key={u.university_id} value={u.university_id}>{u.university}</option>)}</select></label>
+ <label>시험 <select value={exam} onChange={e=>change(setExam,e.target.value)}><option value="">전체 시험</option>{r.data?.exams?.map(e=><option key={e.exam_id} value={e.exam_id}>{e.title??e.exam_id}</option>)}</select></label>
  <label>상태 <select value={status} onChange={e=>change(setStatus,e.target.value)}><option value="">전체 상태</option><option value="completed">완료</option><option value="reserved">진행 중</option><option value="failed">실패</option></select></label>
  <label>이용권 출처 <select value={source} onChange={e=>change(setSource,e.target.value)}><option value="">전체 출처</option><option value="beta">베타 발급 연결</option><option value="other">베타 발급 연결 없음</option></select></label><button onClick={()=>setRefresh(x=>x+1)}>새로고침</button></div>
- {r.error||(r.data&&r.data.version!=='admin-lab-v1')?<p role="alert">첨삭 현황을 조회하지 못했습니다. 관리자 권한·조회 연결을 확인한 후 다시 시도하세요.</p>:!r.data?<p role="status">첨삭 현황 조회 중…</p>:<>
+ <form onSubmit={e=>{e.preventDefault();change(setQuery,draft.trim());}}><label>회원 이메일 또는 UUID<input maxLength={254} value={draft} onChange={e=>setDraft(e.target.value)}/></label><button>회원 검색</button></form>
+ <label>요청 시작일 (KST)<input type="date" value={from} onChange={e=>change(setFrom,e.target.value)}/></label><label>요청 종료일 (KST, 포함)<input type="date" value={to} onChange={e=>change(setTo,e.target.value)}/></label><button onClick={()=>{setFrom('');setTo('');setOffset(0);}}>전체 기간</button>
+ {!dates?<p role="alert">시작일과 종료일을 모두 입력하고 400일 이내로 선택하세요.</p>:r.error||(r.data&&r.data.version!=='admin-lab-filtered-v1')?<p role="alert">첨삭 현황을 조회하지 못했습니다. 관리자 권한·조회 연결을 확인한 후 다시 시도하세요.</p>:!r.data?<p role="status">첨삭 현황 조회 중…</p>:<>
  <dl className="admin-detail__grid">{Object.entries({initial:'최초·후속 유료 요청',completed:'완료',pending:'진행 중',failed:'실패',free_revisions:'무료 재첨삭 요청',beta_credit:'베타 발급 연결'}).map(([k,label])=><div key={k}><dt>{label}</dt><dd>{r.data!.summary[k as keyof LabList['summary']]}회</dd></div>)}</dl>
+ <p>최근 첨삭 대학·시험: {r.data.latest?.university??'확인 불가'} · {r.data.latest?.title??'확인 불가'}</p>
  <p>최근 요청 {formatDateTime(r.data.summary.last_requested_at)} · 최근 이용권 차감 {formatDateTime(r.data.summary.last_consumed_at)}</p>
  <div className="admin-table-scroll"><table className="admin-table"><caption>{r.data.total}회 · 최근 요청순</caption><thead><tr><th>대학·시험</th><th>요청 / 완료 (KST)</th><th>상태</th><th>이용권·회차</th><th>상세</th></tr></thead><tbody>{r.data.items.map(x=><tr key={x.id}><td>{x.university??'대학 확인 불가'}<br/>{x.title??x.exam_id}</td><td>{formatDateTime(x.created_at)}<br/>{formatDateTime(x.completed_at)}</td><td>{labState(x.state)} · 결과 {x.result_question_count}/{x.question_count}문항</td><td>{x.free_revision?'무료 재첨삭':x.parent_id?'재첨삭·과금 확인 필요':'최초·후속 유료 회차'}<br/>{x.beta_credit?'베타 발급 연결':'베타 발급 연결 없음'}</td><td><button onClick={()=>setSelected(x.id)}>첨삭 상세 보기</button></td></tr>)}</tbody></table></div>
  {!r.data.items.length&&<p>조건에 맞는 첨삭 요청이 없습니다.</p>}
  <button disabled={!offset} onClick={()=>{setOffset(Math.max(0,offset-25));setSelected(null);}}>이전</button> <span>{Math.floor(offset/25)+1}페이지</span> <button disabled={offset+25>=r.data.total} onClick={()=>{setOffset(offset+25);setSelected(null);}}>다음</button>
- </>}{selected&&<AdminLabDetail key={selected} runId={selected} onSelect={setSelected}/>}</section>;
+ </>}{selected&&<><button onClick={()=>setSelected(null)}>첨삭 목록으로 돌아가기</button><AdminLabDetail key={selected} runId={selected} onSelect={setSelected}/></>}</section>;
 }
 export function AdminLabDetail({runId,onSelect}:{runId:string;onSelect:(id:string)=>void}){
  const [refresh,setRefresh]=useState(0);const r=useReadReport<LabDetail>('admin_lab_run_detail',{p_run:runId},refresh);
@@ -34,6 +45,7 @@ export function AdminLabDetail({runId,onSelect}:{runId:string;onSelect:(id:strin
  return <section className="admin-section"><h3>{String(run.university??'')} · {String(run.title??'첨삭 상세')}</h3><p>회원 {d.user_id} · {String(run.year??'')}학년도 · {labState(String(run.state))} · 읽기 전용</p>
  <p>요청 {formatDateTime(String(run.created_at))} · 완료 {formatDateTime(typeof run.completed_at==='string'?run.completed_at:null)}</p>
  <ul>{labAlerts(d).map(s=><li key={s}>{s}</li>)}</ul>
+ <nav aria-label="첨삭 관련 화면"><a href={`/admin/operations/?run=${encodeURIComponent(runId)}`}>운영 처리 이력</a>{' · '}<a href={`/admin/essay-feedback/?user=${encodeURIComponent(d.user_id)}`}>이 회원의 학생 피드백</a></nav><p>품질 검수는 별도 권한이 필요합니다. 권한이 없으면 검수 화면에서 접근이 제한됩니다.</p>
  <h4>처리 과정</h4><ol><li>요청 생성: {formatDateTime(String(run.created_at))}</li><li>이용권 확인: {d.billing?`${d.billing.reason} · ${d.billing.credits_required}회 · ${d.billing.status}`:'기록 없음'}</li><li>예약: {formatDateTime(d.billing?.reserved_at??null)} / 정산: {formatDateTime(d.billing?.settled_at??null)} / 해제: {formatDateTime(d.billing?.released_at??null)}</li><li>평가 호출: {d.calls.length?`${d.calls.length}건 (아래 처리 정보)`:'확인 불가 — 호출 기록 없음'}</li><li>결과 저장: {reports.length?`${reports.length}문항 표시 가능`:parseError?'저장 형식 표시 불가 — 원본 확인 필요':'표시 가능한 완료 결과 없음'}</li><li>사용자 결과 열람: 확인 불가 — 회차별 확정 열람 기록 미연결</li></ol>
  {typeof run.parent_id==='string'&&<button onClick={()=>onSelect(String(run.parent_id))}>연결된 최초 첨삭 보기</button>}
  {d.children.map(c=><p key={c.id}><button onClick={()=>onSelect(c.id)}>재첨삭 {formatDateTime(c.at)} · {labState(c.state)}</button></p>)}

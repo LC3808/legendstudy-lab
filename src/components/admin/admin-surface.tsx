@@ -34,6 +34,7 @@ export type AdminNavKey =
   | "essay-feedback"
   | "notices"
   | "inquiries"
+  | "essay-runs"
   | "essay"
   | "quality"
   | "materials";
@@ -242,12 +243,9 @@ function AdminNavigation({ active, onNavigate }: { active: AdminNavKey; onNaviga
   const support = useAdminQuery(client => client.supportMetrics(), "support-badge");
   useSupportRefresh(support.reload);
   const selected = (entry: {key:string;href:string|null}) => entry.key === active || (active === "data" && pathname?.replace(/\/$/, "") === entry.href?.replace(/\/$/, ""));
-  const dashboard = ADMIN_NAV.find(entry => entry.key === "dashboard")!;
   const groups = ADMIN_GROUPS.map(group=>({title:group.title,entries:group.keys.map(key=>ADMIN_NAV.find(entry=>entry.key===key)!)}));
   return <nav className="admin-nav" aria-label="운영 콘솔">
     <p className="admin-nav__brand">LegendStudy<span>+</span><small>INTELLIGENCE CONSOLE</small></p>
-    <Link className={`admin-nav__link admin-nav__dashboard${selected(dashboard) ? " admin-nav__link--active" : ""}`}
-      href={dashboard.href!} onClick={onNavigate} aria-current={selected(dashboard) ? "page" : undefined}>대시보드</Link>
     {groups.map((group) => <section className="admin-nav__group" key={group.title} aria-label={group.title}>
       <details open><summary className="admin-nav__heading">{group.title}</summary>
       <ul className="admin-nav__list">{group.entries.map((entry) => <li key={entry.key}>

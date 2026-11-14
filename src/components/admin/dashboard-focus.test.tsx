@@ -23,7 +23,7 @@ const kpis=()=>screen.getByRole('region',{name:'핵심 지표 요약'});
 it('shows small cohorts, N수, hours/minutes and puts admissions above operations',async()=>{
  render(<AdminDashboardView/>);await screen.findAllByText('3시간 44분');
  expect(screen.getByText('N수·검정고시 등',{selector:'span'})).toBeInTheDocument();expect(screen.getByText('가상대학교')).toBeInTheDocument();
- expect(screen.getAllByRole('heading',{level:2}).map(x=>x.textContent)).toEqual(['회원과 학생 구성','기록된 공부 시간','희망 대학·전공 현황','실제 지원 현황 · 고3·N수','입시 성과 · 합격 현황','앱 이용·인기 자료','문의와 서비스 운영']);
+ expect(screen.getAllByRole('heading',{level:2}).map(x=>x.textContent)).toEqual(['논술 LAB 운영 확인','회원과 학생 구성','기록된 공부 시간','희망 대학·전공 현황','실제 지원 현황 · 고3·N수','입시 성과 · 합격 현황','앱 이용·인기 자료','문의와 서비스 운영']);
  expect(mocks.rpc).toHaveBeenCalledWith('admin_member_composition',{p_from:null,p_to:null});
 });
 it('uses bounded KST dates for the default 30 days and preserves existing KPI values',async()=>{

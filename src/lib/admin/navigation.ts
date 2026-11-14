@@ -5,6 +5,7 @@ export type NavEntry = { key: string; label: string; href: string | null };
  * rather than reimplemented: it keeps its own authorization and its own route.
  */
 const EXISTING_NAV: readonly NavEntry[] = [
+  {key:"essay-runs",label:"첨삭 요청·결과",href:"/admin/essay-runs/"},
   { key: "material-sync", label: "학습자료 동기화", href: "/admin/material-sync/" },
   { key: "dashboard", label: "대시보드", href: "/admin/" },
   { key: "members", label: "회원", href: "/admin/members/" },
@@ -26,10 +27,13 @@ const EXISTING_NAV: readonly NavEntry[] = [
 ] as const;
 
 export const ADMIN_GROUPS = [
- {title:'기본 운영',keys:['members','credit','payment','inquiries','notices','beta','materials']},
- {title:'분석·품질',keys:['essay-usage','quality','analytics']},
- {title:'운영 점검',keys:['essay','essay-feedback','material-sync']},
- {title:'유입·행동 (GA4)',keys:['visitors']},
+ {title:'운영 대시보드',keys:['dashboard','notices']},
+ {title:'회원·이용권',keys:['members','credit','payment']},
+ {title:'첨삭 운영',keys:['essay-runs','essay','beta','beta-usage','beta-failures']},
+ {title:'첨삭 품질',keys:['quality','materials']},
+ {title:'학생 피드백',keys:['essay-feedback','satisfaction','inquiries']},
+ {title:'학습·입시 분석',keys:['learning','study','applications','students','essay-usage']},
+ {title:'매출·비용·안정성',keys:['analytics','visitors','verification','material-sync']},
 ] as const;
 const EXTRA_NAV = [
  ['overview','통합 분석 대시보드'],['visitors','방문자·유입 분석'],['conversion','가입·전환 분석'],['installs','앱 설치 유입 분석'],
