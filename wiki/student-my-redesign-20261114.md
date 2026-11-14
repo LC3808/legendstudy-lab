@@ -199,5 +199,30 @@ MY (ProfilePage 재구성)
 
 ---
 
+---
+
+## [보완 2026-11-14 통합] 나의 논술 연동 (실제 첨삭 이용 발생)
+
+> 통합 설계 [admin-essay-operations-ia-20261114.md](admin-essay-operations-ia-20261114.md) 후속. 실제 첨삭 이용(운영 58요청/47완료)이 발생해 MY의 **논술** 표면을 보완한다. **학습·입시·논술 균형 유지** — 논술로 MY를 과도하게 채우지 않는다. 기존 §3 "나의 학습·자료"의 LAB 카드를 확장하는 방식.
+
+기존 MY는 LAB 섹션(`MyScoreSummary`)·논술 기록(`readEssays` 최근 3)·성장(`EssayGrowthCard`)이 이미 있다. 아래만 요약 보강(별도 대형 섹션 신설 아님):
+
+| 보강 항목 | 데이터 | 상태 |
+|---|---|---|
+| 완료된 첨삭 수 | `summarizeRecords().evaluatedCycles` | ✅ 클라이언트 계산 가능 |
+| 재첨삭 횟수 | `summarizeRecords().reevaluated` | ✅ |
+| 최근 첨삭 대학 | `readEssays()[0].universities.name` | ✅ |
+| 최근 첨삭 결과 | 기존 `EssayRecords`/report | ✅ |
+| 재작성 진행 상태 | `rewrite`/`parentId`(growth 라벨: 최초/무료 재첨삭/새 답안) | ✅ |
+| 보유 이용권 | 기존 `CreditBalanceCard` | ✅ |
+| 첨삭 결과 코멘트(남김 여부) | `essay_feedback`(학생) | 🟡 운영 RPC 설치 확인 필요(통합 문서 §8) |
+| 무료 재첨삭 가능 여부 | included_revision/required | 🟡 현재 0 — 후속(통합 §11) |
+
+- **통합 위치:** §3-C2 "학습·자산" 하단 LAB 카드를 "나의 논술" 요약으로: *완료 n건 · 재첨삭 m건 · 최근 {대학} · [기록 보기]*, 재작성 진행 중이면 배지. 편집·상세는 기존 `/lab`·논술 기록으로 링크.
+- **코멘트 연동:** 결과 화면의 `EssayFeedback`(선택)과 MY는 **중복 노출하지 않는다**(MY는 "의견 남긴 첨삭" 표시 정도). 코멘트 작성은 결과 열람 흐름에서만.
+- 실제 데이터 없는 지표(무료 재첨삭 eligibility 등)는 **후속 분리**.
+
+---
+
 ## 제약 재확인
 설계 문서뿐. **Flutter·WEB·DB·RPC·운영 배포 변경 없음.** 코드에 없는 기능을 구현된 것으로 적지 않았다(⚪/⛔ 명시). 기준 커밋 APP `c4511dd`·WEB `041e6cd`. 관리자 종합현황 개편은 [별도 문서](admin-learning-admissions-overview-redesign-20261114.md). Owner 검토 후 구현 범위 확정.
