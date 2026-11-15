@@ -33,12 +33,12 @@ export const ADMIN_GROUPS = [
  {title:'첨삭 운영',keys:['essay-runs','essay','beta','beta-usage','beta-failures']},
  {title:'첨삭 품질',keys:['quality','materials']},
  {title:'학생 피드백',keys:['essay-feedback','satisfaction','inquiries']},
- {title:'학습·입시 분석',keys:['learning','study','applications','students','essay-usage']},
+ {title:'학습·입시 분석',keys:['learning','app-usage','study','applications','students','essay-usage']},
  {title:'매출·비용·안정성',keys:['analytics','visitors','verification','material-sync']},
 ] as const;
 const EXTRA_NAV = [
  ['overview','통합 분석 대시보드'],['visitors','방문자·유입 분석'],['conversion','가입·전환 분석'],['installs','앱 설치 유입 분석'],
- ['learning','학습·입시 종합 현황'],['universities','대학 선호도 분석'],['materials-data','인기 시험·학습자료 분석'],['study','공부 시간 분석'],['scores','성적·학습 분석'],['applications','입시 지원 분석'],['students','학생 통합 분석 (Student 360)'],['insights','개인화 인사이트 관리'],
+ ['app-usage','앱 이용 분석'],['learning','학습·입시 종합 현황'],['universities','대학 선호도 분석'],['materials-data','인기 시험·학습자료 분석'],['study','공부 시간 분석'],['scores','성적·학습 분석'],['applications','입시 지원 분석'],['students','학생 통합 분석 (Student 360)'],['insights','개인화 인사이트 관리'],
  ['essay-usage','논술 학습 분석'],['samples','사용자 답안 샘플 검수'],['satisfaction','만족도·피드백 분석'],['verification','베타 검증 결과'],
 ] as const;
 export const ADMIN_NAV = [...EXISTING_NAV,...EXTRA_NAV.map(([key,label])=>({key,label,href:`/admin/data/${key}/`}))];

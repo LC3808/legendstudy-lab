@@ -19,3 +19,13 @@ describe('independent member report availability',()=>{
   });
  }
 });
+it('opens only the UUID-linked student without requiring a matching list page',async()=>{
+ const {AdminMembersView}=await import('./admin-members-view');
+ const id='00000000-0000-4000-8000-000000000012';
+ window.history.replaceState(null,'',`/admin/members/?member=${id}`);
+ mocks.query.mockImplementation((_query:unknown,key:string)=>({reload:vi.fn(),state:key.startsWith('detail:')?{status:'loading'}:(key.startsWith('student360:')||key.startsWith('credit:'))?{status:'loading'}:{status:'ready',data:{total:0,filteredTotal:0,items:[]}}}));
+ render(<AdminMembersView/>);
+ expect(await screen.findByRole('region',{name:'연결된 학생 상세'})).toBeInTheDocument();
+ expect(mocks.query.mock.calls.some(([,key])=>key===`detail:${id}`)).toBe(true);
+ window.history.replaceState(null,'','/');
+});

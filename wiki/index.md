@@ -1,3 +1,5 @@
+[2026-11-15 APP 행동 분석 구현](app-usage-analytics-implementation-20261115.md) — GA4 재사용·운영 연결 검증 진행.
+
 [2026-11-15 학습·입시 분석 통합 구현 — 진행 중](learning-admissions-analytics-implementation-20261115.md)
 
 2026-11-15: [운영 정합성·지원 삭제·잔여 테스트](operations-integrity-20261115.md). WEB 전체2032 PASS/0 FAIL/0 ERROR, Flutter20 PASS. 지원 요약 캐시 결함 수정; 운영 데이터 변경 없음. WEB96b17f18 운영 반영. APP 단말 검증 및 승인 필요한 한양대 종료는 별도 보류.

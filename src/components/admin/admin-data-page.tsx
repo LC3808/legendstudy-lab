@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import {AppUsagePage} from './app-usage-report';
 import {AdminLearningRankings} from './admin-learning-rankings';
 import {formatStudyTime} from '@/lib/admin/study-time';
 import {AdminLearningHub} from './admin-learning-hub';
@@ -116,6 +117,7 @@ function Learning({section}:{section:string}){
 }
 function MergedEntry({href,label}:{href:string;label:string}){return <AdminPanel title="통합된 분석 화면"><p>기존 주소를 유지합니다. 같은 조회 기능은 아래 화면에서 확인하세요.</p><a href={href} onClick={e=>{e.preventDefault();window.location.assign(href+window.location.search);}}>{label} →</a></AdminPanel>;}
 export function AdminDataPage({section}:{section:string}){
+ if(section==='app-usage')return <AppUsagePage/>;
  if(section==='overview')return <MergedEntry href="/admin/" label="서비스 현황"/>;
  if(section==='installs')return <MergedEntry href="/admin/data/visitors/" label="방문자·유입 (설치 클릭과 설치 완료 구분)"/>;
  if(section==='students')return <MergedEntry href="/admin/members/" label="회원 / Student 360"/>;

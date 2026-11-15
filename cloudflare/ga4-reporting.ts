@@ -1,13 +1,17 @@
+import {readAppUsage, appUsageConfiguration} from './ga4-app-usage';
 import {importPKCS8, SignJWT} from 'jose';
 import {promoEvents,type GaReport,type GaTable} from '../src/lib/admin/ga4-report';
 export type GaEnv={NEXT_PUBLIC_SUPABASE_URL?:string;NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?:string;
+ GA4_APP_STREAM_IDS?:string;GA4_APP_PROPERTY_ID?:string;
  GA4_SERVICE_ACCOUNT_EMAIL?:string;GA4_PRIVATE_KEY?:string;GA4_REPORT_ORIGIN?:string};
 const property='396674471',stream='5829568136';
 const headers={'Content-Type':'application/json','Cache-Control':'private, no-store','Vary':'Authorization','X-Content-Type-Options':'nosniff','X-Robots-Tag':'noindex, nofollow'};
-class Failure extends Error {constructor(readonly code:string,readonly status=502){super(code);}}
-const obj=(v:unknown):Record<string,unknown>=>{if(!v||typeof v!=='object'||Array.isArray(v))throw new Failure('INVALID_RESPONSE');return v as Record<string,unknown>;};
+export class Failure extends Error {constructor(readonly code:string,readonly status=502){super(code);}}
+export const obj=(v:unknown):Record<string,unknown>=>{if(!v||typeof v!=='object'||Array.isArray(v))throw new Failure('INVALID_RESPONSE');return v as Record<string,unknown>;};
 function dates(url:URL){
- if([...url.searchParams.keys()].some(k=>!['from','to'].includes(k))||url.searchParams.getAll('from').length!==1||url.searchParams.getAll('to').length!==1)throw new Failure('INVALID_REQUEST',400);
+ if([...url.searchParams.keys()].some(k=>!['from','to','surface','platform'].includes(k))||url.searchParams.getAll('from').length!==1||url.searchParams.getAll('to').length!==1)throw new Failure('INVALID_REQUEST',400);
+ if(url.searchParams.getAll('surface').length>1||(url.searchParams.has('surface')&&url.searchParams.get('surface')!=='app'))throw new Failure('INVALID_REQUEST',400);
+ if(url.searchParams.has('platform')&&(url.searchParams.get('surface')!=='app'||url.searchParams.getAll('platform').length!==1||!['all','ios','android'].includes(url.searchParams.get('platform')!)))throw new Failure('INVALID_REQUEST',400);
  const from=url.searchParams.get('from')!,to=url.searchParams.get('to')!;
  const valid=(s:string)=>/^\d{4}-\d{2}-\d{2}$/.test(s)&&Number.isFinite(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
  if(!valid(from)||!valid(to)||to<from||Date.parse(to)-Date.parse(from)>=400*86400000)throw new Failure('INVALID_REQUEST',400);
@@ -33,7 +37,7 @@ function report(from:string,to:string,metrics:string[],dimension?:string,limit=4
  dimensionFilter:extra?{andGroup:{expressions:[hostFilter,extra]}}:hostFilter,limit:String(limit),
  ...(dimension?{orderBys:[dimension==='date'?{dimension:{dimensionName:'date'}}:{metric:{metricName:metrics[0]},desc:true}]}:{}),keepEmptyRows:false};
 }
-function table(raw:unknown,metrics:string[],dimension?:string,limit=400):GaTable{
+export function table(raw:unknown,metrics:string[],dimension?:string,limit=400):GaTable{
  const r=obj(raw);const mh=r.metricHeaders;if(!Array.isArray(mh)||mh.length!==metrics.length||mh.some((v,i)=>obj(v).name!==metrics[i]))throw new Failure('INVALID_RESPONSE');
  const dh=r.dimensionHeaders??[];if(!Array.isArray(dh)||dh.length!==(dimension?1:0)||(dimension&&obj(dh[0]).name!==dimension))throw new Failure('INVALID_RESPONSE');
  const rows=r.rows??[];if(!Array.isArray(rows)||rows.length>limit)throw new Failure('INVALID_RESPONSE');
@@ -63,11 +67,21 @@ export async function handleGaReport(request:Request,env:GaEnv,fetcher:typeof fe
  const gate=await fetcher(base+'/rest/v1/rpc/admin_operator',{method:'POST',headers:h,body:'{}',signal,redirect:'manual'});
  if(!gate.ok)throw new Failure('AUTH_UNAVAILABLE',502);
  if(await gate.json()!==true)throw new Failure('ADMIN_REQUIRED',403);
+ const app=url.searchParams.get('surface')==='app';
+ const config=app?appUsageConfiguration(env):null;
+ if(app&&!config)return reply({version:'ga4-app-usage-v1',state:'UNCONNECTED'});
  if(!env.GA4_SERVICE_ACCOUNT_EMAIL||!env.GA4_PRIVATE_KEY)throw new Failure('NOT_CONFIGURED',503);
  const token=await tokenProvider(env,fetcher,signal);
  const call=async(action:string,body:unknown)=>{
- const r=await fetcher(`https://analyticsdata.googleapis.com/v1beta/properties/${property}:${action}`,{method:'POST',signal,redirect:'manual',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
+ const r=await fetcher(`https://analyticsdata.googleapis.com/v1beta/properties/${config?.propertyId??property}${action==='metadata'?'/metadata':':'+action}`,{method:action==='metadata'?'GET':'POST',signal,redirect:'manual',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},...(action==='metadata'?{}:{body:JSON.stringify(body)})});
  if(!r.ok){const err=await r.json().catch(()=>null);const disabled=JSON.stringify(err).includes('SERVICE_DISABLED');throw new Failure(r.status===429?'RATE_LIMITED':disabled?'API_DISABLED':r.status===401||r.status===403?'PERMISSION_REQUIRED':'READ_UNAVAILABLE',r.status===429?429:502);}return obj(await r.json());};
+ if(app&&config)return reply(await readAppUsage(config,from,to,call,async(ids:string[])=>{
+ const query=new URLSearchParams({select:'id,title',id:`in.(${ids.join(',')})`});
+ const r=await fetcher(base+'/rest/v1/content_items?'+query,{headers:h,signal,redirect:'manual'});
+ if(!r.ok)return null;const rows:unknown=await r.json();
+ if(!Array.isArray(rows))return null;
+ return Object.fromEntries(rows.filter(v=>v&&typeof v.id==='string'&&typeof v.title==='string').map(v=>[v.id,v.title.slice(0,200)]));
+ },(url.searchParams.get('platform')??'all') as 'all'|'ios'|'android'));
  const metrics=['activeUsers','newUsers','sessions','screenPageViews'];
  const [batch,returning]=await Promise.all([
  call('batchRunReports',{requests:[report(from,to,metrics),report(from,to,metrics,'date'),report(from,to,['sessions','activeUsers'],'sessionDefaultChannelGroup',20),report(from,to,['screenPageViews','activeUsers'],'pagePath',20),report(from,to,['eventCount','totalUsers'],'eventName',4,{filter:{fieldName:'eventName',inListFilter:{values:[...promoEvents]}}})]}),
