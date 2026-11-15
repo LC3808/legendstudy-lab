@@ -63,3 +63,18 @@ it('does not issue invalid KPI date requests while custom dates are incomplete',
  expect(within(kpis()).getByRole('alert')).toBeInTheDocument();
  expect(mocks.rpc).not.toHaveBeenCalled();
 });
+it('synchronizes KPI and learning windows while preserving the independent member period and current inquiries',async()=>{
+ render(<AdminDashboardView/>);await screen.findAllByText('3시간 44분');mocks.rpc.mockClear();
+ fireEvent.change(screen.getByRole('combobox',{name:'대시보드 기간'}),{target:{value:'d7'}});
+ await waitFor(()=>expect(mocks.rpc).toHaveBeenCalledWith('admin_admission_outcomes',expect.any(Object)));
+ const bounded=['admin_dashboard_study','admin_learning_analytics','admin_admissions_analytics','admin_admission_outcomes','admin_member_composition'];
+ const args=bounded.map(name=>mocks.rpc.mock.calls.find(([n])=>n===name)![1]);
+ expect(args.every(a=>JSON.stringify(a)===JSON.stringify(args[0]))).toBe(true);
+ expect(Date.parse(args[0].p_to)-Date.parse(args[0].p_from)).toBe(7*86400000);
+ expect(screen.getByRole('combobox',{name:'회원 구성 기간'})).toHaveValue('all');
+ expect(within(kpis()).getByRole('link',{name:/미처리 문의/})).toHaveTextContent('현재 대기');
+ mocks.rpc.mockClear();fireEvent.change(screen.getByRole('combobox',{name:'회원 구성 기간'}),{target:{value:'today'}});
+ await waitFor(()=>expect(mocks.rpc).toHaveBeenCalledWith('admin_member_composition',expect.any(Object)));
+ expect(mocks.rpc.mock.calls.every(([n])=>n==='admin_member_composition')).toBe(true);
+ expect(screen.getByRole('combobox',{name:'대시보드 기간'})).toHaveValue('d7');
+});

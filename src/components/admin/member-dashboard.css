@@ -81,3 +81,15 @@
 .dash-recent__pager span{font-size:12px;color:#4c646c;font-variant-numeric:tabular-nums}
 
 .admin-nickname{display:block;max-width:12rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* PHASE 4: size the dashboard bands by available content width, including sidebar. */
+.focused-admin{container-type:inline-size;min-width:0}
+.focused-admin .focus-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.focused-admin .focus-kpi{padding:14px 14px 14px 18px}
+.focused-admin .focus-kpi__n{color:#4c646c;margin-top:8px;line-height:1.5}
+.lab-status-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.lab-status h2{margin:0;font-size:18px}
+.lab-status .focus-toolbar{margin-bottom:12px}
+.lab-status .focus-kpi__v{font-size:28px}
+@container (min-width:650px){.focused-admin .focus-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.lab-status-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@container (min-width:1200px){.focused-admin .focus-kpis{grid-template-columns:repeat(6,minmax(0,1fr))}}
