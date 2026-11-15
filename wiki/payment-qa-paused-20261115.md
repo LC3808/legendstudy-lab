@@ -1,6 +1,6 @@
 # LIVE 결제 PAUSED 유지 · 단일 Owner QA 사전 검증
 
-2026-11-15. 운영 SQL 미적용, 결제 활성화/실제 결제/환불/스토어 제출 0. 이 문서는 적용 승인 요청 전 후보이며 배포 영수증이 아니다.
+2026-11-15. 운영 SQL 미적용, 결제 활성화/실제 결제/환불/스토어 제출 0. 코드 운영 배포 및 읽기 진단 결과는 마지막 영수증에 기록한다. SQL은 검토 후보로 유지한다.
 
 ## 확인된 서버 상태
 
@@ -17,7 +17,7 @@
 
 LIVE QA는 PAYMENT_ENABLED와 별도로 `PAYMENT_QA_ONLY=true`, 정확한 단일 OWNER PAYMENT_QA_SUBJECTS, 미래 PAYMENT_QA_UNTIL을 모두 요구한다. 누락/false/잘못된 설정은 차단. 1c/4900원만 신규 승인 후보. 기존 승인 완료 복구와 조회 계약은 보존한다. 결제창 UI도 consumer_purchase=false이면 비활성화한다.
 
-진단 endpoint는 고정 Owner의 fresh Auth만 허용하고 PAUSED에서만 작동한다. 결과는 상태 코드·허용 오류 코드·일치 여부만 반환한다. Finance 및 Toss Secret, 토큰, 결제키, 응답 본문은 반환하지 않는다. **코드만 검증했으며 운영 endpoint 배포/실행은 아직 안 했다.**
+진단 endpoint는 고정 Owner의 fresh Auth만 허용하고 PAUSED에서만 작동한다. 결과는 상태 코드·허용 오류 코드·일치 여부만 반환한다. Finance 및 Toss Secret, 토큰, 결제키, 응답 본문은 반환하지 않는다. **이후 Owner의 PAUSED 코드 배포 승인으로 운영 배포·읽기 진단을 수행했다. 최신 결과는 마지막 영수증 참조.**
 
 ## Owner에게 보고하는 정확한 SQL 후보
 
@@ -47,3 +47,18 @@ Owner 전용 PAUSED 읽기 진단 UI를 관리자 결제 화면에 추가했다.
 구현 SHA `ca56582`는 작업 브랜치 Commit·Push 완료. Cloudflare `--apply` 실행 요청은 자동 승인 검토에서 **실행 전 거부**됐다: 구현·검증 허용과 별도로 정확한 운영 배포의 명시 승인이 필요하다는 사유. 우회하지 않았으며 Owner에게 PAUSED·환경 설정·SQL을 유지하는 코드 배포 승인만 요청했다. 새 배포 ID 없음. 운영 기준은 계속 `9105e9e8-3606-472d-976e-2b2ab493438e`; 신규 읽기 진단의 운영 실행은 NOT TESTED.
 
 구분: 구현/합성 테스트/운영 공개 설정 빌드/배포 계획 DONE; 운영 코드 배포 BLOCKED(승인 대기); SQL HOLD(Owner 명시 보류); Finance 유효성·MID·Pages→Toss 실제 읽기 진단 NOT TESTED; 실제 결제/환불0; PAUSED 해제0.
+
+
+## Owner 승인 후 운영 배포 · 읽기 진단 영수증 (22:31 KST)
+
+Owner가 “PAUSED 유지 코드 배포 승인”으로 위 차단을 해소했다. 제품 변경 `ca56582`, 배포 Git metadata `49e08ee4dd03d47a7f61205ee9ebc64d3618b8d0`. Cloudflare 운영 배포 **`c6dcd96a-8ac1-4d32-8dbe-97959286969d`** success 및 canonical 승격 확인. 배포 완료 시각 2026-11-15 22:29:04 KST.
+
+- DONE: LIVE/PAYMENT_ENABLED=false 유지. 이전·새 배포 환경 메타데이터 동일, 함수 라우팅 동일, 비결제 정적 경로 2,934개 hash 보존. Secret 값은 출력/저장하지 않았고 환경 설정 PATCH도 하지 않았다.
+- DONE: 운영 관리자 `/admin/payment/`에서 Owner 전용 읽기 진단 버튼 표시·실행 확인. 기존 결제 조회와 “신규 결제 일시 중지” 표시 유지.
+- PARTIAL: Finance 읽기 진단은 **HTTP 401 / PGRST303**, 읽기 권한 미확인. 실제 배포 인증 경로 실패를 확인했으나 정확한 토큰 거부 원인까지 분리하지 못했다. 로컬 과거 JWT 만료와 동일 원인이라고 단정하지 않는다. Finance 자격 증명 점검·수정안 검토가 필요하며 이번 배포에서 교체하지 않았다.
+- DONE(읽기 범위): Toss 고정 기존 주문 GET **HTTP 200 / MID 일치**. UI 오류 코드 필드는 성공 응답에도 `UNCLASSIFIED`로 표시한다. 이 값 자체를 Toss 오류로 해석하지 않는다. Pages→Toss 해당 읽기 경로 접근과 Secret으로 조회한 MID 일치는 확인했다.
+- NOT TESTED: LIVE Client/Secret 쌍 일치, 카드 인증/실제 승인 성공, 과거 INVALID_UNREGISTERED_SUBMALL 재현. 조회 200은 결제 승인 성공 증거가 아니다.
+- HOLD: 운영 SQL 미적용. authenticated 직접 payment_order 실행의 서버 DB 제한은 아직 적용되지 않았다. Worker 차단을 직접 RPC 차단 완료로 보고하지 않는다.
+- PAUSED 유지. SQL 적용·결제 활성화·실제 결제·환불·스토어 제출 모두 0. Finance 인증 실패 및 SQL HOLD가 남아 있으므로 실제 결제 재시험 준비 완료로 판정하지 않는다.
+
+코드 검증은 앞서 완료한 WEB 2,078 PASS / 5 SKIP / 0 FAIL, TypeScript·변경 ESLint·webpack build PASS를 사용했다. 이번에는 코드 변경 없이 승인된 산출물을 배포하고 배포/브라우저 읽기 검증만 수행했다. 비Owner 운영 계정 실브라우저 차단은 NOT TESTED(합성 테스트 PASS).
