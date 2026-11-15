@@ -1,10 +1,11 @@
 'use client';
 import {useState,useEffect} from 'react';
+import Link from 'next/link';
 import {useAuth} from '@/components/auth-context';
 import {AdminPanel,AdminLoading} from './admin-surface';
 import {AdminSchoolName} from './admin-school-name';
 
-type AppRow={application_id:string;student_name:string;office_code:string|null;school_code:string|null;student_status:string|null;grade_level:number|null;university:string;intended_division:string;admission_type:string;admission_name:string;admission_year:number;created_at:string;status:string|null;ever_accepted:boolean};
+type AppRow={application_id:string;user_id?:string;student_name:string;office_code:string|null;school_code:string|null;student_status:string|null;grade_level:number|null;university:string;intended_division:string;admission_type:string;admission_name:string;admission_year:number;created_at:string;status:string|null;ever_accepted:boolean};
 type Roster={offset:number;limit:number;total:number;has_more:boolean;items:AppRow[]};
 const STATUS:Record<string,string>={planned:'지원 예정',submitted:'제출',stage_pass:'1단계 합격',accepted:'최종 합격',additional_acceptance:'추가 합격',rejected:'불합격',registered:'등록',not_registered:'미등록'};
 function statusText(s:string|null,ever:boolean):string{
@@ -30,7 +31,7 @@ export function ApplicationsRoster(){
     <div className="admin-table-scroll"><table className="admin-table">
       <thead><tr><th scope="col">학생</th><th scope="col">학교</th><th scope="col">대학</th><th scope="col">학과·모집단위</th><th scope="col">전형</th><th scope="col">학년도</th><th scope="col">상태</th></tr></thead>
       <tbody>{d.items.map(a=><tr key={a.application_id}>
-        <td>{a.student_name}{a.student_status?` · ${a.grade_level&&a.student_status==='student'?`고${a.grade_level}`:STUDENT[a.student_status]??a.student_status}`:''}</td>
+        <td>{a.user_id&&/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(a.user_id)?<Link href={`/admin/members/?member=${encodeURIComponent(a.user_id)}`}>{a.student_name} · Student 360</Link>:a.student_name}{a.student_status?` · ${a.grade_level&&a.student_status==='student'?`고${a.grade_level}`:STUDENT[a.student_status]??a.student_status}`:''}</td>
         <td>{a.office_code&&a.school_code?<AdminSchoolName office={a.office_code} school={a.school_code}/>:'미입력'}</td>
         <td>{a.university}</td>
         <td>{a.intended_division}</td>
@@ -41,6 +42,6 @@ export function ApplicationsRoster(){
     </table></div>
     <div className="admin-pagination"><button type="button" className="button button--outline button--small" disabled={offset===0} onClick={()=>setOffset(Math.max(0,offset-25))}>이전</button><span aria-live="polite">{Math.floor(offset/25)+1} 페이지</span><button type="button" className="button button--outline button--small" disabled={!d.has_more} onClick={()=>setOffset(offset+25)}>다음</button></div>
     </>}
-    <p className="admin-muted">operator 권한 전용 · 학생이 직접 입력한 실제 지원 기준입니다. 같은 대학에 복수 전형·학과 지원이 가능합니다. 합격 이력은 등록·미등록 이후에도 「합격」으로 함께 표시합니다.</p>
+    <p className="admin-muted">전체 기간 목록 (상단 기간 필터와 별도) · operator 권한 전용 · 학생이 직접 입력한 실제 지원 기준입니다. 같은 대학에 복수 전형·학과 지원이 가능합니다. 합격 이력은 등록·미등록 이후에도 「합격」으로 함께 표시합니다.</p>
   </AdminPanel>;
 }

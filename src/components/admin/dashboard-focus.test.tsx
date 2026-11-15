@@ -3,7 +3,7 @@ import {render,screen,waitFor,cleanup,within,fireEvent} from '@testing-library/r
 import {afterEach,beforeEach,it,expect,vi} from 'vitest';
 const mocks=vi.hoisted(()=>{const rpc=vi.fn();return {rpc,client:{rpc},query:vi.fn(),user:{id:'synthetic-operator'}};});
 vi.mock('@/components/auth-context',()=>({useAuth:()=>({client:mocks.client,user:mocks.user})}));
-vi.mock('./admin-surface',()=>({useAdminQuery:mocks.query,useSupportRefresh:()=>{},AdminErrorPanel:()=>null}));
+vi.mock('./admin-surface',async original=>({...await original<typeof import('./admin-surface')>(),useAdminQuery:mocks.query,useSupportRefresh:()=>{},AdminErrorPanel:()=>null}));
 vi.mock('./school-distribution',()=>({SchoolDistribution:()=>null}));
 import {AdminDashboardView} from './admin-dashboard-view';
 const payload:Record<string,unknown>={

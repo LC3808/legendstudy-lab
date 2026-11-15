@@ -3,7 +3,8 @@ import Link from 'next/link';
 import {AdminLearningRankings} from './admin-learning-rankings';
 import {formatStudyTime} from '@/lib/admin/study-time';
 import {AdminLearningHub} from './admin-learning-hub';
-import {AdminDataTable} from './admin-data-table';
+import {KpiTile} from './kpi-tile';
+import './learning-analytics.css';
 import {useEffect,useMemo,useState} from 'react';
 import {useAuth} from '@/components/auth-context';
 import {AdminAnalytics} from './admin-analytics';
@@ -13,6 +14,7 @@ import {analyticsWindow} from '@/lib/admin/analytics';
 import type {AdminPeriod} from '@/lib/admin/period';
 import {parseLearningAnalytics,learningMetrics,learningDefinitions,type LearningAnalytics} from '@/lib/admin/learning-analytics';
 import {AdminSchoolName} from './admin-school-name';
+import {LearningSummary,LearningAdmissions} from './learning-overview-summary';
 import {ApplicationsRoster} from './admin-applications-roster';
 
 const studyGradeNames:Record<string,string>={'1':'고1','2':'고2','3':'고3',retaker:'N수·검정고시 등',unknown:'미입력'};
@@ -99,8 +101,13 @@ function Learning({section}:{section:string}){
  {!window?<AdminPanel title="올바른 기간을 선택해 주세요"/>:!current?<AdminLoading/>:current.error?<AdminErrorPanel kind={current.error}/>:current.data?<>
  <p>출처: Supabase 학습 원장 · 조회 시각 {new Date(current.data.as_of).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})} KST · {current.data.state}</p>
  <p>기록이 있는 모든 학생을 집계합니다. 0은 기록 없음, 미확인은 조회값 없음입니다.</p>
- <div className="admin-metrics">{Object.entries(learningMetrics).filter(([k])=>section!=='study'||k.startsWith('study_')).map(([k,label])=><div className="admin-metric" key={k}><p>{label}</p><strong>{k==='study_ms'?formatStudyTime(current.data!.metrics.study_ms):current.data!.metrics[k as keyof typeof learningMetrics]?.toLocaleString()??'미확인'}</strong></div>)}</div>
- {kinds.map(kind=><AdminPanel key={kind} title={learningDefinitions[kind as keyof typeof learningDefinitions]}><AdminLearningRankings key={JSON.stringify([user?.id,window,kind])} kind={kind} range={window}/></AdminPanel>)}
+ {section==='learning'?<LearningSummary data={current.data}/>:<div className="learning-kpi-groups">{[
+  {title:'입시 관심',keys:['targets','applications']},
+  {title:'자료 이용',keys:['saved','recent']},
+  {title:'학습 활동',keys:['study_users','study_ms']},
+ ].map(group=><section className="learning-kpi-group" key={group.title}><h2>{group.title}</h2><div>{group.keys.map(name=>{const k=name as keyof typeof learningMetrics;const value=current.data!.metrics[k];return <KpiTile key={k} label={learningMetrics[k]} value={value==null?'미확인':k==='study_ms'?formatStudyTime(value):`${value.toLocaleString()}${['targets','study_users'].includes(k)?'명':k==='recent'?'쌍':'건'}`} note={k==='recent'?'최근 열람 시각 기준 · 현재 남은 학생·자료 쌍':k==='study_ms'?'완료·동기화된 구간 · 중복 시간 제외':'선택 기간 · 현재 남아 있는 기록'}/>;})}</div></section>)}</div>}
+ {section==='learning'&&<LearningAdmissions range={window} refresh={now.getTime()}/>}
+ {kinds.map(kind=><AdminPanel key={kind} title={{targets:'희망 대학 순위',saved:'인기 저장 자료',recent:'최근 열람 자료',applications:'실제 지원 대학 순위'}[kind]??kind}><p className="learning-section-note">{learningDefinitions[kind as keyof typeof learningDefinitions]}</p><AdminLearningRankings key={JSON.stringify([user?.id,window,kind])} kind={kind} range={window}/></AdminPanel>)}
    {(section==='learning'||section==='applications')&&<ApplicationsRoster/>}
  {section==='insights'&&<AdminPanel title="인사이트 DRAFT 미리보기"><p>자동 노출 OFF · 저장·승인 원장 연결 전에는 미리보기만 제공합니다.</p>{current.data.rows.filter(r=>r.kind==='saved').slice(0,1).map(r=><p key={r.label}>선택 기간에 현재 남아 있는 저장 기록 기준, {r.users}명의 학생이 「{r.label}」 자료를 저장했습니다.</p>)}<p>기간: {current.data.from} ~ {current.data.to} · 전체 기록 집계 · 조회 시각과 출처는 위와 동일합니다.</p></AdminPanel>}
  </>:null}

@@ -18,3 +18,13 @@ it('failed request is an error with retry, not empty rankings',async()=>{
  mocks.rpc.mockResolvedValue({error:{message:'denied'}});render(<AdminLearningRankings kind="saved" range={range}/>);
  expect(await screen.findByRole('alert')).toHaveTextContent('집계를 불러오지 못했습니다');
 });
+it('distinguishes stored pairs from pageviews and exposes the complete material title',async()=>{
+ const title='[2026년 9월 시행] 아주 긴 학습자료 원문 제목 '.repeat(5).trim();
+ mocks.rpc.mockResolvedValue({data:{version:'admin-learning-rankings-v1',page:1,total_count:1,total_pages:1,rows:[{id:'material',label:title,users:7,records:7,rank:1}]}});
+ render(<AdminLearningRankings kind="recent" range={range}/>);
+ expect(await screen.findByRole('columnheader',{name:'열람 학생'})).toBeInTheDocument();
+ expect(screen.getByRole('columnheader',{name:'학생·자료 쌍'})).toBeInTheDocument();
+ expect(screen.getByTitle(title)).toHaveClass('learning-ranking__title');
+ expect(screen.getByText('전체 자료명')).toBeInTheDocument();
+ expect(screen.getByRole('button',{name:'다음'})).toBeDisabled();
+});

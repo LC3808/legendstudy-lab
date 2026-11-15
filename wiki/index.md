@@ -1,3 +1,5 @@
+[2026-11-15 학습·입시 분석 통합 구현 — 진행 중](learning-admissions-analytics-implementation-20261115.md)
+
 2026-11-15: [운영 정합성·지원 삭제·잔여 테스트](operations-integrity-20261115.md). WEB 전체2032 PASS/0 FAIL/0 ERROR, Flutter20 PASS. 지원 요약 캐시 결함 수정; 운영 데이터 변경 없음. WEB96b17f18 운영 반영. APP 단말 검증 및 승인 필요한 한양대 종료는 별도 보류.
 
 2026-11-15: [논술 LAB 독립 운영 대시보드](essay-lab-dashboard-implementation-20261115.md). 운영7071ad83·WEB297ffc4. 신규 읽기 집계 RPC/원본 보존/권한·실행 계획 PASS. 집중40 PASS·빌드·실제 기간/베타/상세/390px 검증 완료. 계약 미지원 범위 별도 기록.

@@ -4,7 +4,7 @@ import {AdminLabOperations} from "./admin-lab-operations";
 import './member-dashboard.css';
 import {MemberRecentActivity} from './member-recent-activity';
 import {MemberUniversityActivity} from './member-university-activity';
-import { Fragment, useState, type ReactNode } from "react";
+import { Fragment, useState, useEffect, type ReactNode } from "react";
 
 import type { AdminMemberDetail } from "@/lib/admin/contract";
 import {defaultMemberFilters,directorySchoolLabel,type MemberDirectory,type MemberFilters} from "@/lib/admin/members";
@@ -113,9 +113,9 @@ function LegacyMemberDetailPanel({ accountId }: { accountId: string }) {
 // Independent read RPCs retain their own server authorization and error states.
 export function AdminMemberDetailPanel({accountId,email=null}: {accountId: string;email?:string|null}) {
   return <div className="member-detail-focus"><LegacyMemberDetailPanel accountId={accountId}/><div className="admin-detail">
-    <section className="admin-detail__block"><Student360Panel accountId={accountId}/></section>
-    <section className="admin-detail__block"><MemberRecentActivity accountId={accountId}/></section>
-    <section className="admin-detail__block"><MemberUniversityActivity accountId={accountId}/><AdminLabOperations key={accountId} accountId={accountId}/></section>
+    <section className="admin-detail__block" aria-label="학습 활동·실제 지원"><Student360Panel accountId={accountId}/></section>
+    <section className="admin-detail__block"><h3>자료 이용 · 현재 저장·최근 열람</h3><MemberRecentActivity accountId={accountId}/></section>
+    <section className="admin-detail__block"><h3>논술 LAB 활동</h3><MemberUniversityActivity accountId={accountId}/><AdminLabOperations key={accountId} accountId={accountId}/></section>
     <details className="admin-detail__block"><summary>이용권 잔액·기록</summary><AdminMemberCreditPanel key={accountId} accountId={accountId} email={email}/></details>
   </div></div>;
 }
@@ -168,6 +168,8 @@ function MemberPager({ offset, filteredTotal, onPage }: { offset: number; filter
 }
 
 export function AdminMembersView() {
+ const [linkedMember,setLinkedMember]=useState<string|null>(null);
+ useEffect(()=>{const read=()=>{const id=new URLSearchParams(window.location.search).get('member');setLinkedMember(id&&/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(id)?id:null);};read();window.addEventListener('popstate',read);return()=>window.removeEventListener('popstate',read);},[]);
  const [draft,setDraft]=useState<MemberFilters>(defaultMemberFilters);
  const [filters,setFilters]=useState<MemberFilters>(defaultMemberFilters);
  const [offset,setOffset]=useState(0);const [selected,setSelected]=useState<string|null>(null);
@@ -180,6 +182,7 @@ export function AdminMembersView() {
  async function findSchool(){setSchoolBusy(true);setHint('');try{const result=await searchSchools(schoolQuery);setSchools(result);if(!result.length)setHint('학교 검색 결과가 없습니다.');}catch{setHint('학교 검색을 처리하지 못했습니다. 다시 시도해 주세요.');}finally{setSchoolBusy(false);}}
  const columns=['회원 아이디 (이메일)','계정 상태','학교','학년','현재 상태','희망 전공','닉네임','가입일','상세'];
  return <div className="admin-stack member-directory focused-admin">
+  {linkedMember&&<section aria-label="연결된 학생 상세"><h2>Student 360</h2><button type="button" className="button button--outline" onClick={()=>{setLinkedMember(null);const url=new URL(window.location.href);url.searchParams.delete('member');window.history.replaceState(null,'',url);}}>상세 닫기</button><AdminMemberDetailPanel key={linkedMember} accountId={linkedMember}/></section>}
   <section className="admin-section">
    <h2>회원 관리</h2>
    {state.status==='ready'&&<p className="admin-section__note">전체 {formatNumber(state.data.total)}명 · 조회 {formatNumber(state.data.filteredTotal)}명</p>}
