@@ -37,7 +37,19 @@
 
 ## 운영 배포·브라우저 검증
 
-진행 중. 배포 및 실제 브라우저 확인 후 결과를 갱신한다. 이 시점 브라우저 검증은 NOT TESTED.
+DONE: 운영 배포 `7071ad83-1432-4113-bd4c-9d234e52ec6d`, WEB source `297ffc4b9ae3e508cc8f8f442996192249c20e79`. 작업 브랜치 `codex/lab-admin-operations-20261114` 일반 Push 완료. 후속 문서 커밋은 운영 소스 변경 없음.
+
+- Cloudflare canonical/latest stage success, **전체 manifest 일치**, 운영/preview 환경 설정과 Functions 라우트 일치 PASS. 기존 관리자 외 파일2737개 보존, 새 관리자/해시 assets202개 반영. 기존 API worker binary SHA256 `eb21ec0e874335c06732df5d39b9c6a1ab63527286040b6d274e9f7b1f27b890` 그대로. 원격 데이터/엔진/결제 변경 없음.
+- CLI HTTP smoke는 Cloudflare403으로 앱 권한 검증 근거로 사용하지 않음. 로그인한 실제 운영 Chrome에서 아래 결과 확인.
+- 메뉴7영역, 운영 대시보드 그룹 두 번째 LAB, 일반 대시보드 허브 링크 PASS.
+- 기본7일:1명/1요청/1완료/0실패/현재1/평균328.7초. 전체:5명/58요청/47완료/10실패/현재1/평균1094.7초. 전체 최근 목록10개. 30일:5명/55요청/44완료. 오늘0명/0요청/평균기록없음이면서 현재처리1 유지 PASS.
+- 전체+베타:성균관1명/1요청/1완료, 평균285.6초. 대학 클릭 시 UUID+source=beta 유지, 기존 목록1건, 성균관 상세 실제3문항 결과 조회 PASS.
+- 최근 활동 링크:회차 UUID+KST from/to 유지, 기존 상세6영역과 미리보기 버튼 확인 PASS. 새 미리보기 탭 재실행은 이번 브라우저 세션에서 NOT TESTED(기존 자동화 회귀 PASS).
+- 운영 현재처리 카드 클릭→state=reserved/진행중 선택, 신규피드백→status=new/신규 선택 PASS. 재시도 상세 링크는 필터 미적용을 명시(자동화 링크 검사 PASS, 이번 세션 실클릭 NOT TESTED).
+- 품질 별도 권한 보유 관리자에서 명시적 로드→기간내3문항/검토0건 PASS. 검토 기록 없음 확인. 실제 검토 사례 링크 실클릭은 자료0건으로 NOT TESTED(권한 gate/사례 링크 자동화 PASS). 비관리자 RPC 차단은 운영 SQL로 PASS; 비관리자 로그인 브라우저 세션은 NOT TESTED.
+- 재무 명시적 로드:7일 지급909/사용1/WEB결제0/취소0, 모델 UNKNOWN 비용 확인불가, 비용미상9영수증 PASS. 전체 TEST KRW127000/10건을 TEST로 분리 표시; 실제 매출로 단정하지 않음. 상태별 숫자는 검증 시점 자료.
+- 모바일 실제 CSS390px:document scrollWidth390, KPI2열, 최근활동 행 block 카드 변환 PASS. 임시 viewport 원복. 스크린샷 `/private/tmp/lab-dashboard.jpg`.
+- 부분 조회 실패/영역별 재시도는 자동화 PASS, 운영 장애 주입은 NOT TESTED. 신규 쓰기 동작 수행0.
 
 ## 명시적 후속 범위
 
