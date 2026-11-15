@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 export type MaterialRanking = {kind:string;label:string;users:number;records:number};
 
@@ -7,9 +8,9 @@ export function DashboardUsageRankings({rows,error,loading}:{rows?:MaterialRanki
  const materials=rows?.filter(row=>row.kind==='recent').slice(0,10)??[];
  return <div className="usage-rankings">
   <section aria-labelledby="app-menu-ranking-title">
-   <h3 id="app-menu-ranking-title">앱 메뉴 이용 TOP 3</h3>
-   <p className="usage-rankings__notice"><strong>집계 준비 중 · 메뉴 이용 기록 미수집</strong></p>
-   <p className="focus-note">홈·자료·학습·LAB·MY 메뉴를 누른 횟수는 현재 저장되지 않습니다. 앱 기록 수집을 연결한 이후부터 순위와 이용 횟수를 표시할 수 있습니다.</p>
+   <h3 id="app-menu-ranking-title">앱 메뉴 이용</h3>
+   <p className="usage-rankings__notice"><Link href="/admin/data/app-usage/">앱 이용 분석에서 메뉴·화면 순위 보기 →</Link></p>
+   <p className="focus-note">앱 GA4의 화면·메뉴 진입 기록을 별도로 집계합니다. 앱 이용 분석에서 기간과 iOS·Android를 선택할 수 있습니다. 메뉴 클릭 등 새 기능 이벤트는 업데이트된 앱에서 수신된 이후 표시됩니다.</p>
   </section>
   <section aria-labelledby="material-ranking-title">
    <h3 id="material-ranking-title">자료 열람 TOP 10</h3>

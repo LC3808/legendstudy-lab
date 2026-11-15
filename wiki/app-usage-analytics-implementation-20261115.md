@@ -1,6 +1,6 @@
 # APP 행동 분석 구현 — 2026-11-15
 
-상태: 코드·자동 테스트 완료, WEB 운영 배포 준비, 새 Flutter 계측의 실기기 수신 NOT TESTED. 스토어 제출하지 않는다.
+상태: 기존 앱 GA4 운영 조회·WEB 배포 DONE, 새 Flutter 계측 코드·빌드 DONE / 실기기 수신 NOT TESTED. 스토어 제출하지 않는다.
 
 ## 기존 구현과 설계 판정 차이
 
@@ -51,3 +51,12 @@ WEB GA 보고서33 PASS. Flutter 관련54 PASS(화면 이동/자료 열림·검�
 API 기준: [GA Data API dimensions/metrics](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema). 배포·최종 전체 회귀·브라우저 검증 결과는 아래 후속 기록에 추가한다.
 
 최종 전체 WEB 회귀: 2050 PASS / 5 SKIP / 0 FAIL / 0 ERROR (274 files, 270 passed/4 skipped).
+
+
+## 실제 운영 조회
+
+운영 `ac1c8d0b` / WEB `bf03b4c` / APP `103c35d`. 기존 GA4 읽기 계정 그대로, 누락된 앱 속성·스트림 공개 설정만 복구했다. 2026-11-15 20:36 KST 실제 관리자 브라우저에서 최근7일(11/09~11/15), iOS+Android: 등록된 행동28,788회/화면15,797회/고유 이용자522명/기능142회 조회 PASS. 기존 논술 LAB 진입142회, 신규 menu_click은 수신 미확인. 첫 관측11/05·최근11/15 표시. 이 결과를 새 Flutter 이벤트 배포 완료로 해석하지 않는다.
+
+Android·오늘 선택/조회: 수신 미확인·관측일 확인 불가를 표시, 오류나 0회 이용으로 변환하지 않음 PASS. 기존 iOS 수집과 Android 미수신을 구분한다. 메뉴 클릭/검색/PDF/북마크/타이머의 실제 신규 앱→GA4 실기기 전송, 오프라인 재전송, Analytics 비활성 실기기 검증 NOT TESTED. 자동 테스트의 비활성/중복/예외 검증과 구분한다.
+
+최종 운영 안내 정리: 대시보드의 과거 '메뉴 기록 미수집' 단정 문구를 앱 이용 분석 링크와 신규 이벤트 범위 안내로 교체. 화면 전체 값과 등록된 화면 TOP10의 집계 범위 차이를 UI에 명시.

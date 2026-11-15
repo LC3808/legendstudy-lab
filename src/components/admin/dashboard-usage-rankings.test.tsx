@@ -10,7 +10,7 @@ it('shows real member counts, limits materials to ten, and never invents menu co
  expect(screen.getByText('12명')).toBeVisible();
  expect(screen.queryByText('자료 10')).toBeNull();
  expect(screen.queryByText('저장만 한 자료')).toBeNull();
- expect(screen.getByText('집계 준비 중 · 메뉴 이용 기록 미수집')).toBeVisible();
+ expect(screen.getByRole('link',{name:/앱 이용 분석에서/})).toHaveAttribute('href','/admin/data/app-usage/');
  expect(screen.getByText(/앱·웹 구분과 자료실 탭 유입 경로/)).toBeInTheDocument();
 });
 it('keeps failure distinct from empty and loading',()=>{

@@ -5,7 +5,7 @@ import {useAuth} from '@/components/auth-context';
 import {gaDates,gaErrorMessage,type GaTable} from '@/lib/admin/ga4-report';
 import {featureNames,type AppPlatform,type AppUsageReport as Report} from '@/lib/admin/app-usage-report';
 function Ranking({title,table,countLabel='실행 수'}:{title:string;table:GaTable|null;countLabel?:string}){
- return <section><h3>{title}</h3>{!table?<p>미연결 · 이벤트 보고서 차원 등록이 필요합니다.</p>:!table.rows.length?<p>수집 대기 · 선택 기간의 이벤트 수신이 아직 확인되지 않았습니다.</p>:<div className="analytics-table"><table><thead><tr><th scope="col">순위</th><th scope="col">메뉴·자료</th>{table.columns.map(c=><th scope="col" key={c}>{c==='totalUsers'?'고유 이용자':countLabel}</th>)}</tr></thead><tbody>{table.rows.map((r,i)=><tr key={i}><td>{i+1}</td><th scope="row">{r.label}</th>{r.values.map((n,j)=><td key={j}>{n.toLocaleString('ko-KR')}</td>)}</tr>)}</tbody></table></div>}</section>;
+ return <section><h3>{title}</h3>{!table?<p>미연결 · 이벤트 보고서 차원 등록이 필요합니다.</p>:!table.rows.length?<p>수집 대기 · 선택 기간의 이벤트 수신이 아직 확인되지 않았습니다.</p>:<div className="analytics-table"><table><thead><tr><th scope="col">순위</th><th scope="col">대상</th>{table.columns.map(c=><th scope="col" key={c}>{c==='totalUsers'?'고유 이용자':countLabel}</th>)}</tr></thead><tbody>{table.rows.map((r,i)=><tr key={i}><td>{i+1}</td><th scope="row">{r.label}</th>{r.values.map((n,j)=><td key={j}>{n.toLocaleString('ko-KR')}</td>)}</tr>)}</tbody></table></div>}</section>;
 }
 export function AppUsageReport({window,refresh}:{window:{p_from:string;p_to:string};refresh:string}){
  const [platform,setPlatform]=useState<AppPlatform>('all');
@@ -31,7 +31,7 @@ export function AppUsageReport({window,refresh}:{window:{p_from:string;p_to:stri
  <div className="focus-kpis">{[
  ['이벤트 발생 수',r.summary?.rows[0]?.values[0]],['화면 조회 수',r.events?.rows.find(e=>e.label==='screen_view')?.values[0]],['메뉴 클릭 수',r.events?.rows.find(e=>e.label==='menu_click')?.values[0]],['기능 실행 수',r.events?.rows.some(e=>e.label in featureNames)?r.events.rows.filter(e=>e.label in featureNames).reduce((n,e)=>n+e.values[0],0):undefined],['고유 이용자 수',r.summary?.rows[0]?.values[1]],
  ].map(([label,value])=><div className="focus-kpi" key={label}><p className="focus-kpi__l">{label}</p><p className="focus-kpi__v">{typeof value==='number'?value.toLocaleString():'수신 미확인'}</p></div>)}</div>
- <p className="focus-note">선택 기간 · 등록된 행동 이벤트 범위. 이벤트가 없는 항목은 미수집·반영 지연과 0회 이용을 구분할 수 없어 수신 미확인으로 표시합니다. 메뉴 클릭은 하단 5개 탐색 메뉴의 실제 선택이며 화면 이동과 별도입니다.</p>
+ <p className="focus-note">선택 기간 · 등록된 행동 이벤트 범위. 이벤트가 없는 항목은 미수집·반영 지연과 0회 이용을 구분할 수 없어 수신 미확인으로 표시합니다. 메뉴 클릭은 하단 5개 탐색 메뉴의 실제 선택이며 화면 이동과 별도입니다. 화면 TOP 10은 등록된 화면명만 포함하므로 자동·미등록 화면을 포함한 전체 화면 조회 수와 범위가 다릅니다.</p>
  <Ranking title="인기 화면 TOP 10" table={r.screens??null} countLabel="화면 조회"/>
  <Ranking title="인기 메뉴 TOP 10 · 클릭" table={r.menuClicks??null} countLabel="클릭 수"/>
  <Ranking title="인기 기능 TOP 10" table={r.events?{...r.events,rows:r.events.rows.filter(e=>e.label in featureNames).slice(0,10).map(e=>({...e,label:featureNames[e.label]}))}:null}/>
