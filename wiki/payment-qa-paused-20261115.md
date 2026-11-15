@@ -33,3 +33,11 @@ LIVE QA는 PAYMENT_ENABLED와 별도로 `PAYMENT_QA_ONLY=true`, 정확한 단일
 ## 검증 상태
 
 최초 WEB 2068 PASS/5 SKIP, 정적 검사 PASS, webpack 정적 빌드 PASS. Turbopack은 외부 node_modules 링크 환경 오류로 실패했으며 webpack으로 통과했다. 단일 Owner 최종 정책 반영 후 WEB 2070 PASS/5 SKIP/0 FAIL, TypeScript·변경 파일 ESLint·webpack 빌드 PASS. 익명 LIVE 구매가 가능하다는 기존 UI 기대값은 최신 차단 정책으로 갱신했다. 실결제/실환불/운영 진단/직접 운영 RPC 차단 확인은 NOT TESTED.
+
+## 최종 사전 차단 보완 및 Owner SQL 결정
+
+Owner는 2026-11-15 “변경안 검토까지, 운영 적용 보류”를 선택했다. 운영 SQL 미적용 유지. postcheck에 default false, SECURITY DEFINER/search_path/ACL, authenticated·anon·finance EXECUTE, 단일 Owner 제한, 정확한 후보 함수 MD5 `8a156d337ed6c3b30b0c2e2d308d6d7c` 검증을 추가했다. 격리 적용·원복으로 지문 확인.
+
+신규 LIVE confirm은 fresh Owner, PAUSED, QA 설정·기한·상품을 confirm_begin 전에 검사한다. 기존 AUTHORIZATION_PENDING/PAID는 저장된 Finance get으로 복구하며 caller payment key를 새 승인에 사용하지 않는다. Provider IN_PROGRESS는 기존 추가 차단을 유지하고 DONE은 재승인 없이 복구한다. 이 경로 분리는 합성 transport 테스트 PASS.
+
+Owner 전용 PAUSED 읽기 진단 UI를 관리자 결제 화면에 추가했다. 서버도 fresh Owner를 재검증하며 raw 응답/Secret을 반환하지 않는다. WEB 전체2078 PASS/5 SKIP/0 FAIL, 정적검사/webpack 빌드 PASS. 운영 공개 클라이언트 설정 누락을 배포 계획 검사가 발견해 현재 NEXT_PUBLIC plain-text 설정만 메모리 전달하여 다시 빌드했다. 결제3경로·관련 API 외 기존 static/환경 설정 보존 계획 PASS. 배포 후 결과는 아래 별도 영수증으로 기록한다.

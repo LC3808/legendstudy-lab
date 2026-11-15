@@ -1,5 +1,6 @@
 "use client";
 
+import {PaymentReadDiagnostics} from './payment-read-diagnostics';
 import {AdminReleaseReport} from './admin-release-report';
 import { useEffect, useState } from "react";
 import { paymentRuntime, type PaymentRuntime } from "@/lib/payment-runtime";
@@ -74,6 +75,7 @@ export function AdminPaymentView() {
 
   return (
     <div className="admin-stack">
+      <PaymentReadDiagnostics paused={runtime?.state === 'PAUSED'}/>
       <AdminReleaseReport kind="payment" onPaymentState={changeState}/>
       <section className="admin-section">
         <h2>주문 상세 조회</h2>

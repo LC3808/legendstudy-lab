@@ -188,9 +188,18 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     let op: Json;
     if (action === 'confirm') {
       if (cfg.mode === 'LIVE' && buyerSubject !== LIVE_QA_OWNER) fail(403, 'QA_PURCHASE_RESTRICTED');
-      if (cfg.mode === 'LIVE' && !cfg.enabled) fail(409, 'PAYMENT_PAUSED');
       id(p.request_key); text(p.payment_key); if (p.amount !== order.amount) fail(422, 'AMOUNT_MISMATCH');
-      op = await process({ action: 'confirm_begin', request_key: p.request_key, payment_key: p.payment_key, amount: order.amount });
+      if (cfg.mode === 'LIVE' && ['AUTHORIZATION_PENDING', 'PAID'].includes(String(order.state))) {
+        // Recover an already persisted operation using its stored key, without
+        // beginning a new approval or trusting the callback's payment key.
+        op = await process({ action: 'get' });
+      } else {
+        if (cfg.mode === 'LIVE') {
+          if (!cfg.enabled) fail(409, 'PAYMENT_PAUSED');
+          if (!qaPurchaseAllowed(env, buyerSubject) || !qaProductAllowed(env, order.sku, order.amount)) fail(403, 'QA_PURCHASE_RESTRICTED');
+        }
+        op = await process({ action: 'confirm_begin', request_key: p.request_key, payment_key: p.payment_key, amount: order.amount });
+      }
     } else if (action === 'cancel' || action === 'support-cancel') op = await process({ action: 'cancel_begin', request_key: p.request_key });
     else op = await process({ action: 'get' });
     safeOrder(op, cfg.mode);
