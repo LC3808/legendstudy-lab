@@ -34,10 +34,22 @@
 - 집중 자동화 20 PASS: 카드4개/기간/0·양수/unknown·error·loading/정확한 링크·필터 한계/중복 설명/기간 동기화/회원 기간 독립/현재 문의 + PHASE3 목록·상세·미리보기.
 - TypeScript, 변경 ESLint, Next webpack production build PASS.
 - 전체 2,011 PASS / 기존 11 FAIL / 기존 1 ERROR / 5 SKIP. PHASE3 대비 신규 실패0. 기존 실패7파일: admin-analytics2, admin-console4, catalog-demand-projection/catalog-demand/public-discovery/university-theme/materials 각1. admin-console mock study.total 누락 오류 유지. 실제 운영 데이터 이상으로 해석하지 않는다.
-- 실제 브라우저/배포 후 검증: 진행 중. 미수행 검증은 아래 최종 기록으로 구분한다.
+- 실제 Chrome 운영 DONE: 4카드 0/1/1/0, 각 집계기간/0 중립/양수 내역 표시. 처리 중과 재시도 1건을 합산하지 않음.
+- 실제 기간 동기화 DONE: d30→today, KPI 공부 시간과 하단 공부 시간이 모두 2시간12분(검증 시점)으로 변경. 회원 구성 all 유지; 회원 d7 변경 후 대시보드 today 유지. 문의0 현재 대기/고정 운영 지표 유지. 전체 선택 시 지원하는 KPI 조회 성공, 희망 대학/학습·입시 상세는 미지원 안내.
+- 실제 링크 DONE: 실패→state=failed 선택·전체10회(최근7일0과 다름), 처리중→state=reserved 선택·1회, 재시도→operations 기본 필터(재시도 미적용), 피드백→status=new 및 신규 선택. 오래된 미완료 건을 재처리하지 않음.
+- 실제 반응형 DONE: 기본 PC KPI3열/운영4열, CSS viewport390px에서 KPI2열/운영2열, document.scrollWidth=390으로 가로 넘침 없음. 임시 viewport 해제.
+- 실제 관리자 접근 DONE. 별도 비관리자 로그인/quality 권한 변경 시나리오는 NOT TESTED; 관련 권한 코드·RPC·라우트 그대로이며 기존 전체 회귀 실행. 외부 urllib HTTP smoke는403이므로 앱 권한 차단 근거로 사용하지 않음.
+- 전체0 접힘/조회오류/알 수 없는 수치는 자동화 PASS, 운영 데이터를 조작한 브라우저 재현은 NOT TESTED. PHASE3 목록 필터/KPI는 운영 재확인, 상세6영역·새 탭 미리보기는 이번 자동화 회귀 PASS와 이전 PHASE3 실검증 참조; 이번 브라우저 재실행 NOT TESTED.
+- 운영 사용자/첨삭/이용권 DML0, 정책 변경0. 현재 운영 레코드는 사용자 활동으로 증가할 수 있으므로 단순 전후 건수 동일을 주장하지 않음.
 
 ## 배포 계획 및 원복
 
 기존 배포 절차로 `/admin/` 루트 HTML/RSC와 새 해시 자산만 갱신. 다른 페이지 자산 2,881개 보존 계획 검증. 기존 API 소스(functions/cloudflare/lockfile) 차이0, Functions route config 동일. 임시 이전 Worker 바이너리 백업이 남아 있지 않아 동일 소스를 기존 Wrangler로 재컴파일했다. 이번 Worker SHA256 `eb21ec0e874335c06732df5d39b9c6a1ab63527286040b6d274e9f7b1f27b890`; 과거 바이너리 해시와 같다고 주장하지 않는다. 운영 환경값/권한 변경 없음.
 
 원복은 기준 canonical `7ea8cef7`로 Pages rollback, DB 원복 불필요. 배포 직전 canonical/설정 drift를 검사하여 타 작업자 변경 시 중단한다. Force push 없음.
+
+## 최종 운영 배포
+
+DONE: `465ae26c-6634-4d10-a905-7587f82a10c7`, source `82a08d5e1fd36d3cad76a9df7e79bb2c69e626f5`, canonical success 확인. 변경17자산(루트 및 신규 해시), 비대상 기존2,881자산 보존. 원격 전체 manifest=계획 manifest, production/preview 설정 동일, Functions routing 동일 검증. Git 일반 Push 완료.
+
+브랜치 `codex/lab-admin-operations-20261114`. 이 문서의 최종 검증 커밋은 배포 이후 문서만 갱신하며 운영 소스는 위 SHA다. 배포/화면 개선 DONE, 통합 경고 집계는 Owner 결정대로 P2 보류(PARTIAL 범위), 미실행 실브라우저 항목은 위 NOT TESTED로 한정한다.
