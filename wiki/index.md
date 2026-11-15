@@ -1,3 +1,4 @@
+[2026-11-15 학습·입시 분석 통합 개편 PHASE 1 — 인기 자료·종합 현황·앱 이벤트](learning-admissions-analytics-redesign-20261115.md)
 [2026-11-15 논술 LAB 전용 운영 대시보드 설계](essay-lab-dashboard-design-20261115.md)
 [2026-11-15 관리자 콘솔 PHASE 4 — 운영 화면 최종 UX 검수·개선 설계](admin-console-final-ux-audit-20261115.md)
 [2026-11-14 관리자 콘솔 PHASE 3 — 실제 화면 UX 검수·UI 개편 설계](admin-console-ux-review-20261114.md)
