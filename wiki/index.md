@@ -1,3 +1,5 @@
+2026-11-15: [Toss LIVE 승인 오류 점검](toss-live-approval-audit-20261115.md) — 국내9개 카드사 심사승인 확인, 서비스 PAUSED 유지. LIVE 실패1/지급0, 관련152 PASS. Finance·키세트·API 접근정책 검증 후 Owner 실결제 필요. 운영 변경0.
+
 [2026-11-15 APP 행동 분석 구현](app-usage-analytics-implementation-20261115.md) — GA4 재사용·운영 연결 검증 진행.
 
 [2026-11-15 학습·입시 분석 통합 구현 — 진행 중](learning-admissions-analytics-implementation-20261115.md)
