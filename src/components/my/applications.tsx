@@ -12,12 +12,13 @@ function useRequestKey(){
  return (input:unknown)=>{const signature=JSON.stringify(input);if(previous.current?.input!==signature)previous.current={input:signature,key:crypto.randomUUID()};return previous.current.key;};
 }
 export type ApplicationSeed={university:{id:string;name:string};division:string;key:string};
-export function ApplicationsPanel({seed=null,clearSeed=()=>{}}:{seed?:ApplicationSeed|null;clearSeed?:()=>void}={}){
+export function ApplicationsPanel({seed=null,clearSeed=()=>{},allowCreate=true}:{seed?:ApplicationSeed|null;clearSeed?:()=>void;allowCreate?:boolean}={}){
  const result=useOwnerData(readAllApplications);
  if(!result.data)return <DataStatus error={result.error} reload={result.reload}/>;
- return <div className="my-panel">
-  <Applications key={JSON.stringify(result.data)} items={result.data} reload={result.reload}/>
-  {seed&&<ApplicationForm key={seed.key} seed={seed} done={()=>{clearSeed();result.reload();}} cancel={clearSeed}/>}
+ if(!allowCreate&&result.data.length===0)return null;
+ return <div className="my-panel"><h3>나의 대학 지원 현황</h3>
+  <Applications key={JSON.stringify(result.data)} items={result.data} reload={result.reload} allowCreate={allowCreate}/>
+  {allowCreate&&seed&&<ApplicationForm key={seed.key} seed={seed} done={()=>{clearSeed();result.reload();}} cancel={clearSeed}/>}
  </div>;
 }
 async function readAllApplications(client:SupabaseClient,owner:string){
@@ -30,7 +31,7 @@ async function readAllApplications(client:SupabaseClient,owner:string){
  }
  throw new Error('APPLICATION_PAGE_LIMIT');
 }
-function Applications({items,reload}:{items:Application[];reload:()=>void}){
+function Applications({items,reload,allowCreate}:{items:Application[];reload:()=>void;allowCreate:boolean}){
  const [adding,setAdding]=useState(false);
  const years=[...new Set(items.map(a=>a.admission_year))].sort((a,b)=>b-a);
  const [year,setYear]=useState(String(years[0]??''));
@@ -41,7 +42,7 @@ function Applications({items,reload}:{items:Application[];reload:()=>void}){
   {items.length>0&&<><div className="my-application-filters"><label>학년도<select value={year} onChange={e=>{setYear(e.target.value);setPage(0);}}>{years.map(y=><option key={y} value={y}>{y}학년도</option>)}</select></label><label>모집 구분<select value={type} onChange={e=>{setType(e.target.value);setPage(0);}}><option value="">전체 모집</option>{[...new Set(items.map(a=>a.admission_type))].map(t=><option key={t}>{t}</option>)}</select></label></div><p className="my-application-summary">{year}학년도 · 지원 기록 {filtered.length}건 <span>최종 합격 {filtered.filter(a=>['accepted','additional_acceptance'].includes(a.latest_event?.kind??'')).length}건</span><span>1단계 합격 {filtered.filter(a=>a.latest_event?.kind==='stage_pass').length}건</span></p><p className="my-summary-caption">현재 필터의 지원 내역별 최신 상태 기준 · 등록 상태는 최종 합격 수에 합산하지 않습니다.</p></>}
   {filtered.slice(page*10,page*10+10).map(a=><ApplicationCard key={a.id} application={a} reload={reload}/>)}
   {filtered.length>10&&<div className="button-row"><button disabled={page===0} onClick={()=>setPage(page-1)}>이전</button><span>{page+1} / {Math.ceil(filtered.length/10)}</span><button disabled={(page+1)*10>=filtered.length} onClick={()=>setPage(page+1)}>다음</button></div>}
-  {adding?<ApplicationForm done={reload} cancel={()=>setAdding(false)}/>:<button className="button button--primary button--small" onClick={()=>setAdding(true)}>지원 내역 추가</button>}
+  {allowCreate&&(adding?<ApplicationForm done={reload} cancel={()=>setAdding(false)}/>:<button className="button button--primary button--small" onClick={()=>setAdding(true)}>지원 내역 추가</button>)}
  </>;
 }
 function ApplicationForm({application,seed,done,cancel}:{application?:Application;seed?:ApplicationSeed;done:()=>void;cancel:()=>void}){
@@ -84,7 +85,7 @@ function ApplicationCard({application:a,reload}:{application:Application;reload:
  return <article className="my-target-card">
   <div className="my-application-row"><h3>{a.university_name_snapshot} · {a.intended_division}</h3>
   <p className={`my-application-badge my-application-badge--${a.latest_event?.kind??"unknown"}`}>{a.latest_event&&a.latest_event.kind in eventLabels?eventLabels[a.latest_event.kind as EventKind]:'결과 미입력'}</p>
-  <RowActions label={`${a.university_name_snapshot} 지원 내역 관리`}><button disabled={busy} className="button button--outline button--small" onClick={()=>setEditing(true)}>지원 내역 변경</button><button disabled={busy} className="button button--outline button--small" onClick={()=>setShowEvent(!showEvent)}>진행·결과 기록</button><button disabled={busy} className="button button--outline button--small" onClick={()=>void loadHistory()}>이력 보기</button><button disabled={busy} className="button button--outline button--small my-danger" onClick={()=>{if(window.confirm('이 지원 내역과 기록한 이력을 삭제할까요?'))void run(async()=>{await deleteApplication(client!,user!.id,a.id);reload();});}}>삭제</button></RowActions></div>
+  <RowActions label={`${a.university_name_snapshot} 지원 내역 관리`}><button disabled={busy} className="button button--outline button--small" onClick={()=>setEditing(true)}>지원 내역 변경</button><button disabled={busy} className="button button--outline button--small" onClick={()=>setShowEvent(!showEvent)}>진행·결과 기록</button><button disabled={busy} className="button button--outline button--small" onClick={()=>void loadHistory()}>이력 보기</button><button disabled={busy} className="button button--outline button--small my-danger" onClick={()=>{if(window.confirm('이 지원 내역과 기록한 지원·합격 이력을 삭제할까요? 관심 대학·학과는 유지됩니다.'))void run(async()=>{await deleteApplication(client!,user!.id,a.id);reload();});}}>삭제</button></RowActions></div>
   <p>{a.admission_year}학년도 · {a.admission_type} · {a.admission_name}</p>
   {showEvent&&<form className="my-goal-form" onSubmit={e=>{e.preventDefault();const at=occurred?new Date(`${occurred}+09:00`).toISOString():null;void run(async()=>{await addApplicationEvent(client!,user!.id,a.id,kind,at,supersedes,requestKey({kind,at,supersedes}));reload();});}}>
    <label>진행·결과<select disabled={busy} value={kind} onChange={e=>setKind(e.target.value as EventKind)}>{Object.entries(eventLabels).map(([v,label])=><option key={v} value={v}>{label}</option>)}</select></label>

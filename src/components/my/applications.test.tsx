@@ -3,7 +3,7 @@ import {render,screen,waitFor,within} from '@testing-library/react';
 import {beforeEach,it,expect,vi} from 'vitest';
 import userEvent from '@testing-library/user-event';
 import {ApplicationsPanel} from './applications';
-import {addApplicationEvent,saveApplication,readApplicationPage,readApplicationEvents} from '@/lib/my/foundation';
+import {deleteApplication,addApplicationEvent,saveApplication,readApplicationPage,readApplicationEvents} from '@/lib/my/foundation';
 const owner={id:'a'};
 const mockedClient={auth:{getSession:async()=>({data:{session:{user:owner}}})}};
 vi.mock('@/components/auth-context',()=>({useAuth:()=>({client:mockedClient,user:owner,status:'authenticated'})}));
@@ -55,4 +55,18 @@ it('keeps stage pass separate from final acceptance and exposes compact actions'
  expect(within(menu.closest('details')!).getByRole('button',{name:'지원 내역 변경'})).toBeTruthy();
  await user.keyboard('{Escape}');
  expect(menu.closest('details')?.open).toBe(false);
+});
+
+it('keeps existing applications manageable when the current profile cannot create new ones',async()=>{
+ const user=userEvent.setup();
+ const row={id:'existing',admission_year:2027,university_id:'u1',university_name_snapshot:'테스트대학교',intended_division:'학과',admission_type:'수시',admission_name:'전형',revision:1,latest_event:null};
+ vi.mocked(readApplicationPage).mockResolvedValue({offset:0,has_more:false,items:[row]});
+ const confirm=vi.spyOn(window,'confirm').mockReturnValue(true);
+ vi.mocked(deleteApplication).mockImplementation(async()=>{vi.mocked(readApplicationPage).mockResolvedValue({offset:0,has_more:false,items:[]});});
+ render(<ApplicationsPanel allowCreate={false}/>);
+ await screen.findByText('테스트대학교 · 학과');expect(screen.queryByRole('button',{name:'지원 내역 추가'})).toBeNull();
+ await user.click(screen.getByLabelText('테스트대학교 지원 내역 관리'));await user.click(screen.getByRole('button',{name:'삭제'}));
+ expect(confirm).toHaveBeenCalledWith(expect.stringContaining('관심 대학·학과는 유지됩니다'));
+ await waitFor(()=>expect(deleteApplication).toHaveBeenCalledWith(mockedClient,'a','existing'));
+ await waitFor(()=>expect(screen.queryByText('테스트대학교 · 학과')).toBeNull());confirm.mockRestore();
 });

@@ -27,7 +27,7 @@
       "verifiedAt": null
     },
     "kangnam": {
-      "universityId": null,
+      "universityId": "35719d49-35d4-5abc-a8e7-2af3bf8dfcf1",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-43"
@@ -136,7 +136,7 @@
       "verifiedAt": null
     },
     "duksung": {
-      "universityId": null,
+      "universityId": "07a2b00d-dd61-5fd9-9ccc-2b9b22c3b5ef",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-30"
@@ -160,7 +160,7 @@
       "verifiedAt": null
     },
     "dongduk": {
-      "universityId": null,
+      "universityId": "550973d4-e672-4a5a-90f0-8f2ba5a95d55",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-42"
@@ -184,7 +184,7 @@
       "verifiedAt": null
     },
     "syu": {
-      "universityId": null,
+      "universityId": "eeed8e73-3d9a-5b57-b7c9-77a574ed0713",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-23"
@@ -196,7 +196,7 @@
       "verifiedAt": null
     },
     "sangmyung": {
-      "universityId": null,
+      "universityId": "d45dbe0e-984c-574d-8a3f-f92956fff5ff",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-34"
@@ -220,7 +220,7 @@
       "verifiedAt": null
     },
     "seokyeong": {
-      "universityId": null,
+      "universityId": "62171755-3e5c-406d-9f87-4ee0df4c70de",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-36"
@@ -280,7 +280,7 @@
       "verifiedAt": null
     },
     "sungshin": {
-      "universityId": null,
+      "universityId": "666c6c34-b181-5b8e-8c74-b64d6373a1d7",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-37"
@@ -304,7 +304,7 @@
       "verifiedAt": null
     },
     "suwon": {
-      "universityId": null,
+      "universityId": "4e93f243-74e7-4f8e-b58b-fa537a39ddf8",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-29"
@@ -340,7 +340,7 @@
       "verifiedAt": null
     },
     "shinhan": {
-      "universityId": null,
+      "universityId": "7b8ae450-5e6e-49bc-a69c-272bd0214ddf",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-45"
@@ -377,7 +377,7 @@
       "verifiedAt": null
     },
     "eulji": {
-      "universityId": null,
+      "universityId": "8540780d-01e6-4361-8190-1768cf4cdbca",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-38"
@@ -425,7 +425,7 @@
       "verifiedAt": null
     },
     "tukorea": {
-      "universityId": null,
+      "universityId": "d25c9a74-4969-4143-872c-1c850338dd0b",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-39"
@@ -437,7 +437,7 @@
       "verifiedAt": null
     },
     "koreatech": {
-      "universityId": null,
+      "universityId": "9edd981f-362b-55b1-bedf-912197cd19d4",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-40"
@@ -473,7 +473,7 @@
       "verifiedAt": null
     },
     "hanshin": {
-      "universityId": null,
+      "universityId": "cd20d37c-916a-4910-bb9c-6efb0bc67f67",
       "admissionYear": 2027,
       "sourceRecords": [
         "row-47"

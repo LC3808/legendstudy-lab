@@ -23,7 +23,7 @@ it('serves only explicitly approved current mappings and keeps pending mappings 
  const {studentPdfForExam}=await import('./student-asset');
  expect(new Set(catalog.questions.map(q=>q.questionId)).size).toBe(1172);
  const approved=catalog.questions.filter(q=>q.storageRead==='APPROVED');
- expect(approved).toHaveLength(1157);expect(new Set(approved.map(q=>q.assetId)).size).toBe(417);
+ expect(approved).toHaveLength(1172);expect(new Set(approved.map(q=>q.assetId)).size).toBe(422);
  for(const q of catalog.questions){
   const pdf=studentPdfForExam(q.examId,q.questionId);
   if(q.storageRead==='APPROVED'){expect(q.verification).toBe('VERIFIED');expect(q.studentDisplay).toBe('APPROVED');expect(pdf?.startPage).toBe(q.startPage);expect(pdf?.assetId).toBe(q.assetId);}

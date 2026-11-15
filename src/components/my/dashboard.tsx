@@ -47,7 +47,7 @@ export function ProfileColleges(){
   <div className="my-colleges-inner"><h2 id="my-colleges-title">나의 대학 관리</h2>
    <div className={`my-college-grid${eligible?'':' my-college-grid--interests'}`}>
     <div><GoalsPanel part="targets" onApply={eligible?setApplicationSeed:undefined}/></div>
-    {eligible&&<div><h3>나의 대학 지원 현황</h3><ApplicationsPanel seed={applicationSeed} clearSeed={()=>setApplicationSeed(null)}/></div>}
+    <ApplicationsPanel allowCreate={eligible} seed={applicationSeed} clearSeed={()=>setApplicationSeed(null)}/>
    </div>
   </div>
  </section>;

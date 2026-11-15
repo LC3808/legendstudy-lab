@@ -150,7 +150,8 @@ function payloadFor(fn: string) {
   if (fn === "admin_dashboard") return dashboardPayload();
   if (fn === "admin_member_search") return searchPayload([member]);
   if (fn === "admin_member_detail") return detailPayload();
-  return creditPayload();
+  if (fn === "admin_member_credit") return creditPayload();
+  return null;
 }
 
 /** Only the transport is faked; parsing and error mapping are the real code. */
@@ -237,15 +238,16 @@ describe("AdminGate", () => {
 });
 
 describe("AdminDashboardView", () => {
-  it("renders observed metrics and marks an uninstalled subsystem", async () => {
-    setSession("authenticated", okOperator);
-    render(<AdminDashboardView />);
-    expect(await screen.findByText("프로필 보유 회원")).toBeInTheDocument();
-    expect(screen.getByText("12")).toBeInTheDocument();
-    expect(screen.getAllByText("미설치").length).toBeGreaterThanOrEqual(2);
-    expect(screen.queryByText(/RUNTIME_OFF/)).not.toBeInTheDocument();
-    expect(screen.getByRole("heading",{name:"수리논술 문항 기록"})).toBeInTheDocument();
-    expect(screen.getByRole("heading",{name:"핵심 운영 지표"})).toBeInTheDocument();
+  it("renders current member metrics and distinguishes missing independent read RPCs", async () => {
+    setSession("authenticated", (fn,p) => fn==='admin_member_composition'
+      ? {data:{accounts:12,profiles:10,active:3,school_members:5,grades:[],schools:[]},error:null}
+      : ['admin_dashboard','admin_member_list','admin_support_summary'].includes(fn)?okOperator(fn,p)
+      : {data:null,error:{code:'PGRST202'}});
+    render(<AdminDashboardView/>);
+    expect(await screen.findByText('전체 가입 계정')).toBeInTheDocument();
+    expect(screen.getByText('미작성 2명')).toBeInTheDocument();
+    expect(screen.getByRole('heading',{name:'회원과 학생 구성'})).toBeInTheDocument();
+    expect(await screen.findAllByText(/조회 실패/)).not.toHaveLength(0);
   });
 
   it("shows an error state with a retry when the read fails", async () => {
@@ -266,15 +268,15 @@ describe("AdminMembersView", () => {
     expect(screen.getByText(/검증고등학교/)).toBeInTheDocument();
     expect(screen.queryByText(member.account_id)).not.toBeInTheDocument();
     expect(screen.queryByText('학교 코드')).not.toBeInTheDocument();
-    expect(screen.getByRole('columnheader',{name:'순번'})).toBeInTheDocument();
-    expect(screen.getByRole('cell',{name:'1'})).toBeInTheDocument();
+    expect(screen.getByRole('columnheader',{name:'회원 아이디 (이메일)'})).toBeInTheDocument();
+    expect(screen.getByRole('cell',{name:member.email})).toBeInTheDocument();
   });
   it("passes search, status, grade, sort and server offsets without filtering page rows",async()=>{
     const requests:Record<string,unknown>[]=[];
     setSession('authenticated',(fn,p)=>{if(fn==='admin_member_list'){requests.push(p!);return {data:directoryPayload(undefined,30,p?.p_offset as number),error:null};}return okOperator(fn,p);});
     render(<AdminMembersView/>);await screen.findByText('전체 30명 · 조회 30명');
     await userEvent.click(screen.getByRole('button',{name:'다음'}));await waitFor(()=>expect(requests.at(-1)?.p_offset).toBe(10));
-    expect(await screen.findByRole('cell',{name:'11'})).toBeInTheDocument();
+    expect(screen.getByRole('button',{name:'이전'})).toBeEnabled();
     await userEvent.type(screen.getByLabelText('이메일·이름·계정 ID 검색'),'회원');
     await userEvent.selectOptions(screen.getByLabelText('현재 상태'),'student');
     await userEvent.selectOptions(screen.getByLabelText('학년'),'3');
@@ -303,9 +305,7 @@ describe("AdminMembersView", () => {
     expect(screen.getByText("email, google")).toBeInTheDocument();
     expect(screen.getByText("검증대학교 · 컴퓨터공학과")).toBeInTheDocument();
     expect(screen.getAllByText("공학").length).toBeGreaterThan(0);
-    await waitFor(() => expect(screen.getByText("학습 정보")).toBeInTheDocument());
-    expect(screen.getByText("답안 본문은 이 화면에 표시하지 않습니다.")).toBeInTheDocument();
-    expect(screen.getAllByText("미설치").length).toBeGreaterThanOrEqual(1);
+    await waitFor(() => expect(screen.getByText("학생·진학 정보")).toBeInTheDocument());
 
     // Credit history and authenticated operator grant control.
     expect(await screen.findByText("지급 단위")).toBeInTheDocument();

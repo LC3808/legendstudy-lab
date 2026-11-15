@@ -61,7 +61,7 @@
     "reviewed_at": "2026-11-13"
   },
   "kangnam": {
-    "university_id": null,
+    "university_id": "35719d49-35d4-5abc-a8e7-2af3bf8dfcf1",
     "source_university_id": "kangnam",
     "university_name": "강남대학교",
     "logo_asset": "/university-logos/kangnam.png",
@@ -321,7 +321,7 @@
     "reviewed_at": "2026-11-13"
   },
   "duksung": {
-    "university_id": null,
+    "university_id": "07a2b00d-dd61-5fd9-9ccc-2b9b22c3b5ef",
     "source_university_id": "duksung",
     "university_name": "덕성여자대학교",
     "logo_asset": "/university-logos/duksung.png",
@@ -378,7 +378,7 @@
     "reviewed_at": "2026-11-13"
   },
   "dongduk": {
-    "university_id": null,
+    "university_id": "550973d4-e672-4a5a-90f0-8f2ba5a95d55",
     "source_university_id": "dongduk",
     "university_name": "동덕여자대학교",
     "logo_asset": "/university-logos/dongduk-official-v2.png",
@@ -429,7 +429,7 @@
     "reviewed_at": "2026-11-13"
   },
   "syu": {
-    "university_id": null,
+    "university_id": "eeed8e73-3d9a-5b57-b7c9-77a574ed0713",
     "source_university_id": "syu",
     "university_name": "삼육대학교",
     "logo_asset": "/university-logos/syu-official-v2.png",
@@ -453,7 +453,7 @@
     "reviewed_at": "2026-11-13"
   },
   "sangmyung": {
-    "university_id": null,
+    "university_id": "d45dbe0e-984c-574d-8a3f-f92956fff5ff",
     "source_university_id": "sangmyung",
     "university_name": "상명대학교",
     "logo_asset": "/university-logos/sangmyung.png",
@@ -516,7 +516,7 @@
     "reviewed_at": "2026-11-13"
   },
   "seokyeong": {
-    "university_id": null,
+    "university_id": "62171755-3e5c-406d-9f87-4ee0df4c70de",
     "source_university_id": "seokyeong",
     "university_name": "서경대학교",
     "logo_asset": "/university-logos/seokyeong.png",
@@ -654,7 +654,7 @@
     "reviewed_at": "2026-11-13"
   },
   "sungshin": {
-    "university_id": null,
+    "university_id": "666c6c34-b181-5b8e-8c74-b64d6373a1d7",
     "source_university_id": "sungshin",
     "university_name": "성신여자대학교",
     "logo_asset": "/university-logos/sungshin-official-v2.png",
@@ -709,7 +709,7 @@
     "reviewed_at": "2026-11-13"
   },
   "suwon": {
-    "university_id": null,
+    "university_id": "4e93f243-74e7-4f8e-b58b-fa537a39ddf8",
     "source_university_id": "suwon",
     "university_name": "수원대학교",
     "logo_asset": "/university-logos/suwon.png",
@@ -796,7 +796,7 @@
     "reviewed_at": "2026-11-13"
   },
   "shinhan": {
-    "university_id": null,
+    "university_id": "7b8ae450-5e6e-49bc-a69c-272bd0214ddf",
     "source_university_id": "shinhan",
     "university_name": "신한대학교",
     "logo_asset": "/university-logos/shinhan.png",
@@ -878,7 +878,7 @@
     "reviewed_at": "2026-11-13"
   },
   "eulji": {
-    "university_id": null,
+    "university_id": "8540780d-01e6-4361-8190-1768cf4cdbca",
     "source_university_id": "eulji",
     "university_name": "을지대학교",
     "logo_asset": "/university-logos/eulji-official-v2.jpg",
@@ -997,7 +997,7 @@
     "reviewed_at": "2026-11-13"
   },
   "tukorea": {
-    "university_id": null,
+    "university_id": "d25c9a74-4969-4143-872c-1c850338dd0b",
     "source_university_id": "tukorea",
     "university_name": "한국공학대학교",
     "logo_asset": "/university-logos/tukorea.svg",
@@ -1020,7 +1020,7 @@
     "notes": "공식 화면용 색상 미확정. 기존 UI 색상 또는 공통 중립색을 사용한다. Claude 자료는 대학별 공식 URL이 없고 비공식 출처가 혼재하므로 공식값으로 승격하지 않는다."
   },
   "koreatech": {
-    "university_id": null,
+    "university_id": "9edd981f-362b-55b1-bedf-912197cd19d4",
     "source_university_id": "koreatech",
     "university_name": "한국기술교육대학교",
     "logo_asset": "/university-logos/koreatech.png",
@@ -1106,7 +1106,7 @@
     "reviewed_at": "2026-11-13"
   },
   "hanshin": {
-    "university_id": null,
+    "university_id": "cd20d37c-916a-4910-bb9c-6efb0bc67f67",
     "source_university_id": "hanshin",
     "university_name": "한신대학교",
     "logo_asset": "/university-logos/hanshin.jpg",
