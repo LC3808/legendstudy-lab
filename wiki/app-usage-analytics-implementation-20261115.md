@@ -60,3 +60,6 @@ API 기준: [GA Data API dimensions/metrics](https://developers.google.com/analy
 Android·오늘 선택/조회: 수신 미확인·관측일 확인 불가를 표시, 오류나 0회 이용으로 변환하지 않음 PASS. 기존 iOS 수집과 Android 미수신을 구분한다. 메뉴 클릭/검색/PDF/북마크/타이머의 실제 신규 앱→GA4 실기기 전송, 오프라인 재전송, Analytics 비활성 실기기 검증 NOT TESTED. 자동 테스트의 비활성/중복/예외 검증과 구분한다.
 
 최종 운영 안내 정리: 대시보드의 과거 '메뉴 기록 미수집' 단정 문구를 앱 이용 분석 링크와 신규 이벤트 범위 안내로 교체. 화면 전체 값과 등록된 화면 TOP10의 집계 범위 차이를 UI에 명시.
+
+
+최종 WEB 운영: `9105e9e8-3606-472d-976e-2b2ab493438e`, 코드 `902057c`. iOS·30일(10/17~11/15) 실조회 행동32,473/화면17,770/고유 이용자580/기능182 PASS. 대시보드 연결·집계 범위 안내 최종 브라우저 PASS. APP 코드 `103c35d` push 완료, 스토어 제출 없음. 최종 배포 세부·보존 검증은 [통합 분석 인계](learning-admissions-analytics-implementation-20261115.md) 참조.
