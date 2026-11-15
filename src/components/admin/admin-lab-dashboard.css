@@ -1,0 +1,16 @@
+.lab-dashboard .focus-toolbar{margin-bottom:12px}
+.lab-dashboard .focus-toolbar label{display:flex;gap:8px;align-items:center}
+.lab-dashboard .admin-table-scroll{max-width:100%;overflow:auto}
+.lab-dashboard .lab-activity td{text-align:left;max-width:20rem;overflow-wrap:anywhere}
+.lab-secondary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.lab-dashboard button{border:1px solid #819b9e;border-radius:5px;padding:7px 12px;background:#fffef9;color:#203747}
+.lab-dashboard .focus-section p{margin:10px 0}
+@container (max-width:600px){
+ .lab-dashboard .lab-activity thead{display:none}
+ .lab-dashboard .lab-activity,.lab-dashboard .lab-activity tbody{display:block}
+ .lab-dashboard .lab-activity tr{display:block;border:1px solid #9aacac;border-radius:6px;padding:10px;margin-bottom:12px}
+ .lab-dashboard .lab-activity td{display:block;max-width:none;border:0;padding:4px;text-align:left}
+ .lab-dashboard .lab-activity td[data-label]::before{content:attr(data-label) ' · ';font-weight:650;color:#4c646c}
+ .lab-dashboard .lab-status-grid{grid-template-columns:1fr}
+ .lab-secondary-grid{grid-template-columns:1fr}
+}

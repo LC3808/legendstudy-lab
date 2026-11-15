@@ -8,7 +8,8 @@ afterEach(cleanup);
 function fixture(failed=0,processing=0,retry_pending:number|undefined=0,pending=0){read.mockImplementation((name:string)=>({data:name==='admin_essay_feedback'?{stats:{pending}}:{summary:{failed},live:{processing,retry_pending}}}));}
 it('shows four scoped cards and preserves exact destination contracts without summing overlaps',()=>{
  fixture(2,1,1,3);render(<AdminLabWarningStrip/>);
- expect(screen.getAllByRole('link')).toHaveLength(4);
+ expect(screen.getAllByRole('link')).toHaveLength(5);
+ expect(screen.getByRole('link',{name:'논술 LAB 대시보드로 →'})).toHaveAttribute('href','/admin/lab-dashboard/');
  expect(screen.getByRole('link',{name:/최근 7일 첨삭 실패 2건/})).toHaveAttribute('href','/admin/essay-runs?state=failed');
  expect(screen.getByRole('link',{name:/현재 처리 중 1건/})).toHaveAttribute('href','/admin/essay-runs?state=reserved');
  expect(screen.getByRole('link',{name:/현재 재시도 대기 1건/})).toHaveTextContent('재시도 필터 미적용');

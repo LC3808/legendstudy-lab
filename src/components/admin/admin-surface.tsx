@@ -25,6 +25,7 @@ export type AdminNavKey =
   | "data"
   | "analytics"
   | "dashboard"
+  | "lab-dashboard"
   | "members"
   | "credit"
   | "payment"

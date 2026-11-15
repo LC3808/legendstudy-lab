@@ -7,6 +7,7 @@ export type NavEntry = { key: string; label: string; href: string | null };
 const EXISTING_NAV: readonly NavEntry[] = [
   {key:"essay-runs",label:"첨삭 요청·결과",href:"/admin/essay-runs/"},
   { key: "material-sync", label: "학습자료 동기화", href: "/admin/material-sync/" },
+  { key: "lab-dashboard", label:"논술 LAB 대시보드",href:"/admin/lab-dashboard/" },
   { key: "dashboard", label: "대시보드", href: "/admin/" },
   { key: "members", label: "회원", href: "/admin/members/" },
   { key: "credit", label: "이용권", href: "/admin/credit/" },
@@ -27,7 +28,7 @@ const EXISTING_NAV: readonly NavEntry[] = [
 ] as const;
 
 export const ADMIN_GROUPS = [
- {title:'운영 대시보드',keys:['dashboard','notices']},
+ {title:'운영 대시보드',keys:['dashboard','lab-dashboard','notices']},
  {title:'회원·이용권',keys:['members','credit','payment']},
  {title:'첨삭 운영',keys:['essay-runs','essay','beta','beta-usage','beta-failures']},
  {title:'첨삭 품질',keys:['quality','materials']},

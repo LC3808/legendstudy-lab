@@ -1,3 +1,5 @@
+2026-11-15: [논술 LAB 독립 운영 대시보드](essay-lab-dashboard-implementation-20261115.md). 신규 집계 RPC 운영 적용·원본 보존·권한/실행 계획 PASS. WEB 빌드 PASS, 운영 배포 검증 진행 중.
+
 2026-11-15: [관리자 PHASE4 — 운영 상태 카드·대시보드 기간 통합](admin-console-phase4-20261115.md). 운영465ae26c·집중20 PASS·브라우저 기간/카드이동/390px 검증 완료. DB 변경 없음.
 
 2026-11-15: [관리자 PHASE3 — 닉네임20·상세6영역·학생 결과 미리보기](admin-console-phase3-20261114.md). DB/WEB7ea8cef7 운영 적용, 원본 보존. WEB52·Flutter 검증 PASS, 실제 미리보기·닉네임 입력 브라우저 검증 완료.
