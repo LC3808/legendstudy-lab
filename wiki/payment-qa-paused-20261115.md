@@ -41,3 +41,9 @@ Owner는 2026-11-15 “변경안 검토까지, 운영 적용 보류”를 선택
 신규 LIVE confirm은 fresh Owner, PAUSED, QA 설정·기한·상품을 confirm_begin 전에 검사한다. 기존 AUTHORIZATION_PENDING/PAID는 저장된 Finance get으로 복구하며 caller payment key를 새 승인에 사용하지 않는다. Provider IN_PROGRESS는 기존 추가 차단을 유지하고 DONE은 재승인 없이 복구한다. 이 경로 분리는 합성 transport 테스트 PASS.
 
 Owner 전용 PAUSED 읽기 진단 UI를 관리자 결제 화면에 추가했다. 서버도 fresh Owner를 재검증하며 raw 응답/Secret을 반환하지 않는다. WEB 전체2078 PASS/5 SKIP/0 FAIL, 정적검사/webpack 빌드 PASS. 운영 공개 클라이언트 설정 누락을 배포 계획 검사가 발견해 현재 NEXT_PUBLIC plain-text 설정만 메모리 전달하여 다시 빌드했다. 결제3경로·관련 API 외 기존 static/환경 설정 보존 계획 PASS. 배포 후 결과는 아래 별도 영수증으로 기록한다.
+
+## 운영 배포 보류 영수증
+
+구현 SHA `ca56582`는 작업 브랜치 Commit·Push 완료. Cloudflare `--apply` 실행 요청은 자동 승인 검토에서 **실행 전 거부**됐다: 구현·검증 허용과 별도로 정확한 운영 배포의 명시 승인이 필요하다는 사유. 우회하지 않았으며 Owner에게 PAUSED·환경 설정·SQL을 유지하는 코드 배포 승인만 요청했다. 새 배포 ID 없음. 운영 기준은 계속 `9105e9e8-3606-472d-976e-2b2ab493438e`; 신규 읽기 진단의 운영 실행은 NOT TESTED.
+
+구분: 구현/합성 테스트/운영 공개 설정 빌드/배포 계획 DONE; 운영 코드 배포 BLOCKED(승인 대기); SQL HOLD(Owner 명시 보류); Finance 유효성·MID·Pages→Toss 실제 읽기 진단 NOT TESTED; 실제 결제/환불0; PAUSED 해제0.
