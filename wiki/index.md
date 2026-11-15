@@ -1,3 +1,4 @@
+[2026-11-15 논술 LAB 전용 운영 대시보드 설계](essay-lab-dashboard-design-20261115.md)
 [2026-11-15 관리자 콘솔 PHASE 4 — 운영 화면 최종 UX 검수·개선 설계](admin-console-final-ux-audit-20261115.md)
 [2026-11-14 관리자 콘솔 PHASE 3 — 실제 화면 UX 검수·UI 개편 설계](admin-console-ux-review-20261114.md)
 [2026-11-14 관리자 IA 통합 설계 — 학습·입시 + 논술 LAB 운영·품질](admin-essay-operations-ia-20261114.md)
