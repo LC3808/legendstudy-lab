@@ -1,0 +1,35 @@
+# LIVE 결제 PAUSED 유지 · 단일 Owner QA 사전 검증
+
+2026-11-15. 운영 SQL 미적용, 결제 활성화/실제 결제/환불/스토어 제출 0. 이 문서는 적용 승인 요청 전 후보이며 배포 영수증이 아니다.
+
+## 확인된 서버 상태
+
+- Cloudflare 운영 deployment: `9105e9e8-3606-472d-976e-2b2ab493438e`. LIVE 설정, PAYMENT_ENABLED=false(PAUSED) 확인.
+- Finance/LIVE Client/LIVE Secret binding 존재·secret_text 형식만 확인. Secret 값 출력/파일 저장 없음. 프로젝트 응답 전체 저장은 자동 승인 검토에서 거부되어 메모리 내 메타데이터 검사로 대체했다.
+- 로컬 예전 Finance JWT는 만료됐으나 배포된 토큰과 동일하다는 근거는 없다. 배포 토큰 유효성, 키 쌍/MID, 현재 Pages→Toss 접근정책은 NOT TESTED.
+- 운영 payment_order는 authenticated 직접 실행 가능. 따라서 Worker만 제한하면 주문 생성 우회가 남는다. payment_process는 finance 역할만 실행 가능.
+- 읽기 진단의 all-zero 주문 ID가 운영에 없음을 SELECT 확인. 기존 payment_process get은 없는 ID에서 쓰기 전 PT404. 고정 과거 실패 주문에 대한 Toss GET만 사용하며 confirm/cancel을 호출하지 않는다.
+- LIVE 주문 FAILED1/NONE1, LIVE 지급0. 과거 INVALID_UNREGISTERED_SUBMALL은 현재 재현하지 않았다.
+
+## 구현 범위
+
+고정 Owner UID `d5eab102-da92-4c4c-9adb-16d2c9d20e4c` 한 개만 LIVE QA 후보. 관리자 역할/이메일/다중 UID로 확장하지 않는다. 고정 reviewer `ddc5ae63-acbb-490b-a423-c996b811dea8`는 TEST 전용이며 과거 LIVE 주문도 신규 confirm_begin 전 차단한다.
+
+LIVE QA는 PAYMENT_ENABLED와 별도로 `PAYMENT_QA_ONLY=true`, 정확한 단일 OWNER PAYMENT_QA_SUBJECTS, 미래 PAYMENT_QA_UNTIL을 모두 요구한다. 누락/false/잘못된 설정은 차단. 1c/4900원만 신규 승인 후보. 기존 승인 완료 복구와 조회 계약은 보존한다. 결제창 UI도 consumer_purchase=false이면 비활성화한다.
+
+진단 endpoint는 고정 Owner의 fresh Auth만 허용하고 PAUSED에서만 작동한다. 결과는 상태 코드·허용 오류 코드·일치 여부만 반환한다. Finance 및 Toss Secret, 토큰, 결제키, 응답 본문은 반환하지 않는다. **코드만 검증했으며 운영 endpoint 배포/실행은 아직 안 했다.**
+
+## Owner에게 보고하는 정확한 SQL 후보
+
+- [apply.sql](candidates/payment-qa-20261115/apply.sql): configuration에 purchase_enabled(default false), qa_started_at, qa_until 세 컬럼 추가. payment_order create의 LIVE 분기에 PAUSED·고정 Owner·1c·기한·QA 기간 사용자별 주문1개 제한. 같은 request_key 재호출은 멱등. 기존 get/TEST/가격/권한 유지. 함수 정의 MD5 불일치면 전체 중단.
+- [postcheck.sql](candidates/payment-qa-20261115/postcheck.sql): 설정과 상태별 주문 수 확인.
+- [rollback.sql](candidates/payment-qa-20261115/rollback.sql): 원본 함수 복원 및 새 컬럼 제거. 사용자 주문·이용권·결제 이력 DML 없음. 원복은 직접 주문 RPC 차단도 제거하므로 운영 PAUSED 상태를 유지하고 접근 영향을 재검토해야 한다.
+- [local-fixture.sql](candidates/payment-qa-20261115/local-fixture.sql), [local-check.sql](candidates/payment-qa-20261115/local-check.sql)은 **폐기 가능한 로컬 DB 전용**. 운영 실행 금지.
+
+격리 PostgreSQL에서 최종 후보 적용→PAUSED 차단→Owner 1c 생성→동일 키 재시도→두 번째 주문 차단→만료 차단→비Owner 차단→get 유지→원복 PASS. 초기 문법/변수 충돌을 이 단계에서 수정했고 운영에 적용하지 않았다.
+
+활성화는 별도 Owner 승인 필요: QA 기한과 시작 시각 확정, 위 SQL 적용·사후 확인, 서버 읽기 진단 통과 후에만 DB purchase_enabled와 Worker PAYMENT_ENABLED를 제한 창 동안 활성화하는 정확한 값을 다시 보고한다. 지금은 둘 다 활성화하지 않는다. 실제 결제는 Owner만 수행하며 환불은 별도 승인이다.
+
+## 검증 상태
+
+최초 WEB 2068 PASS/5 SKIP, 정적 검사 PASS, webpack 정적 빌드 PASS. Turbopack은 외부 node_modules 링크 환경 오류로 실패했으며 webpack으로 통과했다. 단일 Owner 최종 정책 반영 후 WEB 2070 PASS/5 SKIP/0 FAIL, TypeScript·변경 파일 ESLint·webpack 빌드 PASS. 익명 LIVE 구매가 가능하다는 기존 UI 기대값은 최신 차단 정책으로 갱신했다. 실결제/실환불/운영 진단/직접 운영 RPC 차단 확인은 NOT TESTED.

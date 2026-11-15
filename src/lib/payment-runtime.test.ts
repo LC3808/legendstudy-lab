@@ -25,7 +25,7 @@ describe('checkout authorization',()=>{
  it('TEST and LIVE keep their existing behaviour',()=>{
   for(const consumerPurchase of [true,false]){
    expect(checkoutOpen('TEST',consumerPurchase)).toBe(true);
-   expect(checkoutOpen('LIVE',consumerPurchase)).toBe(true);
+   expect(checkoutOpen('LIVE',consumerPurchase)).toBe(consumerPurchase);
   }
  });
  it('never claims a purchase is available without a configured runtime',()=>{

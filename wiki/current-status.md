@@ -1,3 +1,5 @@
+2026-11-15: [단일 Owner LIVE QA 사전 검증](payment-qa-paused-20261115.md) — PAUSED 유지, SQL 후보 격리 검증·운영 미적용, 실제 결제/환불0.
+
 2026-11-15: [Toss LIVE 승인 오류 점검](toss-live-approval-audit-20261115.md) — 국내9개 카드사 심사승인 확인, 서비스 PAUSED 유지. LIVE 실패1/지급0, 관련152 PASS. Finance·키세트·API 접근정책 검증 후 Owner 실결제 필요. 운영 변경0.
 
 2026-11-15: [학습·입시 통합 분석](learning-admissions-analytics-implementation-20261115.md)·[앱 이용 분석](app-usage-analytics-implementation-20261115.md). 읽기 RPC2개·WEB9105e9e8(코드902057c) 운영 적용, 자료표/지원8건/Student360/실제GA4 조회 확인. WEB2050 PASS/0 FAIL/0 ERROR, Flutter54 PASS·iOS simulator build PASS. 신규 앱 이벤트 실기기 수신·스토어 배포는 미수행.

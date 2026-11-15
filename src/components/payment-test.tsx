@@ -92,6 +92,6 @@ export function PaymentTest({callback=false,live=false}: {callback?:boolean;live
     </div>
   </section>;
   return <section className="policy-page content-wrap content-wrap--detail"><h1>{callback?'결제 확인':live?'이용권 구매':'결제 테스트 환경'}</h1><p role="status">{message}</p><Link href="/login/">로그인</Link>
-    {callback ? <button disabled={busy} onClick={()=>void result()}>재확인</button> : pricingPlans.map(plan=><div key={plan.id}><h2>{plan.name} · {plan.priceLabel}</h2><button disabled={busy || !(live ? runtime.state === 'LIVE' : runtime.state === 'TEST' || (runtime.state === 'REVIEW' && runtime.consumerPurchase))} onClick={()=>void buy(plan.credits)}>{live?'구매하기':'테스트 결제'}</button></div>)}
+    {callback ? <button disabled={busy} onClick={()=>void result()}>재확인</button> : pricingPlans.map(plan=><div key={plan.id}><h2>{plan.name} · {plan.priceLabel}</h2><button disabled={busy || !(live ? runtime.state === 'LIVE' && runtime.consumerPurchase : runtime.state === 'TEST' || (runtime.state === 'REVIEW' && runtime.consumerPurchase))} onClick={()=>void buy(plan.credits)}>{live?'구매하기':'테스트 결제'}</button></div>)}
     {order && <p>주문 상태: {order.state}</p>}{!callback && <button disabled={busy} onClick={()=>{for(const p of pricingPlans) sessionStorage.removeItem(`payment-${live?'live':'test'}-${p.credits}`);setOrder(null);setMessage(live?'새 주문을 시작할 수 있습니다.':'새 테스트 주문을 시작할 수 있습니다.');}}>{live?'새 주문':'새 테스트 주문'}</button>}<p><Link href="/pricing/">요금 안내</Link> · <Link href="/support/">고객센터</Link></p></section>;
 }

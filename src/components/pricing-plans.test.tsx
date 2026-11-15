@@ -120,7 +120,7 @@ describe("pricing product grid", () => {
 
   it("preserves the chosen SKU through login without creating an anonymous order", async () => {
     client = { auth: { getSession: async () => ({ data: { session: null } }) } };
-    const f = runtime("LIVE"); vi.stubGlobal("fetch", f);
+    const f = runtime("TEST"); vi.stubGlobal("fetch", f);
     window.history.replaceState(null, "", "/pricing/?sku=3c");
     render(<PricingPlans />);
     const pay = await screen.findByRole("link", { name: "결제하기" });
@@ -130,8 +130,8 @@ describe("pricing product grid", () => {
     expect(f).toHaveBeenCalledTimes(1);
   });
 
-  it("keeps a denied reviewer disabled and never creates an order", async () => {
-    const f = runtime("REVIEW", false); vi.stubGlobal("fetch", f);
+  it.each(["REVIEW", "LIVE"])("keeps a denied %s visitor disabled and never creates an order", async (state) => {
+    const f = runtime(state, false); vi.stubGlobal("fetch", f);
     render(<PricingPlans />);
     await waitFor(() => expect(f).toHaveBeenCalledTimes(1));
     fireEvent.click(screen.getByRole("button", { name: "결제하기" }));

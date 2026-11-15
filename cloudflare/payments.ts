@@ -1,5 +1,7 @@
 /** Cloudflare only. APP 3b3b869 payment-v1 is the sole persistence authority. */
-export type Env = {
+import { LIVE_QA_OWNER, TEST_REVIEWER, qaPurchaseAllowed, qaProductAllowed, type QaEnv } from './payment-qa';
+import { paymentDiagnostics } from './payment-diagnostics';
+export type Env = QaEnv & {
   PAYMENT_MODE?: string; PAYMENT_ENABLED?: string; PAYMENT_ORIGIN?: string;
   PAYMENT_SUPABASE_URL?: string; PAYMENT_SUPABASE_PUBLISHABLE_KEY?: string;
   PAYMENT_FINANCE_TOKEN?: string; PAYMENT_SUPPORT_SUBJECTS?: string; PAYMENT_REVIEW_SUBJECTS?: string;
@@ -67,7 +69,7 @@ async function reviewer(request: Request, env: Env, io: IO): Promise<boolean> {
     const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/auth/v1/user`, { headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: bearer } });
     if (!r.ok) return false;
     const user = await read(r, 32768);
-    return user.email === 'review@legendstudy.com' && typeof user.email_confirmed_at === 'string' && uuid.test(String(user.id)) && (env.PAYMENT_REVIEW_SUBJECTS || '').split(',').filter(Boolean).includes(String(user.id));
+    return (env.PAYMENT_MODE !== 'LIVE' || (user.id === TEST_REVIEWER && env.PAYMENT_REVIEW_SUBJECTS === TEST_REVIEWER)) && user.email === 'review@legendstudy.com' && typeof user.email_confirmed_at === 'string' && uuid.test(String(user.id)) && (env.PAYMENT_REVIEW_SUBJECTS || '').split(',').filter(Boolean).includes(String(user.id));
   } catch { return false; }
 }
 async function call(io: IO, url: string, init: RequestInit): Promise<Response> {
@@ -96,7 +98,21 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
       exact(await read(request, 2048), []);
       const allowed = (cfg.review || env.PAYMENT_MODE === 'LIVE') ? await reviewer(request, env, io) : false;
       if (env.PAYMENT_MODE === 'LIVE' && allowed) cfg = config(env, 'TEST');
-      return Response.json({ state: cfg.enabled ? cfg.state : 'PAUSED', mode: cfg.mode, consumer_purchase: cfg.enabled && (cfg.mode === 'LIVE' || allowed) }, { headers });
+      const qaRestricted = cfg.mode === 'LIVE';
+      let qaAllowed = !qaRestricted;
+      if (qaRestricted && cfg.enabled) {
+        const authorization = request.headers.get('authorization');
+        if (authorization && /^Bearer [A-Za-z0-9._-]{10,8192}$/.test(authorization)) {
+          try {
+            const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/auth/v1/user`, { headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: authorization } });
+            if (r.ok) {
+              const user = await read(r, 32768);
+              qaAllowed = user.is_anonymous !== true && uuid.test(String(user.id)) && qaPurchaseAllowed(env, String(user.id));
+            }
+          } catch { /* fail closed; never exposes upstream credentials or errors */ }
+        }
+      }
+      return Response.json({ state: cfg.enabled ? cfg.state : 'PAUSED', mode: cfg.mode, consumer_purchase: cfg.enabled && qaAllowed && (cfg.mode === 'LIVE' || allowed) }, { headers });
     }
     const bearer = request.headers.get('authorization');
     if (!bearer || !/^Bearer [A-Za-z0-9._-]{10,8192}$/.test(bearer)) fail(401, 'AUTH_REQUIRED');
@@ -104,15 +120,23 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     // action is gated here, so a non-allowlisted member cannot create an order.
     if (cfg.review && !(await reviewer(request, env, io))) fail(403, 'REVIEW_REQUIRED');
     let buyerMode: 'TEST'|'LIVE' = cfg.mode as 'TEST'|'LIVE';
+    let buyerSubject: string | undefined;
     if (env.PAYMENT_MODE === 'LIVE') {
       const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/auth/v1/user`, { headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: bearer! } });
       if (!r.ok) fail(401, 'AUTH_REQUIRED');
       const user = await read(r, 32768);
       if (!uuid.test(String(user.id)) || user.is_anonymous === true) fail(401, 'AUTH_REQUIRED');
-      buyerMode = user.id === env.PAYMENT_REVIEW_SUBJECTS && user.email === 'review@legendstudy.com' && typeof user.email_confirmed_at === 'string' ? 'TEST' : 'LIVE';
+      buyerSubject = String(user.id);
+      buyerMode = user.id === TEST_REVIEWER && env.PAYMENT_REVIEW_SUBJECTS === TEST_REVIEWER && user.email === 'review@legendstudy.com' && typeof user.email_confirmed_at === 'string' ? 'TEST' : 'LIVE';
       cfg = config(env, buyerMode);
     }
     const p = await read(request, 2048);
+    if (action === 'diagnostics') {
+      exact(p, []);
+      if (env.PAYMENT_MODE !== 'LIVE' || cfg.enabled) fail(409, 'DIAGNOSTICS_REQUIRES_PAUSED');
+      if (buyerSubject !== LIVE_QA_OWNER) fail(403, 'SUPPORT_REQUIRED');
+      return Response.json(await paymentDiagnostics(env, io), { headers });
+    }
     const rpc = async (name: string, body: Json, finance = false) => {
       const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/rest/v1/rpc/${name}`, { method: 'POST', headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: finance ? `Bearer ${env.PAYMENT_FINANCE_TOKEN}` : bearer!, 'Content-Type': 'application/json' }, body: JSON.stringify({ p: { dto_version: 'payment-v1', ...body } }) });
       if (!r.ok) {
@@ -130,12 +154,15 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     };
     if (action === 'orders') {
       if (!cfg.enabled) fail(409, 'PAYMENT_PAUSED');
+      if (cfg.mode === 'LIVE' && !qaPurchaseAllowed(env, buyerSubject)) fail(403, 'QA_PURCHASE_RESTRICTED');
       exact(p, ['sku','request_key']); id(p.request_key);
       if (!['1c','3c','5c','10c'].includes(String(p.sku))) fail(422, 'UNSUPPORTED_SKU');
+      if (cfg.mode === 'LIVE' && !qaProductAllowed(env, p.sku, p.sku === '1c' ? 4900 : undefined)) fail(403, 'QA_PURCHASE_RESTRICTED');
       const created = await rpc('payment_order', { action: 'create', ...p });
       if ((created.mode === 'TEST' || created.mode === 'LIVE') && created.mode !== cfg.mode) fail(409, 'ORDER_NOT_CHECKOUT_READY');
       const o = safeOrder(created, cfg.mode);
       if (o.state !== 'ORDER_CREATED' || Date.parse(String(o.expires_at)) <= Date.now()) fail(409, 'ORDER_NOT_CHECKOUT_READY');
+      if (cfg.mode === 'LIVE' && !qaProductAllowed(env, o.sku, o.amount)) fail(403, 'QA_PURCHASE_RESTRICTED');
       return Response.json({ order: o, checkout: { clientKey: cfg.clientKey, customerKey: o.id, orderId: o.order_id, orderName: `LegendStudy 논술 첨삭 ${o.quantity}회 이용권${cfg.mode === 'TEST' ? ' TEST' : ''}`, amount: { currency: 'KRW', value: o.amount }, successUrl: `${origin}/payments/success/`, failUrl: `${origin}/payments/fail/` } }, { headers });
     }
     const shape: Record<string,string[]> = { status: ['id'], confirm: ['id','request_key','payment_key','amount'], reconcile: ['id'], cancel: ['id','request_key'], 'support-inspect': ['id','request_key'], 'support-cancel': ['id','request_key'], 'support-reconcile': ['id','request_key'] };
@@ -160,6 +187,8 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     const process = (body: Json) => rpc('payment_process', { id: p.id, ...body }, true);
     let op: Json;
     if (action === 'confirm') {
+      if (cfg.mode === 'LIVE' && buyerSubject !== LIVE_QA_OWNER) fail(403, 'QA_PURCHASE_RESTRICTED');
+      if (cfg.mode === 'LIVE' && !cfg.enabled) fail(409, 'PAYMENT_PAUSED');
       id(p.request_key); text(p.payment_key); if (p.amount !== order.amount) fail(422, 'AMOUNT_MISMATCH');
       op = await process({ action: 'confirm_begin', request_key: p.request_key, payment_key: p.payment_key, amount: order.amount });
     } else if (action === 'cancel' || action === 'support-cancel') op = await process({ action: 'cancel_begin', request_key: p.request_key });
@@ -195,6 +224,9 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
       if (!cancel && ['ABORTED','EXPIRED'].includes(String(v.status))) return result(await process({ action: 'outcome', operation_id: op.operation_id, outcome: 'REJECTED' }));
       if (!cancel && v.status === 'IN_PROGRESS') {
         if (!cfg.enabled) fail(409, 'PAYMENT_PAUSED');
+        // Preserve lookup/recovery of already charged orders. Only a NEW provider
+        // approval is fenced, including reconcile and forged existing-order paths.
+        if (cfg.mode === 'LIVE' && (!qaPurchaseAllowed(env, buyerSubject) || !qaProductAllowed(env, order.sku, order.amount))) fail(403, 'QA_PURCHASE_RESTRICTED');
         v = await provider('confirm', { paymentKey: key, orderId: order.order_id, amount: order.amount }); verify(v);
       }
       if (cancel && v.status === 'DONE') {

@@ -31,7 +31,7 @@ export function checkoutAvailable(state: PaymentState) { return state === 'TEST'
  * the server, which resolves the session itself, so it cannot be forged here.
  */
 export function checkoutOpen(state: PaymentState, consumerPurchase: boolean) {
-  return state === 'TEST' || state === 'LIVE' || (state === 'REVIEW' && consumerPurchase);
+  return state === 'TEST' || ((state === 'LIVE' || state === 'REVIEW') && consumerPurchase);
 }
 
 /**
