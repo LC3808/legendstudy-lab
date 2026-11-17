@@ -249,3 +249,44 @@ it('Owner QA can confirm only one-credit canonical product in synthetic transpor
 for(const patch of [{PAYMENT_QA_UNTIL:'2000-01-01'},{PAYMENT_QA_ONLY:undefined},{PAYMENT_QA_ONLY:'false'},{PAYMENT_QA_SUBJECTS:ID+','+KEY}])it('Owner new approval rejects invalid QA before Finance '+JSON.stringify(patch),async()=>{const f=fixture({...liveEnv,...patch});f.order.state='ORDER_CREATED';f.order.sku='1c';f.order.amount=4900;f.order.quantity=1;expect((await f.send('confirm',{id:ID,request_key:KEY,payment_key:'synthetic-payment',amount:4900})).status).toBe(403);expect(f.calls.some(c=>c.url.endsWith('/payment_process')||c.url.includes('api.tosspayments.com'))).toBe(false);});
 it('Owner new disallowed SKU rejects before Finance',async()=>{const f=fixture(liveEnv);f.order.state='ORDER_CREATED';expect((await f.confirm()).status).toBe(403);expect(f.calls.some(c=>c.url.endsWith('/payment_process')||c.url.includes('api.tosspayments.com'))).toBe(false);});
 it('PAUSED expired QA recovers persisted DONE using get without confirm_begin',async()=>{const f=fixture({...liveEnv,PAYMENT_ENABLED:'false',PAYMENT_QA_UNTIL:'2000-01-01'});expect((await f.confirm()).status).toBe(200);expect(f.finishes).toBe(1);expect(f.calls.some(c=>(c.body.p as Record<string,unknown>)?.action==='confirm_begin'||c.url.endsWith('/confirm'))).toBe(false);});
+
+
+describe('Owner-approved public LIVE sales',()=>{
+ const publicEnv={...liveEnv,PAYMENT_PUBLIC_ENABLED:'true',PAYMENT_REVIEW_SUBJECTS:'ddc5ae63-acbb-490b-a423-c996b811dea8'};
+ for(const [sku,amount] of Object.entries({'1c':4900,'3c':11900,'5c':17900,'10c':29900}))it('ordinary authenticated buyer purchases '+sku,async()=>{
+  const f=fixture(publicEnv);f.f.subject=KEY;f.f.email='buyer@example.com';
+  expect((await(await f.send('runtime',{})).json()).consumer_purchase).toBe(true);
+  const created=await(await f.send('orders',{sku,request_key:KEY})).json();expect(created.checkout.amount.value).toBe(amount);
+  f.provider.totalAmount=amount;f.provider.balanceAmount=amount;f.provider.status='IN_PROGRESS';
+  const args={id:ID,request_key:KEY,payment_key:'synthetic-payment',amount};
+  expect((await(await f.send('confirm',args)).json()).order.grant_state).toBe('POSTED');
+  await f.send('confirm',args);expect(f.finishes).toBe(1);
+  expect(f.calls.filter(c=>c.url.endsWith('/confirm'))).toHaveLength(1);
+ });
+ it('PAUSED prevents public creates and new approvals before finance',async()=>{
+  const f=fixture({...publicEnv,PAYMENT_ENABLED:'false'});f.f.subject=KEY;f.order.state='ORDER_CREATED';
+  expect((await(await f.send('runtime',{})).json()).consumer_purchase).toBe(false);
+  expect((await f.send('orders',{sku:'1c',request_key:KEY})).status).toBe(409);
+  expect((await f.confirm()).status).toBe(409);
+  expect(f.calls.some(c=>c.url.includes('payment_process')||c.url.includes('api.tosspayments.com'))).toBe(false);
+ });
+ it('review identity remains TEST and receives no spendable grant',async()=>{
+  const f=fixture(publicEnv);f.f.subject=publicEnv.PAYMENT_REVIEW_SUBJECTS;f.order.mode='TEST';f.provider.mId='tleglabn24k';
+  expect((await(await f.send('runtime',{})).json()).mode).toBe('TEST');
+  expect((await(await f.send('orders',{sku:'3c',request_key:KEY})).json()).order.mode).toBe('TEST');
+  f.provider.totalAmount=11900;f.provider.balanceAmount=11900;
+  expect((await(await f.send('confirm',{id:ID,request_key:KEY,payment_key:'synthetic-payment',amount:11900})).json()).order.grant_state).toBe('TEST_RECORDED');
+ });
+ it('review cannot approve old LIVE order even with public sales enabled',async()=>{
+  const f=fixture(publicEnv);f.f.subject=publicEnv.PAYMENT_REVIEW_SUBJECTS;expect((await f.confirm()).status).toBe(403);
+  expect(f.calls.some(c=>c.url.includes('payment_process'))).toBe(false);
+ });
+ it('another buyer cannot confirm a foreign order',async()=>{
+  const f=fixture(publicEnv);f.f.subject=KEY;f.f.foreign=true;expect((await f.confirm()).status).toBe(403);
+  expect(f.calls.some(c=>c.url.includes('payment_process'))).toBe(false);
+ });
+ it('anonymous runtime remains closed',async()=>{
+  const r=await payment(new Request(publicEnv.PAYMENT_ORIGIN+'/api/payments/runtime',{method:'POST',headers:{Origin:publicEnv.PAYMENT_ORIGIN!,'Content-Type':'application/json'},body:'{}'}),publicEnv,async()=>{throw Error('must not call');});
+  expect((await r.json()).consumer_purchase).toBe(false);
+ });
+});

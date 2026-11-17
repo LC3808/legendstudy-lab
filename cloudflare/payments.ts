@@ -157,7 +157,7 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
       if (cfg.mode === 'LIVE' && !qaPurchaseAllowed(env, buyerSubject)) fail(403, 'QA_PURCHASE_RESTRICTED');
       exact(p, ['sku','request_key']); id(p.request_key);
       if (!['1c','3c','5c','10c'].includes(String(p.sku))) fail(422, 'UNSUPPORTED_SKU');
-      if (cfg.mode === 'LIVE' && !qaProductAllowed(env, p.sku, p.sku === '1c' ? 4900 : undefined)) fail(403, 'QA_PURCHASE_RESTRICTED');
+      if (cfg.mode === 'LIVE' && !qaProductAllowed(env, p.sku, ({'1c':4900,'3c':11900,'5c':17900,'10c':29900} as Record<string, number>)[String(p.sku)])) fail(403, 'QA_PURCHASE_RESTRICTED');
       const created = await rpc('payment_order', { action: 'create', ...p });
       if ((created.mode === 'TEST' || created.mode === 'LIVE') && created.mode !== cfg.mode) fail(409, 'ORDER_NOT_CHECKOUT_READY');
       const o = safeOrder(created, cfg.mode);
@@ -187,7 +187,7 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
     const process = (body: Json) => rpc('payment_process', { id: p.id, ...body }, true);
     let op: Json;
     if (action === 'confirm') {
-      if (cfg.mode === 'LIVE' && buyerSubject !== LIVE_QA_OWNER) fail(403, 'QA_PURCHASE_RESTRICTED');
+      if (cfg.mode === 'LIVE' && buyerSubject !== LIVE_QA_OWNER && !qaPurchaseAllowed(env, buyerSubject)) fail(403, 'QA_PURCHASE_RESTRICTED');
       id(p.request_key); text(p.payment_key); if (p.amount !== order.amount) fail(422, 'AMOUNT_MISMATCH');
       if (cfg.mode === 'LIVE' && ['AUTHORIZATION_PENDING', 'PAID'].includes(String(order.state))) {
         // Recover an already persisted operation using its stored key, without

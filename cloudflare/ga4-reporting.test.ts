@@ -30,3 +30,43 @@ describe('GA4 server boundary',()=>{
  expect(await googleToken({...env,GA4_PRIVATE_KEY:privateKey},f,new AbortController().signal)).toBe('short-lived-test');
  });
 });
+
+describe('LAB visitor boundary',()=>{
+ const labEnv={...env,GA4_LAB_PROPERTY_ID:'396674471',GA4_LAB_STREAM_ID:'16254992877',GA4_LAB_START_DATE:'2026-11-01'};
+ it('queries the LAB stream and hostname over one complete period, never summed daily users',async()=>{
+  const f=network();const r=await handleGaReport(req('surface=lab'),labEnv,f,token);const body=await r.json();
+  expect(body).toMatchObject({version:'lab-visitors-v1',state:'CONNECTED',totalUsers:12,sessions:12,pageViews:12,startDate:'2026-11-01'});
+  expect(f.mock.calls).toHaveLength(3);const call=JSON.parse(String(f.mock.calls[2][1]?.body));
+  expect(call.dateRanges).toHaveLength(1);expect(call.dimensions).toBeUndefined();expect(call.metrics.map((x:{name:string})=>x.name)).toEqual(['totalUsers','sessions','screenPageViews']);
+  expect(JSON.stringify(call.dimensionFilter)).toContain('lab.legendstudy.com');expect(JSON.stringify(call.dimensionFilter)).toContain('16254992877');expect(JSON.stringify(call)).not.toContain('5829568136');
+ });
+ it('keeps missing LAB configuration distinct from zero visitors',async()=>{
+  const f=network();const body=await(await handleGaReport(req('surface=lab'),env,f,token)).json();expect(body).toEqual({version:'lab-visitors-v1',state:'UNCONNECTED'});expect(f).toHaveBeenCalledTimes(2);
+ });
+ it.each(['surface=lab&from=2026-11-01','surface=lab&surface=lab','surface=lab&platform=ios','surface=lab&property=other'])('rejects client changes to the cumulative scope: %s',async query=>{expect((await handleGaReport(req(query),labEnv,network(),token)).status).toBe(400);});
+ it.each([false,null])('blocks non-admin LAB queries before Google (%s)',async gate=>{const f=network(gate);expect((await handleGaReport(req('surface=lab'),labEnv,f,token)).status).toBe(403);expect(f).toHaveBeenCalledTimes(2);});
+ it('blocks anonymous LAB access',async()=>{const f=network();expect((await handleGaReport(req('surface=lab',false),labEnv,f,token)).status).toBe(401);expect(f).not.toHaveBeenCalled();});
+});
+
+
+describe('LAB empty report regression',()=>{
+ const labEnv={...env,GA4_LAB_PROPERTY_ID:'396674471',GA4_LAB_STREAM_ID:'16254992877',GA4_LAB_START_DATE:'2026-11-16'};
+ const empty={kind:'analyticsData#runReport',metadata:{timeZone:'Asia/Seoul'}};
+ async function report(value:unknown){
+  const f=network();f.mockImplementationOnce(async()=>json({id:'owner'})).mockImplementationOnce(async()=>json(true)).mockImplementationOnce(async()=>json(value));
+  return handleGaReport(req('surface=lab'),labEnv,f,token);
+ }
+ it('accepts the production no-data envelope without inventing headers',async()=>{
+  const r=await report(empty);expect(r.status).toBe(200);expect(await r.json()).toMatchObject({state:'CONNECTED',totalUsers:0,sessions:0,pageViews:0,timeZone:'Asia/Seoul',limited:false});
+ });
+ it('accepts an explicitly zero rowCount',async()=>{expect((await report({...empty,rowCount:0})).status).toBe(200);});
+ it.each([{}, {metadata:empty.metadata}, {...empty,kind:'other'}, {...empty,metadata:{}}, {...empty,rowCount:1}, {...empty,rows:[{}]}, {...empty,metricHeaders:[]}, {...empty,totals:[{}]}])('rejects malformed or incomplete non-empty responses: %j',async value=>{
+  const r=await report(value);expect(r.status).toBe(502);expect(await r.json()).toEqual({code:'INVALID_RESPONSE'});
+ });
+ it('retains valid zero-row header responses',async()=>{
+  const r=await report({...apiReport({metrics:[{name:'totalUsers'},{name:'sessions'},{name:'screenPageViews'}]}),rows:[],rowCount:0});expect(r.status).toBe(200);expect(await r.json()).toMatchObject({totalUsers:0,sessions:0,pageViews:0});
+ });
+ it('rejects fractional visitor counts',async()=>{
+  const r=await report({...apiReport({metrics:[{name:'totalUsers'},{name:'sessions'},{name:'screenPageViews'}]}),rows:[{metricValues:[{value:'1.5'},{value:'2'},{value:'3'}]}]});expect(r.status).toBe(502);
+ });
+});

@@ -75,3 +75,5 @@ App usage follow-up: [WEB rankings and APP collection handoff](admin-app-usage-r
 [대학 소식 연결](university-news-phase1-connected-20261113.md): API운영/Flutter구현, 29연결13미완료. 테스트17PASS·실기기NT.
 
 [개인화 UUID35·관리자 네 순위 페이지네이션 운영](personalization-phase2-release-20261113.md): 7대학 미연결, WEB17/APP17 PASS·실기기NT.
+
+11/17 [일반 LIVE 공개](payment-public-live-20261117.md): Owner 정책 변경·2108 PASS, 단계 배포 준비.
