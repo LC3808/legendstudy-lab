@@ -11,7 +11,6 @@ import { promotionCopy } from "@/lib/pricing";
  * eligibility, expiry and reuse limits; the client only submits the code.
  */
 export function PricingPromoForm() {
-  const noteId = "pricing-promotion-note";
 
   return (
     <form
@@ -28,15 +27,11 @@ export function PricingPromoForm() {
           type="text"
           placeholder={promotionCopy.inputPlaceholder}
           autoComplete="off"
-          aria-describedby={noteId}
         />
-        <button className="button button--outline" type="submit" disabled aria-describedby={noteId}>
+        <button className="button button--outline" type="submit" disabled>
           {promotionCopy.ctaLabel}
         </button>
       </div>
-      <p className="pricing-promo__note" id={noteId} role="status">
-        적용 준비 중
-      </p>
     </form>
   );
 }

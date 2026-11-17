@@ -37,6 +37,7 @@ export const metadata = buildPublicMetadata(
 export default function PricingPage() {
   return (
     <div className="policy-page content-wrap content-wrap--detail pricing-page">
+      <header className="pricing-hero">
       <p className="eyebrow eyebrow--accent">LEGENDSTUDY LAB / PRICING</p>
       <div className="policy-page__heading">
         <h1>
@@ -54,9 +55,11 @@ export default function PricingPage() {
         <h2 id="pricing-free-title">신규 가입 {pricingPolicy.freeSignupCredits} 이용권 무료</h2>
       </section>
 
+      </header>
+
       <section className="policy-section" aria-labelledby="pricing-plans-title">
         <h2 id="pricing-plans-title">판매 상품</h2>
-        <p>구매한 횟수만큼 논술 첨삭을 이용하는 이용권입니다. 충전형 포인트가 아니며, 각 이용권에는 최초 첨삭 1회와 동일 답안 재첨삭 1회가 포함됩니다.</p>
+        <p className="pricing-plans__description">구매한 횟수만큼 논술 첨삭을 이용하는 이용권입니다. 충전형 포인트가 아니며, 각 이용권에는 <span className="pricing-phrase">최초 첨삭 1회</span>와 <span className="pricing-phrase">동일 답안 재첨삭 1회</span>가 포함됩니다.</p>
         <PricingPlans />
       </section>
 

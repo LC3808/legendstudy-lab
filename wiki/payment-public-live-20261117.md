@@ -23,3 +23,11 @@ pricing에서 admin 1c4900원 LIVE Toss창 확인, 신규주문86f4d220-6527-468
 ## LIVE E2E 성공 — 11/17 18:11:53 KST
 
 Owner 직접 카드결제 완료. 주문86f4d220-6527-4689-8723-52800802b2b6: LIVE/4900원/PAID/POSTED, CONFIRM SUCCEEDED. 지급1개·purchase원장+1 한 행, 잔액92→93. 실제WEB /account/credits/ 구매+1/구매분1/전체93 확인. 유효기간2027-02-17 18:11:53 KST. 중복지급0·환불0. APP실기기 잔액은 NOT TESTED. 일반LIVE공개 유지. Finance11/24 갱신필요.
+
+## 환불 시험 및 요금 UI 후속
+
+Owner가 일반 결제 유지·방금4900원 주문 환불 시험과 pricing 경계/문구/줄바꿈 수정을 요청했다. DB 사전검사에서 해당 구매grant는 purchase+1만 존재, 사용/예약0으로 전액 환불 대상. 기존 support-inspect/support-cancel 서버 API를 사용하는 Owner 고정UID 전용 환불 제어를 관리자에 추가했다. 서버의 기존 freshAuth/support허용목록/finance권한/미사용계산을 유지하며 금액은 클라이언트가 전송하지 않는다. 대상 확인과 실제 실행을 분리하고 실행시 금액·회수량 확인, 중복 클릭 잠금 및 요청키 재사용, 불확실한 응답 시 재실행 차단 안내를 적용했다. 실제 환불은 아직 수행하지 않았다.
+
+pricing 상단header 테두리, 페이지 범위 섹션/FAQ/카드 내부 구분선 대비 강화. ‘적용 준비 중’ 제거, 비활성 쿠폰 적용 동작은 유지. 판매설명 max-width 해제와 의미단위 nowrap으로 ‘최초 첨삭 1회’ 중간 분리 방지. 다른 페이지 전역 시각 변경은 없다.
+
+관련5파일200 PASS, TypeScript/ESLint/webpack static build PASS. UI 배포는 pricing/admin-payment 두 경로와 추가 hashed assets만 변경, 현재 LIVE 설정·결제API·그 외 기존정적자산 보존. 실제 배포/환불 결과는 후속 기록.

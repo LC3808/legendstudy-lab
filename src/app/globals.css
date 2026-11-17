@@ -1851,3 +1851,16 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 }
 .essay-lab-page .essay-hero__label { color:var(--brand-text); font-weight:700; }
 .essay-lab-page .page-intro h1.essay-hero__headline { max-width:32em; line-height:1.4; word-break:keep-all; overflow-wrap:anywhere; }
+
+/* Pricing boundaries: scoped so policy and application pages are unchanged. */
+.pricing-page { --pricing-divider: #8190a1; }
+.pricing-page .pricing-hero { padding: clamp(1.25rem, 3vw, 2.5rem); border: 1px solid var(--ink); border-radius: var(--radius-md); background: var(--surface); }
+.pricing-page .pricing-hero .eyebrow { margin-top: 0; }
+.pricing-page .policy-section { border-top: 1px solid var(--pricing-divider); }
+.pricing-page .pricing-free, .pricing-page .pricing-fact,
+.pricing-page .plan-card__value, .pricing-page .pricing-faq,
+.pricing-page .pricing-faq details, .pricing-page .pricing-summary > div,
+.pricing-page .pricing-promo input, .pricing-page .button--outline { border-color: var(--pricing-divider); }
+.pricing-page .pricing-summary > div { border: 1px solid var(--pricing-divider); }
+.pricing-page .pricing-plans__description { max-width: none; word-break: keep-all; text-wrap: pretty; }
+.pricing-page .pricing-phrase { white-space: nowrap; }

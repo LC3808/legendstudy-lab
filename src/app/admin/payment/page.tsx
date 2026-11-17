@@ -15,7 +15,7 @@ export default function AdminPaymentPage() {
       active="payment"
       eyebrow="운영 콘솔"
       title="결제 조회"
-      lead="주문 내역을 조회합니다. 이 화면은 조회 전용이며 취소·환불 권한은 없습니다."
+      lead="주문 내역을 조회합니다. 취소·환불은 별도 권한이 있는 운영자만 처리할 수 있습니다."
     >
       <AdminPaymentView />
     </AdminSurface>

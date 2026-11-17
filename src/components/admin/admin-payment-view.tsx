@@ -1,5 +1,6 @@
 "use client";
 
+import {PaymentRefundControl} from './payment-refund-control';
 import {PaymentReadDiagnostics} from './payment-read-diagnostics';
 import {AdminReleaseReport} from './admin-release-report';
 import { useEffect, useState } from "react";
@@ -22,8 +23,8 @@ import { AdminEmpty, AdminErrorPanel, AdminLoading, useAdminQuery } from "./admi
  * Payment operations read.
  *
  * ADMIN-P0-B grants the console a read-only view of the order ledger. There is
- * no cancel, refund or reconcile control: those actions stay on the finance-only
- * `payment_support` contract, which no browser session can reach.
+ * separate Owner refund control calls the authenticated server adapter; the
+ * finance-only `payment_support` contract remains inaccessible to the browser.
  *
  * When the payment migration is not installed the read reports that fact and
  * every figure renders as 미설치 rather than 0, because "0건" would tell an
@@ -76,6 +77,7 @@ export function AdminPaymentView() {
   return (
     <div className="admin-stack">
       <PaymentReadDiagnostics paused={runtime?.state === 'PAUSED'}/>
+      <PaymentRefundControl/>
       <AdminReleaseReport kind="payment" onPaymentState={changeState}/>
       <section className="admin-section">
         <h2>주문 상세 조회</h2>
