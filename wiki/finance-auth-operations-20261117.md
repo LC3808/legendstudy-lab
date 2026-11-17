@@ -1,6 +1,6 @@
 # Finance 자동 갱신 구현·운영 인계
 
-**PARTIAL / NOT DEPLOYED**. Owner 요청의 운영 적용 순서 5번에 따라 별도 운영 승인 대기.
+**PARTIAL / SHADOW**. Owner가 전용 Worker/DO/Secrets/private binding 및 Shadow 성공 후 Automatic 전환을 승인했다. 운영 검증 중이며 아래 기존 준비 기록은 역사적 상태다.
 정책·전체 비교·권한/원복/검증의 정본은 APP Wiki `wiki/finance-auth-renewal-20261117.md`다.
 
 ## 구현 위치
@@ -29,3 +29,12 @@ PAYMENT_FINANCE_AUTO=false + Pages 재배포 또는 직전 배포 복귀. 기존
 ## 검증 영수증
 
 전체2161 PASS/5 SKIP 뒤 최종 목적지·shadow·멱등성·실제읽기 상태 추가 검사202 PASS. TS/ESLint/Next build/Pages compile/Worker dry-run PASS. 실제 후보/기존토큰 읽기 PT404, 비시간claims동일, 익명401. 주문22/operation13/ledger889행·payment_process MD5·ACL 불변. 기존배포 fb94f1da-0603-4a45-9d65-d387edb730b7 보존; 설정/Secret 업로드0. 실제 자동갱신 운영 완료가 아니다.
+
+## 승인 후 단계적 적용 — 진행 중
+
+- 최초 운영 기준 `00d02c96-c227-42d6-b28d-edbe4456dcde`, Shadow `ed2d55a9-3540-4101-b319-ccb0799a3346`.
+- Worker `legendstudy-finance-auth`, SQLite DO `FinanceVault` 설치. Secret4개 등록, 기존 Pages 수동 Secret과 Toss키 보존. Production 서비스 연결만 추가, Preview 불변.
+- 초기 Shadow에서 Workers가 `redirect: error`를 지원하지 않아 JWKS 요청 전 실패. 자동 전환하지 않았으며 기존 결제는 수동 경로 유지. `manual`+3xx거절로 수정, Secret·DB 권한 변경 없음.
+- 상태 조회가 실패 재시도를 무한히 늦추지 않도록 보완. 실패 단계 로그/암호화 복원 로그는 허용된 메타데이터만 출력.
+- 관련50 PASS, 앞선 전체2166 PASS/5 SKIP. 운영 자동 재시도 성공 및 Automatic 전환은 별도 최종 영수증으로 확정한다.
+- 근거: https://developers.cloudflare.com/workers/runtime-apis/request/ (`redirect: error` 미지원).

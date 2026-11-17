@@ -11,6 +11,7 @@ async function storageKey(secret:string) {
 }
 export class FinanceVault {
   private renewal:Renewal;
+  private restored=false;
   constructor(ctx:{storage:Storage},env:Env) {
     const storage=ctx.storage;
     this.renewal=new Renewal({
@@ -18,7 +19,12 @@ export class FinanceVault {
         const saved=await storage.get<{iv:number[];cipher:number[]}>('credential-v1');
         if(!saved)return undefined;
         const plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:new Uint8Array(saved.iv)},await storageKey(env.FINANCE_STORAGE_KEY),new Uint8Array(saved.cipher));
-        return JSON.parse(new TextDecoder().decode(plain)) as State;
+        const state=JSON.parse(new TextDecoder().decode(plain)) as State;
+        if(!this.restored){
+          console.info(JSON.stringify({event:'finance_vault_restore',credentialPresent:!!state.active,expiresAt:state.active?.expires??null,lastSuccess:state.lastSuccess??null}));
+          this.restored=true;
+        }
+        return state;
       },
       save:async s=>{
         const iv=crypto.getRandomValues(new Uint8Array(12));
