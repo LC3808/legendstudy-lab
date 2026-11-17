@@ -178,3 +178,8 @@ Reviewed History/rewrite exact-ID resolution (`4fc3952`) and confirmed-photo Pro
 2026-11-13: [대학 소식 연결](university-news-phase1-connected-20261113.md). 운영API42/52, Flutter16+운영파서1PASS. 신규DB0, UUID13/기기 후속.
 
 [개인화 UUID35·관리자 네 순위 페이지네이션 운영](personalization-phase2-release-20261113.md): 7대학 미연결, WEB17/APP17 PASS·실기기NT.
+
+
+## 2026-11-17 — Finance Automatic 운영 적용
+
+Owner 승인으로 private Worker/암호화DO/Secret4개 설치, Shadow 오류를 Workers manual redirect로 수정 후 실제 재시도 회복·복원 검증. Automatic9201e47a, 2168 PASS/5 SKIP, 원장/주문 불변·거래실행0. [영수증·원복](finance-auth-operations-20261117.md).

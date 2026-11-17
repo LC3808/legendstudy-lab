@@ -1,6 +1,6 @@
 # Finance 자동 갱신 구현·운영 인계
 
-**PARTIAL / SHADOW**. Owner가 전용 Worker/DO/Secrets/private binding 및 Shadow 성공 후 Automatic 전환을 승인했다. 운영 검증 중이며 아래 기존 준비 기록은 역사적 상태다.
+**DONE / AUTOMATIC**. Owner 승인으로 Shadow 검증 후 자동 인증 운영 적용 완료. 아래 준비/실패 기록은 역사적 근거이며 최종 영수증을 따른다.
 정책·전체 비교·권한/원복/검증의 정본은 APP Wiki `wiki/finance-auth-renewal-20261117.md`다.
 
 ## 구현 위치
@@ -38,3 +38,15 @@ PAYMENT_FINANCE_AUTO=false + Pages 재배포 또는 직전 배포 복귀. 기존
 - 상태 조회가 실패 재시도를 무한히 늦추지 않도록 보완. 실패 단계 로그/암호화 복원 로그는 허용된 메타데이터만 출력.
 - 관련50 PASS, 앞선 전체2166 PASS/5 SKIP. 운영 자동 재시도 성공 및 Automatic 전환은 별도 최종 영수증으로 확정한다.
 - 근거: https://developers.cloudflare.com/workers/runtime-apis/request/ (`redirect: error` 미지원).
+
+
+## 최종 운영 영수증
+
+- 운영코드 `d2d607a151ae4fdefde0e9d9b10ca537ce4f9a4b`, Pages Automatic **9201e47a-f06c-4c35-92a0-3fd6e08ad0da**. Shadow 원복 기준 **96eb8a1a-5f9c-410d-8bf4-0d9aed53ace3**.
+- Worker version **d14a757e-5b46-448c-8b66-325d181c2a9f**, SQLite namespace f7736b5bb58440f088c9a2105c39cea3, Secret4개·private Production binding·cron15분 설치. workers.dev/preview 비활성, Preview binding 불변.
+- 초기 JWKS redirect 호환성 오류 후 실제 alarm60/300/900초 재시도·20:02:52 발급/read 회복. 재배포 후 암호화 active 복원: 같은 만료·성공시각. 관리자 ‘자동 갱신 · 인증 유효’ 확인.
+- 신규 만료 **2026-11-24 20:02:52 KST**, 갱신 임계 **11/23 10:26:52 KST**(잔여20%) 이후 다음요청/alarm/cron. 실제 자연 만료경계 도달·다중리전 부하 NOT TESTED, 합성 경계/40동시 PASS.
+- 원장889·주문22·작업13 및 주문/원장MD5·RPC함수/ACL 불변, role login/super/bypassrls=false·테이블grant0. 실제 결제·환불0. LIVE/public=true, review TEST 보존, 관리자잔액92.
+- 최종2168 PASS/5 SKIP, TS/ESLint/Pages compile PASS. 정적3081경로·그 외 설정 보존.
+- 기존 수동 Secret 미삭제. false+재배포 또는 Shadow 배포로 원복 후 읽기확인. 수동 토큰11/24 18:03:34 이후에는 기존 서명키·동일claims로 먼저 수동갱신 필요.
+- 관리자 마지막 실패19:47:52는 회복 전 이력이다. 현재건강·다음재시도없음과 구분. 외부 알림은 미구현, 기존 관리자/안전로그 사용.
