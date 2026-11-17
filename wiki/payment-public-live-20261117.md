@@ -31,3 +31,5 @@ Owner가 일반 결제 유지·방금4900원 주문 환불 시험과 pricing 경
 pricing 상단header 테두리, 페이지 범위 섹션/FAQ/카드 내부 구분선 대비 강화. ‘적용 준비 중’ 제거, 비활성 쿠폰 적용 동작은 유지. 판매설명 max-width 해제와 의미단위 nowrap으로 ‘최초 첨삭 1회’ 중간 분리 방지. 다른 페이지 전역 시각 변경은 없다.
 
 관련5파일200 PASS, TypeScript/ESLint/webpack static build PASS. UI 배포는 pricing/admin-payment 두 경로와 추가 hashed assets만 변경, 현재 LIVE 설정·결제API·그 외 기존정적자산 보존. 실제 배포/환불 결과는 후속 기록.
+
+UI 운영배포2e1a82a9-8d0d-4906-85e5-7b5350d45e84/source afc60eb. pricing 실제배너/구분선/설명줄바꿈/준비중문구삭제 확인. 기타3059경로·API·설정 보존. 관리자에서 기존 support-inspect 성공:4900원/회수1/eligible. Owner 최종환불 실행 인계중, 환불완료 아님. 모바일viewport 시각검수 미실행.
