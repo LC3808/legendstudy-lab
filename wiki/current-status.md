@@ -77,3 +77,5 @@ App usage follow-up: [WEB rankings and APP collection handoff](admin-app-usage-r
 [개인화 UUID35·관리자 네 순위 페이지네이션 운영](personalization-phase2-release-20261113.md): 7대학 미연결, WEB17/APP17 PASS·실기기NT.
 
 11/17 [일반 LIVE 공개](payment-public-live-20261117.md): 일반LIVE 배포3f7a57bb·Finance복구·2108 PASS, LIVE4900원승인·전액환불·회수1·잔액92 확인.
+
+11/17 이용안내10개 항목 전체테두리 운영반영: [배포·검증](payment-public-live-20261117.md).
