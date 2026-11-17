@@ -1,3 +1,4 @@
+import { financeToken } from './finance-client';
 import type { Env } from './payments';
 
 /** Fixed read-only probes. No caller-controlled URL, order, token or action. */
@@ -10,8 +11,9 @@ export async function paymentDiagnostics(env: Env, io: typeof fetch): Promise<Re
       return { status: r.status, code, mid_matches: r.ok && body.mId === 'leglabn24k' };
     } catch { return { status: 0, code: 'UNAVAILABLE', mid_matches: false }; }
   };
+  const token = await financeToken(env).catch(() => '');
   const finance = await probe(`${env.PAYMENT_SUPABASE_URL}/rest/v1/rpc/payment_process`, {
-    method: 'POST', headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: `Bearer ${env.PAYMENT_FINANCE_TOKEN}`, 'Content-Type': 'application/json' },
+    method: 'POST', headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     // Inspected production definition: get + absent ID raises PT404 before any write.
     body: JSON.stringify({ p: { dto_version: 'payment-v1', action: 'get', id: '00000000-0000-0000-0000-000000000000' } }),
   });

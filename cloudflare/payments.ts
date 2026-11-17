@@ -1,7 +1,8 @@
 /** Cloudflare only. APP 3b3b869 payment-v1 is the sole persistence authority. */
 import { LIVE_QA_OWNER, TEST_REVIEWER, qaPurchaseAllowed, qaProductAllowed, type QaEnv } from './payment-qa';
+import { financeFetch, financeStatus, type FinanceEnv } from './finance-client';
 import { paymentDiagnostics } from './payment-diagnostics';
-export type Env = QaEnv & {
+export type Env = QaEnv & FinanceEnv & {
   PAYMENT_MODE?: string; PAYMENT_ENABLED?: string; PAYMENT_ORIGIN?: string;
   PAYMENT_SUPABASE_URL?: string; PAYMENT_SUPABASE_PUBLISHABLE_KEY?: string;
   PAYMENT_FINANCE_TOKEN?: string; PAYMENT_SUPPORT_SUBJECTS?: string; PAYMENT_REVIEW_SUBJECTS?: string;
@@ -36,7 +37,7 @@ function config(e: Env, selected?: 'TEST'|'LIVE') {
   const test = selected ? selected === 'TEST' : !live;
   const clientKey = test ? e.TOSS_TEST_CLIENT_KEY : e.TOSS_LIVE_CLIENT_KEY;
   const secret = test ? e.TOSS_TEST_SECRET_KEY : e.TOSS_LIVE_SECRET_KEY;
-  const checks = { client_key_family: (test ? /^test_ck_/ : /^live_ck_/).test(clientKey || ''), secret_key_family: (test ? /^test_sk_/ : /^live_sk_/).test(secret || ''), merchant: e.TOSS_MID === 'leglabn24k', finance_present: Boolean(e.PAYMENT_FINANCE_TOKEN), publishable_present: Boolean(e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) };
+  const checks = { client_key_family: (test ? /^test_ck_/ : /^live_ck_/).test(clientKey || ''), secret_key_family: (test ? /^test_sk_/ : /^live_sk_/).test(secret || ''), merchant: e.TOSS_MID === 'leglabn24k', finance_present: Boolean(e.PAYMENT_FINANCE_TOKEN || (e.PAYMENT_FINANCE_AUTO === 'true' && e.FINANCE_AUTH)), publishable_present: Boolean(e.PAYMENT_SUPABASE_PUBLISHABLE_KEY) };
   if (Object.values(checks).some(ok => !ok)) {
     // REVIEW-only bounded diagnostics: booleans never contain a binding value,
     // token, key prefix/length, buyer identity or provider response.
@@ -131,6 +132,11 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
       cfg = config(env, buyerMode);
     }
     const p = await read(request, 2048);
+    if (action === 'finance-auth-status') {
+      exact(p, []);
+      if (env.PAYMENT_MODE !== 'LIVE' || buyerSubject !== LIVE_QA_OWNER) fail(403, 'SUPPORT_REQUIRED');
+      return Response.json(await financeStatus(env, io), { headers });
+    }
     if (action === 'diagnostics') {
       exact(p, []);
       if (env.PAYMENT_MODE !== 'LIVE' || cfg.enabled) fail(409, 'DIAGNOSTICS_REQUIRES_PAUSED');
@@ -138,7 +144,12 @@ export async function payment(request: Request, env: Env, io: IO = fetch): Promi
       return Response.json(await paymentDiagnostics(env, io), { headers });
     }
     const rpc = async (name: string, body: Json, finance = false) => {
-      const r = await call(io, `${env.PAYMENT_SUPABASE_URL}/rest/v1/rpc/${name}`, { method: 'POST', headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: finance ? `Bearer ${env.PAYMENT_FINANCE_TOKEN}` : bearer!, 'Content-Type': 'application/json' }, body: JSON.stringify({ p: { dto_version: 'payment-v1', ...body } }) });
+      const url = `${env.PAYMENT_SUPABASE_URL}/rest/v1/rpc/${name}`;
+      const init = { method: 'POST', headers: { apikey: env.PAYMENT_SUPABASE_PUBLISHABLE_KEY!, Authorization: bearer!, 'Content-Type': 'application/json' }, body: JSON.stringify({ p: { dto_version: 'payment-v1', ...body } }) };
+      let r: Response;
+      try { r = finance ? await financeFetch(env, io, url, init) : await call(io, url, init); }
+      catch { return fail(503, 'RECONCILIATION_REQUIRED'); }
+      if (r.status >= 300 && r.status < 400) return fail(503, 'RECONCILIATION_REQUIRED');
       if (!r.ok) {
         const status = [401,403,404,409,422].includes(r.status) ? r.status : 503;
         // REVIEW diagnostics identify only the failed boundary, never an upstream

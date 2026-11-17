@@ -1,6 +1,7 @@
 "use client";
 
 import {PaymentRefundControl} from './payment-refund-control';
+import {FinanceAuthStatus} from './finance-auth-status';
 import {PaymentReadDiagnostics} from './payment-read-diagnostics';
 import {AdminReleaseReport} from './admin-release-report';
 import { useEffect, useState } from "react";
@@ -76,6 +77,7 @@ export function AdminPaymentView() {
 
   return (
     <div className="admin-stack">
+      <FinanceAuthStatus/>
       <PaymentReadDiagnostics paused={runtime?.state === 'PAUSED'}/>
       <PaymentRefundControl/>
       <AdminReleaseReport kind="payment" onPaymentState={changeState}/>

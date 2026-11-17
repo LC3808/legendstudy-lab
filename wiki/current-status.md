@@ -79,3 +79,5 @@ App usage follow-up: [WEB rankings and APP collection handoff](admin-app-usage-r
 11/17 [일반 LIVE 공개](payment-public-live-20261117.md): 일반LIVE 배포3f7a57bb·Finance복구·2108 PASS, LIVE4900원승인·전액환불·회수1·잔액92 확인.
 
 11/17 이용안내10개 항목 전체테두리 운영반영: [배포·검증](payment-public-live-20261117.md).
+
+11/17 [Finance 자동 갱신](finance-auth-operations-20261117.md): 구현·실제읽기 PASS, 운영설치/전환 Owner 승인대기. LIVE 유지.

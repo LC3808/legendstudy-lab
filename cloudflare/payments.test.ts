@@ -290,3 +290,28 @@ describe('Owner-approved public LIVE sales',()=>{
   expect((await r.json()).consumer_purchase).toBe(false);
  });
 });
+
+describe('Finance status Owner-only access',()=>{
+ it('allows Owner status while LIVE remains enabled without finance writes',async()=>{const f=fixture(liveEnv);const r=await f.send('finance-auth-status',{});expect(r.status).toBe(200);expect((await r.json()).automatic).toBe(false);expect(f.calls.every(c=>c.url.endsWith('/auth/v1/user'))).toBe(true);});
+ it('denies non-owner including support admins',async()=>{const f=fixture(liveEnv);f.f.subject=KEY;expect((await f.send('finance-auth-status',{}, {...liveEnv,PAYMENT_SUPPORT_SUBJECTS:KEY})).status).toBe(403);expect(f.calls.every(c=>c.url.endsWith('/auth/v1/user'))).toBe(true);});
+ it('denies arbitrary status request fields',async()=>{const f=fixture(liveEnv);expect((await f.send('finance-auth-status',{role:'service_role'})).status).toBe(422);});
+});
+it('automatic auth rotation preserves confirm idempotency and never exposes JWT',async()=>{
+ const base={...liveEnv,PAYMENT_PUBLIC_ENABLED:'true',PAYMENT_QA_ONLY:'false'};
+ const f=fixture(base);let serial=0;let current='';let rejectOnce=true;
+ const auto:Env={...base,PAYMENT_FINANCE_AUTO:'true',FINANCE_AUTH:{fetch:async()=>{
+  const now=Math.floor(Date.now()/1000)+serial++;
+  current=Buffer.from(JSON.stringify({alg:'ES256'})).toString('base64url')+'.'+Buffer.from(JSON.stringify({role:'essay_finance',sub:ID,aud:'authenticated',iss:base.PAYMENT_SUPABASE_URL+'/auth/v1',iat:now,exp:now+604800})).toString('base64url')+'.synthetic';
+  return Response.json({credential:{token:current}});
+ }}};
+ const io:typeof fetch=async(url,init)=>{
+  const h=new Headers(init?.headers);
+  if(h.get('Authorization')==='Bearer '+current){
+   if(rejectOnce){rejectOnce=false;return Response.json({code:'PGRST303'},{status:401});}
+   h.set('Authorization','Bearer synthetic-finance');
+  }
+  return f.io(url,{...init,headers:h});
+ };
+ const request=()=>new Request(base.PAYMENT_ORIGIN+'/api/payments/confirm',{method:'POST',headers:{Origin:base.PAYMENT_ORIGIN!,Authorization:'Bearer synthetic-user-token','Content-Type':'application/json'},body:JSON.stringify({id:ID,request_key:KEY,payment_key:'synthetic-payment',amount:29900})});
+ const response=await payment(request(),auto,io);expect(response.status).toBe(200);expect(await response.text()).not.toContain(current);await payment(request(),auto,io);expect(f.finishes).toBe(1);
+});
