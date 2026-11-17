@@ -33,3 +33,8 @@ pricing 상단header 테두리, 페이지 범위 섹션/FAQ/카드 내부 구분
 관련5파일200 PASS, TypeScript/ESLint/webpack static build PASS. UI 배포는 pricing/admin-payment 두 경로와 추가 hashed assets만 변경, 현재 LIVE 설정·결제API·그 외 기존정적자산 보존. 실제 배포/환불 결과는 후속 기록.
 
 UI 운영배포2e1a82a9-8d0d-4906-85e5-7b5350d45e84/source afc60eb. pricing 실제배너/구분선/설명줄바꿈/준비중문구삭제 확인. 기타3059경로·API·설정 보존. 관리자에서 기존 support-inspect 성공:4900원/회수1/eligible. Owner 최종환불 실행 인계중, 환불완료 아님. 모바일viewport 시각검수 미실행.
+
+
+## LIVE 환불 E2E 성공 — 11/17 18:25:26 KST
+
+Owner 직접 환불 실행·확인 후 운영 DB/WEB 검증: 주문86f4d220-6527-4689-8723-52800802b2b6 CANCELLED/REVOKED, CANCEL SUCCEEDED 4900원/error null. 원장 purchase_v1 +1 및 purchase_cancel_v1 -1 각각1행·예약0, 중복회수0. WEB 환불완료 메시지 및 이용권 전체92·구매0 확인(93→92). 기존 서버의 Toss 취소응답 검증 성공이며 독립 Toss GET/카드명세/APP 실기기는 미검증. 일반LIVE·review TEST 유지, 추가배포/SQL 없음. Finance11/24 18:03:34 KST 이전 갱신 필요.
