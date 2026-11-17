@@ -19,3 +19,7 @@ Finance는 기존 signer/subject/essay_finance 역할 유지, 기존 JWKS와 일
 복구단계526ed879-1b91-443a-9371-80b07fe39ccc: PAUSED 상태 관리자 Finance PT404(권한확인), Toss200/MID일치. 공개배포3f7a57bb-5096-488c-bef1-f28787f7f458/source01d2624: PAYMENT_PUBLIC_ENABLED=true, PAYMENT_ENABLED=true, MODE LIVE. 비로그인runtime consumer_purchase=false. 기존3070자산 및 비결제API75입력 보존. 기존설정 중 Finance/Public/Enabled만 변경. SQL0.
 
 pricing에서 admin 1c4900원 LIVE Toss창 확인, 신규주문86f4d220-6527-4689-8723-52800802b2b6 생성, 잔액92·지급0. 실제 인증/결제는 Owner 인계중이며 승인/지급성공은 미검증이다. review TEST와 일반비관리자 허용은 합성테스트PASS, 이번 운영 계정전환E2E는 미실행.
+
+## LIVE E2E 성공 — 11/17 18:11:53 KST
+
+Owner 직접 카드결제 완료. 주문86f4d220-6527-4689-8723-52800802b2b6: LIVE/4900원/PAID/POSTED, CONFIRM SUCCEEDED. 지급1개·purchase원장+1 한 행, 잔액92→93. 실제WEB /account/credits/ 구매+1/구매분1/전체93 확인. 유효기간2027-02-17 18:11:53 KST. 중복지급0·환불0. APP실기기 잔액은 NOT TESTED. 일반LIVE공개 유지. Finance11/24 갱신필요.
