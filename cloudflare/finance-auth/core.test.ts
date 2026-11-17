@@ -26,3 +26,14 @@ describe('serialized renewal and recovery',()=>{
 });
 it('periodic read health detects revoked token and stops returning it',async()=>{const f=setup(initial());f.deps.probe.mockRejectedValue(Error('PROBE_401'));const r=await f.renewal.run(undefined,true);expect(r.status).toMatchObject({healthy:false,warning:true,lastError:'PROBE_401'});expect(f.state.active?.token).toBe('old');expect((await f.renewal.run()).credential).toBeUndefined();});
 it('periodic network failure warns but preserves valid token',async()=>{const f=setup(initial());f.deps.probe.mockRejectedValue(Error('PROBE_UNAVAILABLE'));const r=await f.renewal.run(undefined,true);expect(r.status).toMatchObject({healthy:true,warning:true});expect((await f.renewal.run()).credential?.token).toBe('old');});
+
+it('status polling cannot postpone renewal retry during a persistent read outage',async()=>{
+ const f=setup(initial());f.deps.probe.mockRejectedValue(Error('PROBE_UNAVAILABLE'));
+ await f.renewal.run(undefined,true);const first=f.state.retryAt;
+ f.time(first-1);await f.renewal.run(undefined,true);expect(f.state.retryAt).toBe(first);
+ f.time(first);await new Renewal(f.store,f.deps).run(undefined,true);
+ expect(f.calls).toBe(1);expect(f.state.retryAt-first).toBe(300);
+ expect(f.state.active?.token).toBe('old');
+ f.time(f.state.retryAt);f.deps.probe.mockResolvedValue();await f.renewal.run(undefined,true);
+ expect(f.calls).toBe(2);expect(f.state.failures).toBe(0);
+});

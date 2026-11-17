@@ -20,8 +20,11 @@ export class Renewal {
     const now = this.deps.now();
     if (rejected && rejected === s.active?.fingerprint) { s.rejected = rejected; s.lastFailure = now; s.lastError = 'JWT_REJECTED'; }
     const valid = () => !!s.active && s.active.expires > this.deps.now() + MIN_VALIDITY && s.active.fingerprint !== s.rejected;
+    // Persist a wakeup before health probes too; network failure cannot lose retries.
+    await this.store.alarm((now + 60) * 1000);
+    // Once retrying, do not let status polling postpone the scheduled renewal.
     // Periodic read-only health check also detects revoked keys before purchases.
-    if (statusOnly && valid() && now - (s.probedAt ?? 0) >= 900) {
+    if (statusOnly && s.failures === 0 && valid() && now - (s.probedAt ?? 0) >= 900) {
       try { await this.deps.probe(s.active!.token); s.probedAt = now; }
       catch (e) {
         const code = e instanceof Error ? e.message : '';
