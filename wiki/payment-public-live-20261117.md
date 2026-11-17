@@ -13,3 +13,9 @@ Finance는 기존 signer/subject/essay_finance 역할 유지, 기존 JWKS와 일
 ## 운영 진행
 
 사전 기준 deployment a5fc7139-2807-40bc-8985-3e175ae73e83, mode LIVE/enabled false. PAUSED 단계에서 Finance Secret 및 명시적 public flag만 갱신·배포, 관리자 읽기 진단 후 PAYMENT_ENABLED=true 활성화 예정. 실제 반영 영수증은 후속 기록한다. 롤백은 PAYMENT_ENABLED=false로 신규 결제를 중지하는 배포이며, 기존 DONE 복구·기록은 보존한다. 배포 후에도 실제 카드 승인/지급 E2E 전에는 실결제 성공이라고 보고하지 않는다.
+
+## 실제 배포 영수증
+
+복구단계526ed879-1b91-443a-9371-80b07fe39ccc: PAUSED 상태 관리자 Finance PT404(권한확인), Toss200/MID일치. 공개배포3f7a57bb-5096-488c-bef1-f28787f7f458/source01d2624: PAYMENT_PUBLIC_ENABLED=true, PAYMENT_ENABLED=true, MODE LIVE. 비로그인runtime consumer_purchase=false. 기존3070자산 및 비결제API75입력 보존. 기존설정 중 Finance/Public/Enabled만 변경. SQL0.
+
+pricing에서 admin 1c4900원 LIVE Toss창 확인, 신규주문86f4d220-6527-4689-8723-52800802b2b6 생성, 잔액92·지급0. 실제 인증/결제는 Owner 인계중이며 승인/지급성공은 미검증이다. review TEST와 일반비관리자 허용은 합성테스트PASS, 이번 운영 계정전환E2E는 미실행.
