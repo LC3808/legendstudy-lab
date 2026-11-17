@@ -1856,7 +1856,7 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 .pricing-page { --pricing-divider: #8190a1; }
 .pricing-page .pricing-hero { padding: clamp(1.25rem, 3vw, 2.5rem); border: 1px solid var(--ink); border-radius: var(--radius-md); background: var(--surface); }
 .pricing-page .pricing-hero .eyebrow { margin-top: 0; }
-.pricing-page .policy-section { border-top: 1px solid var(--pricing-divider); }
+.pricing-page > .policy-section { margin-top: 1.5rem; padding: clamp(1.1rem, 2.5vw, 2rem); border: 2px solid var(--ink); border-radius: var(--radius-md); background: var(--surface); }
 .pricing-page .pricing-free, .pricing-page .pricing-fact,
 .pricing-page .plan-card__value, .pricing-page .pricing-faq,
 .pricing-page .pricing-faq details, .pricing-page .pricing-summary > div,
@@ -1864,3 +1864,11 @@ body:has(.pricing-page), body:has(.refund-page) { min-width: 0; }
 .pricing-page .pricing-summary > div { border: 1px solid var(--pricing-divider); }
 .pricing-page .pricing-plans__description { max-width: none; word-break: keep-all; text-wrap: pretty; }
 .pricing-page .pricing-phrase { white-space: nowrap; }
+
+/* Each guide section has a complete outline, matching the LAB card hierarchy. */
+.pricing-page .pricing-hero { border-width: 2px; }
+.pricing-page .process-list li, .pricing-page .contact-list__item { border-color: var(--pricing-divider); }
+.pricing-page .pricing-faq { display: grid; gap: .65rem; border: 0; }
+.pricing-page .pricing-faq details { padding-inline: 1rem; border: 1px solid var(--pricing-divider); border-radius: var(--radius-sm); }
+.pricing-page .pricing-faq details[open] summary { border-bottom: 1px solid var(--pricing-divider); margin-bottom: .85rem; }
+@media (max-width: 680px) { .pricing-page .process-list li { grid-template-columns: 1fr; gap: .4rem; } }

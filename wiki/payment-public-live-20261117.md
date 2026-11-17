@@ -38,3 +38,8 @@ UI 운영배포2e1a82a9-8d0d-4906-85e5-7b5350d45e84/source afc60eb. pricing 실�
 ## LIVE 환불 E2E 성공 — 11/17 18:25:26 KST
 
 Owner 직접 환불 실행·확인 후 운영 DB/WEB 검증: 주문86f4d220-6527-4689-8723-52800802b2b6 CANCELLED/REVOKED, CANCEL SUCCEEDED 4900원/error null. 원장 purchase_v1 +1 및 purchase_cancel_v1 -1 각각1행·예약0, 중복회수0. WEB 환불완료 메시지 및 이용권 전체92·구매0 확인(93→92). 기존 서버의 Toss 취소응답 검증 성공이며 독립 Toss GET/카드명세/APP 실기기는 미검증. 일반LIVE·review TEST 유지, 추가배포/SQL 없음. Finance11/24 18:03:34 KST 이전 갱신 필요.
+
+
+## 이용안내 항목별 테두리 후속
+
+Owner 요청에 따라 /pricing/ 판매상품·쿠폰·구매안내·이용범위·방법·조건·FAQ·환불·고객센터·사업자정보 각 section을 2px navy 전체 테두리·흰 배경·동일 여백으로 구분한다. FAQ 질문별 테두리와 이용단계/연락처 대비도 보완한다. 기존 논술LAB 카드 경계 정책을 재사용하며 가격/문구/결제/DB 변경0. 운영 검증은 후속 기록.
