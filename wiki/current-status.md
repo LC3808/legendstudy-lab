@@ -1,4 +1,4 @@
-2026-11-20: [관리자 논술 기간·재진행·삭제](admin-run-management-20261120.md) — 구현·격리 검증 완료, 새 DB 기능 설치 방식 확인 대기. 운영 새배포/기존요청변경0.
+2026-11-20: [관리자 논술 기간·재진행·삭제](admin-run-management-20261120.md) — Owner승인 DB설치·WEB e84b1232/Worker9ac3b91c 배포·UI/권한 검증 완료. 기존 데이터 불변, 실제 요청 작업0.
 
 2026-11-15: [단일 Owner LIVE QA 검증](payment-qa-paused-20261115.md) — Owner 승인 코드 배포 c6dcd96a DONE·PAUSED 유지. Finance 401/PGRST303, Toss 읽기200/MID일치. SQL HOLD·결제 재시험 보류·실제 결제/환불0.
 
