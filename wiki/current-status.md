@@ -83,3 +83,6 @@ App usage follow-up: [WEB rankings and APP collection handoff](admin-app-usage-r
 11/17 [Finance 자동 갱신](finance-auth-operations-20261117.md): Automatic 운영9201e47a·읽기/재시도/재시작 PASS, 수동원복 경로 보존. LIVE 유지.
 
 11/17 이용안내2안(제목선·안쪽패널) 운영반영422b518/00d02c96. Finance는 후속 Automatic 배포로 전환.
+
+
+11/20 [작성 가이드](writing-guide-readability-20261120.md): 공통 목록·2175 tests PASS, Pages969afe59 운영/실제3문항·원문PDF 확인. LIVE/Finance 설정 불변.

@@ -183,3 +183,8 @@ Reviewed History/rewrite exact-ID resolution (`4fc3952`) and confirmed-photo Pro
 ## 2026-11-17 — Finance Automatic 운영 적용
 
 Owner 승인으로 private Worker/암호화DO/Secret4개 설치, Shadow 오류를 Workers manual redirect로 수정 후 실제 재시도 회복·복원 검증. Automatic9201e47a, 2168 PASS/5 SKIP, 원장/주문 불변·거래실행0. [영수증·원복](finance-auth-operations-20261117.md).
+
+
+## 2026-11-20 — 작성 가이드 운영 반영
+
+[공통 UI·검증](writing-guide-readability-20261120.md): d559b9b / Pages969afe59, 전체2175 PASS/5 SKIP, 실제3문항·원문PDF 확인. 정본은 APP Wiki; DB/학생답안/평가/결제/Finance 변경0.
