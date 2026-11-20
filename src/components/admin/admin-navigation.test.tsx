@@ -18,7 +18,8 @@ describe('existing admin LAB routes',()=>{
   const nav=await screen.findByRole('navigation',{name:'운영 콘솔'});
   expect(within(nav).getByRole('region',{name:'회원·이용권'})).toBeVisible();
   const expected=[['이용권·매출·비용','analytics'],['베타 테스트 관리','beta'],['평가·비용 모니터링','operations'],['피드백·오류 신고','essay-feedback'],['공지사항 관리','notices']];
-  expect(within(nav).getAllByRole('link')).toHaveLength(26);
+  expect(within(nav).getAllByRole('link')).toHaveLength(27);
+  expect(within(nav).getByRole('link',{name:'공식 입시 일정'})).toHaveAttribute('href','/admin/admission-schedules');
   expect(within(nav).getByRole('region',{name:'운영 대시보드'}).querySelectorAll('a')[1]).toHaveTextContent('논술 LAB 대시보드');
   expect(within(nav).getByRole('link',{name:'앱 이용 분석'})).toHaveAttribute('href','/admin/data/app-usage');
   expect(nav.querySelectorAll('details[open]')).toHaveLength(7);

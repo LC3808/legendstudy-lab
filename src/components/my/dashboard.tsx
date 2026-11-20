@@ -5,6 +5,7 @@ import {CreditExpiry} from './credit-expiry';
 import {ReturnNavigation} from './return-navigation';
 import {LabCards} from './lab-cards';
 import {ApplicationsPanel, type ApplicationSeed} from './applications';
+import {AdmissionDayEventsPanel} from './admission-day-events';
 import {StudySummaryPanel} from './study-summary';
 import {SchoolStudyEntry} from './school-entry';
 import { ProfileHeaderView } from './profile-header';
@@ -25,6 +26,7 @@ export function MyDashboard(){
   </header>
   <OwnerArea>
    <ProfileColleges/>
+   <AdmissionDayEventsPanel/>
    <section className="my-section" aria-labelledby="my-usage-title"><h2 id="my-usage-title">내 이용 현황</h2><Usage /></section>
    <section className="my-section" aria-labelledby="my-labs-title"><h2 id="my-labs-title">LAB</h2><LabCards /></section>
    <section className="my-section" aria-labelledby="my-growth-title"><h2 id="my-growth-title">나의 성장</h2><EssayGrowthCard compact /></section>

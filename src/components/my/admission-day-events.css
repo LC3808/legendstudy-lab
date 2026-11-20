@@ -1,0 +1,14 @@
+.admission-days__heading{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.admission-days__lead,.admission-days__note{color:var(--color-text-muted,#526174);line-height:1.6;font-size:.9rem}
+.admission-days__list{display:grid;gap:.75rem;margin:1rem 0}
+.admission-days__event{display:flex;justify-content:space-between;gap:1rem;border:1px solid var(--color-border,#dce3ec);border-radius:12px;padding:1rem;min-width:0;background:#fff}
+.admission-days__event>div:first-child{min-width:0;overflow-wrap:anywhere}
+.admission-days__event h3{margin:.4rem 0;font-size:1rem}
+.admission-days__event p{margin:.3rem 0}
+.admission-days__badge{display:inline-block;color:#284d68;background:#edf3f7;border-radius:6px;padding:.2rem .45rem;font-size:.75rem;font-weight:700}
+.admission-days__actions{display:flex;align-items:center;flex-direction:column;justify-content:center;gap:.65rem;flex-shrink:0}
+.admission-days__actions strong{font-size:1.25rem;white-space:nowrap;color:#153b65}
+.admission-days__hidden{margin-top:1rem;border-top:1px solid #dce3ec;padding-top:1rem}
+.admission-days__hidden summary{cursor:pointer;font-weight:600;margin-bottom:.75rem}
+.admission-days__hidden .admission-days__event{margin-top:.6rem}
+@media(max-width:480px){.admission-days__event{padding:.8rem;gap:.6rem}.admission-days__actions .button{padding:.45rem .7rem;min-height:40px}}

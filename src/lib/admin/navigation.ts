@@ -5,6 +5,7 @@ export type NavEntry = { key: string; label: string; href: string | null };
  * rather than reimplemented: it keeps its own authorization and its own route.
  */
 const EXISTING_NAV: readonly NavEntry[] = [
+  { key: "admission-schedules", label: "공식 입시 일정", href: "/admin/admission-schedules/" },
   {key:"essay-runs",label:"첨삭 요청·결과",href:"/admin/essay-runs/"},
   { key: "material-sync", label: "학습자료 동기화", href: "/admin/material-sync/" },
   { key: "lab-dashboard", label:"논술 LAB 대시보드",href:"/admin/lab-dashboard/" },
@@ -33,7 +34,7 @@ export const ADMIN_GROUPS = [
  {title:'첨삭 운영',keys:['essay-runs','essay','beta','beta-usage','beta-failures']},
  {title:'첨삭 품질',keys:['quality','materials']},
  {title:'학생 피드백',keys:['essay-feedback','satisfaction','inquiries']},
- {title:'학습·입시 분석',keys:['learning','app-usage','study','applications','students','essay-usage']},
+ {title:'학습·입시 분석',keys:['admission-schedules','learning','app-usage','study','applications','students','essay-usage']},
  {title:'매출·비용·안정성',keys:['analytics','visitors','verification','material-sync']},
 ] as const;
 const EXTRA_NAV = [

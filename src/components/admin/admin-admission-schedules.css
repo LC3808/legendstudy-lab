@@ -1,0 +1,22 @@
+.admin-schedules{display:grid;gap:1.5rem}
+.admin-schedules__heading{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.admin-schedules__hint{font-size:.88rem;color:#526174;line-height:1.6}
+.admin-schedules__form fieldset{border:0;margin:0;padding:0;min-width:0}
+.admin-schedules__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1rem 0}
+.admin-schedules__grid label,.admin-schedules__filter{display:grid;gap:.35rem;min-width:0;font-weight:600}
+.admin-schedules__grid input,.admin-schedules__grid select,.admin-schedules__grid textarea,.admin-schedules__filter select{width:100%;min-width:0;border:1px solid #cbd5e1;border-radius:8px;padding:.65rem;background:#fff;font:inherit;color:inherit}
+.admin-schedules__grid textarea{resize:vertical;min-height:88px}
+.admin-schedules__wide{grid-column:1/-1}
+.admin-schedules__grid .admin-schedules__publish{display:flex;align-items:center;gap:.6rem}
+.admin-schedules__publish input{width:1.2rem;height:1.2rem}
+.admin-schedules__filter{max-width:22rem;margin:1rem 0}
+.admin-schedules__list{display:grid;gap:.75rem}
+.admin-schedules__item{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:1rem;border:1px solid #dce3ec;border-radius:12px;background:#fff;min-width:0}
+.admin-schedules__item>div{min-width:0;overflow-wrap:anywhere}
+.admin-schedules__item h3{font-size:1.05rem;margin:.6rem 0}
+.admin-schedules__item p{margin:.35rem 0;line-height:1.5}
+.admin-schedules__item>button{flex-shrink:0}
+.admin-schedules__state{display:inline-block;font-size:.8rem;font-weight:700;padding:.25rem .45rem;border-radius:6px;background:#fff4d7;color:#705116}
+.admin-schedules__state--verified{background:#e5f4ec;color:#256346}
+.admin-schedules__state--cancelled{background:#edf0f5;color:#526174}
+@media(max-width:600px){.admin-schedules__grid{grid-template-columns:minmax(0,1fr)}.admin-schedules__wide{grid-column:auto}.admin-schedules__item{padding:.8rem;gap:.6rem}.admin-schedules__item>button{padding:.5rem .6rem}}

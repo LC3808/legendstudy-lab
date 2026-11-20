@@ -1,6 +1,7 @@
 import type {SupabaseClient} from '@supabase/supabase-js';
 import {parseEssaySummary} from './essay-summary';
 import {assertOwner,ensureOwnerProfile} from './data';
+import {notifyAdmissionSchedulesChanged} from './admission-day-events';
 export const eventLabels={planned:'지원 예정',submitted:'지원 완료',stage_pass:'1단계 합격',accepted:'최초합격',additional_acceptance:'추가합격',rejected:'불합격',not_registered:'미등록',registered:'등록'} as const;
 export type EventKind=keyof typeof eventLabels;
 export type ApplicationEvent={id:string;kind:EventKind|'created'|'details_changed';occurred_at:string|null;recorded_at:string;supersedes_event_id?:string|null};
@@ -42,10 +43,10 @@ export async function readApplicationEvents(client:SupabaseClient,owner:string,i
 export type ApplicationInput={id:string|null;revision:number;year:number;university:string;division:string;admissionType:string;admissionName:string};
 export async function saveApplication(client:SupabaseClient,owner:string,input:ApplicationInput,key:string){
  await ensureOwnerProfile(client,owner);
- return string(await rpc(client,owner,'my_application_save',{p_id:input.id,p_revision:input.revision,p_year:input.year,p_university:input.university,p_division:input.division,p_admission_type:input.admissionType,p_admission_name:input.admissionName,p_request_key:key}));
+ const id=string(await rpc(client,owner,'my_application_save',{p_id:input.id,p_revision:input.revision,p_year:input.year,p_university:input.university,p_division:input.division,p_admission_type:input.admissionType,p_admission_name:input.admissionName,p_request_key:key}));notifyAdmissionSchedulesChanged();return id;
 }
-export async function addApplicationEvent(client:SupabaseClient,owner:string,id:string,kind:EventKind,occurred:string|null,supersedes:string|null,key:string){return string(await rpc(client,owner,'my_application_event',{p_id:id,p_kind:kind,p_occurred_at:occurred,p_supersedes:supersedes,p_request_key:key}));}
-export async function deleteApplication(client:SupabaseClient,owner:string,id:string){await rpc(client,owner,'my_application_delete',{p_id:id});}
+export async function addApplicationEvent(client:SupabaseClient,owner:string,id:string,kind:EventKind,occurred:string|null,supersedes:string|null,key:string){const result=string(await rpc(client,owner,'my_application_event',{p_id:id,p_kind:kind,p_occurred_at:occurred,p_supersedes:supersedes,p_request_key:key}));notifyAdmissionSchedulesChanged();return result;}
+export async function deleteApplication(client:SupabaseClient,owner:string,id:string){await rpc(client,owner,'my_application_delete',{p_id:id});notifyAdmissionSchedulesChanged();}
 /** Presentation unit conversion only; aggregation remains on the shared server. */
 export function studyMinutes(ms:number){return Math.floor(ms/60000);}
 /** Readable duration from the same ms: "2시간 15분" / "45분" / "0분". Presentation only. */
