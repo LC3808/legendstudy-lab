@@ -1,0 +1,27 @@
+.report-block.report-guide.writing-guide {
+  display: grid; gap: 0; min-width: 0; padding: 24px;
+  color: #243247; background: #fff8ec; border-radius: 10px;
+  overflow-wrap: anywhere; line-height: 1.7;
+}
+.report-guide.writing-guide > h3 { margin: 0; color: #1f3a5f; font-size: 21px; font-weight: 700; line-height: 1.5; }
+.report-guide.writing-guide .writing-guide__intro { margin: 12px 0 0; font-size: 15px; line-height: 1.7; }
+.report-guide.writing-guide .writing-guide__section { margin-top: 28px; min-width: 0; }
+.report-guide.writing-guide h4 { display: flex; align-items: baseline; gap: 10px; margin: 0 0 12px; color: #0f2f5f; font-size: 18px; font-weight: 600; line-height: 1.6; }
+.report-guide.writing-guide h4 > span { color: #64748b; font-size: 13px; font-weight: 600; }
+.report-guide.writing-guide ol, .report-guide.writing-guide ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.report-guide.writing-guide li { display: flex; align-items: flex-start; gap: 12px; margin: 0; padding: 12px 14px; border-radius: 8px; font-size: 16px; line-height: 1.7; }
+.report-guide.writing-guide .writing-guide__priorities li { background: #fff3dc; font-weight: 500; }
+.report-guide.writing-guide .writing-guide__checklist li { background: #fff; }
+.report-guide.writing-guide .writing-guide__number { flex: 0 0 26px; height: 26px; border-radius: 50%; background: #fff; color: #b45309; text-align: center; font-size: 14px; font-weight: 700; line-height: 26px; }
+.report-guide.writing-guide .writing-guide__check { flex: 0 0 20px; color: #1f3a5f; font-weight: 700; }
+.report-guide.writing-guide .writing-guide__text { min-width: 0; white-space: pre-wrap; }
+.report-guide.writing-guide .writing-guide__hint { margin: 10px 0 0; color: #64748b; font-size: 13px; line-height: 1.7; }
+.report-guide.writing-guide .writing-guide__note { margin: 24px 0 0; padding-top: 14px; border-top: 1px solid #e5e7eb; color: #64748b; font-size: 14px; line-height: 1.7; }
+.report-guide.writing-guide .writing-guide__note > span { margin-right: 8px; font-weight: 600; }
+.report-guide.writing-guide .writing-guide__empty { margin: 20px 0 0; font-size: 15px; }
+@media (max-width: 760px) {
+  .report-block.report-guide.writing-guide { padding: 16px; }
+  .report-guide.writing-guide > h3 { font-size: 20px; }
+  .report-guide.writing-guide h4 { font-size: 17px; }
+  .report-guide.writing-guide li { padding: 12px; gap: 10px; font-size: 15px; }
+}

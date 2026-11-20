@@ -3,6 +3,7 @@ import {AnswerDisclosure} from '../math-learning/answer-disclosure';
 import {MathText} from "../math-display/math-text";
 import {criterionEvidence,studentCriterionName} from '@/lib/my/criterion-display';
 import './evaluation-refinement.css';
+import {WritingGuideCard} from './writing-guide-card';
 import {GrowthBars} from './growth-bars';
 import '../essay-service.css';
 import {evaluationChangeSentence,evaluationSpeech} from '@/lib/my/evaluation-presentation';
@@ -51,10 +52,6 @@ function CriterionBody({report}:{report:Report}){
 }
 const humanLevels=['','크게 보완 필요','부족','보완 필요','대체로 충실','매우 충실'];
 function HumanEvaluationReport({report,title,answerLabel,before,allowVoice}:{before?:Report;report:Report;title:string;answerLabel?:string;allowVoice:boolean}){
- const distinct=(values:string[])=>[...new Set(values.filter(s=>s.trim()))];
- const linked=new Set(report.weaknesses.map(f=>f.action));
- const actions=distinct(report.actions).filter(s=>!linked.has(s));
- const checklist=distinct(report.nextSteps).filter(s=>!linked.has(s)&&!report.actions.includes(s));
  return <article className="my-panel evaluation-report essay-service"><h2 className="evaluation-report__title">{title}</h2>
  <details className="report-answer"><summary>{answerLabel??'제출 답안'}</summary><p className="essay-answer">{report.answer||'첨부 답안 · 비공개 보관'}</p></details>
  {before&&<details className="report-answer"><summary>비교 대상 · 이전 제출 답안</summary><p className="essay-answer">{before.answer||'첨부 답안 · 비공개 보관'}</p></details>}
@@ -65,12 +62,7 @@ function HumanEvaluationReport({report,title,answerLabel,before,allowVoice}:{bef
   <h3>풀이 과정 평가</h3>{report.math.steps.length?report.math.steps.map((step,index)=><article key={index} className="report-feedback"><h4>풀이 {step.position||index+1} · {step.status}</h4><p><MathText text={step.representation}/></p><p><MathText text={step.explanation}/></p></article>):<p>저장된 풀이 단계 평가가 없습니다.</p>}
  </section>}
  {allowVoice&&<details className="report-audio"><summary>음성으로 듣기</summary><VoiceFeedback text={evaluationSpeech(report)}/></details>}
- <section className="report-block report-guide"><h3>높은 평가를 위한 작성 가이드</h3>
- <p>이 문항에 저장된 수정 방향과 확인 항목입니다. 보완 사유와 연결된 개선 방법은 아래에서 확인하세요.</p>
- {report.actions.length>0&&<><h4>우선 개선 과제</h4><ul>{report.weaknesses.filter(f=>report.actions.includes(f.action)).map((f,i)=><li key={i}>{f.title||'보완할 점'} · 아래 개선 방법 확인</li>)}{actions.map((a,i)=><li key={'action'+i}>{a}</li>)}</ul></>}
- {checklist.length>0&&<><h4>다시 쓸 때 확인할 것</h4><ul>{checklist.map((s,i)=><li key={i}>{s}</li>)}</ul></>}
- <p className="my-note">이 기록에는 별도로 검증된 높은 평가의 핵심 조건과 추천 답안 전개 순서가 없습니다. 저장된 피드백만 안내합니다.</p>
- </section>
+ <WritingGuideCard report={report}/>
  <FeedbackSection title="잘한 점" items={report.strengths} answer={report.answer}/>
  <FeedbackSection title="보완할 점과 개선 방법" items={report.weaknesses} answer={report.answer}/>
  {report.sentences?.filter(s=>s.quote&&report.answer.includes(s.quote)).length?<section className="report-block report-sentences"><h3>문장 다듬기</h3>{report.sentences.filter(s=>s.quote&&report.answer.includes(s.quote)).map((s,i)=><article className="report-feedback" key={i}><h4>학생이 작성한 글</h4><blockquote>{s.quote}</blockquote><h4>평가</h4><p>{s.diagnosis}</p><div className="rewrite-direction"><h4>개선 방법</h4><p>{s.direction}</p>{s.example&&<><h4>수정 예시 · 학생 원문 아님</h4><p>{s.example}</p></>}</div></article>)}</section>:null}
