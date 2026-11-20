@@ -11,3 +11,5 @@ it('covers seven calendar dates and current month',()=>{
  expect(periodBounds('d7','','',now)!.from).toBe(Date.parse('2026-10-18T00:00:00+09:00'));
  expect(periodBounds('month','','',now)!.from).toBe(Date.parse('2026-10-01T00:00:00+09:00'));
 });
+
+it('rejects nonexistent calendar dates without rolling them into next month',()=>{expect(periodBounds('custom','2026-02-30','2026-03-03')).toBeNull();expect(periodBounds('custom','2026-02-28','2026-02-30')).toBeNull();});

@@ -1,36 +1,46 @@
-'use client';
-import {useMemo,useState} from 'react';
+"use client";
+import {useEffect,useMemo,useState} from 'react';
 import {useReadReport} from './admin-dashboard-view';
 import {KpiTile} from './kpi-tile';
+import {AdminPeriodFilter} from './admin-period-filter';
+import type {AdminPeriod} from '@/lib/admin/period';
+import {formatDateTime} from '@/lib/admin/format';
+import {labDashboardHref} from '@/lib/admin/lab-dashboard';
 import {analyticsWindow} from '@/lib/admin/analytics';
-export type LabStatusReport={summary?:{failed?:number};live?:{processing?:number;retry_pending?:number}};
+export type LabStatusReport={summary?:{requests?:number;completed?:number;failed?:number;retries?:number|null};live?:{processing?:number;retry_pending?:number}};
+type Read<T>={data?:T;error?:boolean;receivedAt?:string};
+type Range={p_from:string|null;p_to:string|null};
 const known=(n:unknown):n is number=>typeof n==='number'&&Number.isInteger(n)&&n>=0;
 export function AdminLabWarningStrip(){
- const [refresh,setRefresh]=useState(0);
- const range=useMemo(()=>{void refresh;return analyticsWindow('d7');},[refresh]);
- const r=useReadReport<LabStatusReport>('admin_essay_operations',range?{...range,p_filters:{},p_offset:0,p_run:null}:null,refresh);
- const feedback=useReadReport<{stats?:{pending?:number}}>('admin_essay_feedback',{p:{status:'new'}},refresh);
- return <LabStatusCards report={r} feedback={feedback} onRefresh={()=>setRefresh(n=>n+1)} hubLink/>;
+ const [refresh,setRefresh]=useState(0),[period,setPeriod]=useState<AdminPeriod>('d7'),[from,setFrom]=useState(''),[to,setTo]=useState('');
+ useEffect(()=>{const update=()=>setRefresh(n=>n+1);window.addEventListener('admin-lab-changed',update);return()=>window.removeEventListener('admin-lab-changed',update);},[]);
+ const range=useMemo(()=>{void refresh;return analyticsWindow(period,from,to);},[refresh,period,from,to]);
+ const valid=range&&Date.parse(range.p_to)-Date.parse(range.p_from)<=93*86400000?range:null;
+ const liveRange=useMemo(()=>{void refresh;return analyticsWindow('today')!;},[refresh]);
+ const live=useReadReport<LabStatusReport>('admin_essay_operations',{...liveRange,p_filters:{},p_offset:0,p_run:null},refresh);
+ const feedback=useReadReport<{stats?:{pending?:number}}>('admin_essay_feedback',{p:{}},refresh);
+ return <><AdminPeriodFilter label="논술 운영 기간 (KST)" period={period} from={from} to={to} options={['today','d7','d30','custom']} onChange={(p,f,t)=>{setPeriod(p);setFrom(f);setTo(t);}}/>{!valid&&<p role="alert">시작일과 종료일을 입력하고 93일 이내로 선택하세요.</p>}<LabStatusCards range={valid} report={live} feedback={feedback} refresh={refresh} onRefresh={()=>setRefresh(n=>n+1)} hubLink/></>;
 }
-export function LabStatusCards({report:r,feedback,onRefresh,hubLink=false}:{report:{data?:LabStatusReport;error?:boolean};feedback:{data?:{stats?:{pending?:number}};error?:boolean};onRefresh:()=>void;hubLink?:boolean}){
+export function LabStatusCards({report,feedback,onRefresh,hubLink=false,range,refresh=0}:{range:Range|null;report:Read<LabStatusReport>;feedback:Read<{stats?:{pending?:number}}>;refresh?:number;onRefresh:()=>void;hubLink?:boolean}){
+ const stats=useReadReport<{version:string;as_of:string;summary:NonNullable<LabStatusReport['summary']>}>('admin_lab_operation_stats',range,refresh);
+ const values=stats.data?.version==='admin-lab-operation-stats-v1'?stats.data.summary:undefined;
+ const periodNote=range?.p_from&&range.p_to?`${formatDateTime(range.p_from)} ~ ${formatDateTime(new Date(Date.parse(range.p_to)-1).toISOString())} · KST`:'전체 기간';
+ const periodItems=[['첨삭 요청',values?.requests,'','선택 기간에 생성된 요청'],['첨삭 완료',values?.completed,'completed','선택 기간 접수 중 현재 완료'],['첨삭 실패',values?.failed,'failed','선택 기간 접수 중 현재 실패'],['재시도 발생',values?.retries,'','선택 기간에 기록된 재시도 사건']] as const;
+ const stamp=(r:Read<unknown>)=>r.receivedAt?formatDateTime(r.receivedAt)+' KST':'확인 중';
  const items=[
-  {name:'최근 7일 첨삭 실패',n:r.data?.summary?.failed,period:'최근 7일 접수 기준 · KST',href:'/admin/essay-runs/?state=failed',destination:'전체 기간 실패 회차 목록',source:r},
-  {name:'현재 처리 중',n:r.data?.live?.processing,period:'전체 기간 · 현재 상태',href:'/admin/essay-runs/?state=reserved',destination:'미완료 회차 목록',source:r},
-  {name:'현재 재시도 대기',n:r.data?.live?.retry_pending,period:'전체 기간 · 현재 상태',href:'/admin/operations/',destination:'운영 상세 · 재시도 필터 미적용',source:r},
-  {name:'신규 학생 피드백',n:feedback.data?.stats?.pending,period:'전체 기간 · 신규 상태',href:'/admin/essay-feedback/?status=new',destination:'신규 피드백 목록',source:feedback},
+  {name:'현재 처리 중',n:report.data?.live?.processing,href:'/admin/essay-runs/?state=reserved&visibility=all',scope:'전체 기간 · 현재 예약 상태 · 숨긴 요청 포함',source:report},
+  {name:'현재 재시도 대기',n:report.data?.live?.retry_pending,href:'/admin/essay-runs/?state=reserved&visibility=all',scope:'전체 기간 · 예약 중 문항 실패 기록 보유 · 숨긴 요청 포함',source:report},
+  {name:'미처리 학생 피드백',n:feedback.data?.stats?.pending,href:'/admin/essay-feedback/',scope:'전체 기간 · 신규 및 확인 중',source:feedback},
  ];
- const allZero=items.every(i=>!i.source.error&&i.source.data&&known(i.n)&&i.n===0);
- const cards=<div className="lab-status-grid">{items.map(i=>{
-  const available=!i.source.error&&!!i.source.data&&known(i.n);
-  const value=available?`${i.n}건`:i.source.error?'확인 불가':!i.source.data?'조회 중…':'확인 불가';
-  return <KpiTile key={i.name} label={i.name} value={value} href={i.href} tone="info" note={<>{i.period}<br/><strong>{available?(i.n===0?'해당 항목 없음':'내역 확인 가능'):'집계 확인 필요'}</strong><br/>{i.destination}</>}/>;
- })}</div>;
  return <section className="admin-panel lab-status" aria-label="논술 LAB 운영 확인">
  <header className="focus-toolbar"><h2>논술 LAB 운영 확인</h2><button type="button" onClick={onRefresh}>운영 상태 새로고침</button></header>
- {r.error||feedback.error?<p role="alert">일부 운영 지표 조회 실패 · 확인 불가</p>:null}
- {allZero?<details><summary>현재 표시 중인 운영 지표에서 추가 확인 항목이 없습니다. · 4개 지표 보기</summary>{cards}</details>:cards}
- <p className="focus-note">처리 중·재시도 대기는 중복될 수 있으며 합산하지 않습니다. 건수만으로 장애를 판정하지 않습니다. 실패·처리 중 링크는 회차 목록으로 이동하며 운영 집계와 범위가 다를 수 있습니다.</p>
+ <h3>기간별 통계</h3><p className="focus-note">{periodNote} · 전체 출처 · 숨긴 요청 포함. 완료·실패는 접수 기간에 속한 요청의 현재 상태입니다. 재시도는 실제 발생 기간으로 집계합니다.</p>
+ {stats.error&&<p role="alert">기간별 지표 조회 실패 · 관리자 권한 또는 통계 DB 적용 상태를 확인하세요.</p>}
+ <div className="lab-status-grid">{periodItems.map(([name,n,state,note])=><KpiTile key={name} label={name} value={!range?'기간 선택 필요':stats.error?'확인 불가':!stats.data?'조회 중…':known(n)?`${n}건`:'확인 불가'} href={name==='재시도 발생'?'/admin/operations/':range?labDashboardHref(range,'',state?{state}:{}):'/admin/essay-runs/'} note={<>{periodNote}<br/>{note}<br/>갱신 {stats.data?.as_of?formatDateTime(stats.data.as_of)+' KST':stamp(stats)}{name==='재시도 발생'&&<><br/>운영 상세 · 재시도 사건 필터 미적용</>}</>}/>)}</div>
+ <h3>현재 운영 상태 · 전체 기간</h3>
+ {(report.error||feedback.error)&&<p role="alert">일부 현재 운영 지표 조회 실패 · 확인 불가</p>}
+ <div className="lab-status-grid">{items.map(i=><KpiTile key={i.name} label={i.name} value={i.source.error?'확인 불가':!i.source.data?'조회 중…':known(i.n)?`${i.n}건`:'확인 불가'} href={i.href} tone="info" note={<>{i.scope}<br/>갱신 {stamp(i.source)}{i.name==='현재 재시도 대기'&&<><br/>예약 목록 · 재시도 가능 여부는 상태 확인</>}</>}/>)}</div>
+ <p className="focus-note">현재 상태는 기간 선택과 무관합니다. 처리 중·재시도 대기는 중복될 수 있으며 합산하지 않습니다. 실행 잠금·문항 기록을 확인하기 전에는 중단으로 판정하지 않습니다. 보관된 요청도 포함합니다.</p>
  {hubLink&&<p><a href="/admin/lab-dashboard/">논술 LAB 대시보드로 →</a></p>}
- <details><summary>집계 범위와 미확인 항목</summary><p className="focus-note">실패는 최근 7일 접수 중 현재 실패 상태입니다. 처리 중은 예약 상태, 재시도 대기는 그중 문항 실패 기록이 있는 항목입니다. 신규 피드백은 신규 상태만 집계합니다. 장기 미완료·결과 누락·차감 이상은 이 집계로 확인할 수 없습니다.</p></details>
  </section>;
 }

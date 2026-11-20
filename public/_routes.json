@@ -6,7 +6,8 @@
     "/api/math/*",
     "/api/essay/*",
     "/api/owner-review/essay",
-    "/api/admin/ga4"
+    "/api/admin/ga4",
+    "/api/admin/essay-run"
   ],
   "exclude": []
 }

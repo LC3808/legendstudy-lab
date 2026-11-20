@@ -1,0 +1,13 @@
+import {it,expect,vi,beforeEach,afterEach} from 'vitest';
+import {onRequestPost} from '../../../functions/api/admin/essay-run';
+const mock=vi.hoisted(()=>({request:vi.fn(),fetch:vi.fn()}));
+vi.mock('../math-release/server/transport',()=>({serverTransport:()=>({request:mock.request})}));
+vi.mock('../essay-runtime/server/worker-binding',()=>({reviewedWorkerBinding:()=>({fetch:mock.fetch})}));
+const body={run_id:'10000000-0000-4000-8000-000000000001',key:'30000000-0000-4000-8000-000000000001'};
+const env={MATH_ORIGIN:'https://lab.legendstudy.com'};
+const req=(data=body,headers:Record<string,string>={Authorization:'Bearer original-admin',Origin:env.MATH_ORIGIN})=>new Request(env.MATH_ORIGIN+'/api/admin/essay-run',{method:'POST',headers,body:JSON.stringify(data)});
+beforeEach(()=>{vi.clearAllMocks();mock.request.mockResolvedValue(new Response('{}'));mock.fetch.mockResolvedValue(new Response(JSON.stringify({state:'queued'}),{status:202}));});afterEach(()=>vi.unstubAllGlobals());
+it('forwards original admin JWT after authoritative capability check, with no caller subject',async()=>{const r=await onRequestPost({request:req(),env});expect(r.status).toBe(202);expect(r.headers.get('cache-control')).toContain('no-store');expect(mock.request).toHaveBeenCalledWith('/rest/v1/rpc/admin_lab_run_capabilities','original-admin',expect.objectContaining({body:JSON.stringify({p_run:body.run_id})}));const forwarded=mock.fetch.mock.calls[0][0] as Request;expect(forwarded.headers.get('authorization')).toBe('Bearer original-admin');expect(await forwarded.json()).toEqual(body);});
+it('blocks direct student API calls before Worker',async()=>{mock.request.mockResolvedValue(new Response('{}',{status:403}));expect((await onRequestPost({request:req(),env})).status).toBe(403);expect(mock.fetch).not.toHaveBeenCalled();});
+it('rejects missing login, foreign Origin and injected identity',async()=>{expect((await onRequestPost({request:req(body,{}),env})).status).toBe(401);expect((await onRequestPost({request:req(body,{Authorization:'Bearer jwt',Origin:'https://other.test'}),env})).status).toBe(403);expect((await onRequestPost({request:req({...body,subject_id:'spoof'} as typeof body),env})).status).toBe(422);expect(mock.request).not.toHaveBeenCalled();});
+it('preserves retry failure and does not claim success after dispatch error',async()=>{mock.fetch.mockResolvedValue(new Response(JSON.stringify({code:'ACTIVE_LEASE'}),{status:409}));const r=await onRequestPost({request:req(),env});expect(r.status).toBe(409);expect(await r.json()).toEqual({code:'ACTIVE_LEASE'});mock.fetch.mockRejectedValue(Error('network'));expect((await onRequestPost({request:req(),env})).status).toBe(503);});

@@ -1,37 +1,32 @@
 // @vitest-environment jsdom
-import {render,screen,cleanup} from '@testing-library/react';
+import {render,screen,cleanup,fireEvent} from '@testing-library/react';
 import {it,expect,vi,afterEach} from 'vitest';
 import {AdminLabWarningStrip} from './admin-lab-warning-strip';
 const read=vi.hoisted(()=>vi.fn());
 vi.mock('./admin-dashboard-view',()=>({useReadReport:read}));
-afterEach(cleanup);
-function fixture(failed=0,processing=0,retry_pending:number|undefined=0,pending=0){read.mockImplementation((name:string)=>({data:name==='admin_essay_feedback'?{stats:{pending}}:{summary:{failed},live:{processing,retry_pending}}}));}
-it('shows four scoped cards and preserves exact destination contracts without summing overlaps',()=>{
- fixture(2,1,1,3);render(<AdminLabWarningStrip/>);
- expect(screen.getAllByRole('link')).toHaveLength(5);
- expect(screen.getByRole('link',{name:'논술 LAB 대시보드로 →'})).toHaveAttribute('href','/admin/lab-dashboard/');
- expect(screen.getByRole('link',{name:/최근 7일 첨삭 실패 2건/})).toHaveAttribute('href','/admin/essay-runs?state=failed');
- expect(screen.getByRole('link',{name:/현재 처리 중 1건/})).toHaveAttribute('href','/admin/essay-runs?state=reserved');
- expect(screen.getByRole('link',{name:/현재 재시도 대기 1건/})).toHaveTextContent('재시도 필터 미적용');
- expect(screen.getByRole('link',{name:/신규 학생 피드백 3건/})).toHaveAttribute('href','/admin/essay-feedback?status=new');
- expect(screen.getByText(/중복될 수 있으며 합산하지 않습니다/)).toBeInTheDocument();
- expect(read).toHaveBeenCalledWith('admin_essay_operations',expect.objectContaining({p_filters:{},p_run:null}),0);
-});
-it('collapses only four confirmed zeros and never asserts system health',()=>{
+afterEach(()=>{cleanup();vi.useRealTimers();});
+function fixture(){read.mockImplementation((name:string)=>({receivedAt:'2026-11-20T00:00:00Z',data:name==='admin_essay_feedback'?{stats:{pending:3}}:name==='admin_lab_operation_stats'?{version:'admin-lab-operation-stats-v1',summary:{requests:4,completed:2,failed:1,retries:1},as_of:'2026-11-20T00:00:00Z'}:{live:{processing:1,retry_pending:1}}}));}
+it('separates four period metrics and three live metrics with truthful scope and timestamps',()=>{
  fixture();render(<AdminLabWarningStrip/>);
- const summary=screen.getByText(/현재 표시 중인 운영 지표에서 추가 확인 항목이 없습니다/);
- expect(summary.closest('details')).not.toHaveAttribute('open');
- expect(screen.queryByText(/전체 시스템 정상/)).not.toBeInTheDocument();
- expect(document.querySelectorAll('.lab-status-grid .focus-kpi__v')).toHaveLength(4);
+ expect(screen.getAllByRole('link')).toHaveLength(8);
+ expect(screen.getByRole('link',{name:/첨삭 요청 4건/})).toHaveTextContent('선택 기간에 생성된 요청');
+ expect(screen.getByRole('link',{name:/재시도 발생 1건/})).toHaveTextContent('선택 기간에 기록된 재시도 사건');
+ expect(screen.getByRole('link',{name:/현재 처리 중 1건/})).toHaveAttribute('href','/admin/essay-runs?state=reserved&visibility=all');
+ expect(screen.getByRole('link',{name:/미처리 학생 피드백 3건/})).toHaveTextContent('신규 및 확인 중');
+ expect(screen.getByText(/중복될 수 있으며 합산하지 않습니다/)).toBeInTheDocument();
+ expect(read).toHaveBeenCalledWith('admin_essay_feedback',{p:{}},0);
 });
-it('keeps unknown counts distinct from zero',()=>{
- fixture();read.mockReturnValue({data:{summary:{failed:0},live:{processing:0}}});render(<AdminLabWarningStrip/>);
+it('KST midnight selects inclusive dates and never filters live data with custom period',()=>{
+ vi.useFakeTimers();vi.setSystemTime(new Date('2026-11-19T15:00:00Z'));fixture();render(<AdminLabWarningStrip/>);
+ fireEvent.change(screen.getByLabelText('논술 운영 기간 (KST)'),{target:{value:'today'}});
+ expect(read).toHaveBeenCalledWith('admin_lab_operation_stats',{p_from:'2026-11-19T15:00:00.000Z',p_to:'2026-11-20T15:00:00.000Z'},0);
+ fireEvent.change(screen.getByLabelText('논술 운영 기간 (KST)'),{target:{value:'custom'}});
+ expect(screen.getByRole('link',{name:/현재 처리 중 1건/})).toBeInTheDocument();
+ expect(read).toHaveBeenLastCalledWith('admin_lab_operation_stats',null,0);
+});
+it('zero and unknown remain distinct; live status remains visible on stats failure',()=>{
+ read.mockImplementation((name:string)=>name==='admin_lab_operation_stats'?{error:true}:name==='admin_essay_feedback'?{data:{stats:{pending:0}}}:{data:{live:{processing:0}}});render(<AdminLabWarningStrip/>);
+ expect(screen.getByRole('alert')).toHaveTextContent('기간별 지표 조회 실패');
+ expect(screen.getByRole('link',{name:/현재 처리 중 0건/})).toBeInTheDocument();
  expect(screen.getByRole('link',{name:/현재 재시도 대기 확인 불가/})).toBeInTheDocument();
- expect(screen.queryByText(/현재 표시 중인 운영 지표에서 추가/)).not.toBeInTheDocument();
-});
-it('does not collapse loading or failed reads',()=>{
- read.mockImplementation((name:string)=>name==='admin_essay_feedback'?{error:true}:{});render(<AdminLabWarningStrip/>);
- expect(screen.getByRole('alert')).toHaveTextContent('조회 실패');
- expect(screen.getByRole('link',{name:/현재 처리 중 조회 중/})).toBeInTheDocument();
- expect(screen.queryByText(/현재 표시 중인 운영 지표에서 추가/)).not.toBeInTheDocument();
 });

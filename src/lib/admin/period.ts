@@ -8,7 +8,7 @@ export function periodBounds(period:AdminPeriod,from='',to='',now=new Date()):{f
  if(period==='custom'){
   if(!/^\d{4}-\d{2}-\d{2}$/.test(from)||!/^\d{4}-\d{2}-\d{2}$/.test(to))return null;
   const a=Date.parse(from+'T00:00:00+09:00'),b=Date.parse(to+'T00:00:00+09:00')+86400000;
-  return Number.isFinite(a)&&Number.isFinite(b)&&a<b?{from:a,to:b}:null;
+  return Number.isFinite(a)&&Number.isFinite(b)&&new Date(a+9*3600000).toISOString().slice(0,10)===from&&new Date(b-86400000+9*3600000).toISOString().slice(0,10)===to&&a<b?{from:a,to:b}:null;
  }
  const calendar=new Date(start+9*3600000);
  if(period==='m6'||period==='y1'){const date=calendar.getUTCDate();calendar.setUTCDate(1);calendar.setUTCMonth(calendar.getUTCMonth()-(period==='m6'?6:12));const last=new Date(Date.UTC(calendar.getUTCFullYear(),calendar.getUTCMonth()+1,0)).getUTCDate();calendar.setUTCDate(Math.min(date,last));return {from:calendar.getTime()-9*3600000,to:start+86400000};}

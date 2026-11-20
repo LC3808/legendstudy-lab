@@ -93,3 +93,5 @@
 .lab-status .focus-kpi__v{font-size:28px}
 @container (min-width:650px){.focused-admin .focus-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.lab-status-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @container (min-width:1200px){.focused-admin .focus-kpis{grid-template-columns:repeat(6,minmax(0,1fr))}}
+
+.lab-status>h3{margin:1.5rem 0 .75rem;padding-top:1rem;border-top:1px solid #cbd9de}.lab-status>h3:first-of-type{border-top:0;padding-top:0}

@@ -188,3 +188,8 @@ Owner 승인으로 private Worker/암호화DO/Secret4개 설치, Shadow 오류�
 ## 2026-11-20 — 작성 가이드 운영 반영
 
 [공통 UI·검증](writing-guide-readability-20261120.md): d559b9b / Pages969afe59, 전체2175 PASS/5 SKIP, 실제3문항·원문PDF 확인. 정본은 APP Wiki; DB/학생답안/평가/결제/Finance 변경0.
+
+
+## 2026-11-20 — 관리자 논술 기간·요청 관리
+
+[구현·승인 경계](admin-run-management-20261120.md). KST기간/실시간 분리·서버 capability·관리자 JWT retry adapter·테스트삭제/학생보관·감사 구현. DB 패키지 격리/동시실행 PASS. 새 DB 설치 승인대기, WEB/Worker 미배포·기존요청변경0.

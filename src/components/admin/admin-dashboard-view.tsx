@@ -19,8 +19,8 @@ import {AdminLabWarningStrip} from './admin-lab-warning-strip';
 import {AdmissionsSections,type Admissions,type Outcomes} from './admin-admissions-sections';
 import {DashboardUsageRankings} from './dashboard-usage-rankings';
 export function useReadReport<T>(name:string,args:Record<string,unknown>|null,refresh=0){
- const {client,user}=useAuth();const key=JSON.stringify([name,args,user?.id,refresh]);const [result,setResult]=useState<{key:string;data?:T;error?:boolean}>();
- useEffect(()=>{let active=true;if(!client||!user)return;const params=JSON.parse(key)[1];if(params===null)return;void Promise.resolve(client.rpc(name,params)).then(({data,error})=>{if(active)setResult(error?{key,error:true}:{key,data:data as T});}).catch(()=>{if(active)setResult({key,error:true});});return()=>{active=false;};},[client,user,key,name]);
+ const {client,user}=useAuth();const key=JSON.stringify([name,args,user?.id,refresh]);const [result,setResult]=useState<{key:string;data?:T;error?:boolean;receivedAt?:string}>();
+ useEffect(()=>{let active=true;if(!client||!user)return;const params=JSON.parse(key)[1];if(params===null)return;void Promise.resolve(client.rpc(name,params)).then(({data,error})=>{if(active)setResult(error?{key,error:true}:{key,data:data as T,receivedAt:new Date().toISOString()});}).catch(()=>{if(active)setResult({key,error:true});});return()=>{active=false;};},[client,user,key,name]);
  return result?.key===key?result:{key};
 }
 export function CompactMetric({label,value,note}:{label:string;value:React.ReactNode;note?:string}){return <div className="focus-metric"><dt>{label}</dt><dd>{value}</dd>{note&&<small>{note}</small>}</div>;}
