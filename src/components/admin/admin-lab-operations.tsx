@@ -27,8 +27,8 @@ export function AdminLabOperations({accountId}:{accountId?:string}){
  const r=useReadReport<LabList>('admin_lab_runs_visible',dates?{p_visibility:visibility,p_user:accountId??null,p_university:university||null,p_exam:exam||null,p_state:status||null,p_source:source||null,p_offset:offset,p_query:query,...dates}:null,refresh);
  const change=(set:(s:string)=>void,value:string)=>{set(value);setOffset(0);setSelected(null);};
  return <section className="admin-section"><h3>논술 LAB 이용 현황</h3><p>시험 회차 기준입니다. 이용권 거래·문항 수 및 이전 단일 문항 평가는 별도입니다.</p>
- <p>목록에서 숨겨도 평가 처리는 계속되며 학생 답안·결과·이용권은 보존됩니다. 숨김은 모든 관리자에게 적용됩니다.</p>
- <label>목록 표시 <select value={visibility} onChange={e=>{setVisibility(e.target.value);setOffset(0);setSelected(null);}}><option value="visible">표시 중인 항목</option><option value="hidden">숨긴 항목</option><option value="all">모든 항목</option></select></label>
+ <p>보관하면 활성 운영 집계와 재진행 대상에서 제외됩니다. 학생 답안·결과·원장과 이용권 예약은 유지되며 환불이나 예약 해제는 실행하지 않습니다. 복원만으로 첨삭이 다시 실행되지는 않습니다.</p>
+ <label>목록 표시 <select value={visibility} onChange={e=>{setVisibility(e.target.value);setOffset(0);setSelected(null);}}><option value="visible">활성 항목</option><option value="hidden">보관된 항목</option><option value="all">모든 항목</option></select></label>
  <div className="lab-filters" aria-label="첨삭 검색 조건"><div className="admin-filters__row"><label>대학 <select value={university} onChange={e=>{change(setUniversity,e.target.value);setExam('');}}><option value="">전체 대학</option>{r.data?.universities?.map(u=><option key={u.university_id} value={u.university_id}>{u.university}</option>)}</select></label>
  <label>시험 <select value={exam} onChange={e=>change(setExam,e.target.value)}><option value="">전체 시험</option>{r.data?.exams?.map(e=><option key={e.exam_id} value={e.exam_id}>{e.title??e.exam_id}</option>)}</select></label>
  <label>상태 <select value={status} onChange={e=>change(setStatus,e.target.value)}><option value="">전체 상태</option><option value="completed">완료</option><option value="reserved">진행 중</option><option value="failed">실패</option></select></label>
