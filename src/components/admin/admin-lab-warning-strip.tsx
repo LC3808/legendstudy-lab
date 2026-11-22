@@ -2,6 +2,7 @@
 import {useEffect,useMemo,useState} from 'react';
 import {useReadReport} from './admin-dashboard-view';
 import {KpiTile} from './kpi-tile';
+import {AdminRecoveryOperations} from './admin-recovery-operations';
 import {AdminPeriodFilter} from './admin-period-filter';
 import type {AdminPeriod} from '@/lib/admin/period';
 import {formatDateTime} from '@/lib/admin/format';
@@ -33,7 +34,7 @@ export function LabStatusCards({report,feedback,onRefresh,hubLink=false,range,re
   {name:'미처리 학생 피드백',n:feedback.data?.stats?.pending,href:'/admin/essay-feedback/',scope:'전체 기간 · 신규 및 확인 중',source:feedback},
   {name:'보관된 요청',n:report.data?.live?.archived,href:'/admin/essay-runs/?visibility=hidden',scope:'전체 기간 · 모든 상태의 보관 요청 · 활성 집계 제외',source:report},
  ];
- return <section className="admin-panel lab-status" aria-label="논술 LAB 운영 확인">
+ return <><section className="admin-panel lab-status" aria-label="논술 LAB 운영 확인">
  <header className="focus-toolbar"><h2>논술 LAB 운영 확인</h2><button type="button" onClick={onRefresh}>운영 상태 새로고침</button></header>
  <h3>기간별 통계</h3><p className="focus-note">{periodNote} · 전체 출처 · 보관 요청 포함. 완료·실패는 접수 기간에 속한 요청의 현재 상태입니다. 재시도는 실제 발생 기간으로 집계합니다.</p>
  {stats.error&&<p role="alert">기간별 지표 조회 실패 · 관리자 권한 또는 통계 DB 적용 상태를 확인하세요.</p>}
@@ -43,5 +44,5 @@ export function LabStatusCards({report,feedback,onRefresh,hubLink=false,range,re
  <div className="lab-status-grid">{items.map(i=><KpiTile key={i.name} label={i.name} value={i.source.error?'확인 불가':!i.source.data?'조회 중…':known(i.n)?`${i.n}건`:'확인 불가'} href={i.href} tone="info" note={<>{i.scope}<br/>갱신 {stamp(i.source)}{i.name==='현재 재시도 대기'&&<><br/>예약 목록 · 재시도 가능 여부는 상태 확인</>}</>}/>)}</div>
  <p className="focus-note">현재 상태는 기간 선택과 무관합니다. 처리 중은 예약을 유지한 미완료 요청 수이며 지금 실행 중이라는 뜻은 아닙니다. 응답 확인이 필요한 요청도 포함됩니다. 첨삭 실패 0건이어도 미완료 요청의 정상 처리를 뜻하지 않습니다. 처리 중·재시도 대기는 중복될 수 있으며 합산하지 않습니다. 실행 잠금·문항 기록을 확인하기 전에는 중단으로 판정하지 않습니다. 보관 요청은 활성 집계에서 제외하며 별도로 표시합니다. 보관해도 이용권 예약은 유지됩니다.</p>
  {hubLink&&<p><a href="/admin/lab-dashboard/">논술 LAB 대시보드로 →</a></p>}
- </section>;
+ </section><AdminRecoveryOperations range={range} refresh={refresh}/></>;
 }

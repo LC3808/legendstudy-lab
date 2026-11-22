@@ -29,11 +29,13 @@ it('KST midnight selects inclusive dates and never filters live data with custom
  expect(read).toHaveBeenCalledWith('admin_lab_operation_stats',{p_from:'2026-11-19T15:00:00.000Z',p_to:'2026-11-20T15:00:00.000Z'},0);
  fireEvent.change(screen.getByLabelText('논술 운영 기간 (KST)'),{target:{value:'custom'}});
  expect(screen.getByRole('link',{name:/현재 처리 중 1건/})).toBeInTheDocument();
- expect(read).toHaveBeenLastCalledWith('admin_lab_operation_stats',null,0);
+ expect(read.mock.calls.filter(c=>c[0]==='admin_lab_operation_stats').at(-1)).toEqual(['admin_lab_operation_stats',null,0]);
+ expect(read).toHaveBeenCalledWith('admin_lab_recovery_operations',{p_from:'2026-11-13T15:00:00.000Z',p_to:'2026-11-20T15:00:00.000Z'},0);
 });
 it('zero and unknown remain distinct; live status remains visible on stats failure',()=>{
  read.mockImplementation((name:string)=>name==='admin_lab_operation_stats'?{error:true}:name==='admin_essay_feedback'?{data:{stats:{pending:0}}}:{data:{live:{processing:0}}});render(<AdminLabWarningStrip/>);
- expect(screen.getByRole('alert')).toHaveTextContent('기간별 지표 조회 실패');
+ expect(screen.getByText(/기간별 지표 조회 실패/)).toHaveAttribute('role','alert');
+ expect(screen.getByText(/복구 운영 현황을 조회하지 못했습니다/)).toHaveAttribute('role','alert');
  expect(screen.getByRole('link',{name:/현재 처리 중 0건/})).toBeInTheDocument();
  expect(screen.getByRole('link',{name:/현재 재시도 대기 확인 불가/})).toBeInTheDocument();
 });

@@ -1,0 +1,3 @@
+.lab-recovery{margin:1rem 0;padding:1rem;border:1px solid #bacbd5;border-radius:.7rem;background:#f8fbfd;color:#173847;overflow-wrap:anywhere}
+.lab-recovery h3{margin-top:0}.lab-recovery button{margin:.25rem .5rem .25rem 0}.lab-recovery__facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem 1rem}.lab-recovery__facts div{min-width:0}.lab-recovery__facts dt{font-weight:600}.lab-recovery__facts dd{margin:0}.lab-recovery__outcome{padding:.75rem;border-left:3px solid #34697a;background:#edf5f6}
+@media(max-width:640px){.lab-recovery__facts{grid-template-columns:1fr}.lab-recovery{padding:.75rem}.lab-recovery button{max-width:100%;white-space:normal}}

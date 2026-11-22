@@ -8,13 +8,23 @@ export async function onRequestPost({request,env}:{request:Request;env:MathEnvir
  const token=request.headers.get('authorization')?.match(/^Bearer ([^\s]+)$/)?.[1];if(!token)return reply({code:'LOGIN_REQUIRED'},401);
  try{
   const body=JSON.parse(new TextDecoder().decode(await boundedBody(request,1024)));
-  if(!body||Object.keys(body).sort().join(',')!=='key,run_id'||!uuid(body.run_id)||!uuid(body.key))return reply({code:'INVALID_REQUEST'},422);
+  const recovery=body?.action==='recover';
+  if(!body||typeof body!=='object'||Object.keys(body).sort().join(',')!==(recovery?'action,diagnosis_token,key,run_id':'key,run_id')||!uuid(body.run_id)||!uuid(body.key)||recovery&&(typeof body.diagnosis_token!=='string'||!/^[a-f0-9]{64}$/.test(body.diagnosis_token)))return reply({code:'INVALID_REQUEST'},422);
   const transport=serverTransport(env);
   // Caller JWT at both boundaries. No subject override / Worker-token promotion.
-  const check=await transport.request('/rest/v1/rpc/admin_lab_run_capabilities',token,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_run:body.run_id})});
-  if(!check.ok)return reply({code:check.status===404?'ADMIN_CONTRACT_PENDING':'ACCESS_DENIED'},check.status===404?503:403);
+  const check=await transport.request('/rest/v1/rpc/'+(recovery?'admin_lab_run_recovery':'admin_lab_run_capabilities'),token,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_run:body.run_id})});
+  if(!check.ok){
+   let failure:{code?:string;message?:string}={};
+   try{failure=JSON.parse(new TextDecoder().decode(await boundedBody(check,4096)));}catch{/* Never expose backend messages. */}
+   if(failure?.code==='PGRST202')return reply({code:'ADMIN_CONTRACT_PENDING'},503);
+   if(failure?.code==='PT404'||failure?.message==='RUN_NOT_FOUND')return reply({code:'RUN_NOT_FOUND'},404);
+   return reply({code:check.status===401?'LOGIN_REQUIRED':check.status===403?'ACCESS_DENIED':'DIAGNOSIS_UNAVAILABLE'},check.status===401?401:check.status===403?403:503);
+  }
   const worker=reviewedWorkerBinding(env);if(!worker)return reply({code:'WORKER_UNAVAILABLE'},503);
-  const result=await worker.fetch(new Request('https://essay-worker.internal/admin-exam-retry',{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(90000)}));
+  // DB/Worker revalidate the diagnosis under their existing locks. Do not reject
+  // a same-key replay using a newer UI diagnosis or guess a completion result.
+  const command=recovery?{run_id:body.run_id,key:body.key,diagnosis_token:body.diagnosis_token}:body;
+  const result=await worker.fetch(new Request('https://essay-worker.internal/'+(recovery?'admin-exam-recover':'admin-exam-retry'),{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(command),signal:AbortSignal.timeout(90000)}));
   const value=JSON.parse(new TextDecoder().decode(await boundedBody(result,16384)));
   return reply(value,result.status);
  }catch{return reply({code:'REQUEST_UNCERTAIN'},503);}

@@ -1,6 +1,8 @@
 'use client';
 import {useEffect,useState} from 'react';
 import {AdminRunActions} from './admin-run-actions';
+import {AdminRunRecovery} from './admin-run-recovery';
+import {useAuth} from '@/components/auth-context';
 import {analyticsWindow} from '@/lib/admin/analytics';
 import {initialLabQuery,uuidValue} from '@/lib/admin/lab-navigation';
 import {useReadReport} from './admin-dashboard-view';
@@ -19,6 +21,7 @@ const questionLabel=(id:string)=>{const label=examQuestionLabel(id);return label
 export function AdminLabOperations({accountId}:{accountId?:string}){
  const [visibility,setVisibility]=useState(()=>{const v=accountId?null:initialLabQuery().get('visibility');return v==='all'||v==='hidden'?v:'visible';});
  const [initial]=useState(()=>accountId?new URLSearchParams():initialLabQuery());
+ const [recoveryOpen,setRecoveryOpen]=useState(()=>initial.get('recovery')==='1');
  const [offset,setOffset]=useState(()=>Math.min(100000,Math.max(0,Number(initial.get('offset'))||0))),[university,setUniversity]=useState(()=>uuidValue(initial.get('university'))??''),[status,setStatus]=useState(()=>['completed','failed','reserved'].includes(initial.get('state')??'')?initial.get('state')!:''),[source,setSource]=useState(()=>['beta','other'].includes(initial.get('source')??'')?initial.get('source')!:''),[selected,setSelected]=useState<string|null>(()=>uuidValue(initial.get('run'))),[refresh,setRefresh]=useState(0);
  useEffect(()=>{if(accountId)return;const url=new URL(window.location.href);for(const [key,value] of Object.entries({offset:offset?String(offset):'',university,state:status,source,run:selected??'',visibility:visibility==='visible'?'':visibility})){const remaining=Array.from(url.searchParams.entries()).filter(([name])=>name!==key);url.search=new URLSearchParams(remaining).toString();if(value)url.searchParams.set(key,value);}window.history.replaceState(window.history.state,'',url);},[accountId,offset,university,status,source,selected,visibility]);
  const [exam,setExam]=useState(()=>uuidValue(initial.get('exam'))??''),[query,setQuery]=useState(()=>initial.get('query')??''),[draft,setDraft]=useState(query),[from,setFrom]=useState(()=>initial.get('from')??''),[to,setTo]=useState(()=>initial.get('to')??'');
@@ -40,22 +43,24 @@ export function AdminLabOperations({accountId}:{accountId?:string}){
  <p className="lab-scope">선택한 표시 상태·회원·대학·시험·상태·출처·기간에 해당하는 회차 집계입니다. 목록과 같은 조건이며 페이지 이동에 영향을 받지 않습니다.</p><dl className="lab-kpis">{Object.entries({requested:'전체 요청',completed:'완료',pending:'진행 중',failed:'실패',free_revisions:'무료 재첨삭 요청',beta_credit:'베타 발급 연결'}).map(([k,label])=><div key={k}><dt>{label}</dt><dd>{r.data!.summary[k as keyof LabList['summary']]}회</dd></div>)}</dl>
  <p>최근 첨삭 대학·시험: {r.data.latest?.university??'확인 불가'} · {r.data.latest?.title??'확인 불가'}</p>
  <p>최근 요청 {formatDateTime(r.data.summary.last_requested_at)} · 최근 이용권 차감 {formatDateTime(r.data.summary.last_consumed_at)}</p>
- <div className="admin-table-scroll"><table className="admin-table"><caption>{r.data.total}회 · 최근 요청순</caption><thead><tr><th>대학·시험</th><th>회원</th><th>요청 / 완료 (KST)</th><th>상태</th><th>이용권·회차</th><th>상세</th></tr></thead><tbody>{r.data.items.map(x=><tr key={x.id}><td>{x.university??'대학 확인 불가'}<br/>{x.title??x.exam_id}</td><td><span title={x.user_id}>{x.email??x.user_id}</span></td><td>{formatDateTime(x.created_at)}<br/>{formatDateTime(x.completed_at)}</td><td>{labState(x.state)} · 결과 {x.result_question_count}/{x.question_count}문항</td><td>{x.free_revision?'무료 재첨삭':x.parent_id?'재첨삭·과금 확인 필요':'최초·후속 유료 회차'}<br/>{x.beta_credit?'베타 발급 연결':'베타 발급 연결 없음'}</td><td><button onClick={()=>setSelected(x.id)}>첨삭 상세 보기</button> <AdminRunActions run={x} onChanged={()=>{setSelected(null);setOffset(0);setRefresh(n=>n+1);}}/></td></tr>)}</tbody></table></div>
+ <div className="admin-table-scroll"><table className="admin-table"><caption>{r.data.total}회 · 최근 요청순</caption><thead><tr><th>대학·시험</th><th>회원</th><th>요청 / 완료 (KST)</th><th>상태</th><th>이용권·회차</th><th>상세</th></tr></thead><tbody>{r.data.items.map(x=><tr key={x.id}><td>{x.university??'대학 확인 불가'}<br/>{x.title??x.exam_id}</td><td><span title={x.user_id}>{x.email??x.user_id}</span></td><td>{formatDateTime(x.created_at)}<br/>{formatDateTime(x.completed_at)}</td><td>{labState(x.state)} · 결과 {x.result_question_count}/{x.question_count}문항</td><td>{x.free_revision?'무료 재첨삭':x.parent_id?'재첨삭·과금 확인 필요':'최초·후속 유료 회차'}<br/>{x.beta_credit?'베타 발급 연결':'베타 발급 연결 없음'}</td><td><button onClick={()=>{setRecoveryOpen(false);setSelected(x.id);}}>첨삭 상세 보기</button> <button onClick={()=>{setRecoveryOpen(true);setSelected(x.id);}}>첨삭 복구·완료</button> <AdminRunActions run={x} onChanged={()=>{setSelected(null);setOffset(0);setRefresh(n=>n+1);}}/></td></tr>)}</tbody></table></div>
  {!r.data.items.length&&<p>조건에 맞는 첨삭 요청이 없습니다.</p>}
  <button disabled={!offset} onClick={()=>{setOffset(Math.max(0,offset-25));setSelected(null);}}>이전</button> <span>{Math.floor(offset/25)+1}페이지</span> <button disabled={offset+25>=r.data.total} onClick={()=>{setOffset(offset+25);setSelected(null);}}>다음</button>
- </>}{selected&&<><button onClick={()=>setSelected(null)}>첨삭 목록으로 돌아가기</button><AdminLabDetail key={selected} runId={selected} onSelect={setSelected}/></>}</section>;
+ </>}{selected&&<><button onClick={()=>setSelected(null)}>첨삭 목록으로 돌아가기</button><AdminLabDetail key={selected} runId={selected} onSelect={setSelected} recoveryOpen={recoveryOpen} onChanged={()=>setRefresh(n=>n+1)}/></>}</section>;
 }
-export function AdminLabDetail({runId,onSelect}:{runId:string;onSelect:(id:string)=>void}){
+export function AdminLabDetail({runId,onSelect,recoveryOpen=false,onChanged}:{runId:string;onSelect:(id:string)=>void;recoveryOpen?:boolean;onChanged?:()=>void}){
+ const {client}=useAuth();const [updatedDetail,setUpdatedDetail]=useState<LabDetail|null>(null),[refreshError,setRefreshError]=useState(false);
+ async function reloadDetail(){onChanged?.();if(!client)return;try{const response=await client.rpc('admin_lab_run_detail',{p_run:runId});if(response.error||response.data?.version!=='admin-lab-detail-v1')throw Error();setUpdatedDetail(response.data);setRefreshError(false);}catch{setRefreshError(true);}}
  const [refresh,setRefresh]=useState(0);const r=useReadReport<LabDetail>('admin_lab_run_detail',{p_run:runId},refresh);
  if(r.error||(r.data&&r.data.version!=='admin-lab-detail-v1'))return <p role="alert">첨삭 상세 조회 불가 — 관리자 권한·계정 상태·원본 기록을 확인하세요. <button onClick={()=>setRefresh(x=>x+1)}>다시 시도</button></p>;
  if(!r.data)return <p role="status">저장된 답안·첨삭 결과 조회 중…</p>;
- const d=r.data,run=d.run;let reports:ReturnType<typeof examReports>=[];let parseError=false;try{reports=examReports(run);}catch{parseError=true;}
+ const d=updatedDetail??r.data,run=d.run;let reports:ReturnType<typeof examReports>=[];let parseError=false;try{reports=examReports(run);}catch{parseError=true;}
  const answers=Array.isArray(run.answers)?run.answers as {questionId:string;body?:string;rubricVersion?:string;evidenceVersion?:string}[]:[];
- return <section className="admin-section lab-detail"><details open><summary>첨삭 요약</summary><h3>{String(run.university??'')} · {String(run.title??'첨삭 상세')}</h3><p>회원 {d.user_id} · {String(run.year??'')}학년도 · {labState(String(run.state))} · 읽기 전용</p>
+ return <section className="admin-section lab-detail"><details open><summary>첨삭 요약</summary><h3>{String(run.university??'')} · {String(run.title??'첨삭 상세')}</h3><p>회원 {d.user_id} · {String(run.year??'')}학년도 · {labState(String(run.state))} · 답안·결과 읽기 전용</p>
  <p>요청 {formatDateTime(String(run.created_at))} · 완료 {formatDateTime(typeof run.completed_at==='string'?run.completed_at:null)}</p>
  <p>문항 {answers.length}개 · 현재 상태: {labState(String(run.state))}</p><ul>{labAlerts(d).filter(s=>!s.startsWith('실패 진단')).map(s=><li key={s}>{s}</li>)}</ul>
  <nav aria-label="첨삭 관련 화면"><a href={`/admin/operations/?run=${encodeURIComponent(runId)}`}>운영 처리 이력</a>{' · '}<a href={`/admin/essay-feedback/?user=${encodeURIComponent(d.user_id)}`}>이 회원의 학생 피드백</a></nav><p>품질 검수는 별도 권한이 필요합니다. 권한이 없으면 검수 화면에서 접근이 제한됩니다.</p>
- </details><details open><summary>처리 상태</summary><h4>처리 과정</h4><ol>
+ </details><AdminRunRecovery runId={runId} subjectId={d.user_id} university={String(run.university??'대학 확인 불가')} exam={String(run.title??'시험 확인 불가')} requestType={d.billing?.reason==='included_revision'?'무료 재첨삭':run.parent_id?'재첨삭 회차':'최초 회차'} autoInspect={recoveryOpen} onChanged={()=>void reloadDetail()}/>{refreshError&&<p role="alert">처리 후 상세 갱신에 실패했습니다. <button onClick={()=>void reloadDetail()}>상세 다시 조회</button></p>}<details open><summary>처리 상태</summary><h4>처리 과정</h4><ol>
  {typeof run.created_at==='string'&&<li>요청 생성: {formatDateTime(run.created_at)}</li>}
  {d.billing?.reserved_at&&<li>이용권 예약: {formatDateTime(d.billing.reserved_at)}</li>}
  {d.calls.length>0&&<li>평가 처리: 호출 기록 {d.calls.length}건</li>}
