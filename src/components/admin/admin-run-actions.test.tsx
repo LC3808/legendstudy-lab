@@ -34,6 +34,12 @@ it.each(['ACTIVE_LEASE','RECONCILIATION_REQUIRED'])('blocks archive while server
 it('does not enable archive when the updated server capability is missing',async()=>{
  mock.rpc.mockResolvedValue({data:{...caps,archive_allowed:undefined}});render(<AdminRunActions run={run} onChanged={vi.fn()}/>);await open();expect(screen.getByRole('button',{name:'보관'})).toBeDisabled();expect(screen.getByText(/현재 보관 가능 여부를 확인할 수 없습니다/)).toBeInTheDocument();
 });
+it('identifies an uncertain response after server-confirmed inactive leases without allowing retry',async()=>{
+ mock.rpc.mockResolvedValue({data:{...caps,active_lease:false,retry_allowed:false,retry_reason:'RECONCILIATION_REQUIRED',archive_allowed:false,archive_reason:'RECONCILIATION_REQUIRED',lease_until:'2026-11-19T00:00:00Z'}});const fetcher=vi.fn();vi.stubGlobal('fetch',fetcher);render(<AdminRunActions run={run} onChanged={vi.fn()}/>);await open();expect(screen.getByText(/응답 확인 필요 · 자동 재진행 불가/)).toBeInTheDocument();expect(screen.getByRole('button',{name:'재진행'})).toBeDisabled();expect(screen.getByRole('button',{name:'보관'})).toBeDisabled();fireEvent.click(screen.getByRole('button',{name:'재진행'}));expect(fetcher).not.toHaveBeenCalled();expect(mock.rpc).toHaveBeenCalledTimes(1);
+});
+it('does not infer an expired run while the server reports an active lease',async()=>{
+ mock.rpc.mockResolvedValue({data:{...caps,active_lease:true,retry_allowed:false,retry_reason:'ACTIVE_LEASE',archive_allowed:false,archive_reason:'ACTIVE_LEASE'}});render(<AdminRunActions run={run} onChanged={vi.fn()}/>);await open();expect(screen.queryByText(/응답 확인 필요 · 자동 재진행 불가/)).not.toBeInTheDocument();expect(screen.getByRole('button',{name:'재진행'})).toBeDisabled();
+});
 it('does not mutate on cancellation and preserves row on server rejection',async()=>{
  render(<AdminRunActions run={run} onChanged={vi.fn()}/>);await open();vi.mocked(window.confirm).mockReturnValue(false);fireEvent.click(screen.getByRole('button',{name:'보관'}));expect(mock.rpc).toHaveBeenCalledTimes(1);
  vi.mocked(window.confirm).mockReturnValue(true);mock.rpc.mockResolvedValue({error:{message:'ACTIVE_LEASE'}});fireEvent.click(screen.getByRole('button',{name:'보관'}));expect(await screen.findByRole('alert')).toHaveTextContent('실행 잠금');expect(screen.getByRole('region',{name:'요청 관리'})).toBeInTheDocument();

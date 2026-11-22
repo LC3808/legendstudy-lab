@@ -16,6 +16,7 @@ it('separates historical period metrics, active status and archived requests wit
  expect(screen.getByRole('link',{name:/보관된 요청 2건/})).toHaveAttribute('href','/admin/essay-runs?visibility=hidden');
  expect(screen.getByRole('link',{name:/미처리 학생 피드백 3건/})).toHaveTextContent('신규 및 확인 중');
  expect(screen.getByText(/중복될 수 있으며 합산하지 않습니다/)).toBeInTheDocument();
+ expect(screen.getByText(/지금 실행 중이라는 뜻은 아닙니다/)).toHaveTextContent('첨삭 실패 0건이어도 미완료 요청의 정상 처리를 뜻하지 않습니다');
  expect(read).toHaveBeenCalledWith('admin_essay_feedback',{p:{}},0);
 });
 it('shows zero active requests while retained archive and historical totals stay visible',()=>{

@@ -41,7 +41,7 @@ export function LabStatusCards({report,feedback,onRefresh,hubLink=false,range,re
  <h3>현재 운영 상태 · 전체 기간</h3>
  {(report.error||feedback.error)&&<p role="alert">일부 현재 운영 지표 조회 실패 · 확인 불가</p>}
  <div className="lab-status-grid">{items.map(i=><KpiTile key={i.name} label={i.name} value={i.source.error?'확인 불가':!i.source.data?'조회 중…':known(i.n)?`${i.n}건`:'확인 불가'} href={i.href} tone="info" note={<>{i.scope}<br/>갱신 {stamp(i.source)}{i.name==='현재 재시도 대기'&&<><br/>예약 목록 · 재시도 가능 여부는 상태 확인</>}</>}/>)}</div>
- <p className="focus-note">현재 상태는 기간 선택과 무관합니다. 처리 중·재시도 대기는 중복될 수 있으며 합산하지 않습니다. 실행 잠금·문항 기록을 확인하기 전에는 중단으로 판정하지 않습니다. 보관 요청은 활성 집계에서 제외하며 별도로 표시합니다. 보관해도 이용권 예약은 유지됩니다.</p>
+ <p className="focus-note">현재 상태는 기간 선택과 무관합니다. 처리 중은 예약을 유지한 미완료 요청 수이며 지금 실행 중이라는 뜻은 아닙니다. 응답 확인이 필요한 요청도 포함됩니다. 첨삭 실패 0건이어도 미완료 요청의 정상 처리를 뜻하지 않습니다. 처리 중·재시도 대기는 중복될 수 있으며 합산하지 않습니다. 실행 잠금·문항 기록을 확인하기 전에는 중단으로 판정하지 않습니다. 보관 요청은 활성 집계에서 제외하며 별도로 표시합니다. 보관해도 이용권 예약은 유지됩니다.</p>
  {hubLink&&<p><a href="/admin/lab-dashboard/">논술 LAB 대시보드로 →</a></p>}
  </section>;
 }
