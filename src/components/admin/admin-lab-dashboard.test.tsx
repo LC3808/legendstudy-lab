@@ -54,3 +54,11 @@ it('loads quality metadata only after separate permission and an explicit reques
  expect(screen.getByRole('link',{name:/문항 1 · 요청/})).toHaveAttribute('href',`/ql?run=${id}&question=${id}`);
  expect(mock.rpc.mock.calls.filter(([n])=>n==='ql_exam_cases')).toHaveLength(1);
 });
+
+it('shows each cohort KPI once, formats wait-inclusive time and leaves undeployed recovery RPC unused',async()=>{
+ render(<AdminLabDashboard/>);await screen.findByText('100%');
+ expect(screen.getAllByRole('link',{name:/^첨삭 요청/})).toHaveLength(1);expect(screen.getAllByRole('link',{name:/^첨삭 완료/})).toHaveLength(1);
+ expect(screen.getAllByText('2분 0초')).toHaveLength(11);expect(screen.queryByText('synthetic@example.test')).toBeNull();
+ expect(screen.getAllByText('회원 00000000')).toHaveLength(10);
+ expect(mock.rpc.mock.calls.some(([n])=>n==='admin_lab_recovery_operations')).toBe(false);
+});

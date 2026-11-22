@@ -11,3 +11,15 @@ it('uses KST calendar boundaries and preserves period/source/UUID deep links',()
 it('keeps absent or invalid numbers distinct from zero',()=>{
  expect(dashboardNumber(0,'건')).toBe('0건');for(const x of [null,undefined,NaN,-1,'0'])expect(dashboardNumber(x)).toBe('확인 불가');
 });
+
+import {completionRate,durationLabel,activityDuration,memberLabel} from './lab-dashboard';
+it('defines request-cohort completion rate and unknown/empty boundaries',()=>{
+ expect(completionRate(9,8)).toBe('88.9%');expect(completionRate(0,0)).toBe('요청 없음');expect(completionRate(2,3)).toBe('확인 불가');expect(completionRate(null,0)).toBe('확인 불가');
+ expect(durationLabel(535.195)).toBe('8분 55초');expect(durationLabel(59.6)).toBe('1분 0초');expect(durationLabel(null)).toBe('기록 없음');
+});
+it('marks only unfinished requests at fifteen minutes as review candidates',()=>{
+ const r={state:'reserved',created_at:'2026-11-22T00:00:00Z',completed_at:null};
+ expect(activityDuration(r,Date.parse('2026-11-22T00:14:59Z')).delayed).toBe(false);expect(activityDuration(r,Date.parse('2026-11-22T00:15:00Z')).delayed).toBe(true);
+ expect(activityDuration({...r,state:'completed',completed_at:'2026-11-22T00:20:00Z'},Date.now())).toEqual({label:'20분 0초',delayed:false});
+ expect(activityDuration({...r,created_at:'invalid'},Date.now()).label).toBe('확인 필요');expect(memberLabel('12345678-aaaa')).toBe('회원 12345678');
+});

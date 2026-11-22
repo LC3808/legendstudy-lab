@@ -11,6 +11,25 @@
  .lab-dashboard .lab-activity tr{display:block;border:1px solid #9aacac;border-radius:6px;padding:10px;margin-bottom:12px}
  .lab-dashboard .lab-activity td{display:block;max-width:none;border:0;padding:4px;text-align:left}
  .lab-dashboard .lab-activity td[data-label]::before{content:attr(data-label) ' · ';font-weight:650;color:#4c646c}
- .lab-dashboard .lab-status-grid{grid-template-columns:1fr}
+ .lab-dashboard .lab-status-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .lab-secondary-grid{grid-template-columns:1fr}
 }
+
+.lab-dashboard h2{font-size:20px;margin:16px 0 8px}
+.lab-dashboard .focus-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+.lab-dashboard .focus-kpi{min-width:0;background:#fff;border-color:#e2e8f0}
+.lab-dashboard .focus-kpi__v{font-size:clamp(20px,2.4vw,30px);overflow-wrap:anywhere}
+.lab-dashboard .focus-kpi__n{font-size:12px}
+.lab-dashboard .lab-activity small{display:block;color:#64748b;margin-top:4px;line-height:1.5}
+.lab-dashboard .lab-state{display:inline-block;border-radius:6px;padding:3px 8px;background:#edf2f7;color:#1f3a5f;white-space:nowrap;font-weight:650}
+.lab-dashboard .lab-state--completed{background:#e6f4ef;color:#0f766e}
+.lab-dashboard .lab-state--failed{background:#fff0ee;color:#b42318}
+.lab-dashboard .lab-activity .lab-delay{color:#9a5700;font-weight:650}
+.lab-metric-help{margin:10px 0;color:#475569;font-size:13px}
+.lab-metric-help summary{cursor:pointer;min-height:28px}
+.lab-retry-strip{max-width:360px;margin:12px 0}
+.lab-dashboard .lab-period-failure{font-size:13px;margin:10px 0 18px}
+.lab-dashboard>.focus-section:last-child{border-top:3px solid #d9e4e8;margin-top:24px}
+@container (min-width:650px){.lab-dashboard .focus-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@container (min-width:950px){.lab-dashboard .focus-kpis{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@container (max-width:600px){.lab-dashboard .focus-toolbar label{flex-wrap:wrap}.lab-dashboard .focus-toolbar input{max-width:100%;min-width:0}.lab-dashboard .focus-toolbar>*{max-width:100%}.lab-dashboard .focus-kpi{padding:12px}}
