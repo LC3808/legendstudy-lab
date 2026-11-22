@@ -5,7 +5,7 @@ vi.mock('../math-release/server/transport',()=>({serverTransport:()=>({request:m
 vi.mock('../essay-runtime/server/worker-binding',()=>({reviewedWorkerBinding:()=>({fetch:mock.fetch})}));
 const body={run_id:'10000000-0000-4000-8000-000000000001',key:'30000000-0000-4000-8000-000000000001'};
 const env={MATH_ORIGIN:'https://lab.legendstudy.com'};
-const req=(data=body,headers:Record<string,string>={Authorization:'Bearer original-admin',Origin:env.MATH_ORIGIN})=>new Request(env.MATH_ORIGIN+'/api/admin/essay-run',{method:'POST',headers,body:JSON.stringify(data)});
+const req=(data:unknown=body,headers:Record<string,string>={Authorization:'Bearer original-admin',Origin:env.MATH_ORIGIN})=>new Request(env.MATH_ORIGIN+'/api/admin/essay-run',{method:'POST',headers,body:JSON.stringify(data)});
 beforeEach(()=>{vi.clearAllMocks();mock.request.mockResolvedValue(new Response('{}'));mock.fetch.mockResolvedValue(new Response(JSON.stringify({state:'queued'}),{status:202}));});afterEach(()=>vi.unstubAllGlobals());
 it('forwards original admin JWT after authoritative capability check, with no caller subject',async()=>{const r=await onRequestPost({request:req(),env});expect(r.status).toBe(202);expect(r.headers.get('cache-control')).toContain('no-store');expect(mock.request).toHaveBeenCalledWith('/rest/v1/rpc/admin_lab_run_capabilities','original-admin',expect.objectContaining({body:JSON.stringify({p_run:body.run_id})}));const forwarded=mock.fetch.mock.calls[0][0] as Request;expect(forwarded.headers.get('authorization')).toBe('Bearer original-admin');expect(await forwarded.json()).toEqual(body);});
 it('blocks direct student API calls before Worker',async()=>{mock.request.mockResolvedValue(new Response('{}',{status:403}));expect((await onRequestPost({request:req(),env})).status).toBe(403);expect(mock.fetch).not.toHaveBeenCalled();});
@@ -32,3 +32,5 @@ it('distinguishes a missing RPC from a missing request without exposing backend 
  }
  expect(mock.fetch).not.toHaveBeenCalled();
 });
+it('forwards explicit uncertain approval only after server administrator verification',async()=>{const r=await onRequestPost({request:req({...recovery,allow_uncertain:true}),env});expect(r.status).toBe(202);const forwarded=mock.fetch.mock.calls[0][0] as Request;expect(await forwarded.json()).toEqual({...body,diagnosis_token:recovery.diagnosis_token,allow_uncertain:true});mock.request.mockResolvedValue(new Response('{}',{status:403}));mock.fetch.mockClear();expect((await onRequestPost({request:req({...recovery,allow_uncertain:true}),env})).status).toBe(403);expect(mock.fetch).not.toHaveBeenCalled();});
+it('rejects coercible or unrecognized uncertain approval flags',async()=>{for(const allow_uncertain of [false,'true',1,null])expect((await onRequestPost({request:req({...recovery,allow_uncertain}),env})).status).toBe(422);expect(mock.fetch).not.toHaveBeenCalled();});
