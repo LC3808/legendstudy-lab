@@ -1,3 +1,4 @@
+[2026-11-22 논술 LAB 대시보드 UI/UX 개편 + 재시도 분석 설계](lab-dashboard-ux-redesign-20261122.md)
 [2026-11-15 학습·입시 분석 통합 개편 PHASE 1 — 인기 자료·종합 현황·앱 이벤트](learning-admissions-analytics-redesign-20261115.md)
 [2026-11-15 논술 LAB 전용 운영 대시보드 설계](essay-lab-dashboard-design-20261115.md)
 [2026-11-15 관리자 콘솔 PHASE 4 — 운영 화면 최종 UX 검수·개선 설계](admin-console-final-ux-audit-20261115.md)
