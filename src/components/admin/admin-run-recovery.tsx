@@ -14,6 +14,7 @@ const terminalErrors=new Set(['DIAGNOSIS_CHANGED','ARTIFACT_VERIFICATION_FAILED'
 export function AdminRunRecovery({runId,subjectId,university,exam,requestType,autoInspect=false,onChanged}:Props){
  const {client}=useAuth();
  const [diagnosis,setDiagnosis]=useState<RecoveryDiagnosis|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[result,setResult]=useState<RecoveryResult|null>(null),[uncertain,setUncertain]=useState(false);
+ const [connection,setConnection]=useState('');
  const lock=useRef(false),autoOpened=useRef(false),pending=useRef<{key:string;diagnosis_token:string;allow_uncertain?:true}|null>(null);
  async function read(){
   if(!client)throw Error('LOGIN_REQUIRED');
@@ -24,6 +25,16 @@ export function AdminRunRecovery({runId,subjectId,university,exam,requestType,au
  async function inspect(){
   if(lock.current)return;lock.current=true;setBusy(true);setError('');
   try{const next=await read();setDiagnosis(next);if(diagnosis&&next.diagnosis_token!==diagnosis.diagnosis_token){onChanged();window.dispatchEvent(new Event('admin-lab-changed'));}}catch(e){setError(recoveryReason(e instanceof Error?e.message:'DIAGNOSIS_UNAVAILABLE'));}finally{lock.current=false;setBusy(false);}
+ }
+ async function checkConnection(){
+  if(!client||lock.current)return;lock.current=true;setBusy(true);setError('');setConnection('');
+  try{
+   const session=await client.auth.getSession(),token=session.data.session?.access_token;if(!token)throw Error('LOGIN_REQUIRED');
+   const response=await fetch('/api/admin/essay-run',{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({action:'check_recovery',run_id:runId})});
+   const body=await response.json();if(!response.ok)throw Error(typeof body?.code==='string'?body.code:'REQUEST_UNCERTAIN');
+   if(body?.version!=='admin-recovery-check-v1'||body.run_id!==runId||body.ready!==true||body.provider_called!==false||body.mutation_performed!==false)throw Error('REQUEST_UNCERTAIN');
+   setConnection('Worker 연결·관리자 권한·런타임 준비·DB 읽기 연결 확인. 첨삭 실행·이용권 변경 없음. 실제 복구 시 조건을 다시 검증합니다.');
+  }catch(e){setError(recoveryReason(e instanceof Error?e.message:'REQUEST_UNCERTAIN'));}finally{lock.current=false;setBusy(false);}
  }
  // Only explicit recovery deep links open a read-only diagnosis automatically.
  useEffect(()=>{if(autoInspect&&client&&!autoOpened.current){autoOpened.current=true;void inspect();}},[autoInspect,client]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -61,6 +72,8 @@ export function AdminRunRecovery({runId,subjectId,university,exam,requestType,au
  return <section className="lab-recovery" aria-label="첨삭 복구·완료 진단">
   <h3>첨삭 복구·완료</h3><p>먼저 저장 결과와 실행·이용권 상태를 진단합니다. 응답 여부가 불확실한 문항은 임의로 다시 실행하거나 완료하지 않습니다.</p>
   <button disabled={busy} onClick={()=>void inspect()}>{busy?'복구 상태 확인 중…':d?'복구 진단 새로고침':'복구 진단 확인'}</button>
+  <button disabled={busy} onClick={()=>void checkConnection()}>Worker 연결 진단 (실행 없음)</button>
+  {connection&&<p role="status">{connection}</p>}
   {error&&<p role="alert">{error}</p>}
   {result&&<p className="lab-recovery__outcome" role="status">{result.state==='queued'&&d?.state==='completed'?'현재 요청 완료 · 최신 진단에서 완료 상태를 확인했습니다. 복구 작업과의 연결은 처리 이력에서 확인하세요.':<>{recoveryState(result.state)}{result.state==='queued'?' · 요청이 접수되었습니다. 복구 진단을 새로고침하여 실제 완료 여부를 확인하세요.':result.state==='completed'?' · 서버에서 실제 완료를 확인했습니다.':result.state==='blocked'?` · ${recoveryReason(result.reason)}`:' · 아직 완료되지 않았습니다. 같은 복구 요청의 결과를 다시 확인하세요.'}</>}</p>}
   {d&&<>

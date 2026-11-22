@@ -15,3 +15,17 @@ for(const mode of ['binding','origin'] as const){
  });
  it(`denies non-admin before ${mode} adapter dispatch`,async()=>{const worker=vi.fn();const http=vi.fn(async()=>Response.json({},{status:403}));vi.stubGlobal('fetch',http);const env={...base,...(mode==='binding'?{ESSAY_REVIEWED_WORKER:{fetch:worker}}:{ESSAY_WORKER_ORIGIN:'https://worker.example'})};expect((await onRequestPost({request:request(),env})).status).toBe(403);expect(worker).not.toHaveBeenCalled();expect(http).toHaveBeenCalledTimes(1);});
 }
+
+for(const mode of ['binding','origin'] as const){
+ it(`runs non-mutating readiness through ${mode} adapter with exact caller identity`,async()=>{
+  const worker=vi.fn(async(r:Request)=>{expect(new URL(r.url).pathname).toBe('/admin-exam-recovery-check');expect(await r.json()).toEqual({run_id:command.run_id});expect(r.headers.get('authorization')).toBe('Bearer original-admin');return Response.json({version:'admin-recovery-check-v1',run_id:command.run_id,ready:true,provider_called:false,mutation_performed:false});});
+  vi.stubGlobal('fetch',vi.fn(async(input:RequestInfo|URL,init?:RequestInit)=>String(input).startsWith(base.MATH_SUPABASE_URL)?Response.json({}):worker(new Request(String(input),init))));
+  const env={...base,...(mode==='binding'?{ESSAY_REVIEWED_WORKER:{fetch:worker}}:{ESSAY_WORKER_ORIGIN:'https://worker.example'})};
+  const req=new Request(origin+'/api/admin/essay-run',{method:'POST',headers:{Authorization:'Bearer original-admin','Content-Type':'application/json'},body:JSON.stringify({action:'check_recovery',run_id:command.run_id})});
+  const res=await onRequestPost({request:req,env});expect(res.status).toBe(200);expect((await res.json()).mutation_performed).toBe(false);expect(worker).toHaveBeenCalledTimes(1);
+ });
+}
+it.each(['RECOVERY_RUNTIME_INIT_FAILED','ADMIN_RPC_UNAVAILABLE','RECOVERY_RESPONSE_UNCERTAIN'])('preserves bounded Worker error %s',async code=>{
+ vi.stubGlobal('fetch',vi.fn(async()=>Response.json({})));const worker=vi.fn(async()=>Response.json({code,stage:'admin_read'},{status:503}));
+ const res=await onRequestPost({request:request(),env:{...base,ESSAY_REVIEWED_WORKER:{fetch:worker}}});expect(res.status).toBe(503);expect((await res.json()).code).toBe(code);
+});

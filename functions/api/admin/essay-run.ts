@@ -8,8 +8,9 @@ export async function onRequestPost({request,env}:{request:Request;env:MathEnvir
  const token=request.headers.get('authorization')?.match(/^Bearer ([^\s]+)$/)?.[1];if(!token)return reply({code:'LOGIN_REQUIRED'},401);
  try{
   const body=JSON.parse(new TextDecoder().decode(await boundedBody(request,1024)));
-  const recovery=body?.action==='recover';
-  if(!body||typeof body!=='object'||Object.keys(body).sort().join(',')!==(recovery?(body.allow_uncertain===true?'action,allow_uncertain,diagnosis_token,key,run_id':'action,diagnosis_token,key,run_id'):'key,run_id')||!uuid(body.run_id)||!uuid(body.key)||recovery&&(typeof body.diagnosis_token!=='string'||!/^[a-f0-9]{64}$/.test(body.diagnosis_token)))return reply({code:'INVALID_REQUEST'},422);
+  const diagnostic=body?.action==='check_recovery';
+  const recovery=body?.action==='recover'||diagnostic;
+  if(!body||typeof body!=='object'||Object.keys(body).sort().join(',')!==(diagnostic?'action,run_id':recovery?(body.allow_uncertain===true?'action,allow_uncertain,diagnosis_token,key,run_id':'action,diagnosis_token,key,run_id'):'key,run_id')||!uuid(body.run_id)||(!diagnostic&&!uuid(body.key))||(!diagnostic&&recovery)&&(typeof body.diagnosis_token!=='string'||!/^[a-f0-9]{64}$/.test(body.diagnosis_token)))return reply({code:'INVALID_REQUEST'},422);
   const transport=serverTransport(env);
   // Caller JWT at both boundaries. No subject override / Worker-token promotion.
   const check=await transport.request('/rest/v1/rpc/'+(recovery?'admin_lab_run_recovery':'admin_lab_run_capabilities'),token,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_run:body.run_id})});
@@ -23,8 +24,8 @@ export async function onRequestPost({request,env}:{request:Request;env:MathEnvir
   const worker=reviewedWorkerBinding(env);if(!worker)return reply({code:'WORKER_UNAVAILABLE'},503);
   // DB/Worker revalidate the diagnosis under their existing locks. Do not reject
   // a same-key replay using a newer UI diagnosis or guess a completion result.
-  const command=recovery?{run_id:body.run_id,key:body.key,diagnosis_token:body.diagnosis_token,...(body.allow_uncertain===true?{allow_uncertain:true}:{})}:body;
-  const result=await worker.fetch(new Request('https://essay-worker.internal/'+(recovery?'admin-exam-recover':'admin-exam-retry'),{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(command),signal:AbortSignal.timeout(90000)}));
+  const command=diagnostic?{run_id:body.run_id}:recovery?{run_id:body.run_id,key:body.key,diagnosis_token:body.diagnosis_token,...(body.allow_uncertain===true?{allow_uncertain:true}:{})}:body;
+  const result=await worker.fetch(new Request('https://essay-worker.internal/'+(diagnostic?'admin-exam-recovery-check':recovery?'admin-exam-recover':'admin-exam-retry'),{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(command),signal:AbortSignal.timeout(90000)}));
   const value=JSON.parse(new TextDecoder().decode(await boundedBody(result,16384)));
   return reply(value,result.status);
  }catch{return reply({code:'REQUEST_UNCERTAIN'},503);}
