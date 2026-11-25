@@ -19,3 +19,13 @@
 Q01–Q15는 보고서의 기술 검토 기준이며 기존 HQP9 검수 저장과 다른 체계다. Q15 개별 지속 저장·Owner 역할 식별·판정별 실시간 집계는 미구현. 현재 이를 적합0으로 꾸미지 않고 집계 불가로 표시한다. 기존 검수 의견/정정 저장은 유지된다. 전 모집단 학생/테스트 확정, 전103문항 의미·공식배점 최종 검수, 공식 원문 한 화면 연결, Claude 이번 V1 별도 검토, 학생 실제 양OS QA는 PARTIAL/NOT TESTED다. 기존 d9c856b는 11/22 대시보드 설계이며 V1 신규 검토로 표기하지 않는다.
 
 운영 적용 후 이 문서에 deployment ID와 실제 브라우저 확인을 추가한다.
+
+## Production postflight
+
+Implementation ecac36e5b31dbf980ee0eebbb433626bb33c477e deployed as Pages 6e4b8189-5a6c-4f28-8d16-e15bf4508500. 3167 unrelated asset paths and deployment settings unchanged; 81 existing API inputs unchanged, two protected-report inputs added. Worker unchanged.
+
+Authenticated production browser: 70 runs /118 questions, 15 report criteria,21 detail links, stored answer and shared student WEB report visible; save remained disabled. Mobile actual433px and desktop1825px had no horizontal overflow; isolated390/768/1440 also passed. Anonymous report GET401; actual ordinary-member JWT E2E NOT TESTED, server denial covered by isolated tests.
+
+Full tests2276PASS/5SKIP; lint,typecheck,build and Functions compile PASS. Existing verify-boundaries check has two unchanged failures: payment-checkout test-environment wording and admin-members URL searchParams.delete interpreted as DB delete. These are not claimed as passing.
+
+DB run/credit/payment hashes unchanged; judgments remained0, target q1 request reserved, reruns0. Overall PARTIAL: Q15 persistence, Owner final identity/aggregation, remaining semantic review and Claude V1 review incomplete. Supplied Claude d9c856b is the older dashboard design, not new V1 approval. Canonical APP Wiki quality-console-v1-20261125.md holds the30-item report.
