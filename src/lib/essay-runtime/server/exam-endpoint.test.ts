@@ -266,3 +266,14 @@ it('operator admission also honors configured public exam scope without querying
  const r=await send({action:'availability',examId:id},{ESSAY_PUBLIC_EXAMS:'22222222-2222-4222-8222-222222222222'});
  expect(r.status).toBe(200);expect(await r.json()).toMatchObject({ready:false,code:'ACCESS_DENIED'});expect(m.dispatch).not.toHaveBeenCalled();expect(m.request).not.toHaveBeenCalled();
 });
+
+it('expired Finance and unavailable broker cannot block student quote or single reservation/dispatch',async()=>{
+ const finance=vi.fn(()=>{throw Error('FINANCE_UNAVAILABLE');});
+ const config={PAYMENT_FINANCE_AUTO:'true',PAYMENT_FINANCE_TOKEN:[btoa(JSON.stringify({alg:'ES256'})),btoa(JSON.stringify({role:'essay_finance',exp:1})),'fixture'].join('.'),FINANCE_AUTH:{fetch:finance}};
+ m.request.mockResolvedValueOnce(Response.json({version:'essay-exam-quote-v1',credits:0,kind:'included'}));
+ expect((await send({action:'quote',examId:id,questionIds:[id],parentId:id},config)).status).toBe(200);
+ expect(m.dispatch).not.toHaveBeenCalled();m.request.mockClear();
+ expect((await send(body,config)).status).toBe(202);
+ expect(m.request).toHaveBeenCalledTimes(1);expect(m.request.mock.calls[0][0]).toBe('/rest/v1/rpc/essay_exam_submit');
+ expect(m.dispatch).toHaveBeenCalledTimes(2);expect(finance).not.toHaveBeenCalled();
+});

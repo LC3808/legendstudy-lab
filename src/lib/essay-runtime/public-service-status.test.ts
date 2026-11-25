@@ -84,3 +84,11 @@ it.each(betaExpansionCandidates.filter(e=>e.catalogQuestionIds))('keeps approved
  ids=e.catalogQuestionIds!.slice(1);expect((await send(config)).status).toBe(503);
  expect(m.worker).not.toHaveBeenCalled();
 });
+
+// P0 Finance isolation: expired payment auth must not participate in discovery.
+it('keeps discovery independent of expired Finance credentials and unavailable broker',async()=>{
+ const finance=vi.fn(()=>{throw Error('FINANCE_UNAVAILABLE');});
+ const response=await send({PAYMENT_FINANCE_AUTO:'true',PAYMENT_FINANCE_TOKEN:[btoa(JSON.stringify({alg:'ES256'})),btoa(JSON.stringify({role:'essay_finance',exp:1})),'fixture'].join('.'),FINANCE_AUTH:{fetch:finance}});
+ expect(response.status).toBe(200);expect((await response.json()).checked).toBe(true);expect(finance).not.toHaveBeenCalled();
+ expect(m.worker).not.toHaveBeenCalled();
+});
