@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+const [source,mode='check']=process.argv.slice(2);
+if(!source||!['check','sync'].includes(mode))throw Error('Canonical report JSON and check|sync required');
+const canonical=fs.readFileSync(source,'utf8');const data=JSON.parse(canonical);
+if(data.version!=='quality-census-20261125-v1'||data.criteria.length!==15)throw Error('Invalid report');
+const destination='functions/_data/quality-report.json';
+if(mode==='sync')fs.writeFileSync(destination,canonical);
+if(fs.readFileSync(destination,'utf8')!==canonical)throw Error('Report source drift');
+console.log({version:data.version,sha256:crypto.createHash('sha256').update(canonical).digest('hex'),synchronized:true});

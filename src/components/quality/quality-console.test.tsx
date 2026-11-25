@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import {beforeEach} from 'vitest';
 
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -159,3 +160,8 @@ describe("QualityConsole operator workspace", () => {
   expect(container.querySelector(".ql-workspace")).toBeNull();
   mocks.auth.user = { id: "u-1" };
  });
+
+// These fixtures exercise the preserved legacy single-evaluation workspace.
+vi.mock('../admin/admin-surface',()=>({AdminFrame:({children}:{children:React.ReactNode})=><>{children}</>}));
+vi.mock('@/lib/quality/console-v1',async()=>{const actual=await vi.importActual<typeof import('@/lib/quality/console-v1')>('@/lib/quality/console-v1');return {...actual,loadQualityReport:vi.fn().mockRejectedValue(Error('report fixture absent'))};});
+beforeEach(()=>window.history.replaceState({},'', '/ql/?source=general'));

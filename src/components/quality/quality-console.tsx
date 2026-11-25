@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {QualityBack} from "./quality-back";
+import {QualityV1} from "./quality-v1";
 import {ExamQuality} from './exam-quality';
 import {MathQualityRead} from "./math-quality-read";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -67,7 +67,7 @@ function OperatorGateView({ auth }: { auth: ReturnType<typeof useAuth> }) {
     () => (auth.client ? createHumanReviewClient(auth.client) : null),
     [auth.client],
   );
-  const [source,setSource]=useState<"general"|"math"|"exam">(()=>typeof window!=="undefined"&&new URLSearchParams(window.location.search).has("run")?"exam":"general");
+  const [source,setSource]=useState<"general"|"math"|"exam">(()=>typeof window!=="undefined"&&new URLSearchParams(window.location.search).get("source")==="general"?"general":"exam");
   const [gate, setGate] = useState<OperatorGate>("checking");
   const [errorKind, setErrorKind] = useState<QualityErrorKind | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
@@ -134,7 +134,9 @@ function OperatorGateView({ auth }: { auth: ReturnType<typeof useAuth> }) {
     );
   }
 
-  return <><div className="content-wrap content-wrap--wide ql-source-controls"><QualityBack/><p>일반 논술은 이전 단일 평가 기록입니다. 현재 시험 회차는 회차·혼합형에서 확인하세요. 소스별 건수는 서로 다른 단위입니다.</p><div role="group" aria-label="논술 유형"><button className="button button--outline button--small" aria-pressed={source==='exam'} onClick={()=>setSource('exam')}>회차·혼합형</button><button className="button button--outline button--small" aria-pressed={source==='general'} onClick={()=>setSource('general')}>일반 논술</button><button className="button button--outline button--small" aria-pressed={source==='math'} onClick={()=>setSource('math')}>수리논술</button></div></div>{source==='exam'&&auth.client?<ExamQuality client={auth.client}/>:source==='math'&&auth.client?<MathQualityRead client={auth.client}/>:<QualityWorkspace quality={quality as QualityClient} humanReview={humanReview as HumanReviewClient}/>}</>;
+  return <QualityV1 client={auth.client!} source={source} onSource={setSource}>
+    {source==='exam'?<ExamQuality client={auth.client!}/>:source==='math'?<MathQualityRead client={auth.client!}/>:<QualityWorkspace quality={quality as QualityClient} humanReview={humanReview as HumanReviewClient}/>}
+  </QualityV1>;
 }
 
 function GateShell({ children }: { children: React.ReactNode }) {

@@ -200,7 +200,12 @@ export function AdminGate({ children }: { children: ReactNode }) {
 
 // --- shell -------------------------------------------------------------------
 
-export function AdminSurface({
+export function AdminSurface(props: Parameters<typeof AdminFrame>[0]) {
+  return <AdminGate><AdminFrame {...props}/></AdminGate>;
+}
+
+/** Layout only; callers must retain their own server-backed authorization gate. */
+export function AdminFrame({
   active,
   eyebrow,
   title,
@@ -217,7 +222,7 @@ export function AdminSurface({
   const menuButton = useRef<HTMLButtonElement>(null);
   function closeMenu() { setMenuOpen(false); menuButton.current?.focus(); }
   return (
-    <AdminGate>
+    <>
     <div className="admin-console-toolbar"><button ref={menuButton} className="admin-menu-toggle" aria-expanded={menuOpen} aria-controls="admin-navigation" onClick={() => setMenuOpen(!menuOpen)}>☰ 메뉴</button><span>LEGENDSTUDY+ <span className="admin-console-subtitle">INTELLIGENCE CONSOLE</span></span><Link href="/essay-lab/">서비스로 돌아가기 ↗</Link></div>
     <div className="admin-page content-wrap content-wrap--wide">
       <div id="admin-navigation" className={`admin-navigation-wrap${menuOpen ? ' is-open' : ''}`} onKeyDown={e=>{if(e.key==='Escape')closeMenu();}}>
@@ -235,7 +240,7 @@ export function AdminSurface({
         {children}
       </div>
     </div>
-    </AdminGate>
+    </>
   );
 }
 

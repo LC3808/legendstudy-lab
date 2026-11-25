@@ -1,0 +1,505 @@
+{
+  "version": "quality-census-20261125-v1",
+  "asOf": "2026-11-25T13:44:50Z",
+  "author": "Codex",
+  "claudeReview": "NOT_TESTED",
+  "status": "PARTIAL",
+  "title": "논술 LAB 실제 첨삭 품질·UX 종합 검토",
+  "wiki": "wiki/essay-lab-student-experience-review-20261125.md",
+  "counts": {
+    "runs": 70,
+    "completed": 58,
+    "failed": 10,
+    "incomplete": 2,
+    "questions": 118,
+    "legacy": 0,
+    "ownerJudgments": 0,
+    "contentReviewedCandidateRuns": 20,
+    "contentReviewedQuestions": 38,
+    "completedQuestions": 103,
+    "criteria": 199
+  },
+  "exams": {
+    "345d3caa-3438-58c3-8f80-62a6242179ec": {
+      "name": "한양대학교 · 2024 · admission · 인문계열 · 오후 2",
+      "university": "한양대학교",
+      "track": "인문계열"
+    },
+    "1033e20b-9a20-5622-a67b-c288ace2734f": {
+      "name": "건국대학교 2026학년도 수시 KU논술우수자 인문",
+      "university": "건국대학교",
+      "track": "인문"
+    },
+    "1862463a-bf97-580a-ad33-694375db5d50": {
+      "name": "서강대학교 2026학년도 모의논술 인문계열(경제경영) 1차",
+      "university": "서강대학교",
+      "track": "인문계열(경제경영)"
+    },
+    "a6667288-75ad-50d4-b237-d2a08e2bff8b": {
+      "name": "2025학년도 숙명여자대학교 모의논술 인문계열",
+      "university": "숙명여자대학교",
+      "track": "인문계열"
+    },
+    "62dab8a7-9fe6-5ab3-aaa1-7db5cfd870aa": {
+      "name": "숙명여자대학교 2026학년도 수시 논술 인문계열 1회차",
+      "university": "숙명여자대학교",
+      "track": "인문계열"
+    },
+    "942c1c43-914f-5b99-9a30-e6474c363f6f": {
+      "name": "고려대학교 2025학년도 수시 논술 인문계열 오후",
+      "university": "고려대학교",
+      "track": "인문계열"
+    },
+    "035e5d8d-e91f-5acd-a3a3-4d321bc9f067": {
+      "name": "성균관대학교 2026학년도 수시 논술 언어형 1교시",
+      "university": "성균관대학교",
+      "track": "언어형"
+    },
+    "6679b5ff-d797-53c9-8a2a-424375d7210c": {
+      "name": "서울여자대학교 2026학년도 수시 논술 인문사회계열",
+      "university": "서울여자대학교",
+      "track": "인문사회계열"
+    },
+    "0d4fcaa4-2be0-52a0-9590-c61f65c5f199": {
+      "name": "숭실대학교 2026학년도 수시 논술 인문계열",
+      "university": "숭실대학교",
+      "track": "인문계열"
+    },
+    "d420ef29-218a-57fd-8524-842a0e551714": {
+      "name": "성균관대학교 2026학년도 수시 논술 언어형 2교시",
+      "university": "성균관대학교",
+      "track": "언어형"
+    },
+    "f3c52b3d-8768-5a11-a64a-fc93be3317c0": {
+      "name": "중앙대학교 · 2026 · admission · 인문사회",
+      "university": "중앙대학교",
+      "track": "인문사회"
+    },
+    "e628b01a-9ab6-5cff-88e0-dcdb7ff8ce26": {
+      "name": "2027학년도 한양대학교 모의논술 인문계열",
+      "university": "한양대학교",
+      "track": "인문계열"
+    },
+    "a00991d4-bab2-51ac-a008-7de55ea1dcb9": {
+      "name": "서강대학교 2025학년도 모의논술 인문계열(경제경영) 2차",
+      "university": "서강대학교",
+      "track": "인문계열(경제경영)"
+    },
+    "68996278-1e19-5560-ac94-cf43656bf684": {
+      "name": "2027학년도 한양대학교 모의논술 상경계열",
+      "university": "한양대학교",
+      "track": "상경계열"
+    },
+    "e4969922-c133-5f7d-ae8d-fc50ba389066": {
+      "name": "2026학년도 한양대학교 수시논술 인문계열 오후 1",
+      "university": "한양대학교",
+      "track": "인문계열"
+    },
+    "3e2526ee-14af-5c47-a5fc-76b70cc5bf8c": {
+      "name": "2026학년도 인하대학교 수시논술 자연계열 오전",
+      "university": "인하대학교",
+      "track": "자연"
+    },
+    "63a36589-6a7f-519e-a599-881b3c2ce5d6": {
+      "name": "고려대학교 2026학년도 수시 논술 인문계열 오전",
+      "university": "고려대학교",
+      "track": "인문계열"
+    },
+    "f3090617-216a-509b-8416-382c48146e86": {
+      "name": "건국대학교 2024학년도 수시 인문사회Ⅰ",
+      "university": "건국대학교",
+      "track": "인문사회Ⅰ"
+    },
+    "60d8874b-2417-5631-9502-227368586759": {
+      "name": "서강대학교 2024학년도 모의논술 인문계열(인문사회) 1차",
+      "university": "서강대학교",
+      "track": "인문계열(인문사회)"
+    },
+    "cba01fbd-3de1-5ac1-ab7b-77465ac40638": {
+      "name": "건국대학교 2025학년도 수시 인문사회Ⅰ",
+      "university": "건국대학교",
+      "track": "인문사회Ⅰ"
+    },
+    "ab62c603-8ef9-58e5-b28a-b7b0abadb1bd": {
+      "name": "2026학년도 한국외국어대학교 수시논술 사회계 T2",
+      "university": "한국외국어대학교",
+      "track": "사회계"
+    },
+    "01390436-371e-515b-b4ae-6ba73bee28e8": {
+      "name": "2023학년도 건국대학교 수시논술 인문사회Ⅰ",
+      "university": "건국대학교",
+      "track": "인문사회Ⅰ"
+    },
+    "51e7299e-0ae7-5e6d-9d37-a46718be76bb": {
+      "name": "2024학년도 경희대학교 모의논술 인문·체육계",
+      "university": "경희대학교",
+      "track": "인문·체육계"
+    },
+    "e75f643f-034b-5dc0-afc2-0a0ddeabc3dc": {
+      "name": "동국대학교 2026학년도 수시 논술 인문계열Ⅰ",
+      "university": "동국대학교",
+      "track": "인문계열Ⅰ"
+    },
+    "e9e7daf3-854c-57d3-a6dd-cc18fca0d8ea": {
+      "name": "중앙대학교 · 2026 · admission · 경영경제",
+      "university": "중앙대학교",
+      "track": "경영경제"
+    },
+    "2ef0cf80-41f6-5b6c-a6f8-344c1b8d5ff6": {
+      "name": "2023학년도 성균관대학교 수시논술 언어형 2교시",
+      "university": "성균관대학교",
+      "track": "언어형"
+    },
+    "5fd2442e-2fa8-5299-9390-712161487556": {
+      "name": "2023학년도 한국외국어대학교 수시논술 사회계 T2",
+      "university": "한국외국어대학교",
+      "track": "사회계"
+    },
+    "37c78d49-42bd-5c3d-8f17-4e39da312a02": {
+      "name": "2026학년도 성균관대학교 모의논술 언어형 ",
+      "university": "성균관대학교",
+      "track": "언어형"
+    },
+    "aa9c471c-974a-5894-b46f-560a449844b3": {
+      "name": "서강대학교 2026학년도 수시 논술 인문계열(경제경영)",
+      "university": "서강대학교",
+      "track": "인문계열(경제경영)"
+    },
+    "317249a5-ef36-5b30-b474-41b1d40efc57": {
+      "name": "2026학년도 한국외국어대학교 수시논술 인문계 T1",
+      "university": "한국외국어대학교",
+      "track": "인문계"
+    },
+    "dd7b238e-7faf-5341-b108-2a3798bc0637": {
+      "name": "경희대학교 2027학년도 모의논술 사회계",
+      "university": "경희대학교",
+      "track": "사회계"
+    },
+    "66f70c38-7d06-5720-b5ce-e3e9fd46a458": {
+      "name": "2025학년도 서강대학교 수시논술 인문계열(경제경영) ",
+      "university": "서강대학교",
+      "track": "인문계열(경제경영)"
+    },
+    "efd414a4-0848-595f-9c86-c07af151a46a": {
+      "name": "2025학년도 한국외국어대학교 수시논술 인문계 T3",
+      "university": "한국외국어대학교",
+      "track": "인문계"
+    },
+    "a0d96e4b-a066-5be4-86d1-79a8f26a4cc1": {
+      "name": "서강대학교 2027학년도 모의논술 인문계열",
+      "university": "서강대학교",
+      "track": "인문계열"
+    }
+  },
+  "sections": [
+    {
+      "title": "검토 범위와 분류",
+      "body": "전체 70요청·118문항을 대조했습니다. 완료 58요청의 결과 문항 수 불일치는 0건입니다. 검증된 테스트 등록은 0건입니다. 관리자 계정 연결 17요청도 테스트 확정이 아닙니다. 나머지 53요청 역시 학생 여부 확정 근거가 충분하지 않습니다. 기존 비관리자·심사계정 제외 후보 23요청 중 완료 20요청·38문항은 답안과 저장 결과를 내용 검토했습니다. 나머지를 검토 완료로 세지 않습니다. 모든 분류 미확정 요청을 목록에 유지합니다. 완료 결과는 103문항·199평가 요소이며 평가 객체·요약 누락은 0입니다. 전체 내용 적합 판정과 구분합니다."
+    },
+    {
+      "title": "평가 기준과 점수",
+      "body": "후보 38문항의 평가 요소 50개를 현재 검수 package 원문과 공백 정규화 포함 비교해 50/50 일치를 확인했습니다. 미등록 criterion binding은 0개입니다. 이는 당시 모든 PDF 버전의 배점 적용 적합성을 인증하지 않습니다. 내부 1~5 레벨은 대학 공식 100점 환산 점수가 아닙니다. 긴 기준을 하나의 요소로 묶은 사례와 4/5 경계는 Owner 검수가 필요합니다."
+    },
+    {
+      "title": "원문 인용·독립 검토",
+      "body": "후보 완료 결과의 학생 답안 인용 20개는 저장 start:end와 20/20 일치했습니다. 제시문 자유서술 전체의 의미 정확성을 인증한 것은 아닙니다. 38문항 모두 quality checkpoint가 있으나 독립 검토 통과를 최종 교육적 적합으로 간주하지 않습니다. 최근 12회 재시도는 독립 검토 미승인 8회·원문 인용 검사 거절 4회, 경험 요청 6건입니다. 재시도 사건과 Provider 호출 횟수는 다릅니다."
+    },
+    {
+      "title": "작성 가이드·무료 재첨삭",
+      "body": "WEB WritingGuideCard의 번호·체크행 개선은 구현되어 있습니다. 저장된 보완 과제·checklist를 재배치한 가이드이며 독립적으로 검증된 고득점 필수 조건은 아닙니다. 완료된 부모 연결 후보 5요청은 included_revision, 필요 이용권 0개, settled, 연결 원장 0건입니다. 부모와 수정 답안·평가를 별도로 보존합니다. 레벨 유지 사례도 있어 상승을 강요하지 않습니다. 이 결과는 인과적인 학습 효과 측정이 아닙니다."
+    },
+    {
+      "title": "학생 WEB·APP 표현",
+      "body": "잘한 점 원본은 문자열 배열이며 Flutter는 일반 제목을 붙입니다. 구체적 내용이 있어도 평가 요소 소제목이 반복되는 데이터·표현 계약 문제입니다. 보완할 점은 title/action/priority를 갖습니다. APP의 가이드 번호·체크행 계층은 WEB과 같지 않습니다. WEB 대학→시험→입력 진입만 비파괴 확인했습니다. 실학생 로그인·첨삭 제출·양 OS 결과 전 흐름은 NOT TESTED입니다. 관리자 미리보기를 학생 실기기 검증으로 대체하지 않습니다."
+    },
+    {
+      "title": "운영 안정성과 보존",
+      "body": "03629605-9a58-4b78-8465-c5331ac1b1c7은 기존 완료 1문항·미완료 q1로 남아 있으며 재실행하지 않았습니다. 정확 인용 위치 보정·완료 문항 재사용은 운영 패치와 구분 확인했습니다. 부분 재생성과 신규 재시도 상한은 비활성 정책을 유지합니다. 실제 청구액을 확인할 수 없어 추가 비용을 산출하지 않습니다. 이번 품질 조사는 학생 원본·결과·점수·상태·원장 변경과 Provider 호출을 수행하지 않습니다."
+    },
+    {
+      "title": "Owner 검수와 검증 한계",
+      "body": "Codex의 구조·내용 검토와 Owner의 교육적 최종 판단을 분리합니다. Claude의 이번 별도 검토는 아직 확보되지 않았습니다. 공식 PDF 전체 의미·배점 재채점, 실학생 양 OS E2E, 장문·확대글자·스크린리더 결과 화면은 미검증입니다. 기존 HQP 9항목 검수와 Q01~Q15는 다른 체계입니다. Q01~Q15 보고서 판정을 기존 9항목 저장 이력으로 변환하지 않습니다."
+    }
+  ],
+  "criteria": [
+    {
+      "id": "Q01",
+      "title": "대학별 평가 기준 반영",
+      "status": "NOT_TESTED",
+      "evidence": "50/50 문구 연결 확인. 전체 공식 기준의 누락·당시 버전·배점 적합성은 추가 검수."
+    },
+    {
+      "id": "Q02",
+      "title": "출제 의도 및 문항 이해",
+      "status": "NOT_TESTED",
+      "evidence": "38문항 내용 검토 범위 외 전체 요청 미검증. Owner 원문 대조 필요."
+    },
+    {
+      "id": "Q03",
+      "title": "학생 답안 분석 정확성",
+      "status": "NOT_TESTED",
+      "evidence": "후보 내용 검토와 전체 교육적 판정 구분."
+    },
+    {
+      "id": "Q04",
+      "title": "평가 요소별 점수 정합성",
+      "status": "NEEDS_IMPROVEMENT",
+      "evidence": "내부 레벨과 공식 배점 구분. 단일 긴 기준·4/5 경계 설명 보강 필요."
+    },
+    {
+      "id": "Q05",
+      "title": "종합 평가 정합성",
+      "status": "NOT_TESTED",
+      "evidence": "전체 요청 최종 교육 검수 미완료."
+    },
+    {
+      "id": "Q06",
+      "title": "잘한 점의 구체성",
+      "status": "NOT_TESTED",
+      "evidence": "검토 후보의 구체적 본문은 확인했으나 전 모집단 적합 판정 미완료."
+    },
+    {
+      "id": "Q07",
+      "title": "보완할 점의 적절성",
+      "status": "NOT_TESTED",
+      "evidence": "구조화된 title/action 확인. 전체 사례 의미·우선순위 검수 필요."
+    },
+    {
+      "id": "Q08",
+      "title": "평가 요소 중심 소제목",
+      "status": "NEEDS_IMPROVEMENT",
+      "evidence": "잘한 점 문자열→Flutter 일반 제목 반복. 기존 결과 재작성 없이 하위호환 설계 필요."
+    },
+    {
+      "id": "Q09",
+      "title": "원문 인용 정확성",
+      "status": "NOT_TESTED",
+      "evidence": "답안 인용 20/20 위치 일치. 제시문 전체 의미 검수는 별개."
+    },
+    {
+      "id": "Q10",
+      "title": "작성 가이드 학습 가치",
+      "status": "NEEDS_IMPROVEMENT",
+      "evidence": "WEB 가독성 개선 유지. APP 계층·중복 안내·독립 기준 구분 보완."
+    },
+    {
+      "id": "Q11",
+      "title": "무료 재첨삭 학습 흐름",
+      "status": "NOT_TESTED",
+      "evidence": "완료 후보5건 무료·원본 보존 확인. 실제 화면 전 흐름 미검증."
+    },
+    {
+      "id": "Q12",
+      "title": "독립 검토 정합성",
+      "status": "NOT_TESTED",
+      "evidence": "38문항 checkpoint 존재. 검토 판단의 교육적 정확성 전체 미검증."
+    },
+    {
+      "id": "Q13",
+      "title": "WEB / APP 결과 정합성",
+      "status": "NEEDS_IMPROVEMENT",
+      "evidence": "동일 Backend 유지. 가이드 표시 계층 차이 및 실기기 미검증."
+    },
+    {
+      "id": "Q14",
+      "title": "학생 UI/UX",
+      "status": "NOT_TESTED",
+      "evidence": "WEB 진입과 코드 검토만. 실학생 결과 양 OS QA 미수행."
+    },
+    {
+      "id": "Q15",
+      "title": "기존 공식 설계 준수",
+      "status": "NEEDS_IMPROVEMENT",
+      "evidence": "기준 소제목·플랫폼 가이드 차이. 기존 엔진·데이터를 변경해 해결하지 않음."
+    }
+  ],
+  "issues": [
+    {
+      "id": "QC-01",
+      "type": "피드백 품질",
+      "title": "잘한 점의 평가 요소 소제목",
+      "cause": "문자열 배열과 일반 제목 변환",
+      "solution": "새 결과부터 criterion 연결 구조를 하위호환 설계. 기존 결과 보존",
+      "priority": "P1",
+      "owner": "Codex / Owner",
+      "state": "발견",
+      "deployed": false,
+      "revalidated": "NOT_TESTED"
+    },
+    {
+      "id": "QC-02",
+      "type": "WEB / APP 정합성",
+      "title": "APP 작성 가이드 계층",
+      "cause": "WEB 번호·체크행 개선이 Native에 미반영",
+      "solution": "동일 저장 내용으로 Native 번호·체크행 설계 및 긴 글·접근성 QA",
+      "priority": "P1",
+      "owner": "Claude / Codex",
+      "state": "발견",
+      "deployed": false,
+      "revalidated": "NOT_TESTED"
+    },
+    {
+      "id": "QC-03",
+      "type": "점수 정합성",
+      "title": "내부 레벨·공식 채점표 설명",
+      "cause": "단일 기준 묶음 및 레벨 경계 설명 한계",
+      "solution": "Owner 대표 문항 검수 후 설명 구조 결정. 공식점수 임의 환산 금지",
+      "priority": "P1",
+      "owner": "Owner",
+      "state": "검토 중",
+      "deployed": false,
+      "revalidated": "NOT_TESTED"
+    },
+    {
+      "id": "QC-04",
+      "type": "처리 안정성",
+      "title": "q1 미완료 요청",
+      "cause": "기존 Provider 응답 불확정. 복구 transport 수정과 실제 완료는 별개",
+      "solution": "완료 문항 보존 진단 후 별도 승인한 경우만 관리자 복구",
+      "priority": "P0",
+      "owner": "Owner / Codex",
+      "state": "보류",
+      "deployed": true,
+      "revalidated": "실제 복구 NOT TESTED"
+    }
+  ],
+  "cases": [
+    {
+      "runId": "65f29c97-bddb-400c-871e-085dd0a30082",
+      "exam": "성균관대학교 2026학년도 수시 논술 언어형 1교시",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "02475dda-83fc-4ad3-b9bf-c0315527f529",
+      "exam": "성균관대학교 2026학년도 수시 논술 언어형 1교시",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "28b18e34-a3fe-48c4-8bf9-33ce891704c8",
+      "exam": "서울여자대학교 2026학년도 수시 논술 인문사회계열",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "c425da77-4d11-4dbf-891a-d8d209182767",
+      "exam": "서울여자대학교 2026학년도 수시 논술 인문사회계열",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "244aed57-d1d2-4095-9c90-18f9fffa07da",
+      "exam": "숭실대학교 2026학년도 수시 논술 인문계열",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "03b6e579-dee5-477c-9add-6f932c7ae367",
+      "exam": "숭실대학교 2026학년도 수시 논술 인문계열",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "bf95ad2f-8382-4999-82c4-054fd8437dee",
+      "exam": "서울여자대학교 2026학년도 수시 논술 인문사회계열",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "f5573d7a-a579-48eb-89b4-d7953c74f5f9",
+      "exam": "2023학년도 성균관대학교 수시논술 언어형 2교시",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "6b9a666b-91c3-40b7-a048-d431f45cedb8",
+      "exam": "2023학년도 한국외국어대학교 수시논술 사회계 T2",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "79e4168f-a018-4f45-96ca-b41b727a61fe",
+      "exam": "2026학년도 성균관대학교 모의논술 언어형 ",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "d9714b6f-c8ac-4cd6-b4e4-553c1898c6ce",
+      "exam": "서강대학교 2026학년도 수시 논술 인문계열(경제경영)",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "b0cd5b26-8333-4a62-b16d-0394fd58f50c",
+      "exam": "서강대학교 2026학년도 수시 논술 인문계열(경제경영)",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "56e42287-8150-455b-b534-1fdbeaeeafc1",
+      "exam": "2026학년도 한국외국어대학교 수시논술 인문계 T1",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "79788b36-3081-4e10-a408-c3ee6c0dbb2b",
+      "exam": "경희대학교 2027학년도 모의논술 사회계",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "c37166d0-6a21-45d3-beb8-de87ce9c81a1",
+      "exam": "2025학년도 서강대학교 수시논술 인문계열(경제경영) ",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "4dcb49e5-789d-4e5b-9989-61a116f47e18",
+      "exam": "서강대학교 2026학년도 수시 논술 인문계열(경제경영)",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "741c72ae-fafb-44d9-8d95-9a4de35cffa6",
+      "exam": "2025학년도 한국외국어대학교 수시논술 인문계 T3",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "789c1739-2e8a-4e97-8657-851ca3937a64",
+      "exam": "2025학년도 서강대학교 수시논술 인문계열(경제경영) ",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "b609cfcc-eae7-458e-8e6f-97361de45ec8",
+      "exam": "서강대학교 2027학년도 모의논술 인문계열",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    },
+    {
+      "runId": "0777eb9b-4be3-47b5-be80-4035989940f9",
+      "exam": "2025학년도 한국외국어대학교 수시논술 인문계 T3",
+      "status": "NOT_TESTED",
+      "note": "구조·내용 검토 후보 / 최종 교육 판단 미완료"
+    }
+  ],
+  "sources": [
+    {
+      "label": "실제 결과·UX 검토",
+      "path": "wiki/essay-lab-student-experience-review-20261125.md",
+      "commit": "61b17c543155ff05991703b2ae4bd555701f4ce8"
+    },
+    {
+      "label": "WEB 학생 결과 코드 검토 기준",
+      "path": "src/components/my/evaluation-report.tsx",
+      "commit": "712ff3aecb1ae1be78cb6dbbb531e97505866035"
+    },
+    {
+      "label": "기존 Claude 대시보드 설계 (이번 V1 검토 아님)",
+      "path": "wiki/lab-dashboard-ux-redesign-20261122.md",
+      "commit": "d9c856b"
+    }
+  ]
+}
