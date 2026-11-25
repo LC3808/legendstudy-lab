@@ -8,6 +8,7 @@ describe('shared 이용권 presentation',()=>{
  ])('maps %s to %s',(raw,label)=>expect(type(raw)).toBe(label));
  it('uses the actual recorded signup quantity',()=>{
   expect(reason('signup_bonus_v1',3)).toBe('가입 축하 이용권 3개');
+  expect(reason('signup_bonus_v2',2)).toBe('가입 축하 이용권 2개');
   expect(reason('signup_bonus_v1',4)).toBe('가입 축하 이용권 4개');
   expect(reason('signup_bonus_v1')).toBe('가입 축하 이용권');
  });

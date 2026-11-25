@@ -95,7 +95,7 @@ export const pricingPolicy = {
   includedReevaluationsPerCredit: 1,
   reevaluationWindowDays: 14,
   reevaluationWindowBasis: "최초 첨삭 결과 제공일",
-  freeSignupCredits: 3,
+  freeSignupCredits: 2,
   freeCreditHasExpiry: false,
   freeCreditCashRefundable: false,
   /** Statutory basis used to deduct consumed Credits from a partial refund. */

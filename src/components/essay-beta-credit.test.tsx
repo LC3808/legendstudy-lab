@@ -24,6 +24,9 @@ it('start is read-only, hide preference does not hide the allowance',async()=>{
  m.rpc.mockResolvedValue({data:{...active,notice_seen:false}});
  render(<EssayBetaCredit/>);await screen.findByRole('dialog');
  expect(screen.getAllByText(/2026년 11월 11일 00:00 KST/)).toHaveLength(2);
+ expect(screen.getByText(/신규 가입 시 무료 첨삭권 2개/)).toBeInTheDocument();
+ expect(screen.getByText(/이미 지급받은 이용권과 잔여 수량은 그대로 유지/)).toBeInTheDocument();
+ expect(screen.queryByText(/신규가입 무료 이용권 3개/)).toBeNull();
  fireEvent.click(screen.getByRole('checkbox',{name:'다음부터 보지 않기'}));
  fireEvent.click(screen.getByRole('button',{name:'무료 첨삭 이용하러 가기'}));
  await waitFor(()=>expect(screen.queryByRole('dialog')).toBeNull());

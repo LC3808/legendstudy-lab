@@ -163,6 +163,7 @@ export const termsDocument: LegalDocument = {
       kind: "items",
       items: [
         `신규 가입 시 ${pricingPolicy.freeSignupCredits} 이용권을 무료로 제공하며, 지급 기능의 공개 시점은 요금 안내 페이지에서 안내합니다.`,
+        "이미 지급받은 무료 이용권과 잔여 수량은 그대로 유지되며, 기존 지급분을 소진해도 신규 가입 혜택이 다시 지급되지 않습니다.",
         "무료로 지급된 이용권은 유효기간이 없고 현금으로 환불되지 않습니다.",
         `무료 이용권으로 받은 최초 첨삭의 재첨삭도 최초 첨삭 결과 제공일로부터 ${pricingPolicy.reevaluationWindowDays}일 이내에 이용할 수 있습니다.`,
       ],

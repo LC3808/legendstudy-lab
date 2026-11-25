@@ -1,6 +1,7 @@
 'use client';
 import {useEffect, useState, useRef} from 'react';
 import {useRouter} from 'next/navigation';
+import {pricingPolicy} from '@/lib/pricing';
 import {getBrowserAuthClient} from '@/lib/browser-auth-client';
 
 export type BetaCredit = {version:'essay-beta-credit-v2';active:false;status:'inactive'|'ended';ends_at?:string} | {
@@ -35,7 +36,7 @@ function BetaNotice({end,limit=1,onClose,onStart}:{end:string;limit?:number;onCl
     <p>인문·사회·상경·자연·수리 논술 중 실제 공개된 시험에서 매일 {limit}회 무료 첨삭을 이용할 수 있어요.</p>
     <p>매일 00:00 KST(한국 시간)에 무료 첨삭 이용 횟수가 갱신되며 미사용분은 소멸돼요.</p>
     <p>베타 서비스는 {betaEndDate(end)}까지 운영돼요. 베타 무료 첨삭권과 무료 재첨삭은 베타 서비스 기간 동안만 이용할 수 있어요.</p>
-    <p>신규가입 무료 이용권 3개는 베타 무료 혜택과 별도이며, 구매 이용권과 함께 기존 정책대로 이용할 수 있어요.</p>
+    <p>신규 가입 시 무료 첨삭권 {pricingPolicy.freeSignupCredits}개를 받을 수 있어요. 이미 지급받은 이용권과 잔여 수량은 그대로 유지되며, 베타 혜택·구매 이용권·무료 재첨삭은 각 기존 정책에 따라 이용할 수 있어요.</p>
     <p>사용 중 불편한 점은 문의·건의사항으로 알려주세요. 공지사항에서 안내를 다시 확인할 수 있어요.</p>
     <label><input type="checkbox" checked={hide} disabled={busy} onChange={e=>setHide(e.target.checked)}/> 다음부터 보지 않기</label>
     {message&&<p role="status">{message}</p>}

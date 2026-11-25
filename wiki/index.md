@@ -1,3 +1,5 @@
+2026-11-25: [신규 무료 첨삭권2개 준비](signup-credit-policy-two-20261125.md) — WEB 안내·기존 잔액 보존 검증 PASS. 운영 DB 승인 대기, WEB 미배포/APP 다음 출시.
+
 2026-11-20: [관리자 논술 기간·재진행·삭제](admin-run-management-20261120.md) — Owner승인 DB설치·WEB e84b1232/Worker9ac3b91c 배포·UI/권한 검증 완료. 기존 데이터 불변, 실제 요청 작업0.
 
 2026-11-15: [단일 Owner LIVE QA 사전 검증](payment-qa-paused-20261115.md) — PAUSED 유지, SQL 후보 격리 검증·운영 미적용, 실제 결제/환불0.

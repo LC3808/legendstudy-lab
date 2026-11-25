@@ -1,6 +1,6 @@
 /** Presentation only. Never rewrites canonical Ledger codes, reasons or amounts. */
 const grantTypes: Readonly<Record<string,string>> = {
- signup_bonus:'신규가입 무료', signup_bonus_v1:'신규가입 무료',
+ signup_bonus:'신규가입 무료', signup_bonus_v1:'신규가입 무료',signup_bonus_v2:'신규가입 무료',
  admin_grant:'관리자 지급', manual_support:'관리자 지급',
  promotion:'이벤트 지급', compensation:'이용 보상', purchase:'이용권 구매', refund:'환불',
  b2b_program:'학교 단체 지급', reserve:'예약', consume:'논술 첨삭 사용',
@@ -24,7 +24,7 @@ export function formatCreditReason(raw:string|null|undefined,quantity?:number):s
  const reason=raw.trim();
  if(reason.startsWith('{')){try{const audit=JSON.parse(reason);if(['admin_grant_v2','admin_recovery_v1'].includes(audit.operation)&&typeof audit.reason==='string')return audit.reason;}catch{/* Preserve legacy free text. */}}
 
- if(['signup_bonus_v1','signup_bonus','signup'].includes(reason)) {
+ if(['signup_bonus_v1','signup_bonus_v2','signup_bonus','signup'].includes(reason)) {
   return typeof quantity==='number'&&Number.isInteger(quantity)&&quantity>0 ? `가입 축하 이용권 ${quantity.toLocaleString('ko-KR')}개` : '가입 축하 이용권';
  }
  if(reason.startsWith('manual_support:'))return reason.slice('manual_support:'.length).trim()||'관리자 지급';
@@ -44,7 +44,7 @@ function lookup(map:Readonly<Record<string,string>>,key:string,fallback:string):
 /** User history deliberately omits internal codes and actor references. Admin formatting stays above. */
 export function formatUserCreditReason(type:string,raw?:string|null):string {
  const labels:Readonly<Record<string,string>>={
-  signup_bonus:'신규가입 무료',signup_bonus_v1:'신규가입 무료',
+  signup_bonus:'신규가입 무료',signup_bonus_v1:'신규가입 무료',signup_bonus_v2:'신규가입 무료',
   admin_grant:'관리자 지급',manual_support:'관리자 지급',purchase:'이용권 구매',
   consume:'논술 첨삭',promotion:'프로모션 지급',refund:'환불',
   compensation:'이용 보상',b2b_program:'학교 단체 지급',expiration:'만료',adjustment:'정정',

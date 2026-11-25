@@ -177,7 +177,7 @@ describe("product card controls", () => {
 
 describe("free signup benefit", () => {
   it("keeps the free grant presented as upcoming, never as active", () => {
-    expect(pricingPolicy.freeSignupCredits).toBe(3);
+    expect(pricingPolicy.freeSignupCredits).toBe(2);
     expect(serviceAvailability.freeSignupGrant.runtimeStatus).toBe("NOT_IMPLEMENTED");
     expect(serviceAvailability.freeSignupGrant.stateLabel).toBe("출시 시 제공");
     expect(serviceAvailability.freeSignupGrant.state).toBe("PLANNED");
