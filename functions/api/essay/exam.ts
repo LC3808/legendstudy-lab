@@ -2,7 +2,7 @@ import {betaExpansionFor,expansionMathMatches,type BetaExpansionEnvironment} fro
 import {onRequestGet as mathAvailability} from './availability';
 import {commerceTestScope,commerceTestExam,examLaunchHold} from '../../../src/lib/essay-runtime/launch-policy';
 import {publicExamScope,MAX_PUBLIC_EXAMS} from '../../../src/lib/essay-runtime/public-exam-scope';
-import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
+import {registryWorkerCredential,registryCredentialIssue} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {reviewedWorkerBinding,type WorkerEnvironment} from '../../../src/lib/essay-runtime/server/worker-binding';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
 import {boundedBody} from '../../../src/lib/math-release/server/request';
@@ -38,7 +38,7 @@ export async function onRequestPost({request,env}:{request:Request;env:Env}){
   const scope=env.ESSAY_E2E_SCOPE?JSON.parse(env.ESSAY_E2E_SCOPE) as {subject:string;exam:string;requestKey:string;parentId?:string;previousPaidRunId?:string}:null;
   if(scope&&(!uuid(scope.subject)||!uuid(scope.exam)||!uuid(scope.requestKey)||subject!==scope.subject||input.examId!==scope.exam||(scope.parentId!==undefined&&!uuid(scope.parentId))||(scope.previousPaidRunId!==undefined&&!uuid(scope.previousPaidRunId))||(scope.parentId!==undefined&&scope.previousPaidRunId!==undefined)||(['submit','quote'].includes(String(input.action))&&((input.parentId??null)!==(scope.parentId??null)||(input.previousPaidRunId??null)!==(scope.previousPaidRunId??null)))))return reply({code:'ACCESS_DENIED'},403);
   const worker=reviewedWorkerBinding(env),credential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);
-  if(!worker||!credential){console.warn('EXAM_WORKER_PREFLIGHT',{bindingReady:!!worker,credentialValid:!!credential});return reply({code:'WORKER_UNAVAILABLE'},503);}
+  if(!worker||!credential){console.warn('EXAM_WORKER_PREFLIGHT',{bindingReady:!!worker,credentialValid:!!credential,credentialIssue:registryCredentialIssue(env.ESSAY_REGISTRY_WORKER_JWT)});return reply({code:'WORKER_UNAVAILABLE'},503);}
   const dispatch=async(path:string,payload:unknown)=>worker.fetch(new Request('https://essay-worker.internal'+path,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(90000)}));
   if(input.action==='availability'&&uuid(input.examId)){
    const ready=await dispatch('/exam-admission',{exam_id:input.examId});

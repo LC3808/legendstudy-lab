@@ -4,7 +4,7 @@ import {commerceTestExam,commerceTestScope,examLaunchHold} from '../../../src/li
 import partialEvidence from '../../../src/data/essay-partial-exam-release-evidence.json';
 import {publicExamScope,MAX_PUBLIC_EXAMS} from '../../../src/lib/essay-runtime/public-exam-scope';
 import {serverTransport,type MathEnvironment} from '../../../src/lib/math-release/server/transport';
-import {registryWorkerCredential} from '../../../src/lib/essay-runtime/server/registry-credential';
+import {registryWorkerCredential,registryCredentialIssue} from '../../../src/lib/essay-runtime/server/registry-credential';
 import {publicCatalog} from '../../../src/lib/essay-runtime/public-discovery';
 import {studentPdfForExam} from '../../../src/lib/materials/student-asset';
 import evidence from '../../../src/data/essay-whole-exam-release-evidence.json';
@@ -33,7 +33,7 @@ export async function onRequestGet({request,env}:{request:Request;env:Env}){
   const universities=new Set<string>(),exams:{examId:string;universityId:string;questionIds:string[]}[]=[];
   if(candidates.length){
    const credential=registryWorkerCredential(env.ESSAY_REGISTRY_WORKER_JWT);
-   if(!credential)throw Error('REGISTRY_CREDENTIAL_REQUIRED');
+   if(!credential){console.warn('ESSAY_REGISTRY_PREFLIGHT',{credentialIssue:registryCredentialIssue(env.ESSAY_REGISTRY_WORKER_JWT)});throw Error('REGISTRY_CREDENTIAL_REQUIRED');}
    const session=await transport.rpcRaw('essay_exam_session_ready',{},credential);
    if(session!=='exam-session-v1')throw Error('SESSION_CONTRACT_REQUIRED');
    for(const universityId of new Set(candidates.map(e=>e.universityId))){

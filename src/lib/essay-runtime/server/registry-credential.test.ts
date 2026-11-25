@@ -1,5 +1,5 @@
 import {it, expect, vi, afterEach} from 'vitest';
-import {registryWorkerCredential} from './registry-credential';
+import {registryWorkerCredential,registryCredentialIssue} from './registry-credential';
 import {onRequestPost} from '../../../../functions/api/essay/catalog';
 import {legendStudySupabaseUrl} from '../../auth-config';
 const now=1800000000000;
@@ -23,4 +23,13 @@ it('fails closed before networking and does not reflect a wrongly configured sec
  const response=await onRequestPost({request:new Request('https://lab.legendstudy.com/api/essay/catalog',{method:'POST',headers:{Authorization:'Bearer student'}}),env:{MATH_SUPABASE_URL:legendStudySupabaseUrl,ESSAY_REGISTRY_WORKER_JWT:secret}});
  expect(response.status).toBe(503);expect(await response.text()).not.toContain(secret);
  expect(request).not.toHaveBeenCalled();
+});
+
+it('diagnoses fixed reasons without exposing a token or claim values',()=>{
+ expect(registryCredentialIssue(undefined,now)).toBe('MISSING');
+ expect(registryCredentialIssue('invalid',now)).toBe('FORMAT');
+ expect(registryCredentialIssue(token({role:'essay_finance',exp:now/1000+3600}),now)).toBe('ROLE');
+ expect(registryCredentialIssue(token({role:'essay_worker',exp:now/1000-1}),now)).toBe('EXPIRED');
+ expect(registryCredentialIssue(token({role:'essay_worker',exp:now/1000+60}),now)).toBe('EXPIRING');
+ expect(registryCredentialIssue(token({role:'essay_worker',exp:now/1000+3600}),now)).toBeNull();
 });
