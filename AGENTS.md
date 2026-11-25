@@ -1,3 +1,7 @@
+# LegendStudy official project state
+
+The canonical project Wiki is **LC3808/legendstudy-app, origin/main:wiki/**, not a WEB task branch. Start with the APP main AGENTS.md, wiki/index.md and wiki/current-status.md (https://github.com/LC3808/legendstudy-app/blob/main/wiki/current-status.md), then inspect this WEB branch and actual deployment. Local WEB Wiki is task evidence only. At closeout publish relevant project status to the APP main Wiki and verify official reflection; a WEB task-branch push alone is not a complete handoff. Preserve unrelated work and do not infer production deployment from Git. If official state cannot be read, report freshness NOT_TESTED. APP main AGENTS defines release-result confirmation and approval boundaries.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
